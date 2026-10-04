@@ -1,3 +1,5 @@
+import 'package:re_view_front/features/chat/domain/entities/chat_quota.dart';
+
 /// 질문 전송 결과.
 class ChatReply {
   const ChatReply({
@@ -5,6 +7,7 @@ class ChatReply {
     required this.answer,
     required this.blocked,
     this.blockReason,
+    this.quota,
   });
 
   /// 다음 질문에 그대로 넣으면 대화가 이어진다.
@@ -12,4 +15,7 @@ class ChatReply {
   final String answer;
   final bool blocked;
   final String? blockReason;
+
+  /// 이 질문까지 반영한 오늘 사용량.
+  final ChatQuota? quota;
 }

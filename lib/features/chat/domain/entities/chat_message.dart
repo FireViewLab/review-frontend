@@ -1,7 +1,18 @@
 enum ChatRole { user, assistant }
 
 /// 전송 실패 종류. 화면에서 문구로 바꿔 보여 준다.
-enum ChatErrorKind { unavailable, timeout, network, unknown }
+enum ChatErrorKind {
+  unavailable,
+  timeout,
+  network,
+
+  /// 오늘 한도를 모두 썼다 (429 CHAT_QUOTA_EXCEEDED).
+  quotaExceeded,
+
+  /// 요금제가 맞지 않아 프로 모드를 쓸 수 없다 (403 CHAT_PLAN_REQUIRED).
+  planRequired,
+  unknown,
+}
 
 /// 챗봇 대화의 한 메시지.
 class ChatMessage {

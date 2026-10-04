@@ -568,13 +568,13 @@ class AppLocalizationsKo extends AppLocalizations {
   String get adminTopBarNotifications => '알림';
 
   @override
-  String get chatLauncherTooltip => 'AI 리뷰 상담';
+  String get chatLauncherTooltip => 'AI 어시스턴트 열기';
 
   @override
   String get chatTitle => 'Re:view AI';
 
   @override
-  String get chatSubtitle => '리뷰 신뢰도에 대해 물어보세요';
+  String get chatSubtitle => '리뷰와 구매 판단을 도와드려요';
 
   @override
   String get chatNewConversation => '새 대화';
@@ -598,7 +598,7 @@ class AppLocalizationsKo extends AppLocalizations {
   String get chatStartWithThisProduct => '이 상품으로 새 대화';
 
   @override
-  String get chatEmptyTitle => '무엇이든 물어보세요';
+  String get chatEmptyTitle => '리뷰에서 궁금한 점을 물어보세요';
 
   @override
   String get chatEmptyBody => '리뷰 신뢰도와 광고성 리뷰 판단을 도와드려요.';
@@ -1212,4 +1212,80 @@ class AppLocalizationsKo extends AppLocalizations {
 
   @override
   String get settingsLoginMethodNaver => '네이버';
+
+  @override
+  String get chatLauncherLabel => 'AI에게 물어보기';
+
+  @override
+  String get chatLauncherProductLabel => '이 상품 리뷰 물어보기';
+
+  @override
+  String get chatProductCta => 'AI에게 이 상품 물어보기';
+
+  @override
+  String get chatEmptyProductTitle => '이 상품, 무엇이 궁금하세요?';
+
+  @override
+  String get chatCopy => '복사';
+
+  @override
+  String get chatCopied => '복사했어요';
+
+  @override
+  String get chatThinkingLong => '답변을 만드는 데 시간이 조금 걸리고 있어요';
+
+  @override
+  String get chatThinkingVeryLong => '아직 답변을 기다리고 있어요. 창을 닫아도 대화는 유지돼요';
+
+  @override
+  String get chatBlockedTitle => '답변할 수 없는 질문이에요';
+
+  @override
+  String get chatModeStandard => '기본';
+
+  @override
+  String get chatModePro => '프로';
+
+  @override
+  String get chatModeProActive => '프로 모드로 더 자세히 답해요';
+
+  @override
+  String get chatModeProLocked => '프로 모드는 프로 요금제에서 쓸 수 있어요';
+
+  @override
+  String get chatPlanFree => '무료';
+
+  @override
+  String get chatPlanPlus => '플러스';
+
+  @override
+  String get chatPlanPro => '프로';
+
+  @override
+  String chatQuotaRemaining(int remaining, int limit) {
+    return '오늘 남은 질문 $remaining/$limit';
+  }
+
+  @override
+  String get chatQuotaUnlimited => '질문 횟수 제한 없음';
+
+  @override
+  String get chatQuotaExceededTitle => '오늘 질문을 모두 사용했어요';
+
+  @override
+  String chatQuotaExceededBody(String time) {
+    return '$time에 다시 물어볼 수 있어요';
+  }
+
+  @override
+  String get chatQuotaExceededBodyNoTime => '내일 다시 물어볼 수 있어요';
+
+  @override
+  String get chatPlanRequiredTitle => '프로 요금제에서 이용할 수 있어요';
+
+  @override
+  String get chatPlanRequiredAction => '기본 모드로 다시 묻기';
+
+  @override
+  String get chatSuggestGeneral3 => '믿을 만한 리뷰는 어떻게 골라?';
 }

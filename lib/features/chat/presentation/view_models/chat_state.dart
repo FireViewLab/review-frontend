@@ -1,4 +1,5 @@
 import 'package:re_view_front/features/chat/domain/entities/chat_message.dart';
+import 'package:re_view_front/features/chat/domain/entities/chat_quota.dart';
 import 'package:re_view_front/features/chat/domain/entities/chat_session.dart';
 
 class ChatState {
@@ -16,6 +17,9 @@ class ChatState {
     this.isLoadingSessions = false,
     this.isLoadingMessages = false,
     this.historyError,
+    this.quota,
+    this.mode = ChatMode.standard,
+    this.sendStartedAt,
   });
 
   final bool isOpen;
@@ -39,6 +43,21 @@ class ChatState {
   final bool isLoadingMessages;
   final String? historyError;
 
+  /// 서버에서 확인한 오늘 사용량. 아직 모르면 null이고, 그때는 숫자를 보여 주지 않는다.
+  final ChatQuota? quota;
+  final ChatMode mode;
+
+  /// 지금 보내는 질문을 시작한 시각. 대기 안내 문구를 고르는 데 쓴다.
+  final DateTime? sendStartedAt;
+
+  /// 대화만 비운 상태. 패널 열림 여부와 사용량·모드는 그대로 둔다.
+  ChatState cleared({int? sessionProductId}) => ChatState(
+    isOpen: isOpen,
+    quota: quota,
+    mode: mode,
+    sessionProductId: sessionProductId,
+  );
+
   bool get hasConversation => messages.isNotEmpty;
 
   ChatState copyWith({
@@ -58,6 +77,9 @@ class ChatState {
     bool? isLoadingMessages,
     String? historyError,
     bool clearHistoryError = false,
+    ChatQuota? quota,
+    ChatMode? mode,
+    DateTime? sendStartedAt,
   }) {
     return ChatState(
       isOpen: isOpen ?? this.isOpen,
@@ -79,6 +101,12 @@ class ChatState {
       lastFailedQuestion: clearLastFailedQuestion
           ? null
           : (lastFailedQuestion ?? this.lastFailedQuestion),
+      quota: quota ?? this.quota,
+      mode: mode ?? this.mode,
+      // 보내는 중이 아니면 시작 시각은 의미가 없다.
+      sendStartedAt: (isSending ?? this.isSending)
+          ? (sendStartedAt ?? this.sendStartedAt)
+          : null,
     );
   }
 }

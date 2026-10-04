@@ -3,6 +3,7 @@ import 'package:re_view_front/app/theme/app_colors.dart';
 import 'package:re_view_front/app/theme/app_spacing.dart';
 import 'package:re_view_front/features/chat/domain/entities/chat_session.dart';
 import 'package:re_view_front/features/chat/presentation/view_models/chat_state.dart';
+import 'package:re_view_front/features/chat/presentation/widgets/chat_style.dart';
 import 'package:re_view_front/l10n/generated/app_localizations.dart';
 
 class ChatHistoryView extends StatelessWidget {
@@ -23,6 +24,7 @@ class ChatHistoryView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);
+    final textTheme = Theme.of(context).textTheme;
     final loading =
         state.isLoadingMessages ||
         (state.isLoadingSessions && state.sessions.isEmpty);
@@ -35,12 +37,15 @@ class ChatHistoryView extends StatelessWidget {
               IconButton(
                 tooltip: l10n.chatBackToConversation,
                 onPressed: onBack,
-                icon: const Icon(Icons.arrow_back_rounded),
+                icon: const Icon(Icons.arrow_back_rounded, size: 20),
               ),
               Expanded(
                 child: Text(
                   l10n.chatPreviousConversations,
-                  style: Theme.of(context).textTheme.titleSmall,
+                  style: textTheme.titleSmall?.copyWith(
+                    color: ChatStyle.ink,
+                    fontWeight: FontWeight.w700,
+                  ),
                 ),
               ),
             ],
@@ -98,24 +103,49 @@ class ChatHistoryView extends StatelessWidget {
                     final session = state.sessions[index];
                     final date = session.lastMessageAt ?? session.createdAt;
                     final local = date?.toLocal();
-                    return ListTile(
-                      leading: const Icon(
-                        Icons.chat_bubble_outline,
-                        color: AppColors.primary,
-                      ),
-                      title: Text(
-                        session.title.trim().isEmpty
-                            ? l10n.chatHistoryUntitled
-                            : session.title,
-                        maxLines: 2,
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                      subtitle: local == null
-                          ? null
-                          : Text(
-                              '${local.year}.${local.month.toString().padLeft(2, '0')}.${local.day.toString().padLeft(2, '0')}',
-                            ),
+                    final title = session.title.trim().isEmpty
+                        ? l10n.chatHistoryUntitled
+                        : session.title;
+                    return InkWell(
                       onTap: () => onSelect(session),
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 20,
+                          vertical: AppSpacing.sm,
+                        ),
+                        child: Row(
+                          children: [
+                            Expanded(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    title,
+                                    maxLines: 2,
+                                    overflow: TextOverflow.ellipsis,
+                                    style: textTheme.bodyMedium?.copyWith(
+                                      color: ChatStyle.ink,
+                                      fontWeight: FontWeight.w600,
+                                    ),
+                                  ),
+                                  if (local != null)
+                                    Text(
+                                      '${local.year}.${local.month.toString().padLeft(2, '0')}.${local.day.toString().padLeft(2, '0')}',
+                                      style: textTheme.labelSmall?.copyWith(
+                                        color: AppColors.textTertiary,
+                                      ),
+                                    ),
+                                ],
+                              ),
+                            ),
+                            const Icon(
+                              Icons.chevron_right_rounded,
+                              size: 20,
+                              color: AppColors.textTertiary,
+                            ),
+                          ],
+                        ),
+                      ),
                     );
                   },
                 ),

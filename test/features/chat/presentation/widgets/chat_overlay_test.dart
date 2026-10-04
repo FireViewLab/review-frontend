@@ -1,6 +1,8 @@
 import 'dart:async';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:go_router/go_router.dart';
@@ -9,11 +11,13 @@ import 'package:re_view_front/app/router/route_paths.dart';
 import 'package:re_view_front/core/error/failure.dart';
 import 'package:re_view_front/core/providers/core_providers.dart';
 import 'package:re_view_front/core/result/result.dart';
+import 'package:re_view_front/features/chat/domain/entities/chat_quota.dart';
 import 'package:re_view_front/features/chat/domain/entities/chat_reply.dart';
 import 'package:re_view_front/features/chat/domain/entities/chat_session.dart';
 import 'package:re_view_front/features/chat/domain/entities/chat_message.dart';
 import 'package:re_view_front/features/chat/domain/repositories/chat_repository.dart';
 import 'package:re_view_front/features/chat/presentation/providers/chat_providers.dart';
+import 'package:re_view_front/features/chat/presentation/widgets/chat_ask_button.dart';
 import 'package:re_view_front/features/chat/presentation/widgets/chat_overlay.dart';
 import 'package:re_view_front/features/chat/presentation/widgets/chat_panel.dart';
 import 'package:re_view_front/features/chat/presentation/widgets/popup_route_tracker.dart';
@@ -233,18 +237,9 @@ void main() {
     await tester.pumpAndSettle();
 
     expect(find.text(l10n.chatProductContext), findsOneWidget);
-    expect(
-      find.widgetWithText(ActionChip, l10n.chatSuggestProduct1),
-      findsOneWidget,
-    );
-    expect(
-      find.widgetWithText(ActionChip, l10n.chatSuggestProduct2),
-      findsOneWidget,
-    );
-    expect(
-      find.widgetWithText(ActionChip, l10n.chatSuggestProduct3),
-      findsOneWidget,
-    );
+    expect(find.text(l10n.chatSuggestProduct1), findsOneWidget);
+    expect(find.text(l10n.chatSuggestProduct2), findsOneWidget);
+    expect(find.text(l10n.chatSuggestProduct3), findsOneWidget);
     expect(find.text(l10n.chatSuggestGeneral1), findsNothing);
     expect(find.text(l10n.chatLoginTitle), findsNothing);
     expect(subject.repository.requests, isEmpty);
@@ -266,7 +261,11 @@ void main() {
     await tester.tap(find.byTooltip(l10n.chatLauncherTooltip));
     await tester.pumpAndSettle();
 
-    await tester.tap(find.widgetWithText(ActionChip, l10n.chatSuggestProduct1));
+    // 추천 질문은 입력창에 채워지고, 보내기를 눌러야 전송된다.
+    await tester.tap(find.text(l10n.chatSuggestProduct1));
+    await tester.pump();
+    expect(repository.requests, isEmpty);
+    await tester.tap(find.byTooltip(l10n.chatSend));
     await tester.pump();
 
     expect(repository.requests.single, (
@@ -288,6 +287,245 @@ void main() {
     expect(tester.takeException(), isNull);
   });
 
+  testWidgets('shows the plan and remaining questions from the server', (
+    tester,
+  ) async {
+    final repository = _FakeChatRepository()..quota = Success(_quota());
+    await _pumpOverlay(
+      tester,
+      path: RoutePaths.home,
+      isLoggedIn: true,
+      repository: repository,
+    );
+    final l10n = _localizations(tester);
+    await tester.tap(find.byTooltip(l10n.chatLauncherTooltip));
+    await tester.pumpAndSettle();
+
+    expect(find.text(l10n.chatPlanFree), findsOneWidget);
+    expect(find.text(l10n.chatQuotaRemaining(3, 5)), findsOneWidget);
+    expect(find.text(l10n.chatModeStandard), findsOneWidget);
+
+    // 무료 요금제는 프로 모드를 고를 수 없고 안내만 본다.
+    await tester.tap(find.text(l10n.chatModePro));
+    await tester.pump();
+    expect(find.text(l10n.chatModeProLocked), findsOneWidget);
+    await tester.enterText(find.byType(TextField), '질문');
+    await tester.pump();
+    await tester.tap(find.byTooltip(l10n.chatSend));
+    await tester.pumpAndSettle(const Duration(seconds: 5));
+    expect(repository.modes.single, ChatMode.standard);
+    expect(tester.takeException(), isNull);
+  });
+
+  testWidgets('hides plan and quota when the server has not answered', (
+    tester,
+  ) async {
+    await _pumpOverlay(tester, path: RoutePaths.home, isLoggedIn: true);
+    final l10n = _localizations(tester);
+    await tester.tap(find.byTooltip(l10n.chatLauncherTooltip));
+    await tester.pumpAndSettle();
+
+    expect(find.text(l10n.chatPlanFree), findsNothing);
+    expect(find.text(l10n.chatModePro), findsNothing);
+    expect(find.byType(TextField), findsOneWidget);
+  });
+
+  testWidgets('sends through pro mode on a pro plan', (tester) async {
+    final repository = _FakeChatRepository()
+      ..quota = Success(
+        _quota(plan: 'PRO', limit: 300, remaining: 280, pro: true),
+      );
+    await _pumpOverlay(
+      tester,
+      path: RoutePaths.home,
+      isLoggedIn: true,
+      repository: repository,
+    );
+    final l10n = _localizations(tester);
+    await tester.tap(find.byTooltip(l10n.chatLauncherTooltip));
+    await tester.pumpAndSettle();
+    // 헤더 배지와 모드 선택에 한 번씩 나온다.
+    expect(find.text(l10n.chatPlanPro), findsNWidgets(2));
+
+    await tester.tap(find.text(l10n.chatModePro).last);
+    await tester.pump();
+    expect(find.text(l10n.chatModeProActive), findsOneWidget);
+    await tester.enterText(find.byType(TextField), '질문');
+    await tester.pump();
+    await tester.tap(find.byTooltip(l10n.chatSend));
+    await tester.pumpAndSettle();
+    expect(repository.modes.single, ChatMode.pro);
+  });
+
+  testWidgets('blocks the input when today\'s questions are used up', (
+    tester,
+  ) async {
+    final repository = _FakeChatRepository()
+      ..quota = Success(_quota(remaining: 0));
+    await _pumpOverlay(
+      tester,
+      path: RoutePaths.home,
+      isLoggedIn: true,
+      repository: repository,
+    );
+    final l10n = _localizations(tester);
+    await tester.tap(find.byTooltip(l10n.chatLauncherTooltip));
+    await tester.pumpAndSettle();
+
+    expect(find.textContaining(l10n.chatQuotaExceededTitle), findsOneWidget);
+    expect(tester.widget<TextField>(find.byType(TextField)).enabled, isFalse);
+    expect(tester.takeException(), isNull);
+  });
+
+  testWidgets('shows blocked, quota and plan notices in the conversation', (
+    tester,
+  ) async {
+    final repository = _FakeChatRepository()..quota = Success(_quota());
+    final subject = await _pumpOverlay(
+      tester,
+      path: RoutePaths.home,
+      isLoggedIn: true,
+      repository: repository,
+    );
+    final l10n = _localizations(tester);
+    await tester.tap(find.byTooltip(l10n.chatLauncherTooltip));
+    await tester.pumpAndSettle();
+    final vm = subject.container.read(chatViewModelProvider.notifier);
+
+    repository.pending = Completer()
+      ..complete(
+        const Success(
+          ChatReply(
+            sessionId: 7,
+            answer: '상품과 리뷰에 관한 질문만 답해요',
+            blocked: true,
+            blockReason: 'OFF_TOPIC',
+          ),
+        ),
+      );
+    await vm.send('날씨');
+    await tester.pumpAndSettle();
+    expect(find.text(l10n.chatBlockedTitle), findsOneWidget);
+    expect(find.byTooltip(l10n.chatCopy), findsNothing);
+
+    repository.pending = Completer()
+      ..complete(
+        const FailureResult(
+          Failure(message: '', code: 'CHAT_PLAN_REQUIRED', statusCode: 403),
+        ),
+      );
+    await vm.send('프로 질문');
+    await tester.pumpAndSettle();
+    expect(find.text(l10n.chatPlanRequiredTitle), findsOneWidget);
+    expect(find.text(l10n.chatPlanRequiredAction), findsOneWidget);
+
+    repository.pending = Completer()
+      ..complete(
+        const FailureResult(
+          Failure(message: '', code: 'CHAT_QUOTA_EXCEEDED', statusCode: 429),
+        ),
+      );
+    await vm.send('한도 질문');
+    await tester.pumpAndSettle();
+    expect(find.text(l10n.chatQuotaExceededTitle), findsOneWidget);
+    expect(find.text(l10n.chatRetry), findsNothing);
+    expect(tester.takeException(), isNull);
+  });
+
+  testWidgets('a suggestion fills the input, keeps focus and sends on enter', (
+    tester,
+  ) async {
+    debugDefaultTargetPlatformOverride = TargetPlatform.macOS;
+    final repository = _FakeChatRepository();
+    await _pumpOverlay(
+      tester,
+      path: RoutePaths.home,
+      isLoggedIn: true,
+      repository: repository,
+    );
+    final l10n = _localizations(tester);
+    await tester.tap(find.byTooltip(l10n.chatLauncherTooltip));
+    await tester.pumpAndSettle();
+
+    await tester.tap(find.text(l10n.chatSuggestGeneral1));
+    await tester.pumpAndSettle();
+    final field = tester.widget<TextField>(find.byType(TextField));
+    expect(field.controller!.text, l10n.chatSuggestGeneral1);
+    expect(field.focusNode!.hasFocus, isTrue);
+
+    await tester.testTextInput.receiveAction(TextInputAction.send);
+    await tester.pumpAndSettle();
+    expect(repository.requests.single.question, l10n.chatSuggestGeneral1);
+    debugDefaultTargetPlatformOverride = null;
+  });
+
+  testWidgets('copies an answer', (tester) async {
+    await _pumpOverlay(tester, path: RoutePaths.home, isLoggedIn: true);
+    final l10n = _localizations(tester);
+    String? copied;
+    tester.binding.defaultBinaryMessenger.setMockMethodCallHandler(
+      SystemChannels.platform,
+      (call) async {
+        if (call.method == 'Clipboard.setData') {
+          copied = (call.arguments as Map)['text'] as String;
+        }
+        return null;
+      },
+    );
+    addTearDown(
+      () => tester.binding.defaultBinaryMessenger.setMockMethodCallHandler(
+        SystemChannels.platform,
+        null,
+      ),
+    );
+    await tester.tap(find.byTooltip(l10n.chatLauncherTooltip));
+    await tester.pumpAndSettle();
+    await tester.enterText(find.byType(TextField), '질문');
+    await tester.pump();
+    await tester.tap(find.byTooltip(l10n.chatSend));
+    await tester.pumpAndSettle();
+
+    await tester.tap(find.byTooltip(l10n.chatCopy));
+    await tester.pump();
+    expect(copied, '리뷰 분석 답변');
+    expect(find.byTooltip(l10n.chatCopied), findsOneWidget);
+    await tester.pump(const Duration(seconds: 3));
+  });
+
+  testWidgets('opens the panel from the inline ask button', (tester) async {
+    final container = ProviderContainer(
+      overrides: [
+        isLoggedInProvider.overrideWithValue(false),
+        chatRepositoryProvider.overrideWithValue(_FakeChatRepository()),
+      ],
+    );
+    addTearDown(container.dispose);
+    await pumpApp(
+      tester,
+      UncontrolledProviderScope(
+        container: container,
+        child: localizedApp(
+          router: GoRouter(
+            routes: [
+              GoRoute(
+                path: '/',
+                builder: (context, state) => const Scaffold(
+                  body: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [ChatAskButton()],
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+    await tester.tap(find.byType(ChatAskButton));
+    expect(container.read(chatViewModelProvider).isOpen, isTrue);
+    expect(tester.takeException(), isNull);
+  });
+
   testWidgets(
     'shows a notice when navigating to another product in a session',
     (tester) async {
@@ -299,9 +537,9 @@ void main() {
       final l10n = _localizations(tester);
       await tester.tap(find.byTooltip(l10n.chatLauncherTooltip));
       await tester.pumpAndSettle();
-      await tester.tap(
-        find.widgetWithText(ActionChip, l10n.chatSuggestProduct1),
-      );
+      await tester.tap(find.text(l10n.chatSuggestProduct1));
+      await tester.pump();
+      await tester.tap(find.byTooltip(l10n.chatSend));
       await tester.pumpAndSettle();
 
       subject.router.go('/product/2');
@@ -320,9 +558,9 @@ void main() {
       expect(find.text(l10n.chatProductContext), findsOneWidget);
       expect(subject.container.read(chatViewModelProvider).messages, isEmpty);
       expect(subject.container.read(chatViewModelProvider).sessionProductId, 2);
-      await tester.tap(
-        find.widgetWithText(ActionChip, l10n.chatSuggestProduct1),
-      );
+      await tester.tap(find.text(l10n.chatSuggestProduct1));
+      await tester.pump();
+      await tester.tap(find.byTooltip(l10n.chatSend));
       await tester.pumpAndSettle();
       expect(subject.repository.requests.last.productId, 2);
       expect(subject.repository.requests.last.sessionId, isNull);
@@ -403,11 +641,35 @@ _pumpOverlay(
   return (container: container, router: router, repository: fake);
 }
 
+ChatQuota _quota({
+  String plan = 'FREE',
+  int limit = 5,
+  int remaining = 3,
+  bool pro = false,
+}) => ChatQuota(
+  planCode: plan,
+  dailyLimit: limit,
+  usedToday: limit - remaining,
+  remaining: remaining,
+  proAvailable: pro,
+  resetAt: DateTime.now().add(const Duration(hours: 3)),
+);
+
 const _reply = Success(
   ChatReply(sessionId: 7, answer: '리뷰 분석 답변', blocked: false),
 );
 
 class _FakeChatRepository implements ChatRepository {
+  Result<ChatQuota> quota = const FailureResult(Failure(message: 'no quota'));
+  final List<ChatMode> modes = [];
+  int quotaRequests = 0;
+
+  @override
+  Future<Result<ChatQuota>> getQuota() async {
+    quotaRequests++;
+    return quota;
+  }
+
   Result<ChatSessionPage> sessions = const Success(
     ChatSessionPage(items: [], page: 0, isLast: true),
   );
@@ -440,7 +702,9 @@ class _FakeChatRepository implements ChatRepository {
     required String question,
     int? sessionId,
     int? productId,
+    ChatMode mode = ChatMode.standard,
   }) async {
+    modes.add(mode);
     requests.add((
       question: question,
       sessionId: sessionId,

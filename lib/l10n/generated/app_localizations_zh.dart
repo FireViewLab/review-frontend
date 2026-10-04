@@ -568,13 +568,13 @@ class AppLocalizationsZh extends AppLocalizations {
   String get adminTopBarNotifications => '通知';
 
   @override
-  String get chatLauncherTooltip => 'AI 评论咨询';
+  String get chatLauncherTooltip => '打开 AI 助手';
 
   @override
   String get chatTitle => 'Re:view AI';
 
   @override
-  String get chatSubtitle => '询问评论可信度';
+  String get chatSubtitle => '帮你看懂评论、做出购买判断';
 
   @override
   String get chatNewConversation => '新对话';
@@ -598,7 +598,7 @@ class AppLocalizationsZh extends AppLocalizations {
   String get chatStartWithThisProduct => '以此商品开始新对话';
 
   @override
-  String get chatEmptyTitle => '尽管问吧';
+  String get chatEmptyTitle => '问问你想了解的评论问题';
 
   @override
   String get chatEmptyBody => '帮助您判断评论可信度并识别广告评论。';
@@ -1210,4 +1210,80 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get settingsLoginMethodNaver => 'Naver';
+
+  @override
+  String get chatLauncherLabel => '问问 AI';
+
+  @override
+  String get chatLauncherProductLabel => '问问这件商品的评论';
+
+  @override
+  String get chatProductCta => '向 AI 询问这件商品';
+
+  @override
+  String get chatEmptyProductTitle => '这件商品，你想了解什么？';
+
+  @override
+  String get chatCopy => '复制';
+
+  @override
+  String get chatCopied => '已复制';
+
+  @override
+  String get chatThinkingLong => '生成回答需要多一点时间';
+
+  @override
+  String get chatThinkingVeryLong => '仍在等待回答。关闭窗口也会保留对话';
+
+  @override
+  String get chatBlockedTitle => '无法回答这个问题';
+
+  @override
+  String get chatModeStandard => '标准';
+
+  @override
+  String get chatModePro => '专业';
+
+  @override
+  String get chatModeProActive => '专业模式会给出更详细的回答';
+
+  @override
+  String get chatModeProLocked => '专业模式仅限专业版套餐使用';
+
+  @override
+  String get chatPlanFree => '免费';
+
+  @override
+  String get chatPlanPlus => 'Plus';
+
+  @override
+  String get chatPlanPro => 'Pro';
+
+  @override
+  String chatQuotaRemaining(int remaining, int limit) {
+    return '今日剩余提问 $remaining/$limit';
+  }
+
+  @override
+  String get chatQuotaUnlimited => '提问次数不限';
+
+  @override
+  String get chatQuotaExceededTitle => '今天的提问次数已用完';
+
+  @override
+  String chatQuotaExceededBody(String time) {
+    return '$time 后可以再次提问';
+  }
+
+  @override
+  String get chatQuotaExceededBodyNoTime => '明天可以再次提问';
+
+  @override
+  String get chatPlanRequiredTitle => '仅限专业版套餐使用';
+
+  @override
+  String get chatPlanRequiredAction => '用标准模式重新提问';
+
+  @override
+  String get chatSuggestGeneral3 => '怎么挑选可信的评论？';
 }
