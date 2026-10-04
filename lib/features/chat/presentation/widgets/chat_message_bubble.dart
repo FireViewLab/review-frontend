@@ -87,7 +87,7 @@ class _AssistantLabel extends StatelessWidget {
     return Row(
       mainAxisSize: MainAxisSize.min,
       children: [
-        const ChatSparkle(size: 20),
+        const ChatMark(size: 20),
         const SizedBox(width: AppSpacing.xs),
         Text(
           AppLocalizations.of(context).chatTitle,
@@ -472,7 +472,7 @@ class _Dots extends StatelessWidget {
                   width: 7,
                   height: 7,
                   decoration: const BoxDecoration(
-                    gradient: ChatStyle.gradient,
+                    color: AppColors.primary,
                     shape: BoxShape.circle,
                   ),
                 ),

@@ -68,61 +68,42 @@ class ChatPanel extends ConsumerWidget {
                     : const BorderSide(color: ChatStyle.line),
               ),
               clipBehavior: Clip.antiAlias,
-              child: Stack(
+              child: Column(
                 children: [
-                  // 헤더 뒤에 깔리는 옅은 색. 블러 없이 그라데이션만 쓴다.
-                  const Positioned(
-                    top: 0,
-                    left: 0,
-                    right: 0,
-                    height: 160,
-                    child: DecoratedBox(
-                      decoration: BoxDecoration(
-                        gradient: LinearGradient(
-                          begin: Alignment.topCenter,
-                          end: Alignment.bottomCenter,
-                          colors: [ChatStyle.wash, AppColors.surface],
-                        ),
+                  _Header(
+                    quota: isLoggedIn ? state.quota : null,
+                    canStartNew:
+                        isLoggedIn &&
+                        (state.hasConversation || state.isHistoryOpen),
+                    onNew: () => vm.startNew(productId: productId),
+                    onClose: vm.close,
+                    onHistory: isLoggedIn ? vm.showHistory : null,
+                    historyEnabled:
+                        !state.isSending && !state.isLoadingMessages,
+                  ),
+                  const Divider(height: 1, color: ChatStyle.line),
+                  if (isLoggedIn && state.isHistoryOpen)
+                    Expanded(
+                      child: ChatHistoryView(
+                        state: state,
+                        onBack: vm.closeHistory,
+                        onSelect: vm.resumeSession,
+                        onLoadMore: vm.loadMoreSessions,
+                        onRetry: vm.showHistory,
                       ),
+                    )
+                  else if (isLoggedIn)
+                    Expanded(
+                      child: _Conversation(
+                        state: state,
+                        productId: productId,
+                        autofocus: !fullScreen,
+                      ),
+                    )
+                  else
+                    Expanded(
+                      child: _LoginPrompt(onLoginPressed: onLoginPressed),
                     ),
-                  ),
-                  Column(
-                    children: [
-                      _Header(
-                        quota: isLoggedIn ? state.quota : null,
-                        canStartNew:
-                            isLoggedIn &&
-                            (state.hasConversation || state.isHistoryOpen),
-                        onNew: () => vm.startNew(productId: productId),
-                        onClose: vm.close,
-                        onHistory: isLoggedIn ? vm.showHistory : null,
-                        historyEnabled:
-                            !state.isSending && !state.isLoadingMessages,
-                      ),
-                      if (isLoggedIn && state.isHistoryOpen)
-                        Expanded(
-                          child: ChatHistoryView(
-                            state: state,
-                            onBack: vm.closeHistory,
-                            onSelect: vm.resumeSession,
-                            onLoadMore: vm.loadMoreSessions,
-                            onRetry: vm.showHistory,
-                          ),
-                        )
-                      else if (isLoggedIn)
-                        Expanded(
-                          child: _Conversation(
-                            state: state,
-                            productId: productId,
-                            autofocus: !fullScreen,
-                          ),
-                        )
-                      else
-                        Expanded(
-                          child: _LoginPrompt(onLoginPressed: onLoginPressed),
-                        ),
-                    ],
-                  ),
                 ],
               ),
             ),
@@ -159,7 +140,7 @@ class _Header extends StatelessWidget {
       padding: const EdgeInsets.fromLTRB(20, AppSpacing.md, AppSpacing.xs, 12),
       child: Row(
         children: [
-          const ChatSparkle(),
+          const ChatMark(),
           const SizedBox(width: AppSpacing.sm),
           Expanded(
             child: Column(
@@ -264,9 +245,8 @@ class _PlanBadge extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
       decoration: BoxDecoration(
-        gradient: isPro ? ChatStyle.gradient : null,
         color: isPro
-            ? null
+            ? ChatStyle.ink
             : isPlus
             ? AppColors.primaryLight
             : AppColors.surface,
@@ -386,7 +366,12 @@ class _ContextBar extends ConsumerWidget {
 
     return Container(
       width: double.infinity,
-      margin: const EdgeInsets.symmetric(horizontal: AppSpacing.md),
+      margin: const EdgeInsets.fromLTRB(
+        AppSpacing.md,
+        AppSpacing.sm,
+        AppSpacing.md,
+        0,
+      ),
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
       decoration: BoxDecoration(
         color: isOtherProduct ? ChatStyle.noticeBackground : AppColors.surface,
@@ -486,7 +471,7 @@ class _LoginPrompt extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          const ChatSparkle(size: 56),
+          const ChatMark(size: 48),
           const SizedBox(height: AppSpacing.lg),
           Text(
             l10n.chatLoginTitle,

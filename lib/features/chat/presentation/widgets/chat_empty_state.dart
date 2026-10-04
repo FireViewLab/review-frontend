@@ -34,13 +34,8 @@ class ChatEmptyState extends StatelessWidget {
           ];
 
     return ListView(
-      padding: const EdgeInsets.fromLTRB(20, AppSpacing.md, 20, AppSpacing.md),
+      padding: const EdgeInsets.fromLTRB(20, AppSpacing.lg, 20, AppSpacing.md),
       children: [
-        const Align(
-          alignment: Alignment.centerLeft,
-          child: ChatSparkle(size: 44),
-        ),
-        const SizedBox(height: AppSpacing.md),
         Text(
           productId != null ? l10n.chatEmptyProductTitle : l10n.chatEmptyTitle,
           style: textTheme.titleLarge?.copyWith(

@@ -313,16 +313,16 @@ class ChatComposerState extends State<ChatComposer> {
                 Icon(
                   _showLockedHint
                       ? Icons.lock_outline_rounded
-                      : Icons.auto_awesome_rounded,
+                      : Icons.workspace_premium_rounded,
                   size: 13,
-                  color: ChatStyle.accent,
+                  color: AppColors.primary,
                 ),
                 const SizedBox(width: 4),
                 Expanded(
                   child: Text(
                     hint,
                     style: textTheme.labelSmall?.copyWith(
-                      color: ChatStyle.accent,
+                      color: AppColors.primary,
                       fontWeight: FontWeight.w600,
                     ),
                   ),
@@ -476,7 +476,7 @@ class _ModeSwitch extends StatelessWidget {
           _ModeSegment(
             label: l10n.chatModePro,
             icon: proAvailable
-                ? Icons.auto_awesome_rounded
+                ? Icons.workspace_premium_rounded
                 : Icons.lock_outline_rounded,
             selected: mode == ChatMode.pro,
             muted: !proAvailable,
@@ -531,7 +531,7 @@ class _ModeSegment extends StatelessWidget {
                   Icon(
                     icon,
                     size: 12,
-                    color: selected ? ChatStyle.accent : color,
+                    color: selected ? AppColors.primary : color,
                   ),
                   const SizedBox(width: 3),
                 ],
@@ -572,8 +572,7 @@ class _SendButton extends StatelessWidget {
           child: Ink(
             decoration: BoxDecoration(
               shape: BoxShape.circle,
-              gradient: enabled ? ChatStyle.gradient : null,
-              color: enabled ? null : ChatStyle.line,
+              color: enabled ? AppColors.primary : ChatStyle.line,
             ),
             child: InkWell(
               onTap: onPressed,

@@ -232,53 +232,48 @@ class _LauncherState extends State<_Launcher> {
   Widget build(BuildContext context) {
     final label = widget.label;
     const radius = BorderRadius.all(Radius.circular(28));
+    final scale = _hovered && !MediaQuery.disableAnimationsOf(context)
+        ? 1.03
+        : 1.0;
     return Tooltip(
       message: widget.tooltip,
       child: AnimatedScale(
-        scale: _hovered ? 1.04 : 1,
+        scale: scale,
         duration: const Duration(milliseconds: 140),
         child: DecoratedBox(
           decoration: const BoxDecoration(
             borderRadius: radius,
             boxShadow: [
               BoxShadow(
-                color: Color(0x330F172A),
-                blurRadius: 24,
-                offset: Offset(0, 10),
+                color: Color(0x1F0F172A),
+                blurRadius: 20,
+                offset: Offset(0, 8),
               ),
             ],
           ),
+          // 사이트의 카드·버튼과 같은 흰 바탕에 얇은 테두리를 쓴다.
           child: Material(
-            color: ChatStyle.ink,
-            borderRadius: radius,
+            color: AppColors.surface,
+            shape: const RoundedRectangleBorder(
+              borderRadius: radius,
+              side: BorderSide(color: ChatStyle.line),
+            ),
             clipBehavior: Clip.antiAlias,
             child: InkWell(
               onTap: widget.onPressed,
               onHover: (value) => setState(() => _hovered = value),
               child: Padding(
-                padding: EdgeInsets.fromLTRB(8, 8, label == null ? 8 : 18, 8),
+                padding: EdgeInsets.fromLTRB(6, 6, label == null ? 6 : 18, 6),
                 child: Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    Container(
-                      width: 40,
-                      height: 40,
-                      decoration: const BoxDecoration(
-                        gradient: ChatStyle.gradient,
-                        shape: BoxShape.circle,
-                      ),
-                      child: const Icon(
-                        Icons.auto_awesome_rounded,
-                        size: 20,
-                        color: AppColors.onPrimary,
-                      ),
-                    ),
+                    const ChatMark(size: 40),
                     if (label != null) ...[
                       const SizedBox(width: 10),
                       Text(
                         label,
                         style: Theme.of(context).textTheme.labelLarge?.copyWith(
-                          color: AppColors.onPrimary,
+                          color: ChatStyle.ink,
                           fontWeight: FontWeight.w700,
                         ),
                       ),

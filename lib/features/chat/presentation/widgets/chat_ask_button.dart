@@ -28,7 +28,7 @@ class ChatAskButton extends ConsumerWidget {
             child: Row(
               mainAxisSize: MainAxisSize.min,
               children: [
-                const ChatSparkle(size: 24),
+                const ChatMark(size: 24),
                 const SizedBox(width: 10),
                 Flexible(
                   child: Text(
