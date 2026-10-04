@@ -406,7 +406,7 @@
   "chatQuotaUnlimited": "提问次数不限",
   "chatQuotaExceededTitle": "今天的提问次数已用完",
   "chatQuotaExceededBody": "{time} 后可以再次提问",
-  "chatQuotaExceededBodyNoTime": "明天可以再次提问",
+  "chatQuotaExceededBodyNoTime": "额度重置后可以再次提问",
   "chatPlanRequiredTitle": "仅限专业版套餐使用",
   "chatPlanRequiredAction": "用标准模式重新提问",
   "chatSuggestGeneral3": "怎么挑选可信的评论？"

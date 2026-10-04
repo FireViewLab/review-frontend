@@ -20,8 +20,11 @@ class ChatComposer extends StatefulWidget {
     required this.isSending,
     required this.quota,
     required this.mode,
+    required this.canUsePro,
+    required this.limitReached,
     required this.onSend,
     required this.onModeChanged,
+    required this.onQuotaReset,
     this.autofocus = true,
   });
 
@@ -32,6 +35,13 @@ class ChatComposer extends StatefulWidget {
   /// 서버에서 확인한 사용량. null이면 횟수와 모드 선택을 보여 주지 않는다.
   final ChatQuota? quota;
   final ChatMode mode;
+  final bool canUsePro;
+
+  /// 서버가 한도 초과로 거절한 뒤 아직 사용량을 다시 확인하지 못한 상태.
+  final bool limitReached;
+
+  /// 한도 초기화 시각이 지났을 때. 사용량을 다시 받아 오는 데 쓴다.
+  final VoidCallback onQuotaReset;
   final ValueChanged<String> onSend;
   final ValueChanged<ChatMode> onModeChanged;
   final bool autofocus;
@@ -43,17 +53,20 @@ class ChatComposer extends StatefulWidget {
 class ChatComposerState extends State<ChatComposer> {
   Timer? _lockedHintTimer;
   Timer? _refocusTimer;
+  Timer? _resetTimer;
   bool _showLockedHint = false;
 
   @override
   void initState() {
     super.initState();
     widget.focusNode.addListener(_onFocusChanged);
+    _scheduleReset();
   }
 
   @override
   void didUpdateWidget(ChatComposer oldWidget) {
     super.didUpdateWidget(oldWidget);
+    if (oldWidget.quota?.resetAt != widget.quota?.resetAt) _scheduleReset();
     if (oldWidget.focusNode != widget.focusNode) {
       oldWidget.focusNode.removeListener(_onFocusChanged);
       widget.focusNode.addListener(_onFocusChanged);
@@ -65,10 +78,25 @@ class ChatComposerState extends State<ChatComposer> {
     widget.focusNode.removeListener(_onFocusChanged);
     _lockedHintTimer?.cancel();
     _refocusTimer?.cancel();
+    _resetTimer?.cancel();
     super.dispose();
   }
 
   void _onFocusChanged() => setState(() {});
+
+  /// 패널을 열어 둔 채 초기화 시각을 넘기면 입력을 다시 열고 사용량을 새로 받는다.
+  void _scheduleReset() {
+    _resetTimer?.cancel();
+    final resetAt = widget.quota?.resetAt;
+    if (resetAt == null) return;
+    final wait = resetAt.difference(DateTime.now());
+    if (wait.isNegative) return;
+    _resetTimer = Timer(wait + const Duration(seconds: 1), () {
+      if (!mounted) return;
+      setState(() {});
+      widget.onQuotaReset();
+    });
+  }
 
   /// 입력창에 포커스를 준다. 버튼이나 추천 질문을 누른 뒤 이어서 입력할 때 쓴다.
   ///
@@ -84,18 +112,23 @@ class ChatComposerState extends State<ChatComposer> {
     });
   }
 
-  bool get _exhausted => widget.quota?.isExhaustedAt(DateTime.now()) ?? false;
+  bool get _exhausted =>
+      widget.limitReached ||
+      (widget.quota?.isExhaustedAt(DateTime.now()) ?? false);
+
+  /// 서버는 UTF-16 길이로 500자를 잰다. 이모지는 화면 글자 수보다 길게 잡힌다.
+  bool get _tooLong => widget.controller.text.length > _maxQuestionLength;
 
   void _submit() {
     final text = widget.controller.text.trim();
-    if (text.isEmpty || widget.isSending || _exhausted) return;
+    if (text.isEmpty || widget.isSending || _exhausted || _tooLong) return;
     widget.onSend(text);
     widget.controller.clear();
     focusInput();
   }
 
   void _selectMode(ChatMode mode) {
-    if (mode == ChatMode.pro && widget.quota?.proAvailable != true) {
+    if (mode == ChatMode.pro && !widget.canUsePro) {
       setState(() => _showLockedHint = true);
       _lockedHintTimer?.cancel();
       _lockedHintTimer = Timer(const Duration(seconds: 4), () {
@@ -192,46 +225,82 @@ class ChatComposerState extends State<ChatComposer> {
                       disabledBorder: InputBorder.none,
                     ),
                   ),
-                  Row(
-                    children: [
-                      if (quota != null)
-                        _ModeSwitch(
-                          mode: widget.mode,
-                          proAvailable: quota.proAvailable,
-                          onSelected: widget.isSending ? null : _selectMode,
-                        ),
-                      const Spacer(),
-                      ListenableBuilder(
-                        listenable: widget.controller,
-                        builder: (context, _) {
-                          final length =
-                              widget.controller.text.characters.length;
-                          final canSend =
-                              !widget.isSending &&
-                              !exhausted &&
-                              widget.controller.text.trim().isNotEmpty;
-                          return Row(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              if (length > 0)
-                                Padding(
-                                  padding: const EdgeInsets.only(right: 10),
-                                  child: Text(
-                                    '$length/$_maxQuestionLength',
-                                    style: textTheme.labelSmall?.copyWith(
-                                      color: AppColors.textTertiary,
-                                    ),
-                                  ),
+                  ListenableBuilder(
+                    listenable: widget.controller,
+                    builder: (context, _) {
+                      final length = widget.controller.text.length;
+                      final canSend =
+                          !widget.isSending &&
+                          !exhausted &&
+                          !_tooLong &&
+                          widget.controller.text.trim().isNotEmpty;
+                      final modeSwitch = quota == null
+                          ? null
+                          : _ModeSwitch(
+                              mode: widget.mode,
+                              proAvailable: widget.canUsePro,
+                              onSelected: widget.isSending ? null : _selectMode,
+                            );
+                      final actions = Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          if (length > 0)
+                            Padding(
+                              padding: const EdgeInsets.only(right: 6),
+                              child: Text(
+                                '$length/$_maxQuestionLength',
+                                style: textTheme.labelSmall?.copyWith(
+                                  color: _tooLong
+                                      ? AppColors.error
+                                      : AppColors.textTertiary,
+                                  fontWeight: _tooLong ? FontWeight.w700 : null,
                                 ),
-                              _SendButton(
-                                tooltip: l10n.chatSend,
-                                onPressed: canSend ? _submit : null,
                               ),
+                            ),
+                          _SendButton(
+                            tooltip: l10n.chatSend,
+                            onPressed: canSend ? _submit : null,
+                          ),
+                        ],
+                      );
+                      return LayoutBuilder(
+                        builder: (context, constraints) {
+                          // 좁은 화면이나 큰 글자에서는 모드 선택을 윗줄로 올린다.
+                          final tight =
+                              constraints.maxWidth < 300 ||
+                              MediaQuery.textScalerOf(context).scale(1) > 1.3;
+                          // 그래도 넘치면 잘리는 대신 줄어들게 한다.
+                          Widget fit(Widget child) => FittedBox(
+                            fit: BoxFit.scaleDown,
+                            alignment: Alignment.centerLeft,
+                            child: child,
+                          );
+                          if (tight && modeSwitch != null) {
+                            return Column(
+                              crossAxisAlignment: CrossAxisAlignment.stretch,
+                              children: [
+                                fit(modeSwitch),
+                                Align(
+                                  alignment: Alignment.centerRight,
+                                  child: fit(actions),
+                                ),
+                              ],
+                            );
+                          }
+                          return Row(
+                            // Spacer를 쓰면 남는 폭을 나눠 가져 보내기 버튼이 오른쪽 끝에 붙지 않는다.
+                            mainAxisAlignment: modeSwitch == null
+                                ? MainAxisAlignment.end
+                                : MainAxisAlignment.spaceBetween,
+                            children: [
+                              if (modeSwitch != null)
+                                Flexible(child: fit(modeSwitch)),
+                              actions,
                             ],
                           );
                         },
-                      ),
-                    ],
+                      );
+                    },
                   ),
                 ],
               ),
@@ -454,7 +523,7 @@ class _ModeSegment extends StatelessWidget {
           onTap: onTap,
           borderRadius: const BorderRadius.all(Radius.circular(8)),
           child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 9),
             child: Row(
               mainAxisSize: MainAxisSize.min,
               children: [
@@ -509,7 +578,7 @@ class _SendButton extends StatelessWidget {
             child: InkWell(
               onTap: onPressed,
               child: SizedBox.square(
-                dimension: 36,
+                dimension: 40,
                 child: Icon(
                   Icons.arrow_upward_rounded,
                   size: 20,

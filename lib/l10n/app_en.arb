@@ -422,7 +422,7 @@
   "chatQuotaUnlimited": "Unlimited questions",
   "chatQuotaExceededTitle": "You've used all of today's questions",
   "chatQuotaExceededBody": "You can ask again at {time}",
-  "chatQuotaExceededBodyNoTime": "You can ask again tomorrow",
+  "chatQuotaExceededBodyNoTime": "You can ask again once the limit resets",
   "chatPlanRequiredTitle": "Available on the Pro plan",
   "chatPlanRequiredAction": "Ask again in Standard mode",
   "chatSuggestGeneral3": "How do I pick trustworthy reviews?"

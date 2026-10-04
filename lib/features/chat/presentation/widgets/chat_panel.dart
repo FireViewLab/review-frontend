@@ -329,29 +329,40 @@ class _ConversationState extends ConsumerState<_Conversation> {
     final state = widget.state;
     final productId = widget.productId;
     final vm = ref.read(chatViewModelProvider.notifier);
-    return Column(
-      children: [
-        _ContextBar(state: state, productId: productId),
-        Expanded(
-          child: state.hasConversation
-              ? _MessageList(state: state, productId: productId)
-              : ChatEmptyState(
-                  productId: productId,
-                  onSuggestionSelected: _fillInput,
-                ),
-        ),
-        ChatComposer(
-          key: _composerKey,
-          controller: _controller,
-          focusNode: _focusNode,
-          isSending: state.isSending,
-          quota: state.quota,
-          mode: state.mode,
-          autofocus: widget.autofocus,
-          onSend: (text) => vm.send(text, productId: productId),
-          onModeChanged: vm.setMode,
-        ),
-      ],
+    return LayoutBuilder(
+      builder: (context, constraints) => Column(
+        children: [
+          _ContextBar(state: state, productId: productId),
+          Expanded(
+            child: state.hasConversation
+                ? _MessageList(state: state, productId: productId)
+                : ChatEmptyState(
+                    productId: productId,
+                    onSuggestionSelected: _fillInput,
+                  ),
+          ),
+          // 글자를 크게 쓰거나 화면이 낮아도 입력 영역이 패널 밖으로 넘치지 않게 한다.
+          ConstrainedBox(
+            constraints: BoxConstraints(maxHeight: constraints.maxHeight * 0.7),
+            child: SingleChildScrollView(
+              child: ChatComposer(
+                key: _composerKey,
+                controller: _controller,
+                focusNode: _focusNode,
+                isSending: state.isSending,
+                quota: state.quota,
+                mode: state.mode,
+                canUsePro: state.canUsePro,
+                limitReached: state.limitReached,
+                onQuotaReset: vm.refreshQuota,
+                autofocus: widget.autofocus,
+                onSend: (text) => vm.send(text, productId: productId),
+                onModeChanged: vm.setMode,
+              ),
+            ),
+          ),
+        ],
+      ),
     );
   }
 }

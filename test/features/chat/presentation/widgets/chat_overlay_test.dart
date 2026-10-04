@@ -303,6 +303,12 @@ void main() {
 
     expect(find.text(l10n.chatPlanFree), findsOneWidget);
     expect(find.text(l10n.chatQuotaRemaining(3, 5)), findsOneWidget);
+    // 보내기 버튼은 입력 상자 오른쪽 끝에 붙는다.
+    expect(
+      tester.getTopRight(find.byType(TextField)).dx -
+          tester.getTopRight(find.byTooltip(l10n.chatSend)).dx,
+      lessThan(4),
+    );
     expect(find.text(l10n.chatModeStandard), findsOneWidget);
 
     // 무료 요금제는 프로 모드를 고를 수 없고 안내만 본다.
@@ -459,6 +465,113 @@ void main() {
     debugDefaultTargetPlatformOverride = null;
   });
 
+  for (final (locale, scale) in [
+    (const Locale('en'), 1.0),
+    (const Locale('en'), 2.0),
+    (const Locale('ja'), 2.0),
+    (const Locale('zh'), 2.0),
+  ]) {
+    testWidgets('composer fits a 320px screen in $locale at ${scale}x', (
+      tester,
+    ) async {
+      final repository = _FakeChatRepository()..quota = Success(_quota());
+      await _pumpOverlay(
+        tester,
+        path: RoutePaths.home,
+        isLoggedIn: true,
+        repository: repository,
+        size: const Size(320, 700),
+        locale: locale,
+        textScale: scale,
+      );
+      final l10n = _localizations(tester);
+      await tester.tap(find.byTooltip(l10n.chatLauncherTooltip));
+      await tester.pumpAndSettle();
+      await tester.enterText(find.byType(TextField), 'a' * 400);
+      await tester.pumpAndSettle();
+
+      expect(find.text('400/500'), findsOneWidget);
+      expect(find.byTooltip(l10n.chatSend), findsOneWidget);
+      expect(tester.takeException(), isNull);
+    });
+  }
+
+  testWidgets('counts length the way the server does', (tester) async {
+    final repository = _FakeChatRepository();
+    await _pumpOverlay(
+      tester,
+      path: RoutePaths.home,
+      isLoggedIn: true,
+      repository: repository,
+    );
+    final l10n = _localizations(tester);
+    await tester.tap(find.byTooltip(l10n.chatLauncherTooltip));
+    await tester.pumpAndSettle();
+
+    // 이모지 251개는 화면 글자로는 251자지만 서버 기준으로는 502자다.
+    await tester.enterText(find.byType(TextField), '😀' * 251);
+    await tester.pump();
+    expect(find.text('502/500'), findsOneWidget);
+    await tester.tap(find.byTooltip(l10n.chatSend));
+    await tester.pump();
+    expect(repository.requests, isEmpty);
+  });
+
+  testWidgets('reopens the input once the reset time passes', (tester) async {
+    final repository = _FakeChatRepository()
+      ..quota = Success(
+        ChatQuota(
+          planCode: 'FREE',
+          dailyLimit: 5,
+          usedToday: 5,
+          remaining: 0,
+          proAvailable: false,
+          resetAt: DateTime.now().add(const Duration(seconds: 3)),
+        ),
+      );
+    await _pumpOverlay(
+      tester,
+      path: RoutePaths.home,
+      isLoggedIn: true,
+      repository: repository,
+    );
+    final l10n = _localizations(tester);
+    await tester.runAsync(() async {
+      await tester.tap(find.byTooltip(l10n.chatLauncherTooltip));
+      await tester.pump();
+      await Future<void>.delayed(const Duration(milliseconds: 300));
+      await tester.pump();
+      expect(tester.widget<TextField>(find.byType(TextField)).enabled, isFalse);
+
+      repository.quota = Success(_quota(remaining: 5));
+      await Future<void>.delayed(const Duration(seconds: 5));
+      await tester.pump();
+      await Future<void>.delayed(const Duration(milliseconds: 100));
+      await tester.pump();
+    });
+    expect(repository.quotaRequests, 2);
+    expect(tester.widget<TextField>(find.byType(TextField)).enabled, isTrue);
+    expect(find.text(l10n.chatQuotaRemaining(5, 5)), findsOneWidget);
+  });
+
+  testWidgets('keeps the panel on screen in a short window', (tester) async {
+    await _pumpOverlay(
+      tester,
+      path: RoutePaths.home,
+      isLoggedIn: false,
+      size: const Size(1280, 260),
+    );
+    final l10n = _localizations(tester);
+    await tester.tap(find.byTooltip(l10n.chatLauncherTooltip));
+    await tester.pumpAndSettle();
+    tester.takeException();
+    expect(
+      tester.getTopLeft(find.byType(ChatPanel)).dy,
+      greaterThanOrEqualTo(0),
+    );
+    expect(find.byTooltip(l10n.chatClose).hitTestable(), findsOneWidget);
+  });
+
   testWidgets('copies an answer', (tester) async {
     await _pumpOverlay(tester, path: RoutePaths.home, isLoggedIn: true);
     final l10n = _localizations(tester);
@@ -584,8 +697,11 @@ _pumpOverlay(
   required String path,
   bool isLoggedIn = false,
   _FakeChatRepository? repository,
+  Size size = const Size(1280, 1000),
+  Locale? locale,
+  double textScale = 1,
 }) async {
-  tester.view.physicalSize = const Size(1280, 1000);
+  tester.view.physicalSize = size;
   tester.view.devicePixelRatio = 1;
   addTearDown(tester.view.resetPhysicalSize);
   addTearDown(tester.view.resetDevicePixelRatio);
@@ -630,11 +746,16 @@ _pumpOverlay(
       container: container,
       child: MaterialApp.router(
         theme: app.theme,
-        locale: app.locale,
+        locale: locale ?? app.locale,
         supportedLocales: app.supportedLocales,
         localizationsDelegates: app.localizationsDelegates,
         routerConfig: router,
-        builder: (context, child) => ChatOverlay(child: child!),
+        builder: (context, child) => MediaQuery(
+          data: MediaQuery.of(
+            context,
+          ).copyWith(textScaler: TextScaler.linear(textScale)),
+          child: ChatOverlay(child: child!),
+        ),
       ),
     ),
   );
@@ -664,10 +785,12 @@ class _FakeChatRepository implements ChatRepository {
   final List<ChatMode> modes = [];
   int quotaRequests = 0;
 
+  Completer<Result<ChatQuota>>? pendingQuota;
+
   @override
   Future<Result<ChatQuota>> getQuota() async {
     quotaRequests++;
-    return quota;
+    return pendingQuota == null ? quota : await pendingQuota!.future;
   }
 
   Result<ChatSessionPage> sessions = const Success(

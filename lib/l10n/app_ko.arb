@@ -909,7 +909,7 @@
   "chatQuotaExceededTitle": "오늘 질문을 모두 사용했어요",
   "chatQuotaExceededBody": "{time}에 다시 물어볼 수 있어요",
   "@chatQuotaExceededBody": {"placeholders": {"time": {"type": "String"}}},
-  "chatQuotaExceededBodyNoTime": "내일 다시 물어볼 수 있어요",
+  "chatQuotaExceededBodyNoTime": "한도가 초기화되면 다시 물어볼 수 있어요",
   "chatPlanRequiredTitle": "프로 요금제에서 이용할 수 있어요",
   "chatPlanRequiredAction": "기본 모드로 다시 묻기",
   "chatSuggestGeneral3": "믿을 만한 리뷰는 어떻게 골라?"

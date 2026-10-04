@@ -1276,7 +1276,7 @@ class AppLocalizationsZh extends AppLocalizations {
   }
 
   @override
-  String get chatQuotaExceededBodyNoTime => '明天可以再次提问';
+  String get chatQuotaExceededBodyNoTime => '额度重置后可以再次提问';
 
   @override
   String get chatPlanRequiredTitle => '仅限专业版套餐使用';

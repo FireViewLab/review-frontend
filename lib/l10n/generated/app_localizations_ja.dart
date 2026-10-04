@@ -1278,7 +1278,7 @@ class AppLocalizationsJa extends AppLocalizations {
   }
 
   @override
-  String get chatQuotaExceededBodyNoTime => '明日また質問できます';
+  String get chatQuotaExceededBodyNoTime => '上限がリセットされたらまた質問できます';
 
   @override
   String get chatPlanRequiredTitle => 'プロプランで利用できます';

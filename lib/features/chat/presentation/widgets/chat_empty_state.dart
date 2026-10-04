@@ -95,8 +95,6 @@ class _SuggestionCard extends StatelessWidget {
       ),
       child: InkWell(
         onTap: onTap,
-        // 누른 뒤 입력창이 포커스를 가져가야 하므로 카드가 포커스를 잡지 않게 한다.
-        canRequestFocus: false,
         borderRadius: radius,
         hoverColor: AppColors.primaryLight,
         child: Padding(

@@ -1,3 +1,5 @@
+import 'dart:math' as math;
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -146,6 +148,8 @@ class _ChatLauncherLayout extends ConsumerWidget {
       children: [
         if (isMobile)
           Positioned.fill(
+            // 화면 키보드가 올라오면 입력창이 가려지지 않게 그만큼 올린다.
+            bottom: media.viewInsets.bottom,
             child: SafeArea(
               child: ChatPanel(
                 productId: productId,
@@ -159,8 +163,14 @@ class _ChatLauncherLayout extends ConsumerWidget {
             right: edge,
             bottom: edge + media.padding.bottom,
             width: _panelWidth,
-            height: (media.size.height - media.padding.vertical - 2 * edge)
-                .clamp(320.0, _panelMaxHeight),
+            // 창이 낮으면 화면 밖으로 나가지 않게 창 높이에 맞춘다.
+            height: math.min(
+              math.max(
+                media.size.height - media.padding.vertical - 2 * edge,
+                0,
+              ),
+              _panelMaxHeight,
+            ),
             child: _Appear(
               child: ChatPanel(
                 productId: productId,

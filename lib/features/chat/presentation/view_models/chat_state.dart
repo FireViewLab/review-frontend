@@ -20,6 +20,8 @@ class ChatState {
     this.quota,
     this.mode = ChatMode.standard,
     this.sendStartedAt,
+    this.limitReached = false,
+    this.proDenied = false,
   });
 
   final bool isOpen;
@@ -50,11 +52,27 @@ class ChatState {
   /// 지금 보내는 질문을 시작한 시각. 대기 안내 문구를 고르는 데 쓴다.
   final DateTime? sendStartedAt;
 
+  /// 서버가 한도 초과(429)로 거절했다. 사용량을 다시 확인할 때까지 보내지 않는다.
+  /// 남은 횟수를 0으로 지어내지 않으려고 숫자와 따로 둔다.
+  final bool limitReached;
+
+  /// 서버가 프로 모드를 거절(403)했다. 다시 확인할 때까지 프로를 고를 수 없다.
+  final bool proDenied;
+
+  /// 지금 프로 모드를 고를 수 있는지.
+  bool get canUsePro => quota?.proAvailable == true && !proDenied;
+
+  /// 오늘 더 보낼 수 없다고 확인된 상태인지.
+  bool isExhaustedAt(DateTime now) =>
+      limitReached || (quota?.isExhaustedAt(now) ?? false);
+
   /// 대화만 비운 상태. 패널 열림 여부와 사용량·모드는 그대로 둔다.
   ChatState cleared({int? sessionProductId}) => ChatState(
     isOpen: isOpen,
     quota: quota,
     mode: mode,
+    limitReached: limitReached,
+    proDenied: proDenied,
     sessionProductId: sessionProductId,
   );
 
@@ -80,6 +98,8 @@ class ChatState {
     ChatQuota? quota,
     ChatMode? mode,
     DateTime? sendStartedAt,
+    bool? limitReached,
+    bool? proDenied,
   }) {
     return ChatState(
       isOpen: isOpen ?? this.isOpen,
@@ -102,6 +122,8 @@ class ChatState {
           ? null
           : (lastFailedQuestion ?? this.lastFailedQuestion),
       quota: quota ?? this.quota,
+      limitReached: limitReached ?? this.limitReached,
+      proDenied: proDenied ?? this.proDenied,
       mode: mode ?? this.mode,
       // 보내는 중이 아니면 시작 시각은 의미가 없다.
       sendStartedAt: (isSending ?? this.isSending)

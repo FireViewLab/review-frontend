@@ -2535,7 +2535,7 @@ abstract class AppLocalizations {
   /// No description provided for @chatQuotaExceededBodyNoTime.
   ///
   /// In ko, this message translates to:
-  /// **'내일 다시 물어볼 수 있어요'**
+  /// **'한도가 초기화되면 다시 물어볼 수 있어요'**
   String get chatQuotaExceededBodyNoTime;
 
   /// No description provided for @chatPlanRequiredTitle.

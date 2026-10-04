@@ -652,6 +652,83 @@ void main() {
     );
   });
 
+  test('a late quota lookup does not overwrite the one from a reply', () async {
+    final lookup = Completer<Result<ChatQuota>>();
+    repository.pendingQuota = lookup;
+    final refreshing = viewModel.refreshQuota();
+
+    repository.pending = Completer()
+      ..complete(
+        Success(
+          ChatReply(
+            sessionId: 7,
+            answer: '답변',
+            blocked: false,
+            quota: quotaOf(remaining: 0),
+          ),
+        ),
+      );
+    await viewModel.send('마지막 질문');
+    lookup.complete(Success(quotaOf(remaining: 1)));
+    await refreshing;
+
+    expect(container.read(chatViewModelProvider).quota?.remaining, 0);
+  });
+
+  test(
+    'stops sending after a 429 even when the quota cannot be reloaded',
+    () async {
+      repository.quota = Success(quotaOf(remaining: 1));
+      await viewModel.refreshQuota();
+      repository.quota = const FailureResult(Failure(message: '네트워크 오류'));
+      repository.pending = Completer()
+        ..complete(
+          const FailureResult(
+            Failure(message: '', code: 'CHAT_QUOTA_EXCEEDED', statusCode: 429),
+          ),
+        );
+      await viewModel.send('질문');
+      await container.pump();
+      await viewModel.send('다시 질문');
+
+      final state = container.read(chatViewModelProvider);
+      expect(repository.requests, hasLength(1));
+      expect(state.limitReached, isTrue);
+      // 남은 횟수는 서버가 알려 준 값 그대로 두고 지어내지 않는다.
+      expect(state.quota?.remaining, 1);
+
+      repository.quota = Success(quotaOf(remaining: 5));
+      await viewModel.refreshQuota();
+      expect(container.read(chatViewModelProvider).limitReached, isFalse);
+    },
+  );
+
+  test(
+    'keeps pro locked after a 403 until the quota is confirmed again',
+    () async {
+      repository.quota = Success(quotaOf(plan: 'PRO', limit: 300, pro: true));
+      await viewModel.refreshQuota();
+      viewModel.setMode(ChatMode.pro);
+      repository.quota = const FailureResult(Failure(message: '네트워크 오류'));
+      repository.pending = Completer()
+        ..complete(
+          const FailureResult(
+            Failure(message: '', code: 'CHAT_PLAN_REQUIRED', statusCode: 403),
+          ),
+        );
+      await viewModel.send('질문');
+      await container.pump();
+
+      viewModel.setMode(ChatMode.pro);
+      expect(container.read(chatViewModelProvider).mode, ChatMode.standard);
+      expect(container.read(chatViewModelProvider).canUsePro, isFalse);
+
+      repository.pending = null;
+      await viewModel.retry();
+      expect(repository.modes, [ChatMode.pro, ChatMode.standard]);
+    },
+  );
+
   test('clears the quota on logout', () async {
     repository.quota = Success(quotaOf());
     await viewModel.refreshQuota();
@@ -688,10 +765,12 @@ class _FakeChatRepository implements ChatRepository {
   final List<ChatMode> modes = [];
   int quotaRequests = 0;
 
+  Completer<Result<ChatQuota>>? pendingQuota;
+
   @override
   Future<Result<ChatQuota>> getQuota() async {
     quotaRequests++;
-    return quota;
+    return pendingQuota == null ? quota : await pendingQuota!.future;
   }
 
   Result<ChatSessionPage> sessions = const Success(

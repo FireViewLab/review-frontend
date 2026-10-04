@@ -1318,7 +1318,8 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
-  String get chatQuotaExceededBodyNoTime => 'You can ask again tomorrow';
+  String get chatQuotaExceededBodyNoTime =>
+      'You can ask again once the limit resets';
 
   @override
   String get chatPlanRequiredTitle => 'Available on the Pro plan';

@@ -283,8 +283,8 @@ class _ErrorNotice extends StatelessWidget {
             icon: Icon(icon, size: 16),
             label: Text(label),
             style: TextButton.styleFrom(
-              padding: const EdgeInsets.only(top: 6),
-              minimumSize: Size.zero,
+              padding: EdgeInsets.zero,
+              minimumSize: const Size(0, 40),
               tapTargetSize: MaterialTapTargetSize.shrinkWrap,
             ),
           );
@@ -357,7 +357,7 @@ class _ChatThinkingIndicatorState extends State<ChatThinkingIndicator>
   late final AnimationController _dots = AnimationController(
     vsync: this,
     duration: const Duration(milliseconds: 1200),
-  )..repeat();
+  );
   final List<Timer> _timers = [];
 
   @override
@@ -373,6 +373,17 @@ class _ChatThinkingIndicatorState extends State<ChatThinkingIndicator>
           }),
         );
       }
+    }
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    // 움직임 줄이기를 켠 사용자에게는 점을 멈춰 둔다.
+    if (MediaQuery.disableAnimationsOf(context)) {
+      _dots.stop();
+    } else if (!_dots.isAnimating) {
+      _dots.repeat();
     }
   }
 

@@ -1278,7 +1278,7 @@ class AppLocalizationsKo extends AppLocalizations {
   }
 
   @override
-  String get chatQuotaExceededBodyNoTime => '내일 다시 물어볼 수 있어요';
+  String get chatQuotaExceededBodyNoTime => '한도가 초기화되면 다시 물어볼 수 있어요';
 
   @override
   String get chatPlanRequiredTitle => '프로 요금제에서 이용할 수 있어요';

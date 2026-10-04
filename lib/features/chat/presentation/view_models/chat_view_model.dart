@@ -52,12 +52,20 @@ class ChatViewModel extends Notifier<ChatState> {
         !ref.read(isLoggedInProvider)) {
       return;
     }
-    result.when(success: _applyQuota, failure: (_) {});
+    result.when(
+      success: (quota) => state = _withQuota(state, quota),
+      failure: (_) {},
+    );
   }
 
-  void _applyQuota(ChatQuota quota) {
-    state = state.copyWith(
+  /// 서버가 준 사용량으로 바꾼다. 조회 응답과 전송 응답이 같은 규칙을 쓴다.
+  ChatState _withQuota(ChatState base, ChatQuota quota) {
+    // 이보다 먼저 시작한 조회가 늦게 도착해 이 값을 덮지 않게 한다.
+    _quotaRequest++;
+    return base.copyWith(
       quota: quota,
+      limitReached: false,
+      proDenied: false,
       // 프로를 쓸 수 없게 됐으면 기본 모드로 되돌린다.
       mode: quota.proAvailable ? null : ChatMode.standard,
     );
@@ -66,7 +74,7 @@ class ChatViewModel extends Notifier<ChatState> {
   /// 프로 모드는 서버가 쓸 수 있다고 확인해 준 경우에만 고를 수 있다.
   void setMode(ChatMode mode) {
     if (state.isSending) return;
-    if (mode == ChatMode.pro && state.quota?.proAvailable != true) return;
+    if (mode == ChatMode.pro && !state.canUsePro) return;
     state = state.copyWith(mode: mode);
   }
 
@@ -87,7 +95,7 @@ class ChatViewModel extends Notifier<ChatState> {
         !ref.read(isLoggedInProvider)) {
       return;
     }
-    if (state.quota?.isExhaustedAt(DateTime.now()) ?? false) return;
+    if (state.isExhaustedAt(DateTime.now())) return;
 
     final isNewSession = state.sessionId == null;
     final generation = _generation;
@@ -117,27 +125,32 @@ class ChatViewModel extends Notifier<ChatState> {
     }
 
     result.when(
-      success: (reply) => state = state.copyWith(
-        sessionId: reply.sessionId,
-        isSending: false,
-        quota: reply.quota,
-        messages: [
-          ...state.messages,
-          ChatMessage(
-            role: ChatRole.assistant,
-            content: reply.answer,
-            blocked: reply.blocked,
-            blockReason: reply.blockReason,
-          ),
-        ],
-      ),
+      success: (reply) {
+        final quota = reply.quota;
+        state = (quota == null ? state : _withQuota(state, quota)).copyWith(
+          sessionId: reply.sessionId,
+          isSending: false,
+          messages: [
+            ...state.messages,
+            ChatMessage(
+              role: ChatRole.assistant,
+              content: reply.answer,
+              blocked: reply.blocked,
+              blockReason: reply.blockReason,
+            ),
+          ],
+        );
+      },
       failure: (failure) {
         final kind = _errorKindOf(failure);
         state = state.copyWith(
           isSending: false,
           lastFailedQuestion: text,
+          // 서버가 거절한 사실은 다시 확인하기 전까지 그대로 따른다.
           // 요금제 문제로 막혔으면 다시 물을 때는 기본 모드로 보낸다.
           mode: kind == ChatErrorKind.planRequired ? ChatMode.standard : null,
+          proDenied: kind == ChatErrorKind.planRequired ? true : null,
+          limitReached: kind == ChatErrorKind.quotaExceeded ? true : null,
           messages: [
             // 실패한 질문은 다시 시도할 때 새로 붙이므로 목록에서 뺀다.
             ...state.messages.where((m) => !identical(m, questionMessage)),
