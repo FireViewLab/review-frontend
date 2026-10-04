@@ -28,11 +28,15 @@
   "rewrites": [
     {
       "source": "/api/:path*",
-      "destination": "https://api.beens.kr/api/:path*"
+      "destination": "https://api.re-view.kr/api/:path*"
     },
     {
       "source": "/oauth2/:path*",
-      "destination": "https://api.beens.kr/oauth2/:path*"
+      "destination": "https://api.re-view.kr/oauth2/:path*"
+    },
+    {
+      "source": "/login/oauth2/:path*",
+      "destination": "https://api.re-view.kr/login/oauth2/:path*"
     },
     {
       "source": "/(.*)",

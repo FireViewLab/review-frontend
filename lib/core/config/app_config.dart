@@ -159,7 +159,7 @@ class AppConfig {
 }
 
 String _defaultApiBaseUrl() {
-  if (!kIsWeb) return 'https://api.beens.kr';
+  if (!kIsWeb) return 'https://api.re-view.kr';
 
   final host = Uri.base.host;
   final isLocalWeb =
@@ -168,5 +168,5 @@ String _defaultApiBaseUrl() {
       host == '::1' ||
       host.endsWith('.localhost');
 
-  return isLocalWeb ? 'https://api.beens.kr' : Uri.base.origin;
+  return isLocalWeb ? 'https://api.re-view.kr' : Uri.base.origin;
 }

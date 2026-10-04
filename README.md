@@ -193,5 +193,5 @@ flutter run
 웹 실행 시 API 주소를 직접 지정하려면 아래처럼 `--dart-define`을 함께 전달할 수 있습니다.
 
 ```bash
-flutter run -d chrome --dart-define=API_BASE_URL=https://api.beens.kr
+flutter run -d chrome --dart-define=API_BASE_URL=https://api.re-view.kr
 ```
