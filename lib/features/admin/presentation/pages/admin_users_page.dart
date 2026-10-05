@@ -102,7 +102,7 @@ class _UserTable extends StatelessWidget {
       builder: (context, constraints) => SingleChildScrollView(
         scrollDirection: Axis.horizontal,
         child: SizedBox(
-          width: constraints.maxWidth < 1200 ? 1200 : constraints.maxWidth,
+          width: constraints.maxWidth < 1040 ? 1040 : constraints.maxWidth,
           child: SingleChildScrollView(
             child: AdminDataTable(
               columns: [
@@ -113,7 +113,7 @@ class _UserTable extends StatelessWidget {
                 AdminTableColumn(label: l10n.adminSignupProvider, flex: 2),
                 AdminTableColumn(label: l10n.adminAtiScore, flex: 2),
                 AdminTableColumn(label: l10n.adminJoinedAt, flex: 2),
-                AdminTableColumn(label: l10n.adminUserPlanColumn, flex: 3),
+                AdminTableColumn(label: l10n.adminUserPlanColumn, flex: 2),
                 AdminTableColumn(label: l10n.adminUserPlanChange, flex: 2),
               ],
               rows: [
