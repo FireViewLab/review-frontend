@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:re_view_front/app/theme/app_motion.dart';
 import 'package:re_view_front/app/router/route_paths.dart';
 import 'package:re_view_front/core/providers/core_providers.dart';
+import 'package:re_view_front/features/account/presentation/widgets/account_shell.dart';
 import 'package:re_view_front/features/admin/presentation/pages/admin_analysis_feedbacks_page.dart';
 import 'package:re_view_front/features/admin/presentation/pages/admin_dashboard_page.dart';
 import 'package:re_view_front/features/admin/presentation/pages/admin_reports_page.dart';
@@ -133,12 +134,6 @@ final appRouterProvider = Provider<GoRouter>((ref) {
         redirect: (context, state) => RoutePaths.myPage,
       ),
       GoRoute(
-        path: RoutePaths.myPage,
-        name: RouteNames.myPage,
-        pageBuilder: (context, state) =>
-            _buildTransitionPage(state, const MyPage()),
-      ),
-      GoRoute(
         path: RoutePaths.search,
         name: RouteNames.search,
         pageBuilder: (context, state) => _buildTransitionPage(
@@ -222,12 +217,6 @@ final appRouterProvider = Provider<GoRouter>((ref) {
             _buildTransitionPage(state, const CartPage()),
       ),
       GoRoute(
-        path: RoutePaths.settings,
-        name: RouteNames.settings,
-        pageBuilder: (context, state) =>
-            _buildTransitionPage(state, const SettingsPage()),
-      ),
-      GoRoute(
         path: RoutePaths.reviewReport,
         name: RouteNames.reviewReport,
         pageBuilder: (context, state) {
@@ -246,22 +235,43 @@ final appRouterProvider = Provider<GoRouter>((ref) {
         },
       ),
       GoRoute(
-        path: RoutePaths.feedbackHistory,
-        name: RouteNames.feedbackHistory,
-        pageBuilder: (context, state) =>
-            _buildTransitionPage(state, const FeedbackHistoryPage()),
-      ),
-      GoRoute(
         path: RoutePaths.notifications,
         name: RouteNames.notifications,
         pageBuilder: (context, state) =>
             _buildTransitionPage(state, const NotificationsPage()),
       ),
-      GoRoute(
-        path: RoutePaths.plan,
-        name: RouteNames.plan,
-        pageBuilder: (context, state) =>
-            _buildTransitionPage(state, const PlanPage()),
+      // 계정 영역: 헤더와 메뉴는 그대로 두고 내용만 바꾼다.
+      ShellRoute(
+        pageBuilder: (context, state, child) => _buildTransitionPage(
+          state,
+          AccountShell(location: state.uri.path, child: child),
+        ),
+        routes: [
+          GoRoute(
+            path: RoutePaths.myPage,
+            name: RouteNames.myPage,
+            pageBuilder: (context, state) =>
+                _buildContentPage(state, const MyPage()),
+          ),
+          GoRoute(
+            path: RoutePaths.plan,
+            name: RouteNames.plan,
+            pageBuilder: (context, state) =>
+                _buildContentPage(state, const PlanContent()),
+          ),
+          GoRoute(
+            path: RoutePaths.feedbackHistory,
+            name: RouteNames.feedbackHistory,
+            pageBuilder: (context, state) =>
+                _buildContentPage(state, const FeedbackHistoryPage()),
+          ),
+          GoRoute(
+            path: RoutePaths.settings,
+            name: RouteNames.settings,
+            pageBuilder: (context, state) =>
+                _buildContentPage(state, const SettingsPage()),
+          ),
+        ],
       ),
       ShellRoute(
         builder: (context, state, child) => AdminShell(child: child),
@@ -318,6 +328,20 @@ CustomTransitionPage<void> _buildTransitionPage(
     // 뒤로 갈 때의 기본값은 300ms라 함께 지정한다.
     transitionDuration: AppMotion.fast,
     reverseTransitionDuration: AppMotion.fast,
+    child: child,
+    transitionsBuilder: _buildTransition,
+  );
+}
+
+/// 공통 틀 안에서 내용만 바뀔 때 쓴다. 틀은 그대로 있고 내용만 짧게 밝아진다.
+CustomTransitionPage<void> _buildContentPage(
+  GoRouterState state,
+  Widget child,
+) {
+  return CustomTransitionPage<void>(
+    key: state.pageKey,
+    transitionDuration: AppMotion.fast,
+    reverseTransitionDuration: Duration.zero,
     child: child,
     transitionsBuilder: _buildTransition,
   );

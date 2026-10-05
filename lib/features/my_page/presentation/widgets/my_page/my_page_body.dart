@@ -11,7 +11,6 @@ import 'package:re_view_front/features/my_page/domain/entities/user_profile.dart
 import 'package:re_view_front/features/wishlist/domain/entities/wishlist_item.dart';
 import 'package:re_view_front/features/wishlist/presentation/view_models/wishlist_state.dart';
 import 'package:re_view_front/l10n/generated/app_localizations.dart';
-import 'package:re_view_front/shared/extensions/context_extensions.dart';
 import 'package:re_view_front/features/notifications/presentation/providers/notification_providers.dart';
 import 'package:re_view_front/features/my_page/presentation/widgets/my_page/my_page_stats.dart';
 import 'package:re_view_front/features/my_page/presentation/widgets/my_page/my_page_common.dart';
@@ -29,9 +28,7 @@ class MyPageBody extends StatelessWidget {
     required this.wishlistCount,
     required this.onProductTap,
     required this.onWishlistTap,
-    required this.onCartTap,
     required this.onPasswordTap,
-    required this.onTopTap,
     required this.onRecentTap,
     required this.onReviewTap,
     required this.onSettingsTap,
@@ -49,9 +46,7 @@ class MyPageBody extends StatelessWidget {
   final int wishlistCount;
   final ValueChanged<String> onProductTap;
   final VoidCallback onWishlistTap;
-  final VoidCallback onCartTap;
   final VoidCallback onPasswordTap;
-  final VoidCallback onTopTap;
   final VoidCallback onRecentTap;
   final VoidCallback onReviewTap;
   final VoidCallback onSettingsTap;
@@ -143,38 +138,7 @@ class MyPageBody extends StatelessWidget {
           child: MyPageTitle(profile: profile),
         ),
         const SizedBox(height: AppSpacing.lg),
-        if (context.viewportSize.width < 980) ...[
-          MyPageSideNavCard(
-            profile: profile,
-            onTopTap: onTopTap,
-            onCartTap: onCartTap,
-            onWishlistTap: onWishlistTap,
-            onRecentTap: onRecentTap,
-            onReviewTap: onReviewTap,
-            onSettingsTap: onSettingsTap,
-          ),
-          const SizedBox(height: AppSpacing.xl),
-          mainContent,
-        ] else
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              SizedBox(
-                width: 260,
-                child: MyPageSideNavCard(
-                  profile: profile,
-                  onTopTap: onTopTap,
-                  onCartTap: onCartTap,
-                  onWishlistTap: onWishlistTap,
-                  onRecentTap: onRecentTap,
-                  onReviewTap: onReviewTap,
-                  onSettingsTap: onSettingsTap,
-                ),
-              ),
-              const SizedBox(width: AppSpacing.xl),
-              Expanded(child: mainContent),
-            ],
-          ),
+        mainContent,
       ],
     );
   }
@@ -201,10 +165,15 @@ class MyPageBody extends StatelessWidget {
   }
 
   double? get _savedAverageRti {
-    final scoredItems = _wishlistItems.where((item) => item.avgRti != null && item.avgRti! > 0);
+    final scoredItems = _wishlistItems.where(
+      (item) => item.avgRti != null && item.avgRti! > 0,
+    );
     if (scoredItems.isEmpty) return null;
 
-    final total = scoredItems.fold<double>(0, (sum, item) => sum + item.avgRti!);
+    final total = scoredItems.fold<double>(
+      0,
+      (sum, item) => sum + item.avgRti!,
+    );
     return total / scoredItems.length;
   }
 }

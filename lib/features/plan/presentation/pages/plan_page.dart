@@ -1,89 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:go_router/go_router.dart';
-import 'package:re_view_front/app/router/route_paths.dart';
 import 'package:re_view_front/app/theme/app_colors.dart';
 import 'package:re_view_front/app/theme/app_spacing.dart';
-import 'package:re_view_front/core/providers/core_providers.dart';
-import 'package:re_view_front/features/home/presentation/data/home_content.dart';
-import 'package:re_view_front/features/home/presentation/home_navigation.dart';
-import 'package:re_view_front/features/home/presentation/providers/home_providers.dart';
-import 'package:re_view_front/features/home/presentation/widgets/home/home_header.dart';
 import 'package:re_view_front/features/plan/presentation/plan_labels.dart';
 import 'package:re_view_front/features/plan/presentation/providers/plan_providers.dart';
 import 'package:re_view_front/features/plan/presentation/view_models/plan_state.dart';
 import 'package:re_view_front/features/plan/presentation/widgets/plan_cards.dart';
 import 'package:re_view_front/l10n/generated/app_localizations.dart';
-import 'package:re_view_front/shared/extensions/context_extensions.dart';
-import 'package:re_view_front/shared/widgets/app_content_view.dart';
 import 'package:re_view_front/shared/widgets/error_view.dart';
 import 'package:re_view_front/shared/widgets/loading_view.dart';
 
-/// 현재 요금제를 보고 다른 요금제로 바꾸는 화면.
-class PlanPage extends ConsumerWidget {
-  const PlanPage({super.key});
-
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final isLoggedIn = ref.watch(isLoggedInProvider);
-    final nickname = ref.watch(userNicknameProvider).value;
-
-    return Scaffold(
-      backgroundColor: AppColors.background,
-      body: CustomScrollView(
-        slivers: [
-          SliverToBoxAdapter(
-            child: HomeHeader(
-              navItems: homeNavItems,
-              selectedNavItem: '',
-              isLoggedIn: isLoggedIn,
-              nickname: nickname,
-              onLoginPressed: () => context.go(RoutePaths.login),
-              onWishPressed: () => context.go(RoutePaths.wishlist),
-              onCartPressed: () => context.go(RoutePaths.cart),
-              onNavItemPressed: (item) => openHomeNavItem(context, item),
-              onLogoPressed: () => context.go(RoutePaths.home),
-              onSearchSubmitted: (q) {
-                if (q.trim().isNotEmpty) {
-                  context.goNamed(
-                    RouteNames.search,
-                    queryParameters: {'q': q.trim()},
-                  );
-                }
-              },
-              searchKeywords: const [],
-              searchRecommendedProducts: const [],
-              onSearchSuggestionsRequested: (query) => ref
-                  .read(searchAutocompleteRemoteDataSourceProvider)
-                  .fetchSuggestions(query),
-              onMyPagePressed: () => context.go(RoutePaths.myPage),
-              onProfileWishPressed: () => context.go(RoutePaths.wishlist),
-              onProfileOrderPressed: () => context.go(RoutePaths.cart),
-              onLogoutPressed: () {
-                ref.read(authTokenStoreProvider.notifier).clear();
-                context.go(RoutePaths.landing);
-              },
-            ),
-          ),
-          SliverToBoxAdapter(
-            child: AppContentView(
-              maxWidth: 1040,
-              padding: EdgeInsets.fromLTRB(
-                context.isMobile ? AppSpacing.md : AppSpacing.xxl,
-                context.isMobile ? AppSpacing.lg : AppSpacing.xl,
-                context.isMobile ? AppSpacing.md : AppSpacing.xxl,
-                AppSpacing.xxxl,
-              ),
-              child: const PlanContent(),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-/// 요금제 화면의 본문. 헤더 없이 따로 쓸 수 있다.
+/// 현재 요금제를 보고 다른 요금제로 바꾸는 화면. 계정 영역의 공통 틀 안에 들어간다.
 class PlanContent extends ConsumerWidget {
   const PlanContent({super.key});
 

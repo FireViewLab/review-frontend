@@ -50,7 +50,10 @@ void main() {
       routes: [
         GoRoute(
           path: RoutePaths.settings,
-          builder: (_, _) => const SettingsPage(),
+          // 실제 앱에서는 계정 영역의 공통 틀이 감싼다.
+          builder: (_, _) => const Scaffold(
+            body: SingleChildScrollView(child: SettingsPage()),
+          ),
         ),
         GoRoute(
           path: RoutePaths.login,
