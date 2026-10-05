@@ -6,9 +6,7 @@ import 'package:re_view_front/features/chat/domain/entities/chat_quota.dart';
 import 'package:re_view_front/features/chat/domain/entities/chat_reply.dart';
 import 'package:re_view_front/features/chat/domain/entities/chat_session.dart';
 import 'package:re_view_front/features/chat/domain/repositories/chat_repository.dart';
-import 'package:re_view_front/features/plan/domain/entities/plan_option.dart';
 import 'package:re_view_front/features/plan/domain/repositories/plan_repository.dart';
-import 'package:re_view_front/core/error/failure.dart';
 
 ChatQuota quotaOf({
   String plan = 'FREE',
@@ -25,17 +23,11 @@ ChatQuota quotaOf({
 );
 
 class FakePlanRepository implements PlanRepository {
-  Result<List<PlanOption>> plans = const FailureResult(
-    Failure(message: 'Not Found', statusCode: 404),
-  );
   Result<DateTime?> expiry = const Success(null);
   Result<void> change = const Success(null);
   Completer<Result<void>>? pendingChange;
   void Function(String code)? onChange;
   final List<String> changes = [];
-
-  @override
-  Future<Result<List<PlanOption>>> getPlans() async => plans;
 
   @override
   Future<Result<DateTime?>> getMyPlanExpiry() async => expiry;
@@ -64,7 +56,7 @@ class FakeQuotaRepository implements ChatRepository {
   Future<Result<ChatReply>> ask({
     required String question,
     int? sessionId,
-    int? productId,
+    String? productId,
     ChatMode mode = ChatMode.standard,
   }) => throw UnimplementedError();
 

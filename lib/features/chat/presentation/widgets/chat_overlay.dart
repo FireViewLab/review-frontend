@@ -55,7 +55,11 @@ const _hiddenPathPrefixes = [
   RoutePaths.admin,
 ];
 
-final _productPathPattern = RegExp(r'^/product/(\d+)');
+/// Data 서버 상품 화면 경로 `/product/{platform}/{productId}`.
+///
+/// 숫자 ID만 있는 기존 상품 화면(`/product/{id}`)은 맞지 않는다. 챗봇은 Data 서버
+/// 상품만 찾을 수 있어서, 그 화면에서는 상품 없이 일반 질문으로 대화한다.
+final _productPathPattern = RegExp(r'^/product/([a-z][a-z0-9]*)/([^/]+)');
 
 class _ChatLayer extends ConsumerWidget {
   const _ChatLayer();
@@ -78,7 +82,10 @@ class _ChatLayer extends ConsumerWidget {
         }
 
         final match = _productPathPattern.firstMatch(path);
-        final productId = match == null ? null : int.tryParse(match.group(1)!);
+        // 서버가 받는 형식은 "{platform}-{productId}"다.
+        final productId = match == null
+            ? null
+            : '${match.group(1)}-${match.group(2)}';
         return _ChatLauncherLayout(
           router: router,
           productId: productId,
@@ -98,7 +105,7 @@ class _ChatLauncherLayout extends ConsumerWidget {
   });
 
   final GoRouter router;
-  final int? productId;
+  final String? productId;
   final bool hasBottomTabs;
 
   static const double _bottomTabsHeight = 72;

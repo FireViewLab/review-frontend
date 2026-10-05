@@ -6,7 +6,6 @@ import 'package:re_view_front/core/error/failure.dart';
 import 'package:re_view_front/core/providers/core_providers.dart';
 import 'package:re_view_front/core/result/result.dart';
 import 'package:re_view_front/features/chat/presentation/providers/chat_providers.dart';
-import 'package:re_view_front/features/plan/domain/entities/plan_option.dart';
 import 'package:re_view_front/features/plan/presentation/providers/plan_providers.dart';
 import 'package:re_view_front/features/plan/presentation/view_models/plan_state.dart';
 
@@ -37,28 +36,18 @@ void main() {
     await container.pump();
   }
 
-  test(
-    'shows the current plan with the fallback list when none is served',
-    () async {
-      await settle();
-      final state = container.read(planViewModelProvider);
-      expect(state.status, PlanStatus.ready);
-      expect(state.quota?.planCode, 'FREE');
-      expect(state.options.map((o) => o.code), ['FREE', 'PLUS', 'PRO']);
-      // 서버가 주지 않은 한도는 지어내지 않는다.
-      expect(state.options.every((o) => o.dailyLimit == null), isTrue);
-    },
-  );
+  test('shows the current plan and the three plans', () async {
+    await settle();
+    final state = container.read(planViewModelProvider);
+    expect(state.status, PlanStatus.ready);
+    expect(state.quota?.planCode, 'FREE');
+    expect(state.options.map((o) => o.code), ['FREE', 'PLUS', 'PRO']);
+  });
 
-  test('uses the limits and expiry the server provides', () async {
-    plans.plans = const Success([
-      PlanOption(code: 'FREE', dailyLimit: 5, proAvailable: false),
-      PlanOption(code: 'PRO', dailyLimit: 300, proAvailable: true),
-    ]);
+  test('uses the expiry the server provides', () async {
     plans.expiry = Success(DateTime.utc(2026, 11, 1));
     await container.read(planViewModelProvider.notifier).load();
     final state = container.read(planViewModelProvider);
-    expect(state.options.last.dailyLimit, 300);
     expect(state.expiresAt, DateTime.utc(2026, 11, 1));
   });
 

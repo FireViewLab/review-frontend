@@ -18,7 +18,7 @@ class ChatRepositoryImpl implements ChatRepository {
   Future<Result<ChatReply>> ask({
     required String question,
     int? sessionId,
-    int? productId,
+    String? productId,
     ChatMode mode = ChatMode.standard,
   }) => _guard(
     () => _dataSource.ask(

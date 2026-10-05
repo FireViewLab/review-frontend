@@ -12,7 +12,7 @@ class ChatEmptyState extends StatelessWidget {
     required this.onSuggestionSelected,
   });
 
-  final int? productId;
+  final String? productId;
 
   /// 추천 질문을 눌렀을 때. 하루 질문 수에 한도가 있어 바로 보내지 않고 입력창에 넣는다.
   final ValueChanged<String> onSuggestionSelected;

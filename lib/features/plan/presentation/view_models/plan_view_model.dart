@@ -1,7 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:re_view_front/core/error/failure.dart';
 import 'package:re_view_front/features/chat/presentation/providers/chat_providers.dart';
-import 'package:re_view_front/features/plan/domain/entities/plan_option.dart';
 import 'package:re_view_front/features/plan/presentation/providers/plan_providers.dart';
 import 'package:re_view_front/features/plan/presentation/view_models/plan_state.dart';
 
@@ -21,9 +20,8 @@ class PlanViewModel extends Notifier<PlanState> {
       state = state.copyWith(status: PlanStatus.loading);
     }
     final planRepository = ref.read(planRepositoryProvider);
-    final (quota, plans, expiry) = await (
+    final (quota, expiry) = await (
       ref.read(chatRepositoryProvider).getQuota(),
-      planRepository.getPlans(),
       planRepository.getMyPlanExpiry(),
     ).wait;
     if (!ref.mounted || request != _request) return;
@@ -33,11 +31,6 @@ class PlanViewModel extends Notifier<PlanState> {
       success: (value) => state = state.copyWith(
         status: PlanStatus.ready,
         quota: value,
-        // 목록을 못 받으면 수치 없는 기본 목록으로 보여 준다.
-        options: plans.when(
-          success: (list) => list.isEmpty ? PlanOption.fallback : list,
-          failure: (_) => PlanOption.fallback,
-        ),
         expiresAt: expiresAt,
         clearExpiresAt: expiresAt == null,
       ),

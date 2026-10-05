@@ -6,7 +6,6 @@ import 'package:re_view_front/core/error/failure.dart';
 import 'package:re_view_front/core/providers/core_providers.dart';
 import 'package:re_view_front/core/result/result.dart';
 import 'package:re_view_front/features/chat/presentation/providers/chat_providers.dart';
-import 'package:re_view_front/features/plan/domain/entities/plan_option.dart';
 import 'package:re_view_front/features/plan/presentation/pages/plan_page.dart';
 import 'package:re_view_front/features/plan/presentation/providers/plan_providers.dart';
 import 'package:re_view_front/features/plan/presentation/widgets/plan_cards.dart';
@@ -68,27 +67,10 @@ void main() {
     expect(find.byType(PlanOptionCard), findsNWidgets(3));
     // 현재 요금제는 바꿀 수 없고 나머지 둘만 고를 수 있다.
     expect(find.text(l10n.planSelect), findsNWidgets(2));
-    // 한도를 받은 현재 요금제에만 숫자가 나온다.
+    // 서버가 알려 준 현재 요금제에만 숫자가 나온다.
     expect(find.text(l10n.planDailyQuestions(5)), findsOneWidget);
     expect(find.text(l10n.planFeaturePro), findsOneWidget);
     expect(tester.takeException(), isNull);
-  });
-
-  testWidgets('shows server limits for every plan when they are provided', (
-    tester,
-  ) async {
-    await pumpPlan(
-      tester,
-      plans: FakePlanRepository()
-        ..plans = const Success([
-          PlanOption(code: 'FREE', dailyLimit: 5, proAvailable: false),
-          PlanOption(code: 'PLUS', dailyLimit: 100, proAvailable: false),
-          PlanOption(code: 'PRO', dailyLimit: 300, proAvailable: true),
-        ]),
-    );
-    final l10n = l10nOf(tester);
-    expect(find.text(l10n.planDailyQuestions(100)), findsOneWidget);
-    expect(find.text(l10n.planDailyQuestions(300)), findsOneWidget);
   });
 
   testWidgets('changes the plan after confirming', (tester) async {

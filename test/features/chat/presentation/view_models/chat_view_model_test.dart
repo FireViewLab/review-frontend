@@ -39,7 +39,11 @@ void main() {
 
   tearDown(() => container.dispose());
 
-  const firstSession = ChatSession(id: 12, title: '상품 리뷰', productId: '1');
+  const firstSession = ChatSession(
+    id: 12,
+    title: '상품 리뷰',
+    productId: 'kurly-1',
+  );
   const secondSession = ChatSession(id: 13, title: '일반 질문');
   const historyMessages = [
     ChatMessage(id: 21, role: ChatRole.user, content: '이전 질문'),
@@ -104,11 +108,11 @@ void main() {
       expect(restored.isOpen, isTrue);
       expect(restored.isHistoryOpen, isFalse);
       expect(restored.sessionId, 12);
-      expect(restored.sessionProductId, 1);
+      expect(restored.sessionProductId, 'kurly-1');
       expect(restored.messages, historyMessages);
       expect(restored.messages.last.blocked, isTrue);
       expect(restored.messages.last.blockReason, '차단 이유');
-      await viewModel.send('후속 질문', productId: 2);
+      await viewModel.send('후속 질문', productId: 'kurly-2');
       expect(repository.requests.single, (
         question: '후속 질문',
         sessionId: 12,
@@ -120,7 +124,7 @@ void main() {
   test(
     'general history clears the previous product and failed question',
     () async {
-      await viewModel.send('실패 질문', productId: 1);
+      await viewModel.send('실패 질문', productId: 'kurly-1');
       repository.result = const FailureResult(Failure(message: '실패'));
       await viewModel.send('다시 질문');
       await viewModel.resumeSession(secondSession);
@@ -133,7 +137,7 @@ void main() {
   );
 
   test('failed restoration preserves the current conversation', () async {
-    await viewModel.send('현재 질문', productId: 1);
+    await viewModel.send('현재 질문', productId: 'kurly-1');
     repository.messages = const FailureResult(Failure(message: '복원 오류'));
     await viewModel.resumeSession(secondSession);
     final state = container.read(chatViewModelProvider);
@@ -194,7 +198,7 @@ void main() {
       if (action == 'back') {
         viewModel.closeHistory();
       } else {
-        viewModel.startNew(productId: 2);
+        viewModel.startNew(productId: 'kurly-2');
       }
       repository.pendingMessages!.complete(const Success(historyMessages));
       await restoring;
@@ -220,11 +224,11 @@ void main() {
   });
 
   test('stores user and assistant messages and session on success', () async {
-    await viewModel.send('  리뷰를 설명해 주세요  ', productId: 1);
+    await viewModel.send('  리뷰를 설명해 주세요  ', productId: 'kurly-1');
 
     final state = container.read(chatViewModelProvider);
     expect(state.sessionId, 7);
-    expect(state.sessionProductId, 1);
+    expect(state.sessionProductId, 'kurly-1');
     expect(state.isSending, isFalse);
     expect(state.lastFailedQuestion, isNull);
     expect(state.messages.map((message) => message.role), [
@@ -238,13 +242,13 @@ void main() {
     expect(repository.requests.single, (
       question: '리뷰를 설명해 주세요',
       sessionId: null,
-      productId: 1,
+      productId: 'kurly-1',
     ));
   });
 
   test('passes product only for a new session and keeps its context', () async {
-    await viewModel.send('첫 질문', productId: 1);
-    await viewModel.send('두 번째 질문', productId: 2);
+    await viewModel.send('첫 질문', productId: 'kurly-1');
+    await viewModel.send('두 번째 질문', productId: 'kurly-2');
 
     expect(repository.requests.last, (
       question: '두 번째 질문',
@@ -252,17 +256,17 @@ void main() {
       productId: null,
     ));
     final state = container.read(chatViewModelProvider);
-    expect(state.sessionProductId, 1);
+    expect(state.sessionProductId, 'kurly-1');
     expect(state.messages, hasLength(4));
   });
 
   test(
     'removes only the failed question and stores an error and retry text',
     () async {
-      await viewModel.send('첫 질문', productId: 1);
+      await viewModel.send('첫 질문', productId: 'kurly-1');
       repository.result = const FailureResult(Failure(message: '전송 실패'));
 
-      await viewModel.send('실패 질문', productId: 2);
+      await viewModel.send('실패 질문', productId: 'kurly-2');
 
       final state = container.read(chatViewModelProvider);
       expect(state.messages.map((message) => message.content), [
@@ -275,7 +279,7 @@ void main() {
       expect(state.lastFailedQuestion, '실패 질문');
       expect(state.isSending, isFalse);
       expect(state.sessionId, 7);
-      expect(state.sessionProductId, 1);
+      expect(state.sessionProductId, 'kurly-1');
     },
   );
 
@@ -283,10 +287,10 @@ void main() {
     'retries a failed new-session question without keeping the error',
     () async {
       repository.result = const FailureResult(Failure(message: '전송 실패'));
-      await viewModel.send('다시 질문', productId: 1);
+      await viewModel.send('다시 질문', productId: 'kurly-1');
       repository.result = _reply;
 
-      await viewModel.retry(productId: 1);
+      await viewModel.retry(productId: 'kurly-1');
 
       expect(repository.requests, hasLength(2));
       expect(repository.requests.last, repository.requests.first);
@@ -298,19 +302,19 @@ void main() {
       expect(state.messages.every((message) => message.error == null), isTrue);
       expect(state.lastFailedQuestion, isNull);
       expect(state.sessionId, 7);
-      expect(state.sessionProductId, 1);
+      expect(state.sessionProductId, 'kurly-1');
     },
   );
 
   test(
     'retries within an existing session without passing another product',
     () async {
-      await viewModel.send('첫 질문', productId: 1);
+      await viewModel.send('첫 질문', productId: 'kurly-1');
       repository.result = const FailureResult(Failure(message: '전송 실패'));
-      await viewModel.send('추가 질문', productId: 2);
+      await viewModel.send('추가 질문', productId: 'kurly-2');
       repository.result = _reply;
 
-      await viewModel.retry(productId: 2);
+      await viewModel.retry(productId: 'kurly-2');
 
       expect(repository.requests.last, (
         question: '추가 질문',
@@ -318,13 +322,13 @@ void main() {
         productId: null,
       ));
       expect(container.read(chatViewModelProvider).messages, hasLength(4));
-      expect(container.read(chatViewModelProvider).sessionProductId, 1);
+      expect(container.read(chatViewModelProvider).sessionProductId, 'kurly-1');
       expect(container.read(chatViewModelProvider).lastFailedQuestion, isNull);
     },
   );
 
   test('does not retry without a failed question', () async {
-    await viewModel.retry(productId: 1);
+    await viewModel.retry(productId: 'kurly-1');
     expect(repository.requests, isEmpty);
   });
 
@@ -401,24 +405,24 @@ void main() {
     'starts a new conversation and clears session, messages and failure',
     () async {
       viewModel.open();
-      await viewModel.send('첫 질문', productId: 1);
+      await viewModel.send('첫 질문', productId: 'kurly-1');
       repository.result = const FailureResult(Failure(message: '전송 실패'));
       await viewModel.send('실패 질문');
 
-      viewModel.startNew(productId: 2);
+      viewModel.startNew(productId: 'kurly-2');
 
       final state = container.read(chatViewModelProvider);
       expect(state.isOpen, isTrue);
       expect(state.messages, isEmpty);
       expect(state.sessionId, isNull);
-      expect(state.sessionProductId, 2);
+      expect(state.sessionProductId, 'kurly-2');
       expect(state.lastFailedQuestion, isNull);
       expect(state.isSending, isFalse);
 
       repository.result = _reply;
-      await viewModel.send('새 질문', productId: 2);
+      await viewModel.send('새 질문', productId: 'kurly-2');
       expect(repository.requests.last.sessionId, isNull);
-      expect(repository.requests.last.productId, 2);
+      expect(repository.requests.last.productId, 'kurly-2');
       viewModel.startNew();
       expect(container.read(chatViewModelProvider).sessionProductId, isNull);
     },
@@ -429,17 +433,17 @@ void main() {
     () async {
       final pending = Completer<Result<ChatReply>>();
       repository.pending = pending;
-      final sending = viewModel.send('첫 질문', productId: 1);
+      final sending = viewModel.send('첫 질문', productId: 'kurly-1');
 
       expect(container.read(chatViewModelProvider).isSending, isTrue);
-      await viewModel.send('중복 질문', productId: 2);
-      viewModel.startNew(productId: 2);
+      await viewModel.send('중복 질문', productId: 'kurly-2');
+      viewModel.startNew(productId: 'kurly-2');
       expect(repository.requests, hasLength(1));
       expect(
         container.read(chatViewModelProvider).messages.single.content,
         '첫 질문',
       );
-      expect(container.read(chatViewModelProvider).sessionProductId, 1);
+      expect(container.read(chatViewModelProvider).sessionProductId, 'kurly-1');
 
       pending.complete(_reply);
       await sending;
@@ -449,7 +453,7 @@ void main() {
   );
 
   test('ignores an empty question', () async {
-    await viewModel.send('  \n  ', productId: 1);
+    await viewModel.send('  \n  ', productId: 'kurly-1');
     expect(repository.requests, isEmpty);
     expect(container.read(chatViewModelProvider).messages, isEmpty);
   });
@@ -458,7 +462,7 @@ void main() {
     'clears the conversation on logout and preserves the open panel',
     () async {
       viewModel.open();
-      await viewModel.send('첫 질문', productId: 1);
+      await viewModel.send('첫 질문', productId: 'kurly-1');
       repository.result = const FailureResult(Failure(message: '전송 실패'));
       await viewModel.send('실패 질문');
 
@@ -480,7 +484,7 @@ void main() {
     () async {
       final pending = Completer<Result<ChatReply>>();
       repository.pending = pending;
-      final sending = viewModel.send('로그아웃 전 질문', productId: 1);
+      final sending = viewModel.send('로그아웃 전 질문', productId: 'kurly-1');
       tokenStore.setLoggedIn(false);
       await container.pump();
       expect(container.read(chatViewModelProvider).messages, isEmpty);
@@ -519,7 +523,7 @@ void main() {
       expect(repository.quotaRequests, 1);
       expect(container.read(chatViewModelProvider).quota?.remaining, 3);
 
-      viewModel.startNew(productId: 2);
+      viewModel.startNew(productId: 'kurly-2');
       expect(container.read(chatViewModelProvider).quota?.remaining, 3);
     },
   );
@@ -740,7 +744,7 @@ void main() {
   test('ignores a failed request that completes after logout', () async {
     final pending = Completer<Result<ChatReply>>();
     repository.pending = pending;
-    final sending = viewModel.send('로그아웃 전 질문', productId: 1);
+    final sending = viewModel.send('로그아웃 전 질문', productId: 'kurly-1');
     tokenStore.setLoggedIn(false);
     await container.pump();
 
@@ -758,7 +762,7 @@ const _reply = Success(
   ChatReply(sessionId: 7, answer: '리뷰 분석 답변', blocked: false),
 );
 
-typedef _Request = ({String question, int? sessionId, int? productId});
+typedef _Request = ({String question, int? sessionId, String? productId});
 
 class _FakeChatRepository implements ChatRepository {
   Result<ChatQuota> quota = const FailureResult(Failure(message: 'no quota'));
@@ -805,7 +809,7 @@ class _FakeChatRepository implements ChatRepository {
   Future<Result<ChatReply>> ask({
     required String question,
     int? sessionId,
-    int? productId,
+    String? productId,
     ChatMode mode = ChatMode.standard,
   }) async {
     modes.add(mode);

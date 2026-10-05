@@ -15,7 +15,7 @@ abstract interface class ChatRepository {
   Future<Result<ChatReply>> ask({
     required String question,
     int? sessionId,
-    int? productId,
+    String? productId,
     ChatMode mode = ChatMode.standard,
   });
 

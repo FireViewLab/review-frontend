@@ -79,14 +79,14 @@ class ChatViewModel extends Notifier<ChatState> {
   }
 
   /// 대화를 비우고, 다음 질문부터 [productId] 기준의 새 세션을 시작한다.
-  void startNew({int? productId}) {
+  void startNew({String? productId}) {
     if (state.isSending) return;
     _generation++;
     state = state.cleared(sessionProductId: productId);
   }
 
   /// [productId]는 새 대화를 시작할 때만 서버에 반영된다.
-  Future<void> send(String question, {int? productId}) async {
+  Future<void> send(String question, {String? productId}) async {
     final text = question.trim();
     if (text.isEmpty ||
         state.isSending ||
@@ -262,7 +262,7 @@ class ChatViewModel extends Notifier<ChatState> {
     }
     result.when(
       success: (messages) => state = state
-          .cleared(sessionProductId: int.tryParse(session.productId ?? ''))
+          .cleared(sessionProductId: _productIdOf(session))
           .copyWith(sessionId: session.id, messages: messages),
       failure: (failure) => state = state.copyWith(
         isLoadingMessages: false,
@@ -271,7 +271,13 @@ class ChatViewModel extends Notifier<ChatState> {
     );
   }
 
-  Future<void> retry({int? productId}) async {
+  /// 상품 없이 시작한 대화는 서버가 빈 값으로 줄 수 있어 null로 맞춘다.
+  String? _productIdOf(ChatSession session) {
+    final id = session.productId;
+    return id == null || id.isEmpty ? null : id;
+  }
+
+  Future<void> retry({String? productId}) async {
     final question = state.lastFailedQuestion;
     if (question == null) return;
     await send(question, productId: productId);

@@ -31,7 +31,7 @@ class ChatState {
   final int? sessionId;
 
   /// 현재 세션이 다루는 상품. 상품 없이 시작한 대화면 null.
-  final int? sessionProductId;
+  final String? sessionProductId;
   final bool isSending;
 
   /// 마지막으로 전송에 실패한 질문. 다시 시도할 때 쓴다.
@@ -67,7 +67,7 @@ class ChatState {
       limitReached || (quota?.isExhaustedAt(now) ?? false);
 
   /// 대화만 비운 상태. 패널 열림 여부와 사용량·모드는 그대로 둔다.
-  ChatState cleared({int? sessionProductId}) => ChatState(
+  ChatState cleared({String? sessionProductId}) => ChatState(
     isOpen: isOpen,
     quota: quota,
     mode: mode,
@@ -83,7 +83,7 @@ class ChatState {
     List<ChatMessage>? messages,
     int? sessionId,
     bool clearSession = false,
-    int? sessionProductId,
+    String? sessionProductId,
     bool? isSending,
     String? lastFailedQuestion,
     bool clearLastFailedQuestion = false,
