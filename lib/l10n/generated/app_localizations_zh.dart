@@ -1355,6 +1355,68 @@ class AppLocalizationsZh extends AppLocalizations {
   String get chatViewPlans => '查看套餐';
 
   @override
+  String get extProductCollectingTitle => '正在获取商品信息';
+
+  @override
+  String get extProductCollectingBody => '这是首次查看的商品，正在从商城收集信息，通常需要 10 到 20 秒。';
+
+  @override
+  String get extProductCollectingSlow => '比预期时间长，请再稍等一下。';
+
+  @override
+  String get extProductUnavailableTitle => '未能获取商品信息';
+
+  @override
+  String get extProductUnavailableBody => '并非商品不存在，而是暂时无法从商城获取信息。请稍后重试。';
+
+  @override
+  String get extProductLoadFailed => '无法加载商品。';
+
+  @override
+  String get extProductRetry => '重试';
+
+  @override
+  String get extProductStale => '正在更新为最新信息';
+
+  @override
+  String extProductVisitShop(String shop) {
+    return '在$shop查看';
+  }
+
+  @override
+  String extProductReviewCount(int count) {
+    return '$count 条评论';
+  }
+
+  @override
+  String extProductPrice(String price) {
+    return '$price韩元';
+  }
+
+  @override
+  String get extProductAnalysisPendingTitle => '尚未分析可信度';
+
+  @override
+  String get extProductAnalysisPendingBody => '该商品的评论尚未分析。分析完成后，可信度分数将显示在这里。';
+
+  @override
+  String get extProductReviewsTitle => '评论';
+
+  @override
+  String get extProductReviewsEmpty => '没有收集到评论。';
+
+  @override
+  String get extProductReviewsMore => '查看更多评论';
+
+  @override
+  String get extProductReviewsMoreFailed => '无法加载更多评论。';
+
+  @override
+  String extProductReviewOption(String option) {
+    return '选项：$option';
+  }
+
+  @override
   String chatQuotaRemaining(int remaining, int limit) {
     return '今日剩余提问 $remaining/$limit';
   }
@@ -1423,4 +1485,97 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get adminUserPlanDateRequired => '请选择今天或之后的到期日期。';
+
+  @override
+  String get externalWishAdd => '收藏';
+
+  @override
+  String get externalWishRemove => '取消收藏';
+
+  @override
+  String get externalCartAdd => '加入购物车';
+
+  @override
+  String get externalCartAdded => '已加入购物车';
+
+  @override
+  String get externalReviewMenu => '评论菜单';
+
+  @override
+  String get externalReport => '举报评论';
+
+  @override
+  String get externalReal => '像真实评论';
+
+  @override
+  String get externalFake => '像虚假评论';
+
+  @override
+  String get externalNotCollected => '请在商品采集完成后重试。';
+
+  @override
+  String get externalUnavailable => '数据服务器暂不可用，请稍后重试。';
+
+  @override
+  String get externalReportDuplicate => '您已举报此评论。';
+
+  @override
+  String get externalFeedbackDuplicate => '您已对此评论提交反馈。';
+
+  @override
+  String get externalFailed => '请求失败，请重试。';
+
+  @override
+  String get externalSuccess => '操作成功。';
+
+  @override
+  String get externalUnanalyzed => '尚未分析';
+
+  @override
+  String get externalReason => '举报原因';
+
+  @override
+  String get externalDetail => '详细内容';
+
+  @override
+  String get externalDetailValidation => '请输入20至500个字符。';
+
+  @override
+  String get externalAttachment => '附件链接（可选）';
+
+  @override
+  String get externalAttachmentValidation => '请输入有效的http或https链接。';
+
+  @override
+  String get externalEvidence => '包含分析依据';
+
+  @override
+  String get externalCancel => '取消';
+
+  @override
+  String get externalSubmit => '提交';
+
+  @override
+  String get externalReasonFake => '疑似虚假评论';
+
+  @override
+  String get externalReasonAi => '疑似自动生成';
+
+  @override
+  String get externalReasonIrrelevant => '无关内容';
+
+  @override
+  String get externalReasonInappropriate => '不当内容或个人信息';
+
+  @override
+  String get externalReasonAd => '广告';
+
+  @override
+  String get externalReasonRepeated => '重复内容';
+
+  @override
+  String get externalReasonOffensive => '侮辱性内容';
+
+  @override
+  String get externalReasonOther => '其他';
 }

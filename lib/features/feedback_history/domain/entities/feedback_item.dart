@@ -10,6 +10,9 @@ class FeedbackItem {
     required this.currentStep,
     required this.totalSteps,
     this.productId,
+    this.reviewId,
+    this.externalReviewId,
+    this.productExternalId,
     this.createdAt,
   });
 
@@ -17,11 +20,14 @@ class FeedbackItem {
   final String typeLabel;
   final String feedbackCategory;
   final int? productId;
+  final int? reviewId;
   final String status;
   final String statusDescription;
   final String productName;
-  final String reviewContent;
+  final String? reviewContent;
   final int currentStep;
   final int totalSteps;
+  final String? externalReviewId;
+  final String? productExternalId;
   final DateTime? createdAt;
 }

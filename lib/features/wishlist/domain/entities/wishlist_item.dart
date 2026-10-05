@@ -22,10 +22,10 @@ class WishlistItem {
   final String imageUrl;
   final int price;
   final String category;
-  final String categoryDisplayName;
-  final double avgRti;
-  final String rtiGrade;
-  final String rtiColor;
+  final String? categoryDisplayName;
+  final double? avgRti;
+  final String? rtiGrade;
+  final String? rtiColor;
   final int reviewCount;
   final double avgRating;
   final bool isPriceDrop;

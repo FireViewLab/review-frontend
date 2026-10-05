@@ -53,17 +53,21 @@ class ReviewReport {
     this.detail,
     this.attachmentUrl,
     this.includeAiEvidence = false,
+    this.externalReviewId,
+    this.productExternalId,
     this.createdAt,
   });
 
   final int reportId;
-  final int reviewId;
+  final int? reviewId;
   final String reason;
   final String status;
   final String productName;
-  final String reviewContent;
+  final String? reviewContent;
   final String? detail;
   final String? attachmentUrl;
   final bool includeAiEvidence;
+  final String? externalReviewId;
+  final String? productExternalId;
   final DateTime? createdAt;
 }

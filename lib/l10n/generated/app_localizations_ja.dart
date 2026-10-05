@@ -1357,6 +1357,71 @@ class AppLocalizationsJa extends AppLocalizations {
   String get chatViewPlans => 'プランを見る';
 
   @override
+  String get extProductCollectingTitle => '商品情報を取得しています';
+
+  @override
+  String get extProductCollectingBody =>
+      '初めての商品のため、ショップから情報を集めています。通常10〜20秒かかります。';
+
+  @override
+  String get extProductCollectingSlow => '通常より時間がかかっています。もう少しお待ちください。';
+
+  @override
+  String get extProductUnavailableTitle => '商品情報を取得できませんでした';
+
+  @override
+  String get extProductUnavailableBody =>
+      '商品が存在しないのではなく、現在ショップから情報を取得できません。しばらくしてからもう一度お試しください。';
+
+  @override
+  String get extProductLoadFailed => '商品を読み込めませんでした。';
+
+  @override
+  String get extProductRetry => '再試行';
+
+  @override
+  String get extProductStale => '最新情報に更新しています';
+
+  @override
+  String extProductVisitShop(String shop) {
+    return '$shopで見る';
+  }
+
+  @override
+  String extProductReviewCount(int count) {
+    return 'レビュー $count件';
+  }
+
+  @override
+  String extProductPrice(String price) {
+    return '$priceウォン';
+  }
+
+  @override
+  String get extProductAnalysisPendingTitle => '信頼度分析前';
+
+  @override
+  String get extProductAnalysisPendingBody =>
+      'この商品のレビューはまだ分析されていません。分析が終わると信頼度スコアがここに表示されます。';
+
+  @override
+  String get extProductReviewsTitle => 'レビュー';
+
+  @override
+  String get extProductReviewsEmpty => '収集されたレビューはありません。';
+
+  @override
+  String get extProductReviewsMore => 'レビューをもっと見る';
+
+  @override
+  String get extProductReviewsMoreFailed => 'レビューをさらに読み込めませんでした。';
+
+  @override
+  String extProductReviewOption(String option) {
+    return 'オプション: $option';
+  }
+
+  @override
   String chatQuotaRemaining(int remaining, int limit) {
     return '今日の残り質問 $remaining/$limit';
   }
@@ -1425,4 +1490,97 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String get adminUserPlanDateRequired => '今日以降の有効期限を選択してください。';
+
+  @override
+  String get externalWishAdd => 'お気に入り';
+
+  @override
+  String get externalWishRemove => 'お気に入り解除';
+
+  @override
+  String get externalCartAdd => 'カートに追加';
+
+  @override
+  String get externalCartAdded => '追加済み';
+
+  @override
+  String get externalReviewMenu => 'レビューメニュー';
+
+  @override
+  String get externalReport => '報告する';
+
+  @override
+  String get externalReal => '本物のレビューだと思う';
+
+  @override
+  String get externalFake => '偽物のレビューだと思う';
+
+  @override
+  String get externalNotCollected => '商品収集の完了後に再試行してください。';
+
+  @override
+  String get externalUnavailable => 'データサーバーに接続できません。後ほど再試行してください。';
+
+  @override
+  String get externalReportDuplicate => 'このレビューは報告済みです。';
+
+  @override
+  String get externalFeedbackDuplicate => 'このレビューには回答済みです。';
+
+  @override
+  String get externalFailed => '処理できませんでした。再試行してください。';
+
+  @override
+  String get externalSuccess => '完了しました。';
+
+  @override
+  String get externalUnanalyzed => '分析前';
+
+  @override
+  String get externalReason => '報告理由';
+
+  @override
+  String get externalDetail => '詳細';
+
+  @override
+  String get externalDetailValidation => '20〜500文字で入力してください。';
+
+  @override
+  String get externalAttachment => '添付URL（任意）';
+
+  @override
+  String get externalAttachmentValidation => '有効なhttpまたはhttps URLを入力してください。';
+
+  @override
+  String get externalEvidence => '分析根拠を含める';
+
+  @override
+  String get externalCancel => 'キャンセル';
+
+  @override
+  String get externalSubmit => '送信';
+
+  @override
+  String get externalReasonFake => '偽物の疑い';
+
+  @override
+  String get externalReasonAi => '自動生成の疑い';
+
+  @override
+  String get externalReasonIrrelevant => '商品と無関係';
+
+  @override
+  String get externalReasonInappropriate => '不適切な表現・個人情報';
+
+  @override
+  String get externalReasonAd => '広告';
+
+  @override
+  String get externalReasonRepeated => '繰り返しの内容';
+
+  @override
+  String get externalReasonOffensive => '侮辱的な内容';
+
+  @override
+  String get externalReasonOther => 'その他';
 }

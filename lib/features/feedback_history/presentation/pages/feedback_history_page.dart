@@ -1,3 +1,5 @@
+import 'package:re_view_front/features/external_product/presentation/widgets/external_history_review_content.dart';
+import 'package:re_view_front/features/external_product/domain/entities/external_history_target.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -270,7 +272,9 @@ class _FeedbackList extends StatelessWidget {
         for (final item in items) ...[
           _FeedbackCard(
             item: item,
-            onProductTap: item.productId != null
+            onProductTap: externalHistoryTarget(item.productExternalId) != null
+                ? () => context.go(externalHistoryTarget(item.productExternalId)!.routePath)
+                : item.productId != null
                 ? () => onProductTap(item.productId!)
                 : null,
           ),
@@ -369,7 +373,7 @@ class _FeedbackCard extends StatelessWidget {
               ),
               const SizedBox(height: AppSpacing.sm),
             ],
-            if (item.reviewContent.isNotEmpty)
+            if ((item.reviewContent ?? item.productName).isNotEmpty)
               Container(
                 width: double.infinity,
                 padding: const EdgeInsets.all(AppSpacing.md),
@@ -377,10 +381,11 @@ class _FeedbackCard extends StatelessWidget {
                   color: AppColors.background,
                   borderRadius: BorderRadius.circular(6),
                 ),
-                child: Text(
-                  item.reviewContent,
+                child: ExternalHistoryReviewContent(
+                  reviewContent: item.reviewContent,
+                  productName: item.productName,
+                  productExternalId: item.productExternalId,
                   maxLines: 3,
-                  overflow: TextOverflow.ellipsis,
                   style: Theme.of(context).textTheme.bodySmall?.copyWith(
                     color: AppColors.textPrimary,
                   ),

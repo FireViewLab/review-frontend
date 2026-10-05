@@ -27,9 +27,9 @@ class CartItem {
   final String imageUrl;
   final int price;
   final int quantity;
-  final double avgRti;
-  final String rtiGrade;
-  final String rtiColor;
+  final double? avgRti;
+  final String? rtiGrade;
+  final String? rtiColor;
   final String trustLevel;
   final int shippingFee;
   final int? originalPrice;

@@ -1398,6 +1398,72 @@ class AppLocalizationsEn extends AppLocalizations {
   String get chatViewPlans => 'View plans';
 
   @override
+  String get extProductCollectingTitle => 'Fetching product details';
+
+  @override
+  String get extProductCollectingBody =>
+      'This product is new to us, so we are collecting it from the shop. It usually takes 10 to 20 seconds.';
+
+  @override
+  String get extProductCollectingSlow =>
+      'This is taking longer than usual. Please wait a little more.';
+
+  @override
+  String get extProductUnavailableTitle => 'Could not get this product';
+
+  @override
+  String get extProductUnavailableBody =>
+      'The product may still exist. We could not reach the shop right now. Please try again shortly.';
+
+  @override
+  String get extProductLoadFailed => 'Could not load the product.';
+
+  @override
+  String get extProductRetry => 'Retry';
+
+  @override
+  String get extProductStale => 'Refreshing with the latest information';
+
+  @override
+  String extProductVisitShop(String shop) {
+    return 'View on $shop';
+  }
+
+  @override
+  String extProductReviewCount(int count) {
+    return '$count reviews';
+  }
+
+  @override
+  String extProductPrice(String price) {
+    return '₩$price';
+  }
+
+  @override
+  String get extProductAnalysisPendingTitle => 'Not analyzed yet';
+
+  @override
+  String get extProductAnalysisPendingBody =>
+      'Reviews of this product have not been analyzed yet. The trust score will appear here once analysis is done.';
+
+  @override
+  String get extProductReviewsTitle => 'Reviews';
+
+  @override
+  String get extProductReviewsEmpty => 'No reviews have been collected.';
+
+  @override
+  String get extProductReviewsMore => 'Show more reviews';
+
+  @override
+  String get extProductReviewsMoreFailed => 'Could not load more reviews.';
+
+  @override
+  String extProductReviewOption(String option) {
+    return 'Option: $option';
+  }
+
+  @override
   String chatQuotaRemaining(int remaining, int limit) {
     return '$remaining of $limit questions left today';
   }
@@ -1468,4 +1534,101 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get adminUserPlanDateRequired =>
       'Choose an expiration date from today onward.';
+
+  @override
+  String get externalWishAdd => 'Save';
+
+  @override
+  String get externalWishRemove => 'Unsave';
+
+  @override
+  String get externalCartAdd => 'Add to cart';
+
+  @override
+  String get externalCartAdded => 'Added to cart';
+
+  @override
+  String get externalReviewMenu => 'Review menu';
+
+  @override
+  String get externalReport => 'Report review';
+
+  @override
+  String get externalReal => 'Looks real';
+
+  @override
+  String get externalFake => 'Looks fake';
+
+  @override
+  String get externalNotCollected =>
+      'Try again after product collection is complete.';
+
+  @override
+  String get externalUnavailable =>
+      'The data server is unavailable. Try again later.';
+
+  @override
+  String get externalReportDuplicate => 'You already reported this review.';
+
+  @override
+  String get externalFeedbackDuplicate =>
+      'You already gave feedback on this review.';
+
+  @override
+  String get externalFailed => 'Could not complete the request. Try again.';
+
+  @override
+  String get externalSuccess => 'Done.';
+
+  @override
+  String get externalUnanalyzed => 'Not analyzed';
+
+  @override
+  String get externalReason => 'Report reason';
+
+  @override
+  String get externalDetail => 'Details';
+
+  @override
+  String get externalDetailValidation => 'Enter 20 to 500 characters.';
+
+  @override
+  String get externalAttachment => 'Attachment URL (optional)';
+
+  @override
+  String get externalAttachmentValidation => 'Enter a valid http or https URL.';
+
+  @override
+  String get externalEvidence => 'Include analysis evidence';
+
+  @override
+  String get externalCancel => 'Cancel';
+
+  @override
+  String get externalSubmit => 'Submit';
+
+  @override
+  String get externalReasonFake => 'Suspected fake review';
+
+  @override
+  String get externalReasonAi => 'Suspected generated content';
+
+  @override
+  String get externalReasonIrrelevant => 'Unrelated content';
+
+  @override
+  String get externalReasonInappropriate =>
+      'Inappropriate content / personal information';
+
+  @override
+  String get externalReasonAd => 'Advertisement';
+
+  @override
+  String get externalReasonRepeated => 'Repetitive content';
+
+  @override
+  String get externalReasonOffensive => 'Offensive content';
+
+  @override
+  String get externalReasonOther => 'Other';
 }

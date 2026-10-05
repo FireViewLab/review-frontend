@@ -32,14 +32,14 @@ class WishlistItemDto {
       ]),
       price: _readInt(json, ['price', 'salePrice', 'currentPrice']),
       category: _readString(json, ['category', 'categoryCode']),
-      categoryDisplayName: _readString(json, [
+      categoryDisplayName: _readNullableString(json, [
         'categoryDisplayName',
         'categoryName',
         'category',
       ]),
-      avgRti: _readDouble(json, ['avgRti', 'rtiScore', 'rti']) ?? 0.0,
-      rtiGrade: _readString(json, ['rtiGrade', 'grade']),
-      rtiColor: _readString(json, ['rtiColor', 'color']),
+      avgRti: _readDouble(json, ['avgRti', 'rtiScore', 'rti']),
+      rtiGrade: _readNullableString(json, ['rtiGrade', 'grade']),
+      rtiColor: _readNullableString(json, ['rtiColor', 'color']),
       reviewCount: _readInt(json, ['reviewCount', 'review_count']),
       avgRating: _readDouble(json, ['avgRating', 'rating', 'starRating']) ?? 0.0,
       isPriceDrop: json['isPriceDrop'] == true || json['priceDrop'] == true,
@@ -54,10 +54,10 @@ class WishlistItemDto {
   final String imageUrl;
   final int price;
   final String category;
-  final String categoryDisplayName;
-  final double avgRti;
-  final String rtiGrade;
-  final String rtiColor;
+  final String? categoryDisplayName;
+  final double? avgRti;
+  final String? rtiGrade;
+  final String? rtiColor;
   final int reviewCount;
   final double avgRating;
   final bool isPriceDrop;

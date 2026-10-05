@@ -100,3 +100,7 @@ class CartButtonNotifier extends AsyncNotifier<bool> {
     );
   }
 }
+
+void refreshCartSnapshot(Ref ref) {
+  ref.invalidate(_cartSnapshotProvider);
+}
