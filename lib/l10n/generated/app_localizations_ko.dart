@@ -1383,4 +1383,46 @@ class AppLocalizationsKo extends AppLocalizations {
 
   @override
   String get chatSuggestGeneral3 => '믿을 만한 리뷰는 어떻게 골라?';
+
+  @override
+  String get adminUserPlanColumn => '요금제';
+
+  @override
+  String get adminUserPlanChange => '요금제 변경';
+
+  @override
+  String get adminUserPlanTitle => '요금제 변경';
+
+  @override
+  String get adminUserPlanExpiry => '만료일';
+
+  @override
+  String get adminUserPlanUnlimited => '무기한';
+
+  @override
+  String get adminUserPlanThirtyDays => '30일';
+
+  @override
+  String get adminUserPlanCustomDate => '날짜 직접 선택';
+
+  @override
+  String get adminUserPlanSelectDate => '날짜 선택';
+
+  @override
+  String get adminUserPlanExpired => '만료됨';
+
+  @override
+  String get adminUserPlanUnknown => '확인되지 않음';
+
+  @override
+  String get adminUserPlanSave => '저장';
+
+  @override
+  String get adminUserPlanCancel => '취소';
+
+  @override
+  String get adminUserPlanSaving => '저장 중';
+
+  @override
+  String get adminUserPlanDateRequired => '오늘 이후의 만료일을 선택해주세요.';
 }

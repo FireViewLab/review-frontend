@@ -1,3 +1,4 @@
+import 'package:re_view_front/features/admin/domain/entities/admin_user.dart';
 import 'package:re_view_front/features/admin/domain/entities/admin_analysis_feedback.dart';
 import 'package:re_view_front/features/admin/domain/entities/admin_report.dart';
 import 'package:re_view_front/features/admin/domain/entities/admin_suspicious_review.dart';
@@ -36,3 +37,16 @@ String analysisUserJudgmentLabel(String? code, AppLocalizations l10n) =>
       'UNDECIDED' => l10n.adminJudgmentUndecided,
       _ => '-',
     };
+
+String adminUserPlanLabel(String? code, AppLocalizations l10n) =>
+    switch (code) {
+      'FREE' => l10n.chatPlanFree,
+      'PLUS' => l10n.chatPlanPlus,
+      'PRO' => l10n.chatPlanPro,
+      _ => l10n.adminUserPlanUnknown,
+    };
+
+extension AdminPlanTierLabel on AdminPlanTier {
+  String localizedLabel(AppLocalizations l10n) =>
+      adminUserPlanLabel(name.toUpperCase(), l10n);
+}

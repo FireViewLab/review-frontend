@@ -8,4 +8,10 @@ abstract interface class AdminUserRepository {
     required int page,
     required int size,
   });
+
+  Future<Result<AdminUser>> updatePlan({
+    required int userId,
+    required AdminPlanTier planTier,
+    DateTime? expiresAt,
+  });
 }

@@ -436,5 +436,19 @@
   "chatQuotaExceededBodyNoTime": "额度重置后可以再次提问",
   "chatPlanRequiredTitle": "仅限专业版套餐使用",
   "chatPlanRequiredAction": "用标准模式重新提问",
-  "chatSuggestGeneral3": "怎么挑选可信的评论？"
+  "chatSuggestGeneral3": "怎么挑选可信的评论？",
+  "adminUserPlanColumn": "套餐",
+  "adminUserPlanChange": "更改套餐",
+  "adminUserPlanTitle": "更改套餐",
+  "adminUserPlanExpiry": "到期日期",
+  "adminUserPlanUnlimited": "无限期",
+  "adminUserPlanThirtyDays": "30天",
+  "adminUserPlanCustomDate": "指定日期",
+  "adminUserPlanSelectDate": "选择日期",
+  "adminUserPlanExpired": "已到期",
+  "adminUserPlanUnknown": "未知",
+  "adminUserPlanSave": "保存",
+  "adminUserPlanCancel": "取消",
+  "adminUserPlanSaving": "保存中",
+  "adminUserPlanDateRequired": "请选择今天或之后的到期日期。"
 }

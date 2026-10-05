@@ -436,5 +436,19 @@
   "chatQuotaExceededBodyNoTime": "上限がリセットされたらまた質問できます",
   "chatPlanRequiredTitle": "プロプランで利用できます",
   "chatPlanRequiredAction": "標準モードでもう一度聞く",
-  "chatSuggestGeneral3": "信頼できるレビューの選び方は？"
+  "chatSuggestGeneral3": "信頼できるレビューの選び方は？",
+  "adminUserPlanColumn": "プラン",
+  "adminUserPlanChange": "プラン変更",
+  "adminUserPlanTitle": "プラン変更",
+  "adminUserPlanExpiry": "有効期限",
+  "adminUserPlanUnlimited": "無期限",
+  "adminUserPlanThirtyDays": "30日",
+  "adminUserPlanCustomDate": "日付を指定",
+  "adminUserPlanSelectDate": "日付を選択",
+  "adminUserPlanExpired": "期限切れ",
+  "adminUserPlanUnknown": "不明",
+  "adminUserPlanSave": "保存",
+  "adminUserPlanCancel": "キャンセル",
+  "adminUserPlanSaving": "保存中",
+  "adminUserPlanDateRequired": "今日以降の有効期限を選択してください。"
 }

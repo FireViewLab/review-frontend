@@ -91,6 +91,13 @@ void main() {
 }
 
 class _FakeUserRepository implements AdminUserRepository {
+  @override
+  Future<Result<AdminUser>> updatePlan({
+    required int userId,
+    required AdminPlanTier planTier,
+    DateTime? expiresAt,
+  }) => throw UnimplementedError();
+
   final Set<int> failPages = {};
   final Map<int, Future<void>> delays = {};
 
