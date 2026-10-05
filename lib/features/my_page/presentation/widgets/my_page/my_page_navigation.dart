@@ -197,6 +197,11 @@ class MyPageSideNavCard extends StatelessWidget {
             onTap: () => context.go(RoutePaths.feedbackHistory),
           ),
           MyPageSideNavItem(
+            icon: Icons.workspace_premium_outlined,
+            label: AppLocalizations.of(context).myPageSideNavPlan,
+            onTap: () => context.go(RoutePaths.plan),
+          ),
+          MyPageSideNavItem(
             icon: Icons.settings_outlined,
             label: AppLocalizations.of(context).sideNavAccountSettings,
             onTap: () => context.go(RoutePaths.settings),

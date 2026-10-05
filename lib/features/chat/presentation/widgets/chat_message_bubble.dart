@@ -14,6 +14,7 @@ class ChatMessageBubble extends StatelessWidget {
     required this.message,
     this.onRetry,
     this.quotaResetAt,
+    this.onPlanPressed,
   });
 
   final ChatMessage message;
@@ -21,6 +22,9 @@ class ChatMessageBubble extends StatelessWidget {
 
   /// 한도 초과 안내에 보여 줄 초기화 시각. 서버에서 받은 값만 넘긴다.
   final DateTime? quotaResetAt;
+
+  /// 요금제 화면으로 간다. 한도·요금제 안내에 링크로 붙는다.
+  final VoidCallback? onPlanPressed;
 
   @override
   Widget build(BuildContext context) {
@@ -31,6 +35,7 @@ class ChatMessageBubble extends StatelessWidget {
         kind: error,
         onRetry: onRetry,
         quotaResetAt: quotaResetAt,
+        onPlanPressed: onPlanPressed,
       );
     }
     if (message.blocked) return _BlockedNotice(message.content);
@@ -267,27 +272,31 @@ class _ErrorNotice extends StatelessWidget {
     required this.kind,
     required this.onRetry,
     required this.quotaResetAt,
+    required this.onPlanPressed,
   });
 
   final ChatErrorKind kind;
   final VoidCallback? onRetry;
   final DateTime? quotaResetAt;
+  final VoidCallback? onPlanPressed;
 
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);
-    Widget? action(String label, IconData icon) => onRetry == null
-        ? null
-        : TextButton.icon(
-            onPressed: onRetry,
-            icon: Icon(icon, size: 16),
-            label: Text(label),
-            style: TextButton.styleFrom(
-              padding: EdgeInsets.zero,
-              minimumSize: const Size(0, 40),
-              tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-            ),
-          );
+    Widget? action(String label, IconData icon, [VoidCallback? onPressed]) {
+      final callback = onPressed ?? onRetry;
+      if (callback == null) return null;
+      return TextButton.icon(
+        onPressed: callback,
+        icon: Icon(icon, size: 16),
+        label: Text(label),
+        style: TextButton.styleFrom(
+          padding: EdgeInsets.zero,
+          minimumSize: const Size(0, 40),
+          tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+        ),
+      );
+    }
 
     switch (kind) {
       case ChatErrorKind.quotaExceeded:
@@ -298,6 +307,13 @@ class _ErrorNotice extends StatelessWidget {
           foreground: ChatStyle.noticeText,
           title: l10n.chatQuotaExceededTitle,
           body: chatQuotaResetText(l10n, quotaResetAt),
+          action: onPlanPressed == null
+              ? null
+              : action(
+                  l10n.chatViewPlans,
+                  Icons.arrow_forward_rounded,
+                  onPlanPressed,
+                ),
         );
       case ChatErrorKind.planRequired:
         return _NoticeCard(
@@ -306,7 +322,18 @@ class _ErrorNotice extends StatelessWidget {
           border: ChatStyle.noticeBorder,
           foreground: ChatStyle.noticeText,
           title: l10n.chatPlanRequiredTitle,
-          action: action(l10n.chatPlanRequiredAction, Icons.refresh_rounded),
+          action: Wrap(
+            spacing: AppSpacing.md,
+            children: [
+              ?action(l10n.chatPlanRequiredAction, Icons.refresh_rounded),
+              if (onPlanPressed != null)
+                ?action(
+                  l10n.chatViewPlans,
+                  Icons.arrow_forward_rounded,
+                  onPlanPressed,
+                ),
+            ],
+          ),
         );
       case ChatErrorKind.unavailable ||
           ChatErrorKind.timeout ||

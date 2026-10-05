@@ -1302,6 +1302,102 @@ class AppLocalizationsEn extends AppLocalizations {
   String get chatPlanPro => 'Pro';
 
   @override
+  String get planTitle => 'Plans';
+
+  @override
+  String get planSubtitle => 'Choose how much you use the AI assistant.';
+
+  @override
+  String get planCurrent => 'Current plan';
+
+  @override
+  String planUsageToday(int used, int limit) {
+    return '$used of $limit questions used today';
+  }
+
+  @override
+  String planUsageUnlimited(int used) {
+    return '$used questions used today · unlimited';
+  }
+
+  @override
+  String planResetAt(String time) {
+    return 'Resets at $time';
+  }
+
+  @override
+  String planExpiresAt(String date) {
+    return 'Active until $date';
+  }
+
+  @override
+  String planDailyQuestions(int count) {
+    return '$count questions a day';
+  }
+
+  @override
+  String get planDailyUnlimited => 'Unlimited questions a day';
+
+  @override
+  String get planFeatureStandard => 'Standard answers';
+
+  @override
+  String get planFeatureLimited => 'Fewest questions a day';
+
+  @override
+  String get planFeatureMore => 'More questions a day than Free';
+
+  @override
+  String get planFeatureMost => 'The most questions a day';
+
+  @override
+  String get planFeaturePro => 'Pro mode: more detailed answers';
+
+  @override
+  String get planSelect => 'Switch to this plan';
+
+  @override
+  String get planCurrentBadge => 'Current';
+
+  @override
+  String planConfirmTitle(String plan) {
+    return 'Switch to the $plan plan?';
+  }
+
+  @override
+  String get planConfirmBody =>
+      'For now it changes right away, with no payment.';
+
+  @override
+  String get planConfirmAction => 'Switch';
+
+  @override
+  String get planCancel => 'Cancel';
+
+  @override
+  String planChanged(String plan) {
+    return 'You are now on the $plan plan';
+  }
+
+  @override
+  String get planChangeUnavailable => 'Changing plans is not available yet.';
+
+  @override
+  String get planChangeFailed => 'Could not change the plan. Please try again.';
+
+  @override
+  String get planLoadFailed => 'Could not load your plan.';
+
+  @override
+  String get planRetry => 'Retry';
+
+  @override
+  String get myPageSideNavPlan => 'Plans';
+
+  @override
+  String get chatViewPlans => 'View plans';
+
+  @override
   String chatQuotaRemaining(int remaining, int limit) {
     return '$remaining of $limit questions left today';
   }
