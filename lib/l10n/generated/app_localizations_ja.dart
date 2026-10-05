@@ -1262,6 +1262,101 @@ class AppLocalizationsJa extends AppLocalizations {
   String get chatPlanPro => 'プロ';
 
   @override
+  String get planTitle => 'プラン';
+
+  @override
+  String get planSubtitle => 'AIアシスタントの利用量を選びましょう。';
+
+  @override
+  String get planCurrent => '現在のプラン';
+
+  @override
+  String planUsageToday(int used, int limit) {
+    return '今日 $used/$limit 回使用';
+  }
+
+  @override
+  String planUsageUnlimited(int used) {
+    return '今日 $used 回使用 · 回数制限なし';
+  }
+
+  @override
+  String planResetAt(String time) {
+    return '$timeにリセット';
+  }
+
+  @override
+  String planExpiresAt(String date) {
+    return '$dateまで利用';
+  }
+
+  @override
+  String planDailyQuestions(int count) {
+    return '1日 $count 回の質問';
+  }
+
+  @override
+  String get planDailyUnlimited => '1日の質問回数制限なし';
+
+  @override
+  String get planFeatureStandard => '標準の回答';
+
+  @override
+  String get planFeatureLimited => '1日の質問数が最も少ない';
+
+  @override
+  String get planFeatureMore => '無料より多い1日の質問数';
+
+  @override
+  String get planFeatureMost => '最も多い1日の質問数';
+
+  @override
+  String get planFeaturePro => 'プロモード：より詳しい回答';
+
+  @override
+  String get planSelect => 'このプランに変更';
+
+  @override
+  String get planCurrentBadge => '利用中';
+
+  @override
+  String planConfirmTitle(String plan) {
+    return '$planプランに変更しますか？';
+  }
+
+  @override
+  String get planConfirmBody => '現在は決済なしですぐに変更されます。';
+
+  @override
+  String get planConfirmAction => '変更';
+
+  @override
+  String get planCancel => 'キャンセル';
+
+  @override
+  String planChanged(String plan) {
+    return '$planプランに変更しました';
+  }
+
+  @override
+  String get planChangeUnavailable => 'プラン変更はまだ準備中です。';
+
+  @override
+  String get planChangeFailed => 'プランを変更できませんでした。もう一度お試しください。';
+
+  @override
+  String get planLoadFailed => 'プラン情報を読み込めませんでした。';
+
+  @override
+  String get planRetry => '再試行';
+
+  @override
+  String get myPageSideNavPlan => 'プラン';
+
+  @override
+  String get chatViewPlans => 'プランを見る';
+
+  @override
   String chatQuotaRemaining(int remaining, int limit) {
     return '今日の残り質問 $remaining/$limit';
   }

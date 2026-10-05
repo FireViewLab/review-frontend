@@ -19,12 +19,16 @@ class ChatPanel extends ConsumerWidget {
     super.key,
     required this.productId,
     required this.onLoginPressed,
+    required this.onPlanPressed,
     this.fullScreen = false,
   });
 
   /// 현재 화면의 상품. 상품 상세가 아니면 null.
   final int? productId;
   final VoidCallback onLoginPressed;
+
+  /// 요금제 화면으로 간다. 한도 초과·프로 잠금 안내에서 쓴다.
+  final VoidCallback onPlanPressed;
 
   /// 모바일 전체 화면이면 모서리와 그림자를 없앤다.
   final bool fullScreen;
@@ -98,6 +102,7 @@ class ChatPanel extends ConsumerWidget {
                         state: state,
                         productId: productId,
                         autofocus: !fullScreen,
+                        onPlanPressed: onPlanPressed,
                       ),
                     )
                   else
@@ -274,11 +279,13 @@ class _Conversation extends ConsumerStatefulWidget {
     required this.state,
     required this.productId,
     required this.autofocus,
+    required this.onPlanPressed,
   });
 
   final ChatState state;
   final int? productId;
   final bool autofocus;
+  final VoidCallback onPlanPressed;
 
   @override
   ConsumerState<_Conversation> createState() => _ConversationState();
@@ -315,7 +322,11 @@ class _ConversationState extends ConsumerState<_Conversation> {
           _ContextBar(state: state, productId: productId),
           Expanded(
             child: state.hasConversation
-                ? _MessageList(state: state, productId: productId)
+                ? _MessageList(
+                    state: state,
+                    productId: productId,
+                    onPlanPressed: widget.onPlanPressed,
+                  )
                 : ChatEmptyState(
                     productId: productId,
                     onSuggestionSelected: _fillInput,
@@ -335,6 +346,7 @@ class _ConversationState extends ConsumerState<_Conversation> {
                 canUsePro: state.canUsePro,
                 limitReached: state.limitReached,
                 onQuotaReset: vm.refreshQuota,
+                onPlanPressed: widget.onPlanPressed,
                 autofocus: widget.autofocus,
                 onSend: (text) => vm.send(text, productId: productId),
                 onModeChanged: vm.setMode,
@@ -421,10 +433,15 @@ class _ContextBar extends ConsumerWidget {
 }
 
 class _MessageList extends ConsumerWidget {
-  const _MessageList({required this.state, required this.productId});
+  const _MessageList({
+    required this.state,
+    required this.productId,
+    required this.onPlanPressed,
+  });
 
   final ChatState state;
   final int? productId;
+  final VoidCallback onPlanPressed;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -445,6 +462,7 @@ class _MessageList extends ConsumerWidget {
           child: ChatMessageBubble(
             message: message,
             quotaResetAt: state.quota?.resetAt,
+            onPlanPressed: onPlanPressed,
             onRetry: message.error == null
                 ? null
                 : () => ref

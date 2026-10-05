@@ -1260,6 +1260,101 @@ class AppLocalizationsZh extends AppLocalizations {
   String get chatPlanPro => 'Pro';
 
   @override
+  String get planTitle => '套餐';
+
+  @override
+  String get planSubtitle => '选择 AI 助手的使用量。';
+
+  @override
+  String get planCurrent => '当前套餐';
+
+  @override
+  String planUsageToday(int used, int limit) {
+    return '今日已用 $used/$limit 次';
+  }
+
+  @override
+  String planUsageUnlimited(int used) {
+    return '今日已用 $used 次 · 次数不限';
+  }
+
+  @override
+  String planResetAt(String time) {
+    return '$time 重置';
+  }
+
+  @override
+  String planExpiresAt(String date) {
+    return '有效期至 $date';
+  }
+
+  @override
+  String planDailyQuestions(int count) {
+    return '每天 $count 次提问';
+  }
+
+  @override
+  String get planDailyUnlimited => '每天提问次数不限';
+
+  @override
+  String get planFeatureStandard => '标准回答';
+
+  @override
+  String get planFeatureLimited => '每天提问次数最少';
+
+  @override
+  String get planFeatureMore => '每天提问次数多于免费版';
+
+  @override
+  String get planFeatureMost => '每天提问次数最多';
+
+  @override
+  String get planFeaturePro => '专业模式：更详细的回答';
+
+  @override
+  String get planSelect => '切换到此套餐';
+
+  @override
+  String get planCurrentBadge => '使用中';
+
+  @override
+  String planConfirmTitle(String plan) {
+    return '要切换到$plan套餐吗？';
+  }
+
+  @override
+  String get planConfirmBody => '目前无需付款，立即生效。';
+
+  @override
+  String get planConfirmAction => '切换';
+
+  @override
+  String get planCancel => '取消';
+
+  @override
+  String planChanged(String plan) {
+    return '已切换到$plan套餐';
+  }
+
+  @override
+  String get planChangeUnavailable => '套餐变更功能尚在准备中。';
+
+  @override
+  String get planChangeFailed => '无法变更套餐，请重试。';
+
+  @override
+  String get planLoadFailed => '无法加载套餐信息。';
+
+  @override
+  String get planRetry => '重试';
+
+  @override
+  String get myPageSideNavPlan => '套餐';
+
+  @override
+  String get chatViewPlans => '查看套餐';
+
+  @override
   String chatQuotaRemaining(int remaining, int limit) {
     return '今日剩余提问 $remaining/$limit';
   }

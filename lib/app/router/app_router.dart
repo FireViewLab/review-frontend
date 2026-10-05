@@ -26,6 +26,7 @@ import 'package:re_view_front/features/settings/presentation/pages/settings_page
 import 'package:re_view_front/features/feedback_history/presentation/pages/feedback_history_page.dart';
 import 'package:re_view_front/features/wishlist/presentation/pages/wishlist_page.dart';
 import 'package:re_view_front/features/notifications/presentation/pages/notifications_page.dart';
+import 'package:re_view_front/features/plan/presentation/pages/plan_page.dart';
 import 'package:re_view_front/features/chat/presentation/widgets/popup_route_tracker.dart';
 import 'package:re_view_front/features/search/presentation/view_models/search_results_state.dart';
 
@@ -72,6 +73,7 @@ final appRouterProvider = Provider<GoRouter>((ref) {
         RoutePaths.settings,
         RoutePaths.feedbackHistory,
         RoutePaths.notifications,
+        RoutePaths.plan,
       };
       if (!isLoggedIn && protectedPages.contains(state.matchedLocation)) {
         return _loginRedirect(state.uri);
@@ -238,6 +240,12 @@ final appRouterProvider = Provider<GoRouter>((ref) {
         name: RouteNames.notifications,
         pageBuilder: (context, state) =>
             _buildTransitionPage(state, const NotificationsPage()),
+      ),
+      GoRoute(
+        path: RoutePaths.plan,
+        name: RouteNames.plan,
+        pageBuilder: (context, state) =>
+            _buildTransitionPage(state, const PlanPage()),
       ),
       ShellRoute(
         builder: (context, state, child) => AdminShell(child: child),

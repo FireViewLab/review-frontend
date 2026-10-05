@@ -2508,6 +2508,168 @@ abstract class AppLocalizations {
   /// **'프로'**
   String get chatPlanPro;
 
+  /// No description provided for @planTitle.
+  ///
+  /// In ko, this message translates to:
+  /// **'요금제'**
+  String get planTitle;
+
+  /// No description provided for @planSubtitle.
+  ///
+  /// In ko, this message translates to:
+  /// **'AI 어시스턴트를 얼마나 쓸지 고르세요.'**
+  String get planSubtitle;
+
+  /// No description provided for @planCurrent.
+  ///
+  /// In ko, this message translates to:
+  /// **'현재 요금제'**
+  String get planCurrent;
+
+  /// No description provided for @planUsageToday.
+  ///
+  /// In ko, this message translates to:
+  /// **'오늘 {used}/{limit}회 사용'**
+  String planUsageToday(int used, int limit);
+
+  /// No description provided for @planUsageUnlimited.
+  ///
+  /// In ko, this message translates to:
+  /// **'오늘 {used}회 사용 · 횟수 제한 없음'**
+  String planUsageUnlimited(int used);
+
+  /// No description provided for @planResetAt.
+  ///
+  /// In ko, this message translates to:
+  /// **'{time}에 초기화'**
+  String planResetAt(String time);
+
+  /// No description provided for @planExpiresAt.
+  ///
+  /// In ko, this message translates to:
+  /// **'{date}까지 이용'**
+  String planExpiresAt(String date);
+
+  /// No description provided for @planDailyQuestions.
+  ///
+  /// In ko, this message translates to:
+  /// **'하루 질문 {count}회'**
+  String planDailyQuestions(int count);
+
+  /// No description provided for @planDailyUnlimited.
+  ///
+  /// In ko, this message translates to:
+  /// **'하루 질문 횟수 제한 없음'**
+  String get planDailyUnlimited;
+
+  /// No description provided for @planFeatureStandard.
+  ///
+  /// In ko, this message translates to:
+  /// **'기본 답변'**
+  String get planFeatureStandard;
+
+  /// No description provided for @planFeatureLimited.
+  ///
+  /// In ko, this message translates to:
+  /// **'하루 질문 수가 가장 적어요'**
+  String get planFeatureLimited;
+
+  /// No description provided for @planFeatureMore.
+  ///
+  /// In ko, this message translates to:
+  /// **'무료보다 더 많은 하루 질문'**
+  String get planFeatureMore;
+
+  /// No description provided for @planFeatureMost.
+  ///
+  /// In ko, this message translates to:
+  /// **'가장 많은 하루 질문'**
+  String get planFeatureMost;
+
+  /// No description provided for @planFeaturePro.
+  ///
+  /// In ko, this message translates to:
+  /// **'프로 모드: 더 자세한 답변'**
+  String get planFeaturePro;
+
+  /// No description provided for @planSelect.
+  ///
+  /// In ko, this message translates to:
+  /// **'이 요금제로 변경'**
+  String get planSelect;
+
+  /// No description provided for @planCurrentBadge.
+  ///
+  /// In ko, this message translates to:
+  /// **'이용 중'**
+  String get planCurrentBadge;
+
+  /// No description provided for @planConfirmTitle.
+  ///
+  /// In ko, this message translates to:
+  /// **'{plan} 요금제로 변경할까요?'**
+  String planConfirmTitle(String plan);
+
+  /// No description provided for @planConfirmBody.
+  ///
+  /// In ko, this message translates to:
+  /// **'지금은 결제 없이 바로 바뀌어요.'**
+  String get planConfirmBody;
+
+  /// No description provided for @planConfirmAction.
+  ///
+  /// In ko, this message translates to:
+  /// **'변경'**
+  String get planConfirmAction;
+
+  /// No description provided for @planCancel.
+  ///
+  /// In ko, this message translates to:
+  /// **'취소'**
+  String get planCancel;
+
+  /// No description provided for @planChanged.
+  ///
+  /// In ko, this message translates to:
+  /// **'{plan} 요금제로 바뀌었어요'**
+  String planChanged(String plan);
+
+  /// No description provided for @planChangeUnavailable.
+  ///
+  /// In ko, this message translates to:
+  /// **'요금제 변경은 아직 준비 중이에요.'**
+  String get planChangeUnavailable;
+
+  /// No description provided for @planChangeFailed.
+  ///
+  /// In ko, this message translates to:
+  /// **'요금제를 바꾸지 못했어요. 다시 시도해 주세요.'**
+  String get planChangeFailed;
+
+  /// No description provided for @planLoadFailed.
+  ///
+  /// In ko, this message translates to:
+  /// **'요금제 정보를 불러오지 못했어요.'**
+  String get planLoadFailed;
+
+  /// No description provided for @planRetry.
+  ///
+  /// In ko, this message translates to:
+  /// **'다시 시도'**
+  String get planRetry;
+
+  /// No description provided for @myPageSideNavPlan.
+  ///
+  /// In ko, this message translates to:
+  /// **'요금제'**
+  String get myPageSideNavPlan;
+
+  /// No description provided for @chatViewPlans.
+  ///
+  /// In ko, this message translates to:
+  /// **'요금제 보기'**
+  String get chatViewPlans;
+
   /// No description provided for @chatQuotaRemaining.
   ///
   /// In ko, this message translates to:
