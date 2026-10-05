@@ -6,19 +6,12 @@ import 'package:go_router/go_router.dart';
 import 'package:re_view_front/app/router/route_paths.dart';
 import 'package:re_view_front/app/theme/app_colors.dart';
 import 'package:re_view_front/app/theme/app_spacing.dart';
-import 'package:re_view_front/core/providers/core_providers.dart';
 import 'package:re_view_front/features/feedback_history/domain/entities/feedback_item.dart';
 import 'package:re_view_front/features/feedback_history/presentation/providers/feedback_history_providers.dart';
 import 'package:re_view_front/features/feedback_history/presentation/view_models/feedback_history_state.dart';
-import 'package:re_view_front/features/home/presentation/data/home_content.dart';
-import 'package:re_view_front/features/home/presentation/providers/home_providers.dart';
-import 'package:re_view_front/features/home/presentation/widgets/home/home_header.dart';
 import 'package:re_view_front/l10n/generated/app_localizations.dart';
-import 'package:re_view_front/shared/extensions/context_extensions.dart';
-import 'package:re_view_front/shared/widgets/app_content_view.dart';
 import 'package:re_view_front/shared/widgets/error_view.dart';
 import 'package:re_view_front/shared/widgets/loading_view.dart';
-import 'package:re_view_front/features/home/presentation/home_navigation.dart';
 
 class FeedbackHistoryPage extends ConsumerStatefulWidget {
   const FeedbackHistoryPage({super.key});
@@ -40,103 +33,40 @@ class _FeedbackHistoryPageState extends ConsumerState<FeedbackHistoryPage> {
   @override
   Widget build(BuildContext context) {
     final state = ref.watch(feedbackHistoryViewModelProvider);
-    final isLoggedIn = ref.watch(isLoggedInProvider);
-    final nickname = ref.watch(userNicknameProvider).value;
-    return Scaffold(
-      backgroundColor: AppColors.background,
-      body: CustomScrollView(
-        slivers: [
-          SliverToBoxAdapter(
-            child: HomeHeader(
-              navItems: homeNavItems,
-              selectedNavItem: '',
-              isLoggedIn: isLoggedIn,
-              nickname: nickname,
-              onLoginPressed: () => context.go(RoutePaths.login),
-              onWishPressed: () => context.go(RoutePaths.wishlist),
-              onCartPressed: () => context.go(RoutePaths.cart),
-              onNavItemPressed: (item) => openHomeNavItem(context, item),
-              onLogoPressed: () => context.go(RoutePaths.home),
-              onSearchSubmitted: (q) {
-                if (q.trim().isNotEmpty) {
-                  context.goNamed(
-                    RouteNames.search,
-                    queryParameters: {'q': q.trim()},
-                  );
-                }
-              },
-              searchKeywords: const [],
-              searchRecommendedProducts: const [],
-              onSearchSuggestionsRequested: _handleSearchSuggestionsRequested,
-              onMyPagePressed: () =>
-                  context.go(isLoggedIn ? RoutePaths.myPage : RoutePaths.login),
-              onProfileWishPressed: () => context.go(RoutePaths.wishlist),
-              onProfileOrderPressed: () => context.go(RoutePaths.cart),
-              onLogoutPressed: () {
-                ref.read(authTokenStoreProvider.notifier).clear();
-                context.go(RoutePaths.landing);
-              },
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        _PageHeader(onBack: () => context.go(RoutePaths.myPage)),
+        const SizedBox(height: AppSpacing.xl),
+        switch (state) {
+          FeedbackHistoryInitial() || FeedbackHistoryLoading() => SizedBox(
+            height: 320,
+            child: AppLoadingView(
+              message: AppLocalizations.of(context).feedbackHistoryLoading,
             ),
           ),
-          SliverToBoxAdapter(
-            child: AppContentView(
-              maxWidth: 1320,
-              padding: EdgeInsets.fromLTRB(
-                context.isMobile ? AppSpacing.md : AppSpacing.xxl,
-                context.isMobile ? AppSpacing.lg : AppSpacing.xl,
-                context.isMobile ? AppSpacing.md : AppSpacing.xxl,
-                AppSpacing.xxxl,
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  _PageHeader(onBack: () => context.go(RoutePaths.myPage)),
-                  const SizedBox(height: AppSpacing.xl),
-                  switch (state) {
-                    FeedbackHistoryInitial() ||
-                    FeedbackHistoryLoading() =>
-                      SizedBox(
-                        height: 320,
-                        child: AppLoadingView(
-                          message: AppLocalizations.of(context).feedbackHistoryLoading,
-                        ),
-                      ),
-                    FeedbackHistoryFailure(:final failure) => SizedBox(
-                      height: 320,
-                      child: AppErrorView(
-                        message: failure.message,
-                        onRetry: () => ref
-                            .read(feedbackHistoryViewModelProvider.notifier)
-                            .load(),
-                      ),
-                    ),
-                    FeedbackHistoryEmpty() => _EmptyBody(
-                      onGoHome: () => context.go(RoutePaths.home),
-                    ),
-                    FeedbackHistorySuccess(:final items) => _FeedbackList(
-                      items: items,
-                      onProductTap: (productId) => context.goNamed(
-                        RouteNames.productDetail,
-                        pathParameters: {'id': productId.toString()},
-                      ),
-                    ),
-                  },
-                ],
-              ),
+          FeedbackHistoryFailure(:final failure) => SizedBox(
+            height: 320,
+            child: AppErrorView(
+              message: failure.message,
+              onRetry: () =>
+                  ref.read(feedbackHistoryViewModelProvider.notifier).load(),
             ),
           ),
-        ],
-      ),
+          FeedbackHistoryEmpty() => _EmptyBody(
+            onGoHome: () => context.go(RoutePaths.home),
+          ),
+          FeedbackHistorySuccess(:final items) => _FeedbackList(
+            items: items,
+            onProductTap: (productId) => context.goNamed(
+              RouteNames.productDetail,
+              pathParameters: {'id': productId.toString()},
+            ),
+          ),
+        },
+      ],
     );
   }
-
-  Future<List<String>> _handleSearchSuggestionsRequested(String query) {
-    return ref
-        .read(searchAutocompleteRemoteDataSourceProvider)
-        .fetchSuggestions(query);
-  }
-
-
 }
 
 class _PageHeader extends StatelessWidget {
@@ -197,9 +127,9 @@ class _PageHeader extends StatelessWidget {
         const SizedBox(height: AppSpacing.xxs),
         Text(
           AppLocalizations.of(context).feedbackHistorySubtitle,
-          style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-            color: AppColors.textSecondary,
-          ),
+          style: Theme.of(
+            context,
+          ).textTheme.bodyMedium?.copyWith(color: AppColors.textSecondary),
         ),
       ],
     );
@@ -235,9 +165,9 @@ class _EmptyBody extends StatelessWidget {
           Text(
             AppLocalizations.of(context).feedbackHistoryEmptyDesc,
             textAlign: TextAlign.center,
-            style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-              color: AppColors.textSecondary,
-            ),
+            style: Theme.of(
+              context,
+            ).textTheme.bodyMedium?.copyWith(color: AppColors.textSecondary),
           ),
           const SizedBox(height: AppSpacing.lg),
           OutlinedButton(
@@ -273,7 +203,9 @@ class _FeedbackList extends StatelessWidget {
           _FeedbackCard(
             item: item,
             onProductTap: externalHistoryTarget(item.productExternalId) != null
-                ? () => context.go(externalHistoryTarget(item.productExternalId)!.routePath)
+                ? () => context.go(
+                    externalHistoryTarget(item.productExternalId)!.routePath,
+                  )
                 : item.productId != null
                 ? () => onProductTap(item.productId!)
                 : null,
@@ -361,11 +293,11 @@ class _FeedbackCard extends StatelessWidget {
                         ),
                         child: Text(
                           l10n.feedbackHistoryViewProduct,
-                          style:
-                              Theme.of(context).textTheme.labelSmall?.copyWith(
-                            color: AppColors.primary,
-                            fontWeight: FontWeight.w700,
-                          ),
+                          style: Theme.of(context).textTheme.labelSmall
+                              ?.copyWith(
+                                color: AppColors.primary,
+                                fontWeight: FontWeight.w700,
+                              ),
                         ),
                       ),
                     ),
@@ -386,9 +318,9 @@ class _FeedbackCard extends StatelessWidget {
                   productName: item.productName,
                   productExternalId: item.productExternalId,
                   maxLines: 3,
-                  style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                    color: AppColors.textPrimary,
-                  ),
+                  style: Theme.of(
+                    context,
+                  ).textTheme.bodySmall?.copyWith(color: AppColors.textPrimary),
                 ),
               ),
           ],
@@ -413,7 +345,8 @@ class _StatusChip extends StatelessWidget {
     final (label, color) = switch (status.toUpperCase()) {
       'SUBMITTED' => (l10n.feedbackStatusSubmitted, const Color(0xFF6366F1)),
       'UNDER_REVIEW' => (l10n.feedbackStatusPending, const Color(0xFFD97706)),
-      'RESOLVED' || 'ACCEPTED' => (l10n.feedbackStatusAccepted, const Color(0xFF16A34A)),
+      'RESOLVED' ||
+      'ACCEPTED' => (l10n.feedbackStatusAccepted, const Color(0xFF16A34A)),
       'REJECTED' => (l10n.feedbackStatusRejected, AppColors.error),
       _ => (l10n.feedbackStatusPending, const Color(0xFFD97706)),
     };
