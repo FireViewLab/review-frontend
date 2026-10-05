@@ -53,4 +53,3 @@
   - changed-files:
       - any-glob-to-any-file:
           - "web/**"
-          - "vercel.json"
