@@ -4,14 +4,15 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:re_view_front/app/theme/app_colors.dart';
 import 'package:re_view_front/app/theme/app_spacing.dart';
 import 'package:re_view_front/core/providers/core_providers.dart';
+import 'package:re_view_front/features/chat/domain/entities/chat_quota.dart';
 import 'package:re_view_front/features/chat/presentation/providers/chat_providers.dart';
 import 'package:re_view_front/features/chat/presentation/view_models/chat_state.dart';
+import 'package:re_view_front/features/chat/presentation/widgets/chat_composer.dart';
+import 'package:re_view_front/features/chat/presentation/widgets/chat_empty_state.dart';
 import 'package:re_view_front/features/chat/presentation/widgets/chat_history_view.dart';
 import 'package:re_view_front/features/chat/presentation/widgets/chat_message_bubble.dart';
+import 'package:re_view_front/features/chat/presentation/widgets/chat_style.dart';
 import 'package:re_view_front/l10n/generated/app_localizations.dart';
-
-/// 서버 `TopicGuard.MAX_QUESTION_LENGTH`와 같은 값.
-const _maxQuestionLength = 500;
 
 class ChatPanel extends ConsumerWidget {
   const ChatPanel({
@@ -33,6 +34,9 @@ class ChatPanel extends ConsumerWidget {
     final isLoggedIn = ref.watch(isLoggedInProvider);
     final state = ref.watch(chatViewModelProvider);
     final vm = ref.read(chatViewModelProvider.notifier);
+    final radius = fullScreen
+        ? BorderRadius.zero
+        : const BorderRadius.all(Radius.circular(AppRadius.xl));
 
     return Semantics(
       scopesRoute: true,
@@ -42,48 +46,66 @@ class ChatPanel extends ConsumerWidget {
         bindings: {const SingleActivator(LogicalKeyboardKey.escape): vm.close},
         child: FocusScope(
           autofocus: true,
-          child: Material(
-            color: AppColors.surface,
-            elevation: fullScreen ? 0 : 12,
-            shadowColor: AppColors.shadow,
-            borderRadius: fullScreen ? null : AppRadius.large,
-            clipBehavior: Clip.antiAlias,
-            child: Column(
-              children: [
-                _Header(
-                  canStartNew:
-                      isLoggedIn &&
-                      (state.hasConversation || state.isHistoryOpen),
-                  onNew: () => vm.startNew(productId: productId),
-                  onClose: vm.close,
-                  onHistory: isLoggedIn ? vm.showHistory : null,
-                  historyEnabled: !state.isSending && !state.isLoadingMessages,
-                ),
-                const Divider(height: 1, color: AppColors.border),
-                if (isLoggedIn && state.isHistoryOpen)
-                  Expanded(
-                    child: ChatHistoryView(
-                      state: state,
-                      onBack: vm.closeHistory,
-                      onSelect: vm.resumeSession,
-                      onLoadMore: vm.loadMoreSessions,
-                      onRetry: vm.showHistory,
+          child: DecoratedBox(
+            decoration: BoxDecoration(
+              borderRadius: radius,
+              boxShadow: fullScreen
+                  ? null
+                  : const [
+                      BoxShadow(
+                        color: Color(0x290F172A),
+                        blurRadius: 48,
+                        offset: Offset(0, 20),
+                      ),
+                    ],
+            ),
+            child: Material(
+              color: AppColors.surface,
+              shape: RoundedRectangleBorder(
+                borderRadius: radius,
+                side: fullScreen
+                    ? BorderSide.none
+                    : const BorderSide(color: ChatStyle.line),
+              ),
+              clipBehavior: Clip.antiAlias,
+              child: Column(
+                children: [
+                  _Header(
+                    quota: isLoggedIn ? state.quota : null,
+                    canStartNew:
+                        isLoggedIn &&
+                        (state.hasConversation || state.isHistoryOpen),
+                    onNew: () => vm.startNew(productId: productId),
+                    onClose: vm.close,
+                    onHistory: isLoggedIn ? vm.showHistory : null,
+                    historyEnabled:
+                        !state.isSending && !state.isLoadingMessages,
+                  ),
+                  const Divider(height: 1, color: ChatStyle.line),
+                  if (isLoggedIn && state.isHistoryOpen)
+                    Expanded(
+                      child: ChatHistoryView(
+                        state: state,
+                        onBack: vm.closeHistory,
+                        onSelect: vm.resumeSession,
+                        onLoadMore: vm.loadMoreSessions,
+                        onRetry: vm.showHistory,
+                      ),
+                    )
+                  else if (isLoggedIn)
+                    Expanded(
+                      child: _Conversation(
+                        state: state,
+                        productId: productId,
+                        autofocus: !fullScreen,
+                      ),
+                    )
+                  else
+                    Expanded(
+                      child: _LoginPrompt(onLoginPressed: onLoginPressed),
                     ),
-                  )
-                else if (isLoggedIn) ...[
-                  _ContextBar(state: state, productId: productId),
-                  Expanded(
-                    child: state.hasConversation
-                        ? _MessageList(state: state, productId: productId)
-                        : _EmptyState(productId: productId),
-                  ),
-                  _Composer(
-                    isSending: state.isSending,
-                    onSend: (text) => vm.send(text, productId: productId),
-                  ),
-                ] else
-                  Expanded(child: _LoginPrompt(onLoginPressed: onLoginPressed)),
-              ],
+                ],
+              ),
             ),
           ),
         ),
@@ -94,6 +116,7 @@ class ChatPanel extends ConsumerWidget {
 
 class _Header extends StatelessWidget {
   const _Header({
+    required this.quota,
     required this.canStartNew,
     required this.onNew,
     required this.onClose,
@@ -101,6 +124,7 @@ class _Header extends StatelessWidget {
     required this.historyEnabled,
   });
 
+  final ChatQuota? quota;
   final bool canStartNew;
   final VoidCallback onNew;
   final VoidCallback onClose;
@@ -111,42 +135,40 @@ class _Header extends StatelessWidget {
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);
     final textTheme = Theme.of(context).textTheme;
+    final quota = this.quota;
     return Padding(
-      padding: const EdgeInsets.fromLTRB(
-        AppSpacing.md,
-        AppSpacing.sm,
-        AppSpacing.xs,
-        AppSpacing.sm,
-      ),
+      padding: const EdgeInsets.fromLTRB(20, AppSpacing.md, AppSpacing.xs, 12),
       child: Row(
         children: [
-          Container(
-            width: 36,
-            height: 36,
-            decoration: const BoxDecoration(
-              color: AppColors.primaryLight,
-              shape: BoxShape.circle,
-            ),
-            child: const Icon(
-              Icons.auto_awesome_rounded,
-              size: 20,
-              color: AppColors.primary,
-            ),
-          ),
+          const ChatMark(),
           const SizedBox(width: AppSpacing.sm),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
-                  l10n.chatTitle,
-                  style: textTheme.titleSmall?.copyWith(
-                    color: AppColors.textPrimary,
-                    fontWeight: FontWeight.w700,
-                  ),
+                Row(
+                  children: [
+                    Flexible(
+                      child: Text(
+                        l10n.chatTitle,
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: textTheme.titleMedium?.copyWith(
+                          color: ChatStyle.ink,
+                          fontWeight: FontWeight.w800,
+                        ),
+                      ),
+                    ),
+                    if (quota != null) ...[
+                      const SizedBox(width: AppSpacing.xs),
+                      _PlanBadge(quota: quota),
+                    ],
+                  ],
                 ),
                 Text(
                   l10n.chatSubtitle,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
                   style: textTheme.bodySmall?.copyWith(
                     color: AppColors.textSecondary,
                   ),
@@ -155,24 +177,169 @@ class _Header extends StatelessWidget {
             ),
           ),
           if (canStartNew)
-            IconButton(
+            _HeaderAction(
               tooltip: l10n.chatNewConversation,
+              icon: Icons.edit_square,
               onPressed: onNew,
-              icon: const Icon(Icons.add_comment_outlined, size: 20),
-              color: AppColors.textSecondary,
             ),
           if (onHistory != null)
-            IconButton(
+            _HeaderAction(
               tooltip: l10n.chatPreviousConversations,
+              icon: Icons.history_rounded,
               onPressed: historyEnabled ? onHistory : null,
-              icon: const Icon(Icons.history_rounded, size: 20),
-              color: AppColors.textSecondary,
             ),
-          IconButton(
+          _HeaderAction(
             tooltip: l10n.chatClose,
+            icon: Icons.close_rounded,
             onPressed: onClose,
-            icon: const Icon(Icons.close_rounded, size: 20),
-            color: AppColors.textSecondary,
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _HeaderAction extends StatelessWidget {
+  const _HeaderAction({
+    required this.tooltip,
+    required this.icon,
+    required this.onPressed,
+  });
+
+  final String tooltip;
+  final IconData icon;
+  final VoidCallback? onPressed;
+
+  @override
+  Widget build(BuildContext context) {
+    return IconButton(
+      tooltip: tooltip,
+      onPressed: onPressed,
+      visualDensity: VisualDensity.compact,
+      icon: Icon(icon, size: 20),
+      color: AppColors.textSecondary,
+    );
+  }
+}
+
+/// 서버가 알려 준 요금제. 값이 없으면 배지를 그리지 않는다.
+class _PlanBadge extends StatelessWidget {
+  const _PlanBadge({required this.quota});
+
+  final ChatQuota quota;
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
+    final code = quota.planCode.toUpperCase();
+    final label = switch (code) {
+      'FREE' => l10n.chatPlanFree,
+      'PLUS' => l10n.chatPlanPlus,
+      'PRO' => l10n.chatPlanPro,
+      _ => quota.planName,
+    };
+    if (label == null || label.isEmpty) return const SizedBox.shrink();
+
+    final isPro = code == 'PRO';
+    final isPlus = code == 'PLUS';
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+      decoration: BoxDecoration(
+        color: isPro
+            ? ChatStyle.ink
+            : isPlus
+            ? AppColors.primaryLight
+            : AppColors.surface,
+        border: isPro || isPlus ? null : Border.all(color: ChatStyle.line),
+        borderRadius: const BorderRadius.all(Radius.circular(999)),
+      ),
+      child: Text(
+        label,
+        style: Theme.of(context).textTheme.labelSmall?.copyWith(
+          fontWeight: FontWeight.w700,
+          color: isPro
+              ? AppColors.onPrimary
+              : isPlus
+              ? AppColors.primary
+              : AppColors.textSecondary,
+        ),
+      ),
+    );
+  }
+}
+
+/// 대화 화면. 추천 질문이 입력창을 채울 수 있도록 입력 상태를 여기서 들고 있다.
+class _Conversation extends ConsumerStatefulWidget {
+  const _Conversation({
+    required this.state,
+    required this.productId,
+    required this.autofocus,
+  });
+
+  final ChatState state;
+  final int? productId;
+  final bool autofocus;
+
+  @override
+  ConsumerState<_Conversation> createState() => _ConversationState();
+}
+
+class _ConversationState extends ConsumerState<_Conversation> {
+  final _controller = TextEditingController();
+  final _focusNode = FocusNode();
+  final _composerKey = GlobalKey<ChatComposerState>();
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    _focusNode.dispose();
+    super.dispose();
+  }
+
+  void _fillInput(String text) {
+    _controller.value = TextEditingValue(
+      text: text,
+      selection: TextSelection.collapsed(offset: text.length),
+    );
+    _composerKey.currentState?.focusInput();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final state = widget.state;
+    final productId = widget.productId;
+    final vm = ref.read(chatViewModelProvider.notifier);
+    return LayoutBuilder(
+      builder: (context, constraints) => Column(
+        children: [
+          _ContextBar(state: state, productId: productId),
+          Expanded(
+            child: state.hasConversation
+                ? _MessageList(state: state, productId: productId)
+                : ChatEmptyState(
+                    productId: productId,
+                    onSuggestionSelected: _fillInput,
+                  ),
+          ),
+          // 글자를 크게 쓰거나 화면이 낮아도 입력 영역이 패널 밖으로 넘치지 않게 한다.
+          ConstrainedBox(
+            constraints: BoxConstraints(maxHeight: constraints.maxHeight * 0.7),
+            child: SingleChildScrollView(
+              child: ChatComposer(
+                key: _composerKey,
+                controller: _controller,
+                focusNode: _focusNode,
+                isSending: state.isSending,
+                quota: state.quota,
+                mode: state.mode,
+                canUsePro: state.canUsePro,
+                limitReached: state.limitReached,
+                onQuotaReset: vm.refreshQuota,
+                autofocus: widget.autofocus,
+                onSend: (text) => vm.send(text, productId: productId),
+                onModeChanged: vm.setMode,
+              ),
+            ),
           ),
         ],
       ),
@@ -199,10 +366,19 @@ class _ContextBar extends ConsumerWidget {
 
     return Container(
       width: double.infinity,
-      color: isOtherProduct ? AppColors.warningSoft : AppColors.primaryLight,
-      padding: const EdgeInsets.symmetric(
-        horizontal: AppSpacing.md,
-        vertical: AppSpacing.xs,
+      margin: const EdgeInsets.fromLTRB(
+        AppSpacing.md,
+        AppSpacing.sm,
+        AppSpacing.md,
+        0,
+      ),
+      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+      decoration: BoxDecoration(
+        color: isOtherProduct ? ChatStyle.noticeBackground : AppColors.surface,
+        border: Border.all(
+          color: isOtherProduct ? ChatStyle.noticeBorder : ChatStyle.line,
+        ),
+        borderRadius: AppRadius.medium,
       ),
       child: Row(
         children: [
@@ -211,15 +387,21 @@ class _ContextBar extends ConsumerWidget {
                 ? Icons.info_outline_rounded
                 : Icons.inventory_2_outlined,
             size: 16,
-            color: isOtherProduct ? AppColors.warning : AppColors.primary,
+            color: isOtherProduct ? ChatStyle.noticeText : AppColors.primary,
           ),
           const SizedBox(width: AppSpacing.xs),
           Expanded(
-            child: Text(
-              isOtherProduct
-                  ? l10n.chatOtherProductNotice
-                  : l10n.chatProductContext,
-              style: textStyle?.copyWith(color: AppColors.textPrimary),
+            child: Padding(
+              padding: const EdgeInsets.symmetric(vertical: 6),
+              child: Text(
+                isOtherProduct
+                    ? l10n.chatOtherProductNotice
+                    : l10n.chatProductContext,
+                style: textStyle?.copyWith(
+                  color: ChatStyle.ink,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
             ),
           ),
           if (isOtherProduct)
@@ -229,6 +411,7 @@ class _ContextBar extends ConsumerWidget {
                   : () => ref
                         .read(chatViewModelProvider.notifier)
                         .startNew(productId: productId),
+              style: TextButton.styleFrom(visualDensity: VisualDensity.compact),
               child: Text(l10n.chatStartWithThisProduct),
             ),
         ],
@@ -250,17 +433,18 @@ class _MessageList extends ConsumerWidget {
     // reverse로 그려서 새 메시지가 오면 항상 맨 아래가 보이게 한다.
     return ListView.builder(
       reverse: true,
-      padding: const EdgeInsets.all(AppSpacing.md),
+      padding: const EdgeInsets.fromLTRB(20, AppSpacing.md, 20, AppSpacing.xs),
       itemCount: messages.length + extra,
       itemBuilder: (context, index) {
         if (state.isSending && index == 0) {
-          return const ChatThinkingBubble();
+          return ChatThinkingIndicator(startedAt: state.sendStartedAt);
         }
         final message = messages[messages.length - 1 - (index - extra)];
         return Padding(
-          padding: const EdgeInsets.only(bottom: AppSpacing.sm),
+          padding: const EdgeInsets.only(bottom: AppSpacing.md),
           child: ChatMessageBubble(
             message: message,
+            quotaResetAt: state.quota?.resetAt,
             onRetry: message.error == null
                 ? null
                 : () => ref
@@ -269,64 +453,6 @@ class _MessageList extends ConsumerWidget {
           ),
         );
       },
-    );
-  }
-}
-
-class _EmptyState extends ConsumerWidget {
-  const _EmptyState({required this.productId});
-
-  final int? productId;
-
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final l10n = AppLocalizations.of(context);
-    final textTheme = Theme.of(context).textTheme;
-    final suggestions = productId != null
-        ? [
-            l10n.chatSuggestProduct1,
-            l10n.chatSuggestProduct2,
-            l10n.chatSuggestProduct3,
-          ]
-        : [l10n.chatSuggestGeneral1, l10n.chatSuggestGeneral2];
-
-    return ListView(
-      padding: const EdgeInsets.all(AppSpacing.lg),
-      children: [
-        Text(
-          l10n.chatEmptyTitle,
-          style: textTheme.titleMedium?.copyWith(
-            color: AppColors.textPrimary,
-            fontWeight: FontWeight.w700,
-          ),
-        ),
-        const SizedBox(height: AppSpacing.xs),
-        Text(
-          l10n.chatEmptyBody,
-          style: textTheme.bodyMedium?.copyWith(color: AppColors.textSecondary),
-        ),
-        const SizedBox(height: AppSpacing.lg),
-        Wrap(
-          spacing: AppSpacing.xs,
-          runSpacing: AppSpacing.xs,
-          children: [
-            for (final suggestion in suggestions)
-              ActionChip(
-                label: Text(suggestion),
-                labelStyle: textTheme.bodySmall?.copyWith(
-                  color: AppColors.primary,
-                  fontWeight: FontWeight.w600,
-                ),
-                backgroundColor: AppColors.primaryLight,
-                side: BorderSide.none,
-                shape: const StadiumBorder(),
-                onPressed: () => ref
-                    .read(chatViewModelProvider.notifier)
-                    .send(suggestion, productId: productId),
-              ),
-          ],
-        ),
-      ],
     );
   }
 }
@@ -341,21 +467,18 @@ class _LoginPrompt extends StatelessWidget {
     final l10n = AppLocalizations.of(context);
     final textTheme = Theme.of(context).textTheme;
     return Padding(
-      padding: const EdgeInsets.all(AppSpacing.lg),
+      padding: const EdgeInsets.all(AppSpacing.xl),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          const Icon(
-            Icons.lock_outline_rounded,
-            size: 40,
-            color: AppColors.textTertiary,
-          ),
-          const SizedBox(height: AppSpacing.md),
+          const ChatMark(size: 48),
+          const SizedBox(height: AppSpacing.lg),
           Text(
             l10n.chatLoginTitle,
             textAlign: TextAlign.center,
-            style: textTheme.titleMedium?.copyWith(
-              color: AppColors.textPrimary,
+            style: textTheme.titleLarge?.copyWith(
+              fontSize: 20,
+              color: ChatStyle.ink,
               fontWeight: FontWeight.w700,
             ),
           ),
@@ -368,119 +491,19 @@ class _LoginPrompt extends StatelessWidget {
             ),
           ),
           const SizedBox(height: AppSpacing.lg),
-          FilledButton(
-            onPressed: onLoginPressed,
-            child: Text(l10n.chatLoginButton),
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-class _Composer extends StatefulWidget {
-  const _Composer({required this.isSending, required this.onSend});
-
-  final bool isSending;
-  final ValueChanged<String> onSend;
-
-  @override
-  State<_Composer> createState() => _ComposerState();
-}
-
-class _ComposerState extends State<_Composer> {
-  final _controller = TextEditingController();
-  final _focusNode = FocusNode();
-
-  @override
-  void dispose() {
-    _controller.dispose();
-    _focusNode.dispose();
-    super.dispose();
-  }
-
-  void _submit() {
-    final text = _controller.text.trim();
-    if (text.isEmpty || widget.isSending) return;
-    widget.onSend(text);
-    _controller.clear();
-    _focusNode.requestFocus();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    final l10n = AppLocalizations.of(context);
-    final textTheme = Theme.of(context).textTheme;
-    return Container(
-      decoration: const BoxDecoration(
-        border: Border(top: BorderSide(color: AppColors.border)),
-      ),
-      padding: const EdgeInsets.fromLTRB(
-        AppSpacing.md,
-        AppSpacing.sm,
-        AppSpacing.sm,
-        AppSpacing.xs,
-      ),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.end,
-            children: [
-              Expanded(
-                child: TextField(
-                  controller: _controller,
-                  focusNode: _focusNode,
-                  autofocus: true,
-                  minLines: 1,
-                  maxLines: 4,
-                  maxLength: _maxQuestionLength,
-                  // multiline이 아니면 여러 줄 입력창에서도 Enter가 전송으로 동작한다.
-                  keyboardType: TextInputType.text,
-                  textInputAction: TextInputAction.send,
-                  // onSubmitted만 두면 전송 뒤 포커스가 빠져 이어서 입력할 수 없다.
-                  onEditingComplete: _submit,
-                  decoration: InputDecoration(
-                    hintText: l10n.chatInputHint,
-                    counterText: '',
-                    isDense: true,
-                    filled: true,
-                    fillColor: AppColors.surfaceMuted,
-                    contentPadding: const EdgeInsets.symmetric(
-                      horizontal: AppSpacing.sm,
-                      vertical: AppSpacing.sm,
-                    ),
-                    border: const OutlineInputBorder(
-                      borderRadius: AppRadius.medium,
-                      borderSide: BorderSide(color: AppColors.border),
-                    ),
-                    enabledBorder: const OutlineInputBorder(
-                      borderRadius: AppRadius.medium,
-                      borderSide: BorderSide(color: AppColors.border),
-                    ),
-                  ),
+          SizedBox(
+            width: double.infinity,
+            child: FilledButton(
+              onPressed: onLoginPressed,
+              style: FilledButton.styleFrom(
+                backgroundColor: ChatStyle.ink,
+                foregroundColor: AppColors.onPrimary,
+                minimumSize: const Size.fromHeight(48),
+                shape: const RoundedRectangleBorder(
+                  borderRadius: BorderRadius.all(Radius.circular(14)),
                 ),
               ),
-              const SizedBox(width: AppSpacing.xs),
-              ListenableBuilder(
-                listenable: _controller,
-                builder: (context, _) {
-                  final canSend =
-                      !widget.isSending && _controller.text.trim().isNotEmpty;
-                  return IconButton.filled(
-                    tooltip: l10n.chatSend,
-                    onPressed: canSend ? _submit : null,
-                    icon: const Icon(Icons.arrow_upward_rounded, size: 20),
-                  );
-                },
-              ),
-            ],
-          ),
-          const SizedBox(height: AppSpacing.xxs),
-          Text(
-            l10n.chatDisclaimer,
-            style: textTheme.labelSmall?.copyWith(
-              color: AppColors.textTertiary,
+              child: Text(l10n.chatLoginButton),
             ),
           ),
         ],

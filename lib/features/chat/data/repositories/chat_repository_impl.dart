@@ -4,6 +4,7 @@ import 'package:re_view_front/core/network/api_response.dart';
 import 'package:re_view_front/core/result/result.dart';
 import 'package:re_view_front/features/chat/data/datasources/chat_remote_data_source.dart';
 import 'package:re_view_front/features/chat/domain/entities/chat_message.dart';
+import 'package:re_view_front/features/chat/domain/entities/chat_quota.dart';
 import 'package:re_view_front/features/chat/domain/entities/chat_reply.dart';
 import 'package:re_view_front/features/chat/domain/entities/chat_session.dart';
 import 'package:re_view_front/features/chat/domain/repositories/chat_repository.dart';
@@ -18,13 +19,18 @@ class ChatRepositoryImpl implements ChatRepository {
     required String question,
     int? sessionId,
     int? productId,
+    ChatMode mode = ChatMode.standard,
   }) => _guard(
     () => _dataSource.ask(
       question: question,
       sessionId: sessionId,
       productId: productId,
+      mode: mode,
     ),
   );
+
+  @override
+  Future<Result<ChatQuota>> getQuota() => _guard(_dataSource.getQuota);
 
   @override
   Future<Result<ChatSessionPage>> getSessions({

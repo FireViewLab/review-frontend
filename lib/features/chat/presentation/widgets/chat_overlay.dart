@@ -1,3 +1,5 @@
+import 'dart:math' as math;
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -8,6 +10,7 @@ import 'package:re_view_front/app/theme/app_colors.dart';
 import 'package:re_view_front/app/theme/app_spacing.dart';
 import 'package:re_view_front/features/chat/presentation/providers/chat_providers.dart';
 import 'package:re_view_front/features/chat/presentation/widgets/chat_panel.dart';
+import 'package:re_view_front/features/chat/presentation/widgets/chat_style.dart';
 import 'package:re_view_front/features/chat/presentation/widgets/popup_route_tracker.dart';
 import 'package:re_view_front/l10n/generated/app_localizations.dart';
 
@@ -98,12 +101,14 @@ class _ChatLauncherLayout extends ConsumerWidget {
   final int? productId;
   final bool hasBottomTabs;
 
-  static const double _buttonSize = 56;
   static const double _bottomTabsHeight = 72;
+  static const double _panelWidth = 420;
+  static const double _panelMaxHeight = 720;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final isOpen = ref.watch(chatViewModelProvider.select((s) => s.isOpen));
+    final l10n = AppLocalizations.of(context);
     final media = MediaQuery.of(context);
     final isMobile = AppBreakpoints.isMobile(media.size.width);
     final edge = isMobile ? AppSpacing.md : AppSpacing.lg;
@@ -112,43 +117,65 @@ class _ChatLauncherLayout extends ConsumerWidget {
         edge +
         (isMobile && hasBottomTabs ? _bottomTabsHeight : 0);
 
-    final panel = ChatPanel(
-      productId: productId,
-      onLoginPressed: () {
-        ref.read(chatViewModelProvider.notifier).close();
-        router.go(RoutePaths.login);
-      },
-    );
+    void onLoginPressed() {
+      ref.read(chatViewModelProvider.notifier).close();
+      router.go(RoutePaths.login);
+    }
 
+    if (!isOpen) {
+      return Stack(
+        children: [
+          Positioned(
+            right: edge,
+            bottom: bottom,
+            child: _Launcher(
+              // 모바일은 화면이 좁아 아이콘만 둔다.
+              label: isMobile
+                  ? null
+                  : productId != null
+                  ? l10n.chatLauncherProductLabel
+                  : l10n.chatLauncherLabel,
+              tooltip: l10n.chatLauncherTooltip,
+              onPressed: ref.read(chatViewModelProvider.notifier).open,
+            ),
+          ),
+        ],
+      );
+    }
+
+    // 패널에 닫기 버튼이 있으므로 열려 있는 동안 런처는 그리지 않는다.
     return Stack(
       children: [
-        if (isOpen && isMobile)
+        if (isMobile)
           Positioned.fill(
+            // 화면 키보드가 올라오면 입력창이 가려지지 않게 그만큼 올린다.
+            bottom: media.viewInsets.bottom,
             child: SafeArea(
               child: ChatPanel(
                 productId: productId,
-                onLoginPressed: panel.onLoginPressed,
+                onLoginPressed: onLoginPressed,
                 fullScreen: true,
               ),
             ),
           )
-        else if (isOpen)
+        else
           Positioned(
             right: edge,
-            bottom: bottom + _buttonSize + AppSpacing.sm,
-            width: 380,
-            height:
-                (media.size.height - bottom - _buttonSize - 2 * AppSpacing.lg)
-                    .clamp(320.0, 600.0),
-            child: panel,
-          ),
-        if (!(isOpen && isMobile))
-          Positioned(
-            right: edge,
-            bottom: bottom,
-            child: _LauncherButton(
-              isOpen: isOpen,
-              onPressed: ref.read(chatViewModelProvider.notifier).toggle,
+            bottom: edge + media.padding.bottom,
+            width: _panelWidth,
+            // 창이 낮으면 화면 밖으로 나가지 않게 창 높이에 맞춘다.
+            height: math.min(
+              math.max(
+                media.size.height - media.padding.vertical - 2 * edge,
+                0,
+              ),
+              _panelMaxHeight,
+            ),
+            child: _Appear(
+              child: ChatPanel(
+                productId: productId,
+                onLoginPressed: onLoginPressed,
+              ),
             ),
           ),
       ],
@@ -156,38 +183,103 @@ class _ChatLauncherLayout extends ConsumerWidget {
   }
 }
 
-class _LauncherButton extends StatelessWidget {
-  const _LauncherButton({required this.isOpen, required this.onPressed});
+/// 패널이 아래에서 살짝 올라오며 나타난다.
+class _Appear extends StatelessWidget {
+  const _Appear({required this.child});
 
-  final bool isOpen;
-  final VoidCallback onPressed;
+  final Widget child;
 
   @override
   Widget build(BuildContext context) {
-    final l10n = AppLocalizations.of(context);
+    if (MediaQuery.disableAnimationsOf(context)) return child;
+    return TweenAnimationBuilder<double>(
+      tween: Tween(begin: 0, end: 1),
+      duration: const Duration(milliseconds: 180),
+      curve: Curves.easeOutCubic,
+      child: child,
+      builder: (context, value, child) => Opacity(
+        opacity: value,
+        child: Transform.translate(
+          offset: Offset(0, 16 * (1 - value)),
+          child: child,
+        ),
+      ),
+    );
+  }
+}
+
+/// 어시스턴트를 여는 버튼. 무엇을 하는 버튼인지 보이도록 문구를 함께 둔다.
+class _Launcher extends StatefulWidget {
+  const _Launcher({
+    required this.label,
+    required this.tooltip,
+    required this.onPressed,
+  });
+
+  /// null이면 아이콘만 그린다.
+  final String? label;
+  final String tooltip;
+  final VoidCallback onPressed;
+
+  @override
+  State<_Launcher> createState() => _LauncherState();
+}
+
+class _LauncherState extends State<_Launcher> {
+  bool _hovered = false;
+
+  @override
+  Widget build(BuildContext context) {
+    final label = widget.label;
+    const radius = BorderRadius.all(Radius.circular(28));
+    final scale = _hovered && !MediaQuery.disableAnimationsOf(context)
+        ? 1.03
+        : 1.0;
     return Tooltip(
-      message: isOpen ? l10n.chatClose : l10n.chatLauncherTooltip,
-      child: Material(
-        color: AppColors.primary,
-        shape: const CircleBorder(),
-        elevation: 6,
-        shadowColor: AppColors.shadow,
-        child: InkWell(
-          customBorder: const CircleBorder(),
-          onTap: onPressed,
-          child: SizedBox.square(
-            dimension: _ChatLauncherLayout._buttonSize,
-            child: AnimatedSwitcher(
-              duration: const Duration(milliseconds: 180),
-              transitionBuilder: (child, animation) => RotationTransition(
-                turns: Tween(begin: 0.85, end: 1.0).animate(animation),
-                child: FadeTransition(opacity: animation, child: child),
+      message: widget.tooltip,
+      child: AnimatedScale(
+        scale: scale,
+        duration: const Duration(milliseconds: 140),
+        child: DecoratedBox(
+          decoration: const BoxDecoration(
+            borderRadius: radius,
+            boxShadow: [
+              BoxShadow(
+                color: Color(0x1F0F172A),
+                blurRadius: 20,
+                offset: Offset(0, 8),
               ),
-              child: Icon(
-                isOpen ? Icons.close_rounded : Icons.auto_awesome_rounded,
-                key: ValueKey(isOpen),
-                color: AppColors.onPrimary,
-                size: 26,
+            ],
+          ),
+          // 사이트의 카드·버튼과 같은 흰 바탕에 얇은 테두리를 쓴다.
+          child: Material(
+            color: AppColors.surface,
+            shape: const RoundedRectangleBorder(
+              borderRadius: radius,
+              side: BorderSide(color: ChatStyle.line),
+            ),
+            clipBehavior: Clip.antiAlias,
+            child: InkWell(
+              onTap: widget.onPressed,
+              onHover: (value) => setState(() => _hovered = value),
+              child: Padding(
+                padding: EdgeInsets.fromLTRB(6, 6, label == null ? 6 : 18, 6),
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    const ChatMark(size: 40),
+                    if (label != null) ...[
+                      const SizedBox(width: 10),
+                      Text(
+                        label,
+                        style: Theme.of(context).textTheme.labelLarge?.copyWith(
+                          color: ChatStyle.ink,
+                          fontWeight: FontWeight.w700,
+                        ),
+                      ),
+                    ],
+                  ],
+                ),
               ),
             ),
           ),

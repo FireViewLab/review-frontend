@@ -1179,7 +1179,7 @@ abstract class AppLocalizations {
   /// 우측 하단 챗봇 버튼 툴팁
   ///
   /// In ko, this message translates to:
-  /// **'AI 리뷰 상담'**
+  /// **'AI 어시스턴트 열기'**
   String get chatLauncherTooltip;
 
   /// 챗봇 패널 제목
@@ -1191,7 +1191,7 @@ abstract class AppLocalizations {
   /// 챗봇 패널 부제
   ///
   /// In ko, this message translates to:
-  /// **'리뷰 신뢰도에 대해 물어보세요'**
+  /// **'리뷰와 구매 판단을 도와드려요'**
   String get chatSubtitle;
 
   /// 새 대화 시작 버튼
@@ -1239,7 +1239,7 @@ abstract class AppLocalizations {
   /// 대화가 없을 때 제목
   ///
   /// In ko, this message translates to:
-  /// **'무엇이든 물어보세요'**
+  /// **'리뷰에서 궁금한 점을 물어보세요'**
   String get chatEmptyTitle;
 
   /// 대화가 없을 때 설명
@@ -2411,6 +2411,150 @@ abstract class AppLocalizations {
   /// In ko, this message translates to:
   /// **'네이버'**
   String get settingsLoginMethodNaver;
+
+  /// No description provided for @chatLauncherLabel.
+  ///
+  /// In ko, this message translates to:
+  /// **'AI에게 물어보기'**
+  String get chatLauncherLabel;
+
+  /// No description provided for @chatLauncherProductLabel.
+  ///
+  /// In ko, this message translates to:
+  /// **'이 상품 리뷰 물어보기'**
+  String get chatLauncherProductLabel;
+
+  /// No description provided for @chatProductCta.
+  ///
+  /// In ko, this message translates to:
+  /// **'AI에게 이 상품 물어보기'**
+  String get chatProductCta;
+
+  /// No description provided for @chatEmptyProductTitle.
+  ///
+  /// In ko, this message translates to:
+  /// **'이 상품, 무엇이 궁금하세요?'**
+  String get chatEmptyProductTitle;
+
+  /// No description provided for @chatCopy.
+  ///
+  /// In ko, this message translates to:
+  /// **'복사'**
+  String get chatCopy;
+
+  /// No description provided for @chatCopied.
+  ///
+  /// In ko, this message translates to:
+  /// **'복사했어요'**
+  String get chatCopied;
+
+  /// No description provided for @chatThinkingLong.
+  ///
+  /// In ko, this message translates to:
+  /// **'답변을 만드는 데 시간이 조금 걸리고 있어요'**
+  String get chatThinkingLong;
+
+  /// No description provided for @chatThinkingVeryLong.
+  ///
+  /// In ko, this message translates to:
+  /// **'아직 답변을 기다리고 있어요. 창을 닫아도 대화는 유지돼요'**
+  String get chatThinkingVeryLong;
+
+  /// No description provided for @chatBlockedTitle.
+  ///
+  /// In ko, this message translates to:
+  /// **'답변할 수 없는 질문이에요'**
+  String get chatBlockedTitle;
+
+  /// No description provided for @chatModeStandard.
+  ///
+  /// In ko, this message translates to:
+  /// **'기본'**
+  String get chatModeStandard;
+
+  /// No description provided for @chatModePro.
+  ///
+  /// In ko, this message translates to:
+  /// **'프로'**
+  String get chatModePro;
+
+  /// No description provided for @chatModeProActive.
+  ///
+  /// In ko, this message translates to:
+  /// **'프로 모드로 더 자세히 답해요'**
+  String get chatModeProActive;
+
+  /// No description provided for @chatModeProLocked.
+  ///
+  /// In ko, this message translates to:
+  /// **'프로 모드는 프로 요금제에서 쓸 수 있어요'**
+  String get chatModeProLocked;
+
+  /// No description provided for @chatPlanFree.
+  ///
+  /// In ko, this message translates to:
+  /// **'무료'**
+  String get chatPlanFree;
+
+  /// No description provided for @chatPlanPlus.
+  ///
+  /// In ko, this message translates to:
+  /// **'플러스'**
+  String get chatPlanPlus;
+
+  /// No description provided for @chatPlanPro.
+  ///
+  /// In ko, this message translates to:
+  /// **'프로'**
+  String get chatPlanPro;
+
+  /// No description provided for @chatQuotaRemaining.
+  ///
+  /// In ko, this message translates to:
+  /// **'오늘 남은 질문 {remaining}/{limit}'**
+  String chatQuotaRemaining(int remaining, int limit);
+
+  /// No description provided for @chatQuotaUnlimited.
+  ///
+  /// In ko, this message translates to:
+  /// **'질문 횟수 제한 없음'**
+  String get chatQuotaUnlimited;
+
+  /// No description provided for @chatQuotaExceededTitle.
+  ///
+  /// In ko, this message translates to:
+  /// **'오늘 질문을 모두 사용했어요'**
+  String get chatQuotaExceededTitle;
+
+  /// No description provided for @chatQuotaExceededBody.
+  ///
+  /// In ko, this message translates to:
+  /// **'{time}에 다시 물어볼 수 있어요'**
+  String chatQuotaExceededBody(String time);
+
+  /// No description provided for @chatQuotaExceededBodyNoTime.
+  ///
+  /// In ko, this message translates to:
+  /// **'한도가 초기화되면 다시 물어볼 수 있어요'**
+  String get chatQuotaExceededBodyNoTime;
+
+  /// No description provided for @chatPlanRequiredTitle.
+  ///
+  /// In ko, this message translates to:
+  /// **'프로 요금제에서 이용할 수 있어요'**
+  String get chatPlanRequiredTitle;
+
+  /// No description provided for @chatPlanRequiredAction.
+  ///
+  /// In ko, this message translates to:
+  /// **'기본 모드로 다시 묻기'**
+  String get chatPlanRequiredAction;
+
+  /// No description provided for @chatSuggestGeneral3.
+  ///
+  /// In ko, this message translates to:
+  /// **'믿을 만한 리뷰는 어떻게 골라?'**
+  String get chatSuggestGeneral3;
 }
 
 class _AppLocalizationsDelegate

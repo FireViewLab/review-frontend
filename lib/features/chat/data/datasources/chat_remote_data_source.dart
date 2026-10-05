@@ -3,9 +3,11 @@ import 'package:re_view_front/core/config/app_config.dart';
 import 'package:re_view_front/core/network/api_client.dart';
 import 'package:re_view_front/core/network/api_response.dart';
 import 'package:re_view_front/features/chat/data/dtos/chat_message_dto.dart';
+import 'package:re_view_front/features/chat/data/dtos/chat_quota_dto.dart';
 import 'package:re_view_front/features/chat/data/dtos/chat_reply_dto.dart';
 import 'package:re_view_front/features/chat/data/dtos/chat_session_dto.dart';
 import 'package:re_view_front/features/chat/domain/entities/chat_message.dart';
+import 'package:re_view_front/features/chat/domain/entities/chat_quota.dart';
 import 'package:re_view_front/features/chat/domain/entities/chat_reply.dart';
 import 'package:re_view_front/features/chat/domain/entities/chat_session.dart';
 
@@ -17,7 +19,10 @@ abstract interface class ChatRemoteDataSource {
     required String question,
     int? sessionId,
     int? productId,
+    ChatMode mode = ChatMode.standard,
   });
+
+  Future<ChatQuota> getQuota();
 }
 
 class ChatRemoteDataSourceImpl implements ChatRemoteDataSource {
@@ -78,9 +83,12 @@ class ChatRemoteDataSourceImpl implements ChatRemoteDataSource {
     required String question,
     int? sessionId,
     int? productId,
+    ChatMode mode = ChatMode.standard,
   }) async {
     final response = await _apiClient.post(
-      '${_config.chatBasePath}/messages',
+      mode == ChatMode.pro
+          ? '${_config.chatBasePath}/pro/messages'
+          : '${_config.chatBasePath}/messages',
       data: <String, dynamic>{
         'question': question,
         'sessionId': ?sessionId,
@@ -96,5 +104,16 @@ class ChatRemoteDataSourceImpl implements ChatRemoteDataSource {
       }
     }
     throw Exception('Invalid response format');
+  }
+
+  @override
+  Future<ChatQuota> getQuota() async {
+    final response = await _apiClient.get('${_config.chatBasePath}/quota');
+    final body = _requireData(response.data);
+    final quota = body is Map<String, dynamic>
+        ? ChatQuotaDto(body).toEntity()
+        : null;
+    if (quota == null) throw const FormatException('Invalid chat quota');
+    return quota;
   }
 }

@@ -569,13 +569,13 @@ class AppLocalizationsJa extends AppLocalizations {
   String get adminTopBarNotifications => '通知';
 
   @override
-  String get chatLauncherTooltip => 'AIレビュー相談';
+  String get chatLauncherTooltip => 'AIアシスタントを開く';
 
   @override
   String get chatTitle => 'Re:view AI';
 
   @override
-  String get chatSubtitle => 'レビューの信頼度について聞いてみましょう';
+  String get chatSubtitle => 'レビューと購入判断をお手伝いします';
 
   @override
   String get chatNewConversation => '新しい会話';
@@ -599,7 +599,7 @@ class AppLocalizationsJa extends AppLocalizations {
   String get chatStartWithThisProduct => 'この商品で新しい会話';
 
   @override
-  String get chatEmptyTitle => '何でも聞いてください';
+  String get chatEmptyTitle => 'レビューで気になることを聞いてください';
 
   @override
   String get chatEmptyBody => 'レビューの信頼度や広告レビューの見分け方をお手伝いします。';
@@ -1212,4 +1212,80 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String get settingsLoginMethodNaver => 'NAVER';
+
+  @override
+  String get chatLauncherLabel => 'AIに聞く';
+
+  @override
+  String get chatLauncherProductLabel => 'この商品のレビューを聞く';
+
+  @override
+  String get chatProductCta => 'この商品についてAIに聞く';
+
+  @override
+  String get chatEmptyProductTitle => 'この商品の何が気になりますか？';
+
+  @override
+  String get chatCopy => 'コピー';
+
+  @override
+  String get chatCopied => 'コピーしました';
+
+  @override
+  String get chatThinkingLong => '回答の作成に少し時間がかかっています';
+
+  @override
+  String get chatThinkingVeryLong => 'まだ回答を待っています。閉じても会話は残ります';
+
+  @override
+  String get chatBlockedTitle => 'この質問には回答できません';
+
+  @override
+  String get chatModeStandard => '標準';
+
+  @override
+  String get chatModePro => 'プロ';
+
+  @override
+  String get chatModeProActive => 'プロモードでより詳しく回答します';
+
+  @override
+  String get chatModeProLocked => 'プロモードはプロプランで利用できます';
+
+  @override
+  String get chatPlanFree => '無料';
+
+  @override
+  String get chatPlanPlus => 'プラス';
+
+  @override
+  String get chatPlanPro => 'プロ';
+
+  @override
+  String chatQuotaRemaining(int remaining, int limit) {
+    return '今日の残り質問 $remaining/$limit';
+  }
+
+  @override
+  String get chatQuotaUnlimited => '質問回数の制限なし';
+
+  @override
+  String get chatQuotaExceededTitle => '今日の質問をすべて使いました';
+
+  @override
+  String chatQuotaExceededBody(String time) {
+    return '$timeにまた質問できます';
+  }
+
+  @override
+  String get chatQuotaExceededBodyNoTime => '上限がリセットされたらまた質問できます';
+
+  @override
+  String get chatPlanRequiredTitle => 'プロプランで利用できます';
+
+  @override
+  String get chatPlanRequiredAction => '標準モードでもう一度聞く';
+
+  @override
+  String get chatSuggestGeneral3 => '信頼できるレビューの選び方は？';
 }

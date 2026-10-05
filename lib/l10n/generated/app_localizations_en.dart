@@ -588,13 +588,13 @@ class AppLocalizationsEn extends AppLocalizations {
   String get adminTopBarNotifications => 'Notifications';
 
   @override
-  String get chatLauncherTooltip => 'AI review assistant';
+  String get chatLauncherTooltip => 'Open AI assistant';
 
   @override
   String get chatTitle => 'Re:view AI';
 
   @override
-  String get chatSubtitle => 'Ask about review trust';
+  String get chatSubtitle => 'Help with reviews and buying decisions';
 
   @override
   String get chatNewConversation => 'New chat';
@@ -620,7 +620,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get chatStartWithThisProduct => 'New chat for this product';
 
   @override
-  String get chatEmptyTitle => 'Ask me anything';
+  String get chatEmptyTitle => 'Ask what you want to know about reviews';
 
   @override
   String get chatEmptyBody =>
@@ -1250,4 +1250,83 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get settingsLoginMethodNaver => 'Naver';
+
+  @override
+  String get chatLauncherLabel => 'Ask AI';
+
+  @override
+  String get chatLauncherProductLabel => 'Ask about this product';
+
+  @override
+  String get chatProductCta => 'Ask AI about this product';
+
+  @override
+  String get chatEmptyProductTitle =>
+      'What would you like to know about this product?';
+
+  @override
+  String get chatCopy => 'Copy';
+
+  @override
+  String get chatCopied => 'Copied';
+
+  @override
+  String get chatThinkingLong => 'This is taking a little longer';
+
+  @override
+  String get chatThinkingVeryLong =>
+      'Still waiting for the answer. You can close this panel and the conversation stays.';
+
+  @override
+  String get chatBlockedTitle => 'I can\'t answer this question';
+
+  @override
+  String get chatModeStandard => 'Standard';
+
+  @override
+  String get chatModePro => 'Pro';
+
+  @override
+  String get chatModeProActive => 'Pro mode gives more detailed answers';
+
+  @override
+  String get chatModeProLocked => 'Pro mode is available on the Pro plan';
+
+  @override
+  String get chatPlanFree => 'Free';
+
+  @override
+  String get chatPlanPlus => 'Plus';
+
+  @override
+  String get chatPlanPro => 'Pro';
+
+  @override
+  String chatQuotaRemaining(int remaining, int limit) {
+    return '$remaining of $limit questions left today';
+  }
+
+  @override
+  String get chatQuotaUnlimited => 'Unlimited questions';
+
+  @override
+  String get chatQuotaExceededTitle => 'You\'ve used all of today\'s questions';
+
+  @override
+  String chatQuotaExceededBody(String time) {
+    return 'You can ask again at $time';
+  }
+
+  @override
+  String get chatQuotaExceededBodyNoTime =>
+      'You can ask again once the limit resets';
+
+  @override
+  String get chatPlanRequiredTitle => 'Available on the Pro plan';
+
+  @override
+  String get chatPlanRequiredAction => 'Ask again in Standard mode';
+
+  @override
+  String get chatSuggestGeneral3 => 'How do I pick trustworthy reviews?';
 }
