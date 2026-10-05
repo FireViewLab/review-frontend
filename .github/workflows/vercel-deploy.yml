@@ -24,7 +24,7 @@ jobs:
       - name: Setup Flutter
         uses: subosito/flutter-action@v2
         with:
-          channel: stable
+          flutter-version: '3.44.2'
           cache: true
 
       - name: Install dependencies
@@ -32,27 +32,6 @@ jobs:
 
       - name: Build Flutter Web
         run: flutter build web --release
-
-      - name: Copy Vercel config to build output
-        run: |
-          cat > build/web/vercel.json << 'EOF'
-          {
-            "headers": [
-              {
-                "source": "/assets/assets/:path*",
-                "headers": [
-                  { "key": "Cache-Control", "value": "public, max-age=86400, stale-while-revalidate=604800" }
-                ]
-              }
-            ],
-            "rewrites": [
-              { "source": "/api/:path*", "destination": "https://api.re-view.kr/api/:path*" },
-              { "source": "/oauth2/:path*", "destination": "https://api.re-view.kr/oauth2/:path*" },
-              { "source": "/login/oauth2/:path*", "destination": "https://api.re-view.kr/login/oauth2/:path*" },
-              { "source": "/(.*)", "destination": "/index.html" }
-            ]
-          }
-          EOF
 
       - name: Install Vercel CLI
         run: npm install --global vercel@latest
@@ -75,7 +54,7 @@ jobs:
       - name: Setup Flutter
         uses: subosito/flutter-action@v2
         with:
-          channel: stable
+          flutter-version: '3.44.2'
           cache: true
 
       - name: Install dependencies
@@ -83,27 +62,6 @@ jobs:
 
       - name: Build Flutter Web
         run: flutter build web --release
-
-      - name: Copy Vercel config to build output
-        run: |
-          cat > build/web/vercel.json << 'EOF'
-          {
-            "headers": [
-              {
-                "source": "/assets/assets/:path*",
-                "headers": [
-                  { "key": "Cache-Control", "value": "public, max-age=86400, stale-while-revalidate=604800" }
-                ]
-              }
-            ],
-            "rewrites": [
-              { "source": "/api/:path*", "destination": "https://api.re-view.kr/api/:path*" },
-              { "source": "/oauth2/:path*", "destination": "https://api.re-view.kr/oauth2/:path*" },
-              { "source": "/login/oauth2/:path*", "destination": "https://api.re-view.kr/login/oauth2/:path*" },
-              { "source": "/(.*)", "destination": "/index.html" }
-            ]
-          }
-          EOF
 
       - name: Install Vercel CLI
         run: npm install --global vercel@latest
