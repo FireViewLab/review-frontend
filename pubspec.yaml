@@ -85,10 +85,7 @@ flutter:
     - assets/images/landing/
     - assets/images/home/brand/
     - assets/images/home/icons/
-    - assets/images/categories/manifest.json
-    - assets/images/categories/icon_name_map_ko.json
     - assets/images/categories/category_images/
-    - assets/images/categories/svg_icons/
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images
