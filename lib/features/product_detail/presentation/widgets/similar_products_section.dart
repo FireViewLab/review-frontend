@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:re_view_front/app/theme/app_motion.dart';
 import 'package:re_view_front/app/router/route_paths.dart';
 import 'package:re_view_front/app/theme/app_colors.dart';
 import 'package:re_view_front/app/theme/app_spacing.dart';
@@ -50,7 +51,7 @@ class _SimilarProductsSectionState extends State<SimilarProductsSection> {
         0.0,
         _scrollController.position.maxScrollExtent,
       ),
-      duration: const Duration(milliseconds: 300),
+      duration: AppMotion.slow,
       curve: Curves.easeInOut,
     );
   }
