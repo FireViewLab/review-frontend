@@ -14,6 +14,9 @@ abstract final class RoutePaths {
   static const wishlist = '/wishlist';
   static const cart = '/cart';
   static const analysisReport = '/product/:id/analysis';
+
+  /// Data 서버 상품. 쇼핑몰 이름과 상품 번호가 함께 있어야 한다.
+  static const externalProduct = '/product/:platform/:productId';
   static const settings = '/settings';
   static const reviewReport = '/report/review';
   static const feedbackHistory = '/feedback-history';
@@ -43,6 +46,7 @@ abstract final class RouteNames {
   static const wishlist = 'wishlist';
   static const cart = 'cart';
   static const analysisReport = 'analysisReport';
+  static const externalProduct = 'externalProduct';
   static const settings = 'settings';
   static const reviewReport = 'reviewReport';
   static const feedbackHistory = 'feedbackHistory';

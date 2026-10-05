@@ -1355,6 +1355,68 @@ class AppLocalizationsZh extends AppLocalizations {
   String get chatViewPlans => '查看套餐';
 
   @override
+  String get extProductCollectingTitle => '正在获取商品信息';
+
+  @override
+  String get extProductCollectingBody => '这是首次查看的商品，正在从商城收集信息，通常需要 10 到 20 秒。';
+
+  @override
+  String get extProductCollectingSlow => '比预期时间长，请再稍等一下。';
+
+  @override
+  String get extProductUnavailableTitle => '未能获取商品信息';
+
+  @override
+  String get extProductUnavailableBody => '并非商品不存在，而是暂时无法从商城获取信息。请稍后重试。';
+
+  @override
+  String get extProductLoadFailed => '无法加载商品。';
+
+  @override
+  String get extProductRetry => '重试';
+
+  @override
+  String get extProductStale => '正在更新为最新信息';
+
+  @override
+  String extProductVisitShop(String shop) {
+    return '在$shop查看';
+  }
+
+  @override
+  String extProductReviewCount(int count) {
+    return '$count 条评论';
+  }
+
+  @override
+  String extProductPrice(String price) {
+    return '$price韩元';
+  }
+
+  @override
+  String get extProductAnalysisPendingTitle => '尚未分析可信度';
+
+  @override
+  String get extProductAnalysisPendingBody => '该商品的评论尚未分析。分析完成后，可信度分数将显示在这里。';
+
+  @override
+  String get extProductReviewsTitle => '评论';
+
+  @override
+  String get extProductReviewsEmpty => '没有收集到评论。';
+
+  @override
+  String get extProductReviewsMore => '查看更多评论';
+
+  @override
+  String get extProductReviewsMoreFailed => '无法加载更多评论。';
+
+  @override
+  String extProductReviewOption(String option) {
+    return '选项：$option';
+  }
+
+  @override
   String chatQuotaRemaining(int remaining, int limit) {
     return '今日剩余提问 $remaining/$limit';
   }

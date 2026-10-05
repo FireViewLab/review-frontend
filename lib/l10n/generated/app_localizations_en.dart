@@ -1398,6 +1398,72 @@ class AppLocalizationsEn extends AppLocalizations {
   String get chatViewPlans => 'View plans';
 
   @override
+  String get extProductCollectingTitle => 'Fetching product details';
+
+  @override
+  String get extProductCollectingBody =>
+      'This product is new to us, so we are collecting it from the shop. It usually takes 10 to 20 seconds.';
+
+  @override
+  String get extProductCollectingSlow =>
+      'This is taking longer than usual. Please wait a little more.';
+
+  @override
+  String get extProductUnavailableTitle => 'Could not get this product';
+
+  @override
+  String get extProductUnavailableBody =>
+      'The product may still exist. We could not reach the shop right now. Please try again shortly.';
+
+  @override
+  String get extProductLoadFailed => 'Could not load the product.';
+
+  @override
+  String get extProductRetry => 'Retry';
+
+  @override
+  String get extProductStale => 'Refreshing with the latest information';
+
+  @override
+  String extProductVisitShop(String shop) {
+    return 'View on $shop';
+  }
+
+  @override
+  String extProductReviewCount(int count) {
+    return '$count reviews';
+  }
+
+  @override
+  String extProductPrice(String price) {
+    return '₩$price';
+  }
+
+  @override
+  String get extProductAnalysisPendingTitle => 'Not analyzed yet';
+
+  @override
+  String get extProductAnalysisPendingBody =>
+      'Reviews of this product have not been analyzed yet. The trust score will appear here once analysis is done.';
+
+  @override
+  String get extProductReviewsTitle => 'Reviews';
+
+  @override
+  String get extProductReviewsEmpty => 'No reviews have been collected.';
+
+  @override
+  String get extProductReviewsMore => 'Show more reviews';
+
+  @override
+  String get extProductReviewsMoreFailed => 'Could not load more reviews.';
+
+  @override
+  String extProductReviewOption(String option) {
+    return 'Option: $option';
+  }
+
+  @override
   String chatQuotaRemaining(int remaining, int limit) {
     return '$remaining of $limit questions left today';
   }

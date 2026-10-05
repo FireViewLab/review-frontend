@@ -1357,6 +1357,71 @@ class AppLocalizationsJa extends AppLocalizations {
   String get chatViewPlans => 'プランを見る';
 
   @override
+  String get extProductCollectingTitle => '商品情報を取得しています';
+
+  @override
+  String get extProductCollectingBody =>
+      '初めての商品のため、ショップから情報を集めています。通常10〜20秒かかります。';
+
+  @override
+  String get extProductCollectingSlow => '通常より時間がかかっています。もう少しお待ちください。';
+
+  @override
+  String get extProductUnavailableTitle => '商品情報を取得できませんでした';
+
+  @override
+  String get extProductUnavailableBody =>
+      '商品が存在しないのではなく、現在ショップから情報を取得できません。しばらくしてからもう一度お試しください。';
+
+  @override
+  String get extProductLoadFailed => '商品を読み込めませんでした。';
+
+  @override
+  String get extProductRetry => '再試行';
+
+  @override
+  String get extProductStale => '最新情報に更新しています';
+
+  @override
+  String extProductVisitShop(String shop) {
+    return '$shopで見る';
+  }
+
+  @override
+  String extProductReviewCount(int count) {
+    return 'レビュー $count件';
+  }
+
+  @override
+  String extProductPrice(String price) {
+    return '$priceウォン';
+  }
+
+  @override
+  String get extProductAnalysisPendingTitle => '信頼度分析前';
+
+  @override
+  String get extProductAnalysisPendingBody =>
+      'この商品のレビューはまだ分析されていません。分析が終わると信頼度スコアがここに表示されます。';
+
+  @override
+  String get extProductReviewsTitle => 'レビュー';
+
+  @override
+  String get extProductReviewsEmpty => '収集されたレビューはありません。';
+
+  @override
+  String get extProductReviewsMore => 'レビューをもっと見る';
+
+  @override
+  String get extProductReviewsMoreFailed => 'レビューをさらに読み込めませんでした。';
+
+  @override
+  String extProductReviewOption(String option) {
+    return 'オプション: $option';
+  }
+
+  @override
   String chatQuotaRemaining(int remaining, int limit) {
     return '今日の残り質問 $remaining/$limit';
   }

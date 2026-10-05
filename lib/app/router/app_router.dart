@@ -23,6 +23,8 @@ import 'package:re_view_front/features/cart/presentation/pages/cart_page.dart';
 import 'package:re_view_front/features/search/presentation/pages/search_results_page.dart';
 import 'package:re_view_front/features/review_report/presentation/pages/review_report_page.dart';
 import 'package:re_view_front/features/settings/presentation/pages/settings_page.dart';
+import 'package:re_view_front/features/external_product/domain/entities/external_product_ref.dart';
+import 'package:re_view_front/features/external_product/presentation/pages/external_product_page.dart';
 import 'package:re_view_front/features/feedback_history/presentation/pages/feedback_history_page.dart';
 import 'package:re_view_front/features/wishlist/presentation/pages/wishlist_page.dart';
 import 'package:re_view_front/features/notifications/presentation/pages/notifications_page.dart';
@@ -168,6 +170,20 @@ final appRouterProvider = Provider<GoRouter>((ref) {
           final id = int.tryParse(idStr) ?? 0;
           return _buildTransitionPage(state, AnalysisReportPage(productId: id));
         },
+      ),
+      // 위의 '/product/:id/analysis'보다 뒤에 둬야 분석 화면 경로를 가로채지 않는다.
+      GoRoute(
+        path: RoutePaths.externalProduct,
+        name: RouteNames.externalProduct,
+        pageBuilder: (context, state) => _buildTransitionPage(
+          state,
+          ExternalProductPage(
+            productRef: ExternalProductRef(
+              platform: state.pathParameters['platform'] ?? '',
+              productId: state.pathParameters['productId'] ?? '',
+            ),
+          ),
+        ),
       ),
       GoRoute(
         path: RoutePaths.oauthCallback,

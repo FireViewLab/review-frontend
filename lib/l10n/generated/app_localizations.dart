@@ -2670,6 +2670,114 @@ abstract class AppLocalizations {
   /// **'요금제 보기'**
   String get chatViewPlans;
 
+  /// No description provided for @extProductCollectingTitle.
+  ///
+  /// In ko, this message translates to:
+  /// **'상품 정보를 가져오고 있어요'**
+  String get extProductCollectingTitle;
+
+  /// No description provided for @extProductCollectingBody.
+  ///
+  /// In ko, this message translates to:
+  /// **'처음 보는 상품이라 쇼핑몰에서 정보를 모으고 있어요. 보통 10~20초 걸려요.'**
+  String get extProductCollectingBody;
+
+  /// No description provided for @extProductCollectingSlow.
+  ///
+  /// In ko, this message translates to:
+  /// **'예상보다 오래 걸리고 있어요. 조금만 더 기다려 주세요.'**
+  String get extProductCollectingSlow;
+
+  /// No description provided for @extProductUnavailableTitle.
+  ///
+  /// In ko, this message translates to:
+  /// **'상품 정보를 가져오지 못했어요'**
+  String get extProductUnavailableTitle;
+
+  /// No description provided for @extProductUnavailableBody.
+  ///
+  /// In ko, this message translates to:
+  /// **'상품이 없는 것이 아니라 지금 쇼핑몰에서 정보를 받지 못했어요. 잠시 후 다시 시도해 주세요.'**
+  String get extProductUnavailableBody;
+
+  /// No description provided for @extProductLoadFailed.
+  ///
+  /// In ko, this message translates to:
+  /// **'상품을 불러오지 못했어요.'**
+  String get extProductLoadFailed;
+
+  /// No description provided for @extProductRetry.
+  ///
+  /// In ko, this message translates to:
+  /// **'다시 시도'**
+  String get extProductRetry;
+
+  /// No description provided for @extProductStale.
+  ///
+  /// In ko, this message translates to:
+  /// **'최신 정보로 갱신하고 있어요'**
+  String get extProductStale;
+
+  /// No description provided for @extProductVisitShop.
+  ///
+  /// In ko, this message translates to:
+  /// **'{shop}에서 보기'**
+  String extProductVisitShop(String shop);
+
+  /// No description provided for @extProductReviewCount.
+  ///
+  /// In ko, this message translates to:
+  /// **'리뷰 {count}개'**
+  String extProductReviewCount(int count);
+
+  /// No description provided for @extProductPrice.
+  ///
+  /// In ko, this message translates to:
+  /// **'{price}원'**
+  String extProductPrice(String price);
+
+  /// No description provided for @extProductAnalysisPendingTitle.
+  ///
+  /// In ko, this message translates to:
+  /// **'신뢰도 분석 전'**
+  String get extProductAnalysisPendingTitle;
+
+  /// No description provided for @extProductAnalysisPendingBody.
+  ///
+  /// In ko, this message translates to:
+  /// **'이 상품의 리뷰는 아직 분석되지 않았어요. 분석이 끝나면 신뢰도 점수가 여기에 표시돼요.'**
+  String get extProductAnalysisPendingBody;
+
+  /// No description provided for @extProductReviewsTitle.
+  ///
+  /// In ko, this message translates to:
+  /// **'리뷰'**
+  String get extProductReviewsTitle;
+
+  /// No description provided for @extProductReviewsEmpty.
+  ///
+  /// In ko, this message translates to:
+  /// **'수집된 리뷰가 없어요.'**
+  String get extProductReviewsEmpty;
+
+  /// No description provided for @extProductReviewsMore.
+  ///
+  /// In ko, this message translates to:
+  /// **'리뷰 더 보기'**
+  String get extProductReviewsMore;
+
+  /// No description provided for @extProductReviewsMoreFailed.
+  ///
+  /// In ko, this message translates to:
+  /// **'리뷰를 더 불러오지 못했어요.'**
+  String get extProductReviewsMoreFailed;
+
+  /// No description provided for @extProductReviewOption.
+  ///
+  /// In ko, this message translates to:
+  /// **'옵션: {option}'**
+  String extProductReviewOption(String option);
+
   /// No description provided for @chatQuotaRemaining.
   ///
   /// In ko, this message translates to:
