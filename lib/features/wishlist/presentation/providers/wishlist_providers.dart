@@ -116,3 +116,7 @@ class WishlistButtonNotifier extends AsyncNotifier<bool> {
     );
   }
 }
+
+void refreshWishlistSnapshot(Ref ref) {
+  ref.invalidate(_wishlistSnapshotProvider);
+}

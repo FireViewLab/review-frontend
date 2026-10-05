@@ -34,12 +34,16 @@ class AdminReport {
     required this.adminComment,
     required this.createdAt,
     required this.updatedAt,
+    this.externalReviewId,
+    this.productExternalId,
   });
 
+  final String? externalReviewId;
+  final String? productExternalId;
   final int reportId;
-  final int reviewId;
+  final int? reviewId;
   final String productName;
-  final String reviewContent;
+  final String? reviewContent;
   final String reason;
   final String reasonDescription;
   final String detail;
@@ -61,6 +65,8 @@ class AdminReport {
     return AdminReport(
       reportId: reportId,
       reviewId: reviewId,
+      externalReviewId: externalReviewId,
+      productExternalId: productExternalId,
       productName: productName,
       reviewContent: reviewContent,
       reason: reason,

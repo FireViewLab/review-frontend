@@ -1468,4 +1468,101 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get adminUserPlanDateRequired =>
       'Choose an expiration date from today onward.';
+
+  @override
+  String get externalWishAdd => 'Save';
+
+  @override
+  String get externalWishRemove => 'Unsave';
+
+  @override
+  String get externalCartAdd => 'Add to cart';
+
+  @override
+  String get externalCartAdded => 'Added to cart';
+
+  @override
+  String get externalReviewMenu => 'Review menu';
+
+  @override
+  String get externalReport => 'Report review';
+
+  @override
+  String get externalReal => 'Looks real';
+
+  @override
+  String get externalFake => 'Looks fake';
+
+  @override
+  String get externalNotCollected =>
+      'Try again after product collection is complete.';
+
+  @override
+  String get externalUnavailable =>
+      'The data server is unavailable. Try again later.';
+
+  @override
+  String get externalReportDuplicate => 'You already reported this review.';
+
+  @override
+  String get externalFeedbackDuplicate =>
+      'You already gave feedback on this review.';
+
+  @override
+  String get externalFailed => 'Could not complete the request. Try again.';
+
+  @override
+  String get externalSuccess => 'Done.';
+
+  @override
+  String get externalUnanalyzed => 'Not analyzed';
+
+  @override
+  String get externalReason => 'Report reason';
+
+  @override
+  String get externalDetail => 'Details';
+
+  @override
+  String get externalDetailValidation => 'Enter 20 to 500 characters.';
+
+  @override
+  String get externalAttachment => 'Attachment URL (optional)';
+
+  @override
+  String get externalAttachmentValidation => 'Enter a valid http or https URL.';
+
+  @override
+  String get externalEvidence => 'Include analysis evidence';
+
+  @override
+  String get externalCancel => 'Cancel';
+
+  @override
+  String get externalSubmit => 'Submit';
+
+  @override
+  String get externalReasonFake => 'Suspected fake review';
+
+  @override
+  String get externalReasonAi => 'Suspected generated content';
+
+  @override
+  String get externalReasonIrrelevant => 'Unrelated content';
+
+  @override
+  String get externalReasonInappropriate =>
+      'Inappropriate content / personal information';
+
+  @override
+  String get externalReasonAd => 'Advertisement';
+
+  @override
+  String get externalReasonRepeated => 'Repetitive content';
+
+  @override
+  String get externalReasonOffensive => 'Offensive content';
+
+  @override
+  String get externalReasonOther => 'Other';
 }

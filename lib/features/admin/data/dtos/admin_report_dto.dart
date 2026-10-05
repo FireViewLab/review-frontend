@@ -8,9 +8,11 @@ class AdminReportDto {
   AdminReport toEntity() {
     return AdminReport(
       reportId: (_json['reportId'] as num?)?.toInt() ?? 0,
-      reviewId: (_json['reviewId'] as num?)?.toInt() ?? 0,
+      reviewId: (_json['reviewId'] as num?)?.toInt(),
+      externalReviewId: _json['externalReviewId']?.toString(),
+      productExternalId: _json['productExternalId']?.toString(),
       productName: _json['productName']?.toString() ?? '',
-      reviewContent: _json['reviewContent']?.toString() ?? '',
+      reviewContent: (_json['reviewContent'] ?? _json['reviewContentSummary'])?.toString(),
       reason: _json['reason']?.toString() ?? '',
       reasonDescription: _json['reasonDescription']?.toString() ?? '',
       detail: _json['detail']?.toString() ?? '',

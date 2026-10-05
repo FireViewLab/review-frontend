@@ -201,10 +201,10 @@ class MyPageBody extends StatelessWidget {
   }
 
   double? get _savedAverageRti {
-    final scoredItems = _wishlistItems.where((item) => item.avgRti > 0);
+    final scoredItems = _wishlistItems.where((item) => item.avgRti != null && item.avgRti! > 0);
     if (scoredItems.isEmpty) return null;
 
-    final total = scoredItems.fold<double>(0, (sum, item) => sum + item.avgRti);
+    final total = scoredItems.fold<double>(0, (sum, item) => sum + item.avgRti!);
     return total / scoredItems.length;
   }
 }
