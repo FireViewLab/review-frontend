@@ -6,23 +6,14 @@ import 'package:re_view_front/app/theme/app_colors.dart';
 import 'package:re_view_front/app/theme/app_spacing.dart';
 import 'package:re_view_front/core/providers/core_providers.dart';
 import 'package:re_view_front/core/providers/locale_provider.dart';
-import 'package:re_view_front/features/cart/presentation/providers/cart_providers.dart';
-import 'package:re_view_front/features/home/domain/entities/dashboard_product.dart';
-import 'package:re_view_front/features/home/presentation/data/home_content.dart';
-import 'package:re_view_front/features/home/presentation/providers/home_providers.dart';
-import 'package:re_view_front/features/home/presentation/view_models/home_dashboard_state.dart';
-import 'package:re_view_front/features/home/presentation/widgets/home/home_header.dart';
 import 'package:re_view_front/features/my_page/domain/entities/user_profile.dart';
 import 'package:re_view_front/features/my_page/presentation/providers/my_page_providers.dart';
 import 'package:re_view_front/features/my_page/presentation/view_models/my_page_state.dart';
 import 'package:re_view_front/features/settings/domain/entities/settings_data.dart';
 import 'package:re_view_front/features/settings/presentation/providers/settings_providers.dart';
 import 'package:re_view_front/features/settings/presentation/view_models/settings_state.dart';
-import 'package:re_view_front/features/wishlist/presentation/providers/wishlist_providers.dart';
 import 'package:re_view_front/l10n/generated/app_localizations.dart';
 import 'package:re_view_front/shared/extensions/context_extensions.dart';
-import 'package:re_view_front/shared/widgets/app_content_view.dart';
-import 'package:re_view_front/features/home/presentation/home_navigation.dart';
 
 class SettingsPage extends ConsumerStatefulWidget {
   const SettingsPage({super.key});
@@ -47,129 +38,34 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
     final isLoggedIn = ref.watch(isLoggedInProvider);
     final settingsState = ref.watch(settingsViewModelProvider);
     if (!isLoggedIn) {
-      return Scaffold(
-        backgroundColor: AppColors.background,
-        body: Center(
-          child: FilledButton(
-            onPressed: () => context.go(RoutePaths.login),
-            child: Text(AppLocalizations.of(context).actionLogin),
-          ),
+      return Center(
+        child: FilledButton(
+          onPressed: () => context.go(RoutePaths.login),
+          child: Text(AppLocalizations.of(context).actionLogin),
         ),
       );
     }
     final currentLocale = ref.watch(localeProvider);
-    final dashboardState = ref.watch(homeDashboardViewModelProvider);
     final myPageState = ref.watch(myPageViewModelProvider);
-    final nickname = ref.watch(userNicknameProvider).value;
-    final cartCount = ref.watch(cartItemCountProvider).value ?? 0;
-    final wishlistCount = ref.watch(wishlistItemCountProvider).value ?? 0;
 
     final profile = switch (myPageState) {
       MyPageSuccess(:final profile) => profile,
       _ => null,
     };
 
-    return Scaffold(
-      backgroundColor: AppColors.background,
-      body: CustomScrollView(
-        slivers: [
-          SliverToBoxAdapter(
-            child: HomeHeader(
-              navItems: homeNavItems,
-              selectedNavItem: '',
-              isLoggedIn: isLoggedIn,
-              nickname: nickname,
-              cartCount: cartCount,
-              wishlistCount: wishlistCount,
-              onLoginPressed: () => context.go(RoutePaths.login),
-              onWishPressed: () => context.go(RoutePaths.wishlist),
-              onCartPressed: () => context.go(RoutePaths.cart),
-              onNavItemPressed: (item) => openHomeNavItem(context, item),
-              onLogoPressed: () => context.go(RoutePaths.home),
-              onSearchSubmitted: _handleSearchSubmitted,
-              searchKeywords: _keywordsFrom(dashboardState),
-              searchRecommendedProducts: _productsFrom(dashboardState),
-              onSearchSuggestionsRequested: _handleSearchSuggestionsRequested,
-              onMyPagePressed: () => context.go(RoutePaths.myPage),
-              onProfileWishPressed: () => context.go(RoutePaths.wishlist),
-              onProfileOrderPressed: () => context.go(RoutePaths.cart),
-              onLogoutPressed: _handleLogout,
-            ),
-          ),
-          SliverToBoxAdapter(
-            child: AppContentView(
-              maxWidth: 1320,
-              padding: EdgeInsets.fromLTRB(
-                context.isMobile ? AppSpacing.md : AppSpacing.xxl,
-                context.isMobile ? AppSpacing.lg : AppSpacing.xl,
-                context.isMobile ? AppSpacing.md : AppSpacing.xxl,
-                AppSpacing.xxxl,
-              ),
-              child: _SettingsBody(
-                settingsState: settingsState,
-                currentLocale: currentLocale,
-                profile: profile,
-                onLocaleChanged: (locale) =>
-                    ref.read(localeProvider.notifier).setLocale(locale),
-                onChanged: (data) =>
-                    ref.read(settingsViewModelProvider.notifier).update(data),
-                onReload: () =>
-                    ref.read(settingsViewModelProvider.notifier).load(),
-                onSave: () =>
-                    ref.read(settingsViewModelProvider.notifier).save(),
-                onMyPageTap: () => context.go(RoutePaths.myPage),
-                onCartTap: () => context.go(RoutePaths.cart),
-                onWishlistTap: () => context.go(RoutePaths.wishlist),
-                onPasswordTap: () => context.go(RoutePaths.passwordReset),
-              ),
-            ),
-          ),
-        ],
-      ),
+    return _SettingsBody(
+      settingsState: settingsState,
+      currentLocale: currentLocale,
+      profile: profile,
+      onLocaleChanged: (locale) =>
+          ref.read(localeProvider.notifier).setLocale(locale),
+      onChanged: (data) =>
+          ref.read(settingsViewModelProvider.notifier).update(data),
+      onReload: () => ref.read(settingsViewModelProvider.notifier).load(),
+      onSave: () => ref.read(settingsViewModelProvider.notifier).save(),
+      onPasswordTap: () => context.go(RoutePaths.passwordReset),
     );
   }
-
-  Future<List<String>> _handleSearchSuggestionsRequested(String query) {
-    return ref
-        .read(searchAutocompleteRemoteDataSourceProvider)
-        .fetchSuggestions(query);
-  }
-
-  void _handleSearchSubmitted(String value) {
-    final q = value.trim();
-    if (q.isEmpty) return;
-    context.goNamed(RouteNames.search, queryParameters: {'q': q});
-  }
-
-  void _handleLogout() {
-    ref.read(authTokenStoreProvider.notifier).clear();
-    context.go(RoutePaths.landing);
-  }
-
-  List<String> _keywordsFrom(HomeDashboardState state) => switch (state) {
-    HomeDashboardSuccess(:final dashboard) =>
-      dashboard.trendingKeywords.map((k) => k.keyword).toList(),
-    _ => const [],
-  };
-
-  List<HomeProductData> _productsFrom(HomeDashboardState state) =>
-      switch (state) {
-        HomeDashboardSuccess(:final dashboard) =>
-          dashboard.recommendedProducts.map(_toHomeProductData).toList(),
-        _ => const [],
-      };
-
-  HomeProductData _toHomeProductData(DashboardProduct p) => HomeProductData(
-    productId: p.id,
-    name: p.name,
-    storeName: p.storeName,
-    priceLabel: _formatPrice(p.price),
-    ratingLabel: p.rating?.toStringAsFixed(1) ?? '-',
-    reviewCountLabel: p.reviewCount?.toString() ?? '-',
-    rtiLabel: p.rtiScore == null ? '' : 'RTI ${p.rtiScore}',
-    imageUrl: p.imageUrl,
-    label: p.label ?? '',
-  );
 }
 
 // ─────────────────────────────────────────────────────────────
@@ -185,9 +81,6 @@ class _SettingsBody extends StatelessWidget {
     required this.onChanged,
     required this.onReload,
     required this.onSave,
-    required this.onMyPageTap,
-    required this.onCartTap,
-    required this.onWishlistTap,
     required this.onPasswordTap,
   });
 
@@ -198,9 +91,6 @@ class _SettingsBody extends StatelessWidget {
   final ValueChanged<SettingsData> onChanged;
   final VoidCallback onReload;
   final VoidCallback onSave;
-  final VoidCallback onMyPageTap;
-  final VoidCallback onCartTap;
-  final VoidCallback onWishlistTap;
   final VoidCallback onPasswordTap;
 
   @override
@@ -269,13 +159,8 @@ class _SettingsBody extends StatelessWidget {
       children: [
         _PageTitle(profile: profile),
         const SizedBox(height: AppSpacing.lg),
-        if (context.viewportSize.width < 980) ...[
-          _SideNavCard(
-            onMyPageTap: onMyPageTap,
-            onCartTap: onCartTap,
-            onWishlistTap: onWishlistTap,
-          ),
-          const SizedBox(height: AppSpacing.xl),
+        // 메뉴는 공통 틀이 그린다. 여기서는 설정 내용과 계정 카드만 놓는다.
+        if (context.viewportSize.width < 1240) ...[
           mainContent,
           const SizedBox(height: AppSpacing.xl),
           rightColumn,
@@ -283,16 +168,7 @@ class _SettingsBody extends StatelessWidget {
           Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              SizedBox(
-                width: 248,
-                child: _SideNavCard(
-                  onMyPageTap: onMyPageTap,
-                  onCartTap: onCartTap,
-                  onWishlistTap: onWishlistTap,
-                ),
-              ),
-              const SizedBox(width: AppSpacing.lg),
-              Expanded(flex: 3, child: mainContent),
+              Expanded(child: mainContent),
               const SizedBox(width: AppSpacing.lg),
               SizedBox(width: 272, child: rightColumn),
             ],
@@ -402,117 +278,6 @@ class _BreadcrumbSep extends StatelessWidget {
 // ─────────────────────────────────────────────────────────────
 // Sidebar nav
 // ─────────────────────────────────────────────────────────────
-
-class _SideNavCard extends StatelessWidget {
-  const _SideNavCard({
-    required this.onMyPageTap,
-    required this.onCartTap,
-    required this.onWishlistTap,
-  });
-
-  final VoidCallback onMyPageTap;
-  final VoidCallback onCartTap;
-  final VoidCallback onWishlistTap;
-
-  @override
-  Widget build(BuildContext context) {
-    return _Card(
-      padding: EdgeInsets.zero,
-      child: Column(
-        children: [
-          const SizedBox(height: AppSpacing.xs),
-          _NavItem(
-            icon: Icons.home_outlined,
-            label: AppLocalizations.of(context).navMyPage,
-            onTap: onMyPageTap,
-          ),
-          _NavItem(
-            icon: Icons.inventory_2_outlined,
-            label: AppLocalizations.of(context).sideNavOrders,
-            onTap: onCartTap,
-          ),
-          _NavItem(
-            icon: Icons.favorite_border,
-            label: AppLocalizations.of(context).navWishlist,
-            onTap: onWishlistTap,
-          ),
-          _NavItem(
-            icon: Icons.history,
-            label: AppLocalizations.of(context).sideNavRecentlyViewed,
-            onTap: onWishlistTap,
-          ),
-          _NavItem(
-            icon: Icons.rate_review_outlined,
-            label: AppLocalizations.of(context).sideNavReviewActivity,
-            onTap: onMyPageTap,
-          ),
-          _NavItem(
-            icon: Icons.settings_outlined,
-            label: AppLocalizations.of(context).sideNavAccountSettings,
-            selected: true,
-            onTap: () {},
-          ),
-          const SizedBox(height: AppSpacing.xs),
-        ],
-      ),
-    );
-  }
-}
-
-class _NavItem extends StatelessWidget {
-  const _NavItem({
-    required this.icon,
-    required this.label,
-    required this.onTap,
-    this.selected = false,
-  });
-
-  final IconData icon;
-  final String label;
-  final VoidCallback onTap;
-  final bool selected;
-
-  @override
-  Widget build(BuildContext context) {
-    return Material(
-      color: selected ? AppColors.primaryLight : Colors.transparent,
-      child: InkWell(
-        onTap: onTap,
-        child: Container(
-          height: 52,
-          decoration: BoxDecoration(
-            border: selected
-                ? const Border(
-                    left: BorderSide(color: AppColors.primary, width: 3),
-                  )
-                : null,
-          ),
-          padding: EdgeInsets.only(
-            left: selected ? AppSpacing.lg - 3 : AppSpacing.lg,
-            right: AppSpacing.lg,
-          ),
-          child: Row(
-            children: [
-              Icon(
-                icon,
-                color: selected ? AppColors.primary : AppColors.textSecondary,
-                size: 20,
-              ),
-              const SizedBox(width: AppSpacing.sm),
-              Text(
-                label,
-                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                  color: selected ? AppColors.primary : AppColors.textPrimary,
-                  fontWeight: selected ? FontWeight.w800 : FontWeight.w600,
-                ),
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-}
 
 // ─────────────────────────────────────────────────────────────
 // Notification section
@@ -1319,9 +1084,8 @@ class _ToggleRow extends StatelessWidget {
 }
 
 class _Card extends StatelessWidget {
-  const _Card({required this.child, this.padding});
+  const _Card({required this.child});
   final Widget child;
-  final EdgeInsetsGeometry? padding;
 
   @override
   Widget build(BuildContext context) {
@@ -1338,7 +1102,7 @@ class _Card extends StatelessWidget {
           ),
         ],
       ),
-      padding: padding ?? const EdgeInsets.all(AppSpacing.lg),
+      padding: const EdgeInsets.all(AppSpacing.lg),
       child: child,
     );
   }
@@ -1347,13 +1111,3 @@ class _Card extends StatelessWidget {
 // ─────────────────────────────────────────────────────────────
 // Helpers
 // ─────────────────────────────────────────────────────────────
-
-String _formatPrice(int price) {
-  final digits = price.toString();
-  final buf = StringBuffer();
-  for (var i = 0; i < digits.length; i++) {
-    if (i > 0 && (digits.length - i) % 3 == 0) buf.write(',');
-    buf.write(digits[i]);
-  }
-  return '$buf원';
-}
