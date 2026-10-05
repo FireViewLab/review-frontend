@@ -1490,4 +1490,97 @@ class AppLocalizationsKo extends AppLocalizations {
 
   @override
   String get adminUserPlanDateRequired => '오늘 이후의 만료일을 선택해주세요.';
+
+  @override
+  String get externalWishAdd => '찜하기';
+
+  @override
+  String get externalWishRemove => '찜 취소';
+
+  @override
+  String get externalCartAdd => '장바구니 담기';
+
+  @override
+  String get externalCartAdded => '장바구니에 담김';
+
+  @override
+  String get externalReviewMenu => '리뷰 메뉴';
+
+  @override
+  String get externalReport => '신고하기';
+
+  @override
+  String get externalReal => '실제 리뷰 같아요';
+
+  @override
+  String get externalFake => '가짜 리뷰 같아요';
+
+  @override
+  String get externalNotCollected => '상품 수집이 끝난 뒤 다시 시도해주세요.';
+
+  @override
+  String get externalUnavailable => '데이터 서버에 연결할 수 없습니다. 잠시 후 다시 시도해주세요.';
+
+  @override
+  String get externalReportDuplicate => '이미 신고한 리뷰입니다.';
+
+  @override
+  String get externalFeedbackDuplicate => '이미 피드백을 남긴 리뷰입니다.';
+
+  @override
+  String get externalFailed => '요청을 처리하지 못했습니다. 다시 시도해주세요.';
+
+  @override
+  String get externalSuccess => '처리되었습니다.';
+
+  @override
+  String get externalUnanalyzed => '분석 전';
+
+  @override
+  String get externalReason => '신고 사유';
+
+  @override
+  String get externalDetail => '상세 내용';
+
+  @override
+  String get externalDetailValidation => '상세 내용을 20자 이상 500자 이내로 작성해주세요.';
+
+  @override
+  String get externalAttachment => '첨부 URL (선택)';
+
+  @override
+  String get externalAttachmentValidation => '올바른 http 또는 https URL을 입력해주세요.';
+
+  @override
+  String get externalEvidence => '분석 근거 포함';
+
+  @override
+  String get externalCancel => '취소';
+
+  @override
+  String get externalSubmit => '제출';
+
+  @override
+  String get externalReasonFake => '가짜 리뷰 의심';
+
+  @override
+  String get externalReasonAi => '자동 생성 의심';
+
+  @override
+  String get externalReasonIrrelevant => '상품과 무관한 내용';
+
+  @override
+  String get externalReasonInappropriate => '부적절한 표현 / 개인정보';
+
+  @override
+  String get externalReasonAd => '광고성 리뷰';
+
+  @override
+  String get externalReasonRepeated => '반복 내용';
+
+  @override
+  String get externalReasonOffensive => '모욕적인 내용';
+
+  @override
+  String get externalReasonOther => '기타';
 }

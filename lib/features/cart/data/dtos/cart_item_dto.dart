@@ -37,9 +37,9 @@ class CartItemDto {
       ]),
       price: _readInt(json, ['price', 'salePrice', 'currentPrice']),
       quantity: _readInt(json, ['quantity', 'qty', 'count']),
-      avgRti: _readDouble(json, ['avgRti', 'rtiScore', 'rti']) ?? 0.0,
-      rtiGrade: _readString(json, ['rtiGrade', 'grade']),
-      rtiColor: _readString(json, ['rtiColor', 'color']),
+      avgRti: _readDouble(json, ['avgRti', 'rtiScore', 'rti']),
+      rtiGrade: _readNullableString(json, ['rtiGrade', 'grade']),
+      rtiColor: _readNullableString(json, ['rtiColor', 'color']),
       trustLevel: _readString(json, ['trustLevel', 'trust', 'rtiLabel']),
       shippingFee: _readInt(json, ['shippingFee', 'shipping_fee', 'deliveryFee']),
       originalPrice: _readNullableInt(json, ['originalPrice', 'regularPrice', 'listPrice']),
@@ -61,9 +61,9 @@ class CartItemDto {
   final String imageUrl;
   final int price;
   final int quantity;
-  final double avgRti;
-  final String rtiGrade;
-  final String rtiColor;
+  final double? avgRti;
+  final String? rtiGrade;
+  final String? rtiColor;
   final String trustLevel;
   final int shippingFee;
   final int? originalPrice;

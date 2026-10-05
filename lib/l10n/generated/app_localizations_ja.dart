@@ -1490,4 +1490,97 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String get adminUserPlanDateRequired => '今日以降の有効期限を選択してください。';
+
+  @override
+  String get externalWishAdd => 'お気に入り';
+
+  @override
+  String get externalWishRemove => 'お気に入り解除';
+
+  @override
+  String get externalCartAdd => 'カートに追加';
+
+  @override
+  String get externalCartAdded => '追加済み';
+
+  @override
+  String get externalReviewMenu => 'レビューメニュー';
+
+  @override
+  String get externalReport => '報告する';
+
+  @override
+  String get externalReal => '本物のレビューだと思う';
+
+  @override
+  String get externalFake => '偽物のレビューだと思う';
+
+  @override
+  String get externalNotCollected => '商品収集の完了後に再試行してください。';
+
+  @override
+  String get externalUnavailable => 'データサーバーに接続できません。後ほど再試行してください。';
+
+  @override
+  String get externalReportDuplicate => 'このレビューは報告済みです。';
+
+  @override
+  String get externalFeedbackDuplicate => 'このレビューには回答済みです。';
+
+  @override
+  String get externalFailed => '処理できませんでした。再試行してください。';
+
+  @override
+  String get externalSuccess => '完了しました。';
+
+  @override
+  String get externalUnanalyzed => '分析前';
+
+  @override
+  String get externalReason => '報告理由';
+
+  @override
+  String get externalDetail => '詳細';
+
+  @override
+  String get externalDetailValidation => '20〜500文字で入力してください。';
+
+  @override
+  String get externalAttachment => '添付URL（任意）';
+
+  @override
+  String get externalAttachmentValidation => '有効なhttpまたはhttps URLを入力してください。';
+
+  @override
+  String get externalEvidence => '分析根拠を含める';
+
+  @override
+  String get externalCancel => 'キャンセル';
+
+  @override
+  String get externalSubmit => '送信';
+
+  @override
+  String get externalReasonFake => '偽物の疑い';
+
+  @override
+  String get externalReasonAi => '自動生成の疑い';
+
+  @override
+  String get externalReasonIrrelevant => '商品と無関係';
+
+  @override
+  String get externalReasonInappropriate => '不適切な表現・個人情報';
+
+  @override
+  String get externalReasonAd => '広告';
+
+  @override
+  String get externalReasonRepeated => '繰り返しの内容';
+
+  @override
+  String get externalReasonOffensive => '侮辱的な内容';
+
+  @override
+  String get externalReasonOther => 'その他';
 }

@@ -271,7 +271,7 @@ class _TableArea extends StatelessWidget {
           id: r.reportId,
           cells: [
             _cell('RPT-${r.reportId}', strong: true),
-            _cell('RWV-${r.reviewId}'),
+            _cell(r.externalReviewId ?? (r.reviewId == null ? '—' : 'RWV-${r.reviewId}')),
             _cell(r.productName),
             _cell(r.reasonDescription.isEmpty ? r.reason : r.reasonDescription),
             _cell(r.detail),

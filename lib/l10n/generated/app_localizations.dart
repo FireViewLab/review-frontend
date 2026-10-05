@@ -2909,6 +2909,192 @@ abstract class AppLocalizations {
   /// In ko, this message translates to:
   /// **'오늘 이후의 만료일을 선택해주세요.'**
   String get adminUserPlanDateRequired;
+
+  /// No description provided for @externalWishAdd.
+  ///
+  /// In ko, this message translates to:
+  /// **'찜하기'**
+  String get externalWishAdd;
+
+  /// No description provided for @externalWishRemove.
+  ///
+  /// In ko, this message translates to:
+  /// **'찜 취소'**
+  String get externalWishRemove;
+
+  /// No description provided for @externalCartAdd.
+  ///
+  /// In ko, this message translates to:
+  /// **'장바구니 담기'**
+  String get externalCartAdd;
+
+  /// No description provided for @externalCartAdded.
+  ///
+  /// In ko, this message translates to:
+  /// **'장바구니에 담김'**
+  String get externalCartAdded;
+
+  /// No description provided for @externalReviewMenu.
+  ///
+  /// In ko, this message translates to:
+  /// **'리뷰 메뉴'**
+  String get externalReviewMenu;
+
+  /// No description provided for @externalReport.
+  ///
+  /// In ko, this message translates to:
+  /// **'신고하기'**
+  String get externalReport;
+
+  /// No description provided for @externalReal.
+  ///
+  /// In ko, this message translates to:
+  /// **'실제 리뷰 같아요'**
+  String get externalReal;
+
+  /// No description provided for @externalFake.
+  ///
+  /// In ko, this message translates to:
+  /// **'가짜 리뷰 같아요'**
+  String get externalFake;
+
+  /// No description provided for @externalNotCollected.
+  ///
+  /// In ko, this message translates to:
+  /// **'상품 수집이 끝난 뒤 다시 시도해주세요.'**
+  String get externalNotCollected;
+
+  /// No description provided for @externalUnavailable.
+  ///
+  /// In ko, this message translates to:
+  /// **'데이터 서버에 연결할 수 없습니다. 잠시 후 다시 시도해주세요.'**
+  String get externalUnavailable;
+
+  /// No description provided for @externalReportDuplicate.
+  ///
+  /// In ko, this message translates to:
+  /// **'이미 신고한 리뷰입니다.'**
+  String get externalReportDuplicate;
+
+  /// No description provided for @externalFeedbackDuplicate.
+  ///
+  /// In ko, this message translates to:
+  /// **'이미 피드백을 남긴 리뷰입니다.'**
+  String get externalFeedbackDuplicate;
+
+  /// No description provided for @externalFailed.
+  ///
+  /// In ko, this message translates to:
+  /// **'요청을 처리하지 못했습니다. 다시 시도해주세요.'**
+  String get externalFailed;
+
+  /// No description provided for @externalSuccess.
+  ///
+  /// In ko, this message translates to:
+  /// **'처리되었습니다.'**
+  String get externalSuccess;
+
+  /// No description provided for @externalUnanalyzed.
+  ///
+  /// In ko, this message translates to:
+  /// **'분석 전'**
+  String get externalUnanalyzed;
+
+  /// No description provided for @externalReason.
+  ///
+  /// In ko, this message translates to:
+  /// **'신고 사유'**
+  String get externalReason;
+
+  /// No description provided for @externalDetail.
+  ///
+  /// In ko, this message translates to:
+  /// **'상세 내용'**
+  String get externalDetail;
+
+  /// No description provided for @externalDetailValidation.
+  ///
+  /// In ko, this message translates to:
+  /// **'상세 내용을 20자 이상 500자 이내로 작성해주세요.'**
+  String get externalDetailValidation;
+
+  /// No description provided for @externalAttachment.
+  ///
+  /// In ko, this message translates to:
+  /// **'첨부 URL (선택)'**
+  String get externalAttachment;
+
+  /// No description provided for @externalAttachmentValidation.
+  ///
+  /// In ko, this message translates to:
+  /// **'올바른 http 또는 https URL을 입력해주세요.'**
+  String get externalAttachmentValidation;
+
+  /// No description provided for @externalEvidence.
+  ///
+  /// In ko, this message translates to:
+  /// **'분석 근거 포함'**
+  String get externalEvidence;
+
+  /// No description provided for @externalCancel.
+  ///
+  /// In ko, this message translates to:
+  /// **'취소'**
+  String get externalCancel;
+
+  /// No description provided for @externalSubmit.
+  ///
+  /// In ko, this message translates to:
+  /// **'제출'**
+  String get externalSubmit;
+
+  /// No description provided for @externalReasonFake.
+  ///
+  /// In ko, this message translates to:
+  /// **'가짜 리뷰 의심'**
+  String get externalReasonFake;
+
+  /// No description provided for @externalReasonAi.
+  ///
+  /// In ko, this message translates to:
+  /// **'자동 생성 의심'**
+  String get externalReasonAi;
+
+  /// No description provided for @externalReasonIrrelevant.
+  ///
+  /// In ko, this message translates to:
+  /// **'상품과 무관한 내용'**
+  String get externalReasonIrrelevant;
+
+  /// No description provided for @externalReasonInappropriate.
+  ///
+  /// In ko, this message translates to:
+  /// **'부적절한 표현 / 개인정보'**
+  String get externalReasonInappropriate;
+
+  /// No description provided for @externalReasonAd.
+  ///
+  /// In ko, this message translates to:
+  /// **'광고성 리뷰'**
+  String get externalReasonAd;
+
+  /// No description provided for @externalReasonRepeated.
+  ///
+  /// In ko, this message translates to:
+  /// **'반복 내용'**
+  String get externalReasonRepeated;
+
+  /// No description provided for @externalReasonOffensive.
+  ///
+  /// In ko, this message translates to:
+  /// **'모욕적인 내용'**
+  String get externalReasonOffensive;
+
+  /// No description provided for @externalReasonOther.
+  ///
+  /// In ko, this message translates to:
+  /// **'기타'**
+  String get externalReasonOther;
 }
 
 class _AppLocalizationsDelegate

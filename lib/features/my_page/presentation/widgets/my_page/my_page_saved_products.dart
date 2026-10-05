@@ -60,12 +60,12 @@ class MyPageSavedProductsSection extends StatelessWidget {
         final item = displayItems[index];
         return MyPageCompactProductCard(
           title: item.name,
-          subtitle: item.platform ?? item.categoryDisplayName,
+          subtitle: item.platform ?? item.categoryDisplayName ?? AppLocalizations.of(context).externalUnanalyzed,
           imageUrl: item.imageUrl,
           price: item.price,
           rating: item.avgRating,
           reviewCount: item.reviewCount,
-          rtiLabel: item.avgRti == 0 ? '' : 'RTI ${item.avgRti.round()}',
+          rtiLabel: item.avgRti == null ? AppLocalizations.of(context).externalUnanalyzed : 'RTI ${item.avgRti!.round()}',
           onTap: () => onProductTap(item.productId),
         );
       },

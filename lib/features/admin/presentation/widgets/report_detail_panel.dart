@@ -1,3 +1,5 @@
+import 'package:go_router/go_router.dart';
+import 'package:re_view_front/features/external_product/domain/entities/external_history_target.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:re_view_front/app/theme/app_colors.dart';
@@ -109,7 +111,7 @@ class _ReportDetailPanelState extends ConsumerState<ReportDetailPanel> {
             child: _InfoBox(
               rows: [
                 (l10n.adminReportId, 'RPT-${r.reportId}'),
-                (l10n.adminReviewId, 'RWV-${r.reviewId}'),
+                (l10n.adminReviewId, r.externalReviewId ?? (r.reviewId == null ? '—' : 'RWV-${r.reviewId}')),
                 (
                   l10n.adminReportReason,
                   r.reasonDescription.isEmpty ? r.reason : r.reasonDescription,
@@ -133,7 +135,10 @@ class _ReportDetailPanelState extends ConsumerState<ReportDetailPanel> {
                   ),
                 ),
                 const SizedBox(height: AppSpacing.xxs),
-                Text(r.reviewContent, style: _bodyStyle),
+                InkWell(
+                  onTap: externalHistoryTarget(r.productExternalId) == null ? null : () => context.go(externalHistoryTarget(r.productExternalId)!.routePath),
+                  child: Text(r.reviewContent ?? r.productName, style: _bodyStyle),
+                ),
               ],
             ),
           ),

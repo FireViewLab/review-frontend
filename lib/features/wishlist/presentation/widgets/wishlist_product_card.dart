@@ -23,7 +23,9 @@ class WishlistProductCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final rtiColor = colorFromHex(item.rtiColor);
+    final rtiColor = item.rtiColor == null
+        ? AppColors.textTertiary
+        : colorFromHex(item.rtiColor!);
 
     return ClipRRect(
       borderRadius: BorderRadius.circular(10),
@@ -51,10 +53,14 @@ class WishlistProductCard extends StatelessWidget {
                   Positioned(
                     top: AppSpacing.xs,
                     left: AppSpacing.xs,
-                    child: RtiBadge(
-                      value: item.avgRti.round(),
-                      color: rtiColor,
-                    ),
+                    child: item.avgRti == null ||
+                            item.rtiGrade == null ||
+                            item.rtiColor == null
+                        ? Text(AppLocalizations.of(context).externalUnanalyzed)
+                        : RtiBadge(
+                            value: item.avgRti!.round(),
+                            color: rtiColor,
+                          ),
                   ),
                   if (item.isPriceDrop)
                     Positioned(

@@ -4,6 +4,7 @@ import 'package:re_view_front/app/theme/app_spacing.dart';
 import 'package:re_view_front/features/cart/domain/entities/cart_item.dart';
 import 'package:re_view_front/features/search/presentation/utils/search_formatters.dart';
 import 'package:re_view_front/features/search/presentation/widgets/search_product_card.dart';
+import 'package:re_view_front/l10n/generated/app_localizations.dart';
 import 'package:re_view_front/shared/widgets/app_network_image.dart';
 
 class CartItemCard extends StatelessWidget {
@@ -30,7 +31,9 @@ class CartItemCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final rtiColor = colorFromHex(item.rtiColor);
+    final rtiColor = item.rtiColor == null
+        ? AppColors.textTertiary
+        : colorFromHex(item.rtiColor!);
     final isMobile = MediaQuery.sizeOf(context).width < 600;
 
     return DecoratedBox(
@@ -207,9 +210,17 @@ class _ProductInfo extends StatelessWidget {
         const SizedBox(height: AppSpacing.xs),
         Row(
           children: [
-            RtiBadge(value: item.avgRti.round(), color: rtiColor),
+            if (item.avgRti == null ||
+                item.rtiGrade == null ||
+                item.rtiColor == null)
+              Text(AppLocalizations.of(context).externalUnanalyzed)
+            else
+              RtiBadge(value: item.avgRti!.round(), color: rtiColor),
             const SizedBox(width: AppSpacing.xs),
-            Text(
+            if (item.avgRti != null &&
+                item.rtiGrade != null &&
+                item.rtiColor != null)
+              Text(
               '신뢰도 ${item.trustLevel}',
               style: Theme.of(context).textTheme.labelSmall?.copyWith(
                 color: AppColors.textSecondary,
