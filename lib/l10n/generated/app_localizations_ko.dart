@@ -1262,6 +1262,101 @@ class AppLocalizationsKo extends AppLocalizations {
   String get chatPlanPro => '프로';
 
   @override
+  String get planTitle => '요금제';
+
+  @override
+  String get planSubtitle => 'AI 어시스턴트를 얼마나 쓸지 고르세요.';
+
+  @override
+  String get planCurrent => '현재 요금제';
+
+  @override
+  String planUsageToday(int used, int limit) {
+    return '오늘 $used/$limit회 사용';
+  }
+
+  @override
+  String planUsageUnlimited(int used) {
+    return '오늘 $used회 사용 · 횟수 제한 없음';
+  }
+
+  @override
+  String planResetAt(String time) {
+    return '$time에 초기화';
+  }
+
+  @override
+  String planExpiresAt(String date) {
+    return '$date까지 이용';
+  }
+
+  @override
+  String planDailyQuestions(int count) {
+    return '하루 질문 $count회';
+  }
+
+  @override
+  String get planDailyUnlimited => '하루 질문 횟수 제한 없음';
+
+  @override
+  String get planFeatureStandard => '기본 답변';
+
+  @override
+  String get planFeatureLimited => '하루 질문 수가 가장 적어요';
+
+  @override
+  String get planFeatureMore => '무료보다 더 많은 하루 질문';
+
+  @override
+  String get planFeatureMost => '가장 많은 하루 질문';
+
+  @override
+  String get planFeaturePro => '프로 모드: 더 자세한 답변';
+
+  @override
+  String get planSelect => '이 요금제로 변경';
+
+  @override
+  String get planCurrentBadge => '이용 중';
+
+  @override
+  String planConfirmTitle(String plan) {
+    return '$plan 요금제로 변경할까요?';
+  }
+
+  @override
+  String get planConfirmBody => '지금은 결제 없이 바로 바뀌어요.';
+
+  @override
+  String get planConfirmAction => '변경';
+
+  @override
+  String get planCancel => '취소';
+
+  @override
+  String planChanged(String plan) {
+    return '$plan 요금제로 바뀌었어요';
+  }
+
+  @override
+  String get planChangeUnavailable => '요금제 변경은 아직 준비 중이에요.';
+
+  @override
+  String get planChangeFailed => '요금제를 바꾸지 못했어요. 다시 시도해 주세요.';
+
+  @override
+  String get planLoadFailed => '요금제 정보를 불러오지 못했어요.';
+
+  @override
+  String get planRetry => '다시 시도';
+
+  @override
+  String get myPageSideNavPlan => '요금제';
+
+  @override
+  String get chatViewPlans => '요금제 보기';
+
+  @override
   String chatQuotaRemaining(int remaining, int limit) {
     return '오늘 남은 질문 $remaining/$limit';
   }

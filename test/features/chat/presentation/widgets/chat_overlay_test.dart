@@ -572,6 +572,52 @@ void main() {
     expect(find.byTooltip(l10n.chatClose).hitTestable(), findsOneWidget);
   });
 
+  testWidgets('links to the plan page when the limit is reached', (
+    tester,
+  ) async {
+    final repository = _FakeChatRepository()
+      ..quota = Success(_quota(remaining: 0));
+    final subject = await _pumpOverlay(
+      tester,
+      path: RoutePaths.home,
+      isLoggedIn: true,
+      repository: repository,
+    );
+    final l10n = _localizations(tester);
+    await tester.tap(find.byTooltip(l10n.chatLauncherTooltip));
+    await tester.pumpAndSettle();
+
+    await tester.tap(find.text(l10n.chatViewPlans));
+    await tester.pumpAndSettle();
+    expect(
+      subject.router.routerDelegate.currentConfiguration.uri.path,
+      RoutePaths.plan,
+    );
+  });
+
+  testWidgets('links to the plan page from the locked pro mode', (
+    tester,
+  ) async {
+    final repository = _FakeChatRepository()..quota = Success(_quota());
+    final subject = await _pumpOverlay(
+      tester,
+      path: RoutePaths.home,
+      isLoggedIn: true,
+      repository: repository,
+    );
+    final l10n = _localizations(tester);
+    await tester.tap(find.byTooltip(l10n.chatLauncherTooltip));
+    await tester.pumpAndSettle();
+    await tester.tap(find.text(l10n.chatModePro));
+    await tester.pump();
+    await tester.tap(find.text(l10n.chatViewPlans));
+    await tester.pumpAndSettle(const Duration(seconds: 5));
+    expect(
+      subject.router.routerDelegate.currentConfiguration.uri.path,
+      RoutePaths.plan,
+    );
+  });
+
   testWidgets('copies an answer', (tester) async {
     await _pumpOverlay(tester, path: RoutePaths.home, isLoggedIn: true);
     final l10n = _localizations(tester);
@@ -718,6 +764,7 @@ _pumpOverlay(
         RoutePaths.resetPassword,
         RoutePaths.passwordReset,
         RoutePaths.productDetail,
+        RoutePaths.plan,
       ])
         GoRoute(
           path: route,

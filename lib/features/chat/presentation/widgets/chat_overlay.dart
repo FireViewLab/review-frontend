@@ -117,6 +117,12 @@ class _ChatLauncherLayout extends ConsumerWidget {
         edge +
         (isMobile && hasBottomTabs ? _bottomTabsHeight : 0);
 
+    void onPlanPressed() {
+      // 모바일에서는 패널이 화면을 덮으므로 닫고 이동한다.
+      if (isMobile) ref.read(chatViewModelProvider.notifier).close();
+      router.go(RoutePaths.plan);
+    }
+
     void onLoginPressed() {
       ref.read(chatViewModelProvider.notifier).close();
       router.go(RoutePaths.login);
@@ -154,6 +160,7 @@ class _ChatLauncherLayout extends ConsumerWidget {
               child: ChatPanel(
                 productId: productId,
                 onLoginPressed: onLoginPressed,
+                onPlanPressed: onPlanPressed,
                 fullScreen: true,
               ),
             ),
@@ -175,6 +182,7 @@ class _ChatLauncherLayout extends ConsumerWidget {
               child: ChatPanel(
                 productId: productId,
                 onLoginPressed: onLoginPressed,
+                onPlanPressed: onPlanPressed,
               ),
             ),
           ),

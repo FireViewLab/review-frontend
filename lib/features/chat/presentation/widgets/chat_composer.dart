@@ -25,6 +25,7 @@ class ChatComposer extends StatefulWidget {
     required this.onSend,
     required this.onModeChanged,
     required this.onQuotaReset,
+    required this.onPlanPressed,
     this.autofocus = true,
   });
 
@@ -42,6 +43,9 @@ class ChatComposer extends StatefulWidget {
 
   /// 한도 초기화 시각이 지났을 때. 사용량을 다시 받아 오는 데 쓴다.
   final VoidCallback onQuotaReset;
+
+  /// 요금제 화면으로 간다.
+  final VoidCallback onPlanPressed;
   final ValueChanged<String> onSend;
   final ValueChanged<ChatMode> onModeChanged;
   final bool autofocus;
@@ -165,7 +169,10 @@ class ChatComposerState extends State<ChatComposer> {
         mainAxisSize: MainAxisSize.min,
         children: [
           if (exhausted)
-            _LimitBanner(resetAt: quota?.resetAt)
+            _LimitBanner(
+              resetAt: quota?.resetAt,
+              onPlanPressed: widget.onPlanPressed,
+            )
           else if (quota != null)
             _QuotaLine(quota: quota),
           GestureDetector(
@@ -327,6 +334,15 @@ class ChatComposerState extends State<ChatComposer> {
                     ),
                   ),
                 ),
+                if (_showLockedHint)
+                  TextButton(
+                    onPressed: widget.onPlanPressed,
+                    style: TextButton.styleFrom(
+                      visualDensity: VisualDensity.compact,
+                      padding: const EdgeInsets.symmetric(horizontal: 8),
+                    ),
+                    child: Text(l10n.chatViewPlans),
+                  ),
               ],
             ),
           ],
@@ -394,9 +410,10 @@ class _QuotaLine extends StatelessWidget {
 }
 
 class _LimitBanner extends StatelessWidget {
-  const _LimitBanner({required this.resetAt});
+  const _LimitBanner({required this.resetAt, required this.onPlanPressed});
 
   final DateTime? resetAt;
+  final VoidCallback onPlanPressed;
 
   @override
   Widget build(BuildContext context) {
@@ -435,6 +452,11 @@ class _LimitBanner extends StatelessWidget {
               ),
               style: textTheme.bodySmall?.copyWith(color: ChatStyle.ink),
             ),
+          ),
+          TextButton(
+            onPressed: onPlanPressed,
+            style: TextButton.styleFrom(visualDensity: VisualDensity.compact),
+            child: Text(l10n.chatViewPlans),
           ),
         ],
       ),
