@@ -10,7 +10,9 @@ import 'package:re_view_front/features/external_product/domain/entities/external
 import 'package:re_view_front/features/external_product/domain/entities/external_product_ref.dart';
 import 'package:re_view_front/features/external_product/presentation/providers/external_product_providers.dart';
 import 'package:re_view_front/features/external_product/presentation/view_models/external_product_state.dart';
+import 'package:re_view_front/features/external_product/presentation/widgets/external_product_action_bar.dart';
 import 'package:re_view_front/features/external_product/presentation/widgets/external_product_sections.dart';
+import 'package:re_view_front/features/external_product/presentation/widgets/external_review_actions.dart';
 import 'package:re_view_front/features/home/presentation/data/home_content.dart';
 import 'package:re_view_front/features/home/presentation/home_navigation.dart';
 import 'package:re_view_front/features/home/presentation/providers/home_providers.dart';
@@ -221,7 +223,13 @@ class _Ready extends StatelessWidget {
       onVisitShop: url == null || !url.hasScheme
           ? null
           : () => launchUrl(url, mode: LaunchMode.externalApplication),
-      actions: const [ChatAskButton()],
+      actions: [
+        ExternalProductActionBar(
+          product: product.ref,
+          springProductId: state.springProductId,
+        ),
+        const ChatAskButton(),
+      ],
     );
 
     return Column(
@@ -280,7 +288,15 @@ class _Ready extends StatelessWidget {
                 for (final (index, review) in state.reviews.indexed) ...[
                   if (index > 0)
                     const Divider(height: 1, color: AppColors.border),
-                  ExternalReviewTile(review: review),
+                  ExternalReviewTile(
+                    review: review,
+                    trailing: ExternalReviewActions(
+                      product: product.ref,
+                      reviewId: review.reviewId,
+                      productName: product.name,
+                      reviewContent: review.content,
+                    ),
+                  ),
                 ],
               ],
             ),
