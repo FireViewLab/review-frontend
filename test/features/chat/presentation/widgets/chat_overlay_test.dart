@@ -87,7 +87,7 @@ void main() {
     final repository = _FakeChatRepository()
       ..sessions = const Success(
         ChatSessionPage(
-          items: [ChatSession(id: 12, title: '이전 상품 대화', productId: '2')],
+          items: [ChatSession(id: 12, title: '이전 상품 대화', productId: 'kurly-2')],
           page: 0,
           isLast: true,
         ),
@@ -98,7 +98,7 @@ void main() {
       ]);
     final subject = await _pumpOverlay(
       tester,
-      path: '/product/1',
+      path: '/product/kurly/1',
       isLoggedIn: true,
       repository: repository,
     );
@@ -162,7 +162,7 @@ void main() {
     });
   }
 
-  for (final path in [RoutePaths.home, '/product/1']) {
+  for (final path in [RoutePaths.home, '/product/kurly/1']) {
     testWidgets('shows the launcher on $path', (tester) async {
       await _pumpOverlay(tester, path: path);
 
@@ -228,7 +228,7 @@ void main() {
   ) async {
     final subject = await _pumpOverlay(
       tester,
-      path: '/product/1',
+      path: '/product/kurly/1',
       isLoggedIn: true,
     );
     final l10n = _localizations(tester);
@@ -253,7 +253,7 @@ void main() {
     final repository = _FakeChatRepository()..pending = pending;
     final subject = await _pumpOverlay(
       tester,
-      path: '/product/1',
+      path: '/product/kurly/1',
       isLoggedIn: true,
       repository: repository,
     );
@@ -271,7 +271,7 @@ void main() {
     expect(repository.requests.single, (
       question: l10n.chatSuggestProduct1,
       sessionId: null,
-      productId: 1,
+      productId: 'kurly-1',
     ));
     expect(subject.container.read(chatViewModelProvider).isSending, isTrue);
     expect(find.text(l10n.chatThinking), findsOneWidget);
@@ -618,6 +618,30 @@ void main() {
     );
   });
 
+  testWidgets('talks without a product on a legacy product page', (
+    tester,
+  ) async {
+    final repository = _FakeChatRepository();
+    await _pumpOverlay(
+      tester,
+      path: '/product/900000000027',
+      isLoggedIn: true,
+      repository: repository,
+    );
+    final l10n = _localizations(tester);
+    await tester.tap(find.byTooltip(l10n.chatLauncherTooltip));
+    await tester.pumpAndSettle();
+
+    // 챗봇이 찾을 수 없는 상품이라 상품 안내와 상품 질문을 보여 주지 않는다.
+    expect(find.text(l10n.chatProductContext), findsNothing);
+    expect(find.text(l10n.chatSuggestGeneral1), findsOneWidget);
+    await tester.enterText(find.byType(TextField), '질문');
+    await tester.pump();
+    await tester.tap(find.byTooltip(l10n.chatSend));
+    await tester.pumpAndSettle();
+    expect(repository.requests.single.productId, isNull);
+  });
+
   testWidgets('copies an answer', (tester) async {
     await _pumpOverlay(tester, path: RoutePaths.home, isLoggedIn: true);
     final l10n = _localizations(tester);
@@ -690,7 +714,7 @@ void main() {
     (tester) async {
       final subject = await _pumpOverlay(
         tester,
-        path: '/product/1',
+        path: '/product/kurly/1',
         isLoggedIn: true,
       );
       final l10n = _localizations(tester);
@@ -701,13 +725,16 @@ void main() {
       await tester.tap(find.byTooltip(l10n.chatSend));
       await tester.pumpAndSettle();
 
-      subject.router.go('/product/2');
+      subject.router.go('/product/kurly/2');
       await tester.pumpAndSettle();
 
       expect(find.text(l10n.chatOtherProductNotice), findsOneWidget);
       expect(find.text(l10n.chatStartWithThisProduct), findsOneWidget);
       expect(find.text('리뷰 분석 답변'), findsOneWidget);
-      expect(subject.container.read(chatViewModelProvider).sessionProductId, 1);
+      expect(
+        subject.container.read(chatViewModelProvider).sessionProductId,
+        'kurly-1',
+      );
       expect(subject.repository.requests, hasLength(1));
       expect(tester.takeException(), isNull);
 
@@ -716,12 +743,15 @@ void main() {
       expect(find.text(l10n.chatOtherProductNotice), findsNothing);
       expect(find.text(l10n.chatProductContext), findsOneWidget);
       expect(subject.container.read(chatViewModelProvider).messages, isEmpty);
-      expect(subject.container.read(chatViewModelProvider).sessionProductId, 2);
+      expect(
+        subject.container.read(chatViewModelProvider).sessionProductId,
+        'kurly-2',
+      );
       await tester.tap(find.text(l10n.chatSuggestProduct1));
       await tester.pump();
       await tester.tap(find.byTooltip(l10n.chatSend));
       await tester.pumpAndSettle();
-      expect(subject.repository.requests.last.productId, 2);
+      expect(subject.repository.requests.last.productId, 'kurly-2');
       expect(subject.repository.requests.last.sessionId, isNull);
     },
   );
@@ -764,6 +794,7 @@ _pumpOverlay(
         RoutePaths.resetPassword,
         RoutePaths.passwordReset,
         RoutePaths.productDetail,
+        '/product/:platform/:id',
         RoutePaths.plan,
       ])
         GoRoute(
@@ -865,13 +896,14 @@ class _FakeChatRepository implements ChatRepository {
   }
 
   Completer<Result<ChatReply>>? pending;
-  final List<({String question, int? sessionId, int? productId})> requests = [];
+  final List<({String question, int? sessionId, String? productId})> requests =
+      [];
 
   @override
   Future<Result<ChatReply>> ask({
     required String question,
     int? sessionId,
-    int? productId,
+    String? productId,
     ChatMode mode = ChatMode.standard,
   }) async {
     modes.add(mode);

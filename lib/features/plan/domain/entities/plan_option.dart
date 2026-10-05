@@ -1,19 +1,14 @@
 /// 고를 수 있는 요금제 하나.
+///
+/// 요금제별 하루 한도는 서버 설정값이고 목록으로 내려 주지 않는다. 그래서 숫자는
+/// 현재 요금제에 한해 사용량 응답에서 가져오고, 여기에는 넣지 않는다.
 class PlanOption {
-  const PlanOption({required this.code, this.dailyLimit, this.proAvailable});
+  const PlanOption({required this.code});
 
   /// 서버 요금제 코드 (FREE / PLUS / PRO).
   final String code;
 
-  /// 하루 질문 수. 서버가 알려 주지 않으면 null이고, 화면에 숫자를 쓰지 않는다.
-  /// -1이면 제한 없음.
-  final int? dailyLimit;
-
-  /// 프로 모드를 쓸 수 있는지. 서버가 알려 주지 않으면 null.
-  final bool? proAvailable;
-
-  /// 서버가 요금제 목록을 주지 않을 때 쓰는 기본 목록. 수치는 넣지 않는다.
-  static const fallback = [
+  static const all = [
     PlanOption(code: 'FREE'),
     PlanOption(code: 'PLUS'),
     PlanOption(code: 'PRO'),

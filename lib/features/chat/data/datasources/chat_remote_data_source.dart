@@ -18,7 +18,7 @@ abstract interface class ChatRemoteDataSource {
   Future<ChatReply> ask({
     required String question,
     int? sessionId,
-    int? productId,
+    String? productId,
     ChatMode mode = ChatMode.standard,
   });
 
@@ -82,7 +82,7 @@ class ChatRemoteDataSourceImpl implements ChatRemoteDataSource {
   Future<ChatReply> ask({
     required String question,
     int? sessionId,
-    int? productId,
+    String? productId,
     ChatMode mode = ChatMode.standard,
   }) async {
     final response = await _apiClient.post(
@@ -92,7 +92,7 @@ class ChatRemoteDataSourceImpl implements ChatRemoteDataSource {
       data: <String, dynamic>{
         'question': question,
         'sessionId': ?sessionId,
-        'productId': ?productId?.toString(),
+        'productId': ?productId,
       },
       options: Options(receiveTimeout: _config.chatReceiveTimeout),
     );

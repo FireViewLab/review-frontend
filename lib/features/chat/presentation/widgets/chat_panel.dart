@@ -24,7 +24,7 @@ class ChatPanel extends ConsumerWidget {
   });
 
   /// 현재 화면의 상품. 상품 상세가 아니면 null.
-  final int? productId;
+  final String? productId;
   final VoidCallback onLoginPressed;
 
   /// 요금제 화면으로 간다. 한도 초과·프로 잠금 안내에서 쓴다.
@@ -283,7 +283,7 @@ class _Conversation extends ConsumerStatefulWidget {
   });
 
   final ChatState state;
-  final int? productId;
+  final String? productId;
   final bool autofocus;
   final VoidCallback onPlanPressed;
 
@@ -364,7 +364,7 @@ class _ContextBar extends ConsumerWidget {
   const _ContextBar({required this.state, required this.productId});
 
   final ChatState state;
-  final int? productId;
+  final String? productId;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -440,7 +440,7 @@ class _MessageList extends ConsumerWidget {
   });
 
   final ChatState state;
-  final int? productId;
+  final String? productId;
   final VoidCallback onPlanPressed;
 
   @override

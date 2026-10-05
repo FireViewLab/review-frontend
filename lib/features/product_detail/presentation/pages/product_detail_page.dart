@@ -5,7 +5,6 @@ import 'package:re_view_front/app/router/route_paths.dart';
 import 'package:re_view_front/app/theme/app_colors.dart';
 import 'package:re_view_front/app/theme/app_spacing.dart';
 import 'package:re_view_front/features/category/domain/entities/product_category_resolver.dart';
-import 'package:re_view_front/features/chat/presentation/widgets/chat_ask_button.dart';
 import 'package:re_view_front/features/product_detail/domain/entities/product_detail.dart';
 import 'package:re_view_front/features/product_detail/domain/entities/product_review.dart';
 import 'package:re_view_front/features/product_detail/domain/entities/review_insight.dart';
@@ -400,8 +399,6 @@ class _DesktopAnalysisSection extends StatelessWidget {
             ),
           ],
         ),
-        const SizedBox(height: AppSpacing.md),
-        const ChatAskButton(),
       ],
     );
   }
@@ -435,8 +432,6 @@ class _MobileAnalysisSection extends StatelessWidget {
           signals: detail.trustSignals,
           onDetailPressed: onDetailPressed,
         ),
-        const SizedBox(height: AppSpacing.md),
-        const SizedBox(width: double.infinity, child: ChatAskButton()),
       ],
     );
   }

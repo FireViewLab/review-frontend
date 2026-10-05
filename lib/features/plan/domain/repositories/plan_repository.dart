@@ -1,10 +1,6 @@
 import 'package:re_view_front/core/result/result.dart';
-import 'package:re_view_front/features/plan/domain/entities/plan_option.dart';
 
 abstract interface class PlanRepository {
-  /// 요금제 목록과 요금제별 하루 한도.
-  Future<Result<List<PlanOption>>> getPlans();
-
   /// 내 요금제 만료일. 무기한이거나 무료면 null.
   Future<Result<DateTime?>> getMyPlanExpiry();
 

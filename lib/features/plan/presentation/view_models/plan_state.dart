@@ -17,7 +17,7 @@ class PlanState {
     this.status = PlanStatus.loading,
     this.quota,
     this.expiresAt,
-    this.options = PlanOption.fallback,
+    this.options = PlanOption.all,
     this.changingCode,
     this.notice,
     this.noticeCode,

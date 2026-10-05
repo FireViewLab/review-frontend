@@ -112,7 +112,7 @@ class PlanOptionCard extends StatelessWidget {
   /// null이면 누를 수 없다.
   final VoidCallback? onSelect;
 
-  /// 이 카드가 현재 요금제일 때, 목록에 한도가 없으면 여기서 가져온다.
+  /// 이 카드가 현재 요금제일 때 하루 한도를 여기서 가져온다.
   final ChatQuota? currentQuota;
 
   @override
@@ -120,10 +120,10 @@ class PlanOptionCard extends StatelessWidget {
     final l10n = AppLocalizations.of(context);
     final textTheme = Theme.of(context).textTheme;
     final code = option.code.toUpperCase();
-    final dailyLimit =
-        option.dailyLimit ?? (isCurrent ? currentQuota?.dailyLimit : null);
+    // 한도는 서버가 알려 준 현재 요금제 것만 숫자로 쓴다.
+    final dailyLimit = isCurrent ? currentQuota?.dailyLimit : null;
     // 프로 모드는 서버가 프로 요금제에만 열어 준다.
-    final hasPro = option.proAvailable ?? code == 'PRO';
+    final hasPro = code == 'PRO';
 
     final features = [
       if (dailyLimit == ChatQuota.unlimited)
