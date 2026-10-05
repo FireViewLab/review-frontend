@@ -14,6 +14,10 @@ class AdminUserDto {
       provider: _json['provider']?.toString(),
       atiScore: (_json['atiScore'] as num?)?.toDouble(),
       createdAt: DateTime.tryParse(_json['createdAt']?.toString() ?? ''),
+      planTier: _json['planTier']?.toString(),
+      planExpiresAt: DateTime.tryParse(
+        _json['planExpiresAt']?.toString() ?? '',
+      ),
     );
   }
 }

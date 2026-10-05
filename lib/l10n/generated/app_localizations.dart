@@ -2555,6 +2555,90 @@ abstract class AppLocalizations {
   /// In ko, this message translates to:
   /// **'믿을 만한 리뷰는 어떻게 골라?'**
   String get chatSuggestGeneral3;
+
+  /// No description provided for @adminUserPlanColumn.
+  ///
+  /// In ko, this message translates to:
+  /// **'요금제'**
+  String get adminUserPlanColumn;
+
+  /// No description provided for @adminUserPlanChange.
+  ///
+  /// In ko, this message translates to:
+  /// **'요금제 변경'**
+  String get adminUserPlanChange;
+
+  /// No description provided for @adminUserPlanTitle.
+  ///
+  /// In ko, this message translates to:
+  /// **'요금제 변경'**
+  String get adminUserPlanTitle;
+
+  /// No description provided for @adminUserPlanExpiry.
+  ///
+  /// In ko, this message translates to:
+  /// **'만료일'**
+  String get adminUserPlanExpiry;
+
+  /// No description provided for @adminUserPlanUnlimited.
+  ///
+  /// In ko, this message translates to:
+  /// **'무기한'**
+  String get adminUserPlanUnlimited;
+
+  /// No description provided for @adminUserPlanThirtyDays.
+  ///
+  /// In ko, this message translates to:
+  /// **'30일'**
+  String get adminUserPlanThirtyDays;
+
+  /// No description provided for @adminUserPlanCustomDate.
+  ///
+  /// In ko, this message translates to:
+  /// **'날짜 직접 선택'**
+  String get adminUserPlanCustomDate;
+
+  /// No description provided for @adminUserPlanSelectDate.
+  ///
+  /// In ko, this message translates to:
+  /// **'날짜 선택'**
+  String get adminUserPlanSelectDate;
+
+  /// No description provided for @adminUserPlanExpired.
+  ///
+  /// In ko, this message translates to:
+  /// **'만료됨'**
+  String get adminUserPlanExpired;
+
+  /// No description provided for @adminUserPlanUnknown.
+  ///
+  /// In ko, this message translates to:
+  /// **'확인되지 않음'**
+  String get adminUserPlanUnknown;
+
+  /// No description provided for @adminUserPlanSave.
+  ///
+  /// In ko, this message translates to:
+  /// **'저장'**
+  String get adminUserPlanSave;
+
+  /// No description provided for @adminUserPlanCancel.
+  ///
+  /// In ko, this message translates to:
+  /// **'취소'**
+  String get adminUserPlanCancel;
+
+  /// No description provided for @adminUserPlanSaving.
+  ///
+  /// In ko, this message translates to:
+  /// **'저장 중'**
+  String get adminUserPlanSaving;
+
+  /// No description provided for @adminUserPlanDateRequired.
+  ///
+  /// In ko, this message translates to:
+  /// **'오늘 이후의 만료일을 선택해주세요.'**
+  String get adminUserPlanDateRequired;
 }
 
 class _AppLocalizationsDelegate

@@ -1288,4 +1288,46 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String get chatSuggestGeneral3 => '信頼できるレビューの選び方は？';
+
+  @override
+  String get adminUserPlanColumn => 'プラン';
+
+  @override
+  String get adminUserPlanChange => 'プラン変更';
+
+  @override
+  String get adminUserPlanTitle => 'プラン変更';
+
+  @override
+  String get adminUserPlanExpiry => '有効期限';
+
+  @override
+  String get adminUserPlanUnlimited => '無期限';
+
+  @override
+  String get adminUserPlanThirtyDays => '30日';
+
+  @override
+  String get adminUserPlanCustomDate => '日付を指定';
+
+  @override
+  String get adminUserPlanSelectDate => '日付を選択';
+
+  @override
+  String get adminUserPlanExpired => '期限切れ';
+
+  @override
+  String get adminUserPlanUnknown => '不明';
+
+  @override
+  String get adminUserPlanSave => '保存';
+
+  @override
+  String get adminUserPlanCancel => 'キャンセル';
+
+  @override
+  String get adminUserPlanSaving => '保存中';
+
+  @override
+  String get adminUserPlanDateRequired => '今日以降の有効期限を選択してください。';
 }

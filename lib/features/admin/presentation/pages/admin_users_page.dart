@@ -8,6 +8,8 @@ import 'package:re_view_front/features/admin/presentation/view_models/admin_user
 import 'package:re_view_front/features/admin/presentation/view_models/admin_user_view_model.dart';
 import 'package:re_view_front/features/admin/presentation/widgets/admin_data_table.dart';
 import 'package:re_view_front/features/admin/presentation/widgets/admin_kpi_card.dart';
+import 'package:re_view_front/features/admin/presentation/widgets/admin_labels.dart';
+import 'package:re_view_front/features/admin/presentation/widgets/admin_user_plan_dialog.dart';
 import 'package:re_view_front/features/admin/presentation/widgets/admin_page_scaffold.dart';
 import 'package:re_view_front/features/admin/presentation/widgets/admin_status_badge.dart';
 import 'package:re_view_front/features/admin/presentation/widgets/admin_text_format.dart';
@@ -28,7 +30,7 @@ class AdminUsersPage extends ConsumerWidget {
       actions: [
         IconButton(
           tooltip: l10n.adminRefresh,
-          onPressed: vm.loadList,
+          onPressed: state.updatingUserIds.isEmpty ? vm.loadList : null,
           icon: const Icon(
             Icons.refresh_rounded,
             color: AppColors.textSecondary,
@@ -96,46 +98,91 @@ class _UserTable extends StatelessWidget {
       );
     }
 
-    return SingleChildScrollView(
-      child: AdminDataTable(
-        columns: [
-          AdminTableColumn(label: 'ID', flex: 1),
-          AdminTableColumn(label: l10n.adminEmail, flex: 4),
-          AdminTableColumn(label: l10n.adminNickname, flex: 3),
-          AdminTableColumn(label: l10n.adminRole, flex: 2),
-          AdminTableColumn(label: l10n.adminSignupProvider, flex: 2),
-          AdminTableColumn(label: l10n.adminAtiScore, flex: 2),
-          AdminTableColumn(label: l10n.adminJoinedAt, flex: 2),
-        ],
-        rows: [
-          for (final user in state.items)
-            AdminTableRowData(
-              id: user.userId,
-              cells: [
-                _cell('${user.userId}'),
-                _cell(user.email, strong: true),
-                _cell(user.nickname.isEmpty ? '-' : user.nickname),
-                Align(
-                  alignment: Alignment.centerLeft,
-                  child: AdminStatusBadge(
-                    label: user.isAdmin
-                        ? l10n.adminSidebarTitle
-                        : l10n.adminUserRole,
-                    tone: user.isAdmin
-                        ? AdminBadgeTone.info
-                        : AdminBadgeTone.neutral,
-                  ),
-                ),
-                _cell(_providerLabel(user, l10n)),
-                _cell(user.atiScore?.toStringAsFixed(1) ?? '-'),
-                _cell(formatAdminDate(user.createdAt)),
+    return LayoutBuilder(
+      builder: (context, constraints) => SingleChildScrollView(
+        scrollDirection: Axis.horizontal,
+        child: SizedBox(
+          width: constraints.maxWidth < 1200 ? 1200 : constraints.maxWidth,
+          child: SingleChildScrollView(
+            child: AdminDataTable(
+              columns: [
+                AdminTableColumn(label: 'ID', flex: 1),
+                AdminTableColumn(label: l10n.adminEmail, flex: 4),
+                AdminTableColumn(label: l10n.adminNickname, flex: 3),
+                AdminTableColumn(label: l10n.adminRole, flex: 2),
+                AdminTableColumn(label: l10n.adminSignupProvider, flex: 2),
+                AdminTableColumn(label: l10n.adminAtiScore, flex: 2),
+                AdminTableColumn(label: l10n.adminJoinedAt, flex: 2),
+                AdminTableColumn(label: l10n.adminUserPlanColumn, flex: 3),
+                AdminTableColumn(label: l10n.adminUserPlanChange, flex: 2),
               ],
+              rows: [
+                for (final user in state.items)
+                  AdminTableRowData(
+                    id: user.userId,
+                    cells: [
+                      _cell('${user.userId}'),
+                      _cell(user.email, strong: true),
+                      _cell(user.nickname.isEmpty ? '-' : user.nickname),
+                      Align(
+                        alignment: Alignment.centerLeft,
+                        child: AdminStatusBadge(
+                          label: user.isAdmin
+                              ? l10n.adminSidebarTitle
+                              : l10n.adminUserRole,
+                          tone: user.isAdmin
+                              ? AdminBadgeTone.info
+                              : AdminBadgeTone.neutral,
+                        ),
+                      ),
+                      _cell(_providerLabel(user, l10n)),
+                      _cell(user.atiScore?.toStringAsFixed(1) ?? '-'),
+                      _cell(formatAdminDate(user.createdAt)),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          AdminStatusBadge(
+                            label: adminUserPlanLabel(user.planTier, l10n),
+                            tone: user.isPlanExpiredAt(DateTime.now())
+                                ? AdminBadgeTone.warning
+                                : AdminBadgeTone.info,
+                          ),
+                          if (user.planExpiresAt != null)
+                            _cell(formatAdminDate(user.planExpiresAt)),
+                          if (user.isPlanExpiredAt(DateTime.now()))
+                            Text(l10n.adminUserPlanExpired),
+                        ],
+                      ),
+                      TextButton(
+                        onPressed:
+                            state.isLoading || state.updatingUserIds.isNotEmpty
+                            ? null
+                            : () => showDialog<void>(
+                                context: context,
+                                barrierDismissible: false,
+                                builder: (_) => AdminUserPlanDialog(
+                                  user: user,
+                                  onSave: (plan, expiresAt) => vm.updatePlan(
+                                    userId: user.userId,
+                                    planTier: plan,
+                                    expiresAt: expiresAt,
+                                  ),
+                                ),
+                              ),
+                        child: Text(l10n.adminUserPlanChange),
+                      ),
+                    ],
+                  ),
+              ],
+              totalPages: state.totalPages,
+              currentPage: state.page,
+              onPageChanged: state.updatingUserIds.isEmpty
+                  ? vm.changePage
+                  : null,
+              emptyMessage: l10n.adminUsersEmpty,
             ),
-        ],
-        totalPages: state.totalPages,
-        currentPage: state.page,
-        onPageChanged: vm.changePage,
-        emptyMessage: l10n.adminUsersEmpty,
+          ),
+        ),
       ),
     );
   }

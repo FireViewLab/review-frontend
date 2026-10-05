@@ -9,6 +9,7 @@ class AdminUserState {
     this.pageSize = 20,
     this.isLoading = false,
     this.errorMessage,
+    this.updatingUserIds = const {},
   });
 
   final List<AdminUser> items;
@@ -18,6 +19,7 @@ class AdminUserState {
   final int pageSize;
   final bool isLoading;
   final String? errorMessage;
+  final Set<int> updatingUserIds;
 
   AdminUserState copyWith({
     List<AdminUser>? items,
@@ -27,6 +29,7 @@ class AdminUserState {
     bool? isLoading,
     String? errorMessage,
     bool clearError = false,
+    Set<int>? updatingUserIds,
   }) {
     return AdminUserState(
       items: items ?? this.items,
@@ -34,6 +37,7 @@ class AdminUserState {
       totalPages: totalPages ?? this.totalPages,
       totalElements: totalElements ?? this.totalElements,
       pageSize: pageSize,
+      updatingUserIds: updatingUserIds ?? this.updatingUserIds,
       isLoading: isLoading ?? this.isLoading,
       errorMessage: clearError ? null : (errorMessage ?? this.errorMessage),
     );

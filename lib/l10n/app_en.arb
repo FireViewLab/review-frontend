@@ -425,5 +425,19 @@
   "chatQuotaExceededBodyNoTime": "You can ask again once the limit resets",
   "chatPlanRequiredTitle": "Available on the Pro plan",
   "chatPlanRequiredAction": "Ask again in Standard mode",
-  "chatSuggestGeneral3": "How do I pick trustworthy reviews?"
+  "chatSuggestGeneral3": "How do I pick trustworthy reviews?",
+  "adminUserPlanColumn": "Plan",
+  "adminUserPlanChange": "Change plan",
+  "adminUserPlanTitle": "Change plan",
+  "adminUserPlanExpiry": "Expiration",
+  "adminUserPlanUnlimited": "No expiration",
+  "adminUserPlanThirtyDays": "30 days",
+  "adminUserPlanCustomDate": "Choose a date",
+  "adminUserPlanSelectDate": "Select date",
+  "adminUserPlanExpired": "Expired",
+  "adminUserPlanUnknown": "Unknown",
+  "adminUserPlanSave": "Save",
+  "adminUserPlanCancel": "Cancel",
+  "adminUserPlanSaving": "Saving",
+  "adminUserPlanDateRequired": "Choose an expiration date from today onward."
 }

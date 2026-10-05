@@ -1,3 +1,5 @@
+enum AdminPlanTier { free, plus, pro }
+
 /// 관리자 사용자 목록 항목.
 class AdminUser {
   const AdminUser({
@@ -8,6 +10,8 @@ class AdminUser {
     required this.provider,
     required this.atiScore,
     required this.createdAt,
+    this.planTier,
+    this.planExpiresAt,
   });
 
   final int userId;
@@ -23,6 +27,16 @@ class AdminUser {
   /// 사용자 신뢰 지수. 산정 전이면 null.
   final double? atiScore;
   final DateTime? createdAt;
+
+  /// 저장된 요금제 코드. 누락되거나 새 코드가 와도 그대로 보존한다.
+  final String? planTier;
+  final DateTime? planExpiresAt;
+
+  bool isPlanExpiredAt(DateTime now) =>
+      planTier != null &&
+      planTier != 'FREE' &&
+      planExpiresAt != null &&
+      planExpiresAt!.isBefore(now);
 
   bool get isAdmin => role.toUpperCase() == 'ADMIN';
 }

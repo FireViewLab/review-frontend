@@ -912,5 +912,19 @@
   "chatQuotaExceededBodyNoTime": "한도가 초기화되면 다시 물어볼 수 있어요",
   "chatPlanRequiredTitle": "프로 요금제에서 이용할 수 있어요",
   "chatPlanRequiredAction": "기본 모드로 다시 묻기",
-  "chatSuggestGeneral3": "믿을 만한 리뷰는 어떻게 골라?"
+  "chatSuggestGeneral3": "믿을 만한 리뷰는 어떻게 골라?",
+  "adminUserPlanColumn": "요금제",
+  "adminUserPlanChange": "요금제 변경",
+  "adminUserPlanTitle": "요금제 변경",
+  "adminUserPlanExpiry": "만료일",
+  "adminUserPlanUnlimited": "무기한",
+  "adminUserPlanThirtyDays": "30일",
+  "adminUserPlanCustomDate": "날짜 직접 선택",
+  "adminUserPlanSelectDate": "날짜 선택",
+  "adminUserPlanExpired": "만료됨",
+  "adminUserPlanUnknown": "확인되지 않음",
+  "adminUserPlanSave": "저장",
+  "adminUserPlanCancel": "취소",
+  "adminUserPlanSaving": "저장 중",
+  "adminUserPlanDateRequired": "오늘 이후의 만료일을 선택해주세요."
 }

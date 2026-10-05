@@ -21,4 +21,23 @@ class AdminUserRepositoryImpl implements AdminUserRepository {
       return FailureResult(adminFailureFrom(e));
     }
   }
+
+  @override
+  Future<Result<AdminUser>> updatePlan({
+    required int userId,
+    required AdminPlanTier planTier,
+    DateTime? expiresAt,
+  }) async {
+    try {
+      return Success(
+        await _dataSource.updatePlan(
+          userId: userId,
+          planTier: planTier,
+          expiresAt: expiresAt,
+        ),
+      );
+    } catch (e) {
+      return FailureResult(adminFailureFrom(e));
+    }
+  }
 }

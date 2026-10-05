@@ -1286,4 +1286,46 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get chatSuggestGeneral3 => '怎么挑选可信的评论？';
+
+  @override
+  String get adminUserPlanColumn => '套餐';
+
+  @override
+  String get adminUserPlanChange => '更改套餐';
+
+  @override
+  String get adminUserPlanTitle => '更改套餐';
+
+  @override
+  String get adminUserPlanExpiry => '到期日期';
+
+  @override
+  String get adminUserPlanUnlimited => '无限期';
+
+  @override
+  String get adminUserPlanThirtyDays => '30天';
+
+  @override
+  String get adminUserPlanCustomDate => '指定日期';
+
+  @override
+  String get adminUserPlanSelectDate => '选择日期';
+
+  @override
+  String get adminUserPlanExpired => '已到期';
+
+  @override
+  String get adminUserPlanUnknown => '未知';
+
+  @override
+  String get adminUserPlanSave => '保存';
+
+  @override
+  String get adminUserPlanCancel => '取消';
+
+  @override
+  String get adminUserPlanSaving => '保存中';
+
+  @override
+  String get adminUserPlanDateRequired => '请选择今天或之后的到期日期。';
 }

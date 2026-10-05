@@ -1329,4 +1329,47 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get chatSuggestGeneral3 => 'How do I pick trustworthy reviews?';
+
+  @override
+  String get adminUserPlanColumn => 'Plan';
+
+  @override
+  String get adminUserPlanChange => 'Change plan';
+
+  @override
+  String get adminUserPlanTitle => 'Change plan';
+
+  @override
+  String get adminUserPlanExpiry => 'Expiration';
+
+  @override
+  String get adminUserPlanUnlimited => 'No expiration';
+
+  @override
+  String get adminUserPlanThirtyDays => '30 days';
+
+  @override
+  String get adminUserPlanCustomDate => 'Choose a date';
+
+  @override
+  String get adminUserPlanSelectDate => 'Select date';
+
+  @override
+  String get adminUserPlanExpired => 'Expired';
+
+  @override
+  String get adminUserPlanUnknown => 'Unknown';
+
+  @override
+  String get adminUserPlanSave => 'Save';
+
+  @override
+  String get adminUserPlanCancel => 'Cancel';
+
+  @override
+  String get adminUserPlanSaving => 'Saving';
+
+  @override
+  String get adminUserPlanDateRequired =>
+      'Choose an expiration date from today onward.';
 }
