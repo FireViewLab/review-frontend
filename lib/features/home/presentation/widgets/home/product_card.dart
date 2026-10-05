@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:re_view_front/app/theme/app_motion.dart';
 import 'package:re_view_front/app/theme/app_colors.dart';
 import 'package:re_view_front/app/theme/app_spacing.dart';
 import 'package:re_view_front/core/providers/core_providers.dart';
@@ -150,31 +151,22 @@ class _HeartButtonState extends ConsumerState<_HeartButton>
   @override
   void initState() {
     super.initState();
-    _controller = AnimationController(
-      vsync: this,
-      duration: const Duration(milliseconds: 400),
-    );
+    _controller = AnimationController(vsync: this, duration: AppMotion.base);
+    // 한 번 살짝 커졌다 돌아온다.
     _scale = TweenSequence<double>([
       TweenSequenceItem(
         tween: Tween(
           begin: 1.0,
-          end: 1.45,
-        ).chain(CurveTween(curve: Curves.easeOut)),
-        weight: 40,
+          end: 1.12,
+        ).chain(CurveTween(curve: AppMotion.enter)),
+        weight: 50,
       ),
       TweenSequenceItem(
         tween: Tween(
-          begin: 1.45,
-          end: 0.88,
-        ).chain(CurveTween(curve: Curves.easeIn)),
-        weight: 30,
-      ),
-      TweenSequenceItem(
-        tween: Tween(
-          begin: 0.88,
+          begin: 1.12,
           end: 1.0,
-        ).chain(CurveTween(curve: Curves.elasticOut)),
-        weight: 30,
+        ).chain(CurveTween(curve: AppMotion.exit)),
+        weight: 50,
       ),
     ]).animate(_controller);
   }

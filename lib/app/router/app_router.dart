@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:re_view_front/app/theme/app_motion.dart';
 import 'package:re_view_front/app/router/route_paths.dart';
 import 'package:re_view_front/core/providers/core_providers.dart';
 import 'package:re_view_front/features/admin/presentation/pages/admin_analysis_feedbacks_page.dart';
@@ -109,11 +110,10 @@ final appRouterProvider = Provider<GoRouter>((ref) {
       GoRoute(
         path: RoutePaths.login,
         name: RouteNames.login,
-        pageBuilder: (context, state) =>
-            _buildTransitionPage(
-              state,
-              LoginPage(from: state.uri.queryParameters['from']),
-            ),
+        pageBuilder: (context, state) => _buildTransitionPage(
+          state,
+          LoginPage(from: state.uri.queryParameters['from']),
+        ),
       ),
       GoRoute(
         path: RoutePaths.signup,
@@ -315,32 +315,27 @@ CustomTransitionPage<void> _buildTransitionPage(
 ) {
   return CustomTransitionPage<void>(
     key: state.pageKey,
-    transitionDuration: const Duration(milliseconds: 280),
+    // 뒤로 갈 때의 기본값은 300ms라 함께 지정한다.
+    transitionDuration: AppMotion.fast,
+    reverseTransitionDuration: AppMotion.fast,
     child: child,
     transitionsBuilder: _buildTransition,
   );
 }
 
+/// 화면을 옮길 때는 짧게 밝아지기만 한다.
+///
+/// 헤더가 화면마다 들어 있어서, 위치를 움직이면 헤더까지 통째로 흔들려 보인다.
 Widget _buildTransition(
   BuildContext context,
   Animation<double> animation,
   Animation<double> secondaryAnimation,
   Widget child,
 ) {
-  final curvedAnimation = CurvedAnimation(
-    parent: animation,
-    curve: Curves.easeOutCubic,
-  );
-
+  if (MediaQuery.disableAnimationsOf(context)) return child;
   return FadeTransition(
-    opacity: curvedAnimation,
-    child: SlideTransition(
-      position: Tween<Offset>(
-        begin: const Offset(0, -0.04),
-        end: Offset.zero,
-      ).animate(curvedAnimation),
-      child: child,
-    ),
+    opacity: CurvedAnimation(parent: animation, curve: AppMotion.enter),
+    child: child,
   );
 }
 

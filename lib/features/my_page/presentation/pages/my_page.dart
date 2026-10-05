@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:re_view_front/app/theme/app_motion.dart';
 import 'package:re_view_front/app/router/route_paths.dart';
 import 'package:re_view_front/app/theme/app_colors.dart';
 import 'package:re_view_front/app/theme/app_spacing.dart';
@@ -163,7 +164,7 @@ class _MyPageState extends ConsumerState<MyPage> {
 
     Scrollable.ensureVisible(
       targetContext,
-      duration: const Duration(milliseconds: 320),
+      duration: AppMotion.slow,
       curve: Curves.easeOutCubic,
       alignment: 0.05,
     );

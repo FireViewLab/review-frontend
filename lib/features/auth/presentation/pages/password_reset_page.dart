@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:re_view_front/shared/widgets/app_fade_in.dart';
 import 'package:re_view_front/app/router/route_paths.dart';
 import 'package:re_view_front/app/theme/app_colors.dart';
 import 'package:re_view_front/app/theme/app_spacing.dart';
@@ -111,12 +112,12 @@ class _PasswordResetPageState extends ConsumerState<PasswordResetPage> {
                     ? Column(
                         crossAxisAlignment: CrossAxisAlignment.stretch,
                         children: [
-                          const _FadeUp(
+                          const AppFadeIn(
                             delay: 0,
                             child: PasswordResetValuePanel(),
                           ),
                           const SizedBox(height: AppSpacing.xl),
-                          _FadeUp(delay: 90, child: _buildCard(state)),
+                          AppFadeIn(delay: 90, child: _buildCard(state)),
                         ],
                       )
                     : Row(
@@ -124,7 +125,7 @@ class _PasswordResetPageState extends ConsumerState<PasswordResetPage> {
                         children: [
                           const Expanded(
                             flex: 12,
-                            child: _FadeUp(
+                            child: AppFadeIn(
                               delay: 0,
                               child: PasswordResetValuePanel(),
                             ),
@@ -134,7 +135,7 @@ class _PasswordResetPageState extends ConsumerState<PasswordResetPage> {
                             flex: 8,
                             child: Align(
                               alignment: Alignment.centerRight,
-                              child: _FadeUp(
+                              child: AppFadeIn(
                                 delay: 120,
                                 child: _buildCard(state),
                               ),
@@ -145,7 +146,7 @@ class _PasswordResetPageState extends ConsumerState<PasswordResetPage> {
               ),
             ),
           ),
-          const _FadeUp(delay: 220, child: LoginFooter()),
+          const AppFadeIn(delay: 220, child: LoginFooter()),
         ],
       ),
     );
@@ -198,50 +199,3 @@ class _PasswordResetPageState extends ConsumerState<PasswordResetPage> {
   }
 }
 
-class _FadeUp extends StatefulWidget {
-  const _FadeUp({required this.child, required this.delay});
-
-  final Widget child;
-  final int delay;
-
-  @override
-  State<_FadeUp> createState() => _FadeUpState();
-}
-
-class _FadeUpState extends State<_FadeUp> with SingleTickerProviderStateMixin {
-  late final AnimationController _controller;
-  late final Animation<double> _opacity;
-  late final Animation<Offset> _offset;
-
-  @override
-  void initState() {
-    super.initState();
-    _controller = AnimationController(
-      vsync: this,
-      duration: const Duration(milliseconds: 420),
-    );
-    _opacity = CurvedAnimation(parent: _controller, curve: Curves.easeOutCubic);
-    _offset = Tween<Offset>(
-      begin: const Offset(0, 0.04),
-      end: Offset.zero,
-    ).animate(CurvedAnimation(parent: _controller, curve: Curves.easeOutCubic));
-
-    Future<void>.delayed(Duration(milliseconds: widget.delay), () {
-      if (mounted) _controller.forward();
-    });
-  }
-
-  @override
-  void dispose() {
-    _controller.dispose();
-    super.dispose();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return FadeTransition(
-      opacity: _opacity,
-      child: SlideTransition(position: _offset, child: widget.child),
-    );
-  }
-}

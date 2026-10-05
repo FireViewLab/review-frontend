@@ -3,6 +3,8 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:re_view_front/app/theme/app_motion.dart';
+import 'package:re_view_front/shared/widgets/app_fade_in.dart';
 import 'package:re_view_front/app/router/route_paths.dart';
 import 'package:re_view_front/app/theme/app_colors.dart';
 import 'package:re_view_front/app/theme/app_spacing.dart';
@@ -110,7 +112,7 @@ class _HomePageState extends ConsumerState<HomePage> {
           SliverToBoxAdapter(
             child: Padding(
               padding: EdgeInsets.only(top: context.isMobile ? 20 : 28),
-              child: _FadeUp(
+              child: AppFadeIn(
                 key: _heroKey,
                 delay: 0,
                 child: HeroBannerCarousel(
@@ -127,7 +129,7 @@ class _HomePageState extends ConsumerState<HomePage> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-                  _FadeUp(
+                  AppFadeIn(
                     key: _categoryKey,
                     delay: 60,
                     child: QuickCategoryRow(
@@ -151,7 +153,7 @@ class _HomePageState extends ConsumerState<HomePage> {
                     ),
                     const SizedBox(height: AppSpacing.xl),
                   ] else ...[
-                    _FadeUp(
+                    AppFadeIn(
                       delay: 120,
                       child: TrendingKeywordChips(
                         keywords: dashboardKeywords,
@@ -161,7 +163,7 @@ class _HomePageState extends ConsumerState<HomePage> {
                     const SizedBox(height: AppSpacing.xl),
                   ],
                   if (useWideCommerceGrid) ...[
-                    _FadeUp(
+                    AppFadeIn(
                       key: _recommendationKey,
                       delay: 180,
                       child: Row(
@@ -221,14 +223,14 @@ class _HomePageState extends ConsumerState<HomePage> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         const Expanded(
-                          child: _FadeUp(
+                          child: AppFadeIn(
                             delay: 240,
                             child: ReviewTrustInfoCard(),
                           ),
                         ),
                         const SizedBox(width: 20),
                         Expanded(
-                          child: _FadeUp(
+                          child: AppFadeIn(
                             key: _benefitKey,
                             delay: 300,
                             child: BenefitCTA(
@@ -241,7 +243,7 @@ class _HomePageState extends ConsumerState<HomePage> {
                       ],
                     ),
                     const SizedBox(height: 20),
-                    _FadeUp(
+                    AppFadeIn(
                       key: _popularCategoryKey,
                       delay: 360,
                       child: PopularCategorySection(
@@ -250,7 +252,7 @@ class _HomePageState extends ConsumerState<HomePage> {
                       ),
                     ),
                   ] else ...[
-                    _FadeUp(
+                    AppFadeIn(
                       key: _recommendationKey,
                       delay: 180,
                       child: ProductRecommendationSection(
@@ -259,9 +261,9 @@ class _HomePageState extends ConsumerState<HomePage> {
                       ),
                     ),
                     const SizedBox(height: AppSpacing.xl),
-                    const _FadeUp(delay: 240, child: ReviewTrustInfoCard()),
+                    const AppFadeIn(delay: 240, child: ReviewTrustInfoCard()),
                     const SizedBox(height: AppSpacing.xl),
-                    _FadeUp(
+                    AppFadeIn(
                       key: _benefitKey,
                       delay: 300,
                       child: BenefitCTA(
@@ -272,7 +274,7 @@ class _HomePageState extends ConsumerState<HomePage> {
                   ],
                   if (!useWideCommerceGrid) ...[
                     const SizedBox(height: AppSpacing.xl),
-                    _FadeUp(
+                    AppFadeIn(
                       key: _popularCategoryKey,
                       delay: 360,
                       child: PopularCategorySection(
@@ -373,7 +375,7 @@ class _HomePageState extends ConsumerState<HomePage> {
 
     Scrollable.ensureVisible(
       targetContext,
-      duration: const Duration(milliseconds: 360),
+      duration: AppMotion.slow,
       curve: Curves.easeOutCubic,
       alignment: 0.04,
     );
@@ -427,58 +429,6 @@ class _HomePageState extends ConsumerState<HomePage> {
     }
 
     return '$buffer원';
-  }
-}
-
-class _FadeUp extends StatefulWidget {
-  const _FadeUp({required this.child, required this.delay, super.key});
-
-  final Widget child;
-  final int delay;
-
-  @override
-  State<_FadeUp> createState() => _FadeUpState();
-}
-
-class _FadeUpState extends State<_FadeUp> with SingleTickerProviderStateMixin {
-  late final AnimationController _controller;
-  late final Animation<double> _opacity;
-  late final Animation<Offset> _offset;
-  Timer? _timer;
-
-  @override
-  void initState() {
-    super.initState();
-    _controller = AnimationController(
-      vsync: this,
-      duration: const Duration(milliseconds: 420),
-    );
-    _opacity = CurvedAnimation(parent: _controller, curve: Curves.easeOutCubic);
-    _offset = Tween<Offset>(
-      begin: const Offset(0, 0.04),
-      end: Offset.zero,
-    ).animate(CurvedAnimation(parent: _controller, curve: Curves.easeOutCubic));
-
-    _timer = Timer(Duration(milliseconds: widget.delay), () {
-      if (mounted) {
-        _controller.forward();
-      }
-    });
-  }
-
-  @override
-  void dispose() {
-    _timer?.cancel();
-    _controller.dispose();
-    super.dispose();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return FadeTransition(
-      opacity: _opacity,
-      child: SlideTransition(position: _offset, child: widget.child),
-    );
   }
 }
 
