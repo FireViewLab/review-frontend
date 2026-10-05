@@ -107,7 +107,7 @@ RTI는 실제 구매자 리뷰의 신뢰도를 종합해 산출한 지표로, �
 | State Management | `flutter_riverpod`, `riverpod_annotation` |
 | Routing | `go_router` |
 | Networking | `Dio` |
-| Data Modeling | `freezed`, `json_serializable` |
+| Data Modeling | 수동 DTO 파싱 및 도메인 모델 |
 | UI Utility | `flutter_typeahead`, `shimmer`, `url_launcher` |
 | Architecture | `Feature-based Clean Architecture` |
 | Target Platforms | `Web`, `Android`, `iOS` |
