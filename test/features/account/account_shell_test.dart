@@ -17,11 +17,8 @@ class _Frame extends StatelessWidget {
   final Widget child;
   final bool wide;
 
-  static int builds = 0;
-
   @override
   Widget build(BuildContext context) {
-    builds++;
     return Scaffold(
       body: wide
           ? Row(
