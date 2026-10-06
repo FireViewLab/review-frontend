@@ -42,6 +42,14 @@ class ChatViewModel extends Notifier<ChatState> {
 
   void toggle() => state.isOpen ? close() : open();
 
+  /// Apply a confirmed server quota and discard older in-flight reads.
+  void applyQuota(ChatQuota quota) => state = _withQuota(state, quota);
+
+  void invalidateQuota() {
+    _quotaRequest++;
+    state = state.copyWith(clearQuota: true, mode: ChatMode.standard);
+  }
+
   /// 요금제와 오늘 남은 질문 수를 다시 받아 온다. 실패하면 이전 값을 그대로 둔다.
   Future<void> refreshQuota() async {
     if (!ref.read(isLoggedInProvider)) return;

@@ -96,6 +96,7 @@ class ChatState {
     String? historyError,
     bool clearHistoryError = false,
     ChatQuota? quota,
+    bool clearQuota = false,
     ChatMode? mode,
     DateTime? sendStartedAt,
     bool? limitReached,
@@ -121,7 +122,7 @@ class ChatState {
       lastFailedQuestion: clearLastFailedQuestion
           ? null
           : (lastFailedQuestion ?? this.lastFailedQuestion),
-      quota: quota ?? this.quota,
+      quota: clearQuota ? null : (quota ?? this.quota),
       limitReached: limitReached ?? this.limitReached,
       proDenied: proDenied ?? this.proDenied,
       mode: mode ?? this.mode,

@@ -1,3 +1,4 @@
+import 'package:re_view_front/features/plan/domain/entities/user_plan.dart';
 import 'package:dio/dio.dart';
 import 'package:re_view_front/core/error/failure.dart';
 import 'package:re_view_front/core/network/api_response.dart';
@@ -11,8 +12,7 @@ class PlanRepositoryImpl implements PlanRepository {
   final PlanRemoteDataSource _dataSource;
 
   @override
-  Future<Result<DateTime?>> getMyPlanExpiry() =>
-      _guard(_dataSource.getMyPlanExpiry);
+  Future<Result<UserPlan>> getMyPlan() => _guard(_dataSource.getMyPlan);
 
   @override
   Future<Result<void>> changeMyPlan(String code) =>

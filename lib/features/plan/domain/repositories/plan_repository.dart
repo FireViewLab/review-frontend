@@ -1,8 +1,9 @@
+import 'package:re_view_front/features/plan/domain/entities/user_plan.dart';
 import 'package:re_view_front/core/result/result.dart';
 
 abstract interface class PlanRepository {
   /// 내 요금제 만료일. 무기한이거나 무료면 null.
-  Future<Result<DateTime?>> getMyPlanExpiry();
+  Future<Result<UserPlan>> getMyPlan();
 
   /// 내 요금제를 [code]로 바꾼다.
   ///
