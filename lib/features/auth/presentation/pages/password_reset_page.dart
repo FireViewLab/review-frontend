@@ -10,11 +10,8 @@ import 'package:re_view_front/features/auth/presentation/view_models/password_re
 import 'package:re_view_front/features/auth/presentation/widgets/login_footer.dart';
 import 'package:re_view_front/features/auth/presentation/widgets/password_reset_card.dart';
 import 'package:re_view_front/features/auth/presentation/widgets/password_reset_value_panel.dart';
-import 'package:re_view_front/features/home/presentation/data/home_content.dart';
-import 'package:re_view_front/features/home/presentation/widgets/home/home_header.dart';
 import 'package:re_view_front/shared/extensions/context_extensions.dart';
 import 'package:re_view_front/shared/widgets/app_content_view.dart';
-import 'package:re_view_front/features/home/presentation/home_navigation.dart';
 
 class PasswordResetPage extends ConsumerStatefulWidget {
   const PasswordResetPage({this.resetToken, super.key});
@@ -94,15 +91,6 @@ class _PasswordResetPageState extends ConsumerState<PasswordResetPage> {
       backgroundColor: AppColors.background,
       body: Column(
         children: [
-          HomeHeader(
-            navItems: homeNavItems,
-            selectedNavItem: '홈',
-            onLoginPressed: () => context.go(RoutePaths.login),
-            onWishPressed: () => context.go(RoutePaths.home),
-            onCartPressed: () => context.go(RoutePaths.home),
-            onNavItemPressed: (item) => openHomeNavItem(context, item),
-            onLogoPressed: () => context.go(RoutePaths.home),
-          ),
           Expanded(
             child: SingleChildScrollView(
               child: AppContentView(
@@ -198,4 +186,3 @@ class _PasswordResetPageState extends ConsumerState<PasswordResetPage> {
     return const EdgeInsets.fromLTRB(32, 56, 32, 48);
   }
 }
-

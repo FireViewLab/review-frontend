@@ -12,11 +12,8 @@ import 'package:re_view_front/features/auth/presentation/widgets/signup_card.dar
 import 'package:re_view_front/features/auth/presentation/widgets/signup_value_panel.dart';
 import 'package:re_view_front/features/auth/presentation/providers/auth_providers.dart';
 import 'package:re_view_front/features/auth/presentation/view_models/signup_state.dart';
-import 'package:re_view_front/features/home/presentation/data/home_content.dart';
-import 'package:re_view_front/features/home/presentation/widgets/home/home_header.dart';
 import 'package:re_view_front/shared/extensions/context_extensions.dart';
 import 'package:re_view_front/shared/widgets/app_content_view.dart';
-import 'package:re_view_front/features/home/presentation/home_navigation.dart';
 
 class SignupPage extends ConsumerStatefulWidget {
   const SignupPage({super.key});
@@ -71,15 +68,6 @@ class _SignupPageState extends ConsumerState<SignupPage> {
       backgroundColor: AppColors.background,
       body: Column(
         children: [
-          HomeHeader(
-            navItems: homeNavItems,
-            selectedNavItem: '홈',
-            onLoginPressed: () => context.go(RoutePaths.login),
-            onWishPressed: () => context.go(RoutePaths.home),
-            onCartPressed: () => context.go(RoutePaths.home),
-            onNavItemPressed: (item) => openHomeNavItem(context, item),
-            onLogoPressed: () => context.go(RoutePaths.home),
-          ),
           Expanded(
             child: SingleChildScrollView(
               child: AppContentView(
@@ -102,7 +90,10 @@ class _SignupPageState extends ConsumerState<SignupPage> {
                         children: [
                           const Expanded(
                             flex: 12,
-                            child: AppFadeIn(delay: 0, child: SignupValuePanel()),
+                            child: AppFadeIn(
+                              delay: 0,
+                              child: SignupValuePanel(),
+                            ),
                           ),
                           const SizedBox(width: 64),
                           Expanded(
@@ -212,4 +203,3 @@ class _SignupPageState extends ConsumerState<SignupPage> {
     redirectToExternalUrl(uri);
   }
 }
-

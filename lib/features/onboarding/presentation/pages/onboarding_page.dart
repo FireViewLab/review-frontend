@@ -4,9 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:re_view_front/app/router/route_paths.dart';
 import 'package:re_view_front/app/theme/app_colors.dart';
 import 'package:re_view_front/app/theme/app_spacing.dart';
-import 'package:re_view_front/features/home/presentation/data/home_content.dart';
 import 'package:re_view_front/features/home/presentation/providers/home_providers.dart';
-import 'package:re_view_front/features/home/presentation/widgets/home/home_header.dart';
 import 'package:re_view_front/features/onboarding/domain/entities/notification_channel.dart';
 import 'package:re_view_front/features/onboarding/presentation/providers/onboarding_providers.dart';
 import 'package:re_view_front/features/onboarding/presentation/view_models/onboarding_state.dart';
@@ -37,15 +35,6 @@ class OnboardingPage extends ConsumerWidget {
       backgroundColor: AppColors.background,
       body: Column(
         children: [
-          HomeHeader(
-            navItems: homeNavItems,
-            selectedNavItem: '',
-            onLoginPressed: () => context.go(RoutePaths.login),
-            onWishPressed: () => context.go(RoutePaths.login),
-            onCartPressed: () => context.go(RoutePaths.login),
-            onNavItemPressed: (_) {},
-            onLogoPressed: () => context.go(RoutePaths.home),
-          ),
           Expanded(
             child: SingleChildScrollView(
               child: AppContentView(

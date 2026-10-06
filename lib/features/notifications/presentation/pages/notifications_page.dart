@@ -1,13 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:re_view_front/app/router/route_paths.dart';
 import 'package:re_view_front/app/theme/app_colors.dart';
 import 'package:re_view_front/app/theme/app_spacing.dart';
-import 'package:re_view_front/core/providers/core_providers.dart';
-import 'package:re_view_front/features/home/presentation/data/home_content.dart';
-import 'package:re_view_front/features/home/presentation/providers/home_providers.dart';
-import 'package:re_view_front/features/home/presentation/widgets/home/home_header.dart';
 import 'package:re_view_front/features/notifications/domain/entities/app_notification.dart';
 import 'package:re_view_front/features/notifications/presentation/notification_target.dart';
 import 'package:re_view_front/features/notifications/presentation/providers/notification_providers.dart';
@@ -17,7 +12,6 @@ import 'package:re_view_front/shared/extensions/context_extensions.dart';
 import 'package:re_view_front/shared/widgets/app_content_view.dart';
 import 'package:re_view_front/shared/widgets/error_view.dart';
 import 'package:re_view_front/shared/widgets/loading_view.dart';
-import 'package:re_view_front/features/home/presentation/home_navigation.dart';
 
 class NotificationsPage extends ConsumerWidget {
   const NotificationsPage({super.key});
@@ -27,8 +21,6 @@ class NotificationsPage extends ConsumerWidget {
     final l10n = AppLocalizations.of(context);
     final state = ref.watch(notificationListViewModelProvider);
     final vm = ref.read(notificationListViewModelProvider.notifier);
-    final isLoggedIn = ref.watch(isLoggedInProvider);
-    final nickname = ref.watch(userNicknameProvider).value;
 
     return Scaffold(
       backgroundColor: AppColors.background,
@@ -40,39 +32,6 @@ class NotificationsPage extends ConsumerWidget {
         },
         child: CustomScrollView(
           slivers: [
-            SliverToBoxAdapter(
-              child: HomeHeader(
-                navItems: homeNavItems,
-                selectedNavItem: '',
-                isLoggedIn: isLoggedIn,
-                nickname: nickname,
-                onLoginPressed: () => context.go(RoutePaths.login),
-                onWishPressed: () => context.go(RoutePaths.wishlist),
-                onCartPressed: () => context.go(RoutePaths.cart),
-                onNavItemPressed: (item) => openHomeNavItem(context, item),
-                onLogoPressed: () => context.go(RoutePaths.home),
-                onSearchSubmitted: (q) {
-                  if (q.trim().isNotEmpty) {
-                    context.goNamed(
-                      RouteNames.search,
-                      queryParameters: {'q': q.trim()},
-                    );
-                  }
-                },
-                searchKeywords: const [],
-                searchRecommendedProducts: const [],
-                onSearchSuggestionsRequested: (query) => ref
-                    .read(searchAutocompleteRemoteDataSourceProvider)
-                    .fetchSuggestions(query),
-                onMyPagePressed: () => context.go(RoutePaths.myPage),
-                onProfileWishPressed: () => context.go(RoutePaths.wishlist),
-                onProfileOrderPressed: () => context.go(RoutePaths.cart),
-                onLogoutPressed: () {
-                  ref.read(authTokenStoreProvider.notifier).clear();
-                  context.go(RoutePaths.landing);
-                },
-              ),
-            ),
             SliverToBoxAdapter(
               child: AppContentView(
                 maxWidth: 840,

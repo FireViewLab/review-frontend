@@ -1,3 +1,4 @@
+import 'package:re_view_front/app/router/app_shell.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -103,84 +104,6 @@ final appRouterProvider = Provider<GoRouter>((ref) {
             _buildTransitionPage(state, const LandingPage()),
       ),
       GoRoute(
-        path: RoutePaths.home,
-        name: RouteNames.home,
-        pageBuilder: (context, state) =>
-            _buildTransitionPage(state, const HomePage()),
-      ),
-      GoRoute(
-        path: RoutePaths.login,
-        name: RouteNames.login,
-        pageBuilder: (context, state) => _buildTransitionPage(
-          state,
-          LoginPage(from: state.uri.queryParameters['from']),
-        ),
-      ),
-      GoRoute(
-        path: RoutePaths.signup,
-        name: RouteNames.signup,
-        pageBuilder: (context, state) =>
-            _buildTransitionPage(state, const SignupPage()),
-      ),
-      GoRoute(
-        path: RoutePaths.onboarding,
-        name: RouteNames.onboarding,
-        pageBuilder: (context, state) =>
-            _buildTransitionPage(state, const OnboardingPage()),
-      ),
-      // 예전에 쓰던 빈 대시보드 경로. 북마크 등으로 들어오면 마이페이지로 보낸다.
-      GoRoute(
-        path: RoutePaths.dashboard,
-        redirect: (context, state) => RoutePaths.myPage,
-      ),
-      GoRoute(
-        path: RoutePaths.search,
-        name: RouteNames.search,
-        pageBuilder: (context, state) => _buildTransitionPage(
-          state,
-          SearchResultsPage(
-            query: state.uri.queryParameters['q'] ?? '',
-            categoryId: state.uri.queryParameters['categoryId'],
-            categoryLabel: state.uri.queryParameters['category'],
-            initialSort: SearchSortOption.values
-                .where((o) => o.name == state.uri.queryParameters['sort'])
-                .firstOrNull,
-          ),
-        ),
-      ),
-      GoRoute(
-        path: RoutePaths.productDetail,
-        name: RouteNames.productDetail,
-        pageBuilder: (context, state) {
-          final idStr = state.pathParameters['id'] ?? '0';
-          final id = int.tryParse(idStr) ?? 0;
-          return _buildTransitionPage(state, ProductDetailPage(productId: id));
-        },
-      ),
-      GoRoute(
-        path: RoutePaths.analysisReport,
-        name: RouteNames.analysisReport,
-        pageBuilder: (context, state) {
-          final idStr = state.pathParameters['id'] ?? '0';
-          final id = int.tryParse(idStr) ?? 0;
-          return _buildTransitionPage(state, AnalysisReportPage(productId: id));
-        },
-      ),
-      // 위의 '/product/:id/analysis'보다 뒤에 둬야 분석 화면 경로를 가로채지 않는다.
-      GoRoute(
-        path: RoutePaths.externalProduct,
-        name: RouteNames.externalProduct,
-        pageBuilder: (context, state) => _buildTransitionPage(
-          state,
-          ExternalProductPage(
-            productRef: ExternalProductRef(
-              platform: state.pathParameters['platform'] ?? '',
-              productId: state.pathParameters['productId'] ?? '',
-            ),
-          ),
-        ),
-      ),
-      GoRoute(
         path: RoutePaths.oauthCallback,
         name: RouteNames.oauthCallback,
         pageBuilder: (context, state) => _buildTransitionPage(
@@ -188,88 +111,183 @@ final appRouterProvider = Provider<GoRouter>((ref) {
           OAuthCallbackPage(queryParams: state.uri.queryParameters),
         ),
       ),
-      GoRoute(
-        path: RoutePaths.passwordReset,
-        name: RouteNames.passwordReset,
-        pageBuilder: (context, state) => _buildTransitionPage(
-          state,
-          PasswordResetPage(resetToken: state.uri.queryParameters['token']),
-        ),
-      ),
-      GoRoute(
-        path: RoutePaths.resetPassword,
-        name: RouteNames.resetPassword,
-        pageBuilder: (context, state) => _buildTransitionPage(
-          state,
-          PasswordResetPage(resetToken: state.uri.queryParameters['token']),
-        ),
-      ),
-      GoRoute(
-        path: RoutePaths.wishlist,
-        name: RouteNames.wishlist,
-        pageBuilder: (context, state) =>
-            _buildTransitionPage(state, const WishlistPage()),
-      ),
-      GoRoute(
-        path: RoutePaths.cart,
-        name: RouteNames.cart,
-        pageBuilder: (context, state) =>
-            _buildTransitionPage(state, const CartPage()),
-      ),
-      GoRoute(
-        path: RoutePaths.reviewReport,
-        name: RouteNames.reviewReport,
-        pageBuilder: (context, state) {
-          final extra = state.extra as Map<String, dynamic>? ?? {};
-          return _buildTransitionPage(
-            state,
-            ReviewReportPage(
-              reviewId: extra['reviewId'] as int? ?? 0,
-              productId: extra['productId'] as int?,
-              productName: extra['productName'] as String? ?? '',
-              reviewContent: extra['reviewContent'] as String? ?? '',
-              rtiScore: extra['rtiScore'] as double? ?? 0,
-              rtiGrade: extra['rtiGrade'] as String? ?? '',
-            ),
-          );
-        },
-      ),
-      GoRoute(
-        path: RoutePaths.notifications,
-        name: RouteNames.notifications,
-        pageBuilder: (context, state) =>
-            _buildTransitionPage(state, const NotificationsPage()),
-      ),
-      // 계정 영역: 헤더와 메뉴는 그대로 두고 내용만 바꾼다.
       ShellRoute(
-        pageBuilder: (context, state, child) => _buildTransitionPage(
-          state,
-          AccountShell(location: state.uri.path, child: child),
-        ),
+        pageBuilder: (context, state, child) =>
+            _buildTransitionPage(state, AppShell(uri: state.uri, child: child)),
         routes: [
           GoRoute(
-            path: RoutePaths.myPage,
-            name: RouteNames.myPage,
+            path: RoutePaths.home,
+            name: RouteNames.home,
             pageBuilder: (context, state) =>
-                _buildContentPage(state, const MyPage()),
+                _buildContentPage(state, const HomePage()),
           ),
           GoRoute(
-            path: RoutePaths.plan,
-            name: RouteNames.plan,
-            pageBuilder: (context, state) =>
-                _buildContentPage(state, const PlanContent()),
+            path: RoutePaths.login,
+            name: RouteNames.login,
+            pageBuilder: (context, state) => _buildContentPage(
+              state,
+              LoginPage(from: state.uri.queryParameters['from']),
+            ),
           ),
           GoRoute(
-            path: RoutePaths.feedbackHistory,
-            name: RouteNames.feedbackHistory,
+            path: RoutePaths.signup,
+            name: RouteNames.signup,
             pageBuilder: (context, state) =>
-                _buildContentPage(state, const FeedbackHistoryPage()),
+                _buildContentPage(state, const SignupPage()),
           ),
           GoRoute(
-            path: RoutePaths.settings,
-            name: RouteNames.settings,
+            path: RoutePaths.onboarding,
+            name: RouteNames.onboarding,
             pageBuilder: (context, state) =>
-                _buildContentPage(state, const SettingsPage()),
+                _buildContentPage(state, const OnboardingPage()),
+          ),
+          // 예전에 쓰던 빈 대시보드 경로. 북마크 등으로 들어오면 마이페이지로 보낸다.
+          GoRoute(
+            path: RoutePaths.dashboard,
+            redirect: (context, state) => RoutePaths.myPage,
+          ),
+          GoRoute(
+            path: RoutePaths.search,
+            name: RouteNames.search,
+            pageBuilder: (context, state) => _buildContentPage(
+              state,
+              SearchResultsPage(
+                query: state.uri.queryParameters['q'] ?? '',
+                categoryId: state.uri.queryParameters['categoryId'],
+                categoryLabel: state.uri.queryParameters['category'],
+                initialSort: SearchSortOption.values
+                    .where((o) => o.name == state.uri.queryParameters['sort'])
+                    .firstOrNull,
+              ),
+            ),
+          ),
+          GoRoute(
+            path: RoutePaths.productDetail,
+            name: RouteNames.productDetail,
+            pageBuilder: (context, state) {
+              final idStr = state.pathParameters['id'] ?? '0';
+              final id = int.tryParse(idStr) ?? 0;
+              return _buildContentPage(state, ProductDetailPage(productId: id));
+            },
+          ),
+          GoRoute(
+            path: RoutePaths.analysisReport,
+            name: RouteNames.analysisReport,
+            pageBuilder: (context, state) {
+              final idStr = state.pathParameters['id'] ?? '0';
+              final id = int.tryParse(idStr) ?? 0;
+              return _buildContentPage(
+                state,
+                AnalysisReportPage(productId: id),
+              );
+            },
+          ),
+          // 위의 '/product/:id/analysis'보다 뒤에 둬야 분석 화면 경로를 가로채지 않는다.
+          GoRoute(
+            path: RoutePaths.externalProduct,
+            name: RouteNames.externalProduct,
+            pageBuilder: (context, state) => _buildContentPage(
+              state,
+              ExternalProductPage(
+                productRef: ExternalProductRef(
+                  platform: state.pathParameters['platform'] ?? '',
+                  productId: state.pathParameters['productId'] ?? '',
+                ),
+              ),
+            ),
+          ),
+          GoRoute(
+            path: RoutePaths.passwordReset,
+            name: RouteNames.passwordReset,
+            pageBuilder: (context, state) => _buildContentPage(
+              state,
+              PasswordResetPage(resetToken: state.uri.queryParameters['token']),
+            ),
+          ),
+          GoRoute(
+            path: RoutePaths.resetPassword,
+            name: RouteNames.resetPassword,
+            pageBuilder: (context, state) => _buildContentPage(
+              state,
+              PasswordResetPage(resetToken: state.uri.queryParameters['token']),
+            ),
+          ),
+          GoRoute(
+            path: RoutePaths.wishlist,
+            name: RouteNames.wishlist,
+            pageBuilder: (context, state) =>
+                _buildContentPage(state, const WishlistPage()),
+          ),
+          GoRoute(
+            path: RoutePaths.cart,
+            name: RouteNames.cart,
+            pageBuilder: (context, state) =>
+                _buildContentPage(state, const CartPage()),
+          ),
+          GoRoute(
+            path: RoutePaths.reviewReport,
+            name: RouteNames.reviewReport,
+            pageBuilder: (context, state) {
+              final extra = state.extra as Map<String, dynamic>? ?? {};
+              return _buildContentPage(
+                state,
+                ReviewReportPage(
+                  reviewId: extra['reviewId'] as int? ?? 0,
+                  productId: extra['productId'] as int?,
+                  productName: extra['productName'] as String? ?? '',
+                  reviewContent: extra['reviewContent'] as String? ?? '',
+                  rtiScore: extra['rtiScore'] as double? ?? 0,
+                  rtiGrade: extra['rtiGrade'] as String? ?? '',
+                ),
+              );
+            },
+          ),
+          GoRoute(
+            path: RoutePaths.notifications,
+            name: RouteNames.notifications,
+            pageBuilder: (context, state) =>
+                _buildContentPage(state, const NotificationsPage()),
+          ),
+          // 계정 영역: 헤더와 메뉴는 그대로 두고 내용만 바꾼다.
+          ShellRoute(
+            pageBuilder: (context, state, child) => _buildContentPage(
+              state,
+              AccountShell(location: state.uri.path, child: child),
+            ),
+            routes: [
+              GoRoute(
+                path: RoutePaths.myPage,
+                name: RouteNames.myPage,
+                pageBuilder: (context, state) => _buildContentPage(
+                  state,
+                  AccountContent(child: const MyPage()),
+                ),
+              ),
+              GoRoute(
+                path: RoutePaths.plan,
+                name: RouteNames.plan,
+                pageBuilder: (context, state) => _buildContentPage(
+                  state,
+                  AccountContent(child: const PlanContent()),
+                ),
+              ),
+              GoRoute(
+                path: RoutePaths.feedbackHistory,
+                name: RouteNames.feedbackHistory,
+                pageBuilder: (context, state) => _buildContentPage(
+                  state,
+                  AccountContent(child: const FeedbackHistoryPage()),
+                ),
+              ),
+              GoRoute(
+                path: RoutePaths.settings,
+                name: RouteNames.settings,
+                pageBuilder: (context, state) => _buildContentPage(
+                  state,
+                  AccountContent(child: const SettingsPage()),
+                ),
+              ),
+            ],
           ),
         ],
       ),
@@ -348,8 +366,6 @@ CustomTransitionPage<void> _buildContentPage(
 }
 
 /// 화면을 옮길 때는 짧게 밝아지기만 한다.
-///
-/// 헤더가 화면마다 들어 있어서, 위치를 움직이면 헤더까지 통째로 흔들려 보인다.
 Widget _buildTransition(
   BuildContext context,
   Animation<double> animation,

@@ -1,3 +1,4 @@
+import 'package:re_view_front/app/router/app_shell.dart';
 import 'dart:async';
 
 import 'package:flutter/material.dart';
@@ -36,24 +37,32 @@ void main() {
     router = GoRouter(
       initialLocation: RoutePaths.home,
       routes: [
-        GoRoute(
-          path: RoutePaths.home,
-          builder: (context, state) => const HomePage(),
-        ),
-        GoRoute(
-          path: RoutePaths.login,
-          builder: (context, state) => const Scaffold(body: Text('login page')),
-        ),
-        GoRoute(
-          path: RoutePaths.signup,
-          builder: (context, state) =>
-              const Scaffold(body: Text('signup page')),
-        ),
-        GoRoute(
-          path: RoutePaths.search,
-          name: RouteNames.search,
-          builder: (context, state) =>
-              SearchResultsPage(query: state.uri.queryParameters['q'] ?? ''),
+        ShellRoute(
+          builder: (context, state, child) =>
+              AppShell(uri: state.uri, child: child),
+          routes: [
+            GoRoute(
+              path: RoutePaths.home,
+              builder: (context, state) => const HomePage(),
+            ),
+            GoRoute(
+              path: RoutePaths.login,
+              builder: (context, state) =>
+                  const Scaffold(body: Text('login page')),
+            ),
+            GoRoute(
+              path: RoutePaths.signup,
+              builder: (context, state) =>
+                  const Scaffold(body: Text('signup page')),
+            ),
+            GoRoute(
+              path: RoutePaths.search,
+              name: RouteNames.search,
+              builder: (context, state) => SearchResultsPage(
+                query: state.uri.queryParameters['q'] ?? '',
+              ),
+            ),
+          ],
         ),
       ],
     );

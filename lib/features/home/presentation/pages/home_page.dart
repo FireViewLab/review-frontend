@@ -1,4 +1,4 @@
-import 'dart:async';
+import 'package:re_view_front/app/router/app_shell.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -12,19 +12,16 @@ import 'package:re_view_front/features/home/domain/entities/dashboard_product.da
 import 'package:re_view_front/features/home/domain/entities/trending_keyword.dart';
 import 'package:re_view_front/features/home/presentation/data/home_content.dart';
 import 'package:re_view_front/core/providers/core_providers.dart';
-import 'package:re_view_front/features/cart/presentation/providers/cart_providers.dart';
 import 'package:re_view_front/features/home/presentation/providers/home_providers.dart';
 import 'package:re_view_front/features/home/presentation/view_models/home_dashboard_state.dart';
 import 'package:re_view_front/features/home/presentation/widgets/home/benefit_cta.dart';
 import 'package:re_view_front/features/home/presentation/widgets/home/banners/hero_banner_carousel.dart';
 import 'package:re_view_front/features/home/presentation/widgets/home/home_footer.dart';
-import 'package:re_view_front/features/home/presentation/widgets/home/home_header.dart';
 import 'package:re_view_front/features/home/presentation/widgets/home/popular_category_section.dart';
 import 'package:re_view_front/features/home/presentation/widgets/home/product_recommendation_section.dart';
 import 'package:re_view_front/features/home/presentation/widgets/home/quick_category_row.dart';
 import 'package:re_view_front/features/home/presentation/widgets/home/review_trust_info_card.dart';
 import 'package:re_view_front/features/home/presentation/widgets/home/trending_keyword_chips.dart';
-import 'package:re_view_front/features/wishlist/presentation/providers/wishlist_providers.dart';
 import 'package:re_view_front/l10n/generated/app_localizations.dart';
 import 'package:re_view_front/shared/extensions/context_extensions.dart';
 import 'package:re_view_front/shared/widgets/app_content_view.dart';
@@ -41,7 +38,6 @@ class HomePage extends ConsumerStatefulWidget {
 
 class _HomePageState extends ConsumerState<HomePage> {
   final _scrollController = ScrollController();
-  final _searchFocusNode = FocusNode();
   final _heroKey = GlobalKey();
   final _categoryKey = GlobalKey();
   final _recommendationKey = GlobalKey();
@@ -52,7 +48,6 @@ class _HomePageState extends ConsumerState<HomePage> {
   @override
   void dispose() {
     _scrollController.dispose();
-    _searchFocusNode.dispose();
     super.dispose();
   }
 
@@ -73,9 +68,6 @@ class _HomePageState extends ConsumerState<HomePage> {
   Widget build(BuildContext context) {
     final useWideCommerceGrid = context.viewportSize.width >= 1120;
     final isLoggedIn = ref.watch(isLoggedInProvider);
-    final nickname = ref.watch(userNicknameProvider).value;
-    final cartCount = ref.watch(cartItemCountProvider).value ?? 0;
-    final wishlistCount = ref.watch(wishlistItemCountProvider).value ?? 0;
     final dashboardState = ref.watch(homeDashboardViewModelProvider);
     final dashboardProducts = _recommendedProductsFrom(dashboardState);
     final dashboardKeywords = _trendingKeywordsFrom(dashboardState);
@@ -84,31 +76,6 @@ class _HomePageState extends ConsumerState<HomePage> {
       body: CustomScrollView(
         controller: _scrollController,
         slivers: [
-          SliverToBoxAdapter(
-            child: HomeHeader(
-              navItems: homeNavItems,
-              selectedNavItem: '홈',
-              onLoginPressed: () => context.go(RoutePaths.login),
-              onWishPressed: () => context.go(RoutePaths.wishlist),
-              onCartPressed: () => context.go(RoutePaths.cart),
-              onNavItemPressed: _handleNavItemPressed,
-              onLogoPressed: () => context.go(RoutePaths.home),
-              onSearchSubmitted: _handleSearchSubmitted,
-              searchKeywords: dashboardKeywords,
-              searchRecommendedProducts: dashboardProducts,
-              onSearchSuggestionsRequested: _handleSearchSuggestionsRequested,
-              searchFocusNode: _searchFocusNode,
-              cartCount: cartCount,
-              wishlistCount: wishlistCount,
-              isLoggedIn: isLoggedIn,
-              nickname: nickname,
-              onMyPagePressed: () =>
-                  context.go(isLoggedIn ? RoutePaths.myPage : RoutePaths.login),
-              onProfileWishPressed: () => context.go(RoutePaths.wishlist),
-              onProfileOrderPressed: () => context.go(RoutePaths.cart),
-              onLogoutPressed: _handleLogout,
-            ),
-          ),
           SliverToBoxAdapter(
             child: Padding(
               padding: EdgeInsets.only(top: context.isMobile ? 20 : 28),
@@ -196,9 +163,7 @@ class _HomePageState extends ConsumerState<HomePage> {
                               children: [
                                 Text(
                                   AppLocalizations.of(context).homeViewAll,
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .labelMedium
+                                  style: Theme.of(context).textTheme.labelMedium
                                       ?.copyWith(
                                         color: AppColors.textSecondary,
                                         fontWeight: FontWeight.w700,
@@ -295,7 +260,7 @@ class _HomePageState extends ConsumerState<HomePage> {
           ? _HomeBottomTabs(
               onHomePressed: () => _handleNavItemPressed('홈'),
               onCategoryPressed: () => _scrollTo(_categoryKey),
-              onSearchPressed: () => _searchFocusNode.requestFocus(),
+              onSearchPressed: () => AppShell.focusSearch(context),
               onWishPressed: () => context.go(RoutePaths.wishlist),
               onMyPressed: () =>
                   context.go(isLoggedIn ? RoutePaths.myPage : RoutePaths.login),
@@ -339,32 +304,12 @@ class _HomePageState extends ConsumerState<HomePage> {
     _scrollTo(_recommendationKey);
   }
 
-  void _handleLogout() {
-    ref.read(authTokenStoreProvider.notifier).clear();
-    context.go(RoutePaths.landing);
-  }
-
   void _handleProductPressed(HomeProductData product) {
     context.go('/product/${product.productId}');
   }
 
-  Future<List<String>> _handleSearchSuggestionsRequested(String query) {
-    return ref
-        .read(searchAutocompleteRemoteDataSourceProvider)
-        .fetchSuggestions(query);
-  }
-
   void _handleKeywordSearch(String keyword) {
     context.goNamed(RouteNames.search, queryParameters: {'q': keyword});
-  }
-
-  void _handleSearchSubmitted(String value) {
-    final query = value.trim();
-    if (query.isEmpty) {
-      return;
-    }
-
-    context.goNamed(RouteNames.search, queryParameters: {'q': query});
   }
 
   void _scrollTo(GlobalKey key) {
@@ -502,9 +447,7 @@ class _HomeBottomTabs extends StatelessWidget {
                         color: i == 0
                             ? AppColors.textPrimary
                             : AppColors.textSecondary,
-                        fontWeight: i == 0
-                            ? FontWeight.w900
-                            : FontWeight.w700,
+                        fontWeight: i == 0 ? FontWeight.w900 : FontWeight.w700,
                       ),
                     ),
                   ],

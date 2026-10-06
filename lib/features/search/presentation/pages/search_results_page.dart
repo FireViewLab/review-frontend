@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:go_router/go_router.dart';
-import 'package:re_view_front/app/router/route_paths.dart';
 import 'package:re_view_front/app/theme/app_colors.dart';
 import 'package:re_view_front/app/theme/app_spacing.dart';
 import 'package:re_view_front/features/category/domain/entities/product_category_resolver.dart';
@@ -10,7 +8,6 @@ import 'package:re_view_front/features/search/presentation/models/search_view_mo
 import 'package:re_view_front/features/search/presentation/providers/search_providers.dart';
 import 'package:re_view_front/features/search/presentation/view_models/search_results_state.dart';
 import 'package:re_view_front/features/search/presentation/view_models/search_state.dart';
-import 'package:re_view_front/features/search/presentation/widgets/search_header.dart';
 import 'package:re_view_front/features/search/presentation/widgets/search_results_body.dart';
 import 'package:re_view_front/shared/extensions/context_extensions.dart';
 import 'package:re_view_front/shared/widgets/app_content_view.dart';
@@ -94,6 +91,10 @@ class _SearchResultsPageState extends ConsumerState<SearchResultsPage> {
 
   @override
   Widget build(BuildContext context) {
+    ref.listen(searchResubmissionProvider, (_, _) {
+      _resetFilters();
+      _triggerSearch();
+    });
     final searchState = ref.watch(searchViewModelProvider);
     final products = _resolveProducts(searchState);
     final totalCount = _resolveTotalCount(searchState, products);
@@ -126,12 +127,6 @@ class _SearchResultsPageState extends ConsumerState<SearchResultsPage> {
       backgroundColor: AppColors.background,
       body: CustomScrollView(
         slivers: [
-          SliverToBoxAdapter(
-            child: SearchHeader(
-              query: _searchInputQuery,
-              onSearchSubmitted: (value) => _goToSearch(context, value),
-            ),
-          ),
           SliverToBoxAdapter(
             child: AppContentView(
               maxWidth: 1760,
@@ -271,18 +266,6 @@ class _SearchResultsPageState extends ConsumerState<SearchResultsPage> {
       SearchSuccess(:final totalCount) => totalCount,
       _ => null,
     };
-  }
-
-  void _goToSearch(BuildContext context, String value) {
-    final nextQuery = value.trim();
-    if (nextQuery.isEmpty) return;
-    if (nextQuery == widget.query.trim()) {
-      _resetFilters();
-      _triggerSearch();
-      return;
-    }
-
-    context.goNamed(RouteNames.search, queryParameters: {'q': nextQuery});
   }
 
   void _handleQuickFilterSelected(String label) {
