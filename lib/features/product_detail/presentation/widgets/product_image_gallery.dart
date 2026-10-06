@@ -27,16 +27,19 @@ class _ProductImageGalleryState extends ConsumerState<ProductImageGallery> {
   int _selectedIndex = 0;
   Timer? _autoSlideTimer;
   Offset? _hoverPosition;
+  bool _reduceMotion = false;
 
   @override
-  void initState() {
-    super.initState();
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    _reduceMotion = MediaQuery.disableAnimationsOf(context);
+    if (_reduceMotion) _hoverPosition = null;
     _startAutoSlide();
   }
 
   void _startAutoSlide() {
     _autoSlideTimer?.cancel();
-    if (widget.imageUrls.length <= 1) return;
+    if (_reduceMotion || widget.imageUrls.length <= 1) return;
     _autoSlideTimer = Timer.periodic(const Duration(seconds: 3), (_) {
       if (!mounted) return;
       setState(() {
@@ -75,7 +78,7 @@ class _ProductImageGalleryState extends ConsumerState<ProductImageGallery> {
                 cursor: images.isNotEmpty
                     ? SystemMouseCursors.zoomIn
                     : MouseCursor.defer,
-                onHover: images.isNotEmpty
+                onHover: images.isNotEmpty && !_reduceMotion
                     ? (event) =>
                           setState(() => _hoverPosition = event.localPosition)
                     : null,
@@ -361,6 +364,7 @@ class _WishlistButton extends ConsumerWidget {
       child: SizedBox.square(
         dimension: 40,
         child: IconButton(
+          tooltip: liked ? '찜 취소' : '찜하기',
           onPressed: asyncStatus.isLoading
               ? null
               : () {
@@ -404,6 +408,7 @@ class _GalleryArrowButton extends StatelessWidget {
       child: SizedBox.square(
         dimension: 32,
         child: IconButton(
+          tooltip: icon == Icons.chevron_left ? '이전 상품 이미지' : '다음 상품 이미지',
           onPressed: onPressed,
           icon: Icon(icon, size: 18),
           padding: EdgeInsets.zero,
