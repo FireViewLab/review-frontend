@@ -75,15 +75,17 @@ class SearchResultProductDto {
   final String? platform;
 
   SearchResultProduct toEntity() {
-    final normalizedDisplayName =
-        subCategory ??
-        (category.isEmpty
-            ? categoryDisplayName
-            : normalizedCategoryLabel(
-                category: category,
-                categoryDisplayName: categoryDisplayName,
-                productName: name,
-              ));
+    final isExternal =
+        externalId?.trim().isNotEmpty == true ||
+        (dataPlatform?.trim().isNotEmpty == true &&
+            dataProductId?.trim().isNotEmpty == true);
+    final normalizedDisplayName = category.isEmpty
+        ? subCategory ?? categoryDisplayName
+        : normalizedCategoryLabel(
+            category: category,
+            categoryDisplayName: categoryDisplayName,
+            productName: isExternal ? '' : name,
+          );
 
     return SearchResultProduct(
       externalId: externalId,

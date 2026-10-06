@@ -128,7 +128,7 @@ class _SearchResultsPageState extends ConsumerState<SearchResultsPage> {
       body: CustomScrollView(
         slivers: [
           if (widget.categoryId != null &&
-              products.any((p) => p.category.isEmpty))
+              products.any((p) => !_hasResolvedCategory(p)))
             const SliverToBoxAdapter(
               child: Padding(
                 padding: EdgeInsets.all(AppSpacing.md),
@@ -378,7 +378,7 @@ class _SearchResultsPageState extends ConsumerState<SearchResultsPage> {
     return products
         .where((product) {
           if (widget.categoryId != null &&
-              product.category.isNotEmpty &&
+              _hasResolvedCategory(product) &&
               !isProductInCategory(
                 widget.categoryId!,
                 productCategory: product.category,
@@ -533,6 +533,15 @@ class _SearchResultsPageState extends ConsumerState<SearchResultsPage> {
       productName: _classificationTextFor(product),
     );
   }
+
+  bool _hasResolvedCategory(SearchResultProduct product) =>
+      product.category.isNotEmpty &&
+      resolveProductCategory(
+            product.category,
+            displayName: product.categoryDisplayName,
+            productName: _classificationTextFor(product),
+          ) !=
+          null;
 
   String _classificationTextFor(SearchResultProduct product) {
     if (product.externalRef != null) return '';

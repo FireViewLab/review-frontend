@@ -47,6 +47,23 @@ void main() {
     }).toEntity();
     expect(product.category, 'BEAUTY_SKINCARE');
     expect(product.subCategory, '뷰티 인디 > 썬크림');
+    expect(product.categoryDisplayName, '스킨케어');
+    final shoes = SearchResultProductDto.fromJson({
+      ...realProduct,
+      'category': 'ACC_SHOES',
+      'categoryDisplayName': '신발',
+      'subCategory': '스니커즈 > 운동화',
+    }).toEntity();
+    expect(shoes.categoryDisplayName, '신발');
+    expect(shoes.subCategory, '스니커즈 > 운동화');
+    expect(
+      isProductInCategory(
+        'shoes',
+        productCategory: shoes.category,
+        productCategoryDisplayName: shoes.categoryDisplayName,
+      ),
+      isTrue,
+    );
     expect(
       isProductInCategory(
         'skincare',
