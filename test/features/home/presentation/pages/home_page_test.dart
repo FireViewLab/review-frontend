@@ -99,7 +99,7 @@ void main() {
   ) async {
     await tester.pumpWidget(buildSubject(pending: true));
 
-    expect(find.byType(ProductCardGridSkeleton), findsOneWidget);
+    expect(find.byType(ProductCardGridSkeleton), findsNWidgets(2));
   });
 
   testWidgets('renders retry UI when dashboard load fails', (tester) async {
@@ -124,6 +124,8 @@ void main() {
     await tester.pumpAndSettle();
 
     final benefitCta = find.text('혜택 받기').first;
+    await tester.ensureVisible(benefitCta);
+    await tester.pumpAndSettle();
     await tester.tap(benefitCta);
     await tester.pumpAndSettle();
 

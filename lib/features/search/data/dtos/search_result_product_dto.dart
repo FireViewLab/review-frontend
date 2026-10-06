@@ -15,10 +15,18 @@ class SearchResultProductDto {
     required this.reviewCount,
     required this.avgRating,
     this.platform,
+    this.externalId,
+    this.dataPlatform,
+    this.dataProductId,
+    this.subCategory,
   });
 
   factory SearchResultProductDto.fromJson(Map<String, dynamic> json) {
     return SearchResultProductDto(
+      externalId: json['externalId'] as String?,
+      dataPlatform: json['dataPlatform'] as String?,
+      dataProductId: json['dataProductId']?.toString(),
+      subCategory: json['subCategory'] as String?,
       id: _readInt(json, ['id', 'productId']),
       name: _readString(json, ['name', 'productName', 'title']),
       imageUrl: _readString(json, [
@@ -35,12 +43,11 @@ class SearchResultProductDto {
         'categoryName',
         'category',
       ]),
-      avgRti: _readDouble(json, ['avgRti', 'rtiScore', 'rti']) ?? 0.0,
-      rtiGrade: _readString(json, ['rtiGrade', 'grade']),
-      rtiColor: _readString(json, ['rtiColor', 'color']),
-      reviewCount: _readInt(json, ['reviewCount', 'review_count']),
-      avgRating:
-          _readDouble(json, ['avgRating', 'rating', 'starRating']) ?? 0.0,
+      avgRti: _readDouble(json, ['avgRti', 'rtiScore', 'rti']),
+      rtiGrade: _readNullableString(json, ['rtiGrade', 'grade']),
+      rtiColor: _readNullableString(json, ['rtiColor', 'color']),
+      reviewCount: _readNullableInt(json, ['reviewCount', 'review_count']),
+      avgRating: _readDouble(json, ['avgRating', 'rating', 'starRating']),
       platform: _readNullableString(json, [
         'platform',
         'storeName',
@@ -49,27 +56,42 @@ class SearchResultProductDto {
     );
   }
 
+  final String? externalId;
+  final String? dataPlatform;
+  final String? dataProductId;
+  final String? subCategory;
+
   final int id;
   final String name;
   final String imageUrl;
   final int price;
   final String category;
   final String categoryDisplayName;
-  final double avgRti;
-  final String rtiGrade;
-  final String rtiColor;
-  final int reviewCount;
-  final double avgRating;
+  final double? avgRti;
+  final String? rtiGrade;
+  final String? rtiColor;
+  final int? reviewCount;
+  final double? avgRating;
   final String? platform;
 
   SearchResultProduct toEntity() {
-    final normalizedDisplayName = normalizedCategoryLabel(
-      category: category,
-      categoryDisplayName: categoryDisplayName,
-      productName: name,
-    );
+    final isExternal =
+        externalId?.trim().isNotEmpty == true ||
+        (dataPlatform?.trim().isNotEmpty == true &&
+            dataProductId?.trim().isNotEmpty == true);
+    final normalizedDisplayName = category.isEmpty
+        ? subCategory ?? categoryDisplayName
+        : normalizedCategoryLabel(
+            category: category,
+            categoryDisplayName: categoryDisplayName,
+            productName: isExternal ? '' : name,
+          );
 
     return SearchResultProduct(
+      externalId: externalId,
+      dataPlatform: dataPlatform,
+      dataProductId: dataProductId,
+      subCategory: subCategory,
       id: id,
       name: name,
       imageUrl: imageUrl,
@@ -100,14 +122,17 @@ String? _readNullableString(Map<String, dynamic> json, List<String> keys) {
   return null;
 }
 
-int _readInt(Map<String, dynamic> json, List<String> keys) {
+int _readInt(Map<String, dynamic> json, List<String> keys) =>
+    _readNullableInt(json, keys) ?? 0;
+
+int? _readNullableInt(Map<String, dynamic> json, List<String> keys) {
   for (final key in keys) {
     final value = json[key];
     if (value is int) return value;
     if (value is double) return value.round();
-    if (value is String) return int.tryParse(value) ?? 0;
+    if (value is String) return int.tryParse(value);
   }
-  return 0;
+  return null;
 }
 
 double? _readDouble(Map<String, dynamic> json, List<String> keys) {

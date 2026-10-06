@@ -1,3 +1,6 @@
+import 'package:re_view_front/features/search/domain/entities/search_result_product.dart';
+import 'package:re_view_front/features/search/domain/usecases/search_products_use_case.dart';
+import 'package:re_view_front/features/search/presentation/providers/search_providers.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:re_view_front/core/providers/core_providers.dart';
@@ -61,3 +64,12 @@ class RefreshHomeDashboardOnEnter extends Notifier<bool> {
     state = false;
   }
 }
+
+final homeCatalogProvider = FutureProvider<List<SearchResultProduct>>((
+  ref,
+) async {
+  final result = await ref.watch(searchProductsUseCaseProvider)(
+    const SearchParams(query: ''),
+  );
+  return result.when(success: (v) => v.products, failure: (f) => throw f);
+});

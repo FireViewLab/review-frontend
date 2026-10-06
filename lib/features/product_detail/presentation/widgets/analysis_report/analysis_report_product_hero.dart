@@ -137,26 +137,27 @@ class AnalysisReportProductHeroCard extends StatelessWidget {
                           if (detail.sellerName != null &&
                               detail.sellerName!.isNotEmpty)
                             AnalysisReportMetaChip(label: detail.sellerName!),
-                          Row(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              const Icon(
-                                Icons.star,
-                                size: 12,
-                                color: Color(0xFFF59E0B),
-                              ),
-                              const SizedBox(width: 2),
-                              Text(
-                                detail.avgRating.toStringAsFixed(1),
-                                style: Theme.of(context).textTheme.labelSmall
-                                    ?.copyWith(
-                                      color: AppColors.textSecondary,
-                                      fontWeight: FontWeight.w600,
-                                      fontSize: 11,
-                                    ),
-                              ),
-                            ],
-                          ),
+                          if (detail.avgRating != null)
+                            Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                const Icon(
+                                  Icons.star,
+                                  size: 12,
+                                  color: Color(0xFFF59E0B),
+                                ),
+                                const SizedBox(width: 2),
+                                Text(
+                                  detail.avgRating!.toStringAsFixed(1),
+                                  style: Theme.of(context).textTheme.labelSmall
+                                      ?.copyWith(
+                                        color: AppColors.textSecondary,
+                                        fontWeight: FontWeight.w600,
+                                        fontSize: 11,
+                                      ),
+                                ),
+                              ],
+                            ),
                           Text(
                             '리뷰 ${detail.reviewCount}개',
                             style: Theme.of(context).textTheme.labelSmall

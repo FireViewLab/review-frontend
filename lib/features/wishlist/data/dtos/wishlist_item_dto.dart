@@ -17,10 +17,18 @@ class WishlistItemDto {
     required this.isNewAlert,
     this.platform,
     this.savedAt,
+    this.externalId,
+    this.dataPlatform,
+    this.dataProductId,
+    this.subCategory,
   });
 
   factory WishlistItemDto.fromJson(Map<String, dynamic> json) {
     return WishlistItemDto(
+      externalId: json['externalId'] as String?,
+      dataPlatform: json['dataPlatform'] as String?,
+      dataProductId: json['dataProductId']?.toString(),
+      subCategory: json['subCategory'] as String?,
       productId: _readInt(json, ['productId', 'id']),
       name: _readString(json, ['name', 'productName', 'title']),
       imageUrl: _readString(json, [
@@ -40,14 +48,23 @@ class WishlistItemDto {
       avgRti: _readDouble(json, ['avgRti', 'rtiScore', 'rti']),
       rtiGrade: _readNullableString(json, ['rtiGrade', 'grade']),
       rtiColor: _readNullableString(json, ['rtiColor', 'color']),
-      reviewCount: _readInt(json, ['reviewCount', 'review_count']),
-      avgRating: _readDouble(json, ['avgRating', 'rating', 'starRating']) ?? 0.0,
+      reviewCount: _readNullableInt(json, ['reviewCount', 'review_count']),
+      avgRating: _readDouble(json, ['avgRating', 'rating', 'starRating']),
       isPriceDrop: json['isPriceDrop'] == true || json['priceDrop'] == true,
       isNewAlert: json['isNewAlert'] == true || json['newAlert'] == true,
-      platform: _readNullableString(json, ['platform', 'storeName', 'brandName']),
+      platform: _readNullableString(json, [
+        'platform',
+        'storeName',
+        'brandName',
+      ]),
       savedAt: _readDateTime(json, ['savedAt', 'createdAt', 'wishlistAt']),
     );
   }
+
+  final String? externalId;
+  final String? dataPlatform;
+  final String? dataProductId;
+  final String? subCategory;
 
   final int productId;
   final String name;
@@ -58,8 +75,8 @@ class WishlistItemDto {
   final double? avgRti;
   final String? rtiGrade;
   final String? rtiColor;
-  final int reviewCount;
-  final double avgRating;
+  final int? reviewCount;
+  final double? avgRating;
   final bool isPriceDrop;
   final bool isNewAlert;
   final String? platform;
@@ -67,6 +84,10 @@ class WishlistItemDto {
 
   WishlistItem toEntity() {
     return WishlistItem(
+      externalId: externalId,
+      dataPlatform: dataPlatform,
+      dataProductId: dataProductId,
+      subCategory: subCategory,
       productId: productId,
       name: name,
       imageUrl: imageUrl,
@@ -99,14 +120,16 @@ String? _readNullableString(Map<String, dynamic> json, List<String> keys) {
   return null;
 }
 
-int _readInt(Map<String, dynamic> json, List<String> keys) {
+int _readInt(Map<String, dynamic> json, List<String> keys) =>
+    _readNullableInt(json, keys) ?? 0;
+int? _readNullableInt(Map<String, dynamic> json, List<String> keys) {
   for (final key in keys) {
     final value = json[key];
     if (value is int) return value;
     if (value is double) return value.round();
-    if (value is String) return int.tryParse(value) ?? 0;
+    if (value is String) return int.tryParse(value);
   }
-  return 0;
+  return null;
 }
 
 double? _readDouble(Map<String, dynamic> json, List<String> keys) {

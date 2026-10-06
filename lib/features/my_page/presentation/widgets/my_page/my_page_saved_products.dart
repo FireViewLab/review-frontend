@@ -19,7 +19,7 @@ class MyPageSavedProductsSection extends StatelessWidget {
 
   final List<WishlistItem> items;
   final bool isLoading;
-  final ValueChanged<int> onProductTap;
+  final ValueChanged<WishlistItem> onProductTap;
 
   @override
   Widget build(BuildContext context) {
@@ -60,13 +60,18 @@ class MyPageSavedProductsSection extends StatelessWidget {
         final item = displayItems[index];
         return MyPageCompactProductCard(
           title: item.name,
-          subtitle: item.platform ?? item.categoryDisplayName ?? AppLocalizations.of(context).externalUnanalyzed,
+          subtitle:
+              item.platform ??
+              item.categoryDisplayName ??
+              AppLocalizations.of(context).externalUnanalyzed,
           imageUrl: item.imageUrl,
           price: item.price,
           rating: item.avgRating,
           reviewCount: item.reviewCount,
-          rtiLabel: item.avgRti == null ? AppLocalizations.of(context).externalUnanalyzed : 'RTI ${item.avgRti!.round()}',
-          onTap: () => onProductTap(item.productId),
+          rtiLabel: item.avgRti == null
+              ? AppLocalizations.of(context).externalUnanalyzed
+              : 'RTI ${item.avgRti!.round()}',
+          onTap: () => onProductTap(item),
         );
       },
     );
@@ -89,8 +94,8 @@ class MyPageCompactProductCard extends StatelessWidget {
   final String subtitle;
   final String imageUrl;
   final int price;
-  final double rating;
-  final int reviewCount;
+  final double? rating;
+  final int? reviewCount;
   final String rtiLabel;
   final VoidCallback onTap;
 
@@ -148,7 +153,7 @@ class MyPageCompactProductCard extends StatelessWidget {
                     const SizedBox(width: 2),
                     Expanded(
                       child: Text(
-                        '${rating.toStringAsFixed(1)} ($reviewCount)',
+                        '${rating?.toStringAsFixed(1) ?? ""}${reviewCount == null ? "" : " ($reviewCount)"}',
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
                         style: Theme.of(context).textTheme.labelSmall,

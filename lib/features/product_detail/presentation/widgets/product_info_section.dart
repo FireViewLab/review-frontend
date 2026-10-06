@@ -31,7 +31,12 @@ class ProductInfoSection extends StatelessWidget {
               _OfficialBadge(),
             ],
             const Spacer(),
-            _RtiBadgeLarge(score: detail.avgRti.round(), color: rtiColor),
+            detail.avgRti == null
+                ? const Text('분석 전')
+                : _RtiBadgeLarge(
+                    score: detail.avgRti!.round(),
+                    color: rtiColor,
+                  ),
           ],
         ),
         const SizedBox(height: AppSpacing.xs),
@@ -136,33 +141,37 @@ class _RatingRow extends StatelessWidget {
       spacing: AppSpacing.xs,
       crossAxisAlignment: WrapCrossAlignment.center,
       children: [
-        Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            for (var i = 0; i < 5; i++)
-              Icon(
-                i < detail.avgRating.floor()
-                    ? Icons.star
-                    : (i < detail.avgRating ? Icons.star_half : Icons.star_border),
-                color: const Color(0xFFF59E0B),
-                size: 16,
+        if (detail.avgRating != null)
+          Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              for (var i = 0; i < 5; i++)
+                Icon(
+                  i < detail.avgRating!.floor()
+                      ? Icons.star
+                      : (i < detail.avgRating!
+                            ? Icons.star_half
+                            : Icons.star_border),
+                  color: const Color(0xFFF59E0B),
+                  size: 16,
+                ),
+              const SizedBox(width: AppSpacing.xxs),
+              Text(
+                detail.avgRating!.toStringAsFixed(1),
+                style: Theme.of(
+                  context,
+                ).textTheme.labelMedium?.copyWith(fontWeight: FontWeight.w900),
               ),
-            const SizedBox(width: AppSpacing.xxs),
-            Text(
-              detail.avgRating.toStringAsFixed(1),
-              style: Theme.of(context).textTheme.labelMedium?.copyWith(
-                fontWeight: FontWeight.w900,
-              ),
-            ),
-          ],
-        ),
-        Text(
-          '리뷰 ${formatSearchCount(detail.reviewCount)}개',
-          style: Theme.of(context).textTheme.labelSmall?.copyWith(
-            color: AppColors.textSecondary,
-            fontWeight: FontWeight.w600,
+            ],
           ),
-        ),
+        if (detail.reviewCount != null)
+          Text(
+            '리뷰 ${formatSearchCount(detail.reviewCount)}개',
+            style: Theme.of(context).textTheme.labelSmall?.copyWith(
+              color: AppColors.textSecondary,
+              fontWeight: FontWeight.w600,
+            ),
+          ),
       ],
     );
   }
@@ -232,8 +241,7 @@ class ProductSpecChipsStrip extends StatelessWidget {
         child: Row(
           children: [
             for (var i = 0; i < chips.length; i++) ...[
-              if (i > 0)
-                Container(width: 1, color: AppColors.border),
+              if (i > 0) Container(width: 1, color: AppColors.border),
               Expanded(child: _SpecChipStripItem(chip: chips[i])),
             ],
           ],
@@ -281,7 +289,11 @@ class _SpecChipItem extends StatelessWidget {
         child: Row(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Icon(_iconDataFor(chip.iconData), size: 16, color: AppColors.textSecondary),
+            Icon(
+              _iconDataFor(chip.iconData),
+              size: 16,
+              color: AppColors.textSecondary,
+            ),
             const SizedBox(width: AppSpacing.xs),
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -327,7 +339,11 @@ class _SpecChipStripItem extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Icon(_iconDataFor(chip.iconData), size: 18, color: AppColors.textSecondary),
+          Icon(
+            _iconDataFor(chip.iconData),
+            size: 18,
+            color: AppColors.textSecondary,
+          ),
           const SizedBox(width: AppSpacing.xs),
           Flexible(
             child: Column(

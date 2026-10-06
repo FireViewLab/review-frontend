@@ -50,14 +50,14 @@ class MyPageRecentActivitySection extends ConsumerWidget {
             icon: Icons.favorite_border,
             title: '"${item.name}" 상품을 저장했어요.',
             trailing: _relativeDate(item.savedAt),
-            onTap: () => onProductTap(item.productId.toString()),
+            onTap: () => context.go(item.detailPath, extra: item.routeContext),
           ),
         for (final item in recentProducts.take(2))
           MyPageActivityItem(
             icon: Icons.history,
             title: '"${item.name}" 상품을 확인했어요.',
             trailing: AppLocalizations.of(context).myPageRecentLabel,
-            onTap: () => onProductTap(item.id),
+            onTap: () => context.go(item.detailPath, extra: item.routeContext),
           ),
       ],
     ];

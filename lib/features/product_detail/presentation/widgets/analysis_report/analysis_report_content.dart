@@ -43,6 +43,20 @@ class AnalysisReportContent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    if (detail.rtiSummary == null || !detail.rtiSummary!.hasReviewMetrics) {
+      return Center(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            const Text('분석 전'),
+            TextButton(
+              onPressed: onBackToProduct,
+              child: const Text('상품으로 돌아가기'),
+            ),
+          ],
+        ),
+      );
+    }
     final isNarrow = MediaQuery.sizeOf(context).width < 760;
     final topPatterns = _aggregateTopPatterns(reviews);
 
@@ -73,7 +87,7 @@ class AnalysisReportContent extends StatelessWidget {
       children: [
         AnalysisReportTrustStatusCard(
           detail: detail,
-          rtiSummary: detail.rtiSummary,
+          rtiSummary: detail.rtiSummary!,
           safeCount: effSafe,
           warnCount: effWarn,
           dangerCount: effDanger,
@@ -81,7 +95,7 @@ class AnalysisReportContent extends StatelessWidget {
         ),
         const SizedBox(height: AppSpacing.md),
         AnalysisReportSummaryCard(
-          rtiSummary: detail.rtiSummary,
+          rtiSummary: detail.rtiSummary!,
           reviews: reviews,
           safeCount: effSafe,
           warnCount: effWarn,
@@ -129,7 +143,7 @@ class AnalysisReportContent extends StatelessWidget {
               const SizedBox(height: AppSpacing.md),
               AnalysisReportTrustStatusCard(
                 detail: detail,
-                rtiSummary: detail.rtiSummary,
+                rtiSummary: detail.rtiSummary!,
                 safeCount: effSafe,
                 warnCount: effWarn,
                 dangerCount: effDanger,
@@ -137,7 +151,7 @@ class AnalysisReportContent extends StatelessWidget {
               ),
               const SizedBox(height: AppSpacing.md),
               AnalysisReportSummaryCard(
-                rtiSummary: detail.rtiSummary,
+                rtiSummary: detail.rtiSummary!,
                 reviews: reviews,
                 safeCount: effSafe,
                 warnCount: effWarn,

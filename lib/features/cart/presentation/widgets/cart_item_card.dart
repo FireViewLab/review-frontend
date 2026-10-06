@@ -1,3 +1,4 @@
+import 'package:go_router/go_router.dart';
 import 'package:flutter/material.dart';
 import 'package:re_view_front/app/theme/app_colors.dart';
 import 'package:re_view_front/app/theme/app_spacing.dart';
@@ -38,10 +39,10 @@ class CartItemCard extends StatelessWidget {
 
     return DecoratedBox(
       decoration: BoxDecoration(
-        color: isSelected ? AppColors.primaryLight.withValues(alpha: 0.4) : AppColors.surface,
-        border: Border(
-          bottom: BorderSide(color: AppColors.border),
-        ),
+        color: isSelected
+            ? AppColors.primaryLight.withValues(alpha: 0.4)
+            : AppColors.surface,
+        border: Border(bottom: BorderSide(color: AppColors.border)),
       ),
       child: Padding(
         padding: const EdgeInsets.symmetric(
@@ -192,15 +193,18 @@ class _ProductInfo extends StatelessWidget {
             ),
           ),
         const SizedBox(height: 2),
-        Text(
-          item.name,
-          maxLines: 2,
-          overflow: TextOverflow.ellipsis,
-          style: Theme.of(context).textTheme.titleSmall?.copyWith(
-            color: AppColors.textPrimary,
-            fontWeight: FontWeight.w700,
-            fontSize: 14,
-            height: 1.3,
+        InkWell(
+          onTap: () => context.go(item.detailPath, extra: item.routeContext),
+          child: Text(
+            item.name,
+            maxLines: 2,
+            overflow: TextOverflow.ellipsis,
+            style: Theme.of(context).textTheme.titleSmall?.copyWith(
+              color: AppColors.textPrimary,
+              fontWeight: FontWeight.w700,
+              fontSize: 14,
+              height: 1.3,
+            ),
           ),
         ),
         if (item.variant != null) ...[
@@ -210,9 +214,7 @@ class _ProductInfo extends StatelessWidget {
         const SizedBox(height: AppSpacing.xs),
         Row(
           children: [
-            if (item.avgRti == null ||
-                item.rtiGrade == null ||
-                item.rtiColor == null)
+            if (item.avgRti == null)
               Text(AppLocalizations.of(context).externalUnanalyzed)
             else
               RtiBadge(value: item.avgRti!.round(), color: rtiColor),
@@ -221,13 +223,13 @@ class _ProductInfo extends StatelessWidget {
                 item.rtiGrade != null &&
                 item.rtiColor != null)
               Text(
-              '신뢰도 ${item.trustLevel}',
-              style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                color: AppColors.textSecondary,
-                fontWeight: FontWeight.w700,
-                fontSize: 11,
+                '신뢰도 ${item.trustLevel}',
+                style: Theme.of(context).textTheme.labelSmall?.copyWith(
+                  color: AppColors.textSecondary,
+                  fontWeight: FontWeight.w700,
+                  fontSize: 11,
+                ),
               ),
-            ),
           ],
         ),
       ],
@@ -249,7 +251,10 @@ class _VariantChip extends StatelessWidget {
         border: Border.all(color: AppColors.border),
       ),
       child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: AppSpacing.xs, vertical: 2),
+        padding: const EdgeInsets.symmetric(
+          horizontal: AppSpacing.xs,
+          vertical: 2,
+        ),
         child: Text(
           label,
           style: Theme.of(context).textTheme.labelSmall?.copyWith(
@@ -286,7 +291,11 @@ class _PriceSection extends StatelessWidget {
           Row(
             mainAxisSize: MainAxisSize.min,
             children: [
-              const Icon(Icons.arrow_downward, color: AppColors.error, size: 12),
+              const Icon(
+                Icons.arrow_downward,
+                color: AppColors.error,
+                size: 12,
+              ),
               Text(
                 '${formatSearchPrice(item.priceDropAmount!)} 인하',
                 style: Theme.of(context).textTheme.labelSmall?.copyWith(
@@ -354,14 +363,16 @@ class _QuantitySelector extends StatelessWidget {
             ),
             child: Text(
               '$quantity',
-              style: Theme.of(context).textTheme.labelMedium?.copyWith(
-                fontWeight: FontWeight.w900,
-              ),
+              style: Theme.of(
+                context,
+              ).textTheme.labelMedium?.copyWith(fontWeight: FontWeight.w900),
             ),
           ),
           _QtyButton(
             icon: Icons.add,
-            onPressed: quantity < maxQuantity ? () => onChanged(quantity + 1) : null,
+            onPressed: quantity < maxQuantity
+                ? () => onChanged(quantity + 1)
+                : null,
           ),
         ],
       ),
@@ -383,7 +394,9 @@ class _QtyButton extends StatelessWidget {
         padding: EdgeInsets.zero,
         icon: Icon(icon, size: 16),
         onPressed: onPressed,
-        color: onPressed == null ? AppColors.textTertiary : AppColors.textPrimary,
+        color: onPressed == null
+            ? AppColors.textTertiary
+            : AppColors.textPrimary,
       ),
     );
   }
@@ -410,7 +423,9 @@ class _ShippingInfo extends StatelessWidget {
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 2),
                 child: Text(
-                  item.isFreeShipping ? '무료배송' : '${formatSearchPrice(item.shippingFee)} 배송',
+                  item.isFreeShipping
+                      ? '무료배송'
+                      : '${formatSearchPrice(item.shippingFee)} 배송',
                   style: Theme.of(context).textTheme.labelSmall?.copyWith(
                     color: AppColors.primary,
                     fontWeight: FontWeight.w900,
@@ -437,7 +452,11 @@ class _ShippingInfo extends StatelessWidget {
           Row(
             mainAxisSize: MainAxisSize.min,
             children: [
-              const Icon(Icons.warning_amber_rounded, color: AppColors.warning, size: 12),
+              const Icon(
+                Icons.warning_amber_rounded,
+                color: AppColors.warning,
+                size: 12,
+              ),
               const SizedBox(width: 2),
               Text(
                 '재고 ${item.stockCount}개 남음',
@@ -471,8 +490,16 @@ class _ItemActions extends StatelessWidget {
     return Row(
       mainAxisSize: MainAxisSize.min,
       children: [
-        _ActionButton(icon: Icons.bookmark_border, label: '나중에 담기', onTap: onSaveForLater),
-        _ActionButton(icon: Icons.favorite_border, label: '찜하기', onTap: onMoveToWishlist),
+        _ActionButton(
+          icon: Icons.bookmark_border,
+          label: '나중에 담기',
+          onTap: onSaveForLater,
+        ),
+        _ActionButton(
+          icon: Icons.favorite_border,
+          label: '찜하기',
+          onTap: onMoveToWishlist,
+        ),
         _ActionButton(icon: Icons.delete_outline, label: '삭제', onTap: onRemove),
       ],
     );

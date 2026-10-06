@@ -11,10 +11,18 @@ class DashboardProductDto {
     this.rating,
     this.reviewCount,
     this.rtiScore,
+    this.externalId,
+    this.dataPlatform,
+    this.dataProductId,
+    this.subCategory,
   });
 
   factory DashboardProductDto.fromJson(Map<String, dynamic> json) {
     return DashboardProductDto(
+      externalId: json['externalId'] as String?,
+      dataPlatform: json['dataPlatform'] as String?,
+      dataProductId: json['dataProductId']?.toString(),
+      subCategory: json['subCategory'] as String?,
       id: _readString(json, ['id', 'productId', 'product_id']),
       name: _readString(json, ['name', 'productName', 'title']),
       storeName: _readString(json, [
@@ -55,6 +63,11 @@ class DashboardProductDto {
     );
   }
 
+  final String? externalId;
+  final String? dataPlatform;
+  final String? dataProductId;
+  final String? subCategory;
+
   final String id;
   final String name;
   final String storeName;
@@ -67,6 +80,10 @@ class DashboardProductDto {
 
   DashboardProduct toEntity() {
     return DashboardProduct(
+      externalId: externalId,
+      dataPlatform: dataPlatform,
+      dataProductId: dataProductId,
+      subCategory: subCategory,
       id: id,
       name: name,
       storeName: storeName,

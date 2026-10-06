@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:re_view_front/app/theme/app_motion.dart';
-import 'package:re_view_front/app/router/route_paths.dart';
 import 'package:re_view_front/app/theme/app_colors.dart';
 import 'package:re_view_front/app/theme/app_spacing.dart';
 import 'package:re_view_front/features/product_detail/domain/entities/similar_product.dart';
@@ -87,11 +86,9 @@ class _SimilarProductsSectionState extends State<SimilarProductsSection> {
                     const SizedBox(width: AppSpacing.md),
                 itemBuilder: (context, index) => _SimilarProductCard(
                   product: widget.products[index],
-                  onTap: () => context.goNamed(
-                    RouteNames.productDetail,
-                    pathParameters: {
-                      'id': widget.products[index].id.toString(),
-                    },
+                  onTap: () => context.go(
+                    widget.products[index].detailPath,
+                    extra: widget.products[index].routeContext,
                   ),
                 ),
               ),
@@ -196,7 +193,7 @@ class _SimilarProductCard extends StatelessWidget {
                       top: AppSpacing.xxs,
                       right: AppSpacing.xxs,
                       child: _RtiBadgeMini(
-                        score: product.avgRti.round(),
+                        score: product.avgRti?.round(),
                         color: rtiColor,
                       ),
                     ),
@@ -225,10 +222,15 @@ class _SimilarProductCard extends StatelessWidget {
                 const Spacer(),
                 Row(
                   children: [
-                    const Icon(Icons.star, color: Color(0xFFF59E0B), size: 12),
+                    if (product.avgRating != null)
+                      const Icon(
+                        Icons.star,
+                        color: Color(0xFFF59E0B),
+                        size: 12,
+                      ),
                     const SizedBox(width: 2),
                     Text(
-                      product.avgRating.toStringAsFixed(1),
+                      product.avgRating?.toStringAsFixed(1) ?? '',
                       style: Theme.of(context).textTheme.labelSmall?.copyWith(
                         fontWeight: FontWeight.w700,
                         fontSize: 11,
@@ -236,7 +238,9 @@ class _SimilarProductCard extends StatelessWidget {
                     ),
                     const SizedBox(width: 2),
                     Text(
-                      '(${formatSearchCount(product.reviewCount)})',
+                      product.reviewCount == null
+                          ? ''
+                          : '(${formatSearchCount(product.reviewCount)})',
                       style: Theme.of(context).textTheme.labelSmall?.copyWith(
                         color: AppColors.textSecondary,
                         fontSize: 11,
@@ -264,7 +268,7 @@ class _SimilarProductCard extends StatelessWidget {
 class _RtiBadgeMini extends StatelessWidget {
   const _RtiBadgeMini({required this.score, required this.color});
 
-  final int score;
+  final int? score;
   final Color color;
 
   @override
@@ -283,7 +287,7 @@ class _RtiBadgeMini extends StatelessWidget {
             Icon(Icons.verified_user_outlined, color: color, size: 11),
             const SizedBox(width: 2),
             Text(
-              'RTI $score',
+              score == null ? '분석 전' : 'RTI $score',
               style: Theme.of(context).textTheme.labelSmall?.copyWith(
                 color: color,
                 fontWeight: FontWeight.w900,

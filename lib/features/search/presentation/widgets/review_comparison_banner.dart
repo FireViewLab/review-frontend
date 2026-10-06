@@ -13,10 +13,16 @@ class ReviewComparisonBanner extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    if (products.isEmpty) return const SizedBox.shrink();
     final representative = _representativeProduct(products);
-    final totalReviews = products.fold(0, (sum, p) => sum + p.reviewCount);
-    final avgRti =
-        products.fold(0.0, (sum, p) => sum + p.avgRti) / products.length;
+    final reviewCounts = products.map((p) => p.reviewCount).whereType<int>();
+    final totalReviews = reviewCounts.isEmpty
+        ? null
+        : reviewCounts.reduce((a, b) => a + b);
+    final analyzed = products.map((p) => p.avgRti).whereType<double>().toList();
+    final avgRti = analyzed.isEmpty
+        ? null
+        : analyzed.reduce((a, b) => a + b) / analyzed.length;
 
     return ClipRRect(
       borderRadius: BorderRadius.circular(14),
@@ -108,13 +114,17 @@ class ReviewComparisonBanner extends StatelessWidget {
                           BannerMetric(
                             icon: Icons.chat_bubble_outline,
                             label: '수집 리뷰',
-                            value: '${formatSearchCount(totalReviews)}건',
+                            value: totalReviews == null
+                                ? '미집계'
+                                : '${formatSearchCount(totalReviews)}건',
                           ),
                           BannerMetric(
                             icon: Icons.favorite_border,
                             label: '평균 RTI',
-                            value: '${avgRti.round()}%',
-                            subtitle: _rtiLabel(avgRti),
+                            value: avgRti == null
+                                ? '분석 전'
+                                : '${avgRti.round()}',
+                            subtitle: avgRti == null ? null : _rtiLabel(avgRti),
                           ),
                         ],
                       ),
@@ -188,9 +198,9 @@ class ReviewComparisonBanner extends StatelessWidget {
   }
 
   double _representativeScore(SearchResultProduct product) {
-    return product.avgRti * 2 +
-        product.avgRating * 20 +
-        product.reviewCount / 40;
+    return (product.avgRti ?? 0) * 2 +
+        (product.avgRating ?? 0) * 20 +
+        (product.reviewCount ?? 0) / 40;
   }
 }
 

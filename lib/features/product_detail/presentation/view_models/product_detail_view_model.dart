@@ -52,6 +52,20 @@ class ProductDetailViewModel extends Notifier<ProductDetailState> {
       return;
     }
 
+    if (detail.externalRef != null) {
+      state = ProductDetailSuccess(
+        detail: detail,
+        reviews: const [],
+        reviewInsight: const ReviewInsight(
+          keywords: [],
+          satisfactionPoints: [],
+          dissatisfactionPoints: [],
+        ),
+        similarProducts: const [],
+      );
+      return;
+    }
+
     final reviewsResult = await reviewsFuture;
     if (!ref.mounted) return;
 
@@ -69,10 +83,12 @@ class ProductDetailViewModel extends Notifier<ProductDetailState> {
         dissatisfactionPoints: [],
       ),
       similarProducts: const [],
-      isAnalyzing: true,
+      isAnalyzing: detail.externalRef == null,
     );
 
-    _triggerAnalysisInBackground(productId.toString(), healthFuture);
+    if (detail.externalRef == null) {
+      _triggerAnalysisInBackground(productId.toString(), healthFuture);
+    }
   }
 
   Future<void> _triggerAnalysisInBackground(
@@ -130,14 +146,29 @@ class ProductDetailViewModel extends Notifier<ProductDetailState> {
           final total = scored.length;
           if (total > 0) {
             realRR = scored.where((r) => r.rtiScore >= 70).length / total * 100;
-            adSR = scored
-                .where((r) => r.reasons.any(
-                  (s) => s.contains('광고') || s.contains('체험') || s.contains('협찬')))
-                .length / total * 100;
-            repR = scored
-                .where((r) => r.reasons.any(
-                  (s) => s.contains('반복') || s.contains('유사')))
-                .length / total * 100;
+            adSR =
+                scored
+                    .where(
+                      (r) => r.reasons.any(
+                        (s) =>
+                            s.contains('광고') ||
+                            s.contains('체험') ||
+                            s.contains('협찬'),
+                      ),
+                    )
+                    .length /
+                total *
+                100;
+            repR =
+                scored
+                    .where(
+                      (r) => r.reasons.any(
+                        (s) => s.contains('반복') || s.contains('유사'),
+                      ),
+                    )
+                    .length /
+                total *
+                100;
           }
         }
 
@@ -149,7 +180,8 @@ class ProductDetailViewModel extends Notifier<ProductDetailState> {
             warnCount: analysis.warnCount,
             dangerCount: analysis.dangerCount,
             trend: analysis.trend,
-            rtiSummary: current.detail.rtiSummary.copyWith(
+            rtiSummary: current.detail.rtiSummary?.copyWith(
+              hasReviewMetrics: true,
               realReviewRatio: realRR / 100,
               realReviewLabel: '${realRR.toStringAsFixed(1)}%',
               adSuspicionRatio: adSR / 100,

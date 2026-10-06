@@ -4,6 +4,7 @@ import 'package:re_view_front/features/search/presentation/providers/search_prov
 import 'package:re_view_front/features/search/presentation/view_models/search_state.dart';
 
 class SearchViewModel extends Notifier<SearchState> {
+  int _request = 0;
   late final SearchProductsUseCase _searchProductsUseCase;
 
   @override
@@ -13,6 +14,7 @@ class SearchViewModel extends Notifier<SearchState> {
   }
 
   Future<void> search(String query, {bool allowEmpty = false}) async {
+    final request = ++_request;
     if (query.trim().isEmpty && !allowEmpty) {
       state = const SearchInitial();
       return;
@@ -26,6 +28,7 @@ class SearchViewModel extends Notifier<SearchState> {
     );
 
     if (!ref.mounted) return;
+    if (request != _request) return;
     state = result.when(
       success: (response) => response.isEmpty
           ? const SearchEmpty()

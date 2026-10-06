@@ -1,3 +1,4 @@
+import 'package:re_view_front/features/external_product/domain/entities/external_product_ref.dart';
 import 'package:re_view_front/app/router/app_shell.dart';
 
 import 'package:flutter/material.dart';
@@ -68,6 +69,7 @@ class _HomePageState extends ConsumerState<HomePage> {
   Widget build(BuildContext context) {
     final useWideCommerceGrid = context.viewportSize.width >= 1120;
     final isLoggedIn = ref.watch(isLoggedInProvider);
+    final catalog = ref.watch(homeCatalogProvider);
     final dashboardState = ref.watch(homeDashboardViewModelProvider);
     final dashboardProducts = _recommendedProductsFrom(dashboardState);
     final dashboardKeywords = _trendingKeywordsFrom(dashboardState);
@@ -129,6 +131,61 @@ class _HomePageState extends ConsumerState<HomePage> {
                     ),
                     const SizedBox(height: AppSpacing.xl),
                   ],
+                  Text(
+                    '상품 둘러보기',
+                    style: Theme.of(context).textTheme.titleMedium,
+                  ),
+                  const SizedBox(height: AppSpacing.md),
+                  catalog.when(
+                    loading: () => const ProductCardGridSkeleton(itemCount: 5),
+                    error: (_, _) => SizedBox(
+                      height: 280,
+                      child: AppErrorView(
+                        message: '상품을 불러오지 못했습니다.',
+                        onRetry: () => ref.invalidate(homeCatalogProvider),
+                      ),
+                    ),
+                    data: (products) => products.isEmpty
+                        ? const Text('표시할 상품이 없습니다.')
+                        : ProductRecommendationSection(
+                            showHeader: false,
+                            products: products
+                                .take(10)
+                                .map(
+                                  (p) => HomeProductData(
+                                    productId: p.id.toString(),
+                                    detailPath: p.detailPath,
+                                    chatProductId: p.chatProductId,
+                                    name: p.name,
+                                    storeName:
+                                        p.platform ?? p.dataPlatform ?? '',
+                                    priceLabel: _formatPrice(p.price),
+                                    ratingLabel:
+                                        p.avgRating?.toStringAsFixed(1) ?? '',
+                                    reviewCountLabel:
+                                        p.reviewCount?.toString() ?? '',
+                                    rtiLabel: p.avgRti == null
+                                        ? '분석 전'
+                                        : 'RTI ${p.avgRti!.round()}',
+                                    imageUrl: p.imageUrl,
+                                    label: p.subCategory ?? '',
+                                  ),
+                                )
+                                .toList(),
+                            onProductTap: _handleProductPressed,
+                          ),
+                  ),
+                  Align(
+                    alignment: Alignment.centerRight,
+                    child: TextButton(
+                      onPressed: () => context.goNamed(
+                        RouteNames.search,
+                        queryParameters: {'sort': 'accuracy'},
+                      ),
+                      child: const Text('전체 상품 보기'),
+                    ),
+                  ),
+                  const SizedBox(height: AppSpacing.xl),
                   if (useWideCommerceGrid) ...[
                     AppFadeIn(
                       key: _recommendationKey,
@@ -305,7 +362,10 @@ class _HomePageState extends ConsumerState<HomePage> {
   }
 
   void _handleProductPressed(HomeProductData product) {
-    context.go('/product/${product.productId}');
+    context.go(
+      product.detailPath ?? '/product/${product.productId}',
+      extra: ProductRouteContext(chatProductId: product.chatProductId),
+    );
   }
 
   void _handleKeywordSearch(String keyword) {
@@ -350,6 +410,8 @@ class _HomePageState extends ConsumerState<HomePage> {
   HomeProductData _toHomeProductData(DashboardProduct product) {
     return HomeProductData(
       productId: product.id,
+      detailPath: product.detailPath,
+      chatProductId: product.chatProductId,
       name: product.name,
       storeName: product.storeName,
       priceLabel: _formatPrice(product.price),

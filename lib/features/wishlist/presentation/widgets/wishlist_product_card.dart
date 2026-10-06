@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:re_view_front/app/router/route_paths.dart';
 import 'package:re_view_front/app/theme/app_colors.dart';
 import 'package:re_view_front/app/theme/app_spacing.dart';
 import 'package:re_view_front/features/search/presentation/utils/search_formatters.dart';
@@ -53,9 +52,7 @@ class WishlistProductCard extends StatelessWidget {
                   Positioned(
                     top: AppSpacing.xs,
                     left: AppSpacing.xs,
-                    child: item.avgRti == null ||
-                            item.rtiGrade == null ||
-                            item.rtiColor == null
+                    child: item.avgRti == null
                         ? Text(AppLocalizations.of(context).externalUnanalyzed)
                         : RtiBadge(
                             value: item.avgRti!.round(),
@@ -102,14 +99,15 @@ class WishlistProductCard extends StatelessWidget {
                   const SizedBox(height: AppSpacing.xs),
                   Row(
                     children: [
-                      const Icon(
-                        Icons.star,
-                        color: Color(0xFFF59E0B),
-                        size: 13,
-                      ),
+                      if (item.avgRating != null)
+                        const Icon(
+                          Icons.star,
+                          color: Color(0xFFF59E0B),
+                          size: 13,
+                        ),
                       const SizedBox(width: AppSpacing.xxs),
                       Text(
-                        item.avgRating.toStringAsFixed(1),
+                        item.avgRating?.toStringAsFixed(1) ?? '',
                         style: Theme.of(context).textTheme.labelSmall?.copyWith(
                           color: AppColors.textPrimary,
                           fontWeight: FontWeight.w900,
@@ -119,7 +117,9 @@ class WishlistProductCard extends StatelessWidget {
                       const SizedBox(width: AppSpacing.xxs),
                       Flexible(
                         child: Text(
-                          '(리뷰 ${formatSearchCount(item.reviewCount)})',
+                          item.reviewCount == null
+                              ? ''
+                              : '(리뷰 ${formatSearchCount(item.reviewCount)})',
                           overflow: TextOverflow.ellipsis,
                           style: Theme.of(context).textTheme.labelSmall
                               ?.copyWith(
@@ -171,9 +171,9 @@ class WishlistProductCard extends StatelessWidget {
                         child: SizedBox(
                           height: 36,
                           child: OutlinedButton(
-                            onPressed: () => context.goNamed(
-                              RouteNames.productDetail,
-                              pathParameters: {'id': item.productId.toString()},
+                            onPressed: () => context.go(
+                              item.detailPath,
+                              extra: item.routeContext,
                             ),
                             style: outlineHoverButtonStyle(
                               padding: const EdgeInsets.symmetric(

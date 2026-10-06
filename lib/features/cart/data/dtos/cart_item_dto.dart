@@ -21,10 +21,18 @@ class CartItemDto {
     this.estimatedDelivery,
     this.stockCount,
     this.maxQuantity = 99,
+    this.externalId,
+    this.dataPlatform,
+    this.dataProductId,
+    this.subCategory,
   });
 
   factory CartItemDto.fromJson(Map<String, dynamic> json) {
     return CartItemDto(
+      externalId: json['externalId'] as String?,
+      dataPlatform: json['dataPlatform'] as String?,
+      dataProductId: json['dataProductId']?.toString(),
+      subCategory: json['subCategory'] as String?,
       cartItemId: _readInt(json, ['cartItemId', 'cartId', 'id']),
       productId: _readInt(json, ['productId', 'product_id']),
       name: _readString(json, ['name', 'productName', 'title']),
@@ -41,19 +49,48 @@ class CartItemDto {
       rtiGrade: _readNullableString(json, ['rtiGrade', 'grade']),
       rtiColor: _readNullableString(json, ['rtiColor', 'color']),
       trustLevel: _readString(json, ['trustLevel', 'trust', 'rtiLabel']),
-      shippingFee: _readInt(json, ['shippingFee', 'shipping_fee', 'deliveryFee']),
-      originalPrice: _readNullableInt(json, ['originalPrice', 'regularPrice', 'listPrice']),
-      priceDropAmount: _readNullableInt(json, ['priceDropAmount', 'discountAmount', 'priceDrop']),
+      shippingFee: _readInt(json, [
+        'shippingFee',
+        'shipping_fee',
+        'deliveryFee',
+      ]),
+      originalPrice: _readNullableInt(json, [
+        'originalPrice',
+        'regularPrice',
+        'listPrice',
+      ]),
+      priceDropAmount: _readNullableInt(json, [
+        'priceDropAmount',
+        'discountAmount',
+        'priceDrop',
+      ]),
       variant: _readNullableString(json, ['variant', 'option', 'optionName']),
-      platform: _readNullableString(json, ['platform', 'storeName', 'brandName']),
+      platform: _readNullableString(json, [
+        'platform',
+        'storeName',
+        'brandName',
+      ]),
       badge: _readNullableString(json, ['badge', 'label', 'tag']),
-      estimatedDelivery: _readNullableString(json, ['estimatedDelivery', 'deliveryDate', 'delivery']),
-      stockCount: _readNullableInt(json, ['stockCount', 'stock', 'remainStock']),
+      estimatedDelivery: _readNullableString(json, [
+        'estimatedDelivery',
+        'deliveryDate',
+        'delivery',
+      ]),
+      stockCount: _readNullableInt(json, [
+        'stockCount',
+        'stock',
+        'remainStock',
+      ]),
       maxQuantity: _readInt(json, ['maxQuantity', 'maxQty']) == 0
           ? 99
           : _readInt(json, ['maxQuantity', 'maxQty']),
     );
   }
+
+  final String? externalId;
+  final String? dataPlatform;
+  final String? dataProductId;
+  final String? subCategory;
 
   final int cartItemId;
   final int productId;
@@ -77,6 +114,10 @@ class CartItemDto {
 
   CartItem toEntity() {
     return CartItem(
+      externalId: externalId,
+      dataPlatform: dataPlatform,
+      dataProductId: dataProductId,
+      subCategory: subCategory,
       cartItemId: cartItemId,
       productId: productId,
       name: name,

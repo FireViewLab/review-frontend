@@ -77,6 +77,10 @@ class _MyPageState extends ConsumerState<MyPage> {
   }
 
   void _goProductDetail(String productId) {
+    if (productId.startsWith('/product/')) {
+      context.go(productId);
+      return;
+    }
     context.goNamed(
       RouteNames.productDetail,
       pathParameters: {'id': productId},

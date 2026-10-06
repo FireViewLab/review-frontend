@@ -39,6 +39,13 @@ class _ProductDetailPageState extends ConsumerState<ProductDetailPage> {
   @override
   Widget build(BuildContext context) {
     final state = ref.watch(productDetailViewModelProvider(widget.productId));
+    if (state is ProductDetailSuccess && state.detail.externalRef != null) {
+      final path = state.detail.detailPath;
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (mounted) context.go(path, extra: state.detail.routeContext);
+      });
+      return const Center(child: CircularProgressIndicator());
+    }
 
     return Scaffold(
       backgroundColor: AppColors.surface,
@@ -359,10 +366,12 @@ class _DesktopAnalysisSection extends StatelessWidget {
             const SizedBox(width: AppSpacing.md),
             SizedBox(
               width: 280,
-              child: TrustSignalCard(
-                signals: detail.trustSignals,
-                onDetailPressed: onDetailPressed,
-              ),
+              child: detail.rtiSummary == null
+                  ? const SizedBox.shrink()
+                  : TrustSignalCard(
+                      signals: detail.trustSignals,
+                      onDetailPressed: onDetailPressed,
+                    ),
             ),
           ],
         ),
@@ -395,10 +404,11 @@ class _MobileAnalysisSection extends StatelessWidget {
           onDetailPressed: onDetailPressed,
         ),
         const SizedBox(height: AppSpacing.md),
-        TrustSignalCard(
-          signals: detail.trustSignals,
-          onDetailPressed: onDetailPressed,
-        ),
+        if (detail.rtiSummary != null)
+          TrustSignalCard(
+            signals: detail.trustSignals,
+            onDetailPressed: onDetailPressed,
+          ),
       ],
     );
   }
@@ -532,7 +542,12 @@ class _ProductTabBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final tabs = [
-      (_ProductDetailTab.review, '리뷰 ${_formatTabCount(detail.reviewCount)}'),
+      (
+        _ProductDetailTab.review,
+        detail.reviewCount == null
+            ? '리뷰'
+            : '리뷰 ${_formatTabCount(detail.reviewCount!)}',
+      ),
       (_ProductDetailTab.priceComparison, '가격비교 ${detail.totalSellerCount}'),
       (_ProductDetailTab.info, '상품 정보'),
     ];
@@ -710,19 +725,19 @@ class _ProductInfoTable extends StatelessWidget {
       if (category.isNotEmpty) ('카테고리', category),
       if (detail.price > 0) ('최저가', '${_formatWon(detail.price)}원'),
       if (detail.totalSellerCount > 0) ('판매처', '${detail.totalSellerCount}곳'),
-      if (detail.reviewCount > 0)
+      if (detail.avgRating != null)
         (
           '평균 별점',
-          '${detail.avgRating.toStringAsFixed(1)} '
-              '(리뷰 ${_formatWon(detail.reviewCount)}개)',
+          '${detail.avgRating!.toStringAsFixed(1)} '
+              '(리뷰 ${_formatWon(detail.reviewCount ?? 0)}개)',
         ),
-      if (detail.avgRti > 0)
+      if (detail.avgRti != null)
         (
           'RTI',
-          detail.rtiGrade.isEmpty
-              ? detail.avgRti.toStringAsFixed(1)
-              : '${detail.avgRti.toStringAsFixed(1)} · '
-                    '${_gradeLabel(detail.rtiGrade)}',
+          (detail.rtiGrade?.isEmpty ?? true)
+              ? detail.avgRti!.toStringAsFixed(1)
+              : '${detail.avgRti!.toStringAsFixed(1)} · '
+                    '${_gradeLabel(detail.rtiGrade!)}',
         ),
       if (detail.deliveryInfo?.isNotEmpty ?? false)
         ('배송', detail.deliveryInfo!),
