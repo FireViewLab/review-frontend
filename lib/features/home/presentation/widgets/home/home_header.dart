@@ -11,8 +11,10 @@ import 'package:re_view_front/app/router/route_paths.dart';
 import 'package:go_router/go_router.dart';
 import 'package:re_view_front/features/home/presentation/widgets/home_header/home_header_types.dart';
 import 'package:re_view_front/features/home/presentation/widgets/home_header/home_header_layouts.dart';
-export 'package:re_view_front/features/home/presentation/widgets/home_header/home_header_profile.dart' show HeaderUserProfileButton;
-export 'package:re_view_front/features/home/presentation/widgets/home_header/home_header_types.dart' show SearchSuggestionsRequested;
+export 'package:re_view_front/features/home/presentation/widgets/home_header/home_header_profile.dart'
+    show HeaderUserProfileButton;
+export 'package:re_view_front/features/home/presentation/widgets/home_header/home_header_types.dart'
+    show SearchSuggestionsRequested;
 
 class HomeHeader extends ConsumerWidget {
   const HomeHeader({
@@ -29,6 +31,7 @@ class HomeHeader extends ConsumerWidget {
     this.onSearchSubmitted,
     this.onLogoPressed,
     this.searchFocusNode,
+    this.searchQuery,
     this.cartCount,
     this.wishlistCount,
     this.isLoggedIn = false,
@@ -53,6 +56,7 @@ class HomeHeader extends ConsumerWidget {
   final ValueChanged<String>? onSearchSubmitted;
   final VoidCallback? onLogoPressed;
   final FocusNode? searchFocusNode;
+  final String? searchQuery;
   final int? cartCount;
   final int? wishlistCount;
   final bool isLoggedIn;
@@ -101,6 +105,7 @@ class HomeHeader extends ConsumerWidget {
                   searchRecommendedProducts: searchRecommendedProducts,
                   onSearchSuggestionsRequested: onSearchSuggestionsRequested,
                   searchFocusNode: searchFocusNode,
+                  searchQuery: searchQuery,
                   isLoggedIn: isLoggedIn,
                   nickname: nickname,
                   onMyPagePressed: onMyPagePressed,
@@ -122,6 +127,7 @@ class HomeHeader extends ConsumerWidget {
                   onSearchSuggestionsRequested: onSearchSuggestionsRequested,
                   onLogoPressed: onLogoPressed,
                   searchFocusNode: searchFocusNode,
+                  searchQuery: searchQuery,
                   cartCount: effectiveCartCount,
                   wishlistCount: effectiveWishlistCount,
                   onNotificationPressed: openNotifications,

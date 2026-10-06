@@ -5,8 +5,6 @@ import 'package:re_view_front/app/router/route_paths.dart';
 import 'package:re_view_front/app/theme/app_colors.dart';
 import 'package:re_view_front/app/theme/app_spacing.dart';
 import 'package:re_view_front/core/providers/core_providers.dart';
-import 'package:re_view_front/features/home/presentation/data/home_content.dart';
-import 'package:re_view_front/features/home/presentation/widgets/home/home_header.dart';
 import 'package:re_view_front/features/review_report/presentation/providers/review_report_providers.dart';
 import 'package:re_view_front/features/review_report/presentation/view_models/review_report_draft.dart';
 import 'package:re_view_front/features/review_report/presentation/view_models/review_report_state.dart';
@@ -16,7 +14,6 @@ import 'package:re_view_front/features/review_report/presentation/widgets/review
 import 'package:re_view_front/features/review_report/presentation/widgets/side_panel/report_side_panel.dart';
 import 'package:re_view_front/shared/extensions/context_extensions.dart';
 import 'package:re_view_front/shared/widgets/app_content_view.dart';
-import 'package:re_view_front/features/home/presentation/home_navigation.dart';
 
 class ReviewReportPage extends ConsumerStatefulWidget {
   const ReviewReportPage({
@@ -127,7 +124,9 @@ class _ReviewReportPageState extends ConsumerState<ReviewReportPage> {
     }
     if (!(_formKey.currentState?.validate() ?? false)) return;
 
-    ref.read(reviewReportViewModelProvider.notifier).submit(
+    ref
+        .read(reviewReportViewModelProvider.notifier)
+        .submit(
           reviewId: widget.reviewId,
           reason: draft.reasons.first.code,
           detail: draft.detail.trim(),
@@ -137,7 +136,9 @@ class _ReviewReportPageState extends ConsumerState<ReviewReportPage> {
 
   void _showSnack(String message) {
     if (!mounted) return;
-    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(message)));
+    ScaffoldMessenger.of(
+      context,
+    ).showSnackBar(SnackBar(content: Text(message)));
   }
 
   void _clearDraftAndGo(VoidCallback navigate) {
@@ -155,9 +156,8 @@ class _ReviewReportPageState extends ConsumerState<ReviewReportPage> {
         content: const Text('신고가 접수되었습니다.\n처리 결과는 피드백 내역에서 확인할 수 있어요.'),
         actions: [
           TextButton(
-            onPressed: () => _clearDraftAndGo(
-              () => context.go(RoutePaths.myPage),
-            ),
+            onPressed: () =>
+                _clearDraftAndGo(() => context.go(RoutePaths.myPage)),
             child: const Text('피드백 내역 보기'),
           ),
           FilledButton(
@@ -199,7 +199,6 @@ class _ReviewReportPageState extends ConsumerState<ReviewReportPage> {
   Widget build(BuildContext context) {
     final state = ref.watch(reviewReportViewModelProvider);
     final isLoggedIn = ref.watch(isLoggedInProvider);
-    final nickname = ref.watch(userNicknameProvider).value;
     final draft = ref.watch(reviewReportDraftProvider);
 
     if (!isLoggedIn) {
@@ -250,33 +249,6 @@ class _ReviewReportPageState extends ConsumerState<ReviewReportPage> {
       body: CustomScrollView(
         slivers: [
           SliverToBoxAdapter(
-            child: HomeHeader(
-              navItems: homeNavItems,
-              selectedNavItem: '',
-              showCategoryNav: false,
-              isLoggedIn: isLoggedIn,
-              nickname: nickname,
-              onLoginPressed: () => context.go(RoutePaths.login),
-              onWishPressed: () => context.go(RoutePaths.wishlist),
-              onCartPressed: () => context.go(RoutePaths.cart),
-              onMyPagePressed: () => context.go(RoutePaths.myPage),
-              onProfileWishPressed: () => context.go(RoutePaths.wishlist),
-              onProfileOrderPressed: () => context.go(RoutePaths.cart),
-              onLogoutPressed: () =>
-                  ref.read(authTokenStoreProvider.notifier).clear(),
-              onNavItemPressed: (item) => openHomeNavItem(context, item),
-              onSearchSubmitted: (q) {
-                if (q.trim().isNotEmpty) {
-                  context.goNamed(
-                    RouteNames.search,
-                    queryParameters: {'q': q.trim()},
-                  );
-                }
-              },
-              onLogoPressed: () => context.goNamed(RouteNames.home),
-            ),
-          ),
-          SliverToBoxAdapter(
             child: AppContentView(
               maxWidth: 1280,
               padding: EdgeInsets.fromLTRB(
@@ -304,8 +276,7 @@ class _ReviewReportPageState extends ConsumerState<ReviewReportPage> {
                               const SizedBox(height: AppSpacing.lg),
                               ReportSidePanel(
                                 selectedCount: draft.reasons.length,
-                                evidenceCount:
-                                    draft.includeAiEvidence ? 4 : 0,
+                                evidenceCount: draft.includeAiEvidence ? 4 : 0,
                               ),
                             ],
                           )
@@ -325,8 +296,9 @@ class _ReviewReportPageState extends ConsumerState<ReviewReportPage> {
                                 width: 300,
                                 child: ReportSidePanel(
                                   selectedCount: draft.reasons.length,
-                                  evidenceCount:
-                                      draft.includeAiEvidence ? 4 : 0,
+                                  evidenceCount: draft.includeAiEvidence
+                                      ? 4
+                                      : 0,
                                 ),
                               ),
                             ],

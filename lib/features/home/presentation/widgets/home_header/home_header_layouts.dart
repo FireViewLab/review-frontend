@@ -28,6 +28,7 @@ class HomeHeaderDesktop extends StatelessWidget {
     this.onSearchSuggestionsRequested,
     this.onLogoPressed,
     this.searchFocusNode,
+    this.searchQuery,
     this.cartCount,
     this.wishlistCount,
     this.onNotificationPressed,
@@ -53,6 +54,7 @@ class HomeHeaderDesktop extends StatelessWidget {
   final SearchSuggestionsRequested? onSearchSuggestionsRequested;
   final VoidCallback? onLogoPressed;
   final FocusNode? searchFocusNode;
+  final String? searchQuery;
   final int? cartCount;
   final int? wishlistCount;
   final VoidCallback? onNotificationPressed;
@@ -92,6 +94,7 @@ class HomeHeaderDesktop extends StatelessWidget {
                   width: searchWidth,
                   child: home.SearchBar(
                     focusNode: searchFocusNode,
+                    initialValue: searchQuery,
                     popularKeywords: searchKeywords,
                     recommendedProducts: searchRecommendedProducts,
                     onSuggestionsRequested: onSearchSuggestionsRequested,
@@ -253,6 +256,7 @@ class HomeHeaderMobile extends StatelessWidget {
     this.searchRecommendedProducts = const [],
     this.onSearchSuggestionsRequested,
     this.searchFocusNode,
+    this.searchQuery,
     this.isLoggedIn = false,
     this.nickname,
     this.onMyPagePressed,
@@ -271,6 +275,7 @@ class HomeHeaderMobile extends StatelessWidget {
   final List<HomeProductData> searchRecommendedProducts;
   final SearchSuggestionsRequested? onSearchSuggestionsRequested;
   final FocusNode? searchFocusNode;
+  final String? searchQuery;
   final bool isLoggedIn;
   final String? nickname;
   final VoidCallback? onMyPagePressed;
@@ -321,6 +326,7 @@ class HomeHeaderMobile extends StatelessWidget {
         const SizedBox(height: AppSpacing.sm),
         home.SearchBar(
           focusNode: searchFocusNode,
+          initialValue: searchQuery,
           popularKeywords: searchKeywords,
           recommendedProducts: searchRecommendedProducts,
           onSuggestionsRequested: onSearchSuggestionsRequested,

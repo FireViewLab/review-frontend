@@ -4,10 +4,6 @@ import 'package:go_router/go_router.dart';
 import 'package:re_view_front/app/router/route_paths.dart';
 import 'package:re_view_front/app/theme/app_colors.dart';
 import 'package:re_view_front/app/theme/app_spacing.dart';
-import 'package:re_view_front/features/home/presentation/data/home_content.dart';
-import 'package:re_view_front/features/home/presentation/providers/home_providers.dart';
-import 'package:re_view_front/features/home/presentation/view_models/home_dashboard_state.dart';
-import 'package:re_view_front/features/home/presentation/widgets/home/home_header.dart';
 import 'package:re_view_front/features/wishlist/domain/entities/wishlist_item.dart';
 import 'package:re_view_front/features/wishlist/domain/entities/wishlist_summary.dart';
 import 'package:re_view_front/features/wishlist/presentation/providers/wishlist_providers.dart';
@@ -20,8 +16,6 @@ import 'package:re_view_front/shared/extensions/context_extensions.dart';
 import 'package:re_view_front/shared/widgets/app_content_view.dart';
 import 'package:re_view_front/shared/widgets/error_view.dart';
 import 'package:re_view_front/shared/widgets/shimmer_box.dart';
-import 'package:re_view_front/core/providers/core_providers.dart';
-import 'package:re_view_front/features/home/presentation/home_navigation.dart';
 
 class WishlistPage extends ConsumerStatefulWidget {
   const WishlistPage({super.key});
@@ -43,48 +37,11 @@ class _WishlistPageState extends ConsumerState<WishlistPage> {
   @override
   Widget build(BuildContext context) {
     final wishlistState = ref.watch(wishlistViewModelProvider);
-    final isLoggedIn = ref.watch(isLoggedInProvider);
-    final nickname = ref.watch(userNicknameProvider).value;
-    final dashboardState = ref.watch(homeDashboardViewModelProvider);
-
-    final keywords = _keywordsFrom(dashboardState);
-    final products = _productsFrom(dashboardState);
 
     return Scaffold(
       backgroundColor: AppColors.background,
       body: CustomScrollView(
         slivers: [
-          SliverToBoxAdapter(
-            child: HomeHeader(
-              navItems: homeNavItems,
-              selectedNavItem: '',
-              isLoggedIn: isLoggedIn,
-              nickname: nickname,
-              onLoginPressed: () => context.go(RoutePaths.login),
-              onWishPressed: () {},
-              onCartPressed: () => context.go(RoutePaths.login),
-              onNavItemPressed: (item) => openHomeNavItem(context, item),
-              onLogoPressed: () => context.go(RoutePaths.home),
-              onSearchSubmitted: (q) {
-                if (q.trim().isNotEmpty) {
-                  context.goNamed(
-                    RouteNames.search,
-                    queryParameters: {'q': q.trim()},
-                  );
-                }
-              },
-              searchKeywords: keywords,
-              searchRecommendedProducts: products,
-              onMyPagePressed: () =>
-                  context.go(isLoggedIn ? RoutePaths.myPage : RoutePaths.login),
-              onProfileWishPressed: () {},
-              onProfileOrderPressed: () => context.go(RoutePaths.login),
-              onLogoutPressed: () {
-                ref.read(authTokenStoreProvider.notifier).clear();
-                context.go(RoutePaths.landing);
-              },
-            ),
-          ),
           SliverToBoxAdapter(
             child: AppContentView(
               maxWidth: 1760,
@@ -95,8 +52,8 @@ class _WishlistPageState extends ConsumerState<WishlistPage> {
                 AppSpacing.xxxl,
               ),
               child: switch (wishlistState) {
-                WishlistLoading() || WishlistInitial() =>
-                  const _WishlistGridSkeleton(),
+                WishlistLoading() ||
+                WishlistInitial() => const _WishlistGridSkeleton(),
                 WishlistFailure(:final failure) => SizedBox(
                   height: 320,
                   child: AppErrorView(
@@ -132,36 +89,6 @@ class _WishlistPageState extends ConsumerState<WishlistPage> {
         ],
       ),
     );
-  }
-
-  List<String> _keywordsFrom(HomeDashboardState state) {
-    return switch (state) {
-      HomeDashboardSuccess(:final dashboard) =>
-        dashboard.trendingKeywords.map((k) => k.keyword).toList(),
-      _ => const [],
-    };
-  }
-
-  List<HomeProductData> _productsFrom(HomeDashboardState state) {
-    return switch (state) {
-      HomeDashboardSuccess(:final dashboard) =>
-        dashboard.recommendedProducts
-            .map(
-              (p) => HomeProductData(
-                productId: p.id,
-                name: p.name,
-                storeName: p.storeName,
-                priceLabel: '${p.price}원',
-                ratingLabel: p.rating?.toStringAsFixed(1) ?? '-',
-                reviewCountLabel: p.reviewCount?.toString() ?? '-',
-                rtiLabel: p.rtiScore == null ? '' : 'RTI ${p.rtiScore}',
-                imageUrl: p.imageUrl,
-                label: p.label ?? '',
-              ),
-            )
-            .toList(),
-      _ => const [],
-    };
   }
 }
 
@@ -474,7 +401,10 @@ class _WishlistCardSkeleton extends StatelessWidget {
                       ShimmerBox(width: 36, height: 36, radius: 6),
                       SizedBox(width: AppSpacing.xs),
                       Expanded(
-                        child: SizedBox(height: 36, child: ShimmerBox(radius: 6)),
+                        child: SizedBox(
+                          height: 36,
+                          child: ShimmerBox(radius: 6),
+                        ),
                       ),
                     ],
                   ),

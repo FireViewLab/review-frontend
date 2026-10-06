@@ -12,11 +12,8 @@ import 'package:re_view_front/features/auth/presentation/widgets/login_footer.da
 import 'package:re_view_front/features/auth/presentation/widgets/login_value_panel.dart';
 import 'package:re_view_front/features/auth/presentation/providers/auth_providers.dart';
 import 'package:re_view_front/features/auth/presentation/view_models/login_state.dart';
-import 'package:re_view_front/features/home/presentation/data/home_content.dart';
-import 'package:re_view_front/features/home/presentation/widgets/home/home_header.dart';
 import 'package:re_view_front/shared/extensions/context_extensions.dart';
 import 'package:re_view_front/shared/widgets/app_content_view.dart';
-import 'package:re_view_front/features/home/presentation/home_navigation.dart';
 
 class LoginPage extends ConsumerStatefulWidget {
   const LoginPage({super.key, this.from});
@@ -76,15 +73,6 @@ class _LoginPageState extends ConsumerState<LoginPage> {
       backgroundColor: AppColors.background,
       body: Column(
         children: [
-          HomeHeader(
-            navItems: homeNavItems,
-            selectedNavItem: '홈',
-            onLoginPressed: () {},
-            onWishPressed: () => context.go(RoutePaths.home),
-            onCartPressed: () => context.go(RoutePaths.home),
-            onNavItemPressed: (item) => openHomeNavItem(context, item),
-            onLogoPressed: () => context.go(RoutePaths.home),
-          ),
           Expanded(
             child: SingleChildScrollView(
               child: AppContentView(
@@ -107,7 +95,10 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                         children: [
                           const Expanded(
                             flex: 12,
-                            child: AppFadeIn(delay: 0, child: LoginValuePanel()),
+                            child: AppFadeIn(
+                              delay: 0,
+                              child: LoginValuePanel(),
+                            ),
                           ),
                           const SizedBox(width: 64),
                           Expanded(
@@ -193,4 +184,3 @@ class _LoginPageState extends ConsumerState<LoginPage> {
     redirectToExternalUrl(uri);
   }
 }
-
