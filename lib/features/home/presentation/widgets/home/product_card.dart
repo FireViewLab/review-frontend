@@ -22,8 +22,8 @@ class ProductCard extends StatelessWidget {
       child: GestureDetector(
         onTap: onTap,
         child: AnimatedContainer(
-          duration: const Duration(milliseconds: 180),
-          curve: Curves.easeOutCubic,
+          duration: AppMotion.of(context, AppMotion.fast),
+          curve: AppMotion.enter,
           decoration: BoxDecoration(
             color: AppColors.surface,
             borderRadius: BorderRadius.circular(20),
@@ -172,6 +172,15 @@ class _HeartButtonState extends ConsumerState<_HeartButton>
   }
 
   @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    if (MediaQuery.disableAnimationsOf(context)) {
+      _controller.stop();
+      _controller.value = 0;
+    }
+  }
+
+  @override
   void dispose() {
     _controller.dispose();
     super.dispose();
@@ -188,7 +197,9 @@ class _HeartButtonState extends ConsumerState<_HeartButton>
       return;
     }
 
-    _controller.forward(from: 0);
+    if (!MediaQuery.disableAnimationsOf(context)) {
+      _controller.forward(from: 0);
+    }
     await ref.read(wishlistButtonProvider(widget.productId).notifier).toggle();
   }
 
@@ -212,7 +223,7 @@ class _HeartButtonState extends ConsumerState<_HeartButton>
             shape: BoxShape.circle,
           ),
           child: AnimatedSwitcher(
-            duration: const Duration(milliseconds: 200),
+            duration: AppMotion.of(context, AppMotion.base),
             transitionBuilder: (child, animation) =>
                 ScaleTransition(scale: animation, child: child),
             child: Icon(

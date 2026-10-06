@@ -1,3 +1,4 @@
+import 'package:re_view_front/app/theme/app_motion.dart';
 import 'package:flutter/material.dart';
 import 'package:re_view_front/app/theme/app_colors.dart';
 import 'package:re_view_front/app/theme/app_spacing.dart';
@@ -50,18 +51,15 @@ class _ReasonCardState extends State<ReasonCard> {
         behavior: HitTestBehavior.opaque,
         onTap: widget.onTap,
         child: AnimatedContainer(
-          duration: const Duration(milliseconds: 180),
-          curve: Curves.easeOutCubic,
+          duration: AppMotion.of(context, AppMotion.base),
+          curve: AppMotion.enter,
           padding: const EdgeInsets.all(AppSpacing.md),
           decoration: BoxDecoration(
             color: selected
                 ? AppColors.primary.withValues(alpha: 0.06)
                 : AppColors.surface,
             borderRadius: BorderRadius.circular(12),
-            border: Border.all(
-              color: borderColor,
-              width: selected ? 1.5 : 1,
-            ),
+            border: Border.all(color: borderColor, width: selected ? 1.5 : 1),
             boxShadow: selected
                 ? [
                     BoxShadow(
@@ -108,9 +106,7 @@ class _ReasonCardState extends State<ReasonCard> {
                 overflow: TextOverflow.ellipsis,
                 style: Theme.of(context).textTheme.labelMedium?.copyWith(
                   fontWeight: FontWeight.w800,
-                  color: selected
-                      ? AppColors.primary
-                      : AppColors.textPrimary,
+                  color: selected ? AppColors.primary : AppColors.textPrimary,
                   fontSize: 13,
                   height: 1.3,
                 ),
@@ -144,8 +140,8 @@ class _SelectionCheckbox extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AnimatedContainer(
-      duration: const Duration(milliseconds: 160),
-      curve: Curves.easeOutCubic,
+      duration: AppMotion.of(context, AppMotion.base),
+      curve: AppMotion.enter,
       width: 20,
       height: 20,
       alignment: Alignment.center,
@@ -158,7 +154,7 @@ class _SelectionCheckbox extends StatelessWidget {
         ),
       ),
       child: AnimatedSwitcher(
-        duration: const Duration(milliseconds: 160),
+        duration: AppMotion.of(context, AppMotion.base),
         transitionBuilder: (child, anim) =>
             ScaleTransition(scale: anim, child: child),
         child: selected

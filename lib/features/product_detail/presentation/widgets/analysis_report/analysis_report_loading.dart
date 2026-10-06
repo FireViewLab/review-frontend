@@ -15,6 +15,7 @@ class AnalysisReportSkeletonView extends StatelessWidget {
   Widget build(BuildContext context) {
     final isNarrow = MediaQuery.sizeOf(context).width < 760;
     return Shimmer.fromColors(
+      enabled: !MediaQuery.disableAnimationsOf(context),
       baseColor: const Color(0xFFE5E7EB),
       highlightColor: const Color(0xFFF9FAFB),
       child: Column(

@@ -1,3 +1,4 @@
+import 'package:re_view_front/app/theme/app_motion.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:re_view_front/app/theme/app_colors.dart';
@@ -68,12 +69,11 @@ class ReviewReportMainForm extends StatelessWidget {
   bool get _agreed => agreePrivacy && agreeNotFalse;
 
   bool _canAdvanceFrom(ReportStep step) => switch (step) {
-        ReportStep.target => true,
-        ReportStep.reason => selectedReasons.isNotEmpty,
-        ReportStep.detail => _detailReady,
-        ReportStep.submit =>
-          _agreed && selectedReasons.isNotEmpty && _detailReady,
-      };
+    ReportStep.target => true,
+    ReportStep.reason => selectedReasons.isNotEmpty,
+    ReportStep.detail => _detailReady,
+    ReportStep.submit => _agreed && selectedReasons.isNotEmpty && _detailReady,
+  };
 
   void _goNext() {
     final next = ReportStep.values[currentStep.index + 1];
@@ -135,6 +135,10 @@ class ReviewReportMainForm extends StatelessWidget {
     final canAdvance = _canAdvanceFrom(currentStep);
     final isLastStep = currentStep == ReportStep.submit;
     final isFirstStep = currentStep == ReportStep.target;
+    final stepContent = KeyedSubtree(
+      key: ValueKey(currentStep),
+      child: _stepContent(),
+    );
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -145,39 +149,36 @@ class ReviewReportMainForm extends StatelessWidget {
           onStepTapped: onStepChanged,
         ),
         const SizedBox(height: AppSpacing.lg),
-        AnimatedSize(
-          duration: const Duration(milliseconds: 220),
-          curve: Curves.easeOutCubic,
-          alignment: Alignment.topCenter,
-          child: AnimatedSwitcher(
-            duration: const Duration(milliseconds: 220),
-            switchInCurve: Curves.easeOutCubic,
-            switchOutCurve: Curves.easeInCubic,
-            transitionBuilder: (child, animation) {
-              final offsetAnim = Tween<Offset>(
-                begin: const Offset(0.04, 0),
-                end: Offset.zero,
-              ).animate(animation);
-              return FadeTransition(
-                opacity: animation,
-                child: SlideTransition(position: offsetAnim, child: child),
-              );
-            },
-            layoutBuilder: (currentChild, previousChildren) {
-              return Stack(
-                alignment: Alignment.topCenter,
-                children: [
-                  ...previousChildren,
-                  ?currentChild,
-                ],
-              );
-            },
-            child: KeyedSubtree(
-              key: ValueKey(currentStep),
-              child: _stepContent(),
+        if (MediaQuery.disableAnimationsOf(context))
+          stepContent
+        else
+          AnimatedSize(
+            duration: AppMotion.of(context, AppMotion.slow),
+            curve: AppMotion.enter,
+            alignment: Alignment.topCenter,
+            child: AnimatedSwitcher(
+              duration: AppMotion.of(context, AppMotion.slow),
+              switchInCurve: AppMotion.enter,
+              switchOutCurve: AppMotion.exit,
+              transitionBuilder: (child, animation) {
+                final offsetAnim = Tween<Offset>(
+                  begin: const Offset(0.04, 0),
+                  end: Offset.zero,
+                ).animate(animation);
+                return FadeTransition(
+                  opacity: animation,
+                  child: SlideTransition(position: offsetAnim, child: child),
+                );
+              },
+              layoutBuilder: (currentChild, previousChildren) {
+                return Stack(
+                  alignment: Alignment.topCenter,
+                  children: [...previousChildren, ?currentChild],
+                );
+              },
+              child: stepContent,
             ),
           ),
-        ),
         const SizedBox(height: AppSpacing.lg),
         _StepNavigationBar(
           isFirstStep: isFirstStep,
@@ -259,11 +260,14 @@ class _StepNavigationBar extends StatelessWidget {
             ),
           ),
           child: isSubmitting
-              ? const SizedBox.square(
+              ? SizedBox.square(
                   dimension: 18,
-                  child: CircularProgressIndicator(
-                    strokeWidth: 2,
-                    color: Colors.white,
+                  child: TickerMode(
+                    enabled: !MediaQuery.disableAnimationsOf(context),
+                    child: const CircularProgressIndicator(
+                      strokeWidth: 2,
+                      color: Colors.white,
+                    ),
                   ),
                 )
               : Row(
