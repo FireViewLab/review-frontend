@@ -12,7 +12,7 @@ class ExternalProductViewModel extends Notifier<ExternalProductState> {
 
   final ExternalProductRef productRef;
 
-  /// 수집은 보통 10~20초 걸린다. 이만큼 기다리면 오래 걸린다고 알린다.
+  /// 이만큼 대기하면 상품 정보를 계속 기다리고 있음을 알린다.
   static const _slowAfter = Duration(seconds: 30);
 
   /// 이보다 오래 걸리면 기다리기를 멈추고 다시 시도하게 한다.

@@ -105,7 +105,7 @@ class _Centered extends StatelessWidget {
   }
 }
 
-/// 처음 보는 상품을 서버가 수집하는 동안 보여 준다. 진행률은 서버가 알려 주지 않는다.
+/// 상품 정보가 준비되기를 기다리는 동안 보여 준다. 진행률은 서버가 알려 주지 않는다.
 class _Collecting extends StatelessWidget {
   const _Collecting({required this.isSlow});
 

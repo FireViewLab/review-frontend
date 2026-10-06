@@ -1361,10 +1361,11 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String get extProductCollectingBody =>
-      '初めての商品のため、ショップから情報を集めています。通常10〜20秒かかります。';
+      'ショップから商品とレビューの情報を取得しています。商品情報が準備でき次第、自動で表示します。';
 
   @override
-  String get extProductCollectingSlow => '通常より時間がかかっています。もう少しお待ちください。';
+  String get extProductCollectingSlow =>
+      'ショップからの商品情報を待っています。商品情報が準備でき次第、自動で表示します。';
 
   @override
   String get extProductUnavailableTitle => '商品情報を取得できませんでした';
@@ -1402,7 +1403,7 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String get extProductAnalysisPendingBody =>
-      'この商品のレビューはまだ分析されていません。分析が終わると信頼度スコアがここに表示されます。';
+      'この商品のレビューはまだ分析されていません。信頼度スコアは提供されていません。';
 
   @override
   String get extProductReviewsTitle => 'レビュー';

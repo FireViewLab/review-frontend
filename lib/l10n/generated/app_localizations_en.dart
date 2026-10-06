@@ -1402,11 +1402,11 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get extProductCollectingBody =>
-      'This product is new to us, so we are collecting it from the shop. It usually takes 10 to 20 seconds.';
+      'We are fetching product and review information from the shop. Product details will appear automatically when available.';
 
   @override
   String get extProductCollectingSlow =>
-      'This is taking longer than usual. Please wait a little more.';
+      'We are still waiting for product information from the shop. Product details will appear automatically when available.';
 
   @override
   String get extProductUnavailableTitle => 'Could not get this product';
@@ -1444,7 +1444,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get extProductAnalysisPendingBody =>
-      'Reviews of this product have not been analyzed yet. The trust score will appear here once analysis is done.';
+      'Reviews for this product have not been analyzed. No trust score is available.';
 
   @override
   String get extProductReviewsTitle => 'Reviews';
