@@ -1,3 +1,4 @@
+import 'package:re_view_front/features/plan/domain/entities/user_plan.dart';
 import 'dart:async';
 
 import 'package:re_view_front/core/result/result.dart';
@@ -23,6 +24,7 @@ ChatQuota quotaOf({
 );
 
 class FakePlanRepository implements PlanRepository {
+  String currentCode = 'FREE';
   Result<DateTime?> expiry = const Success(null);
   Result<void> change = const Success(null);
   Completer<Result<void>>? pendingChange;
@@ -30,13 +32,19 @@ class FakePlanRepository implements PlanRepository {
   final List<String> changes = [];
 
   @override
-  Future<Result<DateTime?>> getMyPlanExpiry() async => expiry;
+  Future<Result<UserPlan>> getMyPlan() async => expiry.when(
+    success: (v) => Success(UserPlan(code: currentCode, expiresAt: v)),
+    failure: FailureResult.new,
+  );
 
   @override
   Future<Result<void>> changeMyPlan(String code) async {
     changes.add(code);
     final result = pendingChange == null ? change : await pendingChange!.future;
-    if (result is Success<void>) onChange?.call(code);
+    if (result is Success<void>) {
+      currentCode = code;
+      onChange?.call(code);
+    }
     return result;
   }
 }

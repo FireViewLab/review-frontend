@@ -90,6 +90,7 @@ void main() {
                         'role': 'USER',
                         'onboardingCompleted': true,
                         'plan': 'FREE',
+                        'planTier': 'FREE',
                         'dailyLimit': 5,
                         'usedToday': 2,
                         'remaining': 3,

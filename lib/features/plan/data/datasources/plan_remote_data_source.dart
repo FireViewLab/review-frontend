@@ -1,9 +1,10 @@
+import 'package:re_view_front/features/plan/domain/entities/user_plan.dart';
 import 'package:re_view_front/core/config/app_config.dart';
 import 'package:re_view_front/core/network/api_client.dart';
 import 'package:re_view_front/core/network/api_response.dart';
 
 abstract interface class PlanRemoteDataSource {
-  Future<DateTime?> getMyPlanExpiry();
+  Future<UserPlan> getMyPlan();
   Future<void> changeMyPlan(String code);
 }
 
@@ -17,15 +18,17 @@ class PlanRemoteDataSourceImpl implements PlanRemoteDataSource {
   final ApiClient _apiClient;
   final AppConfig _config;
 
-  // 백엔드에 요청한 경로다(review-backend #174). 서버에 생기기 전에는 404가 온다.
+  // Current-user plan mutation contract.
   static const myPlanPath = '/api/users/me/plan';
 
   @override
-  Future<DateTime?> getMyPlanExpiry() async {
+  Future<UserPlan> getMyPlan() async {
     final response = await _apiClient.get(_config.userMePath);
     final body = _requireData(response.data);
-    if (body is! Map<String, dynamic>) return null;
-    return DateTime.tryParse(body['planExpiresAt']?.toString() ?? '');
+    if (body is! Map<String, dynamic>) {
+      throw const FormatException('Invalid user response');
+    }
+    return UserPlan.fromJson(body);
   }
 
   @override
@@ -34,7 +37,13 @@ class PlanRemoteDataSourceImpl implements PlanRemoteDataSource {
       myPlanPath,
       data: <String, dynamic>{'planTier': code},
     );
-    _requireData(response.data);
+    final body = _requireData(response.data);
+    if (body is! Map<String, dynamic> ||
+        UserPlan.fromJson(body).code != code.toUpperCase()) {
+      throw const FormatException(
+        'Plan change response does not match the requested plan',
+      );
+    }
   }
 
   Object? _requireData(Object? data) {

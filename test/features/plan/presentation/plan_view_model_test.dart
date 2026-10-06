@@ -1,3 +1,4 @@
+import 'package:re_view_front/features/chat/domain/entities/chat_quota.dart';
 import 'dart:async';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -69,9 +70,60 @@ void main() {
     expect(state.quota?.planCode, 'PRO');
     expect(state.notice, PlanNotice.changed);
     expect(state.isChanging, isFalse);
-    // 요금제 화면이 한 번, 어시스턴트가 한 번 다시 받는다.
-    expect(chat.quotaRequests, before + 2);
+    // One confirmed server quota updates both screens.
+    expect(chat.quotaRequests, before + 1);
   });
+
+  test('does not announce success when refreshed quota disagrees', () async {
+    await settle();
+    await container.read(planViewModelProvider.notifier).change('PLUS');
+    final state = container.read(planViewModelProvider);
+    expect(state.notice, PlanNotice.refreshFailed);
+    expect(state.status, PlanStatus.failure);
+    expect(state.isChanging, isFalse);
+    expect(container.read(chatViewModelProvider).quota, isNull);
+  });
+
+  test('does not announce success when quota refresh fails', () async {
+    await settle();
+    plans.onChange = (_) =>
+        chat.quota = const FailureResult(Failure(message: 'quota unavailable'));
+    await container.read(planViewModelProvider.notifier).change('PLUS');
+    expect(
+      container.read(planViewModelProvider).notice,
+      PlanNotice.refreshFailed,
+    );
+    expect(container.read(chatViewModelProvider).quota, isNull);
+  });
+
+  test('requires current-user response as well as quota', () async {
+    await settle();
+    plans.expiry = const FailureResult(Failure(message: 'profile unavailable'));
+    await container.read(planViewModelProvider.notifier).load();
+    expect(container.read(planViewModelProvider).status, PlanStatus.failure);
+  });
+
+  test(
+    'updates an open chat and removes pro permission on downgrade',
+    () async {
+      await settle();
+      final vm = container.read(planViewModelProvider.notifier);
+      plans.onChange = (code) => chat.quota = Success(
+        quotaOf(plan: code, limit: code == 'PRO' ? 80 : 5, pro: code == 'PRO'),
+      );
+      await vm.change('PRO');
+      final chatVm = container.read(chatViewModelProvider.notifier);
+      chatVm.open();
+      await settle();
+      chatVm.setMode(ChatMode.pro);
+      expect(container.read(chatViewModelProvider).canUsePro, isTrue);
+      await vm.change('FREE');
+      expect(container.read(chatViewModelProvider).isOpen, isTrue);
+      expect(container.read(chatViewModelProvider).quota?.planCode, 'FREE');
+      expect(container.read(chatViewModelProvider).canUsePro, isFalse);
+      expect(container.read(chatViewModelProvider).mode, ChatMode.standard);
+    },
+  );
 
   test(
     'reports that changing is not available when the server lacks it',

@@ -7,6 +7,7 @@ import 'package:re_view_front/features/plan/presentation/view_models/plan_state.
 class PlanViewModel extends Notifier<PlanState> {
   /// 다시 불러올 때마다 올린다. 늦게 온 이전 응답이 새 값을 덮지 않게 한다.
   int _request = 0;
+  int _changeRequest = 0;
 
   @override
   PlanState build() {
@@ -22,11 +23,21 @@ class PlanViewModel extends Notifier<PlanState> {
     final planRepository = ref.read(planRepositoryProvider);
     final (quota, expiry) = await (
       ref.read(chatRepositoryProvider).getQuota(),
-      planRepository.getMyPlanExpiry(),
+      planRepository.getMyPlan(),
     ).wait;
     if (!ref.mounted || request != _request) return;
 
-    final expiresAt = expiry.when(success: (v) => v, failure: (_) => null);
+    final account = expiry.when(success: (v) => v, failure: (_) => null);
+    final currentQuota = quota.when(success: (v) => v, failure: (_) => null);
+    if (account == null ||
+        currentQuota == null ||
+        account.code != currentQuota.planCode.toUpperCase()) {
+      state = state.copyWith(status: PlanStatus.failure);
+      ref.read(chatViewModelProvider.notifier).invalidateQuota();
+      return;
+    }
+    ref.read(chatViewModelProvider.notifier).applyQuota(currentQuota);
+    final expiresAt = account.expiresAt;
     quota.when(
       success: (value) => state = state.copyWith(
         status: PlanStatus.ready,
@@ -41,25 +52,33 @@ class PlanViewModel extends Notifier<PlanState> {
 
   Future<void> change(String code) async {
     if (state.isChanging || state.quota?.planCode.toUpperCase() == code) return;
-    final request = _request;
+    final changeRequest = ++_changeRequest;
     state = state.copyWith(changingCode: code, clearNotice: true);
 
     final result = await ref.read(planRepositoryProvider).changeMyPlan(code);
-    if (!ref.mounted || request != _request) return;
+    if (!ref.mounted || changeRequest != _changeRequest) return;
 
     await result.when(
       success: (_) async {
         await load();
-        if (!ref.mounted) return;
+        if (!ref.mounted || changeRequest != _changeRequest) return;
+        final confirmed =
+            state.status == PlanStatus.ready &&
+            state.quota?.planCode.toUpperCase() == code.toUpperCase();
         state = state.copyWith(
           clearChanging: true,
-          notice: PlanNotice.changed,
+          notice: confirmed ? PlanNotice.changed : PlanNotice.refreshFailed,
           noticeCode: code,
         );
         // 열려 있는 어시스턴트의 남은 횟수와 모드도 새 요금제로 맞춘다.
-        ref.read(chatViewModelProvider.notifier).refreshQuota();
+        if (!confirmed) {
+          ref.read(chatViewModelProvider.notifier).invalidateQuota();
+        }
       },
       failure: (failure) async {
+        // A response/connection failure can occur after the server applied a change.
+        await load();
+        if (!ref.mounted || changeRequest != _changeRequest) return;
         state = state.copyWith(
           clearChanging: true,
           notice: _isUnavailable(failure)

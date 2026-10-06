@@ -6,6 +6,7 @@ enum PlanStatus { loading, ready, failure }
 /// 요금제 변경 결과. 화면에서 문구로 바꿔 보여 준다.
 enum PlanNotice {
   changed,
+  refreshFailed,
 
   /// 서버에 본인 요금제 변경 기능이 아직 없다.
   unavailable,
