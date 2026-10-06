@@ -194,6 +194,8 @@ class QuickCategoryData {
 
 class HomeProductData {
   const HomeProductData({
+    this.detailPath,
+    this.chatProductId,
     required this.productId,
     required this.name,
     required this.storeName,
@@ -205,6 +207,8 @@ class HomeProductData {
     required this.label,
   });
 
+  final String? detailPath;
+  final String? chatProductId;
   final String productId;
   final String name;
   final String storeName;

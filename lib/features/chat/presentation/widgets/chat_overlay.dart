@@ -1,3 +1,4 @@
+import 'package:re_view_front/features/external_product/domain/entities/external_product_ref.dart';
 import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
@@ -59,7 +60,6 @@ const _hiddenPathPrefixes = [
 ///
 /// 숫자 ID만 있는 기존 상품 화면(`/product/{id}`)은 맞지 않는다. 챗봇은 Data 서버
 /// 상품만 찾을 수 있어서, 그 화면에서는 상품 없이 일반 질문으로 대화한다.
-final _productPathPattern = RegExp(r'^/product/([a-z][a-z0-9]*)/([^/]+)');
 
 class _ChatLayer extends ConsumerWidget {
   const _ChatLayer();
@@ -81,11 +81,16 @@ class _ChatLayer extends ConsumerWidget {
           return const SizedBox.shrink();
         }
 
-        final match = _productPathPattern.firstMatch(path);
+        final productRef = ExternalProductRef.fromRoute(
+          router.routerDelegate.currentConfiguration.uri,
+        );
         // 서버가 받는 형식은 "{platform}-{productId}"다.
-        final productId = match == null
+        final extra = router.routerDelegate.currentConfiguration.extra;
+        final productId = productRef == null
             ? null
-            : '${match.group(1)}-${match.group(2)}';
+            : extra is ProductRouteContext
+            ? extra.chatProductId
+            : productRef.externalId;
         return _ChatLauncherLayout(
           router: router,
           productId: productId,

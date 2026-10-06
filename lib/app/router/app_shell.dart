@@ -85,6 +85,7 @@ class _AppShellState extends ConsumerState<AppShell> {
             .map(
               (p) => HomeProductData(
                 productId: p.id,
+                detailPath: p.detailPath,
                 name: p.name,
                 storeName: p.storeName,
                 priceLabel: '${p.price}원',

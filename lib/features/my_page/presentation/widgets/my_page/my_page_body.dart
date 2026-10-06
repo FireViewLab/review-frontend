@@ -95,7 +95,8 @@ class MyPageBody extends StatelessWidget {
                 isLoading:
                     wishlistState is WishlistLoading ||
                     wishlistState is WishlistInitial,
-                onProductTap: (id) => onProductTap(id.toString()),
+                onProductTap: (item) =>
+                    context.go(item.detailPath, extra: item.routeContext),
               ),
             ],
           ),
@@ -165,9 +166,7 @@ class MyPageBody extends StatelessWidget {
   }
 
   double? get _savedAverageRti {
-    final scoredItems = _wishlistItems.where(
-      (item) => item.avgRti != null && item.avgRti! > 0,
-    );
+    final scoredItems = _wishlistItems.where((item) => item.avgRti != null);
     if (scoredItems.isEmpty) return null;
 
     final total = scoredItems.fold<double>(

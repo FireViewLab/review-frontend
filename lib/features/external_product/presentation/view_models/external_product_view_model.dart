@@ -24,6 +24,7 @@ class ExternalProductViewModel extends Notifier<ExternalProductState> {
   /// 다시 불러올 때마다 올린다. 이전 요청과 대기를 모두 버린다.
   int _generation = 0;
   Timer? _pollTimer;
+  final Set<String> _loadedCursors = {};
 
   @override
   ExternalProductState build() {
@@ -35,6 +36,7 @@ class ExternalProductViewModel extends Notifier<ExternalProductState> {
   Future<void> load() async {
     final generation = ++_generation;
     _pollTimer?.cancel();
+    _loadedCursors.clear();
     state = const ExternalProductState();
     await _fetch(generation, startedAt: DateTime.now());
   }
@@ -136,6 +138,10 @@ class ExternalProductViewModel extends Notifier<ExternalProductState> {
     result.when(
       success: (snapshot) {
         // 같은 리뷰가 두 페이지에 걸쳐 와도 한 번만 보여 준다.
+        _loadedCursors.add(cursor);
+        final next = snapshot.nextCursor;
+        final exhausted =
+            next == null || next.isEmpty || _loadedCursors.contains(next);
         final seen = {for (final review in state.reviews) review.reviewId};
         state = state.copyWith(
           isLoadingMore: false,
@@ -144,8 +150,8 @@ class ExternalProductViewModel extends Notifier<ExternalProductState> {
             for (final review in snapshot.reviews)
               if (seen.add(review.reviewId)) review,
           ],
-          nextCursor: snapshot.nextCursor,
-          clearNextCursor: snapshot.nextCursor == null,
+          nextCursor: exhausted ? null : next,
+          clearNextCursor: exhausted,
         );
       },
       failure: (_) =>

@@ -2,7 +2,6 @@ import 'package:re_view_front/app/theme/app_motion.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:re_view_front/app/router/route_paths.dart';
 import 'package:re_view_front/app/theme/app_colors.dart';
 import 'package:re_view_front/app/theme/app_spacing.dart';
 import 'package:re_view_front/core/providers/core_providers.dart';
@@ -60,7 +59,7 @@ class _SearchProductCardState extends State<SearchProductCard> {
           borderRadius: BorderRadius.circular(10),
           clipBehavior: Clip.antiAlias,
           child: InkWell(
-            onTap: () => _openProductDetail(context, product.id),
+            onTap: () => _openProductDetail(context, product),
             borderRadius: BorderRadius.circular(10),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -82,7 +81,7 @@ class _SearchProductCardState extends State<SearchProductCard> {
                         top: AppSpacing.xs,
                         right: AppSpacing.xs,
                         child: RtiBadge(
-                          value: product.avgRti.round(),
+                          value: product.avgRti?.round(),
                           color: rtiColor,
                         ),
                       ),
@@ -90,7 +89,7 @@ class _SearchProductCardState extends State<SearchProductCard> {
                         child: _HoverTapLayer(
                           onEnter: () => setState(() => _hovered = true),
                           onExit: () => setState(() => _hovered = false),
-                          onTap: () => _openProductDetail(context, product.id),
+                          onTap: () => _openProductDetail(context, product),
                         ),
                       ),
                     ],
@@ -112,6 +111,13 @@ class _SearchProductCardState extends State<SearchProductCard> {
                           fontSize: 11,
                         ),
                       ),
+                      if (product.subCategory?.isNotEmpty ?? false)
+                        Text(
+                          product.subCategory!,
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                          style: Theme.of(context).textTheme.labelSmall,
+                        ),
                       const SizedBox(height: 2),
                       Row(
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -137,14 +143,15 @@ class _SearchProductCardState extends State<SearchProductCard> {
                       const SizedBox(height: AppSpacing.xs),
                       Row(
                         children: [
-                          const Icon(
-                            Icons.star,
-                            color: Color(0xFFF59E0B),
-                            size: 13,
-                          ),
+                          if (product.avgRating != null)
+                            const Icon(
+                              Icons.star,
+                              color: Color(0xFFF59E0B),
+                              size: 13,
+                            ),
                           const SizedBox(width: AppSpacing.xxs),
                           Text(
-                            product.avgRating.toStringAsFixed(1),
+                            product.avgRating?.toStringAsFixed(1) ?? '',
                             style: Theme.of(context).textTheme.labelSmall
                                 ?.copyWith(
                                   color: AppColors.textPrimary,
@@ -155,7 +162,9 @@ class _SearchProductCardState extends State<SearchProductCard> {
                           const SizedBox(width: AppSpacing.xxs),
                           Flexible(
                             child: Text(
-                              '(리뷰 ${formatSearchCount(product.reviewCount)})',
+                              product.reviewCount == null
+                                  ? ''
+                                  : '(리뷰 ${formatSearchCount(product.reviewCount)})',
                               overflow: TextOverflow.ellipsis,
                               style: Theme.of(context).textTheme.labelSmall
                                   ?.copyWith(
@@ -215,11 +224,8 @@ class _HoverTapLayer extends StatelessWidget {
   }
 }
 
-void _openProductDetail(BuildContext context, int productId) {
-  context.goNamed(
-    RouteNames.productDetail,
-    pathParameters: {'id': productId.toString()},
-  );
+void _openProductDetail(BuildContext context, SearchResultProduct product) {
+  context.go(product.detailPath, extra: product.routeContext);
 }
 
 class SearchProductListTile extends StatefulWidget {
@@ -260,13 +266,13 @@ class _SearchProductListTileState extends State<SearchProductListTile> {
           Positioned(
             top: AppSpacing.xs,
             right: AppSpacing.xs,
-            child: RtiBadge(value: product.avgRti.round(), color: rtiColor),
+            child: RtiBadge(value: product.avgRti?.round(), color: rtiColor),
           ),
           Positioned.fill(
             child: _HoverTapLayer(
               onEnter: () => setState(() => _hovered = true),
               onExit: () => setState(() => _hovered = false),
-              onTap: () => _openProductDetail(context, product.id),
+              onTap: () => _openProductDetail(context, product),
             ),
           ),
         ],
@@ -283,7 +289,7 @@ class _SearchProductListTileState extends State<SearchProductListTile> {
         color: Colors.transparent,
         child: InkWell(
           borderRadius: BorderRadius.circular(10),
-          onTap: () => _openProductDetail(context, product.id),
+          onTap: () => _openProductDetail(context, product),
           child: AnimatedContainer(
             duration: AppMotion.of(context, AppMotion.fast),
             curve: AppMotion.enter,
@@ -359,6 +365,13 @@ class ListTileDetails extends StatelessWidget {
             fontSize: 11,
           ),
         ),
+        if (product.subCategory?.isNotEmpty ?? false)
+          Text(
+            product.subCategory!,
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+            style: Theme.of(context).textTheme.labelSmall,
+          ),
         const SizedBox(height: AppSpacing.xxs),
         Text(
           product.name,
@@ -380,10 +393,11 @@ class ListTileDetails extends StatelessWidget {
             Row(
               mainAxisSize: MainAxisSize.min,
               children: [
-                const Icon(Icons.star, color: Color(0xFFF59E0B), size: 15),
+                if (product.avgRating != null)
+                  const Icon(Icons.star, color: Color(0xFFF59E0B), size: 15),
                 const SizedBox(width: AppSpacing.xxs),
                 Text(
-                  product.avgRating.toStringAsFixed(1),
+                  product.avgRating?.toStringAsFixed(1) ?? '',
                   style: Theme.of(context).textTheme.labelSmall?.copyWith(
                     color: AppColors.textPrimary,
                     fontWeight: FontWeight.w900,
@@ -392,7 +406,9 @@ class ListTileDetails extends StatelessWidget {
                 ),
                 const SizedBox(width: AppSpacing.xxs),
                 Text(
-                  '(리뷰 ${formatSearchCount(product.reviewCount)})',
+                  product.reviewCount == null
+                      ? ''
+                      : '(리뷰 ${formatSearchCount(product.reviewCount)})',
                   style: Theme.of(context).textTheme.labelSmall?.copyWith(
                     color: AppColors.textSecondary,
                     fontWeight: FontWeight.w700,
@@ -472,7 +488,7 @@ class _ProductQuickActions extends StatelessWidget {
 class RtiBadge extends StatelessWidget {
   const RtiBadge({super.key, required this.value, required this.color});
 
-  final int value;
+  final int? value;
   final Color color;
 
   @override
@@ -491,12 +507,18 @@ class RtiBadge extends StatelessWidget {
         child: Row(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Icon(Icons.verified_user_outlined, color: color, size: 14),
+            Icon(
+              value == null
+                  ? Icons.hourglass_empty
+                  : Icons.verified_user_outlined,
+              color: value == null ? AppColors.textTertiary : color,
+              size: 14,
+            ),
             const SizedBox(width: AppSpacing.xxs),
             Text(
-              'RTI $value',
+              value == null ? '분석 전' : 'RTI $value',
               style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                color: color,
+                color: value == null ? AppColors.textTertiary : color,
                 fontWeight: FontWeight.w900,
                 fontSize: 12,
               ),

@@ -1,3 +1,4 @@
+import 'package:re_view_front/features/external_product/domain/entities/external_product_ref.dart';
 import 'dart:async';
 
 import 'package:flutter/foundation.dart';
@@ -244,6 +245,47 @@ void main() {
     expect(find.text(l10n.chatLoginTitle), findsNothing);
     expect(subject.repository.requests, isEmpty);
     expect(tester.takeException(), isNull);
+  });
+
+  testWidgets('keeps the supplied external identifier alongside its v2 route', (
+    tester,
+  ) async {
+    final subject = await _pumpOverlay(
+      tester,
+      path: '/product/kurly/route-id',
+      isLoggedIn: true,
+    );
+    subject.router.go(
+      '/product/kurly/route-id',
+      extra: const ProductRouteContext(chatProductId: 'kurly-original-id'),
+    );
+    await tester.pumpAndSettle();
+    final l10n = _localizations(tester);
+    await tester.tap(find.byTooltip(l10n.chatLauncherTooltip));
+    await tester.pumpAndSettle();
+    await tester.tap(find.text(l10n.chatSuggestProduct1));
+    await tester.pump();
+    await tester.tap(find.byTooltip(l10n.chatSend));
+    await tester.pumpAndSettle();
+    expect(subject.repository.requests.single.productId, 'kurly-original-id');
+  });
+
+  testWidgets('decodes an escaped external product ID before sending', (
+    tester,
+  ) async {
+    final subject = await _pumpOverlay(
+      tester,
+      path: '/product/kurly/a-b%2Fc%20%25',
+      isLoggedIn: true,
+    );
+    final l10n = _localizations(tester);
+    await tester.tap(find.byTooltip(l10n.chatLauncherTooltip));
+    await tester.pumpAndSettle();
+    await tester.tap(find.text(l10n.chatSuggestProduct1));
+    await tester.pump();
+    await tester.tap(find.byTooltip(l10n.chatSend));
+    await tester.pumpAndSettle();
+    expect(subject.repository.requests.single.productId, 'kurly-a-b/c %');
   });
 
   testWidgets('sends a product chip question and displays the reply', (

@@ -4,6 +4,44 @@
 class ExternalProductRef {
   const ExternalProductRef({required this.platform, required this.productId});
 
+  /// Prefer explicit fields; split a compound ID only at its first separator.
+  static ExternalProductRef? resolve({
+    String? dataPlatform,
+    String? dataProductId,
+    String? externalId,
+  }) {
+    final platform = dataPlatform?.trim().toLowerCase();
+    final id = dataProductId?.trim();
+    if (platform != null &&
+        platform.isNotEmpty &&
+        id != null &&
+        id.isNotEmpty) {
+      return ExternalProductRef(platform: platform, productId: id);
+    }
+    final value = externalId?.trim();
+    if (value == null) return null;
+    final separator = value.indexOf('-');
+    if (separator <= 0 || separator == value.length - 1) return null;
+    return ExternalProductRef(
+      platform: value.substring(0, separator).toLowerCase(),
+      productId: value.substring(separator + 1),
+    );
+  }
+
+  static ExternalProductRef? fromRoute(Uri uri) {
+    final segments = uri.pathSegments;
+    if (segments.length != 3 ||
+        segments.first != 'product' ||
+        segments[1].isEmpty ||
+        segments[2].isEmpty) {
+      return null;
+    }
+    return ExternalProductRef(
+      platform: segments[1].toLowerCase(),
+      productId: segments[2],
+    );
+  }
+
   /// 수집기 이름. 소문자다 (naver, kurly, oliveyoung …).
   final String platform;
 
@@ -28,4 +66,10 @@ class ExternalProductRef {
 
   @override
   String toString() => externalId;
+}
+
+/// Product context carried alongside navigation; numeric IDs stay out of chat.
+class ProductRouteContext {
+  const ProductRouteContext({this.chatProductId});
+  final String? chatProductId;
 }

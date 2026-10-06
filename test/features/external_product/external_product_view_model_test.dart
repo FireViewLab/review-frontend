@@ -152,6 +152,40 @@ void main() {
     expect(repository.cursors, hasLength(2));
   });
 
+  test('stops pagination when the server repeats a cursor', () async {
+    repository.products = [
+      Success(readyOf(nextCursor: 'c1')),
+      Success(readyOf(nextCursor: 'c1')),
+    ];
+    container = build();
+    await waitFor(ExternalProductPhase.ready);
+    await container.read(provider.notifier).loadMoreReviews();
+    expect(container.read(provider).hasMoreReviews, isFalse);
+    await container.read(provider.notifier).loadMoreReviews();
+    expect(repository.cursors, [null, 'c1']);
+  });
+
+  test('stops cyclic cursors but preserves unique reviews', () async {
+    repository.products = [
+      Success(readyOf(nextCursor: 'c1')),
+      Success(readyOf(reviews: [reviewOf('3')], nextCursor: 'c2')),
+      Success(
+        readyOf(reviews: [reviewOf('3'), reviewOf('4')], nextCursor: 'c1'),
+      ),
+    ];
+    container = build();
+    await waitFor(ExternalProductPhase.ready);
+    await container.read(provider.notifier).loadMoreReviews();
+    await container.read(provider.notifier).loadMoreReviews();
+    expect(container.read(provider).reviews.map((r) => r.reviewId), [
+      '1',
+      '2',
+      '3',
+      '4',
+    ]);
+    expect(container.read(provider).hasMoreReviews, isFalse);
+  });
+
   test('keeps the reviews and the cursor when the next page fails', () async {
     repository.products = [Success(readyOf(nextCursor: 'c1')), failure];
     container = build();

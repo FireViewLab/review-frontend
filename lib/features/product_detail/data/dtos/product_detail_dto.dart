@@ -19,7 +19,16 @@ class ProductDetailDto {
     required this.lowestPrice,
     required this.lowestPlatform,
     required this.platforms,
+    this.externalId,
+    this.dataPlatform,
+    this.dataProductId,
+    this.subCategory,
   });
+
+  final String? externalId;
+  final String? dataPlatform;
+  final String? dataProductId;
+  final String? subCategory;
 
   final int id;
   final String name;
@@ -28,11 +37,11 @@ class ProductDetailDto {
   final String category;
   final String categoryDisplayName;
   final String? platform;
-  final double avgRti;
-  final String rtiGrade;
-  final String rtiColor;
-  final int reviewCount;
-  final double avgRating;
+  final double? avgRti;
+  final String? rtiGrade;
+  final String? rtiColor;
+  final int? reviewCount;
+  final double? avgRating;
   final int? lowestPrice;
   final String? lowestPlatform;
   final List<PlatformEntry> platforms;
@@ -40,6 +49,10 @@ class ProductDetailDto {
   factory ProductDetailDto.fromJson(Map<String, dynamic> json) {
     final rawPlatforms = json['platforms'] as List? ?? [];
     return ProductDetailDto(
+      externalId: json['externalId'] as String?,
+      dataPlatform: json['dataPlatform'] as String?,
+      dataProductId: json['dataProductId']?.toString(),
+      subCategory: json['subCategory'] as String?,
       id: (json['id'] as num).toInt(),
       name: (json['name'] ?? json['title']) as String? ?? '',
       imageUrl: json['imageUrl'] as String?,
@@ -47,11 +60,11 @@ class ProductDetailDto {
       category: json['category'] as String? ?? '',
       categoryDisplayName: json['categoryDisplayName'] as String? ?? '',
       platform: json['platform'] as String?,
-      avgRti: (json['avgRti'] as num?)?.toDouble() ?? 0.0,
-      rtiGrade: json['rtiGrade'] as String? ?? 'SAFE',
-      rtiColor: json['rtiColor'] as String? ?? '#22C55E',
-      reviewCount: (json['reviewCount'] as num?)?.toInt() ?? 0,
-      avgRating: (json['avgRating'] as num?)?.toDouble() ?? 0.0,
+      avgRti: (json['avgRti'] as num?)?.toDouble(),
+      rtiGrade: json['rtiGrade'] as String?,
+      rtiColor: json['rtiColor'] as String?,
+      reviewCount: (json['reviewCount'] as num?)?.toInt(),
+      avgRating: (json['avgRating'] as num?)?.toDouble(),
       lowestPrice: (json['lowestPrice'] as num?)?.toInt(),
       lowestPlatform: json['lowestPlatform'] as String?,
       platforms: rawPlatforms
@@ -62,12 +75,20 @@ class ProductDetailDto {
 
   ProductDetail toEntity() {
     final comparisons = _buildPriceComparisons();
-    final normalizedDisplayName = normalizedCategoryLabel(
-      category: category,
-      categoryDisplayName: categoryDisplayName,
-      productName: name,
-    );
+    final normalizedDisplayName =
+        subCategory ??
+        (category.isEmpty
+            ? categoryDisplayName
+            : normalizedCategoryLabel(
+                category: category,
+                categoryDisplayName: categoryDisplayName,
+                productName: name,
+              ));
     return ProductDetail(
+      externalId: externalId,
+      dataPlatform: dataPlatform,
+      dataProductId: dataProductId,
+      subCategory: subCategory,
       id: id,
       name: name,
       brand: '',
@@ -135,21 +156,27 @@ class ProductDetailDto {
       };
 
   List<String> _deriveBreadcrumbs() {
-    final normalizedDisplayName = normalizedCategoryLabel(
-      category: category,
-      categoryDisplayName: categoryDisplayName,
-      productName: name,
-    );
+    final normalizedDisplayName =
+        subCategory ??
+        (category.isEmpty
+            ? categoryDisplayName
+            : normalizedCategoryLabel(
+                category: category,
+                categoryDisplayName: categoryDisplayName,
+                productName: name,
+              ));
     return [
       if (normalizedDisplayName.isNotEmpty) normalizedDisplayName,
       if (name.isNotEmpty) name,
     ];
   }
 
-  RtiSummary _deriveRtiSummary() {
-    final label = _gradeLabel(rtiGrade);
+  RtiSummary? _deriveRtiSummary() {
+    if (avgRti == null) return null;
+    final label = rtiGrade == null ? '' : _gradeLabel(rtiGrade!);
     return RtiSummary(
-      rtiScore: avgRti.round(),
+      hasReviewMetrics: false,
+      rtiScore: avgRti!.round(),
       rtiLabel: label,
       rtiSubLabel: 'AI 분석 결과',
       realReviewRatio: 0.0,
@@ -159,7 +186,7 @@ class ProductDetailDto {
       repetitionRatio: 0.0,
       repetitionLabel: '집계 중',
       summaryMessage: '$reviewCount개 리뷰 기반 RTI 분석 결과입니다.',
-      analyzedReviewCount: reviewCount,
+      analyzedReviewCount: reviewCount ?? 0,
     );
   }
 

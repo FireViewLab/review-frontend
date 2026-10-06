@@ -97,15 +97,17 @@ class ProductCard extends StatelessWidget {
                       const SizedBox(height: AppSpacing.xs),
                       Row(
                         children: [
-                          const Icon(
-                            Icons.star,
-                            color: Color(0xFFF59E0B),
-                            size: 16,
-                          ),
+                          if (product.ratingLabel.isNotEmpty &&
+                              product.ratingLabel != "-")
+                            const Icon(
+                              Icons.star,
+                              color: Color(0xFFF59E0B),
+                              size: 16,
+                            ),
                           const SizedBox(width: AppSpacing.xxs),
                           Expanded(
                             child: Text(
-                              '${product.ratingLabel} (${product.reviewCountLabel})',
+                              '${product.ratingLabel}${product.reviewCountLabel.isEmpty ? "" : " (${product.reviewCountLabel})"}',
                               maxLines: 1,
                               overflow: TextOverflow.ellipsis,
                               style: Theme.of(context).textTheme.labelMedium,

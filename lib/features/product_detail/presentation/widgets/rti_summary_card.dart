@@ -11,11 +11,26 @@ class RtiSummaryCard extends StatelessWidget {
     required this.onDetailPressed,
   });
 
-  final RtiSummary rtiSummary;
+  final RtiSummary? rtiSummary;
   final VoidCallback onDetailPressed;
 
   @override
   Widget build(BuildContext context) {
+    final rtiSummary = this.rtiSummary;
+    if (rtiSummary == null) {
+      return const Padding(
+        padding: EdgeInsets.all(AppSpacing.lg),
+        child: Text('분석 전'),
+      );
+    }
+    if (!rtiSummary.hasReviewMetrics) {
+      return Padding(
+        padding: const EdgeInsets.all(AppSpacing.lg),
+        child: Text(
+          'RTI ${rtiSummary.rtiScore}${rtiSummary.rtiLabel.isEmpty ? "" : " · ${rtiSummary.rtiLabel}"}',
+        ),
+      );
+    }
     return Padding(
       padding: const EdgeInsets.all(AppSpacing.md),
       child: Column(

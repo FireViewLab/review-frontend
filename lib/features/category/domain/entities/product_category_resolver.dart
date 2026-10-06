@@ -19,11 +19,12 @@ ResolvedProductCategory? resolveProductCategory(
   String? productName,
 }) {
   final inferredProductCategory = _inferCategoryIdFromProductName(productName);
-  final candidates = [
-    inferredProductCategory,
-    value,
-    displayName,
-  ].whereType<String>().where((v) => v.trim().isNotEmpty);
+  final candidates =
+      (value?.contains('_') == true
+              ? [value, displayName, inferredProductCategory]
+              : [inferredProductCategory, value, displayName])
+          .whereType<String>()
+          .where((v) => v.trim().isNotEmpty);
 
   for (final candidate in candidates) {
     final category = _findCategory(candidate);
@@ -124,6 +125,7 @@ String _normalize(String value) {
 }
 
 const _categoryAliases = {
+  'beautyskincare': 'skincare',
   '전자기기': 'digital-appliance',
   '전자제품': 'digital-appliance',
   '디지털가전': 'digital-appliance',

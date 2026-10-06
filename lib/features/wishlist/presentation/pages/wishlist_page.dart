@@ -141,7 +141,9 @@ class _WishlistBody extends StatelessWidget {
       case WishlistSortOption.rti:
         result.sort((a, b) => (b.avgRti ?? -1).compareTo(a.avgRti ?? -1));
       case WishlistSortOption.reviewCount:
-        result.sort((a, b) => b.reviewCount.compareTo(a.reviewCount));
+        result.sort(
+          (a, b) => (b.reviewCount ?? -1).compareTo(a.reviewCount ?? -1),
+        );
     }
 
     return result;

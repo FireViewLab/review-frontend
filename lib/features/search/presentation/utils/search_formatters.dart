@@ -14,7 +14,8 @@ String formatSearchPrice(int price) {
   return '$buffer원';
 }
 
-String formatSearchCount(int count) {
+String formatSearchCount(int? count) {
+  if (count == null) return '';
   final digits = count.toString();
   final buffer = StringBuffer();
   for (var i = 0; i < digits.length; i++) {
@@ -27,8 +28,8 @@ String formatSearchCount(int count) {
   return buffer.toString();
 }
 
-Color colorFromHex(String hex) {
-  final normalized = hex.replaceFirst('#', '');
+Color colorFromHex(String? hex) {
+  final normalized = (hex ?? '').replaceFirst('#', '');
   if (normalized.length == 6) {
     final value = int.tryParse('FF$normalized', radix: 16);
     if (value != null) return Color(value);
@@ -36,5 +37,5 @@ Color colorFromHex(String hex) {
     final value = int.tryParse(normalized, radix: 16);
     if (value != null) return Color(value);
   }
-  return AppColors.primary;
+  return AppColors.textTertiary;
 }

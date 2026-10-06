@@ -25,6 +25,7 @@ void main() {
   Widget buildSubject() {
     return ProviderScope(
       overrides: [
+        homeCatalogProvider.overrideWith((ref) async => []),
         loginViewModelProvider.overrideWith(_TestLoginViewModel.new),
         apiClientProvider.overrideWith((ref) {
           throw StateError('Unexpected API access in app test');

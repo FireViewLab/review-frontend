@@ -127,6 +127,16 @@ class _SearchResultsPageState extends ConsumerState<SearchResultsPage> {
       backgroundColor: AppColors.background,
       body: CustomScrollView(
         slivers: [
+          if (widget.categoryId != null &&
+              products.any((p) => p.category.isEmpty))
+            const SliverToBoxAdapter(
+              child: Padding(
+                padding: EdgeInsets.all(AppSpacing.md),
+                child: Text(
+                  '쇼핑몰 상품은 카테고리 이름으로 검색하며, 분류가 확정되지 않은 결과도 함께 표시합니다. 상세 분류는 쇼핑몰 원문을 확인해 주세요.',
+                ),
+              ),
+            ),
           SliverToBoxAdapter(
             child: AppContentView(
               maxWidth: 1760,
@@ -215,7 +225,12 @@ class _SearchResultsPageState extends ConsumerState<SearchResultsPage> {
     }
     return [
       SearchFilterChipData(label: '전체', count: totalCount),
-      const SearchFilterChipData(label: 'RTI 80+', count: 0),
+      SearchFilterChipData(
+        label: 'RTI 80+',
+        count: products
+            .where((p) => p.avgRti != null && p.avgRti! >= 80)
+            .length,
+      ),
       for (final cat in categorySet)
         SearchFilterChipData(
           label: cat,
@@ -363,6 +378,7 @@ class _SearchResultsPageState extends ConsumerState<SearchResultsPage> {
     return products
         .where((product) {
           if (widget.categoryId != null &&
+              product.category.isNotEmpty &&
               !isProductInCategory(
                 widget.categoryId!,
                 productCategory: product.category,
@@ -393,12 +409,14 @@ class _SearchResultsPageState extends ConsumerState<SearchResultsPage> {
             if (maxPrice != null && product.price > maxPrice) return false;
           }
 
-          if (_isRtiFilterActive && product.avgRti < _selectedRtiMinimum) {
+          if (_isRtiFilterActive &&
+              (product.avgRti == null ||
+                  product.avgRti! < _selectedRtiMinimum)) {
             return false;
           }
 
           if (_selectedReviewConditions.contains('리뷰 50개 이상') &&
-              product.reviewCount < 50) {
+              (product.reviewCount == null || product.reviewCount! < 50)) {
             return false;
           }
 
@@ -418,11 +436,15 @@ class _SearchResultsPageState extends ConsumerState<SearchResultsPage> {
       case SearchSortOption.accuracy:
         return sorted;
       case SearchSortOption.rti:
-        sorted.sort((a, b) => b.avgRti.compareTo(a.avgRti));
+        sorted.sort((a, b) => (b.avgRti ?? -1).compareTo(a.avgRti ?? -1));
       case SearchSortOption.reviewCount:
-        sorted.sort((a, b) => b.reviewCount.compareTo(a.reviewCount));
+        sorted.sort(
+          (a, b) => (b.reviewCount ?? -1).compareTo(a.reviewCount ?? -1),
+        );
       case SearchSortOption.sales:
-        sorted.sort((a, b) => b.reviewCount.compareTo(a.reviewCount));
+        sorted.sort(
+          (a, b) => (b.reviewCount ?? -1).compareTo(a.reviewCount ?? -1),
+        );
       case SearchSortOption.priceLow:
         sorted.sort((a, b) => a.price.compareTo(b.price));
       case SearchSortOption.priceHigh:
@@ -485,7 +507,7 @@ class _SearchResultsPageState extends ConsumerState<SearchResultsPage> {
 
   bool _matchesQuickFilter(SearchResultProduct product, String label) {
     return switch (label) {
-      'RTI 80+' => product.avgRti >= 80,
+      'RTI 80+' => product.avgRti != null && product.avgRti! >= 80,
       '무선' => product.name.contains('무선'),
       '노이즈캔슬링' => product.name.contains('ANC') || product.name.contains('노이즈'),
       '커널형' => product.name.contains('커널'),
@@ -502,6 +524,9 @@ class _SearchResultsPageState extends ConsumerState<SearchResultsPage> {
   }
 
   String _categoryLabelForProduct(SearchResultProduct product) {
+    if (product.category.isEmpty) {
+      return product.subCategory ?? product.categoryDisplayName;
+    }
     return normalizedCategoryLabel(
       category: product.category,
       categoryDisplayName: product.categoryDisplayName,
@@ -510,6 +535,7 @@ class _SearchResultsPageState extends ConsumerState<SearchResultsPage> {
   }
 
   String _classificationTextFor(SearchResultProduct product) {
+    if (product.externalRef != null) return '';
     final searchContext = _effectiveSearchQuery.trim();
     if (searchContext.isEmpty) return product.name;
     return '$searchContext ${product.name}';

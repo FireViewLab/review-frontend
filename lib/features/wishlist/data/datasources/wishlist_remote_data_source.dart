@@ -4,7 +4,8 @@ import 'package:re_view_front/features/wishlist/data/dtos/wishlist_item_dto.dart
 import 'package:re_view_front/features/wishlist/domain/entities/wishlist_summary.dart';
 
 abstract interface class WishlistRemoteDataSource {
-  Future<({List<WishlistItemDto> items, WishlistSummary summary})> getWishlist();
+  Future<({List<WishlistItemDto> items, WishlistSummary summary})>
+  getWishlist();
   Future<void> addWishlist(int productId);
   Future<void> removeWishlist(int productId);
   Future<bool> checkWishlist(int productId);
@@ -12,14 +13,15 @@ abstract interface class WishlistRemoteDataSource {
 
 class WishlistRemoteDataSourceImpl implements WishlistRemoteDataSource {
   const WishlistRemoteDataSourceImpl({required ApiClient apiClient})
-      : _apiClient = apiClient;
+    : _apiClient = apiClient;
 
   final ApiClient _apiClient;
 
   static const _basePath = '/api/wishlist';
 
   @override
-  Future<({List<WishlistItemDto> items, WishlistSummary summary})> getWishlist() async {
+  Future<({List<WishlistItemDto> items, WishlistSummary summary})>
+  getWishlist() async {
     final response = await _apiClient.get(_basePath);
     final data = response.data;
 
@@ -31,7 +33,10 @@ class WishlistRemoteDataSourceImpl implements WishlistRemoteDataSource {
     final body = payload.requireSuccess();
 
     if (body is List<dynamic>) {
-      final items = body.whereType<Map<String, dynamic>>().map(WishlistItemDto.fromJson).toList();
+      final items = body
+          .whereType<Map<String, dynamic>>()
+          .map(WishlistItemDto.fromJson)
+          .toList();
       return (items: items, summary: _computeSummary(items));
     }
 
@@ -94,12 +99,15 @@ class WishlistRemoteDataSourceImpl implements WishlistRemoteDataSource {
     List<WishlistItemDto> items,
   ) {
     return WishlistSummary(
-      priceDropCount: _readInt(json, ['priceDropCount', 'priceDrop', 'dropCount']) ??
+      priceDropCount:
+          _readInt(json, ['priceDropCount', 'priceDrop', 'dropCount']) ??
           items.where((i) => i.isPriceDrop).length,
-      newAlertCount: _readInt(json, ['newAlertCount', 'newAlert', 'alertCount']) ??
+      newAlertCount:
+          _readInt(json, ['newAlertCount', 'newAlert', 'alertCount']) ??
           items.where((i) => i.isNewAlert).length,
-      totalReviewCount: _readInt(json, ['totalReviewCount', 'reviewCount', 'total']) ??
-          items.fold(0, (sum, i) => sum + i.reviewCount),
+      totalReviewCount:
+          _readInt(json, ['totalReviewCount', 'reviewCount', 'total']) ??
+          items.fold(0, (sum, i) => sum + (i.reviewCount ?? 0)),
     );
   }
 
@@ -107,7 +115,7 @@ class WishlistRemoteDataSourceImpl implements WishlistRemoteDataSource {
     return WishlistSummary(
       priceDropCount: items.where((i) => i.isPriceDrop).length,
       newAlertCount: items.where((i) => i.isNewAlert).length,
-      totalReviewCount: items.fold(0, (sum, i) => sum + i.reviewCount),
+      totalReviewCount: items.fold(0, (sum, i) => sum + (i.reviewCount ?? 0)),
     );
   }
 

@@ -1,3 +1,4 @@
+import 'package:re_view_front/features/search/data/dtos/search_result_product_dto.dart';
 import 'package:flutter/material.dart';
 import 'dart:ui' show PointerDeviceKind;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -55,6 +56,54 @@ void main() {
       );
     }
   }
+
+  testWidgets(
+    'real product grid routes to encoded v2 detail instead of numeric ID',
+    (tester) async {
+      final product = SearchResultProductDto.fromJson({
+        'id': 690821524936079,
+        'name': '실상품',
+        'price': 29900,
+        'dataPlatform': 'kurly',
+        'dataProductId': 'a-b/c %',
+      }).toEntity();
+      final router = GoRouter(
+        routes: [
+          GoRoute(
+            path: '/',
+            builder: (_, _) => Scaffold(
+              body: SizedBox(
+                width: 360,
+                height: 460,
+                child: SearchProductCard(product: product),
+              ),
+            ),
+          ),
+          GoRoute(
+            path: '/product/:platform/:productId',
+            builder: (_, state) => Text(
+              'external ${state.pathParameters['platform']} ${state.pathParameters['productId']}',
+            ),
+          ),
+        ],
+      );
+      addTearDown(router.dispose);
+      await tester.pumpWidget(
+        ProviderScope(
+          overrides: [isLoggedInProvider.overrideWithValue(false)],
+          child: MaterialApp.router(routerConfig: router),
+        ),
+      );
+      await tester.pumpAndSettle();
+      await tester.tap(find.byType(SearchProductCard));
+      await tester.pumpAndSettle();
+      expect(find.text('external kurly a-b/c %'), findsOneWidget);
+      expect(
+        router.routeInformationProvider.value.uri.toString(),
+        '/product/kurly/a-b%2Fc%20%25',
+      );
+    },
+  );
 
   testWidgets(
     'opens product detail by tapping the grid card without a price CTA',
