@@ -8,6 +8,10 @@ on:
     branches:
       - develop
 
+concurrency:
+  group: vercel-${{ github.event_name }}-${{ github.ref }}
+  cancel-in-progress: false
+
 jobs:
   deploy-preview:
     if: github.event_name == 'pull_request'
@@ -31,7 +35,9 @@ jobs:
         run: flutter pub get
 
       - name: Build Flutter Web
-        run: flutter build web --release
+        run: |
+          flutter build web --release
+          bash scripts/write-deployment-marker.sh
 
       - name: Install Vercel CLI
         run: npm install --global vercel@latest
@@ -61,7 +67,9 @@ jobs:
         run: flutter pub get
 
       - name: Build Flutter Web
-        run: flutter build web --release
+        run: |
+          flutter build web --release
+          bash scripts/write-deployment-marker.sh
 
       - name: Install Vercel CLI
         run: npm install --global vercel@latest
