@@ -1,3 +1,4 @@
+import 'package:re_view_front/app/theme/app_motion.dart';
 import 'package:flutter/material.dart';
 import 'package:re_view_front/app/theme/app_colors.dart';
 import 'package:re_view_front/app/theme/app_spacing.dart';
@@ -66,10 +67,7 @@ class ReportSummaryCard extends StatelessWidget {
               ),
               const SizedBox(width: AppSpacing.xs),
               Expanded(
-                child: _MetricBox(
-                  value: '$reviewTargetCount건',
-                  label: '대상 리뷰',
-                ),
+                child: _MetricBox(value: '$reviewTargetCount건', label: '대상 리뷰'),
               ),
             ],
           ),
@@ -93,8 +91,8 @@ class _MetricBox extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AnimatedContainer(
-      duration: const Duration(milliseconds: 180),
-      curve: Curves.easeOutCubic,
+      duration: AppMotion.of(context, AppMotion.base),
+      curve: AppMotion.enter,
       padding: const EdgeInsets.symmetric(
         horizontal: AppSpacing.sm,
         vertical: AppSpacing.sm,

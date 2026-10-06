@@ -1,3 +1,4 @@
+import 'package:re_view_front/app/theme/app_motion.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -33,8 +34,8 @@ class _SearchProductCardState extends State<SearchProductCard> {
       onEnter: (_) => setState(() => _hovered = true),
       onExit: (_) => setState(() => _hovered = false),
       child: AnimatedContainer(
-        duration: const Duration(milliseconds: 160),
-        curve: Curves.easeOut,
+        duration: AppMotion.of(context, AppMotion.fast),
+        curve: AppMotion.enter,
         decoration: BoxDecoration(
           color: AppColors.surface,
           borderRadius: BorderRadius.circular(10),
@@ -69,9 +70,12 @@ class _SearchProductCardState extends State<SearchProductCard> {
                     fit: StackFit.expand,
                     children: [
                       AnimatedScale(
-                        scale: _hovered ? 1.035 : 1,
-                        duration: const Duration(milliseconds: 180),
-                        curve: Curves.easeOut,
+                        scale:
+                            _hovered && !MediaQuery.disableAnimationsOf(context)
+                            ? 1.035
+                            : 1,
+                        duration: AppMotion.of(context, AppMotion.fast),
+                        curve: AppMotion.enter,
                         child: AppNetworkImage(url: product.imageUrl),
                       ),
                       Positioned(
@@ -242,9 +246,11 @@ class _SearchProductListTileState extends State<SearchProductListTile> {
         children: [
           Positioned.fill(
             child: AnimatedScale(
-              scale: _hovered ? 1.035 : 1,
-              duration: const Duration(milliseconds: 180),
-              curve: Curves.easeOut,
+              scale: _hovered && !MediaQuery.disableAnimationsOf(context)
+                  ? 1.035
+                  : 1,
+              duration: AppMotion.of(context, AppMotion.fast),
+              curve: AppMotion.enter,
               child: AppNetworkImage(
                 url: product.imageUrl,
                 borderRadius: AppRadius.medium,
@@ -279,8 +285,8 @@ class _SearchProductListTileState extends State<SearchProductListTile> {
           borderRadius: BorderRadius.circular(10),
           onTap: () => _openProductDetail(context, product.id),
           child: AnimatedContainer(
-            duration: const Duration(milliseconds: 160),
-            curve: Curves.easeOut,
+            duration: AppMotion.of(context, AppMotion.fast),
+            curve: AppMotion.enter,
             decoration: BoxDecoration(
               color: AppColors.surface,
               borderRadius: BorderRadius.circular(10),
@@ -642,7 +648,7 @@ class _WishlistSquareButton extends ConsumerWidget {
               },
         style: _wishlistButtonStyle(liked),
         child: AnimatedSwitcher(
-          duration: const Duration(milliseconds: 180),
+          duration: AppMotion.of(context, AppMotion.fast),
           transitionBuilder: (child, animation) =>
               ScaleTransition(scale: animation, child: child),
           child: Icon(
@@ -744,12 +750,15 @@ class _CartSquareButtonState extends ConsumerState<_CartSquareButton> {
             : _addToCart,
         style: _cartButtonStyle(inCart),
         child: _loading || asyncStatus.isLoading
-            ? const SizedBox.square(
+            ? SizedBox.square(
                 dimension: 14,
-                child: CircularProgressIndicator(strokeWidth: 2),
+                child: TickerMode(
+                  enabled: !MediaQuery.disableAnimationsOf(context),
+                  child: const CircularProgressIndicator(strokeWidth: 2),
+                ),
               )
             : AnimatedSwitcher(
-                duration: const Duration(milliseconds: 180),
+                duration: AppMotion.of(context, AppMotion.fast),
                 transitionBuilder: (child, animation) =>
                     ScaleTransition(scale: animation, child: child),
                 child: Icon(

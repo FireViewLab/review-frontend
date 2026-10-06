@@ -1,3 +1,4 @@
+import 'package:re_view_front/app/theme/app_motion.dart';
 import 'package:flutter/material.dart';
 import 'package:re_view_front/app/theme/app_colors.dart';
 import 'package:re_view_front/app/theme/app_spacing.dart';
@@ -48,8 +49,8 @@ class ReasonSelectorSection extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           AnimatedSize(
-            duration: const Duration(milliseconds: 180),
-            curve: Curves.easeOutCubic,
+            duration: AppMotion.of(context, AppMotion.base),
+            curve: AppMotion.enter,
             alignment: Alignment.topLeft,
             child: hasSelection
                 ? Padding(

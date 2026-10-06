@@ -1,3 +1,4 @@
+import 'package:re_view_front/app/theme/app_motion.dart';
 import 'package:flutter/material.dart';
 import 'package:re_view_front/app/theme/app_colors.dart';
 import 'package:re_view_front/app/theme/app_spacing.dart';
@@ -36,11 +37,17 @@ class _TrendyDropdownState extends State<TrendyDropdown>
   @override
   void initState() {
     super.initState();
-    _controller = AnimationController(
-      vsync: this,
-      duration: const Duration(milliseconds: 160),
-    );
-    _anim = CurvedAnimation(parent: _controller, curve: Curves.easeOutCubic);
+    _controller = AnimationController(vsync: this, duration: AppMotion.base);
+    _anim = CurvedAnimation(parent: _controller, curve: AppMotion.enter);
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    _controller.duration = AppMotion.of(context, AppMotion.base);
+    if (MediaQuery.disableAnimationsOf(context) && _controller.isAnimating) {
+      _controller.value = _isOpen ? 1 : 0;
+    }
   }
 
   @override
@@ -59,7 +66,8 @@ class _TrendyDropdownState extends State<TrendyDropdown>
   }
 
   void _open() {
-    final renderBox = _fieldKey.currentContext?.findRenderObject() as RenderBox?;
+    final renderBox =
+        _fieldKey.currentContext?.findRenderObject() as RenderBox?;
     if (renderBox == null) return;
     final size = renderBox.size;
 
@@ -152,8 +160,8 @@ class _TrendyDropdownState extends State<TrendyDropdown>
               onTap: _toggle,
               child: AnimatedContainer(
                 key: _fieldKey,
-                duration: const Duration(milliseconds: 160),
-                curve: Curves.easeOutCubic,
+                duration: AppMotion.of(context, AppMotion.base),
+                curve: AppMotion.enter,
                 padding: const EdgeInsets.symmetric(
                   horizontal: AppSpacing.md,
                   vertical: 14,
@@ -192,7 +200,7 @@ class _TrendyDropdownState extends State<TrendyDropdown>
                       ),
                     ),
                     AnimatedRotation(
-                      duration: const Duration(milliseconds: 200),
+                      duration: AppMotion.of(context, AppMotion.base),
                       turns: isActive ? 0.5 : 0,
                       child: Icon(
                         Icons.keyboard_arrow_down_rounded,
@@ -293,7 +301,7 @@ class _MenuItemState extends State<_MenuItem> {
         behavior: HitTestBehavior.opaque,
         onTap: widget.onTap,
         child: AnimatedContainer(
-          duration: const Duration(milliseconds: 120),
+          duration: AppMotion.of(context, AppMotion.fast),
           padding: const EdgeInsets.symmetric(
             horizontal: AppSpacing.sm,
             vertical: 10,

@@ -25,9 +25,7 @@ class LandingRtiDemoCard extends ConsumerWidget {
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          _TrustBadgeRow(
-            product: productAsync.value,
-          ),
+          _TrustBadgeRow(product: productAsync.value),
           const SizedBox(height: AppSpacing.md),
           productAsync.when(
             data: (product) => _ProductCard(product: product),
@@ -320,11 +318,7 @@ class _RtiDisclaimer extends StatelessWidget {
 }
 
 class _SkeletonBox extends StatefulWidget {
-  const _SkeletonBox({
-    this.width,
-    required this.height,
-    this.radius = 0,
-  });
+  const _SkeletonBox({this.width, required this.height, this.radius = 0});
 
   final double? width;
   final double height;
@@ -345,10 +339,22 @@ class _SkeletonBoxState extends State<_SkeletonBox>
     _controller = AnimationController(
       vsync: this,
       duration: const Duration(milliseconds: 900),
-    )..repeat(reverse: true);
-    _opacity = Tween<double>(begin: 0.35, end: 0.7).animate(
-      CurvedAnimation(parent: _controller, curve: Curves.easeInOut),
     );
+    _opacity = Tween<double>(
+      begin: 0.35,
+      end: 0.7,
+    ).animate(CurvedAnimation(parent: _controller, curve: Curves.easeInOut));
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    if (MediaQuery.disableAnimationsOf(context)) {
+      _controller.stop();
+      _controller.value = 0.5;
+    } else if (!_controller.isAnimating) {
+      _controller.repeat(reverse: true);
+    }
   }
 
   @override

@@ -1,3 +1,4 @@
+import 'package:re_view_front/app/theme/app_motion.dart';
 import 'package:flutter/material.dart';
 import 'package:re_view_front/app/theme/app_colors.dart';
 import 'package:re_view_front/app/theme/app_spacing.dart';
@@ -113,8 +114,8 @@ class _StepItemState extends State<_StepItem> {
         behavior: HitTestBehavior.opaque,
         onTap: widget.onTap,
         child: AnimatedContainer(
-          duration: const Duration(milliseconds: 220),
-          curve: Curves.easeOutCubic,
+          duration: AppMotion.of(context, AppMotion.slow),
+          curve: AppMotion.enter,
           padding: const EdgeInsets.symmetric(
             horizontal: AppSpacing.md,
             vertical: AppSpacing.md,
@@ -137,7 +138,7 @@ class _StepItemState extends State<_StepItem> {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               AnimatedContainer(
-                duration: const Duration(milliseconds: 220),
+                duration: AppMotion.of(context, AppMotion.slow),
                 width: 28,
                 height: 28,
                 alignment: Alignment.center,

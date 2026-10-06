@@ -1,3 +1,4 @@
+import 'package:re_view_front/app/theme/app_motion.dart';
 import 'package:flutter/material.dart';
 import 'package:re_view_front/app/theme/app_colors.dart';
 import 'package:re_view_front/app/theme/app_spacing.dart';
@@ -21,7 +22,7 @@ class AiEvidenceSection extends StatelessWidget {
       title: '분석 근거 함께 제출 (선택)',
       description: '현재 리뷰의 RTI 분석 신호를 신고 근거로 첨부할 수 있어요.',
       child: AnimatedContainer(
-        duration: const Duration(milliseconds: 180),
+        duration: AppMotion.of(context, AppMotion.base),
         padding: const EdgeInsets.all(AppSpacing.md),
         decoration: BoxDecoration(
           color: checked
@@ -55,9 +56,7 @@ class AiEvidenceSection extends StatelessWidget {
                 children: [
                   Text(
                     'AI 분석 근거 첨부',
-                    style: Theme.of(
-                      context,
-                    ).textTheme.labelMedium?.copyWith(
+                    style: Theme.of(context).textTheme.labelMedium?.copyWith(
                       fontWeight: FontWeight.w800,
                       color: AppColors.textPrimary,
                     ),
@@ -78,10 +77,7 @@ class AiEvidenceSection extends StatelessWidget {
                 onPressed: onShowEvidence,
                 child: const Text(
                   '근거 보기',
-                  style: TextStyle(
-                    fontSize: 12,
-                    fontWeight: FontWeight.w700,
-                  ),
+                  style: TextStyle(fontSize: 12, fontWeight: FontWeight.w700),
                 ),
               ),
           ],
