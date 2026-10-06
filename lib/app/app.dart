@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:re_view_front/app/router/app_router.dart';
+import 'package:re_view_front/app/widgets/startup_focus_scope.dart';
 import 'package:re_view_front/app/theme/app_theme.dart';
 import 'package:re_view_front/core/providers/locale_provider.dart';
 import 'package:re_view_front/features/chat/presentation/widgets/chat_overlay.dart';
@@ -44,21 +45,23 @@ class ReViewApp extends ConsumerWidget {
         );
     });
 
-    return MaterialApp.router(
-      title: 'Re:view',
-      debugShowCheckedModeBanner: false,
-      theme: AppTheme.light,
-      routerConfig: router,
-      scaffoldMessengerKey: _messengerKey,
-      builder: (context, child) => ChatOverlay(child: child!),
-      locale: locale,
-      supportedLocales: supportedLocales,
-      localizationsDelegates: const [
-        AppLocalizations.delegate,
-        GlobalMaterialLocalizations.delegate,
-        GlobalWidgetsLocalizations.delegate,
-        GlobalCupertinoLocalizations.delegate,
-      ],
+    return StartupFocusScope(
+      child: MaterialApp.router(
+        title: 'Re:view',
+        debugShowCheckedModeBanner: false,
+        theme: AppTheme.light,
+        routerConfig: router,
+        scaffoldMessengerKey: _messengerKey,
+        builder: (context, child) => ChatOverlay(child: child!),
+        locale: locale,
+        supportedLocales: supportedLocales,
+        localizationsDelegates: const [
+          AppLocalizations.delegate,
+          GlobalMaterialLocalizations.delegate,
+          GlobalWidgetsLocalizations.delegate,
+          GlobalCupertinoLocalizations.delegate,
+        ],
+      ),
     );
   }
 }

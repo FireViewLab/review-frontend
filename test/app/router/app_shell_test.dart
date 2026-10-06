@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -15,6 +17,9 @@ import 'package:re_view_front/features/home/presentation/widgets/home/home_heade
 import 'package:re_view_front/features/home/presentation/widgets/home/search_bar.dart'
     as home;
 import 'package:re_view_front/features/product_detail/presentation/pages/analysis_report_page.dart';
+import 'package:re_view_front/features/plan/presentation/pages/plan_page.dart';
+import 'package:re_view_front/features/plan/presentation/widgets/plan_cards.dart';
+import 'package:re_view_front/l10n/generated/app_localizations.dart';
 import 'package:re_view_front/features/external_product/presentation/pages/external_product_page.dart';
 
 import '../../helpers/pump_app.dart';
@@ -40,6 +45,7 @@ void main() {
     Size size = const Size(1280, 900),
     bool loggedIn = true,
     String location = RoutePaths.home,
+    Future<int> Function(RequestOptions)? responseStatus,
   }) async {
     tester.view.physicalSize = size;
     tester.view.devicePixelRatio = 1;
@@ -48,30 +54,55 @@ void main() {
     final container = ProviderContainer(
       overrides: [
         apiClientProvider.overrideWith((ref) {
-          final client = ApiClient(ref.read(appConfigProvider));
-          client.dio.interceptors.clear();
+          final client = ApiClient(
+            ref.read(appConfigProvider),
+            tokenStore: ref.read(authTokenStoreProvider.notifier),
+          );
+          client.dio.interceptors.removeWhere((i) => i is LogInterceptor);
           client.dio.interceptors.add(
             InterceptorsWrapper(
-              onRequest: (options, handler) => handler.resolve(
-                Response(
-                  requestOptions: options,
-                  statusCode: 200,
-                  data: {
-                    'success': true,
-                    'data': {
-                      'id': 1,
-                      'email': 'user@example.com',
-                      'nickname': '사용자',
-                      'role': 'USER',
-                      'onboardingCompleted': true,
-                      'items': <dynamic>[],
-                      'content': <dynamic>[],
-                      'recommendedProducts': <dynamic>[],
-                      'trendingKeywords': <dynamic>[],
+              onRequest: (options, handler) async {
+                final status = await responseStatus?.call(options) ?? 200;
+                if (status != 200) {
+                  handler.reject(
+                    DioException(
+                      requestOptions: options,
+                      type: DioExceptionType.badResponse,
+                      response: Response(
+                        requestOptions: options,
+                        statusCode: status,
+                      ),
+                    ),
+                    true,
+                  );
+                  return;
+                }
+                handler.resolve(
+                  Response(
+                    requestOptions: options,
+                    statusCode: 200,
+                    data: {
+                      'success': true,
+                      'data': {
+                        'id': 1,
+                        'email': 'user@example.com',
+                        'nickname': '사용자',
+                        'role': 'USER',
+                        'onboardingCompleted': true,
+                        'plan': 'FREE',
+                        'dailyLimit': 5,
+                        'usedToday': 2,
+                        'remaining': 3,
+                        'proAvailable': false,
+                        'items': <dynamic>[],
+                        'content': <dynamic>[],
+                        'recommendedProducts': <dynamic>[],
+                        'trendingKeywords': <dynamic>[],
+                      },
                     },
-                  },
-                ),
-              ),
+                  ),
+                );
+              },
             ),
           );
           ref.onDispose(() => client.dio.close(force: true));
@@ -157,14 +188,14 @@ void main() {
   testWidgets('nested routes keep header and account menus accessible', (
     tester,
   ) async {
-      final handle = tester.ensureSemantics();
-      try {
-        await mount(tester, location: RoutePaths.settings);
-        expect(find.bySemanticsLabel('장바구니'), findsWidgets);
-        expect(find.bySemanticsLabel('계정 설정'), findsWidgets);
-      } finally {
-        handle.dispose();
-      }
+    final handle = tester.ensureSemantics();
+    try {
+      await mount(tester, location: RoutePaths.settings);
+      expect(find.bySemanticsLabel('장바구니'), findsWidgets);
+      expect(find.bySemanticsLabel('계정 설정'), findsWidgets);
+    } finally {
+      handle.dispose();
+    }
   });
 
   testWidgets(
@@ -215,6 +246,88 @@ void main() {
       },
     );
   }
+
+  for (final width in [320.0, 1280.0]) {
+    testWidgets('late account responses and plan dialog at width $width', (
+      tester,
+    ) async {
+      final ready = Completer<int>();
+      final (_, router) = await mount(
+        tester,
+        size: Size(width, 900),
+        location: RoutePaths.settings,
+        responseStatus: (_) => ready.future,
+      );
+      expect(tester.takeException(), isNull);
+      // Leave while requests are still pending; inspect the transition frames.
+      router.go(RoutePaths.plan);
+      await tester.pump();
+      await tester.pump(const Duration(milliseconds: 60));
+      expect(tester.takeException(), isNull);
+      ready.complete(200);
+      await tester.pump();
+      await tester.pump(const Duration(milliseconds: 60));
+      await tester.pump(const Duration(seconds: 1));
+      expect(find.byType(PlanOptionCard), findsNWidgets(3));
+      expect(tester.takeException(), isNull);
+      final l10n = AppLocalizations.of(
+        tester.element(find.byType(PlanContent)),
+      );
+      final select = find.text(l10n.planSelect).first;
+      await tester.ensureVisible(select);
+      await tester.tap(select);
+      await tester.pumpAndSettle();
+      expect(find.byType(AlertDialog), findsOneWidget);
+      expect(tester.takeException(), isNull);
+      await tester.tap(find.text(l10n.planCancel));
+      await tester.pumpAndSettle();
+      await navigate(tester, router, RoutePaths.settings);
+    });
+
+    testWidgets(
+      '401 during account transition returns to login at width $width',
+      (tester) async {
+        final expired = Completer<int>();
+        final (container, router) = await mount(
+          tester,
+          size: Size(width, 900),
+          location: RoutePaths.settings,
+          responseStatus: (options) =>
+              options.path.startsWith('/api/users/me') ||
+                  options.path.startsWith('/api/chat')
+              ? expired.future
+              : Future.value(200),
+        );
+        router.go(RoutePaths.plan);
+        await tester.pump();
+        await tester.pump(const Duration(milliseconds: 60));
+        expect(tester.takeException(), isNull);
+        expired.complete(401);
+        await tester.pumpAndSettle();
+        expect(container.read(isLoggedInProvider), isFalse);
+        expect(
+          router.routeInformationProvider.value.uri.path,
+          RoutePaths.login,
+        );
+        expect(tester.takeException(), isNull);
+      },
+    );
+  }
+
+  testWidgets('failed account APIs still allow menu navigation', (
+    tester,
+  ) async {
+    final (_, router) = await mount(
+      tester,
+      location: RoutePaths.settings,
+      responseStatus: (_) async => 500,
+    );
+    expect(tester.takeException(), isNull);
+    await navigate(tester, router, RoutePaths.plan);
+    expect(find.byType(PlanOptionCard), findsNothing);
+    await navigate(tester, router, RoutePaths.myPage);
+    await navigate(tester, router, RoutePaths.settings);
+  });
 
   testWidgets(
     'protected route returns through login and logout exits the shell',
