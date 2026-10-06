@@ -40,6 +40,13 @@ class ChatViewModel extends Notifier<ChatState> {
 
   void close() => state = state.copyWith(isOpen: false);
 
+  /// A product question opens the conversation rather than a retained history
+  /// screen. Keep the current session so changing products still asks the user.
+  void openConversation() {
+    if (state.isHistoryOpen) closeHistory();
+    open();
+  }
+
   void toggle() => state.isOpen ? close() : open();
 
   /// Apply a confirmed server quota and discard older in-flight reads.
