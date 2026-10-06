@@ -3,6 +3,12 @@
   "outputDirectory": "build/web",
   "headers": [
     {
+      "source": "/deployment.json",
+      "headers": [
+        { "key": "Cache-Control", "value": "no-store" }
+      ]
+    },
+    {
       "source": "/api/:path*",
       "headers": [
         { "key": "Access-Control-Allow-Origin", "value": "*" },
