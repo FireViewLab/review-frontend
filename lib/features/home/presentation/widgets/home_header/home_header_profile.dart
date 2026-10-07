@@ -71,6 +71,7 @@ class HomeHeaderUserProfileButtonState extends State<HeaderUserProfileButton> {
               targetAnchor: Alignment.bottomRight,
               followerAnchor: Alignment.topRight,
               child: GestureDetector(
+                // Consume internal taps so the parent dismissal layer does not close the menu.
                 onTap: () {},
                 child: HomeHeaderProfileDropdown(
                   nickname: widget.nickname,

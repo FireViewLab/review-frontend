@@ -5,7 +5,6 @@ import 'package:re_view_front/app/router/route_paths.dart';
 import 'package:re_view_front/app/theme/app_colors.dart';
 import 'package:re_view_front/app/theme/app_spacing.dart';
 import 'package:re_view_front/features/home/presentation/providers/home_providers.dart';
-import 'package:re_view_front/features/onboarding/domain/entities/notification_channel.dart';
 import 'package:re_view_front/features/onboarding/presentation/providers/onboarding_providers.dart';
 import 'package:re_view_front/features/onboarding/presentation/view_models/onboarding_state.dart';
 import 'package:re_view_front/features/onboarding/presentation/widgets/category_step.dart';
@@ -23,7 +22,11 @@ class OnboardingPage extends ConsumerWidget {
       if (state.isSuccess) {
         ref.read(refreshHomeDashboardOnEnterProvider.notifier).request();
         ref.invalidate(homeDashboardViewModelProvider);
-        context.go(RoutePaths.home);
+        context.go(
+          GoRouterState.of(context).uri.queryParameters['edit'] == 'true'
+              ? RoutePaths.settings
+              : RoutePaths.home,
+        );
       }
     });
 
@@ -48,31 +51,39 @@ class OnboardingPage extends ConsumerWidget {
                   children: [
                     OnboardingStepIndicator(currentStep: stepNumber),
                     const SizedBox(height: AppSpacing.xl),
-                    _OnboardingCard(
-                      child: state.step == OnboardingStep.category
-                          ? CategoryStep(
-                              selectedCategories: state.selectedCategories,
-                              onToggle: vm.toggleCategory,
-                              onNext: state.canProceed
-                                  ? vm.goToNotificationStep
-                                  : null,
-                              onSkip: () => context.go(RoutePaths.home),
-                            )
-                          : NotificationStep(
-                              state: state,
-                              onToggleLowTrustReview:
-                                  vm.toggleLowTrustReviewAlert,
-                              onToggleRiskSurge: vm.toggleRiskSurgeAlert,
-                              onToggleAnalysisComplete:
-                                  vm.toggleAnalysisCompleteAlert,
-                              onToggleWeeklyReport: vm.toggleWeeklyReportAlert,
-                              onToggleMarketing: vm.toggleMarketingAlert,
-                              onToggleChannel: (NotificationChannel channel) =>
-                                  vm.toggleChannel(channel),
-                              onPrevious: vm.goToCategoryStep,
-                              onComplete: vm.complete,
-                            ),
-                    ),
+                    if (state.failureMessage != null) ...[
+                      Text(
+                        state.failureMessage!,
+                        style: const TextStyle(color: AppColors.error),
+                      ),
+                      TextButton(
+                        onPressed: state.isLoading ? null : vm.load,
+                        child: const Text('다시 불러오기'),
+                      ),
+                    ],
+                    if (state.isLoading)
+                      const Center(child: CircularProgressIndicator()),
+                    if (state.isLoaded && !state.isLoading)
+                      _OnboardingCard(
+                        child: state.step == OnboardingStep.category
+                            ? CategoryStep(
+                                selectedCategories: state.selectedCategories,
+                                availableCategories: state.availableCategories,
+                                minTrustScore: state.minTrustScore,
+                                onThresholdChanged: vm.setThreshold,
+                                onToggle: vm.toggleCategory,
+                                onNext: state.canProceed
+                                    ? vm.goToNotificationStep
+                                    : null,
+                                onSkip: vm.skip,
+                              )
+                            : NotificationStep(
+                                state: state,
+                                onChanged: vm.updateSettings,
+                                onPrevious: vm.goToCategoryStep,
+                                onComplete: vm.complete,
+                              ),
+                      ),
                   ],
                 ),
               ),

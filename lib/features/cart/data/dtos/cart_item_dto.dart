@@ -43,7 +43,7 @@ class CartItemDto {
         'thumbnail',
         'image',
       ]),
-      price: _readInt(json, ['price', 'salePrice', 'currentPrice']),
+      price: _readNullableInt(json, ['price', 'salePrice', 'currentPrice']),
       quantity: _readInt(json, ['quantity', 'qty', 'count']),
       avgRti: _readDouble(json, ['avgRti', 'rtiScore', 'rti']),
       rtiGrade: _readNullableString(json, ['rtiGrade', 'grade']),
@@ -96,7 +96,7 @@ class CartItemDto {
   final int productId;
   final String name;
   final String imageUrl;
-  final int price;
+  final int? price;
   final int quantity;
   final double? avgRti;
   final String? rtiGrade;

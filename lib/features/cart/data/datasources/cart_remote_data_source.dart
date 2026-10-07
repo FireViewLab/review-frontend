@@ -13,7 +13,7 @@ abstract interface class CartRemoteDataSource {
 
 class CartRemoteDataSourceImpl implements CartRemoteDataSource {
   const CartRemoteDataSourceImpl({required ApiClient apiClient})
-      : _apiClient = apiClient;
+    : _apiClient = apiClient;
 
   final ApiClient _apiClient;
 
@@ -25,14 +25,17 @@ class CartRemoteDataSourceImpl implements CartRemoteDataSource {
     final data = response.data;
 
     if (data is! Map<String, dynamic>) {
-      return (items: <CartItemDto>[], summary: _emptySummary);
+      throw const FormatException('Invalid cart response');
     }
 
     final payload = ApiResponse<Object?>.fromJson(data);
     final body = payload.requireSuccess();
 
     if (body is List<dynamic>) {
-      final items = body.whereType<Map<String, dynamic>>().map(CartItemDto.fromJson).toList();
+      final items = body
+          .whereType<Map<String, dynamic>>()
+          .map(CartItemDto.fromJson)
+          .toList();
       return (items: items, summary: _computeSummary(items));
     }
 
@@ -51,7 +54,7 @@ class CartRemoteDataSourceImpl implements CartRemoteDataSource {
       return (items: items, summary: summary);
     }
 
-    return (items: <CartItemDto>[], summary: _emptySummary);
+    throw const FormatException('Invalid cart response');
   }
 
   @override
@@ -102,21 +105,20 @@ class CartRemoteDataSourceImpl implements CartRemoteDataSource {
   ) {
     final computed = _computeSummary(items);
     return CartSummary(
-      totalProductPrice: _readInt(json, [
+      totalProductPrice:
+          _readInt(json, [
             'totalProductPrice',
             'productTotal',
             'subtotal',
             'totalPrice',
           ]) ??
           computed.totalProductPrice,
-      shippingFee: _readInt(json, ['shippingFee', 'shipping', 'deliveryFee']) ?? 0,
-      discountAmount: _readInt(json, [
-            'discountAmount',
-            'discount',
-            'couponDiscount',
-          ]) ??
-          0,
-      totalPayment: _readInt(json, [
+      shippingFee:
+          _readInt(json, ['shippingFee', 'shipping', 'deliveryFee']) ?? 0,
+      discountAmount:
+          _readInt(json, ['discountAmount', 'discount', 'couponDiscount']) ?? 0,
+      totalPayment:
+          _readInt(json, [
             'totalPayment',
             'total',
             'finalPrice',
@@ -131,7 +133,7 @@ class CartRemoteDataSourceImpl implements CartRemoteDataSource {
   }
 
   CartSummary _computeSummary(List<CartItemDto> items) {
-    final total = items.fold(0, (sum, i) => sum + i.price * i.quantity);
+    final total = items.fold(0, (sum, i) => sum + (i.price ?? 0) * i.quantity);
     return CartSummary(
       totalProductPrice: total,
       shippingFee: 0,
@@ -139,13 +141,6 @@ class CartRemoteDataSourceImpl implements CartRemoteDataSource {
       totalPayment: total,
     );
   }
-
-  static const _emptySummary = CartSummary(
-    totalProductPrice: 0,
-    shippingFee: 0,
-    discountAmount: 0,
-    totalPayment: 0,
-  );
 }
 
 int? _readInt(Map<String, dynamic> json, List<String> keys) {

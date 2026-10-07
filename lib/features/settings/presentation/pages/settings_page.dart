@@ -158,6 +158,14 @@ class _SettingsBody extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         _PageTitle(profile: profile),
+        Align(
+          alignment: Alignment.centerLeft,
+          child: TextButton.icon(
+            onPressed: () => context.push('${RoutePaths.onboarding}?edit=true'),
+            icon: const Icon(Icons.interests_outlined),
+            label: const Text('관심 카테고리·알림 설정 다시 편집'),
+          ),
+        ),
         const SizedBox(height: AppSpacing.lg),
         // 메뉴는 공통 틀이 그린다. 여기서는 설정 내용과 계정 카드만 놓는다.
         if (context.viewportSize.width < 1240) ...[

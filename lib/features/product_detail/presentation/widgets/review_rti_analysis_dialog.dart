@@ -1,3 +1,4 @@
+import 'package:re_view_front/shared/widgets/rti_criteria_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -968,7 +969,7 @@ class _DialogFooter extends ConsumerWidget {
           ),
           const SizedBox(width: AppSpacing.xs),
           OutlinedButton(
-            onPressed: () {},
+            onPressed: () => showRtiCriteriaDialog(context),
             style: OutlinedButton.styleFrom(
               side: const BorderSide(color: AppColors.primary),
               foregroundColor: AppColors.primary,

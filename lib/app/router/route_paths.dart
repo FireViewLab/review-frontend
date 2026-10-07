@@ -22,6 +22,7 @@ abstract final class RoutePaths {
   static const feedbackHistory = '/feedback-history';
   static const notifications = '/notifications';
   static const plan = '/plan';
+  static const testPayment = '/payments/test';
 
   static const admin = '/admin';
   static const adminReviews = '/admin/reviews';
