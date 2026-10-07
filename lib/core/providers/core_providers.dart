@@ -51,8 +51,9 @@ final userNicknameProvider = FutureProvider.autoDispose<String?>((ref) async {
     final config = ref.read(appConfigProvider);
     final response = await apiClient.get(config.userMePath);
     if (!ref.mounted ||
-        ref.read(authSessionProvider).revision != session.revision)
+        ref.read(authSessionProvider).revision != session.revision) {
       return null;
+    }
     if (response.data is Map<String, dynamic>) {
       final payload = ApiResponse<Map<String, dynamic>>.fromJson(
         response.data as Map<String, dynamic>,

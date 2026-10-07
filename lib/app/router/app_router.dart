@@ -407,8 +407,9 @@ String? _safeReturnPath(String? value) {
   if (value == null ||
       !value.startsWith('/') ||
       value.startsWith('//') ||
-      value.contains('\\'))
+      value.contains('\\')) {
     return null;
+  }
   final uri = Uri.tryParse(value);
   if (uri == null ||
       uri.hasScheme ||
@@ -417,7 +418,8 @@ String? _safeReturnPath(String? value) {
         RoutePaths.landing,
         RoutePaths.login,
         RoutePaths.signup,
-      }.contains(uri.path))
+      }.contains(uri.path)) {
     return null;
+  }
   return value;
 }

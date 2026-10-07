@@ -21,8 +21,9 @@ class MyPageViewModel extends Notifier<MyPageState> {
     final result = await ref.read(getMyProfileUseCaseProvider)();
     if (!ref.mounted ||
         generation != _generation ||
-        !ref.read(isLoggedInProvider))
+        !ref.read(isLoggedInProvider)) {
       return;
+    }
 
     state = result.when(
       success: (profile) {
