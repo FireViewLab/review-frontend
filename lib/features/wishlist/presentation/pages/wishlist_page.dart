@@ -27,6 +27,7 @@ class WishlistPage extends ConsumerStatefulWidget {
 class _WishlistPageState extends ConsumerState<WishlistPage> {
   WishlistFilterOption _selectedFilter = WishlistFilterOption.all;
   WishlistSortOption _sortOption = WishlistSortOption.recent;
+  String? _facet;
 
   @override
   void initState() {
@@ -69,6 +70,7 @@ class _WishlistPageState extends ConsumerState<WishlistPage> {
                   :final items,
                   :final summary,
                   :final togglingProductIds,
+                  :final errorMessage,
                 ) =>
                   _WishlistBody(
                     items: items,
@@ -76,8 +78,21 @@ class _WishlistPageState extends ConsumerState<WishlistPage> {
                     togglingProductIds: togglingProductIds,
                     selectedFilter: _selectedFilter,
                     sortOption: _sortOption,
-                    onFilterSelected: (f) =>
-                        setState(() => _selectedFilter = f),
+                    facet: _facet,
+                    errorMessage: errorMessage,
+                    onRetry: () =>
+                        ref.read(wishlistViewModelProvider.notifier).load(),
+                    onFacetSelected: (value) => setState(() => _facet = value),
+                    onFilterSelected: (f) => setState(() {
+                      _selectedFilter = f;
+                      _facet = null;
+                      if (f == WishlistFilterOption.rti) {
+                        _sortOption = WishlistSortOption.rti;
+                      }
+                      if (f == WishlistFilterOption.lowestPrice) {
+                        _sortOption = WishlistSortOption.priceLow;
+                      }
+                    }),
                     onSortChanged: (s) => setState(() => _sortOption = s),
                     onRemove: (productId) => ref
                         .read(wishlistViewModelProvider.notifier)
@@ -102,6 +117,10 @@ class _WishlistBody extends StatelessWidget {
     required this.onFilterSelected,
     required this.onSortChanged,
     required this.onRemove,
+    this.facet,
+    this.errorMessage,
+    required this.onRetry,
+    required this.onFacetSelected,
   });
 
   final List<WishlistItem> items;
@@ -112,6 +131,25 @@ class _WishlistBody extends StatelessWidget {
   final ValueChanged<WishlistFilterOption> onFilterSelected;
   final ValueChanged<WishlistSortOption> onSortChanged;
   final ValueChanged<int> onRemove;
+  final String? facet;
+  final String? errorMessage;
+  final VoidCallback onRetry;
+  final ValueChanged<String?> onFacetSelected;
+  String _category(WishlistItem item) =>
+      item.categoryDisplayName?.trim().isNotEmpty == true
+      ? item.categoryDisplayName!
+      : item.subCategory?.trim().isNotEmpty == true
+      ? item.subCategory!
+      : '미분류';
+  String _platform(WishlistItem item) =>
+      item.platform?.trim().isNotEmpty == true ? item.platform! : '쇼핑몰 정보 없음';
+  int _comparePrice(WishlistItem a, WishlistItem b, {bool descending = false}) {
+    if (a.price == null) return b.price == null ? 0 : 1;
+    if (b.price == null) return -1;
+    return descending
+        ? b.price!.compareTo(a.price!)
+        : a.price!.compareTo(b.price!);
+  }
 
   List<WishlistItem> get _filtered {
     var result = switch (selectedFilter) {
@@ -123,9 +161,11 @@ class _WishlistBody extends StatelessWidget {
       ]..sort((a, b) => (b.avgRti ?? -1).compareTo(a.avgRti ?? -1)),
       WishlistFilterOption.lowestPrice => [
         ...items,
-      ]..sort((a, b) => a.price.compareTo(b.price)),
-      WishlistFilterOption.brand => [...items],
-      WishlistFilterOption.category => [...items],
+      ]..sort((a, b) => _comparePrice(a, b)),
+      WishlistFilterOption.brand =>
+        items.where((i) => facet == null || _platform(i) == facet).toList(),
+      WishlistFilterOption.category =>
+        items.where((i) => facet == null || _category(i) == facet).toList(),
     };
 
     switch (sortOption) {
@@ -135,9 +175,9 @@ class _WishlistBody extends StatelessWidget {
               (b.savedAt ?? DateTime(0)).compareTo(a.savedAt ?? DateTime(0)),
         );
       case WishlistSortOption.priceLow:
-        result.sort((a, b) => a.price.compareTo(b.price));
+        result.sort((a, b) => _comparePrice(a, b));
       case WishlistSortOption.priceHigh:
-        result.sort((a, b) => b.price.compareTo(a.price));
+        result.sort((a, b) => _comparePrice(a, b, descending: true));
       case WishlistSortOption.rti:
         result.sort((a, b) => (b.avgRti ?? -1).compareTo(a.avgRti ?? -1));
       case WishlistSortOption.reviewCount:
@@ -158,6 +198,13 @@ class _WishlistBody extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         _WishlistPageHeader(totalCount: items.length),
+        if (errorMessage != null) ...[
+          Text(errorMessage!, style: const TextStyle(color: AppColors.error)),
+          TextButton(
+            onPressed: togglingProductIds.isEmpty ? onRetry : null,
+            child: const Text('다시 불러오기'),
+          ),
+        ],
         const SizedBox(height: AppSpacing.md),
         if (!isMobile)
           WishlistSummaryCard(summary: summary, totalCount: items.length),
@@ -169,6 +216,30 @@ class _WishlistBody extends StatelessWidget {
           onFilterSelected: onFilterSelected,
           onSortChanged: onSortChanged,
         ),
+        if (selectedFilter == WishlistFilterOption.brand ||
+            selectedFilter == WishlistFilterOption.category)
+          Wrap(
+            spacing: 8,
+            runSpacing: 8,
+            children: [
+              ChoiceChip(
+                label: const Text('전체'),
+                selected: facet == null,
+                onSelected: (_) => onFacetSelected(null),
+              ),
+              for (final value in {
+                for (final item in items)
+                  selectedFilter == WishlistFilterOption.brand
+                      ? _platform(item)
+                      : _category(item),
+              })
+                ChoiceChip(
+                  label: Text(value),
+                  selected: facet == value,
+                  onSelected: (_) => onFacetSelected(value),
+                ),
+            ],
+          ),
         const SizedBox(height: AppSpacing.md),
         if (isMobile)
           WishlistSummaryCard(summary: summary, totalCount: items.length),

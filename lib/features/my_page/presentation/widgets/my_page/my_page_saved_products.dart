@@ -93,7 +93,7 @@ class MyPageCompactProductCard extends StatelessWidget {
   final String title;
   final String subtitle;
   final String imageUrl;
-  final int price;
+  final int? price;
   final double? rating;
   final int? reviewCount;
   final String rtiLabel;
@@ -140,7 +140,7 @@ class MyPageCompactProductCard extends StatelessWidget {
                 ),
                 const SizedBox(height: AppSpacing.xs),
                 Text(
-                  myPageFormatPrice(price),
+                  price == null ? '가격 정보 없음' : myPageFormatPrice(price!),
                   style: Theme.of(context).textTheme.labelLarge?.copyWith(
                     color: AppColors.textPrimary,
                     fontWeight: FontWeight.w900,

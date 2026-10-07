@@ -33,7 +33,7 @@ enum WishlistFilterOption {
     WishlistFilterOption.priceDrop => l10n.wishlistFilterPriceDrop,
     WishlistFilterOption.rti => l10n.wishlistFilterRti,
     WishlistFilterOption.lowestPrice => l10n.wishlistFilterLowestPrice,
-    WishlistFilterOption.brand => l10n.wishlistFilterBrand,
+    WishlistFilterOption.brand => '쇼핑몰',
     WishlistFilterOption.category => l10n.wishlistFilterCategory,
   };
 }
@@ -71,7 +71,9 @@ class WishlistFilterBar extends StatelessWidget {
                     padding: const EdgeInsets.only(right: AppSpacing.xs),
                     child: _FilterChip(
                       label: filter.localizedLabel(l10n),
-                      badge: filter == WishlistFilterOption.priceDrop && priceDropCount > 0
+                      badge:
+                          filter == WishlistFilterOption.priceDrop &&
+                              priceDropCount > 0
                           ? priceDropCount
                           : null,
                       selected: selectedFilter == filter,
@@ -83,10 +85,7 @@ class WishlistFilterBar extends StatelessWidget {
           ),
         ),
         const SizedBox(width: AppSpacing.sm),
-        _SortDropdown(
-          value: sortOption,
-          onChanged: onSortChanged,
-        ),
+        _SortDropdown(value: sortOption, onChanged: onSortChanged),
       ],
     );
   }

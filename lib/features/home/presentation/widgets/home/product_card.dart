@@ -202,7 +202,14 @@ class _HeartButtonState extends ConsumerState<_HeartButton>
     if (!MediaQuery.disableAnimationsOf(context)) {
       _controller.forward(from: 0);
     }
-    await ref.read(wishlistButtonProvider(widget.productId).notifier).toggle();
+    final error = await ref
+        .read(wishlistButtonProvider(widget.productId).notifier)
+        .toggle();
+    if (mounted && error != null) {
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text(error)));
+    }
   }
 
   @override
