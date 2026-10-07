@@ -248,7 +248,7 @@ class _HomePageState extends ConsumerState<HomePage> {
                             ),
                           ),
                           TextButton(
-                            onPressed: () {},
+                            onPressed: () => context.push(RoutePaths.search),
                             style: TextButton.styleFrom(
                               padding: const EdgeInsets.symmetric(
                                 horizontal: AppSpacing.xs,
