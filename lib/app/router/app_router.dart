@@ -11,6 +11,7 @@ import 'package:re_view_front/features/admin/presentation/pages/admin_dashboard_
 import 'package:re_view_front/features/admin/presentation/pages/admin_reports_page.dart';
 import 'package:re_view_front/features/admin/presentation/pages/admin_suspicious_reviews_page.dart';
 import 'package:re_view_front/features/admin/presentation/pages/admin_users_page.dart';
+import 'package:re_view_front/features/admin/presentation/pages/admin_banners_page.dart';
 import 'package:re_view_front/features/admin/presentation/widgets/admin_shell.dart';
 import 'package:re_view_front/features/auth/presentation/pages/login_page.dart';
 import 'package:re_view_front/features/auth/presentation/pages/oauth_callback_page.dart';
@@ -89,6 +90,7 @@ final appRouterProvider = Provider<GoRouter>((ref) {
         RoutePaths.adminReports,
         RoutePaths.adminAnalysisFeedbacks,
         RoutePaths.adminUsers,
+        RoutePaths.adminBanners,
       };
       if (adminPages.contains(state.matchedLocation)) {
         if (!isLoggedIn) return _loginRedirect(state.uri);
@@ -323,6 +325,12 @@ final appRouterProvider = Provider<GoRouter>((ref) {
             name: RouteNames.adminUsers,
             pageBuilder: (context, state) =>
                 _buildTransitionPage(state, const AdminUsersPage()),
+          ),
+          GoRoute(
+            path: RoutePaths.adminBanners,
+            name: RouteNames.adminBanners,
+            pageBuilder: (context, state) =>
+                _buildTransitionPage(state, const AdminBannersPage()),
           ),
         ],
       ),

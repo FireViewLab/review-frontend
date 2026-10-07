@@ -168,7 +168,10 @@ class HomeBannerData {
     required this.description,
     required this.ctaLabel,
     required this.badgeLabel,
-    required this.assetPath,
+    this.assetPath,
+    this.imageUrl,
+    this.mobileImageUrl,
+    this.targetUrl,
     required this.color,
     required this.accentColor,
     required this.icon,
@@ -179,7 +182,10 @@ class HomeBannerData {
   final String description;
   final String ctaLabel;
   final String badgeLabel;
-  final String assetPath;
+  final String? assetPath;
+  final String? imageUrl;
+  final String? mobileImageUrl;
+  final String? targetUrl;
   final Color color;
   final Color accentColor;
   final IconData icon;

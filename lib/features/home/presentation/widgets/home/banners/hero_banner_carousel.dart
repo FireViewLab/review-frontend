@@ -6,6 +6,7 @@ import 'package:re_view_front/app/theme/app_colors.dart';
 import 'package:re_view_front/app/theme/app_spacing.dart';
 import 'package:re_view_front/features/home/presentation/data/home_content.dart';
 import 'package:re_view_front/shared/extensions/context_extensions.dart';
+import 'package:re_view_front/shared/widgets/app_network_image.dart';
 
 class HeroBannerCarousel extends StatefulWidget {
   const HeroBannerCarousel({
@@ -24,7 +25,7 @@ class HeroBannerCarousel extends StatefulWidget {
 class _HeroBannerCarouselState extends State<HeroBannerCarousel> {
   late PageController _controller;
   Timer? _autoTimer;
-  double _viewportFraction = .94;
+  double _viewportFraction = .46;
   int _currentPage = 0;
   int _activeIndex = 0;
   int _targetPage = 0;
@@ -34,9 +35,6 @@ class _HeroBannerCarouselState extends State<HeroBannerCarousel> {
   bool _isInteracting = false;
   bool _hovered = false;
   bool _reduceMotion = false;
-
-  static const _assetAspectRatio = 1916 / 821;
-  static const _maxWidth = 1440.0;
 
   @override
   void initState() {
@@ -64,10 +62,12 @@ class _HeroBannerCarouselState extends State<HeroBannerCarousel> {
       });
     }
     _reduceMotion = reduceMotion;
-    final width = context.viewportSize.width.clamp(0.0, _maxWidth);
+    final width = context.viewportSize.width;
     final nextFraction = context.isMobile
-        ? .94
-        : (width < 900 ? .88 : (960.0 / width).clamp(.66, .82));
+        ? .88
+        : (width < 900
+              ? .82
+              : (width < 1200 ? .68 : (width < 1600 ? .46 : .36)));
     if (nextFraction != _viewportFraction) {
       _currentPage = _controller.hasClients
           ? (_controller.page ?? _currentPage.toDouble()).round()
@@ -105,126 +105,116 @@ class _HeroBannerCarouselState extends State<HeroBannerCarousel> {
   @override
   Widget build(BuildContext context) {
     if (widget.items.isEmpty) return const SizedBox.shrink();
-    return Align(
-      alignment: Alignment.topCenter,
-      heightFactor: 1,
-      child: ConstrainedBox(
-        constraints: const BoxConstraints(maxWidth: _maxWidth),
-        child: MouseRegion(
-          onEnter: (_) {
-            _hovered = true;
-            _autoTimer?.cancel();
-          },
-          onExit: (_) {
-            _hovered = false;
-            _scheduleAuto();
-          },
-          child: Listener(
-            onPointerDown: (_) => _autoTimer?.cancel(),
-            onPointerUp: (_) => _scheduleAuto(),
-            onPointerCancel: (_) => _scheduleAuto(),
-            child: LayoutBuilder(
-              builder: (context, constraints) {
-                final imageHeight =
-                    (constraints.maxWidth * _viewportFraction - 16) /
-                    _assetAspectRatio;
-                return Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    SizedBox(
-                      height: imageHeight,
-                      child: NotificationListener<ScrollNotification>(
-                        onNotification: (notification) {
-                          if (notification is ScrollStartNotification &&
-                              notification.dragDetails != null) {
-                            _isInteracting = true;
-                            _moveRequest++;
-                            _isMoving = false;
-                            _autoTimer?.cancel();
-                          } else if (notification is ScrollEndNotification &&
-                              _isInteracting) {
-                            _isInteracting = false;
-                            _targetPage =
-                                (_controller.page ?? _currentPage.toDouble())
-                                    .round();
-                            _scheduleAuto();
-                          }
-                          return false;
-                        },
-                        child: PageView.builder(
-                          controller: _controller,
-                          padEnds: true,
-                          itemCount: widget.items.length < 2
-                              ? widget.items.length
-                              : null,
-                          onPageChanged: (index) => setState(() {
-                            _currentPage = index;
-                            _activeIndex = _realIndexFor(index);
-                          }),
-                          itemBuilder: (context, index) {
-                            final item = widget.items[_realIndexFor(index)];
-                            return Padding(
-                              padding: const EdgeInsets.symmetric(
-                                horizontal: 8,
-                              ),
-                              child: _BannerCard(
-                                item: item,
-                                onPressed: () =>
-                                    widget.onBannerPressed?.call(item),
-                              ),
-                            );
-                          },
-                        ),
-                      ),
-                    ),
-                    if (context.isMobile)
-                      Padding(
-                        padding: const EdgeInsets.fromLTRB(16, 8, 16, 0),
-                        child: ExcludeSemantics(
-                          child: Text(
-                            '${widget.items[_activeIndex].title} ${widget.items[_activeIndex].emphasis}',
-                            textAlign: TextAlign.center,
-                            style: Theme.of(context).textTheme.titleSmall,
+    return MouseRegion(
+      onEnter: (_) {
+        _hovered = true;
+        _autoTimer?.cancel();
+      },
+      onExit: (_) {
+        _hovered = false;
+        _scheduleAuto();
+      },
+      child: Listener(
+        onPointerDown: (_) => _autoTimer?.cancel(),
+        onPointerUp: (_) => _scheduleAuto(),
+        onPointerCancel: (_) => _scheduleAuto(),
+        child: SizedBox(
+          height: context.isMobile ? 240 : (context.isTablet ? 320 : 300),
+          child: Stack(
+            alignment: Alignment.center,
+            children: [
+              NotificationListener<ScrollNotification>(
+                onNotification: (notification) {
+                  if (notification is ScrollStartNotification &&
+                      notification.dragDetails != null) {
+                    _isInteracting = true;
+                    _moveRequest++;
+                    _isMoving = false;
+                    _autoTimer?.cancel();
+                  } else if (notification is ScrollEndNotification &&
+                      _isInteracting) {
+                    _isInteracting = false;
+                    _targetPage = (_controller.page ?? _currentPage.toDouble())
+                        .round();
+                    _scheduleAuto();
+                  }
+                  return false;
+                },
+                child: PageView.builder(
+                  controller: _controller,
+                  padEnds: true,
+                  itemCount: widget.items.length < 2
+                      ? widget.items.length
+                      : null,
+                  onPageChanged: (index) => setState(() {
+                    _currentPage = index;
+                    _activeIndex = _realIndexFor(index);
+                  }),
+                  itemBuilder: (context, index) {
+                    final item = widget.items[_realIndexFor(index)];
+                    return AnimatedBuilder(
+                      animation: _controller,
+                      builder: (context, child) {
+                        final page = _controller.hasClients
+                            ? (_controller.page ?? _currentPage.toDouble())
+                            : _currentPage.toDouble();
+                        final focus = 1 - (page - index).abs().clamp(0.0, 1.0);
+                        return Padding(
+                          padding: EdgeInsets.symmetric(
+                            horizontal: AppSpacing.md / 2,
+                            vertical: AppSpacing.xs * (1 - focus),
                           ),
-                        ),
-                      ),
-                    const SizedBox(height: 8),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        _CircleControl(
-                          icon: Icons.chevron_left,
-                          onTap: () => _moveBy(-1),
-                        ),
-                        const SizedBox(width: 8),
-                        Flexible(
-                          child: Semantics(
-                            liveRegion: true,
-                            label:
-                                '배너 ${_activeIndex + 1}/${widget.items.length}',
-                            child: _BannerProgress(
-                              itemCount: widget.items.length,
-                              activeIndex: _activeIndex,
-                              isPaused: _isPaused || _reduceMotion,
-                              reducedMotion: _reduceMotion,
-                              onPauseToggle: () {
-                                setState(() => _isPaused = !_isPaused);
-                                _scheduleAuto();
-                              },
-                            ),
+                          child: _BannerCard(
+                            item: item,
+                            focus: focus,
+                            onPressed: () => widget.onBannerPressed?.call(item),
                           ),
-                        ),
-                        const SizedBox(width: 8),
-                        _CircleControl(
-                          icon: Icons.chevron_right,
-                          onTap: () => _moveBy(1),
-                        ),
-                      ],
-                    ),
-                  ],
-                );
-              },
-            ),
+                        );
+                      },
+                    );
+                  },
+                ),
+              ),
+              Positioned(
+                left: context.isMobile ? AppSpacing.xs : -12,
+                child: _CircleControl(
+                  icon: Icons.chevron_left,
+                  onTap: () => _moveBy(-1),
+                ),
+              ),
+              Positioned(
+                right: context.isMobile ? AppSpacing.xs : AppSpacing.lg,
+                child: _CircleControl(
+                  icon: Icons.chevron_right,
+                  onTap: () => _moveBy(1),
+                ),
+              ),
+              Positioned(
+                bottom: AppSpacing.md,
+                child: Semantics(
+                  liveRegion: true,
+                  label: '배너 ${_activeIndex + 1}/${widget.items.length}',
+                  child: _BannerProgress(
+                    itemCount: widget.items.length,
+                    activeIndex: _activeIndex,
+                    isPaused: _isPaused || _reduceMotion,
+                    reducedMotion: _reduceMotion,
+                    onPauseToggle: () {
+                      setState(() => _isPaused = !_isPaused);
+                      _scheduleAuto();
+                    },
+                  ),
+                ),
+              ),
+              if (!context.isMobile) ...[
+                const Positioned.fill(
+                  child: IgnorePointer(child: _CarouselEdgeFade(isLeft: true)),
+                ),
+                const Positioned.fill(
+                  child: IgnorePointer(child: _CarouselEdgeFade(isLeft: false)),
+                ),
+              ],
+            ],
           ),
         ),
       ),
@@ -289,6 +279,29 @@ class _HeroBannerCarouselState extends State<HeroBannerCarousel> {
   }
 }
 
+class _CarouselEdgeFade extends StatelessWidget {
+  const _CarouselEdgeFade({required this.isLeft});
+
+  final bool isLeft;
+
+  @override
+  Widget build(BuildContext context) {
+    return Align(
+      alignment: isLeft ? Alignment.centerLeft : Alignment.centerRight,
+      child: Container(
+        width: 120,
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            begin: isLeft ? Alignment.centerLeft : Alignment.centerRight,
+            end: isLeft ? Alignment.centerRight : Alignment.centerLeft,
+            colors: const [AppColors.background, Color(0x00F8FAFC)],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
 class _BannerProgress extends StatelessWidget {
   const _BannerProgress({
     required this.itemCount,
@@ -306,70 +319,94 @@ class _BannerProgress extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ClipRRect(
-      borderRadius: BorderRadius.circular(999),
-      child: BackdropFilter(
-        filter: ImageFilter.blur(sigmaX: 18, sigmaY: 18),
-        child: DecoratedBox(
-          decoration: BoxDecoration(
-            color: Colors.white.withValues(alpha: 0.22),
-            borderRadius: BorderRadius.circular(999),
-            border: Border.all(color: Colors.white.withValues(alpha: 0.34)),
-            boxShadow: const [
-              BoxShadow(
-                color: Color(0x140F172A),
-                blurRadius: 18,
-                offset: Offset(0, 8),
+    // Keep the original slim pill while retaining a larger pause hit target.
+    return SizedBox(
+      height: 48,
+      child: Stack(
+        alignment: Alignment.center,
+        children: [
+          Positioned.fill(
+            top: 6,
+            bottom: 6,
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(999),
+              child: BackdropFilter(
+                filter: ImageFilter.blur(sigmaX: 18, sigmaY: 18),
+                child: DecoratedBox(
+                  decoration: BoxDecoration(
+                    color: Colors.white.withValues(alpha: 0.22),
+                    borderRadius: BorderRadius.circular(999),
+                    border: Border.all(
+                      color: Colors.white.withValues(alpha: 0.34),
+                    ),
+                    boxShadow: const [
+                      BoxShadow(
+                        color: Color(0x140F172A),
+                        blurRadius: 18,
+                        offset: Offset(0, 8),
+                      ),
+                    ],
+                  ),
+                ),
               ),
-            ],
-          ),
-          child: Padding(
-            padding: const EdgeInsets.symmetric(
-              horizontal: AppSpacing.xs,
-              vertical: 6,
             ),
+          ),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: AppSpacing.xs),
             child: Row(
               mainAxisSize: MainAxisSize.min,
               children: [
-                for (var i = 0; i < itemCount; i++)
-                  Container(
-                    width: i == activeIndex ? 28 : 7,
-                    height: 6,
-                    margin: const EdgeInsets.only(right: 5),
-                    decoration: BoxDecoration(
-                      color: i == activeIndex
-                          ? AppColors.textPrimary.withValues(alpha: 0.92)
-                          : AppColors.border,
-                      borderRadius: BorderRadius.circular(999),
+                if (itemCount > 8)
+                  Text('${activeIndex + 1}/$itemCount')
+                else
+                  for (var i = 0; i < itemCount; i++)
+                    Container(
+                      width: i == activeIndex ? 28 : 7,
+                      height: 6,
+                      margin: const EdgeInsets.only(right: 5),
+                      decoration: BoxDecoration(
+                        color: i == activeIndex
+                            ? AppColors.textPrimary.withValues(alpha: 0.92)
+                            : Colors.white.withValues(alpha: 0.72),
+                        borderRadius: BorderRadius.circular(999),
+                      ),
                     ),
-                  ),
                 const SizedBox(width: AppSpacing.xxs),
-                SizedBox.square(
-                  dimension: 48,
-                  child: IconButton(
-                    tooltip: isPaused ? '재생' : '일시정지',
-                    onPressed: reducedMotion ? null : onPauseToggle,
-                    icon: Icon(
-                      isPaused ? Icons.play_arrow_rounded : Icons.pause_rounded,
-                      size: 16,
-                    ),
-                    color: AppColors.textPrimary.withValues(alpha: 0.9),
-                    padding: EdgeInsets.zero,
-                  ),
-                ),
+                const SizedBox.square(dimension: 24),
               ],
             ),
           ),
-        ),
+          Positioned(
+            right: 0,
+            top: 0,
+            bottom: 0,
+            width: 48,
+            child: IconButton(
+              tooltip: isPaused ? '재생' : '일시정지',
+              onPressed: reducedMotion ? null : onPauseToggle,
+              icon: Icon(
+                isPaused ? Icons.play_arrow_rounded : Icons.pause_rounded,
+                size: 16,
+              ),
+              color: AppColors.textPrimary.withValues(alpha: 0.9),
+              padding: EdgeInsets.zero,
+            ),
+          ),
+        ],
       ),
     );
   }
 }
 
 class _BannerCard extends StatelessWidget {
-  const _BannerCard({required this.item, required this.onPressed});
+  const _BannerCard({
+    required this.item,
+    required this.focus,
+    required this.onPressed,
+  });
 
   final HomeBannerData item;
+  final double focus;
   final VoidCallback onPressed;
 
   @override
@@ -388,8 +425,10 @@ class _BannerCard extends StatelessWidget {
             borderRadius: BorderRadius.circular(24),
             border: Border.all(color: Colors.white),
             boxShadow: [
-              const BoxShadow(
-                color: Color(0x160F172A),
+              BoxShadow(
+                color: const Color(
+                  0x160F172A,
+                ).withValues(alpha: 0x16 / 255 * focus),
                 blurRadius: 24,
                 offset: Offset(0, 16),
               ),
@@ -397,88 +436,110 @@ class _BannerCard extends StatelessWidget {
           ),
           child: ClipRRect(
             borderRadius: BorderRadius.circular(24),
-            child: Image.asset(
-              item.assetPath,
-              fit: BoxFit.contain,
-              alignment: Alignment.center,
-              errorBuilder: (context, error, stackTrace) => context.isMobile
-                  ? Padding(
-                      padding: const EdgeInsets.all(12),
-                      child: Center(
-                        child: Text(
-                          '${item.title}\n${item.emphasis}',
-                          textAlign: TextAlign.center,
-                          style: Theme.of(context).textTheme.titleSmall,
-                        ),
-                      ),
-                    )
-                  : Padding(
-                      padding: const EdgeInsets.all(38),
-                      child: Row(
-                        children: [
-                          Expanded(
-                            flex: 11,
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              mainAxisAlignment: MainAxisAlignment.center,
+            child: item.imageUrl != null
+                ? AppNetworkImage(
+                    url: context.isMobile
+                        ? item.mobileImageUrl ?? item.imageUrl!
+                        : item.imageUrl!,
+                    fit: BoxFit.cover,
+                    placeholderIcon: Icons.image_not_supported_outlined,
+                  )
+                : Image.asset(
+                    item.assetPath!,
+                    fit: BoxFit.cover,
+                    alignment: Alignment.center,
+                    errorBuilder: (context, error, stackTrace) =>
+                        context.isMobile
+                        ? Padding(
+                            padding: const EdgeInsets.all(12),
+                            child: Center(
+                              child: Text(
+                                '${item.title}\n${item.emphasis}',
+                                textAlign: TextAlign.center,
+                                style: Theme.of(context).textTheme.titleSmall,
+                              ),
+                            ),
+                          )
+                        : Padding(
+                            padding: const EdgeInsets.all(38),
+                            child: Row(
                               children: [
-                                Text(
-                                  item.title,
-                                  style: Theme.of(context).textTheme.titleMedium
-                                      ?.copyWith(
-                                        color: AppColors.textPrimary,
-                                        fontWeight: FontWeight.w800,
-                                      ),
-                                ),
-                                const SizedBox(height: AppSpacing.xs),
-                                Text(
-                                  item.emphasis,
-                                  style:
-                                      (context.isMobile || useCompactText
-                                              ? Theme.of(
-                                                  context,
-                                                ).textTheme.headlineSmall
-                                              : Theme.of(
-                                                  context,
-                                                ).textTheme.displayMedium)
-                                          ?.copyWith(
-                                            color: item.accentColor,
-                                            fontWeight: FontWeight.w900,
-                                          ),
-                                  maxLines: 2,
-                                  overflow: TextOverflow.ellipsis,
-                                ),
-                                const SizedBox(height: AppSpacing.md),
-                                Text(
-                                  item.description,
-                                  style: Theme.of(context).textTheme.bodyMedium
-                                      ?.copyWith(
-                                        color: AppColors.textSecondary,
-                                      ),
-                                ),
-                                const SizedBox(height: AppSpacing.lg),
-                                OutlinedButton(
-                                  onPressed: onPressed,
-                                  child: Row(
-                                    mainAxisSize: MainAxisSize.min,
+                                Expanded(
+                                  flex: 11,
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
-                                      Text(item.ctaLabel),
-                                      const SizedBox(width: AppSpacing.xxs),
-                                      const Icon(Icons.chevron_right, size: 18),
+                                      Text(
+                                        item.title,
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .titleMedium
+                                            ?.copyWith(
+                                              color: AppColors.textPrimary,
+                                              fontWeight: FontWeight.w800,
+                                            ),
+                                      ),
+                                      const SizedBox(height: AppSpacing.xs),
+                                      Text(
+                                        item.emphasis,
+                                        style:
+                                            (context.isMobile || useCompactText
+                                                    ? Theme.of(
+                                                        context,
+                                                      ).textTheme.headlineSmall
+                                                    : Theme.of(
+                                                        context,
+                                                      ).textTheme.displayMedium)
+                                                ?.copyWith(
+                                                  color: item.accentColor,
+                                                  fontWeight: FontWeight.w900,
+                                                ),
+                                        maxLines: 2,
+                                        overflow: TextOverflow.ellipsis,
+                                      ),
+                                      const SizedBox(height: AppSpacing.md),
+                                      Text(
+                                        item.description,
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .bodyMedium
+                                            ?.copyWith(
+                                              color: AppColors.textSecondary,
+                                            ),
+                                      ),
+                                      const SizedBox(height: AppSpacing.lg),
+                                      OutlinedButton(
+                                        onPressed: onPressed,
+                                        child: Row(
+                                          mainAxisSize: MainAxisSize.min,
+                                          children: [
+                                            Text(item.ctaLabel),
+                                            const SizedBox(
+                                              width: AppSpacing.xxs,
+                                            ),
+                                            const Icon(
+                                              Icons.chevron_right,
+                                              size: 18,
+                                            ),
+                                          ],
+                                        ),
+                                      ),
                                     ],
                                   ),
                                 ),
+                                if (!context.isMobile) ...[
+                                  const SizedBox(width: AppSpacing.md),
+                                  Expanded(
+                                    flex: 8,
+                                    child: _BannerVisual(item: item),
+                                  ),
+                                ],
                               ],
                             ),
                           ),
-                          if (!context.isMobile) ...[
-                            const SizedBox(width: AppSpacing.md),
-                            Expanded(flex: 8, child: _BannerVisual(item: item)),
-                          ],
-                        ],
-                      ),
-                    ),
-            ),
+                  ),
           ),
         ),
       ),

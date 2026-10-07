@@ -31,6 +31,8 @@ import 'package:re_view_front/shared/widgets/product_card_skeleton.dart';
 import 'package:re_view_front/features/home/presentation/home_navigation.dart';
 import 'package:re_view_front/features/home/presentation/widgets/home/home_category_sheet.dart';
 import 'package:re_view_front/features/search/presentation/view_models/search_results_state.dart';
+import 'package:re_view_front/features/banners/presentation/providers/banner_providers.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class HomePage extends ConsumerStatefulWidget {
   const HomePage({super.key});
@@ -72,6 +74,27 @@ class _HomePageState extends ConsumerState<HomePage> {
     final useWideCommerceGrid = context.viewportSize.width >= 1120;
     final isLoggedIn = ref.watch(isLoggedInProvider);
     final catalog = ref.watch(homeCatalogProvider);
+    final bannerFeed = ref.watch(publicBannersProvider);
+    final bannerContract = ref.watch(bannerApiContractProvider);
+    final registeredBanners = bannerFeed.hasError
+        ? const <HomeBannerData>[]
+        : (bannerFeed.value ?? [])
+              .map(
+                (banner) => HomeBannerData(
+                  title: banner.title,
+                  emphasis: '',
+                  description: '',
+                  ctaLabel: '',
+                  badgeLabel: '',
+                  imageUrl: banner.imageUrl,
+                  mobileImageUrl: banner.mobileImageUrl,
+                  targetUrl: banner.targetUrl,
+                  color: AppColors.surface,
+                  accentColor: AppColors.textPrimary,
+                  icon: Icons.image_outlined,
+                ),
+              )
+              .toList();
     final dashboardState = ref.watch(homeDashboardViewModelProvider);
     final dashboardProducts = _recommendedProductsFrom(dashboardState);
     final dashboardKeywords = _trendingKeywordsFrom(dashboardState);
@@ -87,12 +110,30 @@ class _HomePageState extends ConsumerState<HomePage> {
                 key: _heroKey,
                 delay: 0,
                 child: HeroBannerCarousel(
-                  items: banners,
+                  items: registeredBanners.isEmpty
+                      ? banners
+                      : registeredBanners,
                   onBannerPressed: _handleBannerPressed,
                 ),
               ),
             ),
           ),
+          if (bannerContract != null && bannerFeed.hasError)
+            SliverToBoxAdapter(
+              child: Padding(
+                padding: context.pagePadding,
+                child: Wrap(
+                  crossAxisAlignment: WrapCrossAlignment.center,
+                  children: [
+                    const Text('배너를 불러오지 못해 기본 배너를 표시합니다.'),
+                    TextButton(
+                      onPressed: () => ref.invalidate(publicBannersProvider),
+                      child: const Text('다시 시도'),
+                    ),
+                  ],
+                ),
+              ),
+            ),
           SliverToBoxAdapter(
             child: AppContentView(
               maxWidth: 1440,
@@ -372,7 +413,32 @@ class _HomePageState extends ConsumerState<HomePage> {
     _handleNavItemPressed(label);
   }
 
-  void _handleBannerPressed(HomeBannerData banner) {
+  Future<void> _handleBannerPressed(HomeBannerData banner) async {
+    final target = banner.targetUrl;
+    if (target != null) {
+      if (target.startsWith('/')) {
+        context.go(target);
+      } else {
+        try {
+          final opened = await launchUrl(
+            Uri.parse(target),
+            mode: LaunchMode.externalApplication,
+          );
+          if (!opened && mounted) {
+            ScaffoldMessenger.of(
+              context,
+            ).showSnackBar(const SnackBar(content: Text('배너 링크를 열지 못했습니다.')));
+          }
+        } catch (_) {
+          if (mounted) {
+            ScaffoldMessenger.of(
+              context,
+            ).showSnackBar(const SnackBar(content: Text('배너 링크를 열지 못했습니다.')));
+          }
+        }
+      }
+      return;
+    }
     _scrollTo(_recommendationKey);
   }
 
