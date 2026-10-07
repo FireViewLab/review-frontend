@@ -84,7 +84,7 @@ class ProductDetailViewModel extends Notifier<ProductDetailState> {
         dissatisfactionPoints: [],
       ),
       similarProducts: const [],
-      isAnalyzing: detail.externalRef == null,
+      isAnalyzing: false,
     );
 
     if (detail.externalRef == null) {
@@ -112,6 +112,10 @@ class ProductDetailViewModel extends Notifier<ProductDetailState> {
       return;
     }
 
+    final beforeRequest = state;
+    if (beforeRequest is ProductDetailSuccess) {
+      state = beforeRequest.copyWith(isAnalyzing: true);
+    }
     final analysisResult = await _triggerAnalysis(productId);
     if (!ref.mounted) return;
 

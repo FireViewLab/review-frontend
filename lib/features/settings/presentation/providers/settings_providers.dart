@@ -38,6 +38,7 @@ final accountLoginMethodProvider = FutureProvider.autoDispose<String?>((
 final savedDisplayPreferencesProvider = FutureProvider<SettingsData?>((
   ref,
 ) async {
+  ref.watch(authTokenStoreProvider);
   if (!ref.watch(isLoggedInProvider)) return null;
   final result = await ref.read(settingsRepositoryProvider).getSettings();
   return result.when(
