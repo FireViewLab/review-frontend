@@ -13,6 +13,8 @@ import 'package:re_view_front/features/home/domain/entities/dashboard_summary.da
 import 'package:re_view_front/features/home/domain/repositories/home_repository.dart';
 import 'package:re_view_front/features/home/domain/usecases/get_home_dashboard_use_case.dart';
 import 'package:re_view_front/features/home/presentation/pages/home_page.dart';
+import 'package:re_view_front/features/home/presentation/widgets/home/home_category_sheet.dart';
+import 'package:re_view_front/features/search/presentation/view_models/search_results_state.dart';
 import 'package:re_view_front/features/home/presentation/providers/home_providers.dart';
 import 'package:re_view_front/features/home/presentation/widgets/home/banners/hero_banner_carousel.dart';
 import 'package:re_view_front/features/home/presentation/widgets/home/brand/home_logo.dart';
@@ -60,6 +62,13 @@ void main() {
               name: RouteNames.search,
               builder: (context, state) => SearchResultsPage(
                 query: state.uri.queryParameters['q'] ?? '',
+                categoryId: state.uri.queryParameters['categoryId'],
+                categoryLabel: state.uri.queryParameters['category'],
+                initialSort: SearchSortOption.values
+                    .where(
+                      (sort) => sort.name == state.uri.queryParameters['sort'],
+                    )
+                    .firstOrNull,
               ),
             ),
           ],
@@ -78,6 +87,83 @@ void main() {
       child: localizedApp(router: router),
     );
   }
+
+  testWidgets(
+    'mobile category tab opens selection from a scrolled page and navigates a leaf',
+    (tester) async {
+      tester.view.physicalSize = const Size(390, 850);
+      tester.view.devicePixelRatio = 1;
+      addTearDown(tester.view.resetPhysicalSize);
+      addTearDown(tester.view.resetDevicePixelRatio);
+      await tester.pumpWidget(buildSubject());
+      await tester.pumpAndSettle();
+      await tester.drag(find.byType(CustomScrollView), const Offset(0, -1500));
+      await tester.pumpAndSettle();
+      await tester.tap(find.text('카테고리').hitTestable());
+      await tester.pumpAndSettle();
+      expect(find.byType(HomeCategorySheet), findsOneWidget);
+      for (final label in ['뷰티', '스킨케어']) {
+        final target = find.descendant(
+          of: find.byType(HomeCategorySheet),
+          matching: find.text(label),
+        );
+        await tester.ensureVisible(target);
+        await tester.tap(target);
+        await tester.pumpAndSettle();
+      }
+      final leaf = find.descendant(
+        of: find.byType(HomeCategorySheet),
+        matching: find.text('선케어'),
+      );
+      await tester.ensureVisible(leaf);
+      await tester.tap(leaf);
+      await tester.pumpAndSettle();
+      expect(find.byType(HomeCategorySheet), findsNothing);
+      expect(
+        router.routeInformationProvider.value.uri.queryParameters['categoryId'],
+        'suncare',
+      );
+      expect(
+        router.routeInformationProvider.value.uri.queryParameters['category'],
+        '선케어',
+      );
+      expect(find.byType(SearchResultsPage), findsOneWidget);
+      expect(tester.takeException(), isNull);
+    },
+  );
+
+  testWidgets(
+    'narrow category sheet dismisses safely and all products initiates catalog search',
+    (tester) async {
+      tester.view.physicalSize = const Size(320, 640);
+      tester.view.devicePixelRatio = 1;
+      addTearDown(tester.view.resetPhysicalSize);
+      addTearDown(tester.view.resetDevicePixelRatio);
+      await tester.pumpWidget(buildSubject());
+      await tester.pumpAndSettle();
+      await tester.tap(find.text('카테고리').hitTestable());
+      await tester.pumpAndSettle();
+      expect(find.byType(HomeCategorySheet), findsOneWidget);
+      await tester.tap(find.byIcon(Icons.close));
+      await tester.pumpAndSettle();
+      expect(router.routeInformationProvider.value.uri.path, RoutePaths.home);
+      await tester.tap(find.text('카테고리').hitTestable());
+      await tester.pumpAndSettle();
+      await tester.tap(
+        find.descendant(
+          of: find.byType(HomeCategorySheet),
+          matching: find.text('전체보기'),
+        ),
+      );
+      await tester.pumpAndSettle();
+      expect(router.routeInformationProvider.value.uri.path, RoutePaths.search);
+      expect(router.routeInformationProvider.value.uri.queryParameters, {
+        'sort': 'accuracy',
+      });
+      expect(find.byType(SearchResultsPage), findsOneWidget);
+      expect(tester.takeException(), isNull);
+    },
+  );
 
   testWidgets('renders home hero and RTI sections', (tester) async {
     await tester.pumpWidget(buildSubject());
