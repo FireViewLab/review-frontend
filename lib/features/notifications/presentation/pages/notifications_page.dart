@@ -1,3 +1,4 @@
+import 'package:re_view_front/app/router/route_paths.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -57,12 +58,55 @@ class NotificationsPage extends ConsumerWidget {
                           ),
                         ),
                         TextButton.icon(
-                          onPressed: state.hasUnread ? vm.markAllRead : null,
+                          onPressed:
+                              !state.isLoading &&
+                                  !state.isLoadingMore &&
+                                  !state.isMutating
+                              ? vm.markAllRead
+                              : null,
                           icon: const Icon(Icons.done_all_rounded, size: 18),
                           label: Text(l10n.notificationsMarkAllRead),
                         ),
                       ],
                     ),
+                    Wrap(
+                      spacing: 8,
+                      children: [
+                        TextButton.icon(
+                          onPressed: state.isLoading || state.isMutating
+                              ? null
+                              : vm.refresh,
+                          icon: const Icon(Icons.refresh),
+                          label: const Text('새로고침'),
+                        ),
+                        TextButton.icon(
+                          onPressed: () => context.push(RoutePaths.settings),
+                          icon: const Icon(Icons.settings_outlined),
+                          label: const Text('알림 설정'),
+                        ),
+                      ],
+                    ),
+                    const Text('앱 안의 알림함입니다. 브라우저 푸시·이메일·문자는 현재 제공되지 않습니다.'),
+                    if (state.errorMessage != null &&
+                        state.items.isNotEmpty) ...[
+                      Text(
+                        state.errorMessage!,
+                        style: const TextStyle(color: AppColors.error),
+                      ),
+                      TextButton(
+                        onPressed: state.failedPage ? vm.retryMore : vm.refresh,
+                        child: const Text('다시 시도'),
+                      ),
+                    ],
+                    if (!state.isLast &&
+                        !state.isLoading &&
+                        state.errorMessage == null)
+                      TextButton(
+                        onPressed: state.isLoadingMore || state.isMutating
+                            ? null
+                            : vm.loadMore,
+                        child: const Text('더 보기'),
+                      ),
                     const SizedBox(height: AppSpacing.lg),
                     _Body(
                       state: state,
@@ -70,7 +114,15 @@ class NotificationsPage extends ConsumerWidget {
                       onTap: (notification) {
                         vm.markRead(notification.id);
                         final route = notificationRoute(notification.targetUrl);
-                        if (route != null) context.go(route);
+                        if (route != null) {
+                          context.push(route);
+                        } else if (notification.targetUrl != null) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(
+                              content: Text('이 알림의 이동 대상은 아직 지원되지 않습니다.'),
+                            ),
+                          );
+                        }
                       },
                     ),
                   ],

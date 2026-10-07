@@ -8,6 +8,9 @@ class NotificationListState {
     this.isLoading = false,
     this.isLoadingMore = false,
     this.errorMessage,
+    this.failedPage = false,
+    this.readingIds = const {},
+    this.isMarkingAll = false,
   });
 
   final List<AppNotification> items;
@@ -18,6 +21,10 @@ class NotificationListState {
   final bool isLoading;
   final bool isLoadingMore;
   final String? errorMessage;
+  final bool failedPage;
+  final Set<int> readingIds;
+  final bool isMarkingAll;
+  bool get isMutating => readingIds.isNotEmpty || isMarkingAll;
 
   bool get hasUnread => items.any((n) => !n.isRead);
 
@@ -29,6 +36,9 @@ class NotificationListState {
     bool? isLoadingMore,
     String? errorMessage,
     bool clearError = false,
+    bool? failedPage,
+    Set<int>? readingIds,
+    bool? isMarkingAll,
   }) {
     return NotificationListState(
       items: items ?? this.items,
@@ -37,6 +47,9 @@ class NotificationListState {
       isLoading: isLoading ?? this.isLoading,
       isLoadingMore: isLoadingMore ?? this.isLoadingMore,
       errorMessage: clearError ? null : (errorMessage ?? this.errorMessage),
+      failedPage: failedPage ?? this.failedPage,
+      readingIds: readingIds ?? this.readingIds,
+      isMarkingAll: isMarkingAll ?? this.isMarkingAll,
     );
   }
 }
