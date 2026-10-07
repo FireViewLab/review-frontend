@@ -148,11 +148,7 @@ class _ChatLauncherLayout extends ConsumerWidget {
             bottom: bottom,
             child: _Launcher(
               // 모바일은 화면이 좁아 아이콘만 둔다.
-              label: isMobile
-                  ? null
-                  : productId != null
-                  ? l10n.chatLauncherProductLabel
-                  : l10n.chatLauncherLabel,
+              label: isMobile ? null : l10n.chatLauncherLabel,
               tooltip: l10n.chatLauncherTooltip,
               onPressed: ref.read(chatViewModelProvider.notifier).open,
             ),
