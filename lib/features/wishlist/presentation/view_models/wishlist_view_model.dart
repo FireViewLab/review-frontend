@@ -14,7 +14,7 @@ class WishlistViewModel extends Notifier<WishlistState> {
   @override
   WishlistState build() {
     _generation++;
-    ref.watch(isLoggedInProvider);
+    ref.watch(authSessionProvider).isLoggedIn;
     _getWishlistUseCase = ref.watch(getWishlistUseCaseProvider);
     _toggleWishlistUseCase = ref.watch(toggleWishlistUseCaseProvider);
     return const WishlistInitial();

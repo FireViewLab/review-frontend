@@ -13,7 +13,9 @@ class TestPaymentViewModel extends Notifier<TestPaymentState> {
   @override
   TestPaymentState build() {
     _generation++;
-    ref.watch(isLoggedInProvider);
+    _requestId = null;
+    _requestOffer = null;
+    ref.watch(authSessionProvider).isLoggedIn;
     return const TestPaymentState();
   }
 

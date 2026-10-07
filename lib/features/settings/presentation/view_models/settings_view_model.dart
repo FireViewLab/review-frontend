@@ -9,7 +9,7 @@ class SettingsViewModel extends Notifier<SettingsState> {
 
   @override
   SettingsState build() {
-    final isLoggedIn = ref.watch(isLoggedInProvider);
+    final isLoggedIn = ref.watch(authSessionProvider).isLoggedIn;
     ++_request;
     if (!isLoggedIn) return const SettingsUnauthenticated();
     Future.microtask(() {

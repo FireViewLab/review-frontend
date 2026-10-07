@@ -4,13 +4,11 @@ import 'package:re_view_front/features/my_page/presentation/providers/my_page_pr
 import 'package:re_view_front/features/my_page/presentation/view_models/my_page_state.dart';
 
 class MyPageViewModel extends Notifier<MyPageState> {
+  int _generation = 0;
   @override
   MyPageState build() {
-    ref.listen<bool>(isLoggedInProvider, (_, next) {
-      if (next) {
-        Future.microtask(load);
-      }
-    });
+    ref.watch(authSessionProvider);
+    _generation++;
     Future.microtask(load);
     return const MyPageLoading();
   }
@@ -18,9 +16,13 @@ class MyPageViewModel extends Notifier<MyPageState> {
   Future<void> load() async {
     if (!ref.mounted) return;
 
+    final generation = ++_generation;
     state = const MyPageLoading();
     final result = await ref.read(getMyProfileUseCaseProvider)();
-    if (!ref.mounted) return;
+    if (!ref.mounted ||
+        generation != _generation ||
+        !ref.read(isLoggedInProvider))
+      return;
 
     state = result.when(
       success: (profile) {
