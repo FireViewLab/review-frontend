@@ -1,3 +1,5 @@
+import 'package:go_router/go_router.dart';
+import 'package:re_view_front/app/router/route_paths.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:re_view_front/app/theme/app_colors.dart';
@@ -60,6 +62,11 @@ class PlanContent extends ConsumerWidget {
           ).textTheme.bodyMedium?.copyWith(color: AppColors.textSecondary),
         ),
         const SizedBox(height: AppSpacing.lg),
+        OutlinedButton.icon(
+          onPressed: () => context.push(RoutePaths.testPayment),
+          icon: const Icon(Icons.science_outlined),
+          label: const Text('토스 TEST 서비스 결제'),
+        ),
         switch (state.status) {
           PlanStatus.loading => const SizedBox(
             height: 320,

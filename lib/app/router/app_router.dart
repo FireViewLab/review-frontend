@@ -1,3 +1,4 @@
+import 'package:re_view_front/features/payments/presentation/pages/test_payment_page.dart';
 import 'package:re_view_front/app/router/app_shell.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -249,6 +250,11 @@ final appRouterProvider = Provider<GoRouter>((ref) {
             name: RouteNames.notifications,
             pageBuilder: (context, state) =>
                 _buildContentPage(state, const NotificationsPage()),
+          ),
+          GoRoute(
+            path: RoutePaths.testPayment,
+            pageBuilder: (context, state) =>
+                _buildContentPage(state, const TestPaymentPage()),
           ),
           // 계정 영역: 헤더와 메뉴는 그대로 두고 내용만 바꾼다.
           ShellRoute(

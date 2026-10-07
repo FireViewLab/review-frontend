@@ -30,7 +30,7 @@ RTI·등급·색상이 null이면 **분석 전**입니다. 0점은 실제 0점�
 
 Google/네이버 OAuth, 회원가입·비밀번호 재설정, 온보딩, 계정 설정, 찜·장바구니, 신고·피드백·알림 화면을 제공합니다. OAuth 시작 경로는 `/oauth2/authorization/{google,naver}`이고 서버 콜백은 `https://re-view.kr/login/oauth2/code/{google,naver}`입니다. 인증이 필요한 화면은 로그인 상태에 따라 이동을 제어합니다.
 
-플랜은 `PATCH /api/users/me/plan`에 `{"planTier":"FREE"|"PLUS"|"PRO"}`를 보내 변경합니다. 반환된 사용자 플랜을 검증하고 `GET /api/users/me`와 `GET /api/chat/quota`를 다시 확인해 현재 화면과 열린 채팅의 권한·한도를 갱신합니다. 실패·불일치·재조회 실패를 성공으로 표시하지 않습니다. `GET /api/plans` 의존은 없으며 한도 수치는 서버 응답을 사용합니다. 결제는 구현 범위에 포함되지 않습니다.
+플랜은 `PATCH /api/users/me/plan`에 `{"planTier":"FREE"|"PLUS"|"PRO"}`를 보내 변경합니다. 반환된 사용자 플랜을 검증하고 `GET /api/users/me`와 `GET /api/chat/quota`를 다시 확인해 현재 화면과 열린 채팅의 권한·한도를 갱신합니다. 실패·불일치·재조회 실패를 성공으로 표시하지 않습니다. `GET /api/plans` 의존은 없으며 한도 수치는 서버 응답을 사용합니다. TEST 서비스 결제 연결은 아래 설정이 필요하며 기존 직접 플랜 변경과 별도입니다.
 
 채팅은 일반 `/api/chat/messages`와 프로 `/api/chat/pro/messages`를 사용합니다. 서버 quota에 따라 프로 선택과 전송을 제어하고, `CHAT_PLAN_REQUIRED`·`CHAT_QUOTA_EXCEEDED`에 맞는 안내와 상태 갱신을 제공합니다.
 
@@ -98,7 +98,17 @@ Actions concurrency는 **동일 ref의 Actions 실행만** 직렬화합니다. �
 
 - 실제 RTI 분석과 `GET /api/dashboard`의 실제 상품 전환은 서버 후속 작업입니다. 더미 33건 삭제는 v2 프론트 배포와 대시보드 전환 이후 서버가 진행합니다.
 - 오늘의집·네이버·에이블리 검색은 수집기 문제로 현재 검색 계약에서 제외돼 있습니다.
-- 결제, 디자인 리뉴얼, 다크 모드, 추가 수집기 구현은 이번 범위 밖입니다.
+- 실결제/live 키, 디자인 리뉴얼, 다크 모드, 추가 수집기 구현은 이번 범위 밖입니다.
 - v1.1.0은 README 최신화와 필요한 실계정 QA 완료 후 main 릴리스 PR·태그·릴리스 순서로 진행합니다. 검증 환경이 없는 항목은 제한으로 남기며 완료로 표시하지 않습니다.
 
 관련 서버 계약: [플랜 #177](https://github.com/FireViewLab/review-backend/issues/177), [실상품 목록 #179](https://github.com/FireViewLab/review-backend/issues/179), [상세 보강 #181](https://github.com/FireViewLab/review-backend/issues/181). 프론트 반영: [#246](https://github.com/FireViewLab/review-frontend/pull/246), [#247](https://github.com/FireViewLab/review-frontend/pull/247).
+
+## TEST 서비스 결제
+
+`/plan` → `/payments/test`는 토스페이먼츠 v2 주문서형 SDK를 연결한 웹 전용 TEST 흐름입니다. 현재 서버 주문/승인 API·결제 대상 가격·상점 TEST 공개키는 없으며 결제 시작은 비활성 상태입니다. 외부 쇼핑몰 상품 결제와 기존 플랜 직접 변경은 연결하지 않습니다.
+
+계약 확정 후 공개 `TOSS_TEST_CLIENT_KEY`(`test_gck_`만 허용)와 `PAYMENT_TEST_CATALOG_PATH`, `PAYMENT_TEST_ORDERS_PATH`, `PAYMENT_TEST_CONFIRM_PATH`를 빌드 define으로 설정합니다. API 경로는 현재 지원되는 URL이 아니라 합의한 계약을 명시 설정하는 경계입니다. 서버가 제공한 TEST offer·가격·무작위 고객키·주문만 SDK로 전달합니다. 모든 요청/응답 본문 로깅은 제거했습니다. secretKey 및 서버간 토큰을 프론트에 넣지 마세요.
+
+SDK success callback은 성공 확정이 아닙니다. 프론트는 인증 사용자 주문을 조회하고 orderId/금액을 비교한 뒤 자체 서버 승인 API만 호출합니다. 서버는 주문 소유자/금액/TEST 모드 검증 및 동일 주문 중복승인 방지를 수행해야 합니다. `PAID` 응답만 승인 확인으로 표시하며 TEST 결제로 실제 플랜·quota를 조작하지 않습니다. 실패·취소는 미완료 안내, 승인 timeout은 상태 조회, callback 새로고침은 먼저 서버 상태를 조회합니다.
+
+공식 문서: [SDK 초기화](https://docs.tosspayments.com/sdk/v2/js/environment), [주문서형 SDK](https://docs.tosspayments.com/sdk/v2/js/payment-widget), [인증·승인 흐름](https://docs.tosspayments.com/guides/v2/get-started/payment-flow). 실제 결제 실행과 화면 테스트는 사용자 담당이며 미검증입니다.
