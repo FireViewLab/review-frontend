@@ -596,7 +596,7 @@ class _RtiScoreCard extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.end,
         children: [
           Text(
-            review.rtiScore > 0 ? 'RTI ${review.rtiScore}' : 'RTI -',
+            review.rtiScore != null ? 'RTI ${review.rtiScore}' : '분석 전',
             style: Theme.of(context).textTheme.displayLarge?.copyWith(
               color: color,
               fontWeight: FontWeight.w900,
@@ -604,11 +604,12 @@ class _RtiScoreCard extends StatelessWidget {
               height: 1,
             ),
           ),
-          if (review.rtiLabel.isNotEmpty) ...[
+          if (review.rtiScore != null &&
+              review.rtiLabel?.isNotEmpty == true) ...[
             const SizedBox(width: AppSpacing.sm),
             Padding(
               padding: const EdgeInsets.only(bottom: 8),
-              child: _RtiGradeBadge(label: review.rtiLabel, color: color),
+              child: _RtiGradeBadge(label: review.rtiLabel!, color: color),
             ),
           ],
         ],
@@ -1010,7 +1011,7 @@ class _DialogFooter extends ConsumerWidget {
                         'productId': productId,
                         'productName': productName,
                         'reviewContent': review.content,
-                        'rtiScore': review.rtiScore.toDouble(),
+                        'rtiScore': review.rtiScore?.toDouble(),
                         'rtiGrade': review.rtiLabel,
                       },
                     );

@@ -27,9 +27,9 @@ class ProductReview {
   final String createdAt;
   final String platform;
   final bool isVerifiedPurchase;
-  final int rtiScore;
-  final String rtiColor;
-  final String rtiLabel;
+  final int? rtiScore;
+  final String? rtiColor;
+  final String? rtiLabel;
   final List<String> imageUrls;
   final List<String> hashtags;
   final List<String> reasons;

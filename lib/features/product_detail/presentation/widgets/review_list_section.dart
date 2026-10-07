@@ -54,7 +54,11 @@ class _ReviewListSectionState extends State<ReviewListSection> {
       ReviewSortOption.withPhoto =>
         list.where((r) => r.imageUrls.isNotEmpty).toList(),
       ReviewSortOption.rtiHigh =>
-        (list..sort((a, b) => b.rtiScore.compareTo(a.rtiScore))),
+        (list..sort((a, b) {
+          if (a.rtiScore == null) return b.rtiScore == null ? 0 : 1;
+          if (b.rtiScore == null) return -1;
+          return b.rtiScore!.compareTo(a.rtiScore!);
+        })),
     };
   }
 
@@ -514,8 +518,8 @@ class _RtiBadgeSmall extends StatelessWidget {
     this.hasDetail = false,
   });
 
-  final int score;
-  final String label;
+  final int? score;
+  final String? label;
   final Color color;
   final bool hasDetail;
 
@@ -534,19 +538,19 @@ class _RtiBadgeSmall extends StatelessWidget {
           Icon(Icons.verified_user_outlined, size: 11, color: color),
           const SizedBox(width: 3),
           Text(
-            score > 0 ? 'RTI $score' : 'RTI -',
+            score != null ? 'RTI $score' : '분석 전',
             style: Theme.of(context).textTheme.labelSmall?.copyWith(
               color: color,
               fontWeight: FontWeight.w900,
               fontSize: 11,
             ),
           ),
-          if (label.isNotEmpty) ...[
+          if (score != null && label?.isNotEmpty == true) ...[
             const SizedBox(width: 4),
             Container(width: 1, height: 9, color: color.withValues(alpha: 0.3)),
             const SizedBox(width: 4),
             Text(
-              label,
+              label!,
               style: Theme.of(context).textTheme.labelSmall?.copyWith(
                 color: color,
                 fontSize: 10,
