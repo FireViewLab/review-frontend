@@ -441,12 +441,12 @@ class _BannerCard extends StatelessWidget {
                     url: context.isMobile
                         ? item.mobileImageUrl ?? item.imageUrl!
                         : item.imageUrl!,
-                    fit: BoxFit.cover,
+                    fit: BoxFit.contain,
                     placeholderIcon: Icons.image_not_supported_outlined,
                   )
                 : Image.asset(
                     item.assetPath!,
-                    fit: BoxFit.cover,
+                    fit: BoxFit.contain,
                     alignment: Alignment.center,
                     errorBuilder: (context, error, stackTrace) =>
                         context.isMobile

@@ -275,7 +275,7 @@ class _AdminBannersPageState extends ConsumerState<AdminBannersPage> {
               ),
             SelectableText('클릭 대상: ${preview.targetUrl}'),
             const Text(
-              '전체 이미지를 표시한 미리보기입니다. 홈에서는 기존 카드 비율에 맞춰 가장자리가 잘릴 수 있습니다.',
+              '홈에서도 전체 이미지를 표시합니다. 이미지 비율에 따라 카드 안에 여백이 생길 수 있습니다.',
             ),
           ],
         ],
