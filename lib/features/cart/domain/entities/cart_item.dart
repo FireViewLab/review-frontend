@@ -47,7 +47,7 @@ class CartItem {
   final int productId;
   final String name;
   final String imageUrl;
-  final int price;
+  final int? price;
   final int quantity;
   final double? avgRti;
   final String? rtiGrade;

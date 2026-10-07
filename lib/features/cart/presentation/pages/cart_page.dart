@@ -73,6 +73,42 @@ class _CartBody extends ConsumerWidget {
 
   final CartSuccess cartState;
 
+  Future<void> _showPurchaseChoices(BuildContext context) => showDialog<void>(
+    context: context,
+    builder: (dialogContext) => AlertDialog(
+      title: const Text('구매처 확인'),
+      content: SizedBox(
+        width: 420,
+        child: SingleChildScrollView(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              const Text(
+                '상품 상세에서 제공되는 쇼핑몰 구매 링크를 이용해 주세요. 이 서비스에서 외부 상품을 결제하지 않습니다.',
+              ),
+              for (final item in cartState.selectedItems)
+                ListTile(
+                  title: Text(item.name),
+                  subtitle: Text('상품 상세 및 구매처 보기'),
+                  trailing: const Icon(Icons.chevron_right),
+                  onTap: () {
+                    Navigator.of(dialogContext).pop();
+                    context.push(item.detailPath, extra: item.routeContext);
+                  },
+                ),
+            ],
+          ),
+        ),
+      ),
+      actions: [
+        TextButton(
+          onPressed: () => Navigator.of(dialogContext).pop(),
+          child: const Text('닫기'),
+        ),
+      ],
+    ),
+  );
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final vm = ref.read(cartViewModelProvider.notifier);
@@ -83,6 +119,17 @@ class _CartBody extends ConsumerWidget {
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         _CartPageHeader(totalCount: cartState.items.length),
+        if (cartState.errorMessage != null) ...[
+          const SizedBox(height: AppSpacing.sm),
+          Text(
+            cartState.errorMessage!,
+            style: const TextStyle(color: AppColors.error),
+          ),
+          TextButton(
+            onPressed: cartState.isUpdating ? null : () => vm.load(),
+            child: const Text('다시 불러오기'),
+          ),
+        ],
         const SizedBox(height: AppSpacing.md),
         _RtiCheckBanner(),
         const SizedBox(height: AppSpacing.sm),
@@ -106,15 +153,14 @@ class _CartBody extends ConsumerWidget {
                 CartItemCard(
                   item: item,
                   isSelected: cartState.selectedIds.contains(item.productId),
-                  isUpdating: cartState.updatingProductIds.contains(
-                    item.productId,
-                  ),
+                  isUpdating: cartState.isUpdating,
                   onToggleSelect: () => vm.toggleSelectItem(item.productId),
                   onQuantityChanged: (qty) =>
                       vm.updateQuantity(item.productId, qty),
                   onRemove: () => vm.removeItem(item.productId),
-                  onMoveToWishlist: () {},
-                  onSaveForLater: () {},
+                  onMoveToWishlist: () => vm.saveToWishlist(item.productId),
+                  onSaveForLater: () =>
+                      vm.saveToWishlist(item.productId, removeFromCart: true),
                 ),
             ],
           ),
@@ -131,7 +177,9 @@ class _CartBody extends ConsumerWidget {
           CartOrderSummary(
             summary: cartState.selectedSummary,
             selectedCount: cartState.selectedIds.length,
-            onCheckout: () async {},
+            hasUnknownPrice: cartState.hasUnknownSelectedPrice,
+            isUpdating: cartState.isUpdating,
+            onCheckout: () => _showPurchaseChoices(context),
             onContinueShopping: () => context.go(RoutePaths.home),
           ),
         ],
@@ -148,7 +196,9 @@ class _CartBody extends ConsumerWidget {
           child: CartOrderSummary(
             summary: cartState.selectedSummary,
             selectedCount: cartState.selectedIds.length,
-            onCheckout: () async {},
+            hasUnknownPrice: cartState.hasUnknownSelectedPrice,
+            isUpdating: cartState.isUpdating,
+            onCheckout: () => _showPurchaseChoices(context),
             onContinueShopping: () => context.go(RoutePaths.home),
           ),
         ),
