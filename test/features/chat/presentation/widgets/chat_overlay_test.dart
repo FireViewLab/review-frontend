@@ -240,7 +240,7 @@ void main() {
     await tester.tap(find.byTooltip(l10n.chatLauncherTooltip));
     await tester.pumpAndSettle();
 
-    expect(find.text(l10n.chatProductContext), findsOneWidget);
+    expect(find.textContaining(l10n.chatTargetProduct), findsOneWidget);
     expect(find.text(l10n.chatSuggestProduct1), findsOneWidget);
     expect(find.text(l10n.chatSuggestProduct2), findsOneWidget);
     expect(find.text(l10n.chatSuggestProduct3), findsOneWidget);
@@ -614,7 +614,7 @@ void main() {
       tester.getTopLeft(find.byType(ChatPanel)).dy,
       greaterThanOrEqualTo(0),
     );
-    expect(find.byTooltip(l10n.chatClose).hitTestable(), findsOneWidget);
+    expect(find.byTooltip(l10n.chatClosePreserve).hitTestable(), findsOneWidget);
   });
 
   testWidgets('links to the plan page when the limit is reached', (
@@ -678,7 +678,7 @@ void main() {
     await tester.pumpAndSettle();
 
     // 챗봇이 찾을 수 없는 상품이라 상품 안내와 상품 질문을 보여 주지 않는다.
-    expect(find.text(l10n.chatProductContext), findsNothing);
+    expect(find.textContaining(l10n.chatTargetProduct), findsNothing);
     expect(find.text(l10n.chatSuggestGeneral1), findsOneWidget);
     await tester.enterText(find.byType(TextField), '질문');
     await tester.pump();
@@ -736,7 +736,7 @@ void main() {
       await tester.tap(find.byType(ChatAskButton));
       await tester.pumpAndSettle();
       expect(find.byType(ChatPanel), findsOneWidget);
-      expect(find.text(l10n.chatProductContext), findsOneWidget);
+      expect(find.textContaining(l10n.chatTargetProduct), findsOneWidget);
       await tester.tap(find.text(l10n.chatSuggestProduct1));
       await tester.pump();
       await tester.tap(find.byTooltip(l10n.chatSend));
@@ -776,7 +776,7 @@ void main() {
   });
 
   testWidgets(
-    'detail CTA leaves history and preserves an existing conversation',
+    'detail CTA leaves history and opens a blank product conversation',
     (tester) async {
       final subject = await _pumpOverlay(
         tester,
@@ -794,25 +794,16 @@ void main() {
       await tester.tap(find.byType(ChatAskButton));
       await tester.pumpAndSettle();
       expect(find.byType(ChatPanel), findsOneWidget);
-      expect(find.text(l10n.chatOtherProductNotice), findsOneWidget);
+      expect(find.text(l10n.chatOtherProductNotice), findsNothing);
       expect(
         subject.container.read(chatViewModelProvider).isHistoryOpen,
         isFalse,
       );
       expect(
         subject.container.read(chatViewModelProvider).sessionProductId,
-        'kurly-other',
-      );
-      expect(
-        subject.container.read(chatViewModelProvider).messages,
-        hasLength(2),
-      );
-      await tester.tap(find.text(l10n.chatStartWithThisProduct));
-      await tester.pumpAndSettle();
-      expect(
-        subject.container.read(chatViewModelProvider).sessionProductId,
         'kurly-1000146248',
       );
+      expect(subject.container.read(chatViewModelProvider).messages, isEmpty);
       expect(tester.takeException(), isNull);
     },
   );
@@ -849,7 +840,7 @@ void main() {
       await tester.tap(find.text(l10n.chatStartWithThisProduct));
       await tester.pumpAndSettle();
       expect(find.text(l10n.chatOtherProductNotice), findsNothing);
-      expect(find.text(l10n.chatProductContext), findsOneWidget);
+      expect(find.textContaining(l10n.chatTargetProduct), findsOneWidget);
       expect(subject.container.read(chatViewModelProvider).messages, isEmpty);
       expect(
         subject.container.read(chatViewModelProvider).sessionProductId,

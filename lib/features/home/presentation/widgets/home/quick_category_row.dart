@@ -35,18 +35,20 @@ class QuickCategoryRow extends StatelessWidget {
                     width: 72,
                     height: 72,
                     alignment: Alignment.center,
-                    decoration: BoxDecoration(
-                      color: AppColors.surface,
-                      shape: BoxShape.circle,
-                      border: Border.all(color: AppColors.border),
-                      boxShadow: const [
-                        BoxShadow(
-                          color: Color(0x0F0F172A),
-                          blurRadius: 18,
-                          offset: Offset(0, 8),
-                        ),
-                      ],
-                    ),
+                    decoration: item.useIconBacking
+                        ? BoxDecoration(
+                            color: AppColors.surface,
+                            shape: BoxShape.circle,
+                            border: Border.all(color: AppColors.border),
+                            boxShadow: const [
+                              BoxShadow(
+                                color: Color(0x0F0F172A),
+                                blurRadius: 18,
+                                offset: Offset(0, 8),
+                              ),
+                            ],
+                          )
+                        : null,
                     child: Padding(
                       padding: const EdgeInsets.all(AppSpacing.xs),
                       child: Image.asset(

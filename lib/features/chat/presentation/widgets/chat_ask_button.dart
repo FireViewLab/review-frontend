@@ -2,15 +2,19 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:re_view_front/app/theme/app_colors.dart';
 import 'package:re_view_front/app/theme/app_spacing.dart';
+import 'package:re_view_front/app/router/app_router.dart';
+import 'package:re_view_front/features/external_product/domain/entities/external_product_ref.dart';
 import 'package:re_view_front/features/chat/presentation/providers/chat_providers.dart';
 import 'package:re_view_front/features/chat/presentation/widgets/chat_style.dart';
 import 'package:re_view_front/l10n/generated/app_localizations.dart';
 
 /// 화면 본문 안에서 어시스턴트를 여는 버튼. 상품 분석 옆에 둔다.
 ///
-/// 패널만 연다. 다른 상품으로 이어지던 대화가 있으면 패널이 새 대화를 권한다.
+/// 상품 문맥을 고정한 빈 새 대화를 연다. 이전 서버 대화 기록은 삭제하지 않는다.
 class ChatAskButton extends ConsumerWidget {
-  const ChatAskButton({super.key});
+  const ChatAskButton({super.key, this.productId});
+
+  final String? productId;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -19,7 +23,24 @@ class ChatAskButton extends ConsumerWidget {
       color: AppColors.primaryLight,
       borderRadius: radius,
       child: InkWell(
-        onTap: ref.read(chatViewModelProvider.notifier).openConversation,
+        onTap: () {
+          final route = ref
+              .read(appRouterProvider)
+              .routerDelegate
+              .currentConfiguration;
+          final extra = route.extra;
+          final externalId =
+              (extra is ProductRouteContext ? extra.chatProductId : null) ??
+              productId ??
+              ExternalProductRef.fromRoute(route.uri)?.externalId;
+          ref
+              .read(chatViewModelProvider.notifier)
+              .openConversation(
+                productId: externalId?.trim().isEmpty == true
+                    ? null
+                    : externalId?.trim(),
+              );
+        },
         borderRadius: radius,
         child: ConstrainedBox(
           constraints: const BoxConstraints(minHeight: 48),

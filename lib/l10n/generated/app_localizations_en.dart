@@ -614,7 +614,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get chatOtherProductNotice =>
-      'You\'re continuing a chat about another product';
+      'This conversation keeps a different context from the current page.';
 
   @override
   String get chatStartWithThisProduct => 'New chat for this product';
@@ -624,7 +624,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get chatEmptyBody =>
-      'I can help you judge review trust and spot sponsored reviews.';
+      'Suggestions only fill the input. Review the question before sending.';
 
   @override
   String get chatSuggestProduct1 => 'Are this product\'s reviews trustworthy?';
@@ -1652,4 +1652,35 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get imagePreviewNext => 'Next image';
+
+  @override
+  String get chatFreshContext => 'New conversation · history is preserved';
+
+  @override
+  String get chatHistoryContext => 'Conversation opened from history';
+
+  @override
+  String get chatActiveContext => 'Ongoing conversation';
+
+  @override
+  String get chatGeneralContext => 'General conversation · no product selected';
+
+  @override
+  String get chatTargetProduct => 'Question target product';
+
+  @override
+  String get chatQuotaLoading => 'Checking your question quota.';
+
+  @override
+  String get chatQuotaUnavailable =>
+      'Could not refresh quota. Last confirmed values are retained.';
+
+  @override
+  String get chatQuotaRefresh => 'Refresh';
+
+  @override
+  String get chatClosePreserve => 'Close (keep conversation)';
+
+  @override
+  String get chatHistoryWait => 'History is available after sending completes.';
 }

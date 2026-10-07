@@ -592,7 +592,7 @@ class AppLocalizationsZh extends AppLocalizations {
   String get chatProductContext => '基于该商品的评论回答';
 
   @override
-  String get chatOtherProductNotice => '正在继续关于其他商品的对话';
+  String get chatOtherProductNotice => '此对话保留了与当前页面不同的上下文。';
 
   @override
   String get chatStartWithThisProduct => '以此商品开始新对话';
@@ -601,7 +601,7 @@ class AppLocalizationsZh extends AppLocalizations {
   String get chatEmptyTitle => '问问你想了解的评论问题';
 
   @override
-  String get chatEmptyBody => '帮助您判断评论可信度并识别广告评论。';
+  String get chatEmptyBody => '推荐问题仅填入输入框。请确认内容后发送。';
 
   @override
   String get chatSuggestProduct1 => '这个商品的评论可信吗？';
@@ -1599,4 +1599,34 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get imagePreviewNext => '下一张图片';
+
+  @override
+  String get chatFreshContext => '新对话 · 保留历史记录';
+
+  @override
+  String get chatHistoryContext => '从历史记录打开的对话';
+
+  @override
+  String get chatActiveContext => '进行中的对话';
+
+  @override
+  String get chatGeneralContext => '常规对话 · 未指定商品';
+
+  @override
+  String get chatTargetProduct => '提问目标商品';
+
+  @override
+  String get chatQuotaLoading => '正在查询提问额度。';
+
+  @override
+  String get chatQuotaUnavailable => '无法刷新额度，保留上次确认的数值。';
+
+  @override
+  String get chatQuotaRefresh => '重新查询';
+
+  @override
+  String get chatClosePreserve => '关闭（保留对话）';
+
+  @override
+  String get chatHistoryWait => '发送完成后可打开历史记录。';
 }
