@@ -1,5 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:re_view_front/app/theme/app_colors.dart';
 import 'package:re_view_front/core/platform/web_image_element.dart';
 
@@ -96,6 +97,8 @@ class _WebImageState extends State<_WebImage> {
     return ColoredBox(
       color: AppColors.surfaceMuted,
       child: HtmlElementView.fromTagName(
+        // Images are display content; the surrounding Flutter button owns input.
+        hitTestBehavior: PlatformViewHitTestBehavior.transparent,
         // url이 바뀌면 새 <img>를 만들어 이전 오류 리스너가 남지 않게 한다.
         key: ValueKey(widget.url),
         tagName: 'img',

@@ -515,5 +515,8 @@
   "externalReasonAd": "Advertisement",
   "externalReasonRepeated": "Repetitive content",
   "externalReasonOffensive": "Offensive content",
-  "externalReasonOther": "Other"
+  "externalReasonOther": "Other",
+  "productImageEnlarge": "Enlarge product image",
+  "productImagePrevious": "Previous product image",
+  "productImageNext": "Next product image"
 }

@@ -3095,6 +3095,24 @@ abstract class AppLocalizations {
   /// In ko, this message translates to:
   /// **'기타'**
   String get externalReasonOther;
+
+  /// No description provided for @productImageEnlarge.
+  ///
+  /// In ko, this message translates to:
+  /// **'상품 이미지 확대'**
+  String get productImageEnlarge;
+
+  /// No description provided for @productImagePrevious.
+  ///
+  /// In ko, this message translates to:
+  /// **'이전 상품 이미지'**
+  String get productImagePrevious;
+
+  /// No description provided for @productImageNext.
+  ///
+  /// In ko, this message translates to:
+  /// **'다음 상품 이미지'**
+  String get productImageNext;
 }
 
 class _AppLocalizationsDelegate

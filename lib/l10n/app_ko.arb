@@ -1013,5 +1013,8 @@
   "externalReasonAd": "광고성 리뷰",
   "externalReasonRepeated": "반복 내용",
   "externalReasonOffensive": "모욕적인 내용",
-  "externalReasonOther": "기타"
+  "externalReasonOther": "기타",
+  "productImageEnlarge": "상품 이미지 확대",
+  "productImagePrevious": "이전 상품 이미지",
+  "productImageNext": "다음 상품 이미지"
 }
