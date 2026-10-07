@@ -39,7 +39,7 @@ void main() {
   );
 
   testWidgets(
-    'centers a dominant asset without cropping and retains the slide on resize',
+    'retains original desktop size and image treatment, reduces mobile height and keeps slide on resize',
     (tester) async {
       await pumpCarousel(tester);
       var ctl = controller(tester);
@@ -50,9 +50,9 @@ void main() {
             w.image is AssetImage &&
             (w.image as AssetImage).assetName == banners.first.assetPath,
       );
-      expect(tester.getCenter(image).dx, closeTo(720, 1));
-      expect(tester.getSize(image).width, greaterThan(900));
-      expect(tester.widget<Image>(image).fit, BoxFit.contain);
+      expect(tester.getSize(find.byType(HeroBannerCarousel)).height, 300);
+      expect(tester.getSize(image).width, lessThan(670));
+      expect(tester.widget<Image>(image).fit, BoxFit.cover);
       await tester.tap(find.byTooltip('다음 배너'));
       await tester.pumpAndSettle();
       expect(ctl.page, closeTo(page + 1, .01));
@@ -61,10 +61,7 @@ void main() {
       ctl = controller(tester);
       expect(ctl.page, closeTo(page + 1, .01));
       expect(indicator(2), findsOneWidget);
-      expect(
-        tester.getSize(find.byType(HeroBannerCarousel)).height,
-        lessThan(300),
-      );
+      expect(tester.getSize(find.byType(HeroBannerCarousel)).height, 240);
       expect(tester.takeException(), isNull);
     },
   );
