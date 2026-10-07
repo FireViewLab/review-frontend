@@ -128,6 +128,16 @@ class ChatHistoryView extends StatelessWidget {
                                       fontWeight: FontWeight.w600,
                                     ),
                                   ),
+                                  Text(
+                                    session.productId?.trim().isNotEmpty == true
+                                        ? '${l10n.chatTargetProduct}: ${session.productId}'
+                                        : l10n.chatGeneralContext,
+                                    maxLines: 1,
+                                    overflow: TextOverflow.ellipsis,
+                                    style: textTheme.labelSmall?.copyWith(
+                                      color: AppColors.textSecondary,
+                                    ),
+                                  ),
                                   if (local != null)
                                     Text(
                                       '${local.year}.${local.month.toString().padLeft(2, '0')}.${local.day.toString().padLeft(2, '0')}',

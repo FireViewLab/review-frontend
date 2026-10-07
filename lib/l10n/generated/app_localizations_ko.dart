@@ -592,7 +592,7 @@ class AppLocalizationsKo extends AppLocalizations {
   String get chatProductContext => '이 상품의 리뷰를 바탕으로 답해요';
 
   @override
-  String get chatOtherProductNotice => '다른 상품에 대한 대화가 이어지고 있어요';
+  String get chatOtherProductNotice => '현재 화면과 다른 대화 문맥을 유지하고 있어요.';
 
   @override
   String get chatStartWithThisProduct => '이 상품으로 새 대화';
@@ -601,7 +601,7 @@ class AppLocalizationsKo extends AppLocalizations {
   String get chatEmptyTitle => '리뷰에서 궁금한 점을 물어보세요';
 
   @override
-  String get chatEmptyBody => '리뷰 신뢰도와 광고성 리뷰 판단을 도와드려요.';
+  String get chatEmptyBody => '추천 질문은 입력창에만 채워져요. 내용을 확인한 뒤 전송해주세요.';
 
   @override
   String get chatSuggestProduct1 => '이 상품 리뷰 믿을 만해?';
@@ -1605,4 +1605,34 @@ class AppLocalizationsKo extends AppLocalizations {
 
   @override
   String get imagePreviewNext => '다음 사진';
+
+  @override
+  String get chatFreshContext => '새 대화 · 이전 기록은 유지돼요';
+
+  @override
+  String get chatHistoryContext => '기록에서 연 대화';
+
+  @override
+  String get chatActiveContext => '진행 중인 대화';
+
+  @override
+  String get chatGeneralContext => '일반 대화 · 상품 지정 없음';
+
+  @override
+  String get chatTargetProduct => '질문 대상 상품';
+
+  @override
+  String get chatQuotaLoading => '질문 한도를 확인하고 있어요.';
+
+  @override
+  String get chatQuotaUnavailable => '한도를 다시 확인하지 못했어요. 마지막 확인 값은 유지돼요.';
+
+  @override
+  String get chatQuotaRefresh => '다시 확인';
+
+  @override
+  String get chatClosePreserve => '닫기 (대화는 유지)';
+
+  @override
+  String get chatHistoryWait => '대화 기록은 전송이 끝난 뒤 열 수 있어요.';
 }

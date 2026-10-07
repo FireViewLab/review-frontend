@@ -593,7 +593,7 @@ class AppLocalizationsJa extends AppLocalizations {
   String get chatProductContext => 'この商品のレビューをもとに回答します';
 
   @override
-  String get chatOtherProductNotice => '別の商品についての会話が続いています';
+  String get chatOtherProductNotice => 'この会話は現在の画面とは異なる文脈を保持しています。';
 
   @override
   String get chatStartWithThisProduct => 'この商品で新しい会話';
@@ -602,7 +602,7 @@ class AppLocalizationsJa extends AppLocalizations {
   String get chatEmptyTitle => 'レビューで気になることを聞いてください';
 
   @override
-  String get chatEmptyBody => 'レビューの信頼度や広告レビューの見分け方をお手伝いします。';
+  String get chatEmptyBody => 'おすすめの質問は入力欄に入るだけです。内容を確認してから送信してください。';
 
   @override
   String get chatSuggestProduct1 => 'この商品のレビューは信頼できる？';
@@ -1605,4 +1605,34 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String get imagePreviewNext => '次の画像';
+
+  @override
+  String get chatFreshContext => '新しい会話・履歴は保持されます';
+
+  @override
+  String get chatHistoryContext => '履歴から開いた会話';
+
+  @override
+  String get chatActiveContext => '進行中の会話';
+
+  @override
+  String get chatGeneralContext => '一般の会話・商品指定なし';
+
+  @override
+  String get chatTargetProduct => '質問対象の商品';
+
+  @override
+  String get chatQuotaLoading => '質問の利用枠を確認しています。';
+
+  @override
+  String get chatQuotaUnavailable => '利用枠を更新できませんでした。前回確認した値を保持しています。';
+
+  @override
+  String get chatQuotaRefresh => '再確認';
+
+  @override
+  String get chatClosePreserve => '閉じる（会話を保持）';
+
+  @override
+  String get chatHistoryWait => '送信が完了すると履歴を開けます。';
 }

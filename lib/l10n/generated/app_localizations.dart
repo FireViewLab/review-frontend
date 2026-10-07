@@ -1227,7 +1227,7 @@ abstract class AppLocalizations {
   /// 현재 화면 상품과 대화 상품이 다를 때 안내
   ///
   /// In ko, this message translates to:
-  /// **'다른 상품에 대한 대화가 이어지고 있어요'**
+  /// **'현재 화면과 다른 대화 문맥을 유지하고 있어요.'**
   String get chatOtherProductNotice;
 
   /// 현재 상품으로 새 대화 시작
@@ -1245,7 +1245,7 @@ abstract class AppLocalizations {
   /// 대화가 없을 때 설명
   ///
   /// In ko, this message translates to:
-  /// **'리뷰 신뢰도와 광고성 리뷰 판단을 도와드려요.'**
+  /// **'추천 질문은 입력창에만 채워져요. 내용을 확인한 뒤 전송해주세요.'**
   String get chatEmptyBody;
 
   /// 상품 대화 추천 질문 1
@@ -3137,6 +3137,66 @@ abstract class AppLocalizations {
   /// In ko, this message translates to:
   /// **'다음 사진'**
   String get imagePreviewNext;
+
+  /// No description provided for @chatFreshContext.
+  ///
+  /// In ko, this message translates to:
+  /// **'새 대화 · 이전 기록은 유지돼요'**
+  String get chatFreshContext;
+
+  /// No description provided for @chatHistoryContext.
+  ///
+  /// In ko, this message translates to:
+  /// **'기록에서 연 대화'**
+  String get chatHistoryContext;
+
+  /// No description provided for @chatActiveContext.
+  ///
+  /// In ko, this message translates to:
+  /// **'진행 중인 대화'**
+  String get chatActiveContext;
+
+  /// No description provided for @chatGeneralContext.
+  ///
+  /// In ko, this message translates to:
+  /// **'일반 대화 · 상품 지정 없음'**
+  String get chatGeneralContext;
+
+  /// No description provided for @chatTargetProduct.
+  ///
+  /// In ko, this message translates to:
+  /// **'질문 대상 상품'**
+  String get chatTargetProduct;
+
+  /// No description provided for @chatQuotaLoading.
+  ///
+  /// In ko, this message translates to:
+  /// **'질문 한도를 확인하고 있어요.'**
+  String get chatQuotaLoading;
+
+  /// No description provided for @chatQuotaUnavailable.
+  ///
+  /// In ko, this message translates to:
+  /// **'한도를 다시 확인하지 못했어요. 마지막 확인 값은 유지돼요.'**
+  String get chatQuotaUnavailable;
+
+  /// No description provided for @chatQuotaRefresh.
+  ///
+  /// In ko, this message translates to:
+  /// **'다시 확인'**
+  String get chatQuotaRefresh;
+
+  /// No description provided for @chatClosePreserve.
+  ///
+  /// In ko, this message translates to:
+  /// **'닫기 (대화는 유지)'**
+  String get chatClosePreserve;
+
+  /// No description provided for @chatHistoryWait.
+  ///
+  /// In ko, this message translates to:
+  /// **'대화 기록은 전송이 끝난 뒤 열 수 있어요.'**
+  String get chatHistoryWait;
 }
 
 class _AppLocalizationsDelegate

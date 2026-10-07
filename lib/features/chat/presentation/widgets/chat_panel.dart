@@ -5,6 +5,7 @@ import 'package:re_view_front/app/theme/app_colors.dart';
 import 'package:re_view_front/app/theme/app_spacing.dart';
 import 'package:re_view_front/core/providers/core_providers.dart';
 import 'package:re_view_front/features/chat/domain/entities/chat_quota.dart';
+import 'package:re_view_front/features/chat/domain/entities/chat_message.dart';
 import 'package:re_view_front/features/chat/presentation/providers/chat_providers.dart';
 import 'package:re_view_front/features/chat/presentation/view_models/chat_state.dart';
 import 'package:re_view_front/features/chat/presentation/widgets/chat_composer.dart';
@@ -72,45 +73,52 @@ class ChatPanel extends ConsumerWidget {
                     : const BorderSide(color: ChatStyle.line),
               ),
               clipBehavior: Clip.antiAlias,
-              child: Column(
-                children: [
-                  _Header(
-                    quota: isLoggedIn ? state.quota : null,
-                    canStartNew:
-                        isLoggedIn &&
-                        (state.hasConversation || state.isHistoryOpen),
-                    onNew: () => vm.startNew(productId: productId),
-                    onClose: vm.close,
-                    onHistory: isLoggedIn ? vm.showHistory : null,
-                    historyEnabled:
-                        !state.isSending && !state.isLoadingMessages,
-                  ),
-                  const Divider(height: 1, color: ChatStyle.line),
-                  if (isLoggedIn && state.isHistoryOpen)
-                    Expanded(
-                      child: ChatHistoryView(
-                        state: state,
-                        onBack: vm.closeHistory,
-                        onSelect: vm.resumeSession,
-                        onLoadMore: vm.loadMoreSessions,
-                        onRetry: vm.showHistory,
+              child: LayoutBuilder(
+                builder: (context, constraints) => Column(
+                  children: [
+                    ConstrainedBox(
+                      constraints: BoxConstraints(
+                        maxHeight: constraints.maxHeight * .35,
                       ),
-                    )
-                  else if (isLoggedIn)
-                    Expanded(
-                      child: _Conversation(
-                        key: ValueKey(state.conversationRevision),
-                        state: state,
-                        productId: productId,
-                        autofocus: !fullScreen,
-                        onPlanPressed: onPlanPressed,
+                      child: SingleChildScrollView(
+                        child: _Header(
+                          quota: isLoggedIn ? state.quota : null,
+                          canStartNew: isLoggedIn,
+                          onNew: () => vm.startNew(productId: productId),
+                          onClose: vm.close,
+                          onHistory: isLoggedIn ? vm.showHistory : null,
+                          historyEnabled:
+                              !state.isSending && !state.isLoadingMessages,
+                        ),
                       ),
-                    )
-                  else
-                    Expanded(
-                      child: _LoginPrompt(onLoginPressed: onLoginPressed),
                     ),
-                ],
+                    const Divider(height: 1, color: ChatStyle.line),
+                    if (isLoggedIn && state.isHistoryOpen)
+                      Expanded(
+                        child: ChatHistoryView(
+                          state: state,
+                          onBack: vm.closeHistory,
+                          onSelect: vm.resumeSession,
+                          onLoadMore: vm.loadMoreSessions,
+                          onRetry: vm.showHistory,
+                        ),
+                      )
+                    else if (isLoggedIn)
+                      Expanded(
+                        child: _Conversation(
+                          key: ValueKey(state.conversationRevision),
+                          state: state,
+                          productId: productId,
+                          autofocus: !fullScreen,
+                          onPlanPressed: onPlanPressed,
+                        ),
+                      )
+                    else
+                      Expanded(
+                        child: _LoginPrompt(onLoginPressed: onLoginPressed),
+                      ),
+                  ],
+                ),
               ),
             ),
           ),
@@ -144,61 +152,81 @@ class _Header extends StatelessWidget {
     final quota = this.quota;
     return Padding(
       padding: const EdgeInsets.fromLTRB(20, AppSpacing.md, AppSpacing.xs, 12),
-      child: Row(
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          const ChatMark(),
-          const SizedBox(width: AppSpacing.sm),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Row(
+          Row(
+            children: [
+              const ChatMark(),
+              const SizedBox(width: AppSpacing.sm),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Flexible(
-                      child: Text(
-                        l10n.chatTitle,
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                        style: textTheme.titleMedium?.copyWith(
-                          color: ChatStyle.ink,
-                          fontWeight: FontWeight.w800,
+                    Row(
+                      children: [
+                        Flexible(
+                          child: Text(
+                            l10n.chatTitle,
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                            style: textTheme.titleMedium?.copyWith(
+                              color: ChatStyle.ink,
+                              fontWeight: FontWeight.w800,
+                            ),
+                          ),
                         ),
+                        if (quota != null) ...[
+                          const SizedBox(width: AppSpacing.xs),
+                          _PlanBadge(quota: quota),
+                        ],
+                      ],
+                    ),
+                    Text(
+                      l10n.chatSubtitle,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: textTheme.bodySmall?.copyWith(
+                        color: AppColors.textSecondary,
                       ),
                     ),
-                    if (quota != null) ...[
-                      const SizedBox(width: AppSpacing.xs),
-                      _PlanBadge(quota: quota),
-                    ],
                   ],
                 ),
-                Text(
-                  l10n.chatSubtitle,
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                  style: textTheme.bodySmall?.copyWith(
-                    color: AppColors.textSecondary,
+              ),
+              _HeaderAction(
+                tooltip: l10n.chatClosePreserve,
+                icon: Icons.close_rounded,
+                onPressed: onClose,
+              ),
+            ],
+          ),
+          if (canStartNew || onHistory != null)
+            Wrap(
+              spacing: AppSpacing.xs,
+              children: [
+                if (canStartNew)
+                  Tooltip(
+                    message: l10n.chatNewConversation,
+                    child: TextButton.icon(
+                      onPressed: onNew,
+                      icon: const Icon(Icons.edit_square, size: 18),
+                      label: Text(l10n.chatNewConversation),
+                    ),
                   ),
-                ),
+                if (onHistory != null)
+                  Tooltip(
+                    message: historyEnabled
+                        ? l10n.chatPreviousConversations
+                        : l10n.chatHistoryWait,
+                    child: TextButton.icon(
+                      onPressed: historyEnabled ? onHistory : null,
+                      icon: const Icon(Icons.history_rounded, size: 18),
+                      label: Text(l10n.chatPreviousConversations),
+                    ),
+                  ),
               ],
             ),
-          ),
-          if (canStartNew)
-            _HeaderAction(
-              tooltip: l10n.chatNewConversation,
-              icon: Icons.edit_square,
-              onPressed: onNew,
-            ),
-          if (onHistory != null)
-            _HeaderAction(
-              tooltip: l10n.chatPreviousConversations,
-              icon: Icons.history_rounded,
-              onPressed: historyEnabled ? onHistory : null,
-            ),
-          _HeaderAction(
-            tooltip: l10n.chatClose,
-            icon: Icons.close_rounded,
-            onPressed: onClose,
-          ),
         ],
       ),
     );
@@ -221,7 +249,6 @@ class _HeaderAction extends StatelessWidget {
     return IconButton(
       tooltip: tooltip,
       onPressed: onPressed,
-      visualDensity: VisualDensity.compact,
       icon: Icon(icon, size: 20),
       color: AppColors.textSecondary,
     );
@@ -316,12 +343,19 @@ class _ConversationState extends ConsumerState<_Conversation> {
   @override
   Widget build(BuildContext context) {
     final state = widget.state;
-    final productId = widget.productId;
+    final productId = state.hasBoundContext || state.sessionId != null
+        ? state.sessionProductId
+        : widget.productId;
     final vm = ref.read(chatViewModelProvider.notifier);
     return LayoutBuilder(
       builder: (context, constraints) => Column(
         children: [
-          _ContextBar(state: state, productId: productId),
+          ConstrainedBox(
+            constraints: BoxConstraints(maxHeight: constraints.maxHeight * .3),
+            child: SingleChildScrollView(
+              child: _ContextBar(state: state, productId: widget.productId),
+            ),
+          ),
           Expanded(
             child: state.hasConversation
                 ? _MessageList(
@@ -336,22 +370,56 @@ class _ConversationState extends ConsumerState<_Conversation> {
           ),
           // 글자를 크게 쓰거나 화면이 낮아도 입력 영역이 패널 밖으로 넘치지 않게 한다.
           ConstrainedBox(
-            constraints: BoxConstraints(maxHeight: constraints.maxHeight * 0.7),
+            constraints: BoxConstraints(maxHeight: constraints.maxHeight * 0.6),
             child: SingleChildScrollView(
-              child: ChatComposer(
-                key: _composerKey,
-                controller: _controller,
-                focusNode: _focusNode,
-                isSending: state.isSending,
-                quota: state.quota,
-                mode: state.mode,
-                canUsePro: state.canUsePro,
-                limitReached: state.limitReached,
-                onQuotaReset: vm.refreshQuota,
-                onPlanPressed: widget.onPlanPressed,
-                autofocus: widget.autofocus,
-                onSend: (text) => vm.send(text, productId: productId),
-                onModeChanged: vm.setMode,
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  if (state.isLoadingQuota || state.quotaLoadFailed)
+                    Padding(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: AppSpacing.md,
+                      ),
+                      child: Row(
+                        children: [
+                          Expanded(
+                            child: Text(
+                              state.isLoadingQuota
+                                  ? AppLocalizations.of(
+                                      context,
+                                    ).chatQuotaLoading
+                                  : AppLocalizations.of(
+                                      context,
+                                    ).chatQuotaUnavailable,
+                              style: Theme.of(context).textTheme.bodySmall,
+                            ),
+                          ),
+                          if (state.quotaLoadFailed && !state.isLoadingQuota)
+                            TextButton(
+                              onPressed: vm.refreshQuota,
+                              child: Text(
+                                AppLocalizations.of(context).chatQuotaRefresh,
+                              ),
+                            ),
+                        ],
+                      ),
+                    ),
+                  ChatComposer(
+                    key: _composerKey,
+                    controller: _controller,
+                    focusNode: _focusNode,
+                    isSending: state.isSending,
+                    quota: state.quota,
+                    mode: state.mode,
+                    canUsePro: state.canUsePro,
+                    limitReached: state.limitReached,
+                    onQuotaReset: vm.refreshQuota,
+                    onPlanPressed: widget.onPlanPressed,
+                    autofocus: widget.autofocus,
+                    onSend: (text) => vm.send(text, productId: productId),
+                    onModeChanged: vm.setMode,
+                  ),
+                ],
               ),
             ),
           ),
@@ -370,64 +438,67 @@ class _ContextBar extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final productId = this.productId;
-    if (productId == null) return const SizedBox.shrink();
-
     final l10n = AppLocalizations.of(context);
-    final textStyle = Theme.of(context).textTheme.bodySmall;
-    final isOtherProduct =
-        state.sessionId != null && state.sessionProductId != productId;
-
+    final target = state.hasBoundContext || state.sessionId != null
+        ? state.sessionProductId
+        : productId;
+    final other =
+        productId != null &&
+        (state.hasBoundContext || state.sessionId != null) &&
+        target != productId;
+    final source = state.isHistoryConversation
+        ? l10n.chatHistoryContext
+        : state.sessionId == null
+        ? l10n.chatFreshContext
+        : l10n.chatActiveContext;
     return Container(
       width: double.infinity,
       margin: const EdgeInsets.fromLTRB(
         AppSpacing.md,
-        AppSpacing.sm,
+        AppSpacing.xs,
         AppSpacing.md,
         0,
       ),
-      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
       decoration: BoxDecoration(
-        color: isOtherProduct ? ChatStyle.noticeBackground : AppColors.surface,
+        color: other ? ChatStyle.noticeBackground : AppColors.surface,
         border: Border.all(
-          color: isOtherProduct ? ChatStyle.noticeBorder : ChatStyle.line,
+          color: other ? ChatStyle.noticeBorder : ChatStyle.line,
         ),
         borderRadius: AppRadius.medium,
       ),
-      child: Row(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Icon(
-            isOtherProduct
-                ? Icons.info_outline_rounded
-                : Icons.inventory_2_outlined,
-            size: 16,
-            color: isOtherProduct ? ChatStyle.noticeText : AppColors.primary,
+          Text(source, style: Theme.of(context).textTheme.labelSmall),
+          Tooltip(
+            message: target ?? l10n.chatGeneralContext,
+            child: Text(
+              target == null
+                  ? l10n.chatGeneralContext
+                  : '${l10n.chatTargetProduct}: $target',
+              maxLines: 2,
+              overflow: TextOverflow.ellipsis,
+              style: Theme.of(
+                context,
+              ).textTheme.bodySmall?.copyWith(fontWeight: FontWeight.w600),
+            ),
           ),
-          const SizedBox(width: AppSpacing.xs),
-          Expanded(
-            child: Padding(
-              padding: const EdgeInsets.symmetric(vertical: 6),
-              child: Text(
-                isOtherProduct
-                    ? l10n.chatOtherProductNotice
-                    : l10n.chatProductContext,
-                style: textStyle?.copyWith(
-                  color: ChatStyle.ink,
-                  fontWeight: FontWeight.w600,
-                ),
+          if (other) ...[
+            Text(
+              l10n.chatOtherProductNotice,
+              style: Theme.of(context).textTheme.bodySmall,
+            ),
+            Align(
+              alignment: Alignment.centerRight,
+              child: TextButton(
+                onPressed: () => ref
+                    .read(chatViewModelProvider.notifier)
+                    .startNew(productId: productId),
+                child: Text(l10n.chatStartWithThisProduct),
               ),
             ),
-          ),
-          if (isOtherProduct)
-            TextButton(
-              onPressed: state.isSending
-                  ? null
-                  : () => ref
-                        .read(chatViewModelProvider.notifier)
-                        .startNew(productId: productId),
-              style: TextButton.styleFrom(visualDensity: VisualDensity.compact),
-              child: Text(l10n.chatStartWithThisProduct),
-            ),
+          ],
         ],
       ),
     );
@@ -461,15 +532,27 @@ class _MessageList extends ConsumerWidget {
         final message = messages[messages.length - 1 - (index - extra)];
         return Padding(
           padding: const EdgeInsets.only(bottom: AppSpacing.md),
-          child: ChatMessageBubble(
-            message: message,
-            quotaResetAt: state.quota?.resetAt,
-            onPlanPressed: onPlanPressed,
-            onRetry: message.error == null
-                ? null
-                : () => ref
-                      .read(chatViewModelProvider.notifier)
-                      .retry(productId: productId),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              if (message.error != null && state.lastFailedQuestion != null)
+                ChatMessageBubble(
+                  message: ChatMessage(
+                    role: ChatRole.user,
+                    content: state.lastFailedQuestion!,
+                  ),
+                ),
+              ChatMessageBubble(
+                message: message,
+                quotaResetAt: state.quota?.resetAt,
+                onPlanPressed: onPlanPressed,
+                onRetry: message.error == null
+                    ? null
+                    : () => ref
+                          .read(chatViewModelProvider.notifier)
+                          .retry(productId: productId),
+              ),
+            ],
           ),
         );
       },
@@ -486,47 +569,49 @@ class _LoginPrompt extends StatelessWidget {
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);
     final textTheme = Theme.of(context).textTheme;
-    return Padding(
-      padding: const EdgeInsets.all(AppSpacing.xl),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          const ChatMark(size: 48),
-          const SizedBox(height: AppSpacing.lg),
-          Text(
-            l10n.chatLoginTitle,
-            textAlign: TextAlign.center,
-            style: textTheme.titleLarge?.copyWith(
-              fontSize: 20,
-              color: ChatStyle.ink,
-              fontWeight: FontWeight.w700,
-            ),
-          ),
-          const SizedBox(height: AppSpacing.xs),
-          Text(
-            l10n.chatLoginBody,
-            textAlign: TextAlign.center,
-            style: textTheme.bodyMedium?.copyWith(
-              color: AppColors.textSecondary,
-            ),
-          ),
-          const SizedBox(height: AppSpacing.lg),
-          SizedBox(
-            width: double.infinity,
-            child: FilledButton(
-              onPressed: onLoginPressed,
-              style: FilledButton.styleFrom(
-                backgroundColor: ChatStyle.ink,
-                foregroundColor: AppColors.onPrimary,
-                minimumSize: const Size.fromHeight(48),
-                shape: const RoundedRectangleBorder(
-                  borderRadius: BorderRadius.all(Radius.circular(14)),
-                ),
+    return SingleChildScrollView(
+      child: Padding(
+        padding: const EdgeInsets.all(AppSpacing.xl),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            const ChatMark(size: 48),
+            const SizedBox(height: AppSpacing.lg),
+            Text(
+              l10n.chatLoginTitle,
+              textAlign: TextAlign.center,
+              style: textTheme.titleLarge?.copyWith(
+                fontSize: 20,
+                color: ChatStyle.ink,
+                fontWeight: FontWeight.w700,
               ),
-              child: Text(l10n.chatLoginButton),
             ),
-          ),
-        ],
+            const SizedBox(height: AppSpacing.xs),
+            Text(
+              l10n.chatLoginBody,
+              textAlign: TextAlign.center,
+              style: textTheme.bodyMedium?.copyWith(
+                color: AppColors.textSecondary,
+              ),
+            ),
+            const SizedBox(height: AppSpacing.lg),
+            SizedBox(
+              width: double.infinity,
+              child: FilledButton(
+                onPressed: onLoginPressed,
+                style: FilledButton.styleFrom(
+                  backgroundColor: ChatStyle.ink,
+                  foregroundColor: AppColors.onPrimary,
+                  minimumSize: const Size.fromHeight(48),
+                  shape: const RoundedRectangleBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(14)),
+                  ),
+                ),
+                child: Text(l10n.chatLoginButton),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

@@ -57,13 +57,19 @@ class ChatViewModel extends Notifier<ChatState> {
 
   void invalidateQuota() {
     _quotaRequest++;
-    state = state.copyWith(clearQuota: true, mode: ChatMode.standard);
+    state = state.copyWith(
+      clearQuota: true,
+      mode: ChatMode.standard,
+      isLoadingQuota: false,
+      quotaLoadFailed: true,
+    );
   }
 
   /// 요금제와 오늘 남은 질문 수를 다시 받아 온다. 실패하면 이전 값을 그대로 둔다.
   Future<void> refreshQuota() async {
     if (!ref.read(isLoggedInProvider)) return;
     final request = ++_quotaRequest;
+    state = state.copyWith(isLoadingQuota: true, quotaLoadFailed: false);
     final result = await _repository.getQuota();
     if (!ref.mounted ||
         request != _quotaRequest ||
@@ -72,7 +78,8 @@ class ChatViewModel extends Notifier<ChatState> {
     }
     result.when(
       success: (quota) => state = _withQuota(state, quota),
-      failure: (_) {},
+      failure: (_) =>
+          state = state.copyWith(isLoadingQuota: false, quotaLoadFailed: true),
     );
   }
 
@@ -84,6 +91,8 @@ class ChatViewModel extends Notifier<ChatState> {
       quota: quota,
       limitReached: false,
       proDenied: false,
+      isLoadingQuota: false,
+      quotaLoadFailed: false,
       // 프로를 쓸 수 없게 됐으면 기본 모드로 되돌린다.
       mode: quota.proAvailable ? null : ChatMode.standard,
     );
@@ -288,7 +297,11 @@ class ChatViewModel extends Notifier<ChatState> {
     result.when(
       success: (messages) => state = state
           .cleared(sessionProductId: _productIdOf(session))
-          .copyWith(sessionId: session.id, messages: messages),
+          .copyWith(
+            sessionId: session.id,
+            messages: messages,
+            isHistoryConversation: true,
+          ),
       failure: (failure) => state = state.copyWith(
         isLoadingMessages: false,
         historyError: failure.message,
