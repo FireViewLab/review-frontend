@@ -13,12 +13,14 @@ class ProductReview {
     required this.rtiScore,
     required this.rtiColor,
     required this.rtiLabel,
+    this.helpfulCount,
     this.imageUrls = const [],
     this.hashtags = const [],
     this.reasons = const [],
     this.rtiDetail,
   });
 
+  final int? helpfulCount;
   final int id;
   final String authorName;
   final String? authorAvatarUrl;

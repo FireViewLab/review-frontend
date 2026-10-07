@@ -1,3 +1,4 @@
+import 'package:re_view_front/features/settings/presentation/providers/settings_providers.dart';
 import 'package:re_view_front/app/theme/app_motion.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -485,14 +486,17 @@ class _ProductQuickActions extends StatelessWidget {
   }
 }
 
-class RtiBadge extends StatelessWidget {
+class RtiBadge extends ConsumerWidget {
   const RtiBadge({super.key, required this.value, required this.color});
 
   final int? value;
   final Color color;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final preferences = ref.watch(confirmedDisplayPreferencesProvider);
+    if (preferences?.rtiLabelStyle == 'NONE') return const SizedBox.shrink();
+    final large = preferences?.rtiLabelStyle == 'BADGE_LARGE';
     return DecoratedBox(
       decoration: BoxDecoration(
         color: AppColors.surface.withValues(alpha: 0.82),
@@ -520,7 +524,7 @@ class RtiBadge extends StatelessWidget {
               style: Theme.of(context).textTheme.labelSmall?.copyWith(
                 color: value == null ? AppColors.textTertiary : color,
                 fontWeight: FontWeight.w900,
-                fontSize: 12,
+                fontSize: large ? 15 : 12,
               ),
             ),
           ],

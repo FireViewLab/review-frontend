@@ -1,3 +1,5 @@
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:re_view_front/features/settings/presentation/providers/settings_providers.dart';
 import 'package:flutter/material.dart';
 import 'package:re_view_front/app/theme/app_colors.dart';
 import 'package:re_view_front/app/theme/app_spacing.dart';
@@ -6,7 +8,7 @@ import 'package:re_view_front/features/home/presentation/widgets/home/product_ca
 import 'package:re_view_front/l10n/generated/app_localizations.dart';
 import 'package:re_view_front/shared/extensions/context_extensions.dart';
 
-class ProductRecommendationSection extends StatelessWidget {
+class ProductRecommendationSection extends ConsumerWidget {
   const ProductRecommendationSection({
     required this.products,
     this.onProductTap,
@@ -21,7 +23,10 @@ class ProductRecommendationSection extends StatelessWidget {
   final bool showHeader;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final compact =
+        ref.watch(confirmedDisplayPreferencesProvider)?.cardDensity ==
+        'COMPACT';
     final grid = products.isEmpty
         ? const _ProductEmptyState()
         : LayoutBuilder(
@@ -32,7 +37,7 @@ class ProductRecommendationSection extends StatelessWidget {
                   columns;
               const imageAspectRatio = 16.0 / 9.0;
               final imageHeight = cardWidth / imageAspectRatio;
-              const textAreaHeight = 170.0;
+              final textAreaHeight = compact ? 154.0 : 170.0;
 
               return GridView.builder(
                 shrinkWrap: true,

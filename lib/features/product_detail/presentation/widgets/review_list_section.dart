@@ -1,3 +1,6 @@
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:re_view_front/features/settings/domain/entities/settings_data.dart';
+import 'package:re_view_front/features/settings/presentation/providers/settings_providers.dart';
 import 'package:flutter/material.dart';
 import 'package:re_view_front/app/theme/app_colors.dart';
 import 'package:re_view_front/app/theme/app_spacing.dart';
@@ -6,9 +9,9 @@ import 'package:re_view_front/features/product_detail/presentation/widgets/revie
 import 'package:re_view_front/features/search/presentation/utils/search_formatters.dart';
 import 'package:re_view_front/shared/widgets/image_preview_dialog.dart';
 
-enum ReviewSortOption { newest, verified, withPhoto, rtiHigh }
+enum ReviewSortOption { newest, verified, withPhoto, rtiHigh, helpful }
 
-class ReviewListSection extends StatefulWidget {
+class ReviewListSection extends ConsumerStatefulWidget {
   const ReviewListSection({
     super.key,
     required this.reviews,
@@ -29,19 +32,52 @@ class ReviewListSection extends StatefulWidget {
   final String productName;
 
   @override
-  State<ReviewListSection> createState() => _ReviewListSectionState();
+  ConsumerState<ReviewListSection> createState() => _ReviewListSectionState();
 }
 
-class _ReviewListSectionState extends State<ReviewListSection> {
+class _ReviewListSectionState extends ConsumerState<ReviewListSection> {
   /// 처음에 그리는 리뷰 수. 리뷰가 많아도 첫 화면을 빨리 그리기 위해 나눠서 보여 준다.
   static const _pageSize = 10;
 
-  ReviewSortOption _sortOption = ReviewSortOption.newest;
+  ReviewSortOption? _selectedSort;
+  bool _showHidden = false;
+  SettingsData? get _preferences =>
+      ref.watch(confirmedDisplayPreferencesProvider);
+  ReviewSortOption get _sortOption =>
+      _selectedSort ??
+      (_preferences?.reviewSortOrder == 'HELPFUL'
+          ? ReviewSortOption.helpful
+          : ReviewSortOption.newest);
+  bool _isHidden(ProductReview review) {
+    final settings = _preferences;
+    return !_showHidden &&
+        settings?.hideRiskyReviews == true &&
+        review.rtiScore != null &&
+        review.rtiScore! < settings!.rtiThreshold;
+  }
+
   bool _photoOnly = false;
   int _visibleCount = _pageSize;
 
   List<ProductReview> get _filteredSortedReviews {
-    var list = List<ProductReview>.from(widget.reviews);
+    var list = widget.reviews.where((r) => !_isHidden(r)).toList();
+    list.sort((a, b) {
+      final first = DateTime.tryParse(a.createdAt.replaceAll('.', '-'));
+      final second = DateTime.tryParse(b.createdAt.replaceAll('.', '-'));
+      if (first == null) return second == null ? 0 : 1;
+      if (second == null) return -1;
+      return second.compareTo(first);
+    });
+    if (_selectedSort == null &&
+        (_preferences?.prioritizeVerifiedReviews == true ||
+            _preferences?.reviewSortOrder == 'VERIFIED_RECENT')) {
+      list = [
+        for (final r in list)
+          if (r.isVerifiedPurchase) r,
+        for (final r in list)
+          if (!r.isVerifiedPurchase) r,
+      ];
+    }
 
     if (_photoOnly) {
       list = list.where((r) => r.imageUrls.isNotEmpty).toList();
@@ -53,6 +89,12 @@ class _ReviewListSectionState extends State<ReviewListSection> {
         list.where((r) => r.isVerifiedPurchase).toList(),
       ReviewSortOption.withPhoto =>
         list.where((r) => r.imageUrls.isNotEmpty).toList(),
+      ReviewSortOption.helpful =>
+        (list..sort((a, b) {
+          if (a.helpfulCount == null) return b.helpfulCount == null ? 0 : 1;
+          if (b.helpfulCount == null) return -1;
+          return b.helpfulCount!.compareTo(a.helpfulCount!);
+        })),
       ReviewSortOption.rtiHigh =>
         (list..sort((a, b) {
           if (a.rtiScore == null) return b.rtiScore == null ? 0 : 1;
@@ -64,15 +106,34 @@ class _ReviewListSectionState extends State<ReviewListSection> {
 
   @override
   Widget build(BuildContext context) {
+    final preferences = _preferences;
     final reviews = _filteredSortedReviews;
+    final hiddenCount = widget.reviews.where(_isHidden).length;
+    final preferencesState = ref.watch(savedDisplayPreferencesProvider);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
+        if (preferencesState.hasError)
+          TextButton.icon(
+            onPressed: () => ref.invalidate(savedDisplayPreferencesProvider),
+            icon: const Icon(Icons.refresh),
+            label: const Text('표시 설정을 불러오지 못했습니다. 재시도'),
+          ),
+        if (hiddenCount > 0)
+          TextButton(
+            onPressed: () => setState(() {
+              _showHidden = true;
+            }),
+            child: Text('설정 기준 이하 리뷰 $hiddenCount개 표시'),
+          ),
+        if (_sortOption == ReviewSortOption.helpful &&
+            !widget.reviews.any((r) => r.helpfulCount != null))
+          const Text('도움 횟수가 제공되지 않아 기존 리뷰 순서로 표시합니다.'),
         _FilterRow(
           sortOption: _sortOption,
           photoOnly: _photoOnly,
           onSortChanged: (v) => setState(() {
-            _sortOption = v;
+            _selectedSort = v;
             _visibleCount = _pageSize;
           }),
           onPhotoOnlyChanged: (v) => setState(() {
@@ -124,6 +185,7 @@ class _ReviewListSectionState extends State<ReviewListSection> {
                   padding: const EdgeInsets.only(bottom: AppSpacing.md),
                   child: ReviewCard(
                     review: review,
+                    preferences: preferences,
                     safeCount: widget.safeCount,
                     warnCount: widget.warnCount,
                     dangerCount: widget.dangerCount,
@@ -188,6 +250,11 @@ class _FilterRow extends StatelessWidget {
           label: '사진 포함',
           selected: sortOption == ReviewSortOption.withPhoto,
           onTap: () => onSortChanged(ReviewSortOption.withPhoto),
+        ),
+        _FilterChip(
+          label: '도움순',
+          selected: sortOption == ReviewSortOption.helpful,
+          onTap: () => onSortChanged(ReviewSortOption.helpful),
         ),
         _FilterChip(
           label: 'RTI 높은순',
@@ -290,8 +357,10 @@ class ReviewCard extends StatelessWidget {
     this.onFeedback,
     this.productId,
     this.productName = '',
+    this.preferences,
   });
 
+  final SettingsData? preferences;
   final ProductReview review;
   final int safeCount;
   final int warnCount;
@@ -308,158 +377,192 @@ class ReviewCard extends StatelessWidget {
         .toList(growable: false);
     final rtiColor = colorFromHex(review.rtiColor);
 
-    return DecoratedBox(
-      decoration: BoxDecoration(
-        color: AppColors.surface,
-        borderRadius: AppRadius.medium,
-        border: Border.all(color: AppColors.border),
-      ),
-      child: Padding(
-        padding: const EdgeInsets.all(AppSpacing.md),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                _Avatar(name: review.authorName),
-                const SizedBox(width: AppSpacing.sm),
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Row(
-                        children: [
-                          Text(
-                            review.authorName,
-                            style: Theme.of(context).textTheme.labelSmall
-                                ?.copyWith(
-                                  color: AppColors.textPrimary,
-                                  fontWeight: FontWeight.w800,
-                                ),
-                          ),
-                          if (review.isVerifiedPurchase) ...[
-                            const SizedBox(width: AppSpacing.xxs),
-                            _VerifiedBadge(),
-                          ],
-                        ],
-                      ),
-                      const SizedBox(height: 2),
-                      Row(
-                        children: [
-                          for (var i = 0; i < 5; i++)
-                            Icon(
-                              i < review.rating
-                                  ? Icons.star
-                                  : Icons.star_border,
-                              color: const Color(0xFFF59E0B),
-                              size: 13,
+    final risky =
+        review.rtiScore != null &&
+        review.rtiScore! < (preferences?.rtiThreshold ?? 0);
+    return GestureDetector(
+      onTap:
+          preferences?.autoOpenAnalysisPopup == true &&
+              risky &&
+              review.rtiDetail != null
+          ? () => showReviewRtiAnalysisDialog(
+              context,
+              review,
+              safeCount: safeCount,
+              warnCount: warnCount,
+              dangerCount: dangerCount,
+              productId: productId,
+              productName: productName,
+            )
+          : null,
+      child: DecoratedBox(
+        decoration: BoxDecoration(
+          color: AppColors.surface,
+          borderRadius: AppRadius.medium,
+          border: Border.all(color: AppColors.border),
+        ),
+        child: Padding(
+          padding: const EdgeInsets.all(AppSpacing.md),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  _Avatar(name: review.authorName),
+                  const SizedBox(width: AppSpacing.sm),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Row(
+                          children: [
+                            Text(
+                              review.authorName,
+                              style: Theme.of(context).textTheme.labelSmall
+                                  ?.copyWith(
+                                    color: AppColors.textPrimary,
+                                    fontWeight: FontWeight.w800,
+                                  ),
                             ),
-                          const SizedBox(width: AppSpacing.xs),
-                          Text(
-                            review.platform.isNotEmpty
-                                ? '${review.createdAt} · ${review.platform}'
-                                : review.createdAt,
-                            style: Theme.of(context).textTheme.labelSmall
-                                ?.copyWith(
-                                  color: AppColors.textSecondary,
-                                  fontSize: 11,
-                                ),
-                          ),
-                        ],
+                            if (review.isVerifiedPurchase) ...[
+                              const SizedBox(width: AppSpacing.xxs),
+                              _VerifiedBadge(),
+                            ],
+                          ],
+                        ),
+                        const SizedBox(height: 2),
+                        Row(
+                          children: [
+                            for (var i = 0; i < 5; i++)
+                              Icon(
+                                i < review.rating
+                                    ? Icons.star
+                                    : Icons.star_border,
+                                color: const Color(0xFFF59E0B),
+                                size: 13,
+                              ),
+                            const SizedBox(width: AppSpacing.xs),
+                            Text(
+                              review.platform.isNotEmpty
+                                  ? '${review.createdAt} · ${review.platform}'
+                                  : review.createdAt,
+                              style: Theme.of(context).textTheme.labelSmall
+                                  ?.copyWith(
+                                    color: AppColors.textSecondary,
+                                    fontSize: 11,
+                                  ),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                  const SizedBox(width: AppSpacing.xs),
+                  if (preferences?.rtiLabelStyle != 'NONE')
+                    GestureDetector(
+                      onTap: () => showReviewRtiAnalysisDialog(
+                        context,
+                        review,
+                        safeCount: safeCount,
+                        warnCount: warnCount,
+                        dangerCount: dangerCount,
+                        productId: productId,
+                        productName: productName,
+                      ),
+                      child: _RtiBadgeSmall(
+                        score: review.rtiScore,
+                        label: review.rtiLabel,
+                        color: rtiColor,
+                        hasDetail: review.rtiDetail != null,
+                        large: preferences?.rtiLabelStyle == 'BADGE_LARGE',
+                      ),
+                    ),
+                  const SizedBox(width: AppSpacing.xxs),
+                  PopupMenuButton<String>(
+                    icon: Icon(
+                      Icons.more_vert,
+                      size: 18,
+                      color: AppColors.textTertiary,
+                    ),
+                    padding: EdgeInsets.zero,
+                    itemBuilder: (_) => const [
+                      PopupMenuItem(value: 'ANALYSIS', child: Text('리뷰 분석 보기')),
+                      PopupMenuItem(value: 'HELPFUL', child: Text('도움이 됐어요')),
+                      PopupMenuItem(
+                        value: 'NOT_HELPFUL',
+                        child: Text('도움이 안 됐어요'),
                       ),
                     ],
+                    onSelected: (value) async {
+                      if (value == 'ANALYSIS') {
+                        showReviewRtiAnalysisDialog(
+                          context,
+                          review,
+                          safeCount: safeCount,
+                          warnCount: warnCount,
+                          dangerCount: dangerCount,
+                          productId: productId,
+                          productName: productName,
+                        );
+                        return;
+                      }
+                      if (onFeedback == null) return;
+                      final success = await onFeedback!(value);
+                      if (context.mounted) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text(
+                              success
+                                  ? '피드백이 제출됐습니다.'
+                                  : '피드백 제출에 실패했습니다. 다시 시도해주세요.',
+                            ),
+                            duration: const Duration(seconds: 2),
+                          ),
+                        );
+                      }
+                    },
                   ),
+                ],
+              ),
+              const SizedBox(height: AppSpacing.sm),
+              Text(
+                review.content,
+                style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                  color: AppColors.textPrimary,
+                  height: 1.6,
                 ),
-                const SizedBox(width: AppSpacing.xs),
-                GestureDetector(
-                  onTap: () => showReviewRtiAnalysisDialog(
-                    context,
-                    review,
-                    safeCount: safeCount,
-                    warnCount: warnCount,
-                    dangerCount: dangerCount,
-                    productId: productId,
-                    productName: productName,
-                  ),
-                  child: _RtiBadgeSmall(
-                    score: review.rtiScore,
-                    label: review.rtiLabel,
-                    color: rtiColor,
-                    hasDetail: true,
-                  ),
-                ),
-                const SizedBox(width: AppSpacing.xxs),
-                PopupMenuButton<String>(
-                  icon: Icon(
-                    Icons.more_vert,
-                    size: 18,
-                    color: AppColors.textTertiary,
-                  ),
-                  padding: EdgeInsets.zero,
-                  itemBuilder: (_) => const [
-                    PopupMenuItem(value: 'HELPFUL', child: Text('도움이 됐어요')),
-                    PopupMenuItem(
-                      value: 'NOT_HELPFUL',
-                      child: Text('도움이 안 됐어요'),
-                    ),
-                  ],
-                  onSelected: onFeedback == null
-                      ? null
-                      : (value) async {
-                          final success = await onFeedback!(value);
-                          if (context.mounted) {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(
-                                content: Text(
-                                  success
-                                      ? '피드백이 제출됐습니다.'
-                                      : '피드백 제출에 실패했습니다. 다시 시도해주세요.',
-                                ),
-                                duration: const Duration(seconds: 2),
-                              ),
-                            );
-                          }
-                        },
+              ),
+              if (review.reasons.isNotEmpty &&
+                  preferences?.showSuspiciousLabel != false) ...[
+                const SizedBox(height: AppSpacing.xs),
+                Wrap(
+                  spacing: AppSpacing.xs,
+                  runSpacing: AppSpacing.xs,
+                  children: review.reasons
+                      .map((r) => _ReasonChip(label: r, color: rtiColor))
+                      .toList(),
                 ),
               ],
-            ),
-            const SizedBox(height: AppSpacing.sm),
-            Text(
-              review.content,
-              style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                color: AppColors.textPrimary,
-                height: 1.6,
-              ),
-            ),
-            if (review.reasons.isNotEmpty) ...[
-              const SizedBox(height: AppSpacing.xs),
-              Wrap(
-                spacing: AppSpacing.xs,
-                runSpacing: AppSpacing.xs,
-                children: review.reasons
-                    .map((r) => _ReasonChip(label: r, color: rtiColor))
-                    .toList(),
-              ),
-            ],
-            if (images.isNotEmpty) ...[
-              const SizedBox(height: AppSpacing.sm),
-              SizedBox(
-                height: 80,
-                child: ListView.separated(
-                  scrollDirection: Axis.horizontal,
-                  itemCount: images.length,
-                  separatorBuilder: (_, _) =>
-                      const SizedBox(width: AppSpacing.xs),
-                  itemBuilder: (context, index) => ImagePreviewThumbnail(
-                    imageUrls: images,
-                    index: index,
-                    size: 80,
+              if (images.isNotEmpty) ...[
+                const SizedBox(height: AppSpacing.sm),
+                SizedBox(
+                  height: 80,
+                  child: ListView.separated(
+                    scrollDirection: Axis.horizontal,
+                    itemCount: images.length,
+                    separatorBuilder: (_, _) =>
+                        const SizedBox(width: AppSpacing.xs),
+                    itemBuilder: (context, index) => ImagePreviewThumbnail(
+                      imageUrls: images,
+                      index: index,
+                      size: 80,
+                    ),
                   ),
                 ),
-              ),
+              ],
             ],
-          ],
+          ),
         ),
       ),
     );
@@ -516,12 +619,14 @@ class _RtiBadgeSmall extends StatelessWidget {
     required this.label,
     required this.color,
     this.hasDetail = false,
+    this.large = false,
   });
 
   final int? score;
   final String? label;
   final Color color;
   final bool hasDetail;
+  final bool large;
 
   @override
   Widget build(BuildContext context) {
@@ -542,7 +647,7 @@ class _RtiBadgeSmall extends StatelessWidget {
             style: Theme.of(context).textTheme.labelSmall?.copyWith(
               color: color,
               fontWeight: FontWeight.w900,
-              fontSize: 11,
+              fontSize: large ? 14 : 11,
             ),
           ),
           if (score != null && label?.isNotEmpty == true) ...[

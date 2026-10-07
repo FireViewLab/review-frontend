@@ -1,3 +1,4 @@
+import 'package:re_view_front/features/settings/presentation/providers/settings_providers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:re_view_front/app/theme/app_motion.dart';
@@ -9,14 +10,15 @@ import 'package:re_view_front/features/wishlist/presentation/providers/wishlist_
 import 'package:re_view_front/l10n/generated/app_localizations.dart';
 import 'package:re_view_front/shared/widgets/app_network_image.dart';
 
-class ProductCard extends StatelessWidget {
+class ProductCard extends ConsumerWidget {
   const ProductCard({required this.product, this.onTap, super.key});
 
   final HomeProductData product;
   final VoidCallback? onTap;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final preferences = ref.watch(confirmedDisplayPreferencesProvider);
     return MouseRegion(
       cursor: SystemMouseCursors.click,
       child: GestureDetector(
@@ -64,7 +66,11 @@ class ProductCard extends StatelessWidget {
                   ),
                 ),
                 Padding(
-                  padding: const EdgeInsets.all(AppSpacing.md),
+                  padding: EdgeInsets.all(
+                    preferences?.cardDensity == 'COMPACT'
+                        ? AppSpacing.sm
+                        : AppSpacing.md,
+                  ),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -113,12 +119,18 @@ class ProductCard extends StatelessWidget {
                               style: Theme.of(context).textTheme.labelMedium,
                             ),
                           ),
-                          if (product.rtiLabel.isNotEmpty)
+                          if (product.rtiLabel.isNotEmpty &&
+                              preferences?.rtiLabelStyle != 'NONE')
                             Text(
                               product.rtiLabel,
                               style: Theme.of(context).textTheme.labelMedium
                                   ?.copyWith(
                                     color: AppColors.primary,
+                                    fontSize:
+                                        preferences?.rtiLabelStyle ==
+                                            'BADGE_LARGE'
+                                        ? 15
+                                        : null,
                                     fontWeight: FontWeight.w900,
                                   ),
                             ),
