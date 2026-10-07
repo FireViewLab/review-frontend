@@ -98,19 +98,24 @@ const banners = [
 const quickCategories = [
   QuickCategoryData(
     label: '리뷰랭킹',
-    iconAssetPath: 'assets/images/home/icons/icon-review-ranking.webp',
+    iconAssetPath:
+        'assets/images/home/icons/icon-review-ranking-transparent.png',
+    useIconBacking: false,
   ),
   QuickCategoryData(
     label: '뷰티',
-    iconAssetPath: 'assets/images/home/icons/icon-beauty.webp',
+    iconAssetPath: 'assets/images/home/icons/icon-beauty-transparent.png',
+    useIconBacking: false,
   ),
   QuickCategoryData(
     label: '가전',
-    iconAssetPath: 'assets/images/home/icons/icon-appliance.webp',
+    iconAssetPath: 'assets/images/home/icons/icon-appliance-transparent.png',
+    useIconBacking: false,
   ),
   QuickCategoryData(
     label: '인테리어',
-    iconAssetPath: 'assets/images/home/icons/icon-interior.webp',
+    iconAssetPath: 'assets/images/home/icons/icon-interior-transparent.png',
+    useIconBacking: false,
   ),
   QuickCategoryData(
     label: '푸드',
@@ -192,10 +197,15 @@ class HomeBannerData {
 }
 
 class QuickCategoryData {
-  const QuickCategoryData({required this.label, required this.iconAssetPath});
+  const QuickCategoryData({
+    required this.label,
+    required this.iconAssetPath,
+    this.useIconBacking = true,
+  });
 
   final String label;
   final String iconAssetPath;
+  final bool useIconBacking;
 }
 
 class HomeProductData {
