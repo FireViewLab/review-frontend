@@ -1593,4 +1593,16 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String get productImageNext => '次の商品画像';
+
+  @override
+  String get imagePreviewOpen => '画像を拡大';
+
+  @override
+  String get imagePreviewTitle => '画像プレビュー';
+
+  @override
+  String get imagePreviewPrevious => '前の画像';
+
+  @override
+  String get imagePreviewNext => '次の画像';
 }

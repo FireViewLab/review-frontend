@@ -518,5 +518,9 @@
   "externalReasonOther": "Other",
   "productImageEnlarge": "Enlarge product image",
   "productImagePrevious": "Previous product image",
-  "productImageNext": "Next product image"
+  "productImageNext": "Next product image",
+  "imagePreviewOpen": "Enlarge image",
+  "imagePreviewTitle": "Image preview",
+  "imagePreviewPrevious": "Previous image",
+  "imagePreviewNext": "Next image"
 }

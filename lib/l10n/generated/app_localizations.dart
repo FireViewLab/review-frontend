@@ -3113,6 +3113,30 @@ abstract class AppLocalizations {
   /// In ko, this message translates to:
   /// **'다음 상품 이미지'**
   String get productImageNext;
+
+  /// No description provided for @imagePreviewOpen.
+  ///
+  /// In ko, this message translates to:
+  /// **'사진 확대'**
+  String get imagePreviewOpen;
+
+  /// No description provided for @imagePreviewTitle.
+  ///
+  /// In ko, this message translates to:
+  /// **'사진 미리보기'**
+  String get imagePreviewTitle;
+
+  /// No description provided for @imagePreviewPrevious.
+  ///
+  /// In ko, this message translates to:
+  /// **'이전 사진'**
+  String get imagePreviewPrevious;
+
+  /// No description provided for @imagePreviewNext.
+  ///
+  /// In ko, this message translates to:
+  /// **'다음 사진'**
+  String get imagePreviewNext;
 }
 
 class _AppLocalizationsDelegate

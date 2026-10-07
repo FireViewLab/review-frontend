@@ -9,7 +9,7 @@ import 'package:re_view_front/features/product_detail/domain/entities/product_re
 import 'package:re_view_front/features/product_detail/domain/entities/review_rti_detail.dart';
 import 'package:re_view_front/features/review_report/presentation/providers/review_report_dep_providers.dart';
 import 'package:re_view_front/features/search/presentation/utils/search_formatters.dart';
-import 'package:re_view_front/shared/widgets/app_network_image.dart';
+import 'package:re_view_front/shared/widgets/image_preview_dialog.dart';
 
 void showReviewRtiAnalysisDialog(
   BuildContext context,
@@ -79,11 +79,11 @@ class ReviewRtiAnalysisDialog extends StatelessWidget {
                   ),
                 ),
                 _DialogFooter(
-            onClose: () => Navigator.of(context).pop(),
-            review: review,
-            productId: productId,
-            productName: productName,
-          ),
+                  onClose: () => Navigator.of(context).pop(),
+                  review: review,
+                  productId: productId,
+                  productName: productName,
+                ),
               ],
             ),
           ),
@@ -237,6 +237,10 @@ class _SelectedReviewSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final images = review.imageUrls
+        .map((url) => url.trim())
+        .where((url) => url.isNotEmpty)
+        .toList(growable: false);
     return _SectionCard(
       title: '선택된 리뷰',
       child: Column(
@@ -280,13 +284,13 @@ class _SelectedReviewSection extends StatelessWidget {
                   .toList(),
             ),
           ],
-          if (review.imageUrls.isNotEmpty) ...[
+          if (images.isNotEmpty) ...[
             const SizedBox(height: AppSpacing.sm),
             SizedBox(
               height: 64,
               child: Builder(
                 builder: (_) {
-                  final total = review.imageUrls.length;
+                  final total = images.length;
                   final shown = total.clamp(0, 3);
                   final hasMore = total > 3;
                   final itemCount = shown + (hasMore ? 1 : 0);
@@ -297,31 +301,34 @@ class _SelectedReviewSection extends StatelessWidget {
                         const SizedBox(width: AppSpacing.xs),
                     itemBuilder: (_, i) {
                       if (i >= shown) {
-                        return Container(
-                          width: 64,
-                          height: 64,
-                          decoration: BoxDecoration(
-                            color: AppColors.surfaceMuted,
-                            borderRadius: AppRadius.small,
-                            border: Border.all(color: AppColors.border),
-                          ),
-                          alignment: Alignment.center,
-                          child: Text(
-                            '+${total - 3}',
-                            style: Theme.of(context).textTheme.labelMedium
-                                ?.copyWith(
-                                  color: AppColors.textSecondary,
-                                  fontWeight: FontWeight.w700,
-                                ),
+                        return ImagePreviewThumbnail(
+                          imageUrls: images,
+                          index: shown,
+                          size: 64,
+                          child: Container(
+                            width: 64,
+                            height: 64,
+                            decoration: BoxDecoration(
+                              color: AppColors.surfaceMuted,
+                              borderRadius: AppRadius.small,
+                              border: Border.all(color: AppColors.border),
+                            ),
+                            alignment: Alignment.center,
+                            child: Text(
+                              '+${total - 3}',
+                              style: Theme.of(context).textTheme.labelMedium
+                                  ?.copyWith(
+                                    color: AppColors.textSecondary,
+                                    fontWeight: FontWeight.w700,
+                                  ),
+                            ),
                           ),
                         );
                       }
-                      return ClipRRect(
-                        borderRadius: AppRadius.small,
-                        child: SizedBox.square(
-                          dimension: 64,
-                          child: AppNetworkImage(url: review.imageUrls[i]),
-                        ),
+                      return ImagePreviewThumbnail(
+                        imageUrls: images,
+                        index: i,
+                        size: 64,
                       );
                     },
                   );
@@ -583,8 +590,7 @@ class _RtiScoreCard extends StatelessWidget {
     return _SectionCard(
       title: 'RTI 신뢰도 점수',
       showInfo: true,
-      infoTooltip:
-          'RTI 신뢰도 점수는 구매 인증, 텍스트 신뢰도,\n반복 표현, 시점 패턴 등을 종합해 산출됩니다.',
+      infoTooltip: 'RTI 신뢰도 점수는 구매 인증, 텍스트 신뢰도,\n반복 표현, 시점 패턴 등을 종합해 산출됩니다.',
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.end,
         children: [
@@ -656,8 +662,7 @@ class _RtiSignalsSection extends StatelessWidget {
     return _SectionCard(
       title: 'A. RTI 구성 신호',
       showInfo: true,
-      infoTooltip:
-          'RTI 점수를 구성하는 신호와 각각의 점수입니다.\n텍스트·행동·네트워크 분석을 종합해 산출합니다.',
+      infoTooltip: 'RTI 점수를 구성하는 신호와 각각의 점수입니다.\n텍스트·행동·네트워크 분석을 종합해 산출합니다.',
       child: Column(
         children: signals
             .map(
@@ -918,8 +923,9 @@ class _DialogFooter extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final alreadyReported =
-        ref.watch(reportedReviewIdsProvider).contains(review.id);
+    final alreadyReported = ref
+        .watch(reportedReviewIdsProvider)
+        .contains(review.id);
     return Container(
       padding: const EdgeInsets.symmetric(
         horizontal: AppSpacing.lg,
@@ -1014,8 +1020,9 @@ class _DialogFooter extends ConsumerWidget {
                     ? AppColors.textTertiary
                     : AppColors.error,
               ),
-              foregroundColor:
-                  alreadyReported ? AppColors.textTertiary : AppColors.error,
+              foregroundColor: alreadyReported
+                  ? AppColors.textTertiary
+                  : AppColors.error,
               padding: const EdgeInsets.symmetric(
                 horizontal: AppSpacing.md,
                 vertical: AppSpacing.xs,

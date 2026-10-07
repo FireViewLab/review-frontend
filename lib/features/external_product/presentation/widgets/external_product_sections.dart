@@ -4,7 +4,7 @@ import 'package:re_view_front/app/theme/app_spacing.dart';
 import 'package:re_view_front/features/external_product/domain/entities/external_product.dart';
 import 'package:re_view_front/features/external_product/presentation/external_platform_labels.dart';
 import 'package:re_view_front/l10n/generated/app_localizations.dart';
-import 'package:re_view_front/shared/widgets/app_network_image.dart';
+import 'package:re_view_front/shared/widgets/image_preview_dialog.dart';
 
 String _two(int value) => value.toString().padLeft(2, '0');
 
@@ -271,6 +271,10 @@ class ExternalReviewTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final images = review.images
+        .map((url) => url.trim())
+        .where((url) => url.isNotEmpty)
+        .toList(growable: false);
     final l10n = AppLocalizations.of(context);
     final textTheme = Theme.of(context).textTheme;
     final rating = review.rating;
@@ -329,21 +333,19 @@ class ExternalReviewTile extends StatelessWidget {
               height: 1.6,
             ),
           ),
-          if (review.images.isNotEmpty) ...[
+          if (images.isNotEmpty) ...[
             const SizedBox(height: AppSpacing.sm),
             SizedBox(
               height: 72,
               child: ListView.separated(
                 scrollDirection: Axis.horizontal,
-                itemCount: review.images.length,
+                itemCount: images.length,
                 separatorBuilder: (_, _) =>
                     const SizedBox(width: AppSpacing.xs),
-                itemBuilder: (context, index) => SizedBox.square(
-                  dimension: 72,
-                  child: AppNetworkImage(
-                    url: review.images[index],
-                    borderRadius: AppRadius.small,
-                  ),
+                itemBuilder: (context, index) => ImagePreviewThumbnail(
+                  imageUrls: images,
+                  index: index,
+                  size: 72,
                 ),
               ),
             ),

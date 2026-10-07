@@ -1016,5 +1016,9 @@
   "externalReasonOther": "기타",
   "productImageEnlarge": "상품 이미지 확대",
   "productImagePrevious": "이전 상품 이미지",
-  "productImageNext": "다음 상품 이미지"
+  "productImageNext": "다음 상품 이미지",
+  "imagePreviewOpen": "사진 확대",
+  "imagePreviewTitle": "사진 미리보기",
+  "imagePreviewPrevious": "이전 사진",
+  "imagePreviewNext": "다음 사진"
 }
