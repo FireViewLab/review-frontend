@@ -279,7 +279,7 @@ class _PriceSection extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.end,
       children: [
         Text(
-          formatSearchPrice(item.price),
+          item.price == null ? '가격 정보 없음' : formatSearchPrice(item.price!),
           style: Theme.of(context).textTheme.titleMedium?.copyWith(
             color: AppColors.textPrimary,
             fontWeight: FontWeight.w900,

@@ -20,12 +20,16 @@ class CartSuccess extends CartState {
     required this.summary,
     this.selectedIds = const {},
     this.updatingProductIds = const {},
+    this.errorMessage,
   });
 
   final List<CartItem> items;
   final CartSummary summary;
   final Set<int> selectedIds;
   final Set<int> updatingProductIds;
+  final String? errorMessage;
+  bool get isUpdating => updatingProductIds.isNotEmpty;
+  bool get hasUnknownSelectedPrice => selectedItems.any((i) => i.price == null);
 
   bool get isAllSelected =>
       items.isNotEmpty && items.every((i) => selectedIds.contains(i.productId));
@@ -35,16 +39,16 @@ class CartSuccess extends CartState {
 
   CartSummary get selectedSummary {
     final selected = selectedItems;
-    final total = selected.fold(0, (sum, i) => sum + i.price * i.quantity);
-    final shipping = selected.every((i) => i.isFreeShipping) ? 0 : summary.shippingFee;
+    final total = selected.fold(
+      0,
+      (sum, i) => sum + (i.price ?? 0) * i.quantity,
+    );
+    // The cart is a saved shopping list, not a merchant checkout quote.
     return CartSummary(
       totalProductPrice: total,
-      shippingFee: shipping,
-      discountAmount: summary.discountAmount,
-      totalPayment: total + shipping - summary.discountAmount,
-      expectedPoint: summary.expectedPoint,
-      appliedCouponName: summary.appliedCouponName,
-      appliedCouponDiscount: summary.appliedCouponDiscount,
+      shippingFee: 0,
+      discountAmount: 0,
+      totalPayment: total,
     );
   }
 
@@ -53,12 +57,15 @@ class CartSuccess extends CartState {
     CartSummary? summary,
     Set<int>? selectedIds,
     Set<int>? updatingProductIds,
+    String? errorMessage,
+    bool clearError = false,
   }) {
     return CartSuccess(
       items: items ?? this.items,
       summary: summary ?? this.summary,
       selectedIds: selectedIds ?? this.selectedIds,
       updatingProductIds: updatingProductIds ?? this.updatingProductIds,
+      errorMessage: clearError ? null : errorMessage ?? this.errorMessage,
     );
   }
 }
