@@ -1,5 +1,4 @@
 import 'package:dio/dio.dart';
-import 'package:flutter/foundation.dart';
 import 'package:re_view_front/core/config/app_config.dart';
 import 'package:re_view_front/core/network/auth_token_store.dart';
 
@@ -32,19 +31,8 @@ class ApiClient {
         },
       ),
     );
-    // 요청 헤더(Authorization)와 응답 본문을 출력하므로 릴리스 빌드에서는 등록하지 않는다.
-    if (kDebugMode) {
-      dio.interceptors.add(
-        LogInterceptor(
-          request: true,
-          requestHeader: true,
-          requestBody: true,
-          responseHeader: false,
-          responseBody: true,
-          error: true,
-        ),
-      );
-    }
+    // Request headers/bodies and response bodies can contain credentials or
+    // payment callback data. Do not install payload logging in any build.
   }
 
   final Dio dio;
@@ -92,5 +80,4 @@ class ApiClient {
   }) {
     return dio.delete(path, queryParameters: queryParameters);
   }
-
 }
