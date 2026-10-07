@@ -516,5 +516,6 @@
   "chatQuotaUnavailable": "无法刷新额度，保留上次确认的数值。",
   "chatQuotaRefresh": "重新查询",
   "chatClosePreserve": "关闭（保留对话）",
-  "chatHistoryWait": "发送完成后可打开历史记录。"
+  "chatHistoryWait": "发送完成后可打开历史记录。",
+  "extProductReviewPreferencesNote": "排序设置仅适用于已加载的评论。不会根据未提供的购买认证或可信度隐藏或分类评论。"
 }

@@ -1683,4 +1683,8 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get chatHistoryWait => 'History is available after sending completes.';
+
+  @override
+  String get extProductReviewPreferencesNote =>
+      'Sorting applies to loaded reviews. Reviews are not hidden or classified using unavailable purchase verification or trust scores.';
 }

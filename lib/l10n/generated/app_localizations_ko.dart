@@ -1635,4 +1635,8 @@ class AppLocalizationsKo extends AppLocalizations {
 
   @override
   String get chatHistoryWait => '대화 기록은 전송이 끝난 뒤 열 수 있어요.';
+
+  @override
+  String get extProductReviewPreferencesNote =>
+      '정렬 설정은 불러온 리뷰에 적용돼요. 제공되지 않은 구매 인증·신뢰도 정보로 리뷰를 숨기거나 분류하지 않아요.';
 }

@@ -516,5 +516,6 @@
   "chatQuotaUnavailable": "利用枠を更新できませんでした。前回確認した値を保持しています。",
   "chatQuotaRefresh": "再確認",
   "chatClosePreserve": "閉じる（会話を保持）",
-  "chatHistoryWait": "送信が完了すると履歴を開けます。"
+  "chatHistoryWait": "送信が完了すると履歴を開けます。",
+  "extProductReviewPreferencesNote": "並び順の設定は読み込み済みのレビューに適用されます。未提供の購入認証や信頼度でレビューを非表示・分類しません。"
 }

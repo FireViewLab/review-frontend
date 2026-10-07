@@ -532,5 +532,6 @@
   "chatQuotaUnavailable": "Could not refresh quota. Last confirmed values are retained.",
   "chatQuotaRefresh": "Refresh",
   "chatClosePreserve": "Close (keep conversation)",
-  "chatHistoryWait": "History is available after sending completes."
+  "chatHistoryWait": "History is available after sending completes.",
+  "extProductReviewPreferencesNote": "Sorting applies to loaded reviews. Reviews are not hidden or classified using unavailable purchase verification or trust scores."
 }
