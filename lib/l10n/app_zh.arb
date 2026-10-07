@@ -499,5 +499,8 @@
   "externalReasonAd": "广告",
   "externalReasonRepeated": "重复内容",
   "externalReasonOffensive": "侮辱性内容",
-  "externalReasonOther": "其他"
+  "externalReasonOther": "其他",
+  "productImageEnlarge": "放大商品图片",
+  "productImagePrevious": "上一张商品图片",
+  "productImageNext": "下一张商品图片"
 }

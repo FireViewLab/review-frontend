@@ -499,5 +499,8 @@
   "externalReasonAd": "広告",
   "externalReasonRepeated": "繰り返しの内容",
   "externalReasonOffensive": "侮辱的な内容",
-  "externalReasonOther": "その他"
+  "externalReasonOther": "その他",
+  "productImageEnlarge": "商品画像を拡大",
+  "productImagePrevious": "前の商品画像",
+  "productImageNext": "次の商品画像"
 }

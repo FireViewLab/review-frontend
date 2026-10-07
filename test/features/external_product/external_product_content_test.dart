@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:re_view_front/shared/widgets/product_image_viewer.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:go_router/go_router.dart';
@@ -73,6 +75,55 @@ void main() {
     expect(find.byIcon(Icons.star_rounded), findsNothing);
     expect(find.text('리뷰 1'), findsOneWidget);
     expect(find.text(l10n.extProductReviewsMore), findsNothing);
+    expect(tester.takeException(), isNull);
+  });
+
+  testWidgets(
+    'v2 single thumbnail opens an accessible image dialog and Escape closes it',
+    (tester) async {
+      final repository = FakeExternalProductRepository()
+        ..products = [
+          const Success(
+            ExternalProductSnapshot(
+              status: CollectionStatus.fresh,
+              product: ExternalProduct(
+                ref: kurlyRef,
+                name: 'Single product',
+                thumbnailUrl: 'https://example.com/product.png',
+              ),
+            ),
+          ),
+        ];
+      await pumpContent(
+        tester,
+        repository: repository,
+        size: const Size(390, 850),
+      );
+      final l10n = l10nOf(tester);
+      expect(find.byType(ProductImageViewer), findsOneWidget);
+      expect(find.byTooltip(l10n.productImageNext), findsNothing);
+      await tester.tap(find.byType(ProductImageViewer));
+      await tester.pumpAndSettle();
+      expect(find.byType(Dialog), findsOneWidget);
+      expect(find.byType(InteractiveViewer), findsOneWidget);
+      final close = find.byTooltip(
+        MaterialLocalizations.of(
+          tester.element(find.byType(Dialog)),
+        ).closeButtonTooltip,
+      );
+      expect(close.hitTestable(), findsOneWidget);
+      await tester.sendKeyEvent(LogicalKeyboardKey.escape);
+      await tester.pumpAndSettle();
+      expect(find.byType(Dialog), findsNothing);
+      expect(tester.takeException(), isNull);
+    },
+  );
+
+  testWidgets('missing v2 image cannot open an empty dialog', (tester) async {
+    await pumpContent(tester);
+    await tester.tap(find.byType(ProductImageViewer));
+    await tester.pumpAndSettle();
+    expect(find.byType(Dialog), findsNothing);
     expect(tester.takeException(), isNull);
   });
 

@@ -22,7 +22,8 @@ void configureWebImageElement(
     ..width = '100%'
     ..height = '100%'
     ..objectFit = objectFit
-    ..display = 'block';
+    ..display = 'block'
+    ..pointerEvents = 'none';
   img.addEventListener(
     'error',
     ((web.Event _) => onError()).toJS,

@@ -1,6 +1,9 @@
 import 'dart:ui' show PointerDeviceKind;
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:re_view_front/shared/widgets/product_image_viewer.dart';
+import 'package:re_view_front/l10n/generated/app_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:re_view_front/app/theme/app_theme.dart';
@@ -27,6 +30,9 @@ void main() {
         ],
         child: MaterialApp(
           theme: AppTheme.light,
+          locale: const Locale('ko'),
+          localizationsDelegates: AppLocalizations.localizationsDelegates,
+          supportedLocales: AppLocalizations.supportedLocales,
           home: const Scaffold(
             body: Center(
               child: SizedBox(
@@ -58,6 +64,9 @@ void main() {
         overrides: [isLoggedInProvider.overrideWithValue(false)],
         child: MaterialApp(
           theme: AppTheme.light,
+          locale: const Locale('ko'),
+          localizationsDelegates: AppLocalizations.localizationsDelegates,
+          supportedLocales: AppLocalizations.supportedLocales,
           builder: (context, child) => MediaQuery(
             data: MediaQuery.of(context).copyWith(disableAnimations: reduced),
             child: child!,
@@ -102,6 +111,34 @@ void main() {
 
       await pumpGallery(tester, reduced: false);
       await tester.pump(const Duration(seconds: 3));
+      expect(find.text('1 / 3'), findsOneWidget);
+      expect(tester.takeException(), isNull);
+    },
+  );
+
+  testWidgets(
+    'reduced motion preserves keyboard enlargement and mobile close',
+    (tester) async {
+      tester.view.physicalSize = const Size(390, 850);
+      tester.view.devicePixelRatio = 1;
+      addTearDown(tester.view.resetPhysicalSize);
+      addTearDown(tester.view.resetDevicePixelRatio);
+      await pumpGallery(tester, reduced: true);
+      final target = find
+          .descendant(
+            of: find.byType(ProductImageViewer),
+            matching: find.byType(InkWell),
+          )
+          .first;
+      final content = tester.widget<InkWell>(target).child!;
+      Focus.of(tester.element(find.byWidget(content))).requestFocus();
+      await tester.pump();
+      await tester.sendKeyEvent(LogicalKeyboardKey.enter);
+      await tester.pumpAndSettle();
+      expect(find.byType(Dialog), findsOneWidget);
+      await tester.tap(find.byIcon(Icons.close));
+      await tester.pumpAndSettle();
+      expect(find.byType(Dialog), findsNothing);
       expect(find.text('1 / 3'), findsOneWidget);
       expect(tester.takeException(), isNull);
     },

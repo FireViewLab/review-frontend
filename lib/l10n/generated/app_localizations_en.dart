@@ -1631,4 +1631,13 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get externalReasonOther => 'Other';
+
+  @override
+  String get productImageEnlarge => 'Enlarge product image';
+
+  @override
+  String get productImagePrevious => 'Previous product image';
+
+  @override
+  String get productImageNext => 'Next product image';
 }

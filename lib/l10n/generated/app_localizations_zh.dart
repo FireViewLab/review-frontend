@@ -1578,4 +1578,13 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get externalReasonOther => '其他';
+
+  @override
+  String get productImageEnlarge => '放大商品图片';
+
+  @override
+  String get productImagePrevious => '上一张商品图片';
+
+  @override
+  String get productImageNext => '下一张商品图片';
 }
