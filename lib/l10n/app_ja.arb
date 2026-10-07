@@ -502,5 +502,9 @@
   "externalReasonOther": "その他",
   "productImageEnlarge": "商品画像を拡大",
   "productImagePrevious": "前の商品画像",
-  "productImageNext": "次の商品画像"
+  "productImageNext": "次の商品画像",
+  "imagePreviewOpen": "画像を拡大",
+  "imagePreviewTitle": "画像プレビュー",
+  "imagePreviewPrevious": "前の画像",
+  "imagePreviewNext": "次の画像"
 }

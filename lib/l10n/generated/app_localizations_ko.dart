@@ -1593,4 +1593,16 @@ class AppLocalizationsKo extends AppLocalizations {
 
   @override
   String get productImageNext => '다음 상품 이미지';
+
+  @override
+  String get imagePreviewOpen => '사진 확대';
+
+  @override
+  String get imagePreviewTitle => '사진 미리보기';
+
+  @override
+  String get imagePreviewPrevious => '이전 사진';
+
+  @override
+  String get imagePreviewNext => '다음 사진';
 }
