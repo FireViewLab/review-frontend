@@ -19,7 +19,7 @@ class ChatAskButton extends ConsumerWidget {
       color: AppColors.primaryLight,
       borderRadius: radius,
       child: InkWell(
-        onTap: ref.read(chatViewModelProvider.notifier).open,
+        onTap: ref.read(chatViewModelProvider.notifier).openConversation,
         borderRadius: radius,
         child: ConstrainedBox(
           constraints: const BoxConstraints(minHeight: 48),

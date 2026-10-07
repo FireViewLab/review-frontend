@@ -446,8 +446,8 @@
   "myPageSideNavPlan": "Plans",
   "chatViewPlans": "View plans",
   "extProductCollectingTitle": "Fetching product details",
-  "extProductCollectingBody": "This product is new to us, so we are collecting it from the shop. It usually takes 10 to 20 seconds.",
-  "extProductCollectingSlow": "This is taking longer than usual. Please wait a little more.",
+  "extProductCollectingBody": "We are fetching product and review information from the shop. Product details will appear automatically when available.",
+  "extProductCollectingSlow": "We are still waiting for product information from the shop. Product details will appear automatically when available.",
   "extProductUnavailableTitle": "Could not get this product",
   "extProductUnavailableBody": "The product may still exist. We could not reach the shop right now. Please try again shortly.",
   "extProductLoadFailed": "Could not load the product.",
@@ -457,7 +457,7 @@
   "extProductReviewCount": "{count} reviews",
   "extProductPrice": "₩{price}",
   "extProductAnalysisPendingTitle": "Not analyzed yet",
-  "extProductAnalysisPendingBody": "Reviews of this product have not been analyzed yet. The trust score will appear here once analysis is done.",
+  "extProductAnalysisPendingBody": "Reviews for this product have not been analyzed. No trust score is available.",
   "extProductReviewsTitle": "Reviews",
   "extProductReviewsEmpty": "No reviews have been collected.",
   "extProductReviewsMore": "Show more reviews",
@@ -515,5 +515,8 @@
   "externalReasonAd": "Advertisement",
   "externalReasonRepeated": "Repetitive content",
   "externalReasonOffensive": "Offensive content",
-  "externalReasonOther": "Other"
+  "externalReasonOther": "Other",
+  "productImageEnlarge": "Enlarge product image",
+  "productImagePrevious": "Previous product image",
+  "productImageNext": "Next product image"
 }

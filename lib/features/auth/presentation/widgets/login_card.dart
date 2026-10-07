@@ -84,7 +84,7 @@ class LoginCard extends StatelessWidget {
                   height: 1.55,
                 ),
               ),
-              const SizedBox(height: 30),
+              SizedBox(height: context.isMobile ? AppSpacing.lg : 30),
               _LoginInputField(
                 controller: emailController,
                 label: '이메일',
@@ -259,8 +259,8 @@ class _LoginInputField extends StatelessWidget {
           ],
         ),
         const SizedBox(height: AppSpacing.xs),
-        SizedBox(
-          height: 56,
+        ConstrainedBox(
+          constraints: const BoxConstraints(minHeight: 56),
           child: TextField(
             controller: controller,
             keyboardType: keyboardType,

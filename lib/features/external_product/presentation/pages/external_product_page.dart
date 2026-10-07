@@ -13,7 +13,7 @@ import 'package:re_view_front/features/external_product/presentation/widgets/ext
 import 'package:re_view_front/l10n/generated/app_localizations.dart';
 import 'package:re_view_front/shared/extensions/context_extensions.dart';
 import 'package:re_view_front/shared/widgets/app_content_view.dart';
-import 'package:re_view_front/shared/widgets/app_network_image.dart';
+import 'package:re_view_front/shared/widgets/product_image_viewer.dart';
 import 'package:re_view_front/shared/widgets/error_view.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -25,7 +25,6 @@ class ExternalProductPage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-
     return Scaffold(
       backgroundColor: AppColors.background,
       body: CustomScrollView(
@@ -105,7 +104,7 @@ class _Centered extends StatelessWidget {
   }
 }
 
-/// 처음 보는 상품을 서버가 수집하는 동안 보여 준다. 진행률은 서버가 알려 주지 않는다.
+/// 상품 정보가 준비되기를 기다리는 동안 보여 준다. 진행률은 서버가 알려 주지 않는다.
 class _Collecting extends StatelessWidget {
   const _Collecting({required this.isSlow});
 
@@ -168,12 +167,8 @@ class _Ready extends StatelessWidget {
     final url = Uri.tryParse(product.url ?? '');
     final category = product.category;
 
-    final image = AspectRatio(
-      aspectRatio: 1,
-      child: AppNetworkImage(
-        url: product.thumbnailUrl ?? '',
-        borderRadius: AppRadius.large,
-      ),
+    final image = ProductImageViewer(
+      imageUrls: [if (product.thumbnailUrl != null) product.thumbnailUrl!],
     );
     final summary = ExternalProductSummary(
       product: product,

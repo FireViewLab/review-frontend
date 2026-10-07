@@ -8,10 +8,21 @@ import 'package:re_view_front/shared/extensions/context_extensions.dart';
 import 'package:re_view_front/shared/widgets/app_network_image.dart';
 
 class LoginValuePanel extends ConsumerWidget {
-  const LoginValuePanel({super.key});
+  const LoginValuePanel({super.key, this.compact = false});
+
+  final bool compact;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    if (compact) {
+      return Text(
+        '내 관심 상품을 이어서 관리하세요.',
+        style: Theme.of(context).textTheme.titleLarge?.copyWith(
+          color: AppColors.textPrimary,
+          fontWeight: FontWeight.w800,
+        ),
+      );
+    }
     final productAsync = ref.watch(featuredProductProvider);
     final product = productAsync.value;
 

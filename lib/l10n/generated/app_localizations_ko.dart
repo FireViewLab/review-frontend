@@ -1361,10 +1361,11 @@ class AppLocalizationsKo extends AppLocalizations {
 
   @override
   String get extProductCollectingBody =>
-      '처음 보는 상품이라 쇼핑몰에서 정보를 모으고 있어요. 보통 10~20초 걸려요.';
+      '쇼핑몰에서 상품과 리뷰 정보를 가져오고 있어요. 상품 정보가 준비되면 자동으로 표시돼요.';
 
   @override
-  String get extProductCollectingSlow => '예상보다 오래 걸리고 있어요. 조금만 더 기다려 주세요.';
+  String get extProductCollectingSlow =>
+      '쇼핑몰에서 상품 정보를 기다리고 있어요. 상품 정보가 준비되면 자동으로 표시돼요.';
 
   @override
   String get extProductUnavailableTitle => '상품 정보를 가져오지 못했어요';
@@ -1402,7 +1403,7 @@ class AppLocalizationsKo extends AppLocalizations {
 
   @override
   String get extProductAnalysisPendingBody =>
-      '이 상품의 리뷰는 아직 분석되지 않았어요. 분석이 끝나면 신뢰도 점수가 여기에 표시돼요.';
+      '이 상품의 리뷰는 아직 분석되지 않았어요. 신뢰도 점수는 제공되지 않아요.';
 
   @override
   String get extProductReviewsTitle => '리뷰';
@@ -1583,4 +1584,13 @@ class AppLocalizationsKo extends AppLocalizations {
 
   @override
   String get externalReasonOther => '기타';
+
+  @override
+  String get productImageEnlarge => '상품 이미지 확대';
+
+  @override
+  String get productImagePrevious => '이전 상품 이미지';
+
+  @override
+  String get productImageNext => '다음 상품 이미지';
 }

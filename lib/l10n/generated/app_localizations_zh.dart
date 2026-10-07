@@ -1358,10 +1358,10 @@ class AppLocalizationsZh extends AppLocalizations {
   String get extProductCollectingTitle => '正在获取商品信息';
 
   @override
-  String get extProductCollectingBody => '这是首次查看的商品，正在从商城收集信息，通常需要 10 到 20 秒。';
+  String get extProductCollectingBody => '正在从商城获取商品和评论信息。商品信息就绪后会自动显示。';
 
   @override
-  String get extProductCollectingSlow => '比预期时间长，请再稍等一下。';
+  String get extProductCollectingSlow => '仍在等待商城的商品信息。商品信息就绪后会自动显示。';
 
   @override
   String get extProductUnavailableTitle => '未能获取商品信息';
@@ -1397,7 +1397,7 @@ class AppLocalizationsZh extends AppLocalizations {
   String get extProductAnalysisPendingTitle => '尚未分析可信度';
 
   @override
-  String get extProductAnalysisPendingBody => '该商品的评论尚未分析。分析完成后，可信度分数将显示在这里。';
+  String get extProductAnalysisPendingBody => '该商品的评论尚未分析，暂无可信度分数。';
 
   @override
   String get extProductReviewsTitle => '评论';
@@ -1578,4 +1578,13 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get externalReasonOther => '其他';
+
+  @override
+  String get productImageEnlarge => '放大商品图片';
+
+  @override
+  String get productImagePrevious => '上一张商品图片';
+
+  @override
+  String get productImageNext => '下一张商品图片';
 }

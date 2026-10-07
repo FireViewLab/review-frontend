@@ -2679,13 +2679,13 @@ abstract class AppLocalizations {
   /// No description provided for @extProductCollectingBody.
   ///
   /// In ko, this message translates to:
-  /// **'처음 보는 상품이라 쇼핑몰에서 정보를 모으고 있어요. 보통 10~20초 걸려요.'**
+  /// **'쇼핑몰에서 상품과 리뷰 정보를 가져오고 있어요. 상품 정보가 준비되면 자동으로 표시돼요.'**
   String get extProductCollectingBody;
 
   /// No description provided for @extProductCollectingSlow.
   ///
   /// In ko, this message translates to:
-  /// **'예상보다 오래 걸리고 있어요. 조금만 더 기다려 주세요.'**
+  /// **'쇼핑몰에서 상품 정보를 기다리고 있어요. 상품 정보가 준비되면 자동으로 표시돼요.'**
   String get extProductCollectingSlow;
 
   /// No description provided for @extProductUnavailableTitle.
@@ -2745,7 +2745,7 @@ abstract class AppLocalizations {
   /// No description provided for @extProductAnalysisPendingBody.
   ///
   /// In ko, this message translates to:
-  /// **'이 상품의 리뷰는 아직 분석되지 않았어요. 분석이 끝나면 신뢰도 점수가 여기에 표시돼요.'**
+  /// **'이 상품의 리뷰는 아직 분석되지 않았어요. 신뢰도 점수는 제공되지 않아요.'**
   String get extProductAnalysisPendingBody;
 
   /// No description provided for @extProductReviewsTitle.
@@ -3095,6 +3095,24 @@ abstract class AppLocalizations {
   /// In ko, this message translates to:
   /// **'기타'**
   String get externalReasonOther;
+
+  /// No description provided for @productImageEnlarge.
+  ///
+  /// In ko, this message translates to:
+  /// **'상품 이미지 확대'**
+  String get productImageEnlarge;
+
+  /// No description provided for @productImagePrevious.
+  ///
+  /// In ko, this message translates to:
+  /// **'이전 상품 이미지'**
+  String get productImagePrevious;
+
+  /// No description provided for @productImageNext.
+  ///
+  /// In ko, this message translates to:
+  /// **'다음 상품 이미지'**
+  String get productImageNext;
 }
 
 class _AppLocalizationsDelegate
