@@ -1587,4 +1587,16 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get productImageNext => '下一张商品图片';
+
+  @override
+  String get imagePreviewOpen => '放大图片';
+
+  @override
+  String get imagePreviewTitle => '图片预览';
+
+  @override
+  String get imagePreviewPrevious => '上一张图片';
+
+  @override
+  String get imagePreviewNext => '下一张图片';
 }

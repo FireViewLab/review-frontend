@@ -1,10 +1,10 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:re_view_front/app/theme/app_colors.dart';
 import 'package:re_view_front/app/theme/app_spacing.dart';
 import 'package:re_view_front/l10n/generated/app_localizations.dart';
 import 'package:re_view_front/shared/widgets/app_network_image.dart';
+import 'package:re_view_front/shared/widgets/image_preview_dialog.dart';
 
 class ProductImageViewer extends StatefulWidget {
   const ProductImageViewer({
@@ -64,11 +64,14 @@ class _ProductImageViewerState extends State<ProductImageViewer> {
 
   void _openImageDialog() {
     _autoSlideTimer?.cancel();
-    showDialog<void>(
-      context: context,
-      animationStyle: _reduceMotion ? AnimationStyle.noAnimation : null,
-      builder: (_) =>
-          _ProductImageDialog(imageUrls: _images, initialIndex: _selectedIndex),
+    final l10n = AppLocalizations.of(context);
+    showImagePreviewDialog(
+      context,
+      imageUrls: _images,
+      initialIndex: _selectedIndex,
+      title: l10n.productImageEnlarge,
+      previousLabel: l10n.productImagePrevious,
+      nextLabel: l10n.productImageNext,
     ).whenComplete(() {
       if (mounted) _startAutoSlide();
     });
@@ -296,8 +299,8 @@ class _ZoomableProductImage extends StatelessWidget {
                 url: url,
                 alignment: alignment,
                 size: previewSize,
-                left: null,
-                right: AppSpacing.sm,
+                left: AppSpacing.sm,
+                right: null,
                 top: null,
                 bottom: AppSpacing.sm,
               ),
@@ -392,102 +395,6 @@ class _GalleryArrowButton extends StatelessWidget {
           color: onPressed != null
               ? AppColors.textPrimary
               : AppColors.textTertiary,
-        ),
-      ),
-    );
-  }
-}
-
-class _ProductImageDialog extends StatefulWidget {
-  const _ProductImageDialog({
-    required this.imageUrls,
-    required this.initialIndex,
-  });
-
-  final List<String> imageUrls;
-  final int initialIndex;
-
-  @override
-  State<_ProductImageDialog> createState() => _ProductImageDialogState();
-}
-
-class _ProductImageDialogState extends State<_ProductImageDialog> {
-  late int _current;
-
-  @override
-  void initState() {
-    super.initState();
-    _current = widget.initialIndex;
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    final images = widget.imageUrls;
-    void close() => Navigator.of(context).pop();
-    return CallbackShortcuts(
-      bindings: {const SingleActivator(LogicalKeyboardKey.escape): close},
-      child: Focus(
-        autofocus: true,
-        child: Dialog(
-          backgroundColor: AppColors.surface,
-          insetPadding: const EdgeInsets.all(AppSpacing.md),
-          child: ConstrainedBox(
-            constraints: BoxConstraints(
-              maxWidth: 680,
-              maxHeight: MediaQuery.sizeOf(context).height * .85,
-            ),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Align(
-                  alignment: Alignment.centerRight,
-                  child: IconButton(
-                    tooltip: MaterialLocalizations.of(
-                      context,
-                    ).closeButtonTooltip,
-                    onPressed: close,
-                    icon: const Icon(Icons.close),
-                  ),
-                ),
-                Flexible(
-                  child: AspectRatio(
-                    aspectRatio: 1,
-                    child: InteractiveViewer(
-                      minScale: 1,
-                      maxScale: 4,
-                      child: AppNetworkImage(
-                        url: images[_current],
-                        fit: BoxFit.contain,
-                      ),
-                    ),
-                  ),
-                ),
-                if (images.length > 1)
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      IconButton(
-                        tooltip: AppLocalizations.of(
-                          context,
-                        ).productImagePrevious,
-                        onPressed: _current > 0
-                            ? () => setState(() => _current--)
-                            : null,
-                        icon: const Icon(Icons.chevron_left),
-                      ),
-                      Text('${_current + 1} / ${images.length}'),
-                      IconButton(
-                        tooltip: AppLocalizations.of(context).productImageNext,
-                        onPressed: _current < images.length - 1
-                            ? () => setState(() => _current++)
-                            : null,
-                        icon: const Icon(Icons.chevron_right),
-                      ),
-                    ],
-                  ),
-              ],
-            ),
-          ),
         ),
       ),
     );

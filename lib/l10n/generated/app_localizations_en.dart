@@ -1640,4 +1640,16 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get productImageNext => 'Next product image';
+
+  @override
+  String get imagePreviewOpen => 'Enlarge image';
+
+  @override
+  String get imagePreviewTitle => 'Image preview';
+
+  @override
+  String get imagePreviewPrevious => 'Previous image';
+
+  @override
+  String get imagePreviewNext => 'Next image';
 }
