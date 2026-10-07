@@ -181,7 +181,7 @@ class _Ready extends StatelessWidget {
           product: product.ref,
           springProductId: state.springProductId,
         ),
-        const ChatAskButton(),
+        ChatAskButton(productId: product.ref.externalId),
       ],
     );
 

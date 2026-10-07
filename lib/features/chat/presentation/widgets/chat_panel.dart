@@ -99,6 +99,7 @@ class ChatPanel extends ConsumerWidget {
                   else if (isLoggedIn)
                     Expanded(
                       child: _Conversation(
+                        key: ValueKey(state.conversationRevision),
                         state: state,
                         productId: productId,
                         autofocus: !fullScreen,
@@ -276,6 +277,7 @@ class _PlanBadge extends StatelessWidget {
 /// 대화 화면. 추천 질문이 입력창을 채울 수 있도록 입력 상태를 여기서 들고 있다.
 class _Conversation extends ConsumerStatefulWidget {
   const _Conversation({
+    super.key,
     required this.state,
     required this.productId,
     required this.autofocus,
