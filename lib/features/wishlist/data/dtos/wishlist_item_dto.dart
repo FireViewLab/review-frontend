@@ -38,7 +38,7 @@ class WishlistItemDto {
         'thumbnail',
         'image',
       ]),
-      price: _readInt(json, ['price', 'salePrice', 'currentPrice']),
+      price: _readNullableInt(json, ['price', 'salePrice', 'currentPrice']),
       category: _readString(json, ['category', 'categoryCode']),
       categoryDisplayName: _readNullableString(json, [
         'categoryDisplayName',
@@ -69,7 +69,7 @@ class WishlistItemDto {
   final int productId;
   final String name;
   final String imageUrl;
-  final int price;
+  final int? price;
   final String category;
   final String? categoryDisplayName;
   final double? avgRti;

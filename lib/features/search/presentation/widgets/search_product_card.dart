@@ -656,7 +656,7 @@ class _WishlistSquareButton extends ConsumerWidget {
       child: OutlinedButton(
         onPressed: asyncStatus.isLoading
             ? null
-            : () {
+            : () async {
                 if (!isLoggedIn) {
                   ScaffoldMessenger.of(context).showSnackBar(
                     const SnackBar(
@@ -666,7 +666,14 @@ class _WishlistSquareButton extends ConsumerWidget {
                   );
                   return;
                 }
-                ref.read(wishlistButtonProvider(productId).notifier).toggle();
+                final error = await ref
+                    .read(wishlistButtonProvider(productId).notifier)
+                    .toggle();
+                if (context.mounted && error != null) {
+                  ScaffoldMessenger.of(
+                    context,
+                  ).showSnackBar(SnackBar(content: Text(error)));
+                }
               },
         style: _wishlistButtonStyle(liked),
         child: AnimatedSwitcher(

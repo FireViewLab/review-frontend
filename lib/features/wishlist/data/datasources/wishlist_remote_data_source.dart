@@ -26,7 +26,7 @@ class WishlistRemoteDataSourceImpl implements WishlistRemoteDataSource {
     final data = response.data;
 
     if (data is! Map<String, dynamic>) {
-      return (items: <WishlistItemDto>[], summary: _emptySummary);
+      throw const FormatException('Invalid wishlist response');
     }
 
     final payload = ApiResponse<Object?>.fromJson(data);
@@ -55,7 +55,7 @@ class WishlistRemoteDataSourceImpl implements WishlistRemoteDataSource {
       return (items: items, summary: summary);
     }
 
-    return (items: <WishlistItemDto>[], summary: _emptySummary);
+    throw const FormatException('Invalid wishlist response');
   }
 
   @override
@@ -118,12 +118,6 @@ class WishlistRemoteDataSourceImpl implements WishlistRemoteDataSource {
       totalReviewCount: items.fold(0, (sum, i) => sum + (i.reviewCount ?? 0)),
     );
   }
-
-  static const _emptySummary = WishlistSummary(
-    priceDropCount: 0,
-    newAlertCount: 0,
-    totalReviewCount: 0,
-  );
 }
 
 int? _readInt(Map<String, dynamic> json, List<String> keys) {
