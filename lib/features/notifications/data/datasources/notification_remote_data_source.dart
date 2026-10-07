@@ -43,11 +43,13 @@ class NotificationRemoteDataSourceImpl implements NotificationRemoteDataSource {
       throw Exception('Invalid response format');
     }
     final content = body['content'];
+    if (content is! List || body['last'] is! bool) {
+      throw const FormatException('Invalid notification page');
+    }
     return NotificationPage(
       items: [
-        if (content is List)
-          for (final item in content.whereType<Map<String, dynamic>>())
-            AppNotificationDto(item).toEntity(),
+        for (final item in content.whereType<Map<String, dynamic>>())
+          AppNotificationDto(item).toEntity(),
       ],
       page: page,
       isLast: body['last'] != false,
@@ -59,9 +61,10 @@ class NotificationRemoteDataSourceImpl implements NotificationRemoteDataSource {
     final response = await _apiClient.get('$_base/me/unread-count');
     final body = _requireData(response.data);
     if (body is Map<String, dynamic>) {
-      return (body['unreadCount'] as num?)?.toInt() ?? 0;
+      final count = body['unreadCount'];
+      if (count is num && count >= 0) return count.toInt();
     }
-    return 0;
+    throw const FormatException('Invalid unread count');
   }
 
   @override
@@ -80,6 +83,6 @@ class NotificationRemoteDataSourceImpl implements NotificationRemoteDataSource {
     if (data is Map<String, dynamic>) {
       return ApiResponse<Object?>.fromJson(data).requireSuccess();
     }
-    return null;
+    throw const FormatException('Invalid notification response');
   }
 }
