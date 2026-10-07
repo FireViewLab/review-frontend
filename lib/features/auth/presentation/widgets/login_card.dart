@@ -38,6 +38,37 @@ class LoginCard extends StatelessWidget {
   final VoidCallback onSignupPressed;
   final VoidCallback? onForgotPasswordPressed;
 
+  void _showAccountHelp(BuildContext context) => showDialog<void>(
+    context: context,
+    builder: (dialogContext) => AlertDialog(
+      title: const Text('계정 도움말'),
+      content: const Text(
+        '이메일 계정의 비밀번호는 비밀번호 찾기에서 재설정할 수 있습니다. 구글·네이버 계정은 가입할 때 사용한 소셜 로그인 버튼을 이용해 주세요.',
+      ),
+      actions: [
+        if (onForgotPasswordPressed != null)
+          TextButton(
+            onPressed: () {
+              Navigator.of(dialogContext).pop();
+              onForgotPasswordPressed!();
+            },
+            child: const Text('비밀번호 찾기'),
+          ),
+        TextButton(
+          onPressed: () {
+            Navigator.of(dialogContext).pop();
+            onSignupPressed();
+          },
+          child: const Text('회원가입'),
+        ),
+        TextButton(
+          onPressed: () => Navigator.of(dialogContext).pop(),
+          child: const Text('닫기'),
+        ),
+      ],
+    ),
+  );
+
   @override
   Widget build(BuildContext context) {
     return ConstrainedBox(
@@ -133,7 +164,9 @@ class LoginCard extends StatelessWidget {
                     ),
                   ),
                   TextButton(
-                    onPressed: isLoading ? null : () {},
+                    onPressed: isLoading
+                        ? null
+                        : () => _showAccountHelp(context),
                     child: const Text('계정 도움말'),
                   ),
                 ],

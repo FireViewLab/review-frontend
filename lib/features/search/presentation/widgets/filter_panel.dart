@@ -7,6 +7,7 @@ import 'package:re_view_front/features/search/presentation/view_models/search_re
 class FilterPanel extends StatelessWidget {
   const FilterPanel({
     super.key,
+    this.onShowResults,
     required this.state,
     required this.selectedCategories,
     required this.selectedPriceRanges,
@@ -47,6 +48,7 @@ class FilterPanel extends StatelessWidget {
   final ValueChanged<double> onRtiMinimumChanged;
   final VoidCallback onResetFilters;
   final bool compact;
+  final VoidCallback? onShowResults;
 
   @override
   Widget build(BuildContext context) {
@@ -289,7 +291,7 @@ class FilterPanel extends StatelessWidget {
             SizedBox(
               width: double.infinity,
               child: FilledButton(
-                onPressed: () {},
+                onPressed: onShowResults,
                 child: Text('$resultCount개 결과 보기'),
               ),
             ),

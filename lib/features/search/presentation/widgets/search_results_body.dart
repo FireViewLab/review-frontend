@@ -85,6 +85,20 @@ class SearchResultsBody extends StatelessWidget {
       );
     }
 
+    final resultsKey = GlobalKey();
+    void showResults() {
+      final target = resultsKey.currentContext;
+      if (target != null) {
+        Scrollable.ensureVisible(
+          target,
+          duration: MediaQuery.disableAnimationsOf(context)
+              ? Duration.zero
+              : const Duration(milliseconds: 250),
+          alignment: 0,
+        );
+      }
+    }
+
     final useSingleColumn =
         context.isMobile || MediaQuery.sizeOf(context).width < 1080;
 
@@ -104,6 +118,7 @@ class SearchResultsBody extends StatelessWidget {
             SearchEmptyState(state: state)
           else ...[
             FilterPanel(
+              onShowResults: showResults,
               state: state,
               selectedCategories: selectedCategories,
               selectedPriceRanges: selectedPriceRanges,
@@ -126,6 +141,7 @@ class SearchResultsBody extends StatelessWidget {
             ),
             const SizedBox(height: AppSpacing.md),
             ResultColumn(
+              key: resultsKey,
               state: state,
               products: products,
               sortOption: sortOption,
@@ -148,6 +164,7 @@ class SearchResultsBody extends StatelessWidget {
         SizedBox(
           width: 252,
           child: FilterPanel(
+            onShowResults: showResults,
             state: state,
             selectedCategories: selectedCategories,
             selectedPriceRanges: selectedPriceRanges,
@@ -185,6 +202,7 @@ class SearchResultsBody extends StatelessWidget {
                 SearchEmptyState(state: state)
               else
                 ResultColumn(
+                  key: resultsKey,
                   state: state,
                   products: products,
                   sortOption: sortOption,

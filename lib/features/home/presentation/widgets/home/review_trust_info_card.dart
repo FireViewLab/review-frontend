@@ -1,3 +1,4 @@
+import 'package:re_view_front/shared/widgets/rti_criteria_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:re_view_front/app/theme/app_colors.dart';
 import 'package:re_view_front/app/theme/app_spacing.dart';
@@ -93,7 +94,7 @@ class _TrustMain extends StatelessWidget {
                   ),
                   const SizedBox(height: AppSpacing.sm),
                   TextButton(
-                    onPressed: () {},
+                    onPressed: () => showRtiCriteriaDialog(context),
                     style: TextButton.styleFrom(
                       padding: EdgeInsets.zero,
                       minimumSize: Size.zero,

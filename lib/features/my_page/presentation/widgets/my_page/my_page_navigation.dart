@@ -1,3 +1,5 @@
+import 'package:go_router/go_router.dart';
+import 'package:re_view_front/app/router/route_paths.dart';
 // ignore_for_file: use_key_in_widget_constructors
 
 import 'package:flutter/material.dart';
@@ -19,7 +21,7 @@ class MyPageTitle extends StatelessWidget {
         Row(
           children: [
             TextButton(
-              onPressed: () {},
+              onPressed: () => context.go(RoutePaths.home),
               style: TextButton.styleFrom(
                 foregroundColor: AppColors.textSecondary,
                 padding: EdgeInsets.zero,
