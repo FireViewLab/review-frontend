@@ -18,13 +18,43 @@ import 'package:re_view_front/shared/widgets/error_view.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 /// Data 서버가 수집한 쇼핑몰 상품의 상세 화면.
-class ExternalProductPage extends ConsumerWidget {
-  const ExternalProductPage({super.key, required this.productRef});
+class ExternalProductPage extends ConsumerStatefulWidget {
+  const ExternalProductPage({
+    super.key,
+    required this.productRef,
+    this.summary,
+  });
 
   final ExternalProductRef productRef;
+  final ProductSummary? summary;
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<ExternalProductPage> createState() =>
+      _ExternalProductPageState();
+}
+
+class _ExternalProductPageState extends ConsumerState<ExternalProductPage> {
+  void _rememberSummary() {
+    final summary = widget.summary;
+    if (summary != null && summary.matches(widget.productRef)) {
+      ref.read(productSummaryCacheProvider).remember(summary);
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _rememberSummary();
+  }
+
+  @override
+  void didUpdateWidget(covariant ExternalProductPage oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    _rememberSummary();
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.background,
       body: CustomScrollView(
@@ -38,7 +68,7 @@ class ExternalProductPage extends ConsumerWidget {
                 context.isMobile ? AppSpacing.md : AppSpacing.xxl,
                 AppSpacing.xxxl,
               ),
-              child: ExternalProductContent(productRef: productRef),
+              child: ExternalProductContent(productRef: widget.productRef),
             ),
           ),
         ],
@@ -59,49 +89,79 @@ class ExternalProductContent extends ConsumerWidget {
     final provider = externalProductViewModelProvider(productRef);
     final state = ref.watch(provider);
     final vm = ref.read(provider.notifier);
-    final product = state.product;
-
-    return switch (state.phase) {
-      ExternalProductPhase.loading => const _Centered(
-        child: CircularProgressIndicator(),
+    final product = state.displayProduct;
+    final status = switch (state.phase) {
+      ExternalProductPhase.loading => const Padding(
+        padding: EdgeInsets.all(AppSpacing.lg),
+        child: LinearProgressIndicator(),
       ),
-      ExternalProductPhase.collecting => _Centered(
-        child: _Collecting(isSlow: state.isSlow),
+      ExternalProductPhase.collecting => _Collecting(isSlow: state.isSlow),
+      ExternalProductPhase.unavailable => AppErrorView(
+        title: l10n.extProductUnavailableTitle,
+        message: state.collectionError ?? l10n.extProductUnavailableBody,
+        retryLabel: l10n.extProductRetry,
+        onRetry: vm.load,
       ),
-      ExternalProductPhase.unavailable => _Centered(
-        child: AppErrorView(
-          title: l10n.extProductUnavailableTitle,
-          message: state.collectionError ?? l10n.extProductUnavailableBody,
-          retryLabel: l10n.extProductRetry,
-          onRetry: vm.load,
-        ),
+      ExternalProductPhase.failure => AppErrorView(
+        message: l10n.extProductLoadFailed,
+        retryLabel: l10n.extProductRetry,
+        onRetry: vm.load,
       ),
-      ExternalProductPhase.failure => _Centered(
-        child: AppErrorView(
-          message: l10n.extProductLoadFailed,
-          retryLabel: l10n.extProductRetry,
-          onRetry: vm.load,
-        ),
-      ),
-      ExternalProductPhase.ready when product != null => _Ready(
-        state: state,
-        product: product,
-        onLoadMore: vm.loadMoreReviews,
-      ),
-      ExternalProductPhase.ready => const SizedBox.shrink(),
+      ExternalProductPhase.ready =>
+        state.collectionError == null
+            ? null
+            : Text(
+                state.collectionError!,
+                style: Theme.of(
+                  context,
+                ).textTheme.bodyMedium?.copyWith(color: AppColors.error),
+              ),
     };
+    if (product == null) {
+      return Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          // A direct link has no list snapshot. Keep the basic information area
+          // separate without inventing a name, price, photo or purchase link.
+          const _SummarySkeleton(),
+          ChatAskButton(productId: productRef.externalId),
+          const SizedBox(height: AppSpacing.lg),
+          const ExternalAnalysisPending(),
+          const SizedBox(height: AppSpacing.lg),
+          Text(l10n.extProductReviewsTitle),
+          ?status,
+        ],
+      );
+    }
+    return _Ready(
+      state: state,
+      product: product,
+      onLoadMore: vm.loadMoreReviews,
+      collectionStatus: status,
+    );
   }
 }
 
-class _Centered extends StatelessWidget {
-  const _Centered({required this.child});
-
-  final Widget child;
-
+class _SummarySkeleton extends StatelessWidget {
+  const _SummarySkeleton();
   @override
-  Widget build(BuildContext context) {
-    return SizedBox(height: 420, child: Center(child: child));
-  }
+  Widget build(BuildContext context) => Semantics(
+    label: AppLocalizations.of(context).extProductSummaryLoading,
+    child: Padding(
+      padding: const EdgeInsets.only(bottom: AppSpacing.lg),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          Container(
+            height: context.isMobile ? 180 : 240,
+            color: AppColors.border,
+          ),
+          const SizedBox(height: AppSpacing.md),
+          Text(AppLocalizations.of(context).extProductSummaryLoading),
+        ],
+      ),
+    ),
+  );
 }
 
 /// 상품 정보가 준비되기를 기다리는 동안 보여 준다. 진행률은 서버가 알려 주지 않는다.
@@ -154,11 +214,13 @@ class _Ready extends StatelessWidget {
     required this.state,
     required this.product,
     required this.onLoadMore,
+    this.collectionStatus,
   });
 
   final ExternalProductState state;
   final ExternalProduct product;
   final VoidCallback onLoadMore;
+  final Widget? collectionStatus;
 
   @override
   Widget build(BuildContext context) {
@@ -173,13 +235,18 @@ class _Ready extends StatelessWidget {
     final summary = ExternalProductSummary(
       product: product,
       isStale: state.isStale,
-      onVisitShop: url == null || !url.hasScheme
+      onVisitShop:
+          url == null ||
+              !['https', 'http'].contains(url.scheme) ||
+              url.host.isEmpty
           ? null
           : () => launchUrl(url, mode: LaunchMode.externalApplication),
       actions: [
         ExternalProductActionBar(
           product: product.ref,
-          springProductId: state.springProductId,
+          springProductId: state.product == null
+              ? state.displayNumericId
+              : state.springProductId,
         ),
         ChatAskButton(productId: product.ref.externalId),
       ],
@@ -188,6 +255,17 @@ class _Ready extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
+        if (state.phase != ExternalProductPhase.ready) ...[
+          Text(
+            state.summary?.source == ProductSummarySource.previousDetail
+                ? l10n.extProductPreviousSummary
+                : l10n.extProductListSummary,
+            style: textTheme.bodySmall?.copyWith(
+              color: AppColors.textSecondary,
+            ),
+          ),
+          const SizedBox(height: AppSpacing.sm),
+        ],
         if (category != null) ...[
           Text(
             category,
@@ -222,7 +300,13 @@ class _Ready extends StatelessWidget {
           ),
         ),
         const SizedBox(height: AppSpacing.xs),
-        if (state.reviews.isEmpty)
+        if (collectionStatus != null) ...[
+          ExternalPanel(child: collectionStatus!),
+          const SizedBox(height: AppSpacing.md),
+        ],
+        if (state.reviews.isEmpty &&
+            state.phase == ExternalProductPhase.ready &&
+            state.collectionError == null)
           Padding(
             padding: const EdgeInsets.symmetric(vertical: AppSpacing.xl),
             child: Text(
@@ -233,7 +317,7 @@ class _Ready extends StatelessWidget {
               ),
             ),
           )
-        else
+        else if (state.reviews.isNotEmpty)
           ExternalPanel(
             padding: const EdgeInsets.symmetric(horizontal: AppSpacing.lg),
             child: Column(
@@ -263,7 +347,8 @@ class _Ready extends StatelessWidget {
               style: textTheme.bodySmall?.copyWith(color: AppColors.error),
             ),
           ),
-        if (state.hasMoreReviews) ...[
+        if (state.hasMoreReviews &&
+            state.phase == ExternalProductPhase.ready) ...[
           const SizedBox(height: AppSpacing.md),
           Center(
             child: OutlinedButton(
