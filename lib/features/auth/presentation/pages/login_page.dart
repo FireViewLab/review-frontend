@@ -71,6 +71,8 @@ class _LoginPageState extends ConsumerState<LoginPage> {
 
     return Scaffold(
       backgroundColor: AppColors.background,
+      // AppShell already resizes the nested route for the keyboard.
+      resizeToAvoidBottomInset: false,
       body: Column(
         children: [
           Expanded(
@@ -82,12 +84,20 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                     ? Column(
                         crossAxisAlignment: CrossAxisAlignment.stretch,
                         children: [
-                          const AppFadeIn(delay: 0, child: LoginValuePanel()),
-                          const SizedBox(height: AppSpacing.xl),
+                          AppFadeIn(
+                            delay: 0,
+                            child: LoginValuePanel(compact: context.isMobile),
+                          ),
+                          SizedBox(
+                            height: context.isMobile
+                                ? AppSpacing.md
+                                : AppSpacing.xl,
+                          ),
                           AppFadeIn(
                             delay: 90,
                             child: _buildLoginCard(context, loginState),
                           ),
+                          if (context.isMobile) const LoginFooter(),
                         ],
                       )
                     : Row(
@@ -116,7 +126,8 @@ class _LoginPageState extends ConsumerState<LoginPage> {
               ),
             ),
           ),
-          const AppFadeIn(delay: 220, child: LoginFooter()),
+          if (!context.isMobile)
+            const AppFadeIn(delay: 220, child: LoginFooter()),
         ],
       ),
     );
@@ -147,7 +158,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
 
   EdgeInsets _pagePadding(BuildContext context) {
     if (context.isMobile) {
-      return const EdgeInsets.fromLTRB(16, 28, 16, 48);
+      return const EdgeInsets.fromLTRB(16, 16, 16, 24);
     }
 
     if (context.isTablet) {
