@@ -40,7 +40,7 @@ jobs:
           bash scripts/write-deployment-marker.sh
 
       - name: Install Vercel CLI
-        run: npm install --global vercel@latest
+        run: npm install --global vercel@62.5.0
 
       - name: Deploy Preview to Vercel
         run: vercel deploy build/web --token=${{ secrets.VERCEL_TOKEN }} --yes
@@ -72,7 +72,7 @@ jobs:
           bash scripts/write-deployment-marker.sh
 
       - name: Install Vercel CLI
-        run: npm install --global vercel@latest
+        run: npm install --global vercel@62.5.0
 
       - name: Deploy Production to Vercel
         run: vercel deploy build/web --prod --token=${{ secrets.VERCEL_TOKEN }} --yes
