@@ -35,8 +35,11 @@ class UnreadNotificationCount extends AsyncNotifier<int> {
     final result = await ref
         .read(notificationRepositoryProvider)
         .getUnreadCount();
-    // 실패해도 헤더가 깨지지 않게 0으로 둔다.
-    return result.when(success: (count) => count, failure: (_) => 0);
+    // Failure is distinct from a confirmed zero unread count.
+    return result.when(
+      success: (count) => count,
+      failure: (failure) => throw failure,
+    );
   }
 
   void adjust(int delta) {
@@ -46,6 +49,10 @@ class UnreadNotificationCount extends AsyncNotifier<int> {
   }
 
   void clear() => state = const AsyncData(0);
+
+  void synchronize() {
+    if (ref.mounted) ref.invalidateSelf();
+  }
 }
 
 final notificationListViewModelProvider =

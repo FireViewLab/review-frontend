@@ -7,7 +7,11 @@ String? notificationRoute(String? targetUrl) {
   if (targetUrl == null) return null;
   final path = Uri.tryParse(targetUrl)?.path ?? targetUrl;
 
-  final product = RegExp(r'^/products?/(\d+)').firstMatch(path);
+  final external = RegExp(r'^/products?/([^/]+)/([^/]+)$').firstMatch(path);
+  if (external != null) {
+    return '/product/${Uri.encodeComponent(external.group(1)!)}/${Uri.encodeComponent(external.group(2)!)}';
+  }
+  final product = RegExp(r'^/products?/(\d+)$').firstMatch(path);
   if (product != null) return '/product/${product.group(1)}';
 
   if (path.startsWith('/reports/me') || path.startsWith('/feedback/me')) {

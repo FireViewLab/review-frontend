@@ -70,7 +70,8 @@ final appRouterProvider = Provider<GoRouter>((ref) {
       }
       if (isLoggedIn &&
           state.matchedLocation == RoutePaths.onboarding &&
-          tokenStore.onboardingCompleted) {
+          tokenStore.onboardingCompleted &&
+          state.uri.queryParameters['edit'] != 'true') {
         return RoutePaths.home;
       }
       const protectedPages = {
