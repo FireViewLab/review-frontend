@@ -15,70 +15,94 @@ class QuickCategoryRow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      height: 124,
-      child: ListView.separated(
-        scrollDirection: Axis.horizontal,
-        itemCount: items.length,
-        separatorBuilder: (_, _) => const SizedBox(width: AppSpacing.lg),
-        itemBuilder: (context, index) {
-          final item = items[index];
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        final compact = constraints.maxWidth < 600;
+        final spacing = compact ? AppSpacing.md : AppSpacing.lg;
+        // Keep three readable targets per row on normal mobile widths. Wrap
+        // can use fewer columns on narrower layouts without horizontal scroll.
+        final itemWidth = compact
+            ? ((constraints.maxWidth - spacing * 2) / 3).clamp(72.0, 94.0)
+            : 94.0;
 
-          return SizedBox(
-            width: 94,
-            child: InkWell(
-              borderRadius: BorderRadius.circular(18),
-              onTap: () => onCategoryPressed?.call(item.label),
-              child: Column(
-                children: [
-                  Container(
-                    width: 72,
-                    height: 72,
-                    alignment: Alignment.center,
-                    decoration: item.useIconBacking
-                        ? BoxDecoration(
-                            color: AppColors.surface,
-                            shape: BoxShape.circle,
-                            border: Border.all(color: AppColors.border),
-                            boxShadow: const [
-                              BoxShadow(
-                                color: Color(0x0F0F172A),
-                                blurRadius: 18,
-                                offset: Offset(0, 8),
+        return SizedBox(
+          width: double.infinity,
+          child: Wrap(
+            alignment: WrapAlignment.center,
+            spacing: spacing,
+            runSpacing: AppSpacing.md,
+            children: [
+              for (final item in items)
+                SizedBox(
+                  width: itemWidth,
+                  child: Material(
+                    color: Colors.transparent,
+                    borderRadius: AppRadius.medium,
+                    child: InkWell(
+                      borderRadius: AppRadius.medium,
+                      hoverColor: AppColors.primaryLight,
+                      focusColor: AppColors.primaryLight,
+                      onTap: onCategoryPressed == null
+                          ? null
+                          : () => onCategoryPressed!(item.label),
+                      child: Semantics(
+                        button: true,
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(
+                            vertical: AppSpacing.xs,
+                          ),
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Ink(
+                                width: 72,
+                                height: 72,
+                                decoration: BoxDecoration(
+                                  color: AppColors.surface,
+                                  shape: BoxShape.circle,
+                                  border: Border.all(color: AppColors.border),
+                                ),
+                                child: Padding(
+                                  padding: const EdgeInsets.all(AppSpacing.xs),
+                                  child: ExcludeSemantics(
+                                    child: Image.asset(
+                                      item.iconAssetPath,
+                                      fit: BoxFit.contain,
+                                      errorBuilder:
+                                          (
+                                            context,
+                                            error,
+                                            stackTrace,
+                                          ) => const Icon(
+                                            Icons.image_not_supported_outlined,
+                                            color: AppColors.primary,
+                                            size: 24,
+                                          ),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              const SizedBox(height: AppSpacing.sm),
+                              Text(
+                                item.label,
+                                textAlign: TextAlign.center,
+                                style: Theme.of(context).textTheme.labelMedium
+                                    ?.copyWith(
+                                      color: AppColors.textPrimary,
+                                      fontWeight: FontWeight.w700,
+                                    ),
                               ),
                             ],
-                          )
-                        : null,
-                    child: Padding(
-                      padding: const EdgeInsets.all(AppSpacing.xs),
-                      child: Image.asset(
-                        item.iconAssetPath,
-                        fit: BoxFit.contain,
-                        errorBuilder: (context, error, stackTrace) =>
-                            const Icon(
-                              Icons.image_not_supported_outlined,
-                              color: AppColors.primary,
-                              size: 24,
-                            ),
+                          ),
+                        ),
                       ),
                     ),
                   ),
-                  const SizedBox(height: AppSpacing.sm),
-                  Text(
-                    item.label,
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                    style: Theme.of(context).textTheme.labelMedium?.copyWith(
-                      color: AppColors.textPrimary,
-                      fontWeight: FontWeight.w700,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          );
-        },
-      ),
+                ),
+            ],
+          ),
+        );
+      },
     );
   }
 }

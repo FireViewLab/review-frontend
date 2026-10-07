@@ -100,34 +100,31 @@ const quickCategories = [
     label: '리뷰랭킹',
     iconAssetPath:
         'assets/images/home/icons/icon-review-ranking-transparent.png',
-    useIconBacking: false,
   ),
   QuickCategoryData(
     label: '뷰티',
     iconAssetPath: 'assets/images/home/icons/icon-beauty-transparent.png',
-    useIconBacking: false,
   ),
   QuickCategoryData(
     label: '가전',
     iconAssetPath: 'assets/images/home/icons/icon-appliance-transparent.png',
-    useIconBacking: false,
   ),
   QuickCategoryData(
     label: '인테리어',
     iconAssetPath: 'assets/images/home/icons/icon-interior-transparent.png',
-    useIconBacking: false,
   ),
   QuickCategoryData(
     label: '푸드',
-    iconAssetPath: 'assets/images/home/icons/icon-food.webp',
+    iconAssetPath: 'assets/images/home/icons/icon-food-transparent.png',
   ),
   QuickCategoryData(
     label: '스포츠',
-    iconAssetPath: 'assets/images/home/icons/icon-sports.webp',
+    iconAssetPath: 'assets/images/home/icons/icon-sports-transparent.png',
   ),
   QuickCategoryData(
     label: '전체보기',
-    iconAssetPath: 'assets/images/home/icons/icon-all-categories.webp',
+    iconAssetPath:
+        'assets/images/home/icons/icon-all-categories-transparent.png',
   ),
 ];
 
@@ -197,15 +194,10 @@ class HomeBannerData {
 }
 
 class QuickCategoryData {
-  const QuickCategoryData({
-    required this.label,
-    required this.iconAssetPath,
-    this.useIconBacking = true,
-  });
+  const QuickCategoryData({required this.label, required this.iconAssetPath});
 
   final String label;
   final String iconAssetPath;
-  final bool useIconBacking;
 }
 
 class HomeProductData {
