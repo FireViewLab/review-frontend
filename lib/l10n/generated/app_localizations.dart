@@ -3215,6 +3215,18 @@ abstract class AppLocalizations {
   /// In ko, this message translates to:
   /// **'이전에 확인한 상품 정보예요. 최신 상세 정보와 리뷰를 확인하고 있어요.'**
   String get extProductPreviousSummary;
+
+  /// No description provided for @recentRecordFailed.
+  ///
+  /// In ko, this message translates to:
+  /// **'최근 본 기록을 확인하지 못했어요. 다시 시도'**
+  String get recentRecordFailed;
+
+  /// No description provided for @recentRecordUnavailable.
+  ///
+  /// In ko, this message translates to:
+  /// **'최근 본 기록에 필요한 상품 식별 정보를 확인하지 못했어요.'**
+  String get recentRecordUnavailable;
 }
 
 class _AppLocalizationsDelegate

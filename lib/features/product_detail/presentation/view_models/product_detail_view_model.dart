@@ -1,3 +1,5 @@
+import 'package:re_view_front/core/providers/core_providers.dart';
+import 'package:re_view_front/features/home/presentation/providers/home_providers.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:re_view_front/core/error/failure.dart';
 import 'package:re_view_front/features/product_detail/domain/entities/product_review.dart';
@@ -33,6 +35,9 @@ class ProductDetailViewModel extends Notifier<ProductDetailState> {
     state = const ProductDetailLoading();
 
     // 서로 기다릴 필요가 없는 요청은 함께 보낸다. 분석 서버 확인도 미리 시작한다.
+    final viewingSession = ref
+        .read(authTokenStoreProvider.notifier)
+        .accessToken;
     final detailFuture = _getDetail(productId);
     final reviewsFuture = _getReviews(productId);
     final healthFuture = _checkHealth();
@@ -52,9 +57,15 @@ class ProductDetailViewModel extends Notifier<ProductDetailState> {
       return;
     }
 
+    final viewRecorded =
+        viewingSession != null &&
+        viewingSession == ref.read(authTokenStoreProvider.notifier).accessToken;
+    ref.invalidate(homeDashboardViewModelProvider);
+
     if (detail.externalRef != null) {
       state = ProductDetailSuccess(
         detail: detail,
+        viewRecorded: viewRecorded,
         reviews: const [],
         reviewInsight: const ReviewInsight(
           keywords: [],
@@ -76,6 +87,7 @@ class ProductDetailViewModel extends Notifier<ProductDetailState> {
 
     state = ProductDetailSuccess(
       detail: detail,
+      viewRecorded: viewRecorded,
       reviews: reviews,
       reviewInsight: const ReviewInsight(
         keywords: [],

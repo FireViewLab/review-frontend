@@ -193,6 +193,9 @@ final appRouterProvider = Provider<GoRouter>((ref) {
             pageBuilder: (context, state) => _buildContentPage(
               state,
               ExternalProductPage(
+                viewAlreadyRecorded:
+                    state.extra is ProductRouteContext &&
+                    (state.extra as ProductRouteContext).viewAlreadyRecorded,
                 summary: state.extra is ProductRouteContext
                     ? (state.extra as ProductRouteContext).summary
                     : null,
