@@ -29,6 +29,8 @@ import 'package:re_view_front/shared/widgets/app_content_view.dart';
 import 'package:re_view_front/shared/widgets/error_view.dart';
 import 'package:re_view_front/shared/widgets/product_card_skeleton.dart';
 import 'package:re_view_front/features/home/presentation/home_navigation.dart';
+import 'package:re_view_front/features/home/presentation/widgets/home/home_category_sheet.dart';
+import 'package:re_view_front/features/search/presentation/view_models/search_results_state.dart';
 
 class HomePage extends ConsumerStatefulWidget {
   const HomePage({super.key});
@@ -316,7 +318,7 @@ class _HomePageState extends ConsumerState<HomePage> {
       bottomNavigationBar: context.isMobile
           ? _HomeBottomTabs(
               onHomePressed: () => _handleNavItemPressed('홈'),
-              onCategoryPressed: () => _scrollTo(_categoryKey),
+              onCategoryPressed: _openCategories,
               onSearchPressed: () => AppShell.focusSearch(context),
               onWishPressed: () => context.go(RoutePaths.wishlist),
               onMyPressed: () =>
@@ -348,9 +350,22 @@ class _HomePageState extends ConsumerState<HomePage> {
     openHomeNavItem(context, item);
   }
 
+  Future<void> _openCategories() async {
+    final selection = await showHomeCategorySheet(context);
+    if (!mounted || selection == null) return;
+    final category = selection.category;
+    context.goNamed(
+      RouteNames.search,
+      queryParameters: category == null
+          ? {'sort': SearchSortOption.accuracy.name}
+          : {'categoryId': category.id, 'category': category.label},
+    );
+  }
+
   void _handleCategoryPressed(String label) {
-    if (label == AppLocalizations.of(context).homeViewAll) {
-      _scrollTo(_popularCategoryKey);
+    if (label == AppLocalizations.of(context).homeViewAll ||
+        label == quickCategories.last.label) {
+      _openCategories();
       return;
     }
 
