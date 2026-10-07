@@ -25,6 +25,9 @@ import 'package:re_view_front/features/chat/presentation/widgets/popup_route_tra
 import 'package:re_view_front/l10n/generated/app_localizations.dart';
 
 import '../../../../helpers/pump_app.dart';
+import '../../../external_product/external_product_fakes.dart';
+import 'package:re_view_front/features/external_product/presentation/pages/external_product_page.dart';
+import 'package:re_view_front/features/external_product/presentation/providers/external_product_providers.dart';
 
 void main() {
   testWidgets('retries failed history and loads the next page', (tester) async {
@@ -717,39 +720,102 @@ void main() {
     await tester.pump(const Duration(seconds: 3));
   });
 
-  testWidgets('opens the panel from the inline ask button', (tester) async {
-    final container = ProviderContainer(
-      overrides: [
-        isLoggedInProvider.overrideWithValue(false),
-        chatRepositoryProvider.overrideWithValue(_FakeChatRepository()),
-      ],
-    );
-    addTearDown(container.dispose);
-    await pumpApp(
+  for (final size in [const Size(1280, 1000), const Size(390, 850)]) {
+    testWidgets('detail CTA opens visible product chat at $size', (
       tester,
-      UncontrolledProviderScope(
-        container: container,
-        child: localizedApp(
-          router: GoRouter(
-            routes: [
-              GoRoute(
-                path: '/',
-                builder: (context, state) => const Scaffold(
-                  body: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [ChatAskButton()],
-                  ),
-                ),
-              ),
-            ],
-          ),
-        ),
+    ) async {
+      final subject = await _pumpOverlay(
+        tester,
+        path: '/product/kurly/1000146248',
+        size: size,
+        isLoggedIn: true,
+        productPage: true,
+      );
+      final l10n = _localizations(tester);
+      await tester.ensureVisible(find.byType(ChatAskButton));
+      await tester.tap(find.byType(ChatAskButton));
+      await tester.pumpAndSettle();
+      expect(find.byType(ChatPanel), findsOneWidget);
+      expect(find.text(l10n.chatProductContext), findsOneWidget);
+      await tester.tap(find.text(l10n.chatSuggestProduct1));
+      await tester.pump();
+      await tester.tap(find.byTooltip(l10n.chatSend));
+      await tester.pumpAndSettle();
+      expect(subject.repository.requests.single.productId, 'kurly-1000146248');
+      expect(tester.takeException(), isNull);
+    });
+  }
+
+  testWidgets('detail CTA opens with keyboard and resumes after a modal', (
+    tester,
+  ) async {
+    final subject = await _pumpOverlay(
+      tester,
+      path: '/product/kurly/1000146248',
+      productPage: true,
+    );
+    final l10n = _localizations(tester);
+    Focus.of(tester.element(find.text(l10n.chatProductCta))).requestFocus();
+    await tester.pump();
+    await tester.sendKeyEvent(LogicalKeyboardKey.enter);
+    await tester.pumpAndSettle();
+    expect(find.byType(ChatPanel), findsOneWidget);
+    expect(find.text(l10n.chatLoginTitle), findsOneWidget);
+    unawaited(
+      showDialog<void>(
+        context: subject.router.routerDelegate.navigatorKey.currentContext!,
+        builder: (_) => const AlertDialog(content: Text('modal')),
       ),
     );
-    await tester.tap(find.byType(ChatAskButton));
-    expect(container.read(chatViewModelProvider).isOpen, isTrue);
+    await tester.pumpAndSettle();
+    expect(find.byType(ChatPanel), findsNothing);
+    subject.router.routerDelegate.navigatorKey.currentState!.pop();
+    await tester.pumpAndSettle();
+    expect(find.byType(ChatPanel), findsOneWidget);
     expect(tester.takeException(), isNull);
   });
+
+  testWidgets(
+    'detail CTA leaves history and preserves an existing conversation',
+    (tester) async {
+      final subject = await _pumpOverlay(
+        tester,
+        path: '/product/kurly/1000146248',
+        isLoggedIn: true,
+        productPage: true,
+      );
+      final l10n = _localizations(tester);
+      final vm = subject.container.read(chatViewModelProvider.notifier);
+      vm.open();
+      await vm.send('question', productId: 'kurly-other');
+      await vm.showHistory();
+      vm.close();
+      await tester.pumpAndSettle();
+      await tester.tap(find.byType(ChatAskButton));
+      await tester.pumpAndSettle();
+      expect(find.byType(ChatPanel), findsOneWidget);
+      expect(find.text(l10n.chatOtherProductNotice), findsOneWidget);
+      expect(
+        subject.container.read(chatViewModelProvider).isHistoryOpen,
+        isFalse,
+      );
+      expect(
+        subject.container.read(chatViewModelProvider).sessionProductId,
+        'kurly-other',
+      );
+      expect(
+        subject.container.read(chatViewModelProvider).messages,
+        hasLength(2),
+      );
+      await tester.tap(find.text(l10n.chatStartWithThisProduct));
+      await tester.pumpAndSettle();
+      expect(
+        subject.container.read(chatViewModelProvider).sessionProductId,
+        'kurly-1000146248',
+      );
+      expect(tester.takeException(), isNull);
+    },
+  );
 
   testWidgets(
     'shows a notice when navigating to another product in a session',
@@ -818,6 +884,7 @@ _pumpOverlay(
   Size size = const Size(1280, 1000),
   Locale? locale,
   double textScale = 1,
+  bool productPage = false,
 }) async {
   tester.view.physicalSize = size;
   tester.view.devicePixelRatio = 1;
@@ -841,13 +908,19 @@ _pumpOverlay(
       ])
         GoRoute(
           path: route,
-          builder: (context, state) => const Scaffold(body: Text('route page')),
+          builder: (context, state) =>
+              productPage && state.uri.path.startsWith('/product/')
+              ? const ExternalProductPage(productRef: kurlyRef)
+              : const Scaffold(body: Text('route page')),
         ),
     ],
   );
   final fake = repository ?? _FakeChatRepository();
   final container = ProviderContainer(
     overrides: [
+      externalProductRepositoryProvider.overrideWithValue(
+        FakeExternalProductRepository(),
+      ),
       appRouterProvider.overrideWithValue(router),
       isLoggedInProvider.overrideWithValue(isLoggedIn),
       chatRepositoryProvider.overrideWithValue(fake),
