@@ -28,6 +28,7 @@ abstract final class RoutePaths {
   static const adminReports = '/admin/reports';
   static const adminAnalysisFeedbacks = '/admin/analysis-feedbacks';
   static const adminUsers = '/admin/users';
+  static const adminBanners = '/admin/banners';
 }
 
 abstract final class RouteNames {
@@ -58,4 +59,5 @@ abstract final class RouteNames {
   static const adminReports = 'adminReports';
   static const adminAnalysisFeedbacks = 'adminAnalysisFeedbacks';
   static const adminUsers = 'adminUsers';
+  static const adminBanners = 'adminBanners';
 }
