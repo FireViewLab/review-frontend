@@ -8,6 +8,8 @@ class ChatState {
     this.messages = const [],
     this.sessionId,
     this.sessionProductId,
+    this.hasBoundContext = false,
+    this.conversationRevision = 0,
     this.isSending = false,
     this.lastFailedQuestion,
     this.isHistoryOpen = false,
@@ -32,6 +34,12 @@ class ChatState {
 
   /// 현재 세션이 다루는 상품. 상품 없이 시작한 대화면 null.
   final String? sessionProductId;
+
+  /// An explicitly selected general conversation also binds its null context.
+  final bool hasBoundContext;
+
+  /// Reset input, focus and scroll state when selecting a different conversation.
+  final int conversationRevision;
   final bool isSending;
 
   /// 마지막으로 전송에 실패한 질문. 다시 시도할 때 쓴다.
@@ -74,6 +82,8 @@ class ChatState {
     limitReached: limitReached,
     proDenied: proDenied,
     sessionProductId: sessionProductId,
+    hasBoundContext: true,
+    conversationRevision: conversationRevision + 1,
   );
 
   bool get hasConversation => messages.isNotEmpty;
@@ -84,6 +94,7 @@ class ChatState {
     int? sessionId,
     bool clearSession = false,
     String? sessionProductId,
+    bool? hasBoundContext,
     bool? isSending,
     String? lastFailedQuestion,
     bool clearLastFailedQuestion = false,
@@ -118,6 +129,8 @@ class ChatState {
       sessionProductId: clearSession
           ? sessionProductId
           : (sessionProductId ?? this.sessionProductId),
+      hasBoundContext: hasBoundContext ?? this.hasBoundContext,
+      conversationRevision: conversationRevision,
       isSending: isSending ?? this.isSending,
       lastFailedQuestion: clearLastFailedQuestion
           ? null

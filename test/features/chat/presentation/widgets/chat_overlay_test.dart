@@ -776,7 +776,7 @@ void main() {
   });
 
   testWidgets(
-    'detail CTA leaves history and preserves an existing conversation',
+    'detail CTA leaves history and opens a blank product conversation',
     (tester) async {
       final subject = await _pumpOverlay(
         tester,
@@ -794,25 +794,16 @@ void main() {
       await tester.tap(find.byType(ChatAskButton));
       await tester.pumpAndSettle();
       expect(find.byType(ChatPanel), findsOneWidget);
-      expect(find.text(l10n.chatOtherProductNotice), findsOneWidget);
+      expect(find.text(l10n.chatOtherProductNotice), findsNothing);
       expect(
         subject.container.read(chatViewModelProvider).isHistoryOpen,
         isFalse,
       );
       expect(
         subject.container.read(chatViewModelProvider).sessionProductId,
-        'kurly-other',
-      );
-      expect(
-        subject.container.read(chatViewModelProvider).messages,
-        hasLength(2),
-      );
-      await tester.tap(find.text(l10n.chatStartWithThisProduct));
-      await tester.pumpAndSettle();
-      expect(
-        subject.container.read(chatViewModelProvider).sessionProductId,
         'kurly-1000146248',
       );
+      expect(subject.container.read(chatViewModelProvider).messages, isEmpty);
       expect(tester.takeException(), isNull);
     },
   );

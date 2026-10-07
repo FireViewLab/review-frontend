@@ -24,7 +24,10 @@ class ChatViewModel extends Notifier<ChatState> {
       if (previous == true && !next) {
         _generation++;
         _quotaRequest++;
-        state = ChatState(isOpen: state.isOpen);
+        state = ChatState(
+          isOpen: state.isOpen,
+          conversationRevision: state.conversationRevision + 1,
+        );
       } else if (next && state.isOpen) {
         refreshQuota();
       }
@@ -40,11 +43,11 @@ class ChatViewModel extends Notifier<ChatState> {
 
   void close() => state = state.copyWith(isOpen: false);
 
-  /// A product question opens the conversation rather than a retained history
-  /// screen. Keep the current session so changing products still asks the user.
-  void openConversation() {
-    if (state.isHistoryOpen) closeHistory();
-    open();
+  /// The explicit product CTA starts a blank conversation; server history stays.
+  void openConversation({String? productId}) {
+    startNew(productId: productId);
+    state = state.copyWith(isOpen: true);
+    refreshQuota();
   }
 
   void toggle() => state.isOpen ? close() : open();
@@ -95,8 +98,8 @@ class ChatViewModel extends Notifier<ChatState> {
 
   /// 대화를 비우고, 다음 질문부터 [productId] 기준의 새 세션을 시작한다.
   void startNew({String? productId}) {
-    if (state.isSending) return;
     _generation++;
+    _historyRequest++;
     state = state.cleared(sessionProductId: productId);
   }
 
@@ -113,6 +116,9 @@ class ChatViewModel extends Notifier<ChatState> {
     if (state.isExhaustedAt(DateTime.now())) return;
 
     final isNewSession = state.sessionId == null;
+    final boundProductId = state.hasBoundContext
+        ? state.sessionProductId
+        : productId;
     final generation = _generation;
     final questionMessage = ChatMessage(role: ChatRole.user, content: text);
     state = state.copyWith(
@@ -122,20 +128,24 @@ class ChatViewModel extends Notifier<ChatState> {
       ],
       isSending: true,
       sendStartedAt: DateTime.now(),
-      sessionProductId: isNewSession ? productId : null,
+      sessionProductId: isNewSession ? boundProductId : null,
+      hasBoundContext: true,
       clearLastFailedQuestion: true,
     );
 
     final result = await _repository.ask(
       question: text,
       sessionId: state.sessionId,
-      productId: isNewSession ? productId : null,
+      productId: isNewSession ? boundProductId : null,
       mode: state.mode,
     );
     // 로그아웃 알림이 응답보다 늦게 올 수 있어 로그인 상태를 직접 확인한다.
-    if (!ref.mounted ||
-        generation != _generation ||
-        !ref.read(isLoggedInProvider)) {
+    if (!ref.mounted || !ref.read(isLoggedInProvider)) {
+      return;
+    }
+    if (generation != _generation) {
+      // The old request can still affect server usage, never the new messages.
+      refreshQuota();
       return;
     }
 

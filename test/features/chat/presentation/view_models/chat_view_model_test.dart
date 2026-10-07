@@ -429,7 +429,7 @@ void main() {
   );
 
   test(
-    'ignores a duplicate send and a new conversation while sending',
+    'ignores duplicate send but allows a new conversation while sending',
     () async {
       final pending = Completer<Result<ChatReply>>();
       repository.pending = pending;
@@ -439,15 +439,12 @@ void main() {
       await viewModel.send('중복 질문', productId: 'kurly-2');
       viewModel.startNew(productId: 'kurly-2');
       expect(repository.requests, hasLength(1));
-      expect(
-        container.read(chatViewModelProvider).messages.single.content,
-        '첫 질문',
-      );
-      expect(container.read(chatViewModelProvider).sessionProductId, 'kurly-1');
+      expect(container.read(chatViewModelProvider).messages, isEmpty);
+      expect(container.read(chatViewModelProvider).sessionProductId, 'kurly-2');
 
       pending.complete(_reply);
       await sending;
-      expect(container.read(chatViewModelProvider).messages, hasLength(2));
+      expect(container.read(chatViewModelProvider).messages, isEmpty);
       expect(container.read(chatViewModelProvider).isSending, isFalse);
     },
   );
