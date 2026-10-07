@@ -384,5 +384,10 @@ class _AdminMenuItem {
           label: l10n.adminMenuUsers,
           icon: Icons.people_outline,
         ),
+        const _AdminMenuItem(
+          path: RoutePaths.adminBanners,
+          label: '배너 관리',
+          icon: Icons.view_carousel_outlined,
+        ),
       ];
 }

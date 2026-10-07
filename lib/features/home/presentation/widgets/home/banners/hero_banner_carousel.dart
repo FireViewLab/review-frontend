@@ -6,6 +6,7 @@ import 'package:re_view_front/app/theme/app_colors.dart';
 import 'package:re_view_front/app/theme/app_spacing.dart';
 import 'package:re_view_front/features/home/presentation/data/home_content.dart';
 import 'package:re_view_front/shared/extensions/context_extensions.dart';
+import 'package:re_view_front/shared/widgets/app_network_image.dart';
 
 class HeroBannerCarousel extends StatefulWidget {
   const HeroBannerCarousel({
@@ -355,18 +356,21 @@ class _BannerProgress extends StatelessWidget {
             child: Row(
               mainAxisSize: MainAxisSize.min,
               children: [
-                for (var i = 0; i < itemCount; i++)
-                  Container(
-                    width: i == activeIndex ? 28 : 7,
-                    height: 6,
-                    margin: const EdgeInsets.only(right: 5),
-                    decoration: BoxDecoration(
-                      color: i == activeIndex
-                          ? AppColors.textPrimary.withValues(alpha: 0.92)
-                          : Colors.white.withValues(alpha: 0.72),
-                      borderRadius: BorderRadius.circular(999),
+                if (itemCount > 8)
+                  Text('${activeIndex + 1}/$itemCount')
+                else
+                  for (var i = 0; i < itemCount; i++)
+                    Container(
+                      width: i == activeIndex ? 28 : 7,
+                      height: 6,
+                      margin: const EdgeInsets.only(right: 5),
+                      decoration: BoxDecoration(
+                        color: i == activeIndex
+                            ? AppColors.textPrimary.withValues(alpha: 0.92)
+                            : Colors.white.withValues(alpha: 0.72),
+                        borderRadius: BorderRadius.circular(999),
+                      ),
                     ),
-                  ),
                 const SizedBox(width: AppSpacing.xxs),
                 const SizedBox.square(dimension: 24),
               ],
@@ -432,88 +436,110 @@ class _BannerCard extends StatelessWidget {
           ),
           child: ClipRRect(
             borderRadius: BorderRadius.circular(24),
-            child: Image.asset(
-              item.assetPath,
-              fit: BoxFit.cover,
-              alignment: Alignment.center,
-              errorBuilder: (context, error, stackTrace) => context.isMobile
-                  ? Padding(
-                      padding: const EdgeInsets.all(12),
-                      child: Center(
-                        child: Text(
-                          '${item.title}\n${item.emphasis}',
-                          textAlign: TextAlign.center,
-                          style: Theme.of(context).textTheme.titleSmall,
-                        ),
-                      ),
-                    )
-                  : Padding(
-                      padding: const EdgeInsets.all(38),
-                      child: Row(
-                        children: [
-                          Expanded(
-                            flex: 11,
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              mainAxisAlignment: MainAxisAlignment.center,
+            child: item.imageUrl != null
+                ? AppNetworkImage(
+                    url: context.isMobile
+                        ? item.mobileImageUrl ?? item.imageUrl!
+                        : item.imageUrl!,
+                    fit: BoxFit.cover,
+                    placeholderIcon: Icons.image_not_supported_outlined,
+                  )
+                : Image.asset(
+                    item.assetPath!,
+                    fit: BoxFit.cover,
+                    alignment: Alignment.center,
+                    errorBuilder: (context, error, stackTrace) =>
+                        context.isMobile
+                        ? Padding(
+                            padding: const EdgeInsets.all(12),
+                            child: Center(
+                              child: Text(
+                                '${item.title}\n${item.emphasis}',
+                                textAlign: TextAlign.center,
+                                style: Theme.of(context).textTheme.titleSmall,
+                              ),
+                            ),
+                          )
+                        : Padding(
+                            padding: const EdgeInsets.all(38),
+                            child: Row(
                               children: [
-                                Text(
-                                  item.title,
-                                  style: Theme.of(context).textTheme.titleMedium
-                                      ?.copyWith(
-                                        color: AppColors.textPrimary,
-                                        fontWeight: FontWeight.w800,
-                                      ),
-                                ),
-                                const SizedBox(height: AppSpacing.xs),
-                                Text(
-                                  item.emphasis,
-                                  style:
-                                      (context.isMobile || useCompactText
-                                              ? Theme.of(
-                                                  context,
-                                                ).textTheme.headlineSmall
-                                              : Theme.of(
-                                                  context,
-                                                ).textTheme.displayMedium)
-                                          ?.copyWith(
-                                            color: item.accentColor,
-                                            fontWeight: FontWeight.w900,
-                                          ),
-                                  maxLines: 2,
-                                  overflow: TextOverflow.ellipsis,
-                                ),
-                                const SizedBox(height: AppSpacing.md),
-                                Text(
-                                  item.description,
-                                  style: Theme.of(context).textTheme.bodyMedium
-                                      ?.copyWith(
-                                        color: AppColors.textSecondary,
-                                      ),
-                                ),
-                                const SizedBox(height: AppSpacing.lg),
-                                OutlinedButton(
-                                  onPressed: onPressed,
-                                  child: Row(
-                                    mainAxisSize: MainAxisSize.min,
+                                Expanded(
+                                  flex: 11,
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
-                                      Text(item.ctaLabel),
-                                      const SizedBox(width: AppSpacing.xxs),
-                                      const Icon(Icons.chevron_right, size: 18),
+                                      Text(
+                                        item.title,
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .titleMedium
+                                            ?.copyWith(
+                                              color: AppColors.textPrimary,
+                                              fontWeight: FontWeight.w800,
+                                            ),
+                                      ),
+                                      const SizedBox(height: AppSpacing.xs),
+                                      Text(
+                                        item.emphasis,
+                                        style:
+                                            (context.isMobile || useCompactText
+                                                    ? Theme.of(
+                                                        context,
+                                                      ).textTheme.headlineSmall
+                                                    : Theme.of(
+                                                        context,
+                                                      ).textTheme.displayMedium)
+                                                ?.copyWith(
+                                                  color: item.accentColor,
+                                                  fontWeight: FontWeight.w900,
+                                                ),
+                                        maxLines: 2,
+                                        overflow: TextOverflow.ellipsis,
+                                      ),
+                                      const SizedBox(height: AppSpacing.md),
+                                      Text(
+                                        item.description,
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .bodyMedium
+                                            ?.copyWith(
+                                              color: AppColors.textSecondary,
+                                            ),
+                                      ),
+                                      const SizedBox(height: AppSpacing.lg),
+                                      OutlinedButton(
+                                        onPressed: onPressed,
+                                        child: Row(
+                                          mainAxisSize: MainAxisSize.min,
+                                          children: [
+                                            Text(item.ctaLabel),
+                                            const SizedBox(
+                                              width: AppSpacing.xxs,
+                                            ),
+                                            const Icon(
+                                              Icons.chevron_right,
+                                              size: 18,
+                                            ),
+                                          ],
+                                        ),
+                                      ),
                                     ],
                                   ),
                                 ),
+                                if (!context.isMobile) ...[
+                                  const SizedBox(width: AppSpacing.md),
+                                  Expanded(
+                                    flex: 8,
+                                    child: _BannerVisual(item: item),
+                                  ),
+                                ],
                               ],
                             ),
                           ),
-                          if (!context.isMobile) ...[
-                            const SizedBox(width: AppSpacing.md),
-                            Expanded(flex: 8, child: _BannerVisual(item: item)),
-                          ],
-                        ],
-                      ),
-                    ),
-            ),
+                  ),
           ),
         ),
       ),
