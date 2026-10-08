@@ -1635,4 +1635,15 @@ class AppLocalizationsKo extends AppLocalizations {
 
   @override
   String get chatHistoryWait => '대화 기록은 전송이 끝난 뒤 열 수 있어요.';
+
+  @override
+  String get extProductSummaryLoading => '상품 기본 정보를 확인하고 있어요.';
+
+  @override
+  String get extProductListSummary =>
+      '목록에서 받은 상품 정보예요. 최신 상세 정보와 리뷰를 확인하고 있어요.';
+
+  @override
+  String get extProductPreviousSummary =>
+      '이전에 확인한 상품 정보예요. 최신 상세 정보와 리뷰를 확인하고 있어요.';
 }

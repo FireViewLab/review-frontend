@@ -1,3 +1,4 @@
+import 'package:re_view_front/features/external_product/domain/entities/product_summary.dart';
 import 'package:re_view_front/features/external_product/domain/entities/external_product.dart';
 
 enum ExternalProductPhase {
@@ -18,6 +19,7 @@ class ExternalProductState {
   const ExternalProductState({
     this.phase = ExternalProductPhase.loading,
     this.product,
+    this.summary,
     this.isStale = false,
     this.hasAnalysis = false,
     this.springProductId,
@@ -31,6 +33,9 @@ class ExternalProductState {
 
   final ExternalProductPhase phase;
   final ExternalProduct? product;
+  final ProductSummary? summary;
+  ExternalProduct? get displayProduct => product ?? summary?.product;
+  int? get displayNumericId => springProductId ?? summary?.verifiedNumericId;
 
   /// 오래된 데이터라 서버가 다시 수집하는 중이다. 화면은 그대로 보여 준다.
   final bool isStale;
@@ -51,6 +56,8 @@ class ExternalProductState {
 
   ExternalProductState copyWith({
     ExternalProductPhase? phase,
+    String? collectionError,
+    bool clearCollectionError = false,
     List<ExternalReview>? reviews,
     String? nextCursor,
     bool clearNextCursor = false,
@@ -61,6 +68,7 @@ class ExternalProductState {
     return ExternalProductState(
       phase: phase ?? this.phase,
       product: product,
+      summary: summary,
       isStale: isStale,
       hasAnalysis: hasAnalysis,
       springProductId: springProductId,
@@ -69,7 +77,9 @@ class ExternalProductState {
       isLoadingMore: isLoadingMore ?? this.isLoadingMore,
       loadMoreFailed: loadMoreFailed ?? this.loadMoreFailed,
       isSlow: isSlow ?? this.isSlow,
-      collectionError: collectionError,
+      collectionError: clearCollectionError
+          ? null
+          : (collectionError ?? this.collectionError),
     );
   }
 }

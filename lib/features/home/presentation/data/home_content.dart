@@ -1,3 +1,4 @@
+import 'package:re_view_front/features/external_product/domain/entities/external_product_ref.dart';
 import 'package:flutter/material.dart';
 import 'package:re_view_front/features/category/domain/entities/product_category_master.dart';
 
@@ -204,6 +205,7 @@ class HomeProductData {
   const HomeProductData({
     this.detailPath,
     this.chatProductId,
+    this.routeContext,
     required this.productId,
     required this.name,
     required this.storeName,
@@ -217,6 +219,7 @@ class HomeProductData {
 
   final String? detailPath;
   final String? chatProductId;
+  final ProductRouteContext? routeContext;
   final String productId;
   final String name;
   final String storeName;

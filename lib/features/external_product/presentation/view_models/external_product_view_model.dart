@@ -30,45 +30,68 @@ class ExternalProductViewModel extends Notifier<ExternalProductState> {
   ExternalProductState build() {
     ref.onDispose(() => _pollTimer?.cancel());
     Future.microtask(load);
-    return const ExternalProductState();
+    return ExternalProductState(
+      summary: ref.read(productSummaryCacheProvider).get(productRef),
+    );
   }
 
   Future<void> load() async {
+    if (!ref.mounted) return;
     final generation = ++_generation;
     _pollTimer?.cancel();
     _loadedCursors.clear();
-    state = const ExternalProductState();
+    state = state.copyWith(
+      phase: ExternalProductPhase.loading,
+      isLoadingMore: false,
+      loadMoreFailed: false,
+      isSlow: false,
+      clearCollectionError: true,
+    );
     await _fetch(generation, startedAt: DateTime.now());
   }
 
-  Future<void> _fetch(int generation, {required DateTime startedAt}) async {
+  Future<void> _fetch(
+    int generation, {
+    required DateTime startedAt,
+    String? reviewError,
+  }) async {
     final result = await _repository.getProduct(productRef);
     if (!_isCurrent(generation)) return;
 
     result.when(
       success: (snapshot) {
         final product = snapshot.product;
-        if (product != null) {
+        if (product != null && product.ref == productRef) {
+          final summary = ProductSummary(
+            product: product,
+            springProductId: snapshot.springProductId,
+            observedAt: DateTime.now(),
+            source: ProductSummarySource.previousDetail,
+          );
+          ref.read(productSummaryCacheProvider).remember(summary);
           state = ExternalProductState(
             phase: ExternalProductPhase.ready,
             product: product,
+            summary: summary,
             isStale: snapshot.status == CollectionStatus.stale,
             hasAnalysis: snapshot.hasAnalysis,
             springProductId: snapshot.springProductId,
             reviews: snapshot.reviews,
             nextCursor: snapshot.nextCursor,
+            collectionError:
+                reviewError ??
+                (snapshot.job?.status == CollectionJobStatus.partial
+                    ? snapshot.job?.lastError
+                    : null),
           );
         } else if (snapshot.status == CollectionStatus.queued) {
           _wait(generation, startedAt: startedAt, jobId: snapshot.job?.id);
         } else {
-          state = const ExternalProductState(
-            phase: ExternalProductPhase.unavailable,
-          );
+          state = state.copyWith(phase: ExternalProductPhase.unavailable);
         }
       },
-      failure: (_) => state = const ExternalProductState(
-        phase: ExternalProductPhase.failure,
-      ),
+      failure: (_) =>
+          state = state.copyWith(phase: ExternalProductPhase.failure),
     );
   }
 
@@ -76,12 +99,10 @@ class ExternalProductViewModel extends Notifier<ExternalProductState> {
   void _wait(int generation, {required DateTime startedAt, int? jobId}) {
     final elapsed = DateTime.now().difference(startedAt);
     if (elapsed >= _giveUpAfter) {
-      state = const ExternalProductState(
-        phase: ExternalProductPhase.unavailable,
-      );
+      state = state.copyWith(phase: ExternalProductPhase.unavailable);
       return;
     }
-    state = ExternalProductState(
+    state = state.copyWith(
       phase: ExternalProductPhase.collecting,
       isSlow: elapsed >= _slowAfter,
     );
@@ -106,9 +127,15 @@ class ExternalProductViewModel extends Notifier<ExternalProductState> {
     await result.when(
       success: (job) async {
         if (job.isFinished) {
-          await _fetch(generation, startedAt: startedAt);
+          await _fetch(
+            generation,
+            startedAt: startedAt,
+            reviewError: job.status == CollectionJobStatus.partial
+                ? job.lastError
+                : null,
+          );
         } else if (job.status == CollectionJobStatus.failed) {
-          state = ExternalProductState(
+          state = state.copyWith(
             phase: ExternalProductPhase.unavailable,
             collectionError: job.lastError,
           );

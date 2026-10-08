@@ -1,3 +1,5 @@
+import 'package:re_view_front/features/external_product/data/dtos/product_summary_dto.dart';
+import 'package:re_view_front/features/external_product/domain/entities/product_summary.dart';
 import 'package:re_view_front/features/home/domain/entities/dashboard_product.dart';
 
 class DashboardProductDto {
@@ -11,6 +13,7 @@ class DashboardProductDto {
     this.rating,
     this.reviewCount,
     this.rtiScore,
+    this.summary,
     this.externalId,
     this.dataPlatform,
     this.dataProductId,
@@ -19,6 +22,7 @@ class DashboardProductDto {
 
   factory DashboardProductDto.fromJson(Map<String, dynamic> json) {
     return DashboardProductDto(
+      summary: ProductSummaryDto.fromJson(json),
       externalId: json['externalId'] as String?,
       dataPlatform: json['dataPlatform'] as String?,
       dataProductId: json['dataProductId']?.toString(),
@@ -63,6 +67,7 @@ class DashboardProductDto {
     );
   }
 
+  final ProductSummary? summary;
   final String? externalId;
   final String? dataPlatform;
   final String? dataProductId;
@@ -80,6 +85,7 @@ class DashboardProductDto {
 
   DashboardProduct toEntity() {
     return DashboardProduct(
+      summary: summary,
       externalId: externalId,
       dataPlatform: dataPlatform,
       dataProductId: dataProductId,
