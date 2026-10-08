@@ -120,7 +120,7 @@ class FilterPanel extends StatelessWidget {
                 ),
                 const SizedBox(height: AppSpacing.xs),
                 PriceRangeSlider(
-                  products: state.products,
+                  products: state.sourceProducts,
                   minPriceController: minPriceController,
                   maxPriceController: maxPriceController,
                   onChanged: onPriceChanged,
@@ -166,13 +166,19 @@ class FilterPanel extends StatelessWidget {
 
             const Divider(height: AppSpacing.lg),
             ExpandableFilterSection(
-              title: '브랜드',
+              title: '판매처',
               children: [
                 SelectBox(
-                  label: selectedBrand ?? '브랜드를 선택하세요',
+                  label: selectedBrand ?? '판매처를 선택하세요',
                   selectedBrand: selectedBrand,
-                  brands: state.products
-                      .map((p) => p.platform)
+                  brands: state.sourceProducts
+                      .map(
+                        (p) => normalizeSearchPlatform(
+                          p.platform ??
+                              p.dataPlatform ??
+                              p.externalRef?.platform,
+                        ),
+                      )
                       .whereType<String>()
                       .toSet()
                       .toList(),
@@ -183,13 +189,15 @@ class FilterPanel extends StatelessWidget {
             const Divider(height: AppSpacing.lg),
             FilterSection(
               title: 'RTI 신뢰 점수',
-              trailing: '${selectedRtiMinimum.round()}점 이상',
+              trailing: state.isRtiFilterActive
+                  ? '${selectedRtiMinimum.round()}점 이상'
+                  : '전체 (분석 전 포함)',
               children: [
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: const [
-                    RangeEndpoint(label: '0%'),
-                    RangeEndpoint(label: '100%'),
+                    RangeEndpoint(label: '0점'),
+                    RangeEndpoint(label: '100점'),
                   ],
                 ),
                 const SizedBox(height: AppSpacing.xs),
@@ -229,18 +237,24 @@ class FilterPanel extends StatelessWidget {
                   runSpacing: AppSpacing.xs,
                   children: [
                     PriceRangeChip(
-                      label: '80% 이상',
-                      selected: selectedRtiMinimum.round() == 80,
+                      label: '80점 이상',
+                      selected:
+                          state.isRtiFilterActive &&
+                          selectedRtiMinimum.round() == 80,
                       onPressed: () => onRtiMinimumChanged(80),
                     ),
                     PriceRangeChip(
-                      label: '90% 이상',
-                      selected: selectedRtiMinimum.round() == 90,
+                      label: '90점 이상',
+                      selected:
+                          state.isRtiFilterActive &&
+                          selectedRtiMinimum.round() == 90,
                       onPressed: () => onRtiMinimumChanged(90),
                     ),
                     PriceRangeChip(
-                      label: '95% 이상',
-                      selected: selectedRtiMinimum.round() == 95,
+                      label: '95점 이상',
+                      selected:
+                          state.isRtiFilterActive &&
+                          selectedRtiMinimum.round() == 95,
                       onPressed: () => onRtiMinimumChanged(95),
                     ),
                   ],
@@ -249,21 +263,9 @@ class FilterPanel extends StatelessWidget {
             ),
             const Divider(height: AppSpacing.lg),
             FilterSection(
-              title: '배송',
+              title: '정보 상태',
               children: [
-                for (final label in const ['로켓배송/오늘출발', '무료배송', '정기배송 가능'])
-                  CheckboxRow(
-                    label: label,
-                    selected: selectedAttributeFilters.contains(label),
-                    onChanged: () => onAttributeToggled(label),
-                  ),
-              ],
-            ),
-            const Divider(height: AppSpacing.lg),
-            FilterSection(
-              title: '판매처 유형',
-              children: [
-                for (final label in const ['공식몰', '스토어'])
+                for (final label in const ['분석 전만', '가격 정보 없음만'])
                   CheckboxRow(
                     label: label,
                     selected: selectedAttributeFilters.contains(label),
@@ -275,11 +277,7 @@ class FilterPanel extends StatelessWidget {
             FilterSection(
               title: '리뷰 조건',
               children: [
-                for (final label in const [
-                  '리뷰 50개 이상',
-                  '사진 포함',
-                  '최근 30일 리뷰 포함',
-                ])
+                for (final label in const ['리뷰 50개 이상'])
                   CheckboxRow(
                     label: label,
                     selected: selectedReviewConditions.contains(label),
@@ -717,7 +715,8 @@ class PriceRangeSlider extends StatelessWidget {
 
     final span = (bounds.$2 - bounds.$1).clamp(1, 1 << 31);
     for (final product in products) {
-      final normalized = (product.price - bounds.$1) / span;
+      if (product.price == null) continue;
+      final normalized = (product.price! - bounds.$1) / span;
       final rawIndex = (normalized * (binCount - 1)).round();
       final index = rawIndex.clamp(0, binCount - 1);
       bins[index]++;
@@ -749,7 +748,11 @@ class PriceRangeSlider extends StatelessWidget {
       return (0, 700000);
     }
 
-    final prices = products.map((product) => product.price);
+    final prices = products
+        .map((product) => product.price)
+        .whereType<int>()
+        .toList();
+    if (prices.isEmpty) return (0, 1);
     final minPrice = prices.reduce((value, element) {
       return value < element ? value : element;
     });
@@ -812,10 +815,10 @@ class SelectBox extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return PopupMenuButton<String?>(
-      tooltip: '브랜드 선택',
-      initialValue: selectedBrand,
-      onSelected: onSelected,
+    return PopupMenuButton<String>(
+      tooltip: '판매처 선택',
+      initialValue: selectedBrand ?? '',
+      onSelected: (value) => onSelected(value.isEmpty ? null : value),
       color: AppColors.surface,
       elevation: 10,
       constraints: const BoxConstraints(minWidth: 210, maxWidth: 230),
@@ -825,16 +828,16 @@ class SelectBox extends StatelessWidget {
         side: const BorderSide(color: AppColors.border),
       ),
       itemBuilder: (context) => [
-        PopupMenuItem<String?>(
-          value: null,
+        PopupMenuItem<String>(
+          value: '',
           height: 36,
           child: SelectMenuItemLabel(
-            label: '전체 브랜드',
+            label: '전체 판매처',
             selected: selectedBrand == null,
           ),
         ),
         for (final brand in brands)
-          PopupMenuItem<String?>(
+          PopupMenuItem<String>(
             value: brand,
             height: 36,
             child: SelectMenuItemLabel(

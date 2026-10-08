@@ -19,6 +19,7 @@ class SearchResultProduct {
     this.dataPlatform,
     this.dataProductId,
     this.subCategory,
+    this.majorCategory,
   });
 
   final ProductSummary? summary;
@@ -26,6 +27,7 @@ class SearchResultProduct {
   final String? dataPlatform;
   final String? dataProductId;
   final String? subCategory;
+  final String? majorCategory;
   ExternalProductRef? get externalRef => ExternalProductRef.resolve(
     dataPlatform: dataPlatform,
     dataProductId: dataProductId,
@@ -41,7 +43,7 @@ class SearchResultProduct {
   final int id;
   final String name;
   final String imageUrl;
-  final int price;
+  final int? price;
   final String category;
   final String categoryDisplayName;
   final String? platform;
@@ -50,4 +52,16 @@ class SearchResultProduct {
   final String? rtiColor;
   final int? reviewCount;
   final double? avgRating;
+}
+
+String? normalizeSearchPlatform(String? value) {
+  final raw = value?.trim();
+  if (raw == null || raw.isEmpty) return null;
+  return switch (raw.toLowerCase().replaceAll(RegExp(r'[\s_-]'), '')) {
+    'kurly' || '컬리' || '마켓컬리' => '컬리',
+    'oliveyoung' || '올리브영' => '올리브영',
+    'musinsa' || '무신사' => '무신사',
+    '11st' || '11street' || '11번가' => '11번가',
+    _ => raw,
+  };
 }

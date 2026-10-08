@@ -1,6 +1,5 @@
 import 'package:re_view_front/features/external_product/data/dtos/product_summary_dto.dart';
 import 'package:re_view_front/features/external_product/domain/entities/product_summary.dart';
-import 'package:re_view_front/features/category/domain/entities/product_category_resolver.dart';
 import 'package:re_view_front/features/search/domain/entities/search_result_product.dart';
 
 class SearchResultProductDto {
@@ -22,6 +21,7 @@ class SearchResultProductDto {
     this.dataPlatform,
     this.dataProductId,
     this.subCategory,
+    this.majorCategory,
   });
 
   factory SearchResultProductDto.fromJson(Map<String, dynamic> json) {
@@ -31,6 +31,7 @@ class SearchResultProductDto {
       dataPlatform: json['dataPlatform'] as String?,
       dataProductId: json['dataProductId']?.toString(),
       subCategory: json['subCategory'] as String?,
+      majorCategory: json['majorCategory'] as String?,
       id: _readInt(json, ['id', 'productId']),
       name: _readString(json, ['name', 'productName', 'title']),
       imageUrl: _readString(json, [
@@ -40,7 +41,11 @@ class SearchResultProductDto {
         'thumbnail',
         'image',
       ]),
-      price: _readInt(json, ['price', 'salePrice', 'discountPrice']),
+      price:
+          ProductSummaryDto.integer(
+            json['price'] ?? json['salePrice'] ?? json['discountPrice'],
+          ) ??
+          ProductSummaryDto.fromJson(json)?.product.price,
       category: _readString(json, ['category', 'categoryCode']),
       categoryDisplayName: _readString(json, [
         'categoryDisplayName',
@@ -52,11 +57,7 @@ class SearchResultProductDto {
       rtiColor: _readNullableString(json, ['rtiColor', 'color']),
       reviewCount: _readNullableInt(json, ['reviewCount', 'review_count']),
       avgRating: _readDouble(json, ['avgRating', 'rating', 'starRating']),
-      platform: _readNullableString(json, [
-        'platform',
-        'storeName',
-        'brandName',
-      ]),
+      platform: _readNullableString(json, ['platform', 'storeName']),
     );
   }
 
@@ -65,11 +66,12 @@ class SearchResultProductDto {
   final String? dataPlatform;
   final String? dataProductId;
   final String? subCategory;
+  final String? majorCategory;
 
   final int id;
   final String name;
   final String imageUrl;
-  final int price;
+  final int? price;
   final String category;
   final String categoryDisplayName;
   final double? avgRti;
@@ -80,17 +82,9 @@ class SearchResultProductDto {
   final String? platform;
 
   SearchResultProduct toEntity() {
-    final isExternal =
-        externalId?.trim().isNotEmpty == true ||
-        (dataPlatform?.trim().isNotEmpty == true &&
-            dataProductId?.trim().isNotEmpty == true);
-    final normalizedDisplayName = category.isEmpty
-        ? subCategory ?? categoryDisplayName
-        : normalizedCategoryLabel(
-            category: category,
-            categoryDisplayName: categoryDisplayName,
-            productName: isExternal ? '' : name,
-          );
+    final normalizedDisplayName = categoryDisplayName.isNotEmpty
+        ? categoryDisplayName
+        : subCategory ?? category;
 
     return SearchResultProduct(
       summary: summary,
@@ -98,6 +92,7 @@ class SearchResultProductDto {
       dataPlatform: dataPlatform,
       dataProductId: dataProductId,
       subCategory: subCategory,
+      majorCategory: majorCategory,
       id: id,
       name: name,
       imageUrl: imageUrl,
@@ -109,7 +104,12 @@ class SearchResultProductDto {
       rtiColor: rtiColor,
       reviewCount: reviewCount,
       avgRating: avgRating,
-      platform: platform,
+      platform: normalizeSearchPlatform(
+        platform ??
+            dataPlatform ??
+            summary?.product.seller ??
+            summary?.product.ref.platform,
+      ),
     );
   }
 }
