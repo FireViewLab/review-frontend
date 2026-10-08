@@ -10,6 +10,7 @@ class CartOrderSummary extends StatelessWidget {
     required this.selectedCount,
     required this.onCheckout,
     required this.onContinueShopping,
+    required this.onTestCheckout,
     this.hasUnknownPrice = false,
     this.isUpdating = false,
   });
@@ -17,6 +18,7 @@ class CartOrderSummary extends StatelessWidget {
   final int selectedCount;
   final Future<void> Function() onCheckout;
   final VoidCallback onContinueShopping;
+  final VoidCallback onTestCheckout;
   final bool hasUnknownPrice;
   final bool isUpdating;
 
@@ -42,6 +44,10 @@ class CartOrderSummary extends StatelessWidget {
             onPressed: selectedCount > 0 && !isUpdating ? onCheckout : null,
             icon: const Icon(Icons.open_in_new),
             label: const Text('선택 상품 구매처 확인'),
+          ),
+          OutlinedButton(
+            onPressed: selectedCount > 0 && !isUpdating ? onTestCheckout : null,
+            child: const Text('장바구니 TEST 주문'),
           ),
           TextButton(
             onPressed: onContinueShopping,

@@ -1,3 +1,5 @@
+import 'package:re_view_front/features/payments/presentation/pages/cart_checkout_page.dart';
+import 'package:re_view_front/features/payments/domain/entities/cart_checkout.dart';
 import 'package:re_view_front/features/payments/presentation/pages/test_payment_page.dart';
 import 'package:re_view_front/app/router/app_shell.dart';
 import 'package:flutter/material.dart';
@@ -79,6 +81,7 @@ final appRouterProvider = Provider<GoRouter>((ref) {
         RoutePaths.myPage,
         RoutePaths.wishlist,
         RoutePaths.cart,
+        RoutePaths.cartCheckout,
         RoutePaths.settings,
         RoutePaths.feedbackHistory,
         RoutePaths.notifications,
@@ -258,6 +261,17 @@ final appRouterProvider = Provider<GoRouter>((ref) {
             name: RouteNames.notifications,
             pageBuilder: (context, state) =>
                 _buildContentPage(state, const NotificationsPage()),
+          ),
+          GoRoute(
+            path: RoutePaths.cartCheckout,
+            pageBuilder: (context, state) => _buildContentPage(
+              state,
+              CartCheckoutPage(
+                selection: state.extra is CartCheckoutSelection
+                    ? state.extra as CartCheckoutSelection
+                    : null,
+              ),
+            ),
           ),
           GoRoute(
             path: RoutePaths.testPayment,
