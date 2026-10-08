@@ -31,6 +31,7 @@ class SearchResultsState {
   const SearchResultsState({
     required this.query,
     required this.products,
+    this.sourceProducts = const [],
     required this.quickFilters,
     required this.categoryFilters,
     required this.priceRanges,
@@ -38,11 +39,13 @@ class SearchResultsState {
     this.sortOption = SearchSortOption.accuracy,
     this.selectedRtiMinimum = 50,
     this.isLoading = false,
+    this.isRtiFilterActive = false,
     this.errorMessage,
   });
 
   final String query;
   final List<SearchResultProduct> products;
+  final List<SearchResultProduct> sourceProducts;
   final List<SearchFilterChipData> quickFilters;
   final List<SearchFilterChipData> categoryFilters;
   final List<SearchFilterChipData> priceRanges;
@@ -50,6 +53,7 @@ class SearchResultsState {
   final SearchSortOption sortOption;
   final int selectedRtiMinimum;
   final bool isLoading;
+  final bool isRtiFilterActive;
   final String? errorMessage;
 
   int get displayTotalCount => totalCount ?? products.length;

@@ -41,8 +41,7 @@ class _SearchResultsPageState extends ConsumerState<SearchResultsPage> {
   late final TextEditingController _maxPriceController;
   String _selectedQuickFilter = '전체';
   String? _selectedBrand;
-  late SearchSortOption _sortOption =
-      widget.initialSort ?? SearchSortOption.accuracy;
+  late SearchSortOption _sortOption = _supportedSort(widget.initialSort);
   SearchViewMode _viewMode = SearchViewMode.grid;
   double _selectedRtiMinimum = 50;
   bool _isPriceFilterActive = false;
@@ -97,25 +96,22 @@ class _SearchResultsPageState extends ConsumerState<SearchResultsPage> {
     });
     final searchState = ref.watch(searchViewModelProvider);
     final products = _resolveProducts(searchState);
-    final totalCount = _resolveTotalCount(searchState, products);
+
     final filteredProducts = _sortProducts(_filterProducts(products));
-    final effectiveTotalCount = widget.categoryId == null
-        ? totalCount
-        : filteredProducts.length;
+    final effectiveTotalCount = filteredProducts.length;
 
     _syncInitialPriceRange(products, _effectiveSearchQuery);
 
     final uiState = SearchResultsState(
       query: _displayQuery,
       products: filteredProducts,
-      quickFilters: _buildQuickFilters(
-        widget.categoryId == null ? products : filteredProducts,
-        effectiveTotalCount ?? filteredProducts.length,
-      ),
-      categoryFilters: _buildCategoryFilters(
-        widget.categoryId == null ? products : filteredProducts,
-      ),
+      sourceProducts: products,
+      quickFilters: _buildQuickFilters(products, products.length),
+      categoryFilters: _buildCategoryFilters(products),
       priceRanges: _buildPriceRanges(products),
+      sortOption: _sortOption,
+      isRtiFilterActive: _isRtiFilterActive,
+      selectedRtiMinimum: _selectedRtiMinimum.round(),
       totalCount: effectiveTotalCount,
       isLoading: searchState.isLoading,
       errorMessage: searchState is SearchFailure
@@ -127,6 +123,14 @@ class _SearchResultsPageState extends ConsumerState<SearchResultsPage> {
       backgroundColor: AppColors.background,
       body: CustomScrollView(
         slivers: [
+          SliverToBoxAdapter(
+            child: Padding(
+              padding: const EdgeInsets.all(AppSpacing.md),
+              child: Text(
+                '현재 불러온 ${products.length}개 상품에서 필터·정렬합니다. 키워드 검색은 최대 40개 결과이며 전체 쇼핑몰 상품 검색 필터가 아닙니다. 배송·판매량·출시일·사진 리뷰 정보는 제공되지 않아 해당 조건은 지원하지 않습니다.',
+              ),
+            ),
+          ),
           if (widget.categoryId != null &&
               products.any((p) => !_hasResolvedCategory(p)))
             const SliverToBoxAdapter(
@@ -177,6 +181,10 @@ class _SearchResultsPageState extends ConsumerState<SearchResultsPage> {
                 onRtiMinimumChanged: (value) {
                   setState(() {
                     _selectedRtiMinimum = value;
+                    _selectedAttributeFilters.remove('분석 전만');
+                    if (_selectedQuickFilter == '분석 전') {
+                      _selectedQuickFilter = '전체';
+                    }
                     _isRtiFilterActive = true;
                     _currentPage = 1;
                   });
@@ -231,6 +239,10 @@ class _SearchResultsPageState extends ConsumerState<SearchResultsPage> {
             .where((p) => p.avgRti != null && p.avgRti! >= 80)
             .length,
       ),
+      SearchFilterChipData(
+        label: '분석 전',
+        count: products.where((p) => p.avgRti == null).length,
+      ),
       for (final cat in categorySet)
         SearchFilterChipData(
           label: cat,
@@ -245,10 +257,19 @@ class _SearchResultsPageState extends ConsumerState<SearchResultsPage> {
     List<SearchResultProduct> products,
   ) {
     if (products.isEmpty) return const [];
-    return const [
-      SearchFilterChipData(label: '1만원 이하', count: 0),
-      SearchFilterChipData(label: '10~30만원', count: 0),
-      SearchFilterChipData(label: '30만원 이상', count: 0),
+    return [
+      SearchFilterChipData(
+        label: '1만원 이하',
+        count: products.where((p) => _matchesPriceRange(p, '1만원 이하')).length,
+      ),
+      SearchFilterChipData(
+        label: '10~30만원',
+        count: products.where((p) => _matchesPriceRange(p, '10~30만원')).length,
+      ),
+      SearchFilterChipData(
+        label: '30만원 이상',
+        count: products.where((p) => _matchesPriceRange(p, '30만원 이상')).length,
+      ),
     ];
   }
 
@@ -273,16 +294,6 @@ class _SearchResultsPageState extends ConsumerState<SearchResultsPage> {
     };
   }
 
-  int? _resolveTotalCount(
-    SearchState state,
-    List<SearchResultProduct> products,
-  ) {
-    return switch (state) {
-      SearchSuccess(:final totalCount) => totalCount,
-      _ => null,
-    };
-  }
-
   void _handleQuickFilterSelected(String label) {
     setState(() {
       _selectedQuickFilter = label;
@@ -293,7 +304,11 @@ class _SearchResultsPageState extends ConsumerState<SearchResultsPage> {
           _selectedRtiMinimum = 50;
           _isRtiFilterActive = false;
           break;
+        case '분석 전':
+          _isRtiFilterActive = false;
+          break;
         case 'RTI 80+':
+          _selectedAttributeFilters.remove('분석 전만');
           _selectedRtiMinimum = 80;
           _isRtiFilterActive = true;
           break;
@@ -349,6 +364,10 @@ class _SearchResultsPageState extends ConsumerState<SearchResultsPage> {
   void _toggleAttributeFilter(String label) {
     setState(() {
       _toggleSetValue(_selectedAttributeFilters, label);
+      if (label == '분석 전만' && _selectedAttributeFilters.contains(label)) {
+        _isRtiFilterActive = false;
+        _selectedQuickFilter = '전체';
+      }
       _currentPage = 1;
     });
   }
@@ -363,7 +382,7 @@ class _SearchResultsPageState extends ConsumerState<SearchResultsPage> {
       _selectedAttributeFilters.clear();
       _selectedReviewConditions.clear();
       _selectedQuickFilter = '전체';
-      _sortOption = widget.initialSort ?? SearchSortOption.accuracy;
+      _sortOption = _supportedSort(widget.initialSort);
       _viewMode = SearchViewMode.grid;
       _selectedRtiMinimum = 50;
       _isRtiFilterActive = false;
@@ -383,8 +402,26 @@ class _SearchResultsPageState extends ConsumerState<SearchResultsPage> {
                 widget.categoryId!,
                 productCategory: product.category,
                 productCategoryDisplayName: product.categoryDisplayName,
-                productName: _classificationTextFor(product),
+                productName: '',
               )) {
+            return false;
+          }
+
+          if (_selectedBrand != null &&
+              normalizeSearchPlatform(
+                    product.platform ??
+                        product.dataPlatform ??
+                        product.externalRef?.platform,
+                  ) !=
+                  _selectedBrand) {
+            return false;
+          }
+          if (_selectedAttributeFilters.contains('분석 전만') &&
+              product.avgRti != null) {
+            return false;
+          }
+          if (_selectedAttributeFilters.contains('가격 정보 없음만') &&
+              product.price != null) {
             return false;
           }
 
@@ -405,8 +442,12 @@ class _SearchResultsPageState extends ConsumerState<SearchResultsPage> {
           if (_isPriceFilterActive) {
             final minPrice = _parsePrice(_minPriceController.text);
             final maxPrice = _parsePrice(_maxPriceController.text);
-            if (minPrice != null && product.price < minPrice) return false;
-            if (maxPrice != null && product.price > maxPrice) return false;
+            if ((minPrice != null || maxPrice != null) &&
+                product.price == null) {
+              return false;
+            }
+            if (minPrice != null && product.price! < minPrice) return false;
+            if (maxPrice != null && product.price! > maxPrice) return false;
           }
 
           if (_isRtiFilterActive &&
@@ -446,20 +487,23 @@ class _SearchResultsPageState extends ConsumerState<SearchResultsPage> {
           (a, b) => (b.reviewCount ?? -1).compareTo(a.reviewCount ?? -1),
         );
       case SearchSortOption.priceLow:
-        sorted.sort((a, b) => a.price.compareTo(b.price));
+        sorted.sort((a, b) => _comparePrice(a.price, b.price));
       case SearchSortOption.priceHigh:
-        sorted.sort((a, b) => b.price.compareTo(a.price));
+        sorted.sort(
+          (a, b) => _comparePrice(a.price, b.price, descending: true),
+        );
       case SearchSortOption.newest:
-        sorted.sort((a, b) => b.id.compareTo(a.id));
+        sorted.sort((a, b) => 0);
     }
     return sorted;
   }
 
   bool _matchesPriceRange(SearchResultProduct product, String label) {
+    if (product.price == null) return false;
     return switch (label) {
-      '1만원 이하' => product.price <= 10000,
-      '10~30만원' => product.price >= 100000 && product.price <= 300000,
-      '30만원 이상' => product.price >= 300000,
+      '1만원 이하' => product.price! <= 10000,
+      '10~30만원' => product.price! >= 100000 && product.price! <= 300000,
+      '30만원 이상' => product.price! >= 300000,
       _ => true,
     };
   }
@@ -468,7 +512,7 @@ class _SearchResultsPageState extends ConsumerState<SearchResultsPage> {
     return switch (label) {
       '1만원 이하' => ('0', '10000'),
       '10~30만원' => ('100000', '300000'),
-      '30만원 이상' => ('300000', '700000'),
+      '30만원 이상' => ('300000', ''),
       _ => ('0', '700000'),
     };
   }
@@ -495,7 +539,8 @@ class _SearchResultsPageState extends ConsumerState<SearchResultsPage> {
       return;
     }
 
-    final prices = products.map((p) => p.price);
+    final prices = products.map((p) => p.price).whereType<int>().toList();
+    if (prices.isEmpty) return;
     final minPrice = prices.reduce((a, b) => a < b ? a : b);
     final maxPrice = prices.reduce((a, b) => a > b ? a : b);
     WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -507,10 +552,8 @@ class _SearchResultsPageState extends ConsumerState<SearchResultsPage> {
 
   bool _matchesQuickFilter(SearchResultProduct product, String label) {
     return switch (label) {
+      '분석 전' => product.avgRti == null,
       'RTI 80+' => product.avgRti != null && product.avgRti! >= 80,
-      '무선' => product.name.contains('무선'),
-      '노이즈캔슬링' => product.name.contains('ANC') || product.name.contains('노이즈'),
-      '커널형' => product.name.contains('커널'),
       _ => _categoryLabelForProduct(product) == label,
     };
   }
@@ -525,12 +568,16 @@ class _SearchResultsPageState extends ConsumerState<SearchResultsPage> {
 
   String _categoryLabelForProduct(SearchResultProduct product) {
     if (product.category.isEmpty) {
-      return product.subCategory ?? product.categoryDisplayName;
+      return product.subCategory?.trim().isNotEmpty == true
+          ? product.subCategory!
+          : product.categoryDisplayName.isNotEmpty
+          ? product.categoryDisplayName
+          : '분류 정보 없음';
     }
     return normalizedCategoryLabel(
       category: product.category,
       categoryDisplayName: product.categoryDisplayName,
-      productName: _classificationTextFor(product),
+      productName: '',
     );
   }
 
@@ -539,16 +586,9 @@ class _SearchResultsPageState extends ConsumerState<SearchResultsPage> {
       resolveProductCategory(
             product.category,
             displayName: product.categoryDisplayName,
-            productName: _classificationTextFor(product),
+            productName: '',
           ) !=
           null;
-
-  String _classificationTextFor(SearchResultProduct product) {
-    if (product.externalRef != null) return '';
-    final searchContext = _effectiveSearchQuery.trim();
-    if (searchContext.isEmpty) return product.name;
-    return '$searchContext ${product.name}';
-  }
 
   String get _displayQuery {
     final searchInputQuery = _searchInputQuery;
@@ -569,4 +609,14 @@ class _SearchResultsPageState extends ConsumerState<SearchResultsPage> {
 
     return '';
   }
+}
+
+SearchSortOption _supportedSort(SearchSortOption? option) =>
+    option == SearchSortOption.sales || option == SearchSortOption.newest
+    ? SearchSortOption.accuracy
+    : option ?? SearchSortOption.accuracy;
+int _comparePrice(int? a, int? b, {bool descending = false}) {
+  if (a == null) return b == null ? 0 : 1;
+  if (b == null) return -1;
+  return descending ? b.compareTo(a) : a.compareTo(b);
 }

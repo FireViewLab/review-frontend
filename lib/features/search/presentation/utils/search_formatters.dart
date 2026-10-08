@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:re_view_front/app/theme/app_colors.dart';
 
-String formatSearchPrice(int price) {
+String formatSearchPrice(int? price) {
+  if (price == null) return '가격 정보 없음';
   final digits = price.toString();
   final buffer = StringBuffer();
   for (var i = 0; i < digits.length; i++) {
