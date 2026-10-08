@@ -1,3 +1,4 @@
+import 'package:re_view_front/shared/widgets/review_photo_view.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:re_view_front/features/settings/domain/entities/settings_data.dart';
 import 'package:re_view_front/features/settings/presentation/providers/settings_providers.dart';
@@ -57,6 +58,7 @@ class _ReviewListSectionState extends ConsumerState<ReviewListSection> {
   }
 
   bool _photoOnly = false;
+  bool _photoView = false;
   int _visibleCount = _pageSize;
 
   List<ProductReview> get _filteredSortedReviews {
@@ -80,7 +82,9 @@ class _ReviewListSectionState extends ConsumerState<ReviewListSection> {
     }
 
     if (_photoOnly) {
-      list = list.where((r) => r.imageUrls.isNotEmpty).toList();
+      list = list
+          .where((r) => validReviewImages(r.imageUrls).isNotEmpty)
+          .toList();
     }
 
     return switch (_sortOption) {
@@ -88,7 +92,7 @@ class _ReviewListSectionState extends ConsumerState<ReviewListSection> {
       ReviewSortOption.verified =>
         list.where((r) => r.isVerifiedPurchase).toList(),
       ReviewSortOption.withPhoto =>
-        list.where((r) => r.imageUrls.isNotEmpty).toList(),
+        list.where((r) => validReviewImages(r.imageUrls).isNotEmpty).toList(),
       ReviewSortOption.helpful =>
         (list..sort((a, b) {
           if (a.helpfulCount == null) return b.helpfulCount == null ? 0 : 1;
@@ -129,15 +133,28 @@ class _ReviewListSectionState extends ConsumerState<ReviewListSection> {
         if (_sortOption == ReviewSortOption.helpful &&
             !widget.reviews.any((r) => r.helpfulCount != null))
           const Text('도움 횟수가 제공되지 않아 기존 리뷰 순서로 표시합니다.'),
-        _FilterRow(
-          sortOption: _sortOption,
+        ReviewPhotoToolbar(
           photoOnly: _photoOnly,
-          onSortChanged: (v) => setState(() {
-            _selectedSort = v;
-            _visibleCount = _pageSize;
-          }),
+          photoView: _photoView,
+          loadedCount: widget.reviews.length,
+          photoReviewCount: widget.reviews
+              .where((r) => validReviewImages(r.imageUrls).isNotEmpty)
+              .length,
           onPhotoOnlyChanged: (v) => setState(() {
             _photoOnly = v;
+            if (!v) _photoView = false;
+            _visibleCount = _pageSize;
+          }),
+          onPhotoViewChanged: (v) => setState(() {
+            _photoView = v;
+            if (v) _photoOnly = true;
+            _visibleCount = _pageSize;
+          }),
+        ),
+        _FilterRow(
+          sortOption: _sortOption,
+          onSortChanged: (v) => setState(() {
+            _selectedSort = v;
             _visibleCount = _pageSize;
           }),
         ),
@@ -178,26 +195,38 @@ class _ReviewListSectionState extends ConsumerState<ReviewListSection> {
             ),
           )
         else ...[
-          ...reviews
-              .take(_visibleCount)
-              .map(
-                (review) => Padding(
-                  padding: const EdgeInsets.only(bottom: AppSpacing.md),
-                  child: ReviewCard(
-                    review: review,
-                    preferences: preferences,
-                    safeCount: widget.safeCount,
-                    warnCount: widget.warnCount,
-                    dangerCount: widget.dangerCount,
-                    onFeedback: widget.onFeedback != null
-                        ? (feedbackType) =>
-                              widget.onFeedback!(review.id, feedbackType)
-                        : null,
-                    productId: widget.productId,
-                    productName: widget.productName,
+          if (_photoView)
+            ReviewPhotoGrid(
+              entries: [
+                for (final review in reviews.take(_visibleCount))
+                  ReviewPhotoEntry(
+                    reviewKey: review.id.toString(),
+                    label: review.authorName,
+                    images: review.imageUrls,
+                  ),
+              ],
+            )
+          else
+            ...reviews
+                .take(_visibleCount)
+                .map(
+                  (review) => Padding(
+                    padding: const EdgeInsets.only(bottom: AppSpacing.md),
+                    child: ReviewCard(
+                      review: review,
+                      preferences: preferences,
+                      safeCount: widget.safeCount,
+                      warnCount: widget.warnCount,
+                      dangerCount: widget.dangerCount,
+                      onFeedback: widget.onFeedback != null
+                          ? (feedbackType) =>
+                                widget.onFeedback!(review.id, feedbackType)
+                          : null,
+                      productId: widget.productId,
+                      productName: widget.productName,
+                    ),
                   ),
                 ),
-              ),
           if (reviews.length > _visibleCount)
             Center(
               child: OutlinedButton(
@@ -217,17 +246,10 @@ class _ReviewListSectionState extends ConsumerState<ReviewListSection> {
 }
 
 class _FilterRow extends StatelessWidget {
-  const _FilterRow({
-    required this.sortOption,
-    required this.photoOnly,
-    required this.onSortChanged,
-    required this.onPhotoOnlyChanged,
-  });
+  const _FilterRow({required this.sortOption, required this.onSortChanged});
 
   final ReviewSortOption sortOption;
-  final bool photoOnly;
   final ValueChanged<ReviewSortOption> onSortChanged;
-  final ValueChanged<bool> onPhotoOnlyChanged;
 
   @override
   Widget build(BuildContext context) {
@@ -247,11 +269,6 @@ class _FilterRow extends StatelessWidget {
           onTap: () => onSortChanged(ReviewSortOption.verified),
         ),
         _FilterChip(
-          label: '사진 포함',
-          selected: sortOption == ReviewSortOption.withPhoto,
-          onTap: () => onSortChanged(ReviewSortOption.withPhoto),
-        ),
-        _FilterChip(
           label: '도움순',
           selected: sortOption == ReviewSortOption.helpful,
           onTap: () => onSortChanged(ReviewSortOption.helpful),
@@ -260,33 +277,6 @@ class _FilterRow extends StatelessWidget {
           label: 'RTI 높은순',
           selected: sortOption == ReviewSortOption.rtiHigh,
           onTap: () => onSortChanged(ReviewSortOption.rtiHigh),
-        ),
-        const _Divider(),
-        GestureDetector(
-          onTap: () => onPhotoOnlyChanged(!photoOnly),
-          child: Row(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              SizedBox(
-                width: 18,
-                height: 18,
-                child: Checkbox(
-                  value: photoOnly,
-                  onChanged: (v) => onPhotoOnlyChanged(v ?? false),
-                  materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                  activeColor: AppColors.primary,
-                ),
-              ),
-              const SizedBox(width: AppSpacing.xxs),
-              Text(
-                '사진 리뷰만 보기',
-                style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                  color: AppColors.textSecondary,
-                  fontWeight: FontWeight.w600,
-                ),
-              ),
-            ],
-          ),
         ),
       ],
     );
@@ -333,20 +323,6 @@ class _FilterChip extends StatelessWidget {
   }
 }
 
-class _Divider extends StatelessWidget {
-  const _Divider();
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      width: 1,
-      height: 16,
-      color: AppColors.borderStrong,
-      margin: const EdgeInsets.symmetric(horizontal: AppSpacing.xxs),
-    );
-  }
-}
-
 class ReviewCard extends StatelessWidget {
   const ReviewCard({
     super.key,
@@ -371,10 +347,7 @@ class ReviewCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final images = review.imageUrls
-        .map((url) => url.trim())
-        .where((url) => url.isNotEmpty)
-        .toList(growable: false);
+    final images = validReviewImages(review.imageUrls);
     final rtiColor = colorFromHex(review.rtiColor);
 
     final risky =

@@ -1,3 +1,4 @@
+import 'package:re_view_front/shared/widgets/review_photo_view.dart';
 import 'package:flutter/material.dart';
 import 'package:re_view_front/app/theme/app_colors.dart';
 import 'package:re_view_front/app/theme/app_spacing.dart';
@@ -271,10 +272,7 @@ class ExternalReviewTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final images = review.images
-        .map((url) => url.trim())
-        .where((url) => url.isNotEmpty)
-        .toList(growable: false);
+    final images = validReviewImages(review.images);
     final l10n = AppLocalizations.of(context);
     final textTheme = Theme.of(context).textTheme;
     final rating = review.rating;
