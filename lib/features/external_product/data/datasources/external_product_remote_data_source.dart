@@ -1,3 +1,4 @@
+import 'package:re_view_front/core/utils/product_image_urls.dart';
 import 'package:re_view_front/core/network/api_client.dart';
 import 'package:re_view_front/core/network/api_response.dart';
 import 'package:re_view_front/features/external_product/domain/entities/external_product.dart';
@@ -89,6 +90,7 @@ class ExternalProductRemoteDataSourceImpl
       seller: _text(json['seller']),
       price: (json['price'] as num?)?.toInt(),
       thumbnailUrl: _text(json['thumbnailUrl']),
+      imageUrls: readProductImages(json),
       category: _text(json['category']),
       reviewCount: (json['reviewCount'] as num?)?.toInt(),
       rating: (json['rating'] as num?)?.toDouble(),
