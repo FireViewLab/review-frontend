@@ -10,6 +10,7 @@ import 'package:re_view_front/features/payments/domain/entities/cart_checkout.da
 import 'package:re_view_front/features/payments/presentation/pages/test_payment_page.dart';
 import 'package:re_view_front/features/payments/presentation/providers/test_payment_providers.dart';
 import 'package:re_view_front/features/payments/presentation/view_models/test_payment_state.dart';
+import 'package:re_view_front/features/payments/presentation/view_models/test_payment_view_model.dart';
 import 'package:re_view_front/shared/widgets/app_content_view.dart';
 
 class CartCheckoutPage extends ConsumerStatefulWidget {
@@ -52,18 +53,18 @@ class _CartCheckoutPageState extends ConsumerState<CartCheckoutPage> {
       }
     });
     if (restoring || _repository != null) {
-      final repository =
-          _repository ??
-          CartCheckoutRepositoryImpl(
-            ref.watch(apiClientProvider),
-            contract,
-            null,
-            null,
-          );
+      final repository = _repository ??= CartCheckoutRepositoryImpl(
+        ref.watch(apiClientProvider),
+        contract,
+        null,
+        null,
+      );
       return ProviderScope(
+        key: ValueKey(session.revision),
         overrides: [
           testPaymentContractProvider.overrideWithValue(contract?.payment),
           testPaymentRepositoryProvider.overrideWithValue(repository),
+          testPaymentViewModelProvider.overrideWith(TestPaymentViewModel.new),
         ],
         child: Consumer(
           builder: (context, childRef, _) {
