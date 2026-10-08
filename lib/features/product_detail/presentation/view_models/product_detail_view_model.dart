@@ -142,10 +142,17 @@ class ProductDetailViewModel extends Notifier<ProductDetailState> {
         var repR = analysis.repetitiveRatio;
 
         if (realRR == 0.0 && adSR == 0.0 && repR == 0.0) {
-          final scored = enrichedReviews.where((r) => r.rtiScore > 0).toList();
+          final scored = enrichedReviews
+              .where((r) => r.rtiScore != null)
+              .toList();
           final total = scored.length;
           if (total > 0) {
-            realRR = scored.where((r) => r.rtiScore >= 70).length / total * 100;
+            realRR =
+                scored
+                    .where((r) => r.rtiScore != null && r.rtiScore! >= 70)
+                    .length /
+                total *
+                100;
             adSR =
                 scored
                     .where(
@@ -181,7 +188,12 @@ class ProductDetailViewModel extends Notifier<ProductDetailState> {
             dangerCount: analysis.dangerCount,
             trend: analysis.trend,
             rtiSummary: current.detail.rtiSummary?.copyWith(
-              hasReviewMetrics: true,
+              hasReviewMetrics:
+                  analysis.safeCount +
+                          analysis.warnCount +
+                          analysis.dangerCount >
+                      0 ||
+                  enrichedReviews.any((r) => r.rtiScore != null),
               realReviewRatio: realRR / 100,
               realReviewLabel: '${realRR.toStringAsFixed(1)}%',
               adSuspicionRatio: adSR / 100,
