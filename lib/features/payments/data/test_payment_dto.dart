@@ -29,8 +29,28 @@ class TestPaymentDto {
     );
   }
 
-  static TestPaymentOrder order(Map<String, dynamic> data) {
-    final quote = offer(data);
+  static TestPaymentOrder order(
+    Map<String, dynamic> data, {
+    bool cart = false,
+  }) {
+    final TestPaymentOffer quote;
+    if (cart) {
+      final code = data['quoteId'];
+      final name = data['orderName'];
+      if (data['purpose'] != 'CART' ||
+          code is! String ||
+          code.isEmpty ||
+          name is! String ||
+          name.isEmpty ||
+          name.length > 100 ||
+          (data['cartReconciled'] is! bool ||
+              (data['status'] == 'PAID' && data['cartReconciled'] != true))) {
+        throw const FormatException('Invalid cart TEST order');
+      }
+      quote = TestPaymentOffer(code: code, name: name, amount: amount(data));
+    } else {
+      quote = offer(data);
+    }
     final id = data['orderId'];
     final customerKey = data['customerKey'];
     final status = data['status'];

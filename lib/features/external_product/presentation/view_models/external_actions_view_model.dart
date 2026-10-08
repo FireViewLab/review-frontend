@@ -116,8 +116,14 @@ final externalReviewActionsProvider = NotifierProvider.autoDispose
 class ExternalReviewActionsViewModel extends Notifier<bool> {
   ExternalReviewActionsViewModel(this.target);
   final ExternalReviewTarget target;
+  int _generation = 0;
   @override
-  bool build() => false;
+  bool build() {
+    ref.watch(authSessionProvider);
+    _generation++;
+    return false;
+  }
+
   Future<Result<void>?> submit({
     String? feedbackType,
     String? reason,
@@ -131,6 +137,7 @@ class ExternalReviewActionsViewModel extends Notifier<bool> {
         Failure(message: 'Login required', statusCode: 401),
       );
     }
+    final generation = _generation;
     state = true;
     final repo = ref.read(externalActionsRepositoryProvider);
     final result = feedbackType != null
@@ -143,7 +150,7 @@ class ExternalReviewActionsViewModel extends Notifier<bool> {
             includeAiEvidence: includeAiEvidence,
             attachmentUrl: attachmentUrl,
           );
-    if (!ref.mounted) return null;
+    if (!ref.mounted || generation != _generation) return null;
     state = false;
     return result;
   }

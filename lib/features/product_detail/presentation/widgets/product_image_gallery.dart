@@ -29,7 +29,6 @@ class _WishlistButton extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final asyncStatus = ref.watch(wishlistButtonProvider(productId));
     final liked = asyncStatus.value ?? false;
-    final isLoggedIn = ref.watch(isLoggedInProvider);
 
     return DecoratedBox(
       decoration: BoxDecoration(
@@ -44,7 +43,7 @@ class _WishlistButton extends ConsumerWidget {
           onPressed: asyncStatus.isLoading
               ? null
               : () async {
-                  if (!isLoggedIn) {
+                  if (!ref.read(authSessionProvider).isLoggedIn) {
                     ScaffoldMessenger.of(context).showSnackBar(
                       const SnackBar(
                         content: Text('로그인이 필요합니다.'),
@@ -53,10 +52,13 @@ class _WishlistButton extends ConsumerWidget {
                     );
                     return;
                   }
+                  final session = ref.read(authSessionProvider);
                   final error = await ref
                       .read(wishlistButtonProvider(productId).notifier)
                       .toggle();
-                  if (context.mounted && error != null) {
+                  if (context.mounted &&
+                      ref.read(authSessionProvider) == session &&
+                      error != null) {
                     ScaffoldMessenger.of(
                       context,
                     ).showSnackBar(SnackBar(content: Text(error)));

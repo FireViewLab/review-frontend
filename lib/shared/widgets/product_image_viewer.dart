@@ -1,4 +1,6 @@
 import 'dart:async';
+import 'package:flutter/foundation.dart';
+import 'package:re_view_front/core/utils/product_image_urls.dart';
 import 'dart:math' as math;
 import 'package:flutter/material.dart';
 import 'package:re_view_front/app/theme/app_colors.dart';
@@ -27,14 +29,19 @@ class _ProductImageViewerState extends State<ProductImageViewer> {
   Offset? _hoverPosition;
   bool _reduceMotion = false;
 
-  List<String> get _images => widget.imageUrls
-      .where((url) => url.trim().isNotEmpty)
-      .toList(growable: false);
+  List<String> get _images => productImageUrls(additional: widget.imageUrls);
 
   @override
   void didUpdateWidget(ProductImageViewer oldWidget) {
     super.didUpdateWidget(oldWidget);
-    if (_selectedIndex >= _images.length) _selectedIndex = 0;
+    final oldImages = productImageUrls(additional: oldWidget.imageUrls);
+    if (listEquals(oldImages, _images)) return;
+    final selected = _selectedIndex < oldImages.length
+        ? oldImages[_selectedIndex]
+        : null;
+    final next = selected == null ? -1 : _images.indexOf(selected);
+    _selectedIndex = next < 0 ? 0 : next;
+    _hoverPosition = null;
     _startAutoSlide();
   }
 
@@ -48,7 +55,7 @@ class _ProductImageViewerState extends State<ProductImageViewer> {
 
   void _startAutoSlide() {
     _autoSlideTimer?.cancel();
-    if (_reduceMotion || _images.length <= 1) return;
+    if (_reduceMotion || _hoverPosition != null || _images.length <= 1) return;
     _autoSlideTimer = Timer.periodic(const Duration(seconds: 3), (_) {
       if (!mounted) return;
       setState(() {
@@ -96,32 +103,59 @@ class _ProductImageViewerState extends State<ProductImageViewer> {
             Semantics(
               button: images.isNotEmpty,
               label: AppLocalizations.of(context).productImageEnlarge,
-              child: InkWell(
-                borderRadius: AppRadius.large,
-                onTap: images.isNotEmpty ? _openImageDialog : null,
-                child: MouseRegion(
-                  cursor: images.isNotEmpty
-                      ? SystemMouseCursors.zoomIn
-                      : MouseCursor.defer,
-                  onHover: images.isNotEmpty && !_reduceMotion
-                      ? (event) =>
-                            setState(() => _hoverPosition = event.localPosition)
-                      : null,
-                  onExit: (_) => setState(() => _hoverPosition = null),
-                  child: AspectRatio(
-                    aspectRatio: 1,
-                    child: DecoratedBox(
-                      decoration: BoxDecoration(
-                        color: const Color(0xFFF5F7FB),
-                        borderRadius: AppRadius.large,
-                        border: Border.all(color: AppColors.border),
+              child: GestureDetector(
+                onHorizontalDragStart: images.length <= 1
+                    ? null
+                    : (_) => _autoSlideTimer?.cancel(),
+                onHorizontalDragEnd: images.length <= 1
+                    ? null
+                    : (details) {
+                        final speed = details.primaryVelocity ?? 0;
+                        if (speed.abs() > 80) {
+                          _goTo(
+                            (_selectedIndex + (speed < 0 ? 1 : -1)).clamp(
+                              0,
+                              images.length - 1,
+                            ),
+                          );
+                        } else {
+                          _startAutoSlide();
+                        }
+                      },
+                child: InkWell(
+                  borderRadius: AppRadius.large,
+                  onTap: images.isNotEmpty ? _openImageDialog : null,
+                  child: MouseRegion(
+                    cursor: images.isNotEmpty
+                        ? SystemMouseCursors.zoomIn
+                        : MouseCursor.defer,
+                    onHover: images.isNotEmpty && !_reduceMotion
+                        ? (event) {
+                            _autoSlideTimer?.cancel();
+                            setState(
+                              () => _hoverPosition = event.localPosition,
+                            );
+                          }
+                        : null,
+                    onExit: (_) {
+                      setState(() => _hoverPosition = null);
+                      _startAutoSlide();
+                    },
+                    child: AspectRatio(
+                      aspectRatio: 1,
+                      child: DecoratedBox(
+                        decoration: BoxDecoration(
+                          color: const Color(0xFFF5F7FB),
+                          borderRadius: AppRadius.large,
+                          border: Border.all(color: AppColors.border),
+                        ),
+                        child: _selectedIndex < images.length
+                            ? _ZoomableProductImage(
+                                url: images[_selectedIndex],
+                                hoverPosition: _hoverPosition,
+                              )
+                            : const ColoredBox(color: AppColors.surfaceMuted),
                       ),
-                      child: _selectedIndex < images.length
-                          ? _ZoomableProductImage(
-                              url: images[_selectedIndex],
-                              hoverPosition: _hoverPosition,
-                            )
-                          : const ColoredBox(color: AppColors.surfaceMuted),
                     ),
                   ),
                 ),
@@ -300,16 +334,16 @@ class _ZoomableProductImageState extends State<_ZoomableProductImage> {
             final rightSpace = safeRect.right - imageRect.right - inset;
             final leftSpace = imageRect.left - inset - safeRect.left;
             final availableSize = math.min(
-              math.max(rightSpace, leftSpace),
+              leftSpace >= 112 ? leftSpace : rightSpace,
               safeRect.height,
             );
             if (availableSize < 112) return const SizedBox.shrink();
             final previewSize = math.min(preferredPreviewSize, availableSize);
             final double left;
-            if (rightSpace >= previewSize) {
-              left = imageRect.right + inset;
-            } else if (imageRect.left - inset - previewSize >= safeRect.left) {
+            if (leftSpace >= previewSize) {
               left = imageRect.left - inset - previewSize;
+            } else if (rightSpace >= previewSize) {
+              left = imageRect.right + inset;
             } else {
               return const SizedBox.shrink();
             }

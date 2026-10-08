@@ -44,8 +44,14 @@ class _ExternalProductActionBar extends ConsumerWidget {
         context.go('/login?from=${Uri.encodeComponent(product.routePath)}');
         return;
       }
+      final session = ref.read(authSessionProvider);
       final result = await ref.read(provider.notifier).act(wishlist: wishlist);
-      if (!context.mounted || !ref.exists(provider)) return;
+      if (!context.mounted ||
+          !ref.exists(provider) ||
+          result == null ||
+          ref.read(authSessionProvider) != session) {
+        return;
+      }
       if (!ref.read(isLoggedInProvider)) {
         context.go('/login?from=${Uri.encodeComponent(product.routePath)}');
         return;

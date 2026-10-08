@@ -3233,6 +3233,60 @@ abstract class AppLocalizations {
   /// In ko, this message translates to:
   /// **'최근 본 기록에 필요한 상품 식별 정보를 확인하지 못했어요.'**
   String get recentRecordUnavailable;
+
+  /// No description provided for @reviewPhotoOnly.
+  ///
+  /// In ko, this message translates to:
+  /// **'사진 리뷰만 보기'**
+  String get reviewPhotoOnly;
+
+  /// No description provided for @reviewListView.
+  ///
+  /// In ko, this message translates to:
+  /// **'리뷰 목록'**
+  String get reviewListView;
+
+  /// No description provided for @reviewPhotosView.
+  ///
+  /// In ko, this message translates to:
+  /// **'사진만 보기'**
+  String get reviewPhotosView;
+
+  /// No description provided for @reviewPhotoScope.
+  ///
+  /// In ko, this message translates to:
+  /// **'불러온 리뷰 {loaded}개 중 사진 리뷰 {photos}개예요. 전체 상품 리뷰 수와 다르며 더보기를 눌러 계속 확인할 수 있어요.'**
+  String reviewPhotoScope(int loaded, int photos);
+
+  /// No description provided for @reviewPhotosEmpty.
+  ///
+  /// In ko, this message translates to:
+  /// **'현재 불러온 리뷰에 유효한 사진이 없어요.'**
+  String get reviewPhotosEmpty;
+
+  /// No description provided for @externalForbidden.
+  ///
+  /// In ko, this message translates to:
+  /// **'이 작업을 할 권한이 없어요.'**
+  String get externalForbidden;
+
+  /// No description provided for @externalAuthRequestFailed.
+  ///
+  /// In ko, this message translates to:
+  /// **'이 요청의 인증을 확인하지 못했어요. 현재 로그인 상태를 확인한 뒤 다시 시도해주세요.'**
+  String get externalAuthRequestFailed;
+
+  /// No description provided for @externalNetworkFailure.
+  ///
+  /// In ko, this message translates to:
+  /// **'네트워크 연결을 확인하고 다시 시도해주세요.'**
+  String get externalNetworkFailure;
+
+  /// No description provided for @externalTimeout.
+  ///
+  /// In ko, this message translates to:
+  /// **'요청 시간이 초과됐어요. 다시 시도해주세요.'**
+  String get externalTimeout;
 }
 
 class _AppLocalizationsDelegate

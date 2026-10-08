@@ -538,5 +538,15 @@
   "extProductListSummary": "Product information from the list. Checking current details and reviews.",
   "extProductPreviousSummary": "Previously viewed product information. Checking current details and reviews.",
   "recentRecordFailed": "Could not confirm recently viewed history. Retry",
-  "recentRecordUnavailable": "The product ID needed for server view history is unavailable."
+  "recentRecordUnavailable": "The product ID needed for server view history is unavailable.",
+  "reviewPhotoOnly": "Photo reviews only",
+  "reviewListView": "Review list",
+  "reviewPhotosView": "Photos only",
+  "reviewPhotoScope": "{photos} photo reviews among {loaded} loaded reviews. This is not the total product review count. Load more to continue.",
+  "reviewPhotosEmpty": "No valid photos in the currently loaded reviews.",
+  "@reviewPhotoScope": {"placeholders": {"loaded": {"type": "int"}, "photos": {"type": "int"}}},
+  "externalForbidden": "You do not have permission for this action.",
+  "externalAuthRequestFailed": "Authentication for this request could not be confirmed. Check your current session and try again.",
+  "externalNetworkFailure": "Check your network connection and try again.",
+  "externalTimeout": "The request timed out. Please try again."
 }

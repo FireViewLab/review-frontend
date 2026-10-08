@@ -83,16 +83,17 @@ bash scripts/write-deployment-marker.sh
 
 ## 배포
 
-`develop` 머지는 운영 배포를 발생시킵니다. 두 빌드 경로를 유지합니다.
+`develop` 머지와 PR push는 분석·release 컴파일만 수행합니다. 요청한 작업을 모두 끝낸 뒤 최종 SHA를 지정한 수동 배포를 한 번 실행합니다. main 릴리스/태그는 별도 QA 조건을 따릅니다.
 
 | 경로 | 빌드·설정 |
 | --- | --- |
-| GitHub Actions `.github/workflows/vercel-deploy.yml` | develop PR은 preview, develop push는 production. `flutter build web --release` 후 SHA 표식을 작성하고 `build/web`을 Vercel에 배포. `web/vercel.json` 사용 |
-| Vercel Git integration | 루트 `vercel.json`의 `bash build.sh` 실행. Flutter 설치/빌드·SHA 표식 후 `build/web`을 제공 |
+| GitHub Actions `.github/workflows/vercel-deploy.yml` | PR/develop push는 배포 없는 `deploy-preview` validation(분석·release 빌드). `workflow_dispatch`로 최종 develop SHA를 지정한 경우에만 SHA 재확인·표식 작성 뒤 `build/web`을 한 번 production 배포. `web/vercel.json` 사용 |
+| Vercel Git integration | `git.deploymentEnabled:false`로 자동 배포 차단. 기존 `build.sh`/rewrite/도메인 설정은 보존하고 최종 배포에는 Actions CLI 경로만 사용 |
 
 양쪽 설정은 `/api`, OAuth 시작·콜백을 API 서버로 연결하고 SPA fallback을 제공합니다. 서버 CORS 제약으로 preview 도메인의 실제 로그인은 운영과 다를 수 있습니다.
 
-Actions concurrency는 **동일 ref의 Actions 실행만** 직렬화합니다. 별도 Vercel Git 빌드와의 교차 순서는 보장하지 않습니다. 두 경로와 이전 실행이 모두 종료한 뒤 [운영 deployment.json](https://re-view.kr/deployment.json)의 `commitSha`를 최종 `origin/develop`과 대조합니다. 이 응답은 `Cache-Control: no-store`이며 커밋 SHA만 공개합니다.
+자동 PR preview 및 자동 production 배포를 하지 않습니다. Vercel 프로젝트의 preview 자동 생성도 비활성화하며 루트와 웹 배포 설정 모두 `git.deploymentEnabled:false`를 유지합니다. `Ignored Build Step`으로 취소해도 배포 한도를 소비하므로 자동 배포 차단의 대안으로 사용하지 않습니다. 기존 `deploy-preview` 검사명은 호환을 위해 유지하지만 배포 없는 분석·release 빌드 검사라는 의미입니다. 최종 단일 Actions production 이후 [운영 deployment.json](https://re-view.kr/deployment.json)의 HTTP200/`Cache-Control:no-store`/`commitSha`가 최종 `origin/develop`과 같은지 확인합니다.
+
 
 ## 남은 의존과 릴리스
 
@@ -105,10 +106,16 @@ Actions concurrency는 **동일 ref의 Actions 실행만** 직렬화합니다. �
 
 ## TEST 서비스 결제
 
-`/plan` → `/payments/test`는 토스페이먼츠 v2 주문서형 SDK를 연결한 웹 전용 TEST 흐름입니다. 현재 서버 주문/승인 API·결제 대상 가격·상점 TEST 공개키는 없으며 결제 시작은 비활성 상태입니다. 외부 쇼핑몰 상품 결제와 기존 플랜 직접 변경은 연결하지 않습니다.
+`/plan` → `/payments/test`는 토스페이먼츠 v2 주문서형 SDK를 연결한 웹 전용 TEST 흐름입니다. 현재 서버 주문/승인 API·결제 대상 가격·상점 TEST 공개키는 없으며 결제 시작은 비활성 상태입니다. 이 서비스 결제는 기존 직접 플랜 변경과 별도입니다. 장바구니 선택 상품 TEST 주문은 별도 계약으로 준비합니다.
 
 계약 확정 후 공개 `TOSS_TEST_CLIENT_KEY`(`test_gck_`만 허용)와 `PAYMENT_TEST_CATALOG_PATH`, `PAYMENT_TEST_ORDERS_PATH`, `PAYMENT_TEST_CONFIRM_PATH`를 빌드 define으로 설정합니다. API 경로는 현재 지원되는 URL이 아니라 합의한 계약을 명시 설정하는 경계입니다. 서버가 제공한 TEST offer·가격·무작위 고객키·주문만 SDK로 전달합니다. 모든 요청/응답 본문 로깅은 제거했습니다. secretKey 및 서버간 토큰을 프론트에 넣지 마세요.
 
 SDK success callback은 성공 확정이 아닙니다. 프론트는 인증 사용자 주문을 조회하고 orderId/금액을 비교한 뒤 자체 서버 승인 API만 호출합니다. 서버는 주문 소유자/금액/TEST 모드 검증 및 동일 주문 중복승인 방지를 수행해야 합니다. `PAID` 응답만 승인 확인으로 표시하며 TEST 결제로 실제 플랜·quota를 조작하지 않습니다. 실패·취소는 미완료 안내, 승인 timeout은 상태 조회, callback 새로고침은 먼저 서버 상태를 조회합니다.
 
 공식 문서: [SDK 초기화](https://docs.tosspayments.com/sdk/v2/js/environment), [주문서형 SDK](https://docs.tosspayments.com/sdk/v2/js/payment-widget), [인증·승인 흐름](https://docs.tosspayments.com/guides/v2/get-started/payment-flow). 실제 결제 실행과 화면 테스트는 사용자 담당이며 미검증입니다.
+
+### 장바구니 선택 상품 TEST 주문
+
+`/cart`에서 선택 상품·수량을 확인한 뒤 `/cart/checkout`으로 이동합니다. 주소 입력, 서버 견적·선택 항목/수량·확정 가격/배송비·판매자/배송 가능 여부 검증, TEST 주문 생성·토스 위젯·콜백 복구 경계를 연결했습니다. 현재 공개 TEST 키와 상품 주문/판매·배송·승인 API가 없어 주소 전송·주문 저장·결제는 비활성화됩니다. 외부몰 상품이 실제 주문·배송 가능한 것으로 표시하거나 가짜 성공으로 처리하지 않습니다.
+
+계약 확정 뒤 `CART_TEST_QUOTES_PATH`, `CART_TEST_ORDERS_PATH`, `CART_TEST_CONFIRM_PATH`와 공개 `TOSS_TEST_CLIENT_KEY`를 설정합니다. 이 경로들은 현재 존재하는 API가 아니라 명시적인 합의·설정이 필요한 경계입니다. 서버 견적은 `purpose:CART`, `testOnly:true`, `currency:KRW`, 선택 항목별 상품/수량/확정 가격, 상품합계·배송비·총액을 제공합니다. 주문은 동일 견적 ID와 TEST 금액을 유지하고 승인 시 서버가 해당 선택 수량만 처리한 `cartReconciled:true`를 반환해야 합니다. 프론트는 전체 장바구니를 임의 삭제하지 않고 서버 상태를 재조회합니다. 주소는 메모리에만 유지하며 계정 전환 시 비웁니다. TEST 승인도 실제 상품 배송·실결제 완료를 뜻하지 않습니다.

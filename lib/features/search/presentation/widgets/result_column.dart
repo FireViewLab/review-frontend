@@ -313,7 +313,7 @@ class ResultToolbar extends StatelessWidget {
       SearchSortOption.priceLow,
       SearchSortOption.rti,
       SearchSortOption.reviewCount,
-      SearchSortOption.sales,
+      SearchSortOption.priceHigh,
     ];
 
     return DecoratedBox(

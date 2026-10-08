@@ -515,7 +515,8 @@ class _HomePageState extends ConsumerState<HomePage> {
 
   String _toKeywordLabel(TrendingKeyword keyword) => keyword.keyword;
 
-  String _formatPrice(int price) {
+  String _formatPrice(int? price) {
+    if (price == null) return '가격 정보 없음';
     final digits = price.toString();
     final buffer = StringBuffer();
     for (var i = 0; i < digits.length; i++) {

@@ -653,7 +653,6 @@ class _WishlistSquareButton extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final asyncStatus = ref.watch(wishlistButtonProvider(productId));
     final liked = asyncStatus.value ?? false;
-    final isLoggedIn = ref.watch(isLoggedInProvider);
 
     return SizedBox.square(
       dimension: 36,
@@ -661,7 +660,7 @@ class _WishlistSquareButton extends ConsumerWidget {
         onPressed: asyncStatus.isLoading
             ? null
             : () async {
-                if (!isLoggedIn) {
+                if (!ref.read(authSessionProvider).isLoggedIn) {
                   ScaffoldMessenger.of(context).showSnackBar(
                     const SnackBar(
                       content: Text('로그인이 필요합니다.'),
@@ -670,10 +669,13 @@ class _WishlistSquareButton extends ConsumerWidget {
                   );
                   return;
                 }
+                final session = ref.read(authSessionProvider);
                 final error = await ref
                     .read(wishlistButtonProvider(productId).notifier)
                     .toggle();
-                if (context.mounted && error != null) {
+                if (context.mounted &&
+                    ref.read(authSessionProvider) == session &&
+                    error != null) {
                   ScaffoldMessenger.of(
                     context,
                   ).showSnackBar(SnackBar(content: Text(error)));
@@ -753,12 +755,14 @@ class _CartSquareButtonState extends ConsumerState<_CartSquareButton> {
         ref.read(cartButtonProvider(widget.productId)).value ?? false;
     if (alreadyInCart) return;
 
+    final session = ref.read(authSessionProvider);
     setState(() => _loading = true);
 
     await ref.read(cartButtonProvider(widget.productId).notifier).add();
 
     if (!mounted) return;
     setState(() => _loading = false);
+    if (ref.read(authSessionProvider) != session) return;
 
     final inCart =
         ref.read(cartButtonProvider(widget.productId)).value ?? false;
