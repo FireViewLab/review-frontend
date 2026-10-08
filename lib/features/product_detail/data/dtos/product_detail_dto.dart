@@ -1,3 +1,4 @@
+import 'package:re_view_front/core/utils/product_image_urls.dart';
 import 'package:re_view_front/features/external_product/data/dtos/product_summary_dto.dart';
 import 'package:re_view_front/features/external_product/domain/entities/product_summary.dart';
 import 'package:re_view_front/features/category/domain/entities/product_category_resolver.dart';
@@ -21,6 +22,7 @@ class ProductDetailDto {
     required this.lowestPrice,
     required this.lowestPlatform,
     required this.platforms,
+    this.imageUrls = const [],
     this.summary,
     this.externalId,
     this.dataPlatform,
@@ -28,6 +30,7 @@ class ProductDetailDto {
     this.subCategory,
   });
 
+  final List<String> imageUrls;
   final ProductSummary? summary;
   final String? externalId;
   final String? dataPlatform;
@@ -53,6 +56,7 @@ class ProductDetailDto {
   factory ProductDetailDto.fromJson(Map<String, dynamic> json) {
     final rawPlatforms = json['platforms'] as List? ?? [];
     return ProductDetailDto(
+      imageUrls: readProductImages(json),
       summary: ProductSummaryDto.fromJson(json),
       externalId: json['externalId'] as String?,
       dataPlatform: json['dataPlatform'] as String?,
@@ -100,7 +104,7 @@ class ProductDetailDto {
       brand: '',
       sellerName: platform,
       isOfficialSeller: false,
-      imageUrls: imageUrl != null ? [imageUrl!] : [],
+      imageUrls: productImageUrls(primary: imageUrl, additional: imageUrls),
       price: lowestPrice ?? price,
       deliveryInfo: null,
       category: category,

@@ -343,10 +343,8 @@ class _ReadyState extends ConsumerState<_Ready> {
         if (!_photoOnly || validReviewImages(entry.$2.images).isNotEmpty)
           entry.$2,
     ];
+    final image = ProductImageViewer(imageUrls: product.galleryImages);
 
-    final image = ProductImageViewer(
-      imageUrls: [if (product.thumbnailUrl != null) product.thumbnailUrl!],
-    );
     final summary = ExternalProductSummary(
       product: product,
       isStale: state.isStale,

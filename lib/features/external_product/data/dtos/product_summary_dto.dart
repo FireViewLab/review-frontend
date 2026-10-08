@@ -1,3 +1,4 @@
+import 'package:re_view_front/core/utils/product_image_urls.dart';
 import '../../domain/entities/external_product.dart';
 import '../../domain/entities/external_product_ref.dart';
 
@@ -40,6 +41,7 @@ class ProductSummaryDto {
               json['thumbnail'] ??
               json['image'],
         ),
+        imageUrls: readProductImages(json),
         price: integer(
           json['price'] ??
               json['salePrice'] ??
