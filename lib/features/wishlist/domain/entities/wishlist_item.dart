@@ -17,12 +17,14 @@ class WishlistItem {
     required this.isNewAlert,
     this.platform,
     this.savedAt,
+    this.summary,
     this.externalId,
     this.dataPlatform,
     this.dataProductId,
     this.subCategory,
   });
 
+  final ProductSummary? summary;
   final String? externalId;
   final String? dataPlatform;
   final String? dataProductId;
@@ -37,7 +39,7 @@ class WishlistItem {
       ? externalId
       : externalRef?.externalId;
   ProductRouteContext get routeContext =>
-      ProductRouteContext(chatProductId: chatProductId);
+      ProductRouteContext(chatProductId: chatProductId, summary: summary);
 
   final int productId;
   final String name;

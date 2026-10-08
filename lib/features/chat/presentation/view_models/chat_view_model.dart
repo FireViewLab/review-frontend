@@ -19,18 +19,15 @@ class ChatViewModel extends Notifier<ChatState> {
 
   @override
   ChatState build() {
-    // 로그아웃하거나 토큰이 만료되면 이전 계정의 대화를 지운다.
-    ref.listen(isLoggedInProvider, (previous, next) {
-      if (previous == true && !next) {
-        _generation++;
-        _quotaRequest++;
-        state = ChatState(
-          isOpen: state.isOpen,
-          conversationRevision: state.conversationRevision + 1,
-        );
-      } else if (next && state.isOpen) {
-        refreshQuota();
-      }
+    ref.listen(authSessionProvider, (_, next) {
+      _generation++;
+      _historyRequest++;
+      _quotaRequest++;
+      state = ChatState(
+        isOpen: state.isOpen,
+        conversationRevision: state.conversationRevision + 1,
+      );
+      if (next.isLoggedIn && state.isOpen) refreshQuota();
     });
     return const ChatState();
   }

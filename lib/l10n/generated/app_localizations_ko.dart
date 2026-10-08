@@ -1635,4 +1635,25 @@ class AppLocalizationsKo extends AppLocalizations {
 
   @override
   String get chatHistoryWait => '대화 기록은 전송이 끝난 뒤 열 수 있어요.';
+
+  @override
+  String get extProductReviewPreferencesNote =>
+      '정렬 설정은 불러온 리뷰에 적용돼요. 제공되지 않은 구매 인증·신뢰도 정보로 리뷰를 숨기거나 분류하지 않아요.';
+
+  @override
+  String get extProductSummaryLoading => '상품 기본 정보를 확인하고 있어요.';
+
+  @override
+  String get extProductListSummary =>
+      '목록에서 받은 상품 정보예요. 최신 상세 정보와 리뷰를 확인하고 있어요.';
+
+  @override
+  String get extProductPreviousSummary =>
+      '이전에 확인한 상품 정보예요. 최신 상세 정보와 리뷰를 확인하고 있어요.';
+
+  @override
+  String get recentRecordFailed => '최근 본 기록을 확인하지 못했어요. 다시 시도';
+
+  @override
+  String get recentRecordUnavailable => '최근 본 기록에 필요한 상품 식별 정보를 확인하지 못했어요.';
 }

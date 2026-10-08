@@ -57,7 +57,10 @@ class ReviewRtiAnalysisDialog extends StatelessWidget {
   Widget build(BuildContext context) {
     return Dialog(
       backgroundColor: Colors.transparent,
-      insetPadding: const EdgeInsets.symmetric(horizontal: 24, vertical: 24),
+      insetPadding: EdgeInsets.symmetric(
+        horizontal: MediaQuery.sizeOf(context).width < 600 ? 12 : 24,
+        vertical: 16,
+      ),
       child: ConstrainedBox(
         constraints: const BoxConstraints(maxWidth: 1100, maxHeight: 860),
         child: ClipRRect(
@@ -180,50 +183,60 @@ class _DialogBody extends StatelessWidget {
     final detail = review.rtiDetail;
     final total = safeCount + warnCount + dangerCount;
 
+    final panels = <Widget>[
+      // Left panel: selected review + risk summary
+      Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          _SelectedReviewSection(review: review),
+          if (total > 0) ...[
+            const SizedBox(height: AppSpacing.sm),
+            _RiskSummarySection(
+              safeCount: safeCount,
+              warnCount: warnCount,
+              dangerCount: dangerCount,
+            ),
+          ],
+        ],
+      ),
+      // Right panel: score card + signal bars + judgment bases
+      Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          _RtiScoreCard(review: review),
+          if (detail != null && detail.signals.isNotEmpty) ...[
+            const SizedBox(height: AppSpacing.sm),
+            _RtiSignalsSection(signals: detail.signals),
+          ],
+          if (detail != null && detail.judgmentBases.isNotEmpty) ...[
+            const SizedBox(height: AppSpacing.sm),
+            _JudgmentBasisSection(bases: detail.judgmentBases),
+          ] else if (detail == null && review.reasons.isNotEmpty) ...[
+            const SizedBox(height: AppSpacing.sm),
+            _ReasonsSection(
+              reasons: review.reasons,
+              color: colorFromHex(review.rtiColor),
+            ),
+          ],
+        ],
+      ),
+    ];
+    if (MediaQuery.sizeOf(context).width < 700) {
+      return Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          panels[0],
+          const SizedBox(height: AppSpacing.md),
+          panels[1],
+        ],
+      );
+    }
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        // Left panel: selected review + risk summary
-        Expanded(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              _SelectedReviewSection(review: review),
-              if (total > 0) ...[
-                const SizedBox(height: AppSpacing.sm),
-                _RiskSummarySection(
-                  safeCount: safeCount,
-                  warnCount: warnCount,
-                  dangerCount: dangerCount,
-                ),
-              ],
-            ],
-          ),
-        ),
+        Expanded(child: panels[0]),
         const SizedBox(width: AppSpacing.md),
-        // Right panel: score card + signal bars + judgment bases
-        Expanded(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              _RtiScoreCard(review: review),
-              if (detail != null && detail.signals.isNotEmpty) ...[
-                const SizedBox(height: AppSpacing.sm),
-                _RtiSignalsSection(signals: detail.signals),
-              ],
-              if (detail != null && detail.judgmentBases.isNotEmpty) ...[
-                const SizedBox(height: AppSpacing.sm),
-                _JudgmentBasisSection(bases: detail.judgmentBases),
-              ] else if (detail == null && review.reasons.isNotEmpty) ...[
-                const SizedBox(height: AppSpacing.sm),
-                _ReasonsSection(
-                  reasons: review.reasons,
-                  color: colorFromHex(review.rtiColor),
-                ),
-              ],
-            ],
-          ),
-        ),
+        Expanded(child: panels[1]),
       ],
     );
   }
@@ -596,19 +609,20 @@ class _RtiScoreCard extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.end,
         children: [
           Text(
-            review.rtiScore > 0 ? 'RTI ${review.rtiScore}' : 'RTI -',
+            review.rtiScore != null ? 'RTI ${review.rtiScore}' : '분석 전',
             style: Theme.of(context).textTheme.displayLarge?.copyWith(
               color: color,
               fontWeight: FontWeight.w900,
-              fontSize: 52,
+              fontSize: MediaQuery.sizeOf(context).width < 700 ? 32 : 52,
               height: 1,
             ),
           ),
-          if (review.rtiLabel.isNotEmpty) ...[
+          if (review.rtiScore != null &&
+              review.rtiLabel?.isNotEmpty == true) ...[
             const SizedBox(width: AppSpacing.sm),
             Padding(
               padding: const EdgeInsets.only(bottom: 8),
-              child: _RtiGradeBadge(label: review.rtiLabel, color: color),
+              child: _RtiGradeBadge(label: review.rtiLabel!, color: color),
             ),
           ],
         ],
@@ -1010,7 +1024,7 @@ class _DialogFooter extends ConsumerWidget {
                         'productId': productId,
                         'productName': productName,
                         'reviewContent': review.content,
-                        'rtiScore': review.rtiScore.toDouble(),
+                        'rtiScore': review.rtiScore?.toDouble(),
                         'rtiGrade': review.rtiLabel,
                       },
                     );

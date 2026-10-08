@@ -1,3 +1,5 @@
+import 'package:re_view_front/features/external_product/data/dtos/product_summary_dto.dart';
+import 'package:re_view_front/features/external_product/domain/entities/product_summary.dart';
 import 'package:re_view_front/features/category/domain/entities/product_category_resolver.dart';
 import 'package:re_view_front/features/search/domain/entities/search_result_product.dart';
 
@@ -15,6 +17,7 @@ class SearchResultProductDto {
     required this.reviewCount,
     required this.avgRating,
     this.platform,
+    this.summary,
     this.externalId,
     this.dataPlatform,
     this.dataProductId,
@@ -23,6 +26,7 @@ class SearchResultProductDto {
 
   factory SearchResultProductDto.fromJson(Map<String, dynamic> json) {
     return SearchResultProductDto(
+      summary: ProductSummaryDto.fromJson(json),
       externalId: json['externalId'] as String?,
       dataPlatform: json['dataPlatform'] as String?,
       dataProductId: json['dataProductId']?.toString(),
@@ -56,6 +60,7 @@ class SearchResultProductDto {
     );
   }
 
+  final ProductSummary? summary;
   final String? externalId;
   final String? dataPlatform;
   final String? dataProductId;
@@ -88,6 +93,7 @@ class SearchResultProductDto {
           );
 
     return SearchResultProduct(
+      summary: summary,
       externalId: externalId,
       dataPlatform: dataPlatform,
       dataProductId: dataProductId,

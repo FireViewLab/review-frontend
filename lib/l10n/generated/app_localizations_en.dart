@@ -1683,4 +1683,27 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get chatHistoryWait => 'History is available after sending completes.';
+
+  @override
+  String get extProductReviewPreferencesNote =>
+      'Sorting applies to loaded reviews. Reviews are not hidden or classified using unavailable purchase verification or trust scores.';
+
+  @override
+  String get extProductSummaryLoading => 'Checking basic product information.';
+
+  @override
+  String get extProductListSummary =>
+      'Product information from the list. Checking current details and reviews.';
+
+  @override
+  String get extProductPreviousSummary =>
+      'Previously viewed product information. Checking current details and reviews.';
+
+  @override
+  String get recentRecordFailed =>
+      'Could not confirm recently viewed history. Retry';
+
+  @override
+  String get recentRecordUnavailable =>
+      'The product ID needed for server view history is unavailable.';
 }

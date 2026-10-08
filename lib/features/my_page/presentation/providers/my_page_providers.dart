@@ -32,6 +32,7 @@ final myPageViewModelProvider =
 final myActivitiesProvider = FutureProvider.autoDispose<List<UserActivity>>((
   ref,
 ) async {
+  if (!ref.watch(authSessionProvider).isLoggedIn) return [];
   final result = await ref.read(myPageRepositoryProvider).getMyActivities();
   return result.when(
     success: (activities) => activities,

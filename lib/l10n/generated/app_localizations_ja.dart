@@ -1635,4 +1635,23 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String get chatHistoryWait => '送信が完了すると履歴を開けます。';
+
+  @override
+  String get extProductReviewPreferencesNote =>
+      '並び順の設定は読み込み済みのレビューに適用されます。未提供の購入認証や信頼度でレビューを非表示・分類しません。';
+
+  @override
+  String get extProductSummaryLoading => '商品の基本情報を確認しています。';
+
+  @override
+  String get extProductListSummary => '一覧で取得した商品情報です。最新の詳細情報とレビューを確認しています。';
+
+  @override
+  String get extProductPreviousSummary => '以前表示した商品情報です。最新の詳細情報とレビューを確認しています。';
+
+  @override
+  String get recentRecordFailed => '閲覧履歴を確認できませんでした。再試行';
+
+  @override
+  String get recentRecordUnavailable => '閲覧履歴に必要な商品識別情報を確認できません。';
 }

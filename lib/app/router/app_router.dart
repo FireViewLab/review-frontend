@@ -39,7 +39,7 @@ import 'package:re_view_front/features/search/presentation/view_models/search_re
 
 class _AuthNotifier extends ChangeNotifier {
   _AuthNotifier(Ref ref) {
-    ref.listen<bool>(isLoggedInProvider, (_, _) => notifyListeners());
+    ref.listen(authSessionProvider, (_, _) => notifyListeners());
   }
 }
 
@@ -66,7 +66,8 @@ final appRouterProvider = Provider<GoRouter>((ref) {
         if (!tokenStore.onboardingCompleted) {
           return RoutePaths.onboarding;
         }
-        return RoutePaths.home;
+        final from = state.uri.queryParameters['from'];
+        return _safeReturnPath(from) ?? RoutePaths.home;
       }
       if (isLoggedIn &&
           state.matchedLocation == RoutePaths.onboarding &&
@@ -193,6 +194,12 @@ final appRouterProvider = Provider<GoRouter>((ref) {
             pageBuilder: (context, state) => _buildContentPage(
               state,
               ExternalProductPage(
+                viewAlreadyRecorded:
+                    state.extra is ProductRouteContext &&
+                    (state.extra as ProductRouteContext).viewAlreadyRecorded,
+                summary: state.extra is ProductRouteContext
+                    ? (state.extra as ProductRouteContext).summary
+                    : null,
                 productRef: ExternalProductRef(
                   platform: state.pathParameters['platform'] ?? '',
                   productId: state.pathParameters['productId'] ?? '',
@@ -400,4 +407,25 @@ String _loginRedirect(Uri target) {
     path: RoutePaths.login,
     queryParameters: {'from': target.toString()},
   ).toString();
+}
+
+String? _safeReturnPath(String? value) {
+  if (value == null ||
+      !value.startsWith('/') ||
+      value.startsWith('//') ||
+      value.contains('\\')) {
+    return null;
+  }
+  final uri = Uri.tryParse(value);
+  if (uri == null ||
+      uri.hasScheme ||
+      uri.hasAuthority ||
+      {
+        RoutePaths.landing,
+        RoutePaths.login,
+        RoutePaths.signup,
+      }.contains(uri.path)) {
+    return null;
+  }
+  return value;
 }

@@ -1,3 +1,4 @@
+import 'package:re_view_front/features/settings/domain/entities/settings_data.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:re_view_front/core/providers/core_providers.dart';
 import 'package:re_view_front/features/settings/data/datasources/settings_remote_data_source.dart';
@@ -28,7 +29,26 @@ final settingsViewModelProvider =
 final accountLoginMethodProvider = FutureProvider.autoDispose<String?>((
   ref,
 ) async {
-  if (!ref.watch(isLoggedInProvider)) return null;
+  if (!ref.watch(authSessionProvider).isLoggedIn) return null;
   final result = await ref.read(settingsRepositoryProvider).getLoginMethod();
   return result.when(success: (method) => method, failure: (_) => null);
+});
+
+/// Server-confirmed values only; an unsaved settings form is not a preference.
+final savedDisplayPreferencesProvider = FutureProvider<SettingsData?>((
+  ref,
+) async {
+  ref.watch(authTokenStoreProvider);
+  if (!ref.watch(isLoggedInProvider)) return null;
+  final result = await ref.read(settingsRepositoryProvider).getSettings();
+  return result.when(
+    success: (settings) => settings,
+    failure: (failure) => throw failure,
+  );
+});
+
+final confirmedDisplayPreferencesProvider = Provider<SettingsData?>((ref) {
+  if (!ref.watch(isLoggedInProvider)) return null;
+  final settings = ref.watch(savedDisplayPreferencesProvider);
+  return settings.isLoading || settings.hasError ? null : settings.value;
 });

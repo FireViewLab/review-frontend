@@ -1,3 +1,5 @@
+import 'package:re_view_front/features/external_product/data/dtos/product_summary_dto.dart';
+import 'package:re_view_front/features/external_product/domain/entities/product_summary.dart';
 import 'package:re_view_front/features/cart/domain/entities/cart_item.dart';
 
 class CartItemDto {
@@ -21,6 +23,7 @@ class CartItemDto {
     this.estimatedDelivery,
     this.stockCount,
     this.maxQuantity = 99,
+    this.summary,
     this.externalId,
     this.dataPlatform,
     this.dataProductId,
@@ -29,6 +32,7 @@ class CartItemDto {
 
   factory CartItemDto.fromJson(Map<String, dynamic> json) {
     return CartItemDto(
+      summary: ProductSummaryDto.fromJson(json, cart: true),
       externalId: json['externalId'] as String?,
       dataPlatform: json['dataPlatform'] as String?,
       dataProductId: json['dataProductId']?.toString(),
@@ -87,6 +91,7 @@ class CartItemDto {
     );
   }
 
+  final ProductSummary? summary;
   final String? externalId;
   final String? dataPlatform;
   final String? dataProductId;
@@ -114,6 +119,7 @@ class CartItemDto {
 
   CartItem toEntity() {
     return CartItem(
+      summary: summary,
       externalId: externalId,
       dataPlatform: dataPlatform,
       dataProductId: dataProductId,

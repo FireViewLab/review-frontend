@@ -201,9 +201,11 @@ class AnalysisReportReviewRow extends StatelessWidget {
     );
   }
 
-  static Color _parseColor(String hex) {
+  static Color _parseColor(String? hex) {
     try {
-      return Color(int.parse('FF${hex.replaceAll('#', '')}', radix: 16));
+      return Color(
+        int.parse('FF${(hex ?? '').replaceAll('#', '')}', radix: 16),
+      );
     } catch (_) {
       return AppColors.textSecondary;
     }
@@ -217,8 +219,8 @@ class AnalysisReportRtiBadge extends StatelessWidget {
     required this.color,
   });
 
-  final int score;
-  final String label;
+  final int? score;
+  final String? label;
   final Color color;
 
   @override
@@ -236,19 +238,19 @@ class AnalysisReportRtiBadge extends StatelessWidget {
           Icon(Icons.verified_user_outlined, size: 11, color: color),
           const SizedBox(width: 3),
           Text(
-            'RTI $score',
+            score == null ? '분석 전' : 'RTI $score',
             style: Theme.of(context).textTheme.labelSmall?.copyWith(
               color: color,
               fontWeight: FontWeight.w900,
               fontSize: 11,
             ),
           ),
-          if (label.isNotEmpty) ...[
+          if (score != null && label?.isNotEmpty == true) ...[
             const SizedBox(width: 4),
             Container(width: 1, height: 9, color: color.withValues(alpha: 0.3)),
             const SizedBox(width: 4),
             Text(
-              label,
+              label!,
               style: Theme.of(context).textTheme.labelSmall?.copyWith(
                 color: color,
                 fontSize: 10,

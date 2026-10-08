@@ -24,7 +24,12 @@ class ApiClient {
           handler.next(options);
         },
         onError: (error, handler) {
-          if (error.response?.statusCode == 401) {
+          final current = tokenStore?.accessToken;
+          final type = tokenStore?.tokenType ?? 'Bearer';
+          final sent = error.requestOptions.headers['Authorization'];
+          if (error.response?.statusCode == 401 &&
+              current != null &&
+              sent == '$type $current') {
             tokenStore?.expireSession();
           }
           handler.next(error);

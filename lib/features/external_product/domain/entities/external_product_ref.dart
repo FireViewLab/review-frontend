@@ -1,3 +1,6 @@
+import 'product_summary.dart';
+export 'product_summary.dart';
+
 /// Data 서버가 수집한 쇼핑몰 상품을 가리키는 식별자.
 ///
 /// 상품 번호만으로는 찾을 수 없고 쇼핑몰 이름과 함께 써야 한다.
@@ -70,6 +73,12 @@ class ExternalProductRef {
 
 /// Product context carried alongside navigation; numeric IDs stay out of chat.
 class ProductRouteContext {
-  const ProductRouteContext({this.chatProductId});
+  const ProductRouteContext({
+    this.chatProductId,
+    this.summary,
+    this.viewAlreadyRecorded = false,
+  });
   final String? chatProductId;
+  final ProductSummary? summary;
+  final bool viewAlreadyRecorded;
 }

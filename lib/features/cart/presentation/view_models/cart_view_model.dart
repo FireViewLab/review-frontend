@@ -15,7 +15,7 @@ class CartViewModel extends Notifier<CartState> {
   @override
   CartState build() {
     _generation++;
-    ref.watch(isLoggedInProvider);
+    ref.watch(authSessionProvider).isLoggedIn;
     _getCartUseCase = ref.watch(getCartUseCaseProvider);
     _updateCartUseCase = ref.watch(updateCartUseCaseProvider);
     return const CartInitial();

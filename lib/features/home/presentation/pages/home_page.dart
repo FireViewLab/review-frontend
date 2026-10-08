@@ -98,6 +98,31 @@ class _HomePageState extends ConsumerState<HomePage> {
     final dashboardState = ref.watch(homeDashboardViewModelProvider);
     final dashboardProducts = _recommendedProductsFrom(dashboardState);
     final dashboardKeywords = _trendingKeywordsFrom(dashboardState);
+    final dashboardExtras = <Widget>[
+      if (dashboardState is HomeDashboardLoading) ...[
+        const ProductCardGridSkeleton(itemCount: 5),
+        const SizedBox(height: AppSpacing.xl),
+      ] else if (dashboardState is HomeDashboardFailure) ...[
+        SizedBox(
+          height: 280,
+          child: AppErrorView(
+            message: dashboardState.failure.message,
+            onRetry: () =>
+                ref.read(homeDashboardViewModelProvider.notifier).refresh(),
+          ),
+        ),
+        const SizedBox(height: AppSpacing.xl),
+      ] else ...[
+        AppFadeIn(
+          delay: 120,
+          child: TrendingKeywordChips(
+            keywords: dashboardKeywords,
+            onKeywordTap: _handleKeywordSearch,
+          ),
+        ),
+        const SizedBox(height: AppSpacing.xl),
+      ],
+    ];
     final page = Scaffold(
       backgroundColor: AppColors.background,
       body: CustomScrollView(
@@ -149,31 +174,10 @@ class _HomePageState extends ConsumerState<HomePage> {
                       onCategoryPressed: _handleCategoryPressed,
                     ),
                   ),
-                  const SizedBox(height: AppSpacing.xl),
-                  if (dashboardState is HomeDashboardLoading) ...[
-                    const ProductCardGridSkeleton(itemCount: 5),
-                    const SizedBox(height: AppSpacing.xl),
-                  ] else if (dashboardState is HomeDashboardFailure) ...[
-                    SizedBox(
-                      height: 280,
-                      child: AppErrorView(
-                        message: dashboardState.failure.message,
-                        onRetry: () => ref
-                            .read(homeDashboardViewModelProvider.notifier)
-                            .refresh(),
-                      ),
-                    ),
-                    const SizedBox(height: AppSpacing.xl),
-                  ] else ...[
-                    AppFadeIn(
-                      delay: 120,
-                      child: TrendingKeywordChips(
-                        keywords: dashboardKeywords,
-                        onKeywordTap: _handleKeywordSearch,
-                      ),
-                    ),
-                    const SizedBox(height: AppSpacing.xl),
-                  ],
+                  SizedBox(
+                    height: context.isMobile ? AppSpacing.md : AppSpacing.xl,
+                  ),
+                  if (!context.isMobile) ...dashboardExtras,
                   Text(
                     '상품 둘러보기',
                     style: Theme.of(context).textTheme.titleMedium,
@@ -199,6 +203,7 @@ class _HomePageState extends ConsumerState<HomePage> {
                                     productId: p.id.toString(),
                                     detailPath: p.detailPath,
                                     chatProductId: p.chatProductId,
+                                    routeContext: p.routeContext,
                                     name: p.name,
                                     storeName:
                                         p.platform ?? p.dataPlatform ?? '',
@@ -228,6 +233,7 @@ class _HomePageState extends ConsumerState<HomePage> {
                       child: const Text('전체 상품 보기'),
                     ),
                   ),
+                  if (context.isMobile) ...dashboardExtras,
                   const SizedBox(height: AppSpacing.xl),
                   if (useWideCommerceGrid) ...[
                     AppFadeIn(
@@ -445,7 +451,9 @@ class _HomePageState extends ConsumerState<HomePage> {
   void _handleProductPressed(HomeProductData product) {
     context.go(
       product.detailPath ?? '/product/${product.productId}',
-      extra: ProductRouteContext(chatProductId: product.chatProductId),
+      extra:
+          product.routeContext ??
+          ProductRouteContext(chatProductId: product.chatProductId),
     );
   }
 
@@ -493,6 +501,7 @@ class _HomePageState extends ConsumerState<HomePage> {
       productId: product.id,
       detailPath: product.detailPath,
       chatProductId: product.chatProductId,
+      routeContext: product.routeContext,
       name: product.name,
       storeName: product.storeName,
       priceLabel: _formatPrice(product.price),
