@@ -136,7 +136,7 @@ class TestPaymentViewModel extends Notifier<TestPaymentState> {
           order: order,
           isBusy: false,
           message: order.isPaid
-              ? '서버에서 TEST 결제 승인을 확인했습니다. 실결제와 자동 플랜 변경은 진행하지 않습니다.'
+              ? '서버에서 TEST 결제 승인을 확인했습니다. 실결제는 진행하지 않습니다.'
               : uri.queryParameters['result'] == 'fail'
               ? '결제가 취소되었거나 실패했습니다. 구매 완료로 처리하지 않았습니다.'
               : '아직 서버에서 결제 완료를 확인하지 못했습니다. 다시 조회할 수 있습니다.',

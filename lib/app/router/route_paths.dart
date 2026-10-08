@@ -13,6 +13,7 @@ abstract final class RoutePaths {
   static const resetPassword = '/reset-password';
   static const wishlist = '/wishlist';
   static const cart = '/cart';
+  static const cartCheckout = '/cart/checkout';
   static const analysisReport = '/product/:id/analysis';
 
   /// Data 서버 상품. 쇼핑몰 이름과 상품 번호가 함께 있어야 한다.

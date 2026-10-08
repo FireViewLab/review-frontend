@@ -10,7 +10,12 @@ import 'package:re_view_front/features/payments/domain/entities/test_payment.dar
 import 'package:re_view_front/features/payments/domain/repositories/test_payment_repository.dart';
 
 class TestPaymentRepositoryImpl implements TestPaymentRepository {
-  const TestPaymentRepositoryImpl(this.client, this.contract);
+  const TestPaymentRepositoryImpl(
+    this.client,
+    this.contract, {
+    this.cart = false,
+  });
+  final bool cart;
   final ApiClient client;
   final TestPaymentContract? contract;
   TestPaymentContract get _contract =>
@@ -39,6 +44,7 @@ class TestPaymentRepositoryImpl implements TestPaymentRepository {
           options: Options(headers: {'Idempotency-Key': requestId}),
         ),
       ),
+      cart: cart,
     ),
   );
   @override
@@ -49,6 +55,7 @@ class TestPaymentRepositoryImpl implements TestPaymentRepository {
           '${_contract.ordersPath}/${Uri.encodeComponent(orderId)}',
         ),
       ),
+      cart: cart,
     ),
   );
   @override
@@ -69,6 +76,7 @@ class TestPaymentRepositoryImpl implements TestPaymentRepository {
           options: Options(headers: {'Idempotency-Key': 'confirm-$orderId'}),
         ),
       ),
+      cart: cart,
     ),
   );
   Map<String, dynamic> _body(Response<dynamic> response) {
