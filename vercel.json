@@ -49,5 +49,6 @@
       "destination": "/index.html"
     }
   ],
-  "buildCommand": "bash build.sh"
+  "buildCommand": "bash build.sh",
+  "git": { "deploymentEnabled": false }
 }
