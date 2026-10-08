@@ -1,25 +1,17 @@
-// ignore_for_file: use_key_in_widget_constructors
-
 import 'package:flutter/material.dart';
-import 'package:re_view_front/app/theme/app_colors.dart';
 import 'package:re_view_front/app/theme/app_spacing.dart';
-import 'package:re_view_front/features/product_detail/domain/entities/product_analysis_result.dart';
 import 'package:re_view_front/features/product_detail/domain/entities/product_detail.dart';
 import 'package:re_view_front/features/product_detail/domain/entities/product_review.dart';
-import 'package:re_view_front/features/product_detail/presentation/widgets/analysis_report/analysis_report_trust_status.dart';
-import 'package:re_view_front/features/product_detail/presentation/widgets/analysis_report/analysis_report_summary.dart';
-import 'package:re_view_front/features/product_detail/presentation/widgets/analysis_report/analysis_report_actions.dart';
-import 'package:re_view_front/features/product_detail/presentation/widgets/analysis_report/analysis_report_product_hero.dart';
-import 'package:re_view_front/features/product_detail/presentation/widgets/analysis_report/analysis_report_trend.dart';
-import 'package:re_view_front/features/product_detail/presentation/widgets/analysis_report/analysis_report_patterns.dart';
+import 'package:re_view_front/features/product_detail/domain/entities/product_analysis_result.dart';
 import 'package:re_view_front/features/product_detail/presentation/widgets/analysis_report/analysis_report_reviews.dart';
+import 'package:re_view_front/features/product_detail/presentation/widgets/analysis_report/analysis_report_trend.dart';
+import 'package:re_view_front/l10n/generated/app_localizations.dart';
 
-// ─────────────────────────────────────────────────────────────────────────────
-// Report Content
-// ─────────────────────────────────────────────────────────────────────────────
-
+/// Read-only report from results already supplied by the product/review APIs.
+/// Does not turn loaded review counts into product-wide ratios or evidence.
 class AnalysisReportContent extends StatelessWidget {
   const AnalysisReportContent({
+    super.key,
     required this.productId,
     required this.detail,
     required this.reviews,
@@ -30,7 +22,6 @@ class AnalysisReportContent extends StatelessWidget {
     required this.trend,
     required this.onBackToProduct,
   });
-
   final int productId;
   final ProductDetail detail;
   final List<ProductReview> reviews;
@@ -43,196 +34,60 @@ class AnalysisReportContent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (detail.rtiSummary == null || !detail.rtiSummary!.hasReviewMetrics) {
-      return Center(
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            const Text('분석 전'),
-            TextButton(
-              onPressed: onBackToProduct,
-              child: const Text('상품으로 돌아가기'),
-            ),
-          ],
-        ),
-      );
-    }
-    final isNarrow = MediaQuery.sizeOf(context).width < 760;
-    final topPatterns = _aggregateTopPatterns(reviews);
-
-    // Derive distribution from reviews' rtiScore when analysis counts not yet available
-    final int effSafe, effWarn, effDanger;
-    if (safeCount + warnCount + dangerCount == 0 && reviews.isNotEmpty) {
-      int s = 0, w = 0, d = 0;
-      for (final r in reviews) {
-        final score = r.rtiScore;
-        if (score == null) continue;
-        if (score >= 70) {
-          s++;
-        } else if (score >= 40) {
-          w++;
-        } else {
-          d++;
-        }
-      }
-      effSafe = s;
-      effWarn = w;
-      effDanger = d;
-    } else {
-      effSafe = safeCount;
-      effWarn = warnCount;
-      effDanger = dangerCount;
-    }
-
-    final rightColumn = Column(
-      children: [
-        AnalysisReportTrustStatusCard(
-          detail: detail,
-          rtiSummary: detail.rtiSummary!,
-          safeCount: effSafe,
-          warnCount: effWarn,
-          dangerCount: effDanger,
-          isAnalyzing: isAnalyzing,
-        ),
-        const SizedBox(height: AppSpacing.md),
-        AnalysisReportSummaryCard(
-          rtiSummary: detail.rtiSummary!,
-          reviews: reviews,
-          safeCount: effSafe,
-          warnCount: effWarn,
-          dangerCount: effDanger,
-        ),
-        const SizedBox(height: AppSpacing.md),
-        AnalysisReportRecommendedActionsCard(onGoToReviews: onBackToProduct),
-      ],
-    );
-
-    final leftColumn = Column(
-      children: [
-        AnalysisReportProductHeroCard(
-          detail: detail,
-          isAnalyzing: isAnalyzing,
-          onBack: onBackToProduct,
-        ),
-        const SizedBox(height: AppSpacing.lg),
-        AnalysisReportTrendSection(trend: trend, isAnalyzing: isAnalyzing),
-        if (topPatterns.isNotEmpty) ...[
-          const SizedBox(height: AppSpacing.lg),
-          AnalysisReportPatternSection(patterns: topPatterns),
-        ],
-        const SizedBox(height: AppSpacing.lg),
-        AnalysisReportReviewListSection(
-          reviews: reviews,
-          isAnalyzing: isAnalyzing,
-        ),
-      ],
-    );
-
+    final l = AppLocalizations.of(context);
+    final analyzed = reviews
+        .where(
+          (r) =>
+              r.rtiScore != null || r.rtiLabel != null || r.reasons.isNotEmpty,
+        )
+        .toList();
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        AnalysisReportBackButton(onPressed: onBackToProduct),
+        Text(detail.name, style: Theme.of(context).textTheme.titleLarge),
         const SizedBox(height: AppSpacing.md),
-        if (isNarrow)
-          Column(
-            children: [
-              AnalysisReportProductHeroCard(
-                detail: detail,
-                isAnalyzing: isAnalyzing,
-                onBack: onBackToProduct,
-              ),
-              const SizedBox(height: AppSpacing.md),
-              AnalysisReportTrustStatusCard(
-                detail: detail,
-                rtiSummary: detail.rtiSummary!,
-                safeCount: effSafe,
-                warnCount: effWarn,
-                dangerCount: effDanger,
-                isAnalyzing: isAnalyzing,
-              ),
-              const SizedBox(height: AppSpacing.md),
-              AnalysisReportSummaryCard(
-                rtiSummary: detail.rtiSummary!,
-                reviews: reviews,
-                safeCount: effSafe,
-                warnCount: effWarn,
-                dangerCount: effDanger,
-              ),
-              const SizedBox(height: AppSpacing.md),
-              AnalysisReportTrendSection(
-                trend: trend,
-                isAnalyzing: isAnalyzing,
-              ),
-              const SizedBox(height: AppSpacing.md),
-              AnalysisReportRecommendedActionsCard(
-                onGoToReviews: onBackToProduct,
-              ),
-              if (topPatterns.isNotEmpty) ...[
-                const SizedBox(height: AppSpacing.lg),
-                AnalysisReportPatternSection(patterns: topPatterns),
-              ],
-              const SizedBox(height: AppSpacing.lg),
-              AnalysisReportReviewListSection(
-                reviews: reviews,
-                isAnalyzing: isAnalyzing,
-              ),
-            ],
-          )
-        else
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Expanded(flex: 58, child: leftColumn),
-              const SizedBox(width: AppSpacing.lg),
-              SizedBox(width: 320, child: rightColumn),
-            ],
+        if (isAnalyzing) Text(l.reportRunning),
+        if (detail.avgRti != null)
+          Text('RTI ${detail.avgRti}')
+        else if (analyzed.isEmpty &&
+            detail.trustSignals.isEmpty &&
+            !isAnalyzing)
+          Text(l.reportBefore),
+        if (detail.rtiGrade != null) Text(detail.rtiGrade!),
+        for (final signal in detail.trustSignals)
+          Text('${signal.label}: ${signal.value}'),
+        const SizedBox(height: AppSpacing.md),
+        Text(l.reportLoadedScope),
+        const SizedBox(height: AppSpacing.sm),
+        if (analyzed.isEmpty)
+          Text(l.reportNoReviewResults)
+        else ...[
+          Text('${l.reportCurrentCount}: ${analyzed.length}'),
+          AnalysisReportReviewListSection(
+            reviews: analyzed,
+            isAnalyzing: isAnalyzing,
           ),
+          for (final review in analyzed.where((r) => r.reasons.isNotEmpty))
+            ExpansionTile(
+              title: Text(
+                review.content,
+                maxLines: 2,
+                overflow: TextOverflow.ellipsis,
+              ),
+              subtitle: Text(l.reportReasons),
+              children: [
+                for (final reason in review.reasons)
+                  ListTile(title: Text(reason)),
+              ],
+            ),
+        ],
+        if (trend.isNotEmpty) ...[
+          const SizedBox(height: AppSpacing.md),
+          AnalysisReportTrendSection(trend: trend, isAnalyzing: false),
+        ],
+        const SizedBox(height: AppSpacing.md),
+        TextButton(onPressed: onBackToProduct, child: Text(l.reportClose)),
       ],
-    );
-  }
-
-  static List<AnalysisReportPatternData> _aggregateTopPatterns(
-    List<ProductReview> reviews,
-  ) {
-    final counts = <String, int>{};
-    for (final review in reviews) {
-      for (final reason in review.reasons) {
-        if (reason.isNotEmpty) {
-          counts[reason] = (counts[reason] ?? 0) + 1;
-        }
-      }
-    }
-    final sorted = counts.entries.toList()
-      ..sort((a, b) => b.value.compareTo(a.value));
-    return sorted
-        .take(4)
-        .map((e) => AnalysisReportPatternData(label: e.key, count: e.value))
-        .toList();
-  }
-}
-
-class AnalysisReportBackButton extends StatelessWidget {
-  const AnalysisReportBackButton({required this.onPressed});
-  final VoidCallback onPressed;
-
-  @override
-  Widget build(BuildContext context) {
-    return TextButton.icon(
-      onPressed: onPressed,
-      style: TextButton.styleFrom(
-        padding: EdgeInsets.zero,
-        minimumSize: Size.zero,
-        tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-        foregroundColor: AppColors.textSecondary,
-      ),
-      icon: const Icon(Icons.arrow_back_ios, size: 13),
-      label: Text(
-        '상품 페이지로 돌아가기',
-        style: Theme.of(context).textTheme.labelSmall?.copyWith(
-          color: AppColors.textSecondary,
-          fontWeight: FontWeight.w600,
-        ),
-      ),
     );
   }
 }

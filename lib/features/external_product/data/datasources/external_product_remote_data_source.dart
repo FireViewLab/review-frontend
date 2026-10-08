@@ -50,7 +50,13 @@ class ExternalProductRemoteDataSourceImpl
           : null,
       job: job is Map<String, dynamic> ? _job(job) : null,
       springProductId: (body['springProductId'] as num?)?.toInt(),
-      hasAnalysis: body['analysis'] != null,
+      hasAnalysis: body['analysis'] is Map<String, dynamic>,
+      analysisStatus:
+          _text(body['analysisStatus']) ??
+          (body['analysis'] is Map ? 'DONE' : 'UNAVAILABLE'),
+      analysis: body['analysis'] is Map<String, dynamic>
+          ? _analysis(body['analysis'] as Map<String, dynamic>)
+          : null,
     );
   }
 
@@ -113,8 +119,23 @@ class ExternalProductRemoteDataSourceImpl
             if (image is String && image.isNotEmpty) image,
       ],
       helpfulCount: (json['helpfulCount'] as num?)?.toInt(),
+      rti: (json['rti'] as num?)?.toDouble(),
+      level: _text(json['level']),
+      reasons: [
+        if (json['reasons'] is List)
+          for (final reason in json['reasons'] as List)
+            if (reason is String && reason.trim().isNotEmpty) reason.trim(),
+      ],
     );
   }
+
+  ExternalAnalysis _analysis(Map<String, dynamic> json) => ExternalAnalysis(
+    modelVersion: _text(json['modelVersion']),
+    policyVersion: _text(json['policyVersion']),
+    reviewCount: (json['reviewCount'] as num?)?.toInt(),
+    sampled: json['sampled'] as bool?,
+    sourceReviewCount: (json['sourceReviewCount'] as num?)?.toInt(),
+  );
 
   CollectionJob? _job(Map<String, dynamic> json) {
     final id = json['id'];

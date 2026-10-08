@@ -1686,4 +1686,68 @@ class AppLocalizationsKo extends AppLocalizations {
 
   @override
   String get externalTimeout => '요청 시간이 초과됐어요. 다시 시도해주세요.';
+
+  @override
+  String get reportTitle => '짧은 report';
+
+  @override
+  String get reportDetails => '상세 분석 보기';
+
+  @override
+  String get reportClose => '닫기';
+
+  @override
+  String get reportBefore => '분석 전';
+
+  @override
+  String get reportCollecting => '상품·리뷰 정보를 수집하고 있어요. 분석 진행 상태와는 별개예요.';
+
+  @override
+  String get reportRunning => '분석이 진행 중이에요.';
+
+  @override
+  String get reportFailed => '분석 결과를 가져오지 못했어요.';
+
+  @override
+  String get reportDisabled => '현재 분석 기능이 비활성화되어 있어요.';
+
+  @override
+  String get reportStale => '기존 분석 결과가 최신 상태가 아니에요.';
+
+  @override
+  String get reportUnavailable => '분석 상태를 확인할 수 없어요.';
+
+  @override
+  String get reportDone => '분석 결과 제공됨';
+
+  @override
+  String get reportLoadedScope =>
+      '현재 불러온 리뷰의 결과만 표시해요. 상품 전체 평균이나 긍정·부정률이 아니에요.';
+
+  @override
+  String get reportInputCount => '분석에 입력한 리뷰';
+
+  @override
+  String get reportSourceCount => '수집된 원본 리뷰';
+
+  @override
+  String get reportSampled => '일부 리뷰 표본 분석';
+
+  @override
+  String get reportFull => '전체 수집 리뷰 분석';
+
+  @override
+  String get reportModel => '모델 버전';
+
+  @override
+  String get reportPolicy => '정책 버전';
+
+  @override
+  String get reportNoReviewResults => '현재 불러온 리뷰에 제공된 분석 결과가 없어요.';
+
+  @override
+  String get reportReasons => '제공된 판단 근거';
+
+  @override
+  String get reportCurrentCount => '현재 불러온 분석 리뷰';
 }

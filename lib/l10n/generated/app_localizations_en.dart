@@ -1738,4 +1738,70 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get externalTimeout => 'The request timed out. Please try again.';
+
+  @override
+  String get reportTitle => 'Short report';
+
+  @override
+  String get reportDetails => 'View detailed analysis';
+
+  @override
+  String get reportClose => 'Close';
+
+  @override
+  String get reportBefore => 'Not analyzed';
+
+  @override
+  String get reportCollecting =>
+      'Product and reviews are being collected. This is separate from analysis.';
+
+  @override
+  String get reportRunning => 'Analysis is in progress.';
+
+  @override
+  String get reportFailed => 'Analysis results could not be retrieved.';
+
+  @override
+  String get reportDisabled => 'Analysis is currently disabled.';
+
+  @override
+  String get reportStale => 'The previous analysis is out of date.';
+
+  @override
+  String get reportUnavailable => 'Analysis status is unavailable.';
+
+  @override
+  String get reportDone => 'Analysis results available';
+
+  @override
+  String get reportLoadedScope =>
+      'Only results for loaded reviews are shown. These are not a product-wide average or sentiment ratio.';
+
+  @override
+  String get reportInputCount => 'Analysis input reviews';
+
+  @override
+  String get reportSourceCount => 'Collected source reviews';
+
+  @override
+  String get reportSampled => 'Sampled reviews analyzed';
+
+  @override
+  String get reportFull => 'All collected reviews analyzed';
+
+  @override
+  String get reportModel => 'Model version';
+
+  @override
+  String get reportPolicy => 'Policy version';
+
+  @override
+  String get reportNoReviewResults =>
+      'No analysis results were provided for the loaded reviews.';
+
+  @override
+  String get reportReasons => 'Provided reasons';
+
+  @override
+  String get reportCurrentCount => 'Loaded analyzed reviews';
 }

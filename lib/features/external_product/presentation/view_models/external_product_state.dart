@@ -22,6 +22,8 @@ class ExternalProductState {
     this.summary,
     this.isStale = false,
     this.hasAnalysis = false,
+    this.analysisStatus = 'UNAVAILABLE',
+    this.analysis,
     this.springProductId,
     this.reviews = const [],
     this.nextCursor,
@@ -40,6 +42,8 @@ class ExternalProductState {
   /// 오래된 데이터라 서버가 다시 수집하는 중이다. 화면은 그대로 보여 준다.
   final bool isStale;
   final bool hasAnalysis;
+  final String analysisStatus;
+  final ExternalAnalysis? analysis;
   final int? springProductId;
   final List<ExternalReview> reviews;
   final String? nextCursor;
@@ -71,6 +75,8 @@ class ExternalProductState {
       summary: summary,
       isStale: isStale,
       hasAnalysis: hasAnalysis,
+      analysisStatus: analysisStatus,
+      analysis: analysis,
       springProductId: springProductId,
       reviews: reviews ?? this.reviews,
       nextCursor: clearNextCursor ? null : (nextCursor ?? this.nextCursor),

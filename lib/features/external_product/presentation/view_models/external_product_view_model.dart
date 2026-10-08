@@ -75,6 +75,8 @@ class ExternalProductViewModel extends Notifier<ExternalProductState> {
             summary: summary,
             isStale: snapshot.status == CollectionStatus.stale,
             hasAnalysis: snapshot.hasAnalysis,
+            analysisStatus: snapshot.analysisStatus,
+            analysis: snapshot.analysis,
             springProductId: snapshot.springProductId,
             reviews: snapshot.reviews,
             nextCursor: snapshot.nextCursor,

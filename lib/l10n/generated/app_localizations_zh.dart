@@ -1677,4 +1677,67 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get externalTimeout => '请求超时，请重试。';
+
+  @override
+  String get reportTitle => '简短报告';
+
+  @override
+  String get reportDetails => '查看详细分析';
+
+  @override
+  String get reportClose => '关闭';
+
+  @override
+  String get reportBefore => '尚未分析';
+
+  @override
+  String get reportCollecting => '正在收集商品和评论，与分析进度不同。';
+
+  @override
+  String get reportRunning => '正在分析。';
+
+  @override
+  String get reportFailed => '无法获取分析结果。';
+
+  @override
+  String get reportDisabled => '当前分析功能已禁用。';
+
+  @override
+  String get reportStale => '以前的分析结果已过期。';
+
+  @override
+  String get reportUnavailable => '无法确认分析状态。';
+
+  @override
+  String get reportDone => '已有分析结果';
+
+  @override
+  String get reportLoadedScope => '仅显示已加载评论的结果，并非商品整体平均分或情感比例。';
+
+  @override
+  String get reportInputCount => '分析输入评论';
+
+  @override
+  String get reportSourceCount => '收集的原始评论';
+
+  @override
+  String get reportSampled => '部分评论抽样分析';
+
+  @override
+  String get reportFull => '已收集评论全部分析';
+
+  @override
+  String get reportModel => '模型版本';
+
+  @override
+  String get reportPolicy => '策略版本';
+
+  @override
+  String get reportNoReviewResults => '已加载评论尚无分析结果。';
+
+  @override
+  String get reportReasons => '提供的判断依据';
+
+  @override
+  String get reportCurrentCount => '已加载的分析评论';
 }
