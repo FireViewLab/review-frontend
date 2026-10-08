@@ -1,3 +1,4 @@
+import 'package:re_view_front/features/settings/presentation/providers/settings_providers.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:re_view_front/core/error/failure.dart';
 import 'package:re_view_front/features/product_detail/domain/entities/product_review.dart';
@@ -83,7 +84,7 @@ class ProductDetailViewModel extends Notifier<ProductDetailState> {
         dissatisfactionPoints: [],
       ),
       similarProducts: const [],
-      isAnalyzing: detail.externalRef == null,
+      isAnalyzing: false,
     );
 
     if (detail.externalRef == null) {
@@ -95,7 +96,12 @@ class ProductDetailViewModel extends Notifier<ProductDetailState> {
     String productId,
     Future<bool> healthFuture,
   ) async {
-    final isHealthy = await healthFuture;
+    final preferences = await ref
+        .read(savedDisplayPreferencesProvider.future)
+        .catchError((_) => null);
+    if (!ref.mounted) return;
+    final isHealthy =
+        preferences?.allowDataAnalysis == true && await healthFuture;
     if (!ref.mounted) return;
 
     if (!isHealthy) {
@@ -106,6 +112,10 @@ class ProductDetailViewModel extends Notifier<ProductDetailState> {
       return;
     }
 
+    final beforeRequest = state;
+    if (beforeRequest is ProductDetailSuccess) {
+      state = beforeRequest.copyWith(isAnalyzing: true);
+    }
     final analysisResult = await _triggerAnalysis(productId);
     if (!ref.mounted) return;
 
@@ -118,6 +128,7 @@ class ProductDetailViewModel extends Notifier<ProductDetailState> {
           final detail = analysis.reviewDetails[review.id];
           if (detail == null) return review;
           return ProductReview(
+            helpfulCount: review.helpfulCount,
             id: review.id,
             authorName: review.authorName,
             authorAvatarUrl: review.authorAvatarUrl,

@@ -1631,6 +1631,10 @@ class AppLocalizationsZh extends AppLocalizations {
   String get chatHistoryWait => '发送完成后可打开历史记录。';
 
   @override
+  String get extProductReviewPreferencesNote =>
+      '排序设置仅适用于已加载的评论。不会根据未提供的购买认证或可信度隐藏或分类评论。';
+
+  @override
   String get extProductSummaryLoading => '正在获取商品基本信息。';
 
   @override

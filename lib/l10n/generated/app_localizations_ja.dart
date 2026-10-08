@@ -1637,6 +1637,10 @@ class AppLocalizationsJa extends AppLocalizations {
   String get chatHistoryWait => '送信が完了すると履歴を開けます。';
 
   @override
+  String get extProductReviewPreferencesNote =>
+      '並び順の設定は読み込み済みのレビューに適用されます。未提供の購入認証や信頼度でレビューを非表示・分類しません。';
+
+  @override
   String get extProductSummaryLoading => '商品の基本情報を確認しています。';
 
   @override

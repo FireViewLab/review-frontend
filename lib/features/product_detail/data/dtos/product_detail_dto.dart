@@ -226,6 +226,8 @@ class PlatformEntry {
 
 class ProductReviewDto {
   const ProductReviewDto({
+    this.helpfulCount,
+    this.imageUrls = const [],
     required this.id,
     required this.reviewerNickname,
     required this.content,
@@ -239,6 +241,8 @@ class ProductReviewDto {
     required this.isVerifiedPurchase,
   });
 
+  final int? helpfulCount;
+  final List<String> imageUrls;
   final int id;
   final String reviewerNickname;
   final String content;
@@ -252,7 +256,14 @@ class ProductReviewDto {
   final bool isVerifiedPurchase;
 
   factory ProductReviewDto.fromJson(Map<String, dynamic> json) {
+    final images = json['imageUrls'] ?? json['images'];
     return ProductReviewDto(
+      helpfulCount: (json['helpfulCount'] as num?)?.toInt(),
+      imageUrls: [
+        if (images is List)
+          for (final image in images)
+            if (image is String && image.trim().isNotEmpty) image.trim(),
+      ],
       id: (json['id'] as num).toInt(),
       reviewerNickname:
           (json['reviewerNickname'] ?? json['authorName']) as String? ?? '',
@@ -288,7 +299,8 @@ class ProductReviewDto {
       rtiScore: rtiScore,
       rtiColor: trustGradeColor,
       rtiLabel: trustGradeLabel,
-      imageUrls: const [],
+      helpfulCount: helpfulCount,
+      imageUrls: imageUrls,
       reasons: reasons,
     );
   }

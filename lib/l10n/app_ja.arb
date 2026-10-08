@@ -517,6 +517,7 @@
   "chatQuotaRefresh": "再確認",
   "chatClosePreserve": "閉じる（会話を保持）",
   "chatHistoryWait": "送信が完了すると履歴を開けます。",
+  "extProductReviewPreferencesNote": "並び順の設定は読み込み済みのレビューに適用されます。未提供の購入認証や信頼度でレビューを非表示・分類しません。",
   "extProductSummaryLoading": "商品の基本情報を確認しています。",
   "extProductListSummary": "一覧で取得した商品情報です。最新の詳細情報とレビューを確認しています。",
   "extProductPreviousSummary": "以前表示した商品情報です。最新の詳細情報とレビューを確認しています。"

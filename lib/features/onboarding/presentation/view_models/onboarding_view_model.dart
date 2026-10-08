@@ -127,6 +127,7 @@ class OnboardingViewModel extends Notifier<OnboardingState> {
         return;
       }
       ref.invalidate(settingsViewModelProvider);
+      ref.invalidate(savedDisplayPreferencesProvider);
     }
     final categories = skip ? _savedCategories : current.selectedCategories;
     final threshold = skip ? _savedThreshold : current.minTrustScore;

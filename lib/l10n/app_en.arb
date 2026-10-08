@@ -533,6 +533,7 @@
   "chatQuotaRefresh": "Refresh",
   "chatClosePreserve": "Close (keep conversation)",
   "chatHistoryWait": "History is available after sending completes.",
+  "extProductReviewPreferencesNote": "Sorting applies to loaded reviews. Reviews are not hidden or classified using unavailable purchase verification or trust scores.",
   "extProductSummaryLoading": "Checking basic product information.",
   "extProductListSummary": "Product information from the list. Checking current details and reviews.",
   "extProductPreviousSummary": "Previously viewed product information. Checking current details and reviews."

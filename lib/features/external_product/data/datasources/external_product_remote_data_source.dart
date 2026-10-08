@@ -110,7 +110,7 @@ class ExternalProductRemoteDataSourceImpl
           for (final image in images)
             if (image is String && image.isNotEmpty) image,
       ],
-      helpfulCount: (json['helpfulCount'] as num?)?.toInt() ?? 0,
+      helpfulCount: (json['helpfulCount'] as num?)?.toInt(),
     );
   }
 

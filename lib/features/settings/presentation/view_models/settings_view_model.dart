@@ -64,7 +64,10 @@ class SettingsViewModel extends Notifier<SettingsState> {
       return;
     }
     state = result.when(
-      success: (settings) => SettingsSaved(settings: settings),
+      success: (settings) {
+        ref.invalidate(savedDisplayPreferencesProvider);
+        return SettingsSaved(settings: settings);
+      },
       failure: (failure) =>
           SettingsError(settings: current, message: failure.message),
     );
