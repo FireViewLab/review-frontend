@@ -3197,6 +3197,24 @@ abstract class AppLocalizations {
   /// In ko, this message translates to:
   /// **'대화 기록은 전송이 끝난 뒤 열 수 있어요.'**
   String get chatHistoryWait;
+
+  /// No description provided for @extProductSummaryLoading.
+  ///
+  /// In ko, this message translates to:
+  /// **'상품 기본 정보를 확인하고 있어요.'**
+  String get extProductSummaryLoading;
+
+  /// No description provided for @extProductListSummary.
+  ///
+  /// In ko, this message translates to:
+  /// **'목록에서 받은 상품 정보예요. 최신 상세 정보와 리뷰를 확인하고 있어요.'**
+  String get extProductListSummary;
+
+  /// No description provided for @extProductPreviousSummary.
+  ///
+  /// In ko, this message translates to:
+  /// **'이전에 확인한 상품 정보예요. 최신 상세 정보와 리뷰를 확인하고 있어요.'**
+  String get extProductPreviousSummary;
 }
 
 class _AppLocalizationsDelegate

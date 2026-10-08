@@ -48,6 +48,7 @@ class ProductDetailSuccess extends ProductDetailState {
   }) {
     final updatedDetail = (rtiSummary != null || trustSignals != null)
         ? ProductDetail(
+            summary: detail.summary,
             externalId: detail.externalId,
             dataPlatform: detail.dataPlatform,
             dataProductId: detail.dataProductId,

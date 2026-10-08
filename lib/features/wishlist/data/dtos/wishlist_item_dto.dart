@@ -1,3 +1,5 @@
+import 'package:re_view_front/features/external_product/data/dtos/product_summary_dto.dart';
+import 'package:re_view_front/features/external_product/domain/entities/product_summary.dart';
 import 'package:re_view_front/features/wishlist/domain/entities/wishlist_item.dart';
 
 class WishlistItemDto {
@@ -17,6 +19,7 @@ class WishlistItemDto {
     required this.isNewAlert,
     this.platform,
     this.savedAt,
+    this.summary,
     this.externalId,
     this.dataPlatform,
     this.dataProductId,
@@ -25,6 +28,7 @@ class WishlistItemDto {
 
   factory WishlistItemDto.fromJson(Map<String, dynamic> json) {
     return WishlistItemDto(
+      summary: ProductSummaryDto.fromJson(json),
       externalId: json['externalId'] as String?,
       dataPlatform: json['dataPlatform'] as String?,
       dataProductId: json['dataProductId']?.toString(),
@@ -61,6 +65,7 @@ class WishlistItemDto {
     );
   }
 
+  final ProductSummary? summary;
   final String? externalId;
   final String? dataPlatform;
   final String? dataProductId;
@@ -84,6 +89,7 @@ class WishlistItemDto {
 
   WishlistItem toEntity() {
     return WishlistItem(
+      summary: summary,
       externalId: externalId,
       dataPlatform: dataPlatform,
       dataProductId: dataProductId,
