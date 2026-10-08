@@ -1683,4 +1683,15 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get chatHistoryWait => 'History is available after sending completes.';
+
+  @override
+  String get extProductSummaryLoading => 'Checking basic product information.';
+
+  @override
+  String get extProductListSummary =>
+      'Product information from the list. Checking current details and reviews.';
+
+  @override
+  String get extProductPreviousSummary =>
+      'Previously viewed product information. Checking current details and reviews.';
 }
