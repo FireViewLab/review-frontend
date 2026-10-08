@@ -1,3 +1,5 @@
+import 'package:re_view_front/features/payments/domain/entities/cart_checkout.dart';
+import 'package:re_view_front/core/providers/core_providers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -84,7 +86,7 @@ class _CartBody extends ConsumerWidget {
             mainAxisSize: MainAxisSize.min,
             children: [
               const Text(
-                '상품 상세에서 제공되는 쇼핑몰 구매 링크를 이용해 주세요. 이 서비스에서 외부 상품을 결제하지 않습니다.',
+                '상품 상세에서 제공되는 쇼핑몰 구매 링크를 이용해 주세요. TEST 주문 기능은 별도 화면에서 준비하며 현재 서버 판매·배송 계약은 없습니다.',
               ),
               for (final item in cartState.selectedItems)
                 ListTile(
@@ -180,6 +182,13 @@ class _CartBody extends ConsumerWidget {
             hasUnknownPrice: cartState.hasUnknownSelectedPrice,
             isUpdating: cartState.isUpdating,
             onCheckout: () => _showPurchaseChoices(context),
+            onTestCheckout: () => context.push(
+              RoutePaths.cartCheckout,
+              extra: CartCheckoutSelection(
+                cartState.selectedItems,
+                ref.read(authSessionProvider).revision,
+              ),
+            ),
             onContinueShopping: () => context.go(RoutePaths.home),
           ),
         ],
@@ -199,6 +208,13 @@ class _CartBody extends ConsumerWidget {
             hasUnknownPrice: cartState.hasUnknownSelectedPrice,
             isUpdating: cartState.isUpdating,
             onCheckout: () => _showPurchaseChoices(context),
+            onTestCheckout: () => context.push(
+              RoutePaths.cartCheckout,
+              extra: CartCheckoutSelection(
+                cartState.selectedItems,
+                ref.read(authSessionProvider).revision,
+              ),
+            ),
             onContinueShopping: () => context.go(RoutePaths.home),
           ),
         ),

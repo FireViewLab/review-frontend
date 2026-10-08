@@ -3,7 +3,9 @@ class TestPaymentOffer {
     required this.code,
     required this.name,
     required this.amount,
+    this.details = const [],
   });
+  final List<String> details;
   final String code;
   final String name;
   final int amount;

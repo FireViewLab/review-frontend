@@ -10,7 +10,8 @@ import 'package:re_view_front/features/search/presentation/utils/search_formatte
 import 'package:re_view_front/shared/widgets/app_content_view.dart';
 
 class TestPaymentPage extends ConsumerStatefulWidget {
-  const TestPaymentPage({super.key});
+  const TestPaymentPage({super.key, this.cart = false});
+  final bool cart;
   @override
   ConsumerState<TestPaymentPage> createState() => _TestPaymentPageState();
 }
@@ -40,7 +41,7 @@ class _TestPaymentPageState extends ConsumerState<TestPaymentPage> {
 
   String _callback(String result, {String? orderId}) => Uri.base
       .replace(
-        path: RoutePaths.testPayment,
+        path: widget.cart ? RoutePaths.cartCheckout : RoutePaths.testPayment,
         queryParameters: {'result': result, 'orderId': ?orderId},
         fragment: '',
       )
@@ -64,11 +65,15 @@ class _TestPaymentPageState extends ConsumerState<TestPaymentPage> {
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               Text(
-                '토스 TEST 서비스 결제',
+                widget.cart ? '장바구니 토스 TEST 결제' : '토스 TEST 서비스 결제',
                 style: Theme.of(context).textTheme.headlineSmall,
               ),
               const SizedBox(height: 12),
-              const Text('테스트 전용입니다. 외부 쇼핑몰 상품 주문·실결제·자동 플랜 변경을 진행하지 않습니다.'),
+              Text(
+                widget.cart
+                    ? 'TEST 주문·결제 전용입니다. 실제 상품 배송과 실결제는 진행하지 않습니다. 판매·배송 가능 상품과 최종 금액은 서버 견적으로 확인합니다.'
+                    : '테스트 전용입니다. 외부 쇼핑몰 상품 주문·실결제·자동 플랜 변경을 진행하지 않습니다.',
+              ),
               if (!loggedIn) ...[
                 const Text('주문 조회와 결제는 로그인이 필요합니다. 결제 콜백 주소는 로그인 후 다시 열어 주세요.'),
                 TextButton(
@@ -95,7 +100,12 @@ class _TestPaymentPageState extends ConsumerState<TestPaymentPage> {
                   for (final offer in state.offers)
                     ListTile(
                       title: Text(offer.name),
-                      subtitle: Text(formatSearchPrice(offer.amount)),
+                      subtitle: Text(
+                        [
+                          formatSearchPrice(offer.amount),
+                          ...offer.details,
+                        ].join('\n'),
+                      ),
                       trailing: FilledButton(
                         onPressed: state.isBusy ? null : () => vm.create(offer),
                         child: const Text('TEST 주문'),
@@ -173,7 +183,11 @@ class _TestPaymentPageState extends ConsumerState<TestPaymentPage> {
                             vm.reset();
                             _request = null;
                             _readyOrder = null;
-                            context.go(RoutePaths.testPayment);
+                            context.go(
+                              widget.cart
+                                  ? RoutePaths.cart
+                                  : RoutePaths.testPayment,
+                            );
                           },
                     child: const Text('TEST 주문 선택으로 돌아가기'),
                   ),
