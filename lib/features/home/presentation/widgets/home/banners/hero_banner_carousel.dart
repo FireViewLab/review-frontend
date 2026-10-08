@@ -105,119 +105,135 @@ class _HeroBannerCarouselState extends State<HeroBannerCarousel> {
   @override
   Widget build(BuildContext context) {
     if (widget.items.isEmpty) return const SizedBox.shrink();
-    return MouseRegion(
-      onEnter: (_) {
-        _hovered = true;
-        _autoTimer?.cancel();
-      },
-      onExit: (_) {
-        _hovered = false;
-        _scheduleAuto();
-      },
-      child: Listener(
-        onPointerDown: (_) => _autoTimer?.cancel(),
-        onPointerUp: (_) => _scheduleAuto(),
-        onPointerCancel: (_) => _scheduleAuto(),
-        child: SizedBox(
-          height: context.isMobile ? 240 : (context.isTablet ? 320 : 300),
-          child: Stack(
-            alignment: Alignment.center,
-            children: [
-              NotificationListener<ScrollNotification>(
-                onNotification: (notification) {
-                  if (notification is ScrollStartNotification &&
-                      notification.dragDetails != null) {
-                    _isInteracting = true;
-                    _moveRequest++;
-                    _isMoving = false;
-                    _autoTimer?.cancel();
-                  } else if (notification is ScrollEndNotification &&
-                      _isInteracting) {
-                    _isInteracting = false;
-                    _targetPage = (_controller.page ?? _currentPage.toDouble())
-                        .round();
-                    _scheduleAuto();
-                  }
-                  return false;
-                },
-                child: PageView.builder(
-                  controller: _controller,
-                  padEnds: true,
-                  itemCount: widget.items.length < 2
-                      ? widget.items.length
-                      : null,
-                  onPageChanged: (index) => setState(() {
-                    _currentPage = index;
-                    _activeIndex = _realIndexFor(index);
-                  }),
-                  itemBuilder: (context, index) {
-                    final item = widget.items[_realIndexFor(index)];
-                    return AnimatedBuilder(
-                      animation: _controller,
-                      builder: (context, child) {
-                        final page = _controller.hasClients
-                            ? (_controller.page ?? _currentPage.toDouble())
-                            : _currentPage.toDouble();
-                        final focus = 1 - (page - index).abs().clamp(0.0, 1.0);
-                        return Padding(
-                          padding: EdgeInsets.symmetric(
-                            horizontal: AppSpacing.md / 2,
-                            vertical: AppSpacing.xs * (1 - focus),
-                          ),
-                          child: _BannerCard(
-                            item: item,
-                            focus: focus,
-                            onPressed: () => widget.onBannerPressed?.call(item),
-                          ),
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        final mobileHeight =
+            (constraints.maxWidth * _viewportFraction - AppSpacing.md) /
+            (1916 / 821);
+        return MouseRegion(
+          onEnter: (_) {
+            _hovered = true;
+            _autoTimer?.cancel();
+          },
+          onExit: (_) {
+            _hovered = false;
+            _scheduleAuto();
+          },
+          child: Listener(
+            onPointerDown: (_) => _autoTimer?.cancel(),
+            onPointerUp: (_) => _scheduleAuto(),
+            onPointerCancel: (_) => _scheduleAuto(),
+            child: SizedBox(
+              height: context.isMobile
+                  ? mobileHeight
+                  : (context.isTablet ? 320 : 300),
+              child: Stack(
+                alignment: Alignment.center,
+                children: [
+                  NotificationListener<ScrollNotification>(
+                    onNotification: (notification) {
+                      if (notification is ScrollStartNotification &&
+                          notification.dragDetails != null) {
+                        _isInteracting = true;
+                        _moveRequest++;
+                        _isMoving = false;
+                        _autoTimer?.cancel();
+                      } else if (notification is ScrollEndNotification &&
+                          _isInteracting) {
+                        _isInteracting = false;
+                        _targetPage =
+                            (_controller.page ?? _currentPage.toDouble())
+                                .round();
+                        _scheduleAuto();
+                      }
+                      return false;
+                    },
+                    child: PageView.builder(
+                      controller: _controller,
+                      padEnds: true,
+                      itemCount: widget.items.length < 2
+                          ? widget.items.length
+                          : null,
+                      onPageChanged: (index) => setState(() {
+                        _currentPage = index;
+                        _activeIndex = _realIndexFor(index);
+                      }),
+                      itemBuilder: (context, index) {
+                        final item = widget.items[_realIndexFor(index)];
+                        return AnimatedBuilder(
+                          animation: _controller,
+                          builder: (context, child) {
+                            final page = _controller.hasClients
+                                ? (_controller.page ?? _currentPage.toDouble())
+                                : _currentPage.toDouble();
+                            final focus =
+                                1 - (page - index).abs().clamp(0.0, 1.0);
+                            return Padding(
+                              padding: EdgeInsets.symmetric(
+                                horizontal: AppSpacing.md / 2,
+                                vertical: AppSpacing.xs * (1 - focus),
+                              ),
+                              child: _BannerCard(
+                                item: item,
+                                focus: focus,
+                                onPressed: () =>
+                                    widget.onBannerPressed?.call(item),
+                              ),
+                            );
+                          },
                         );
                       },
-                    );
-                  },
-                ),
-              ),
-              Positioned(
-                left: context.isMobile ? AppSpacing.xs : -12,
-                child: _CircleControl(
-                  icon: Icons.chevron_left,
-                  onTap: () => _moveBy(-1),
-                ),
-              ),
-              Positioned(
-                right: context.isMobile ? AppSpacing.xs : AppSpacing.lg,
-                child: _CircleControl(
-                  icon: Icons.chevron_right,
-                  onTap: () => _moveBy(1),
-                ),
-              ),
-              Positioned(
-                bottom: AppSpacing.md,
-                child: Semantics(
-                  liveRegion: true,
-                  label: '배너 ${_activeIndex + 1}/${widget.items.length}',
-                  child: _BannerProgress(
-                    itemCount: widget.items.length,
-                    activeIndex: _activeIndex,
-                    isPaused: _isPaused || _reduceMotion,
-                    reducedMotion: _reduceMotion,
-                    onPauseToggle: () {
-                      setState(() => _isPaused = !_isPaused);
-                      _scheduleAuto();
-                    },
+                    ),
                   ),
-                ),
+                  Positioned(
+                    left: context.isMobile ? AppSpacing.xs : -12,
+                    child: _CircleControl(
+                      icon: Icons.chevron_left,
+                      onTap: () => _moveBy(-1),
+                    ),
+                  ),
+                  Positioned(
+                    right: context.isMobile ? AppSpacing.xs : AppSpacing.lg,
+                    child: _CircleControl(
+                      icon: Icons.chevron_right,
+                      onTap: () => _moveBy(1),
+                    ),
+                  ),
+                  Positioned(
+                    bottom: AppSpacing.md,
+                    child: Semantics(
+                      liveRegion: true,
+                      label: '배너 ${_activeIndex + 1}/${widget.items.length}',
+                      child: _BannerProgress(
+                        itemCount: widget.items.length,
+                        activeIndex: _activeIndex,
+                        isPaused: _isPaused || _reduceMotion,
+                        reducedMotion: _reduceMotion,
+                        onPauseToggle: () {
+                          setState(() => _isPaused = !_isPaused);
+                          _scheduleAuto();
+                        },
+                      ),
+                    ),
+                  ),
+                  if (!context.isMobile) ...[
+                    const Positioned.fill(
+                      child: IgnorePointer(
+                        child: _CarouselEdgeFade(isLeft: true),
+                      ),
+                    ),
+                    const Positioned.fill(
+                      child: IgnorePointer(
+                        child: _CarouselEdgeFade(isLeft: false),
+                      ),
+                    ),
+                  ],
+                ],
               ),
-              if (!context.isMobile) ...[
-                const Positioned.fill(
-                  child: IgnorePointer(child: _CarouselEdgeFade(isLeft: true)),
-                ),
-                const Positioned.fill(
-                  child: IgnorePointer(child: _CarouselEdgeFade(isLeft: false)),
-                ),
-              ],
-            ],
+            ),
           ),
-        ),
-      ),
+        );
+      },
     );
   }
 
