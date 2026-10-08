@@ -21,12 +21,14 @@ class CartItem {
     this.estimatedDelivery,
     this.stockCount,
     this.maxQuantity = 99,
+    this.summary,
     this.externalId,
     this.dataPlatform,
     this.dataProductId,
     this.subCategory,
   });
 
+  final ProductSummary? summary;
   final String? externalId;
   final String? dataPlatform;
   final String? dataProductId;
@@ -41,7 +43,7 @@ class CartItem {
       ? externalId
       : externalRef?.externalId;
   ProductRouteContext get routeContext =>
-      ProductRouteContext(chatProductId: chatProductId);
+      ProductRouteContext(chatProductId: chatProductId, summary: summary);
 
   final int cartItemId;
   final int productId;
@@ -68,6 +70,7 @@ class CartItem {
 
   CartItem copyWith({int? quantity}) {
     return CartItem(
+      summary: summary,
       externalId: externalId,
       dataPlatform: dataPlatform,
       dataProductId: dataProductId,

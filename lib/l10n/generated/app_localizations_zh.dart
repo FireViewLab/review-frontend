@@ -1629,4 +1629,13 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get chatHistoryWait => '发送完成后可打开历史记录。';
+
+  @override
+  String get extProductSummaryLoading => '正在获取商品基本信息。';
+
+  @override
+  String get extProductListSummary => '这是商品列表中的信息。正在获取最新详情和评论。';
+
+  @override
+  String get extProductPreviousSummary => '这是之前查看的商品信息。正在获取最新详情和评论。';
 }
