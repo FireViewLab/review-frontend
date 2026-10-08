@@ -10,6 +10,7 @@ import 'package:re_view_front/features/payments/domain/entities/cart_checkout.da
 import 'package:re_view_front/features/payments/presentation/pages/test_payment_page.dart';
 import 'package:re_view_front/features/payments/presentation/providers/test_payment_providers.dart';
 import 'package:re_view_front/features/payments/presentation/view_models/test_payment_state.dart';
+import 'package:re_view_front/features/payments/presentation/view_models/test_payment_view_model.dart';
 import 'package:re_view_front/shared/widgets/app_content_view.dart';
 
 class CartCheckoutPage extends ConsumerStatefulWidget {
@@ -52,18 +53,18 @@ class _CartCheckoutPageState extends ConsumerState<CartCheckoutPage> {
       }
     });
     if (restoring || _repository != null) {
-      final repository =
-          _repository ??
-          CartCheckoutRepositoryImpl(
-            ref.watch(apiClientProvider),
-            contract,
-            null,
-            null,
-          );
+      final repository = _repository ??= CartCheckoutRepositoryImpl(
+        ref.watch(apiClientProvider),
+        contract,
+        null,
+        null,
+      );
       return ProviderScope(
+        key: ValueKey(session.revision),
         overrides: [
           testPaymentContractProvider.overrideWithValue(contract?.payment),
           testPaymentRepositoryProvider.overrideWithValue(repository),
+          testPaymentViewModelProvider.overrideWith(TestPaymentViewModel.new),
         ],
         child: Consumer(
           builder: (context, childRef, _) {
@@ -159,7 +160,11 @@ class _CartCheckoutPageState extends ConsumerState<CartCheckoutPage> {
                           final text = value?.trim() ?? '';
                           if (text.isEmpty) return '입력해 주세요.';
                           if (i == 1 &&
-                              !RegExp(r'^[0-9+\- ]{8,20}$').hasMatch(text)) {
+                              (!RegExp(r'^\+?[0-9\- ]+$').hasMatch(text) ||
+                                  text.replaceAll(RegExp(r'\D'), '').length <
+                                      8 ||
+                                  text.replaceAll(RegExp(r'\D'), '').length >
+                                      15)) {
                             return '연락처 형식을 확인해 주세요.';
                           }
                           if (i == 2 && !RegExp(r'^\d{5}$').hasMatch(text)) {
