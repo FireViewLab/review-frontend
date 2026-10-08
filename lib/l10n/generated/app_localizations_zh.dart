@@ -1665,4 +1665,16 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get reviewPhotosEmpty => '当前已加载评论没有有效图片。';
+
+  @override
+  String get externalForbidden => '没有执行此操作的权限。';
+
+  @override
+  String get externalAuthRequestFailed => '无法确认此请求的身份验证。请检查当前登录状态后重试。';
+
+  @override
+  String get externalNetworkFailure => '请检查网络连接后重试。';
+
+  @override
+  String get externalTimeout => '请求超时，请重试。';
 }

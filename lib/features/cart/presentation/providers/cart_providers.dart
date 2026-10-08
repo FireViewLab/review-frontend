@@ -69,9 +69,12 @@ class CartButtonNotifier extends AsyncNotifier<bool> {
 
   final int _productId;
   bool _isAdding = false;
+  int _generation = 0;
 
   @override
   Future<bool> build() async {
+    _generation++;
+    _isAdding = false;
     if (_productId <= 0) return false;
 
     final isLoggedIn = ref.watch(authSessionProvider).isLoggedIn;
@@ -86,10 +89,11 @@ class CartButtonNotifier extends AsyncNotifier<bool> {
     if (_productId <= 0) return;
     if (!ref.read(isLoggedInProvider)) return;
 
+    final generation = _generation;
     _isAdding = true;
     final result = await ref.read(updateCartUseCaseProvider).add(_productId);
 
-    if (!ref.mounted) return;
+    if (!ref.mounted || generation != _generation) return;
     _isAdding = false;
     result.when(
       success: (_) {

@@ -1673,4 +1673,17 @@ class AppLocalizationsKo extends AppLocalizations {
 
   @override
   String get reviewPhotosEmpty => '현재 불러온 리뷰에 유효한 사진이 없어요.';
+
+  @override
+  String get externalForbidden => '이 작업을 할 권한이 없어요.';
+
+  @override
+  String get externalAuthRequestFailed =>
+      '이 요청의 인증을 확인하지 못했어요. 현재 로그인 상태를 확인한 뒤 다시 시도해주세요.';
+
+  @override
+  String get externalNetworkFailure => '네트워크 연결을 확인하고 다시 시도해주세요.';
+
+  @override
+  String get externalTimeout => '요청 시간이 초과됐어요. 다시 시도해주세요.';
 }

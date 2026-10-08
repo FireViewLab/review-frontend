@@ -3263,6 +3263,30 @@ abstract class AppLocalizations {
   /// In ko, this message translates to:
   /// **'현재 불러온 리뷰에 유효한 사진이 없어요.'**
   String get reviewPhotosEmpty;
+
+  /// No description provided for @externalForbidden.
+  ///
+  /// In ko, this message translates to:
+  /// **'이 작업을 할 권한이 없어요.'**
+  String get externalForbidden;
+
+  /// No description provided for @externalAuthRequestFailed.
+  ///
+  /// In ko, this message translates to:
+  /// **'이 요청의 인증을 확인하지 못했어요. 현재 로그인 상태를 확인한 뒤 다시 시도해주세요.'**
+  String get externalAuthRequestFailed;
+
+  /// No description provided for @externalNetworkFailure.
+  ///
+  /// In ko, this message translates to:
+  /// **'네트워크 연결을 확인하고 다시 시도해주세요.'**
+  String get externalNetworkFailure;
+
+  /// No description provided for @externalTimeout.
+  ///
+  /// In ko, this message translates to:
+  /// **'요청 시간이 초과됐어요. 다시 시도해주세요.'**
+  String get externalTimeout;
 }
 
 class _AppLocalizationsDelegate

@@ -1671,4 +1671,17 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String get reviewPhotosEmpty => '読み込み済みレビューに有効な写真がありません。';
+
+  @override
+  String get externalForbidden => 'この操作の権限がありません。';
+
+  @override
+  String get externalAuthRequestFailed =>
+      'このリクエストの認証を確認できませんでした。現在のログイン状態を確認して再試行してください。';
+
+  @override
+  String get externalNetworkFailure => 'ネットワーク接続を確認して再試行してください。';
+
+  @override
+  String get externalTimeout => 'リクエストがタイムアウトしました。再試行してください。';
 }

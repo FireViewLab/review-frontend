@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:re_view_front/core/providers/core_providers.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:re_view_front/app/router/app_router.dart';
@@ -21,7 +22,11 @@ class ReViewApp extends ConsumerWidget {
     final router = ref.watch(appRouterProvider);
     final locale = ref.watch(localeProvider);
 
+    ref.listen(authSessionProvider, (previous, next) {
+      if (previous != next) _messengerKey.currentState?.clearSnackBars();
+    });
     ref.listen(sessionExpiredProvider, (_, _) {
+      if (ref.read(authSessionProvider).isLoggedIn) return;
       final messenger = _messengerKey.currentState;
       final context = _messengerKey.currentContext;
       if (messenger == null || context == null) return;
@@ -34,12 +39,15 @@ class ReViewApp extends ConsumerWidget {
             content: Text(l10n.sessionExpiredMessage),
             action: SnackBarAction(
               label: l10n.sessionExpiredLogin,
-              onPressed: () => router.go(
-                Uri(
-                  path: RoutePaths.login,
-                  queryParameters: {'from': location.toString()},
-                ).toString(),
-              ),
+              onPressed: () {
+                if (ref.read(authSessionProvider).isLoggedIn) return;
+                router.go(
+                  Uri(
+                    path: RoutePaths.login,
+                    queryParameters: {'from': location.toString()},
+                  ).toString(),
+                );
+              },
             ),
           ),
         );
