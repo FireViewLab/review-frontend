@@ -24,12 +24,14 @@ class ProductDetail {
     required this.totalSellerCount,
     required this.rtiSummary,
     required this.trustSignals,
+    this.summary,
     this.externalId,
     this.dataPlatform,
     this.dataProductId,
     this.subCategory,
   });
 
+  final ProductSummary? summary;
   final String? externalId;
   final String? dataPlatform;
   final String? dataProductId;
@@ -44,7 +46,7 @@ class ProductDetail {
       ? externalId
       : externalRef?.externalId;
   ProductRouteContext get routeContext =>
-      ProductRouteContext(chatProductId: chatProductId);
+      ProductRouteContext(chatProductId: chatProductId, summary: summary);
 
   final int id;
   final String name;

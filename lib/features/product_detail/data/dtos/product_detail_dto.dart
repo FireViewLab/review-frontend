@@ -1,3 +1,5 @@
+import 'package:re_view_front/features/external_product/data/dtos/product_summary_dto.dart';
+import 'package:re_view_front/features/external_product/domain/entities/product_summary.dart';
 import 'package:re_view_front/features/category/domain/entities/product_category_resolver.dart';
 import 'package:re_view_front/features/product_detail/domain/entities/product_detail.dart';
 import 'package:re_view_front/features/product_detail/domain/entities/product_review.dart';
@@ -19,12 +21,14 @@ class ProductDetailDto {
     required this.lowestPrice,
     required this.lowestPlatform,
     required this.platforms,
+    this.summary,
     this.externalId,
     this.dataPlatform,
     this.dataProductId,
     this.subCategory,
   });
 
+  final ProductSummary? summary;
   final String? externalId;
   final String? dataPlatform;
   final String? dataProductId;
@@ -49,6 +53,7 @@ class ProductDetailDto {
   factory ProductDetailDto.fromJson(Map<String, dynamic> json) {
     final rawPlatforms = json['platforms'] as List? ?? [];
     return ProductDetailDto(
+      summary: ProductSummaryDto.fromJson(json),
       externalId: json['externalId'] as String?,
       dataPlatform: json['dataPlatform'] as String?,
       dataProductId: json['dataProductId']?.toString(),
@@ -85,6 +90,7 @@ class ProductDetailDto {
                 productName: name,
               ));
     return ProductDetail(
+      summary: summary,
       externalId: externalId,
       dataPlatform: dataPlatform,
       dataProductId: dataProductId,

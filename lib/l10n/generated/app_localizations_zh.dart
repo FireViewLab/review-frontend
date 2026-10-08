@@ -1633,4 +1633,13 @@ class AppLocalizationsZh extends AppLocalizations {
   @override
   String get extProductReviewPreferencesNote =>
       '排序设置仅适用于已加载的评论。不会根据未提供的购买认证或可信度隐藏或分类评论。';
+
+  @override
+  String get extProductSummaryLoading => '正在获取商品基本信息。';
+
+  @override
+  String get extProductListSummary => '这是商品列表中的信息。正在获取最新详情和评论。';
+
+  @override
+  String get extProductPreviousSummary => '这是之前查看的商品信息。正在获取最新详情和评论。';
 }

@@ -1639,4 +1639,15 @@ class AppLocalizationsKo extends AppLocalizations {
   @override
   String get extProductReviewPreferencesNote =>
       '정렬 설정은 불러온 리뷰에 적용돼요. 제공되지 않은 구매 인증·신뢰도 정보로 리뷰를 숨기거나 분류하지 않아요.';
+
+  @override
+  String get extProductSummaryLoading => '상품 기본 정보를 확인하고 있어요.';
+
+  @override
+  String get extProductListSummary =>
+      '목록에서 받은 상품 정보예요. 최신 상세 정보와 리뷰를 확인하고 있어요.';
+
+  @override
+  String get extProductPreviousSummary =>
+      '이전에 확인한 상품 정보예요. 최신 상세 정보와 리뷰를 확인하고 있어요.';
 }
