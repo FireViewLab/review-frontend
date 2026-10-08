@@ -1,3 +1,4 @@
+import 'package:re_view_front/core/utils/product_image_urls.dart';
 import 'package:re_view_front/features/external_product/domain/entities/external_product_ref.dart';
 
 /// 서버가 알려 주는 수집 상태. 네 가지 모두 HTTP 200으로 온다.
@@ -48,6 +49,7 @@ class ExternalProduct {
     this.seller,
     this.price,
     this.thumbnailUrl,
+    this.imageUrls = const [],
     this.category,
     this.reviewCount,
     this.rating,
@@ -61,6 +63,9 @@ class ExternalProduct {
   final String? seller;
   final int? price;
   final String? thumbnailUrl;
+  final List<String> imageUrls;
+  List<String> get galleryImages =>
+      productImageUrls(primary: thumbnailUrl, additional: imageUrls);
   final String? category;
   final int? reviewCount;
 

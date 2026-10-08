@@ -325,9 +325,7 @@ class _Ready extends ConsumerWidget {
       });
     }
 
-    final image = ProductImageViewer(
-      imageUrls: [if (product.thumbnailUrl != null) product.thumbnailUrl!],
-    );
+    final image = ProductImageViewer(imageUrls: product.galleryImages);
     final summary = ExternalProductSummary(
       product: product,
       isStale: state.isStale,
