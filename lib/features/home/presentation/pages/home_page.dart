@@ -203,6 +203,7 @@ class _HomePageState extends ConsumerState<HomePage> {
                                     productId: p.id.toString(),
                                     detailPath: p.detailPath,
                                     chatProductId: p.chatProductId,
+                                    routeContext: p.routeContext,
                                     name: p.name,
                                     storeName:
                                         p.platform ?? p.dataPlatform ?? '',
@@ -450,7 +451,9 @@ class _HomePageState extends ConsumerState<HomePage> {
   void _handleProductPressed(HomeProductData product) {
     context.go(
       product.detailPath ?? '/product/${product.productId}',
-      extra: ProductRouteContext(chatProductId: product.chatProductId),
+      extra:
+          product.routeContext ??
+          ProductRouteContext(chatProductId: product.chatProductId),
     );
   }
 
@@ -498,6 +501,7 @@ class _HomePageState extends ConsumerState<HomePage> {
       productId: product.id,
       detailPath: product.detailPath,
       chatProductId: product.chatProductId,
+      routeContext: product.routeContext,
       name: product.name,
       storeName: product.storeName,
       priceLabel: _formatPrice(product.price),

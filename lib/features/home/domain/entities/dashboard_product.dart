@@ -11,12 +11,14 @@ class DashboardProduct {
     this.rating,
     this.reviewCount,
     this.rtiScore,
+    this.summary,
     this.externalId,
     this.dataPlatform,
     this.dataProductId,
     this.subCategory,
   });
 
+  final ProductSummary? summary;
   final String? externalId;
   final String? dataPlatform;
   final String? dataProductId;
@@ -31,7 +33,7 @@ class DashboardProduct {
       ? externalId
       : externalRef?.externalId;
   ProductRouteContext get routeContext =>
-      ProductRouteContext(chatProductId: chatProductId);
+      ProductRouteContext(chatProductId: chatProductId, summary: summary);
 
   final String id;
   final String name;

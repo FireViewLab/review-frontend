@@ -1635,4 +1635,13 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String get chatHistoryWait => '送信が完了すると履歴を開けます。';
+
+  @override
+  String get extProductSummaryLoading => '商品の基本情報を確認しています。';
+
+  @override
+  String get extProductListSummary => '一覧で取得した商品情報です。最新の詳細情報とレビューを確認しています。';
+
+  @override
+  String get extProductPreviousSummary => '以前表示した商品情報です。最新の詳細情報とレビューを確認しています。';
 }

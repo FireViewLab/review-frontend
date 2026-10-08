@@ -1,3 +1,4 @@
+import 'package:re_view_front/features/external_product/domain/entities/external_product.dart';
 import 'package:re_view_front/features/external_product/domain/entities/external_product_ref.dart';
 
 class SimilarProduct {
@@ -30,8 +31,24 @@ class SimilarProduct {
   String? get chatProductId => (externalId?.trim().isNotEmpty ?? false)
       ? externalId
       : externalRef?.externalId;
-  ProductRouteContext get routeContext =>
-      ProductRouteContext(chatProductId: chatProductId);
+  ProductRouteContext get routeContext => ProductRouteContext(
+    chatProductId: chatProductId,
+    summary: externalRef == null
+        ? null
+        : ProductSummary(
+            springProductId: id,
+            product: ExternalProduct(
+              ref: externalRef!,
+              name: name,
+              thumbnailUrl: imageUrl.isEmpty ? null : imageUrl,
+              price: price,
+              brand: brand.isEmpty ? null : brand,
+              category: subCategory,
+              reviewCount: reviewCount,
+              rating: avgRating,
+            ),
+          ),
+  );
 
   final int id;
   final String name;
