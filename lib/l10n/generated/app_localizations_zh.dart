@@ -1648,4 +1648,16 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get recentRecordUnavailable => '无法获取服务器浏览记录所需的商品标识。';
+
+  @override
+  String get externalForbidden => '没有执行此操作的权限。';
+
+  @override
+  String get externalAuthRequestFailed => '无法确认此请求的身份验证。请检查当前登录状态后重试。';
+
+  @override
+  String get externalNetworkFailure => '请检查网络连接后重试。';
+
+  @override
+  String get externalTimeout => '请求超时，请重试。';
 }

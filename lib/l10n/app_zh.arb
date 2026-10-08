@@ -522,5 +522,9 @@
   "extProductListSummary": "这是商品列表中的信息。正在获取最新详情和评论。",
   "extProductPreviousSummary": "这是之前查看的商品信息。正在获取最新详情和评论。",
   "recentRecordFailed": "无法确认最近浏览记录。重试",
-  "recentRecordUnavailable": "无法获取服务器浏览记录所需的商品标识。"
+  "recentRecordUnavailable": "无法获取服务器浏览记录所需的商品标识。",
+  "externalForbidden": "没有执行此操作的权限。",
+  "externalAuthRequestFailed": "无法确认此请求的身份验证。请检查当前登录状态后重试。",
+  "externalNetworkFailure": "请检查网络连接后重试。",
+  "externalTimeout": "请求超时，请重试。"
 }

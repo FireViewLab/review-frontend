@@ -1706,4 +1706,18 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get recentRecordUnavailable =>
       'The product ID needed for server view history is unavailable.';
+
+  @override
+  String get externalForbidden => 'You do not have permission for this action.';
+
+  @override
+  String get externalAuthRequestFailed =>
+      'Authentication for this request could not be confirmed. Check your current session and try again.';
+
+  @override
+  String get externalNetworkFailure =>
+      'Check your network connection and try again.';
+
+  @override
+  String get externalTimeout => 'The request timed out. Please try again.';
 }
