@@ -1,5 +1,6 @@
 import 'package:re_view_front/core/providers/core_providers.dart';
 import 'package:re_view_front/features/home/presentation/providers/home_providers.dart';
+import 'package:re_view_front/features/settings/presentation/providers/settings_providers.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:re_view_front/core/error/failure.dart';
 import 'package:re_view_front/features/product_detail/domain/entities/product_review.dart';
@@ -95,7 +96,7 @@ class ProductDetailViewModel extends Notifier<ProductDetailState> {
         dissatisfactionPoints: [],
       ),
       similarProducts: const [],
-      isAnalyzing: detail.externalRef == null,
+      isAnalyzing: false,
     );
 
     if (detail.externalRef == null) {
@@ -107,7 +108,12 @@ class ProductDetailViewModel extends Notifier<ProductDetailState> {
     String productId,
     Future<bool> healthFuture,
   ) async {
-    final isHealthy = await healthFuture;
+    final preferences = await ref
+        .read(savedDisplayPreferencesProvider.future)
+        .catchError((_) => null);
+    if (!ref.mounted) return;
+    final isHealthy =
+        preferences?.allowDataAnalysis == true && await healthFuture;
     if (!ref.mounted) return;
 
     if (!isHealthy) {
@@ -118,6 +124,10 @@ class ProductDetailViewModel extends Notifier<ProductDetailState> {
       return;
     }
 
+    final beforeRequest = state;
+    if (beforeRequest is ProductDetailSuccess) {
+      state = beforeRequest.copyWith(isAnalyzing: true);
+    }
     final analysisResult = await _triggerAnalysis(productId);
     if (!ref.mounted) return;
 
@@ -130,6 +140,7 @@ class ProductDetailViewModel extends Notifier<ProductDetailState> {
           final detail = analysis.reviewDetails[review.id];
           if (detail == null) return review;
           return ProductReview(
+            helpfulCount: review.helpfulCount,
             id: review.id,
             authorName: review.authorName,
             authorAvatarUrl: review.authorAvatarUrl,
@@ -154,10 +165,17 @@ class ProductDetailViewModel extends Notifier<ProductDetailState> {
         var repR = analysis.repetitiveRatio;
 
         if (realRR == 0.0 && adSR == 0.0 && repR == 0.0) {
-          final scored = enrichedReviews.where((r) => r.rtiScore > 0).toList();
+          final scored = enrichedReviews
+              .where((r) => r.rtiScore != null)
+              .toList();
           final total = scored.length;
           if (total > 0) {
-            realRR = scored.where((r) => r.rtiScore >= 70).length / total * 100;
+            realRR =
+                scored
+                    .where((r) => r.rtiScore != null && r.rtiScore! >= 70)
+                    .length /
+                total *
+                100;
             adSR =
                 scored
                     .where(
@@ -193,7 +211,12 @@ class ProductDetailViewModel extends Notifier<ProductDetailState> {
             dangerCount: analysis.dangerCount,
             trend: analysis.trend,
             rtiSummary: current.detail.rtiSummary?.copyWith(
-              hasReviewMetrics: true,
+              hasReviewMetrics:
+                  analysis.safeCount +
+                          analysis.warnCount +
+                          analysis.dangerCount >
+                      0 ||
+                  enrichedReviews.any((r) => r.rtiScore != null),
               realReviewRatio: realRR / 100,
               realReviewLabel: '${realRR.toStringAsFixed(1)}%',
               adSuspicionRatio: adSR / 100,

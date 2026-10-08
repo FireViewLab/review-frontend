@@ -1,3 +1,5 @@
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:re_view_front/features/settings/presentation/providers/settings_providers.dart';
 import 'package:flutter/material.dart';
 import 'package:re_view_front/app/theme/app_colors.dart';
 import 'package:re_view_front/app/theme/app_spacing.dart';
@@ -102,7 +104,7 @@ class ResultColumn extends StatelessWidget {
   }
 }
 
-class ProductGrid extends StatelessWidget {
+class ProductGrid extends ConsumerWidget {
   const ProductGrid({super.key, required this.products, required this.columns});
 
   final List<SearchResultProduct> products;
@@ -121,7 +123,10 @@ class ProductGrid extends StatelessWidget {
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final compact =
+        ref.watch(confirmedDisplayPreferencesProvider)?.cardDensity ==
+        'COMPACT';
     final cardHeight = switch (columns) {
       1 => 520.0,
       2 => 490.0,
@@ -138,7 +143,7 @@ class ProductGrid extends StatelessWidget {
         crossAxisCount: columns,
         mainAxisSpacing: AppSpacing.sm,
         crossAxisSpacing: AppSpacing.sm,
-        mainAxisExtent: cardHeight,
+        mainAxisExtent: compact ? cardHeight - 32 : cardHeight,
       ),
       itemBuilder: (context, index) {
         final product = products[index];
@@ -264,7 +269,10 @@ class _SearchCardSkeleton extends StatelessWidget {
                       ShimmerBox(width: 36, height: 36, radius: 6),
                       SizedBox(width: AppSpacing.xs),
                       Expanded(
-                        child: SizedBox(height: 36, child: ShimmerBox(radius: 6)),
+                        child: SizedBox(
+                          height: 36,
+                          child: ShimmerBox(radius: 6),
+                        ),
                       ),
                     ],
                   ),

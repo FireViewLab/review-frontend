@@ -18,11 +18,13 @@ class QuickCategoryRow extends StatelessWidget {
     return LayoutBuilder(
       builder: (context, constraints) {
         final compact = constraints.maxWidth < 600;
-        final spacing = compact ? AppSpacing.md : AppSpacing.lg;
-        // Keep three readable targets per row on normal mobile widths. Wrap
-        // can use fewer columns on narrower layouts without horizontal scroll.
+        final spacing = compact ? AppSpacing.xs : AppSpacing.lg;
+        // Compact mobile targets keep all categories visible in two rows.
+        // Larger text uses three columns to preserve readable labels.
+        final columns = MediaQuery.textScalerOf(context).scale(14) > 18 ? 3 : 4;
         final itemWidth = compact
-            ? ((constraints.maxWidth - spacing * 2) / 3).clamp(72.0, 94.0)
+            ? ((constraints.maxWidth - spacing * (columns - 1)) / columns)
+                  .clamp(48.0, 94.0)
             : 94.0;
 
         return SizedBox(
@@ -30,7 +32,7 @@ class QuickCategoryRow extends StatelessWidget {
           child: Wrap(
             alignment: WrapAlignment.center,
             spacing: spacing,
-            runSpacing: AppSpacing.md,
+            runSpacing: compact ? AppSpacing.xs : AppSpacing.md,
             children: [
               for (final item in items)
                 SizedBox(
@@ -55,8 +57,8 @@ class QuickCategoryRow extends StatelessWidget {
                             mainAxisSize: MainAxisSize.min,
                             children: [
                               Ink(
-                                width: 72,
-                                height: 72,
+                                width: compact ? 48 : 72,
+                                height: compact ? 48 : 72,
                                 decoration: BoxDecoration(
                                   color: AppColors.surface,
                                   shape: BoxShape.circle,
@@ -82,7 +84,9 @@ class QuickCategoryRow extends StatelessWidget {
                                   ),
                                 ),
                               ),
-                              const SizedBox(height: AppSpacing.sm),
+                              SizedBox(
+                                height: compact ? AppSpacing.xs : AppSpacing.sm,
+                              ),
                               Text(
                                 item.label,
                                 textAlign: TextAlign.center,

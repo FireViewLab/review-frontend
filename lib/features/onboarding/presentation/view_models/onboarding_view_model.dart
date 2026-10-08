@@ -14,7 +14,7 @@ class OnboardingViewModel extends Notifier<OnboardingState> {
   @override
   OnboardingState build() {
     _generation++;
-    ref.watch(isLoggedInProvider);
+    ref.watch(authSessionProvider).isLoggedIn;
     Future.microtask(() {
       if (ref.mounted) load();
     });
@@ -127,6 +127,7 @@ class OnboardingViewModel extends Notifier<OnboardingState> {
         return;
       }
       ref.invalidate(settingsViewModelProvider);
+      ref.invalidate(savedDisplayPreferencesProvider);
     }
     final categories = skip ? _savedCategories : current.selectedCategories;
     final threshold = skip ? _savedThreshold : current.minTrustScore;

@@ -36,8 +36,7 @@ class SettingsDto {
       rtiLabelStyle:
           _json['rtiLabelStyle'] as String? ?? defaults.rtiLabelStyle,
       theme: _json['theme'] as String? ?? defaults.theme,
-      allowDataAnalysis:
-          _json['allowDataAnalysis'] as bool? ?? defaults.allowDataAnalysis,
+      allowDataAnalysis: _json['allowDataAnalysis'] as bool? ?? false,
     );
   }
 

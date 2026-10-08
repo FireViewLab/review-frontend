@@ -78,7 +78,7 @@ class ExternalReview {
     this.writtenAt,
     this.option,
     this.images = const [],
-    this.helpfulCount = 0,
+    this.helpfulCount,
   });
 
   /// 쇼핑몰이 발급한 리뷰 번호. 숫자처럼 보여도 문자열이다.
@@ -89,7 +89,7 @@ class ExternalReview {
   final DateTime? writtenAt;
   final String? option;
   final List<String> images;
-  final int helpfulCount;
+  final int? helpfulCount;
 }
 
 /// 상품 상세 조회 한 번의 결과.

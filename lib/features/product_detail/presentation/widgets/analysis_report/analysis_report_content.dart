@@ -65,10 +65,11 @@ class AnalysisReportContent extends StatelessWidget {
     if (safeCount + warnCount + dangerCount == 0 && reviews.isNotEmpty) {
       int s = 0, w = 0, d = 0;
       for (final r in reviews) {
-        if (r.rtiScore <= 0) continue;
-        if (r.rtiScore >= 70) {
+        final score = r.rtiScore;
+        if (score == null) continue;
+        if (score >= 70) {
           s++;
-        } else if (r.rtiScore >= 40) {
+        } else if (score >= 40) {
           w++;
         } else {
           d++;

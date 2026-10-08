@@ -226,6 +226,8 @@ class PlatformEntry {
 
 class ProductReviewDto {
   const ProductReviewDto({
+    this.helpfulCount,
+    this.imageUrls = const [],
     required this.id,
     required this.reviewerNickname,
     required this.content,
@@ -239,34 +241,41 @@ class ProductReviewDto {
     required this.isVerifiedPurchase,
   });
 
+  final int? helpfulCount;
+  final List<String> imageUrls;
   final int id;
   final String reviewerNickname;
   final String content;
   final double rating;
-  final int rtiScore;
-  final String trustGrade;
-  final String trustGradeLabel;
-  final String trustGradeColor;
+  final int? rtiScore;
+  final String? trustGrade;
+  final String? trustGradeLabel;
+  final String? trustGradeColor;
   final List<String> reasons;
   final String writtenAt;
   final bool isVerifiedPurchase;
 
   factory ProductReviewDto.fromJson(Map<String, dynamic> json) {
+    final images = json['imageUrls'] ?? json['images'];
     return ProductReviewDto(
+      helpfulCount: (json['helpfulCount'] as num?)?.toInt(),
+      imageUrls: [
+        if (images is List)
+          for (final image in images)
+            if (image is String && image.trim().isNotEmpty) image.trim(),
+      ],
       id: (json['id'] as num).toInt(),
       reviewerNickname:
           (json['reviewerNickname'] ?? json['authorName']) as String? ?? '',
       content: json['content'] as String? ?? '',
       rating: (json['rating'] as num?)?.toDouble() ?? 0.0,
       rtiScore:
-          (((json['reviewerAtiScore'] ?? json['rtiScore'] ?? json['rti'])
-                          as num?)
-                      ?.toDouble() ??
-                  0.0)
-              .round(),
-      trustGrade: json['trustGrade'] as String? ?? '',
-      trustGradeLabel: json['trustGradeLabel'] as String? ?? '',
-      trustGradeColor: json['trustGradeColor'] as String? ?? '',
+          ((json['reviewerAtiScore'] ?? json['rtiScore'] ?? json['rti'])
+                  as num?)
+              ?.round(),
+      trustGrade: json['trustGrade'] as String?,
+      trustGradeLabel: json['trustGradeLabel'] as String?,
+      trustGradeColor: json['trustGradeColor'] as String?,
       reasons: List<String>.from(json['reasons'] as List? ?? []),
       writtenAt: (json['writtenAt'] ?? json['createdAt']) as String? ?? '',
       isVerifiedPurchase: json['isVerifiedPurchase'] as bool? ?? false,
@@ -290,7 +299,8 @@ class ProductReviewDto {
       rtiScore: rtiScore,
       rtiColor: trustGradeColor,
       rtiLabel: trustGradeLabel,
-      imageUrls: const [],
+      helpfulCount: helpfulCount,
+      imageUrls: imageUrls,
       reasons: reasons,
     );
   }

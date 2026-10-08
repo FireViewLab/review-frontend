@@ -3198,6 +3198,12 @@ abstract class AppLocalizations {
   /// **'대화 기록은 전송이 끝난 뒤 열 수 있어요.'**
   String get chatHistoryWait;
 
+  /// No description provided for @extProductReviewPreferencesNote.
+  ///
+  /// In ko, this message translates to:
+  /// **'정렬 설정은 불러온 리뷰에 적용돼요. 제공되지 않은 구매 인증·신뢰도 정보로 리뷰를 숨기거나 분류하지 않아요.'**
+  String get extProductReviewPreferencesNote;
+
   /// No description provided for @extProductSummaryLoading.
   ///
   /// In ko, this message translates to:

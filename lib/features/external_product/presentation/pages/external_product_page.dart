@@ -13,6 +13,7 @@ import 'package:re_view_front/features/external_product/presentation/widgets/ext
 import 'package:re_view_front/features/external_product/presentation/widgets/external_product_sections.dart';
 import 'package:re_view_front/features/external_product/presentation/widgets/external_review_actions.dart';
 import 'package:re_view_front/l10n/generated/app_localizations.dart';
+import 'package:re_view_front/features/settings/presentation/providers/settings_providers.dart';
 import 'package:re_view_front/shared/extensions/context_extensions.dart';
 import 'package:re_view_front/shared/widgets/app_content_view.dart';
 import 'package:re_view_front/shared/widgets/product_image_viewer.dart';
@@ -281,7 +282,7 @@ class _Collecting extends StatelessWidget {
   }
 }
 
-class _Ready extends StatelessWidget {
+class _Ready extends ConsumerWidget {
   const _Ready({
     required this.state,
     required this.product,
@@ -295,11 +296,34 @@ class _Ready extends StatelessWidget {
   final Widget? collectionStatus;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final l10n = AppLocalizations.of(context);
     final textTheme = Theme.of(context).textTheme;
     final url = Uri.tryParse(product.url ?? '');
     final category = product.category;
+    final preferences = ref.watch(confirmedDisplayPreferencesProvider);
+    final reviews = state.reviews.indexed.toList();
+    if (preferences != null) {
+      reviews.sort((a, b) {
+        if (preferences.reviewSortOrder == 'HELPFUL') {
+          final left = a.$2.helpfulCount;
+          final right = b.$2.helpfulCount;
+          if (left == null && right != null) return 1;
+          if (right == null && left != null) return -1;
+          if (left != null && right != null && left != right) {
+            return right.compareTo(left);
+          }
+        }
+        final left = a.$2.writtenAt;
+        final right = b.$2.writtenAt;
+        if (left == null && right != null) return 1;
+        if (right == null && left != null) return -1;
+        if (left != null && right != null && left != right) {
+          return right.compareTo(left);
+        }
+        return a.$1.compareTo(b.$1);
+      });
+    }
 
     final image = ProductImageViewer(
       imageUrls: [if (product.thumbnailUrl != null) product.thumbnailUrl!],
@@ -372,6 +396,15 @@ class _Ready extends StatelessWidget {
           ),
         ),
         const SizedBox(height: AppSpacing.xs),
+        if (preferences != null) ...[
+          Text(
+            l10n.extProductReviewPreferencesNote,
+            style: textTheme.bodySmall?.copyWith(
+              color: AppColors.textSecondary,
+            ),
+          ),
+          const SizedBox(height: AppSpacing.sm),
+        ],
         if (collectionStatus != null) ...[
           ExternalPanel(child: collectionStatus!),
           const SizedBox(height: AppSpacing.md),
@@ -394,7 +427,8 @@ class _Ready extends StatelessWidget {
             padding: const EdgeInsets.symmetric(horizontal: AppSpacing.lg),
             child: Column(
               children: [
-                for (final (index, review) in state.reviews.indexed) ...[
+                for (final (index, review)
+                    in reviews.map((entry) => entry.$2).indexed) ...[
                   if (index > 0)
                     const Divider(height: 1, color: AppColors.border),
                   ExternalReviewTile(

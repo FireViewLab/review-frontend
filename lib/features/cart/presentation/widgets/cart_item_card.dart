@@ -423,9 +423,7 @@ class _ShippingInfo extends StatelessWidget {
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 2),
                 child: Text(
-                  item.isFreeShipping
-                      ? '무료배송'
-                      : '${formatSearchPrice(item.shippingFee)} 배송',
+                  '배송 조건은 구매처에서 확인',
                   style: Theme.of(context).textTheme.labelSmall?.copyWith(
                     color: AppColors.primary,
                     fontWeight: FontWeight.w900,

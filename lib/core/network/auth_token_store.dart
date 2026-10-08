@@ -25,6 +25,9 @@ class AuthTokenStore extends Notifier<bool> {
   @override
   bool build() => _accessToken != null;
 
+  @override
+  bool updateShouldNotify(bool previous, bool next) => true;
+
   void save({
     required String accessToken,
     required String tokenType,
@@ -39,11 +42,11 @@ class AuthTokenStore extends Notifier<bool> {
     _role = role;
     WebStorage.write(_keyAccessToken, accessToken);
     WebStorage.write(_keyTokenType, tokenType);
-    if (onboardingCompleted) {
-      WebStorage.write(_keyOnboardingCompleted, 'true');
-    }
+    WebStorage.write(_keyOnboardingCompleted, onboardingCompleted.toString());
     if (nickname != null && nickname.isNotEmpty) {
       WebStorage.write(_keyNickname, nickname);
+    } else {
+      WebStorage.remove(_keyNickname);
     }
     if (role != null && role.isNotEmpty) {
       WebStorage.write(_keyRole, role);
@@ -51,6 +54,7 @@ class AuthTokenStore extends Notifier<bool> {
       WebStorage.remove(_keyRole);
     }
     state = true;
+    ref.read(authSessionRevisionProvider.notifier).advance();
   }
 
   void saveNickname(String nickname) {
@@ -87,6 +91,7 @@ class AuthTokenStore extends Notifier<bool> {
     WebStorage.remove(_keyNickname);
     WebStorage.remove(_keyRole);
     state = false;
+    ref.read(authSessionRevisionProvider.notifier).advance();
   }
 }
 
@@ -100,4 +105,15 @@ class SessionExpiredNotifier extends Notifier<int> {
   int build() => 0;
 
   void notify() => state++;
+}
+
+/// Non-sensitive revision; never exposes authentication credentials.
+final authSessionRevisionProvider = NotifierProvider<AuthSessionRevision, int>(
+  AuthSessionRevision.new,
+);
+
+class AuthSessionRevision extends Notifier<int> {
+  @override
+  int build() => 0;
+  void advance() => state++;
 }
