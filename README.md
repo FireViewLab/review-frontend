@@ -83,16 +83,17 @@ bash scripts/write-deployment-marker.sh
 
 ## 배포
 
-`develop` 머지는 운영 배포를 발생시킵니다. 두 빌드 경로를 유지합니다.
+`develop` 머지와 PR push는 분석·release 컴파일만 수행합니다. 요청한 작업을 모두 끝낸 뒤 최종 SHA를 지정한 수동 배포를 한 번 실행합니다. main 릴리스/태그는 별도 QA 조건을 따릅니다.
 
 | 경로 | 빌드·설정 |
 | --- | --- |
-| GitHub Actions `.github/workflows/vercel-deploy.yml` | develop PR은 preview, develop push는 production. `flutter build web --release` 후 SHA 표식을 작성하고 `build/web`을 Vercel에 배포. `web/vercel.json` 사용 |
-| Vercel Git integration | 루트 `vercel.json`의 `bash build.sh` 실행. Flutter 설치/빌드·SHA 표식 후 `build/web`을 제공 |
+| GitHub Actions `.github/workflows/vercel-deploy.yml` | PR/develop push는 배포 없는 `deploy-preview` validation(분석·release 빌드). `workflow_dispatch`로 최종 develop SHA를 지정한 경우에만 SHA 재확인·표식 작성 뒤 `build/web`을 한 번 production 배포. `web/vercel.json` 사용 |
+| Vercel Git integration | `git.deploymentEnabled:false`로 자동 배포 차단. 기존 `build.sh`/rewrite/도메인 설정은 보존하고 최종 배포에는 Actions CLI 경로만 사용 |
 
 양쪽 설정은 `/api`, OAuth 시작·콜백을 API 서버로 연결하고 SPA fallback을 제공합니다. 서버 CORS 제약으로 preview 도메인의 실제 로그인은 운영과 다를 수 있습니다.
 
-Actions concurrency는 **동일 ref의 Actions 실행만** 직렬화합니다. 별도 Vercel Git 빌드와의 교차 순서는 보장하지 않습니다. 두 경로와 이전 실행이 모두 종료한 뒤 [운영 deployment.json](https://re-view.kr/deployment.json)의 `commitSha`를 최종 `origin/develop`과 대조합니다. 이 응답은 `Cache-Control: no-store`이며 커밋 SHA만 공개합니다.
+자동 PR preview 및 자동 production 배포를 하지 않습니다. Vercel 프로젝트의 preview 자동 생성도 비활성화하며 루트와 웹 배포 설정 모두 `git.deploymentEnabled:false`를 유지합니다. `Ignored Build Step`으로 취소해도 배포 한도를 소비하므로 자동 배포 차단의 대안으로 사용하지 않습니다. 기존 `deploy-preview` 검사명은 호환을 위해 유지하지만 배포 없는 분석·release 빌드 검사라는 의미입니다. 최종 단일 Actions production 이후 [운영 deployment.json](https://re-view.kr/deployment.json)의 HTTP200/`Cache-Control:no-store`/`commitSha`가 최종 `origin/develop`과 같은지 확인합니다.
+
 
 ## 남은 의존과 릴리스
 
