@@ -36,7 +36,7 @@ final _cartSnapshotProvider = FutureProvider.autoDispose<CartSnapshot?>((
   ref,
 ) async {
   ref.keepAlive();
-  final isLoggedIn = ref.watch(isLoggedInProvider);
+  final isLoggedIn = ref.watch(authSessionProvider).isLoggedIn;
   if (!isLoggedIn) return null;
 
   final result = await ref.read(getCartUseCaseProvider)();
@@ -44,7 +44,7 @@ final _cartSnapshotProvider = FutureProvider.autoDispose<CartSnapshot?>((
 });
 
 final cartItemCountProvider = FutureProvider.autoDispose<int>((ref) async {
-  final isLoggedIn = ref.watch(isLoggedInProvider);
+  final isLoggedIn = ref.watch(authSessionProvider).isLoggedIn;
   if (!isLoggedIn) return 0;
   final snapshot = await ref.watch(_cartSnapshotProvider.future);
   return snapshot?.items.length ?? 0;
@@ -53,7 +53,7 @@ final cartItemCountProvider = FutureProvider.autoDispose<int>((ref) async {
 final cartProductIdsProvider = FutureProvider.autoDispose<Set<int>>((
   ref,
 ) async {
-  final isLoggedIn = ref.watch(isLoggedInProvider);
+  final isLoggedIn = ref.watch(authSessionProvider).isLoggedIn;
   if (!isLoggedIn) return <int>{};
   final snapshot = await ref.watch(_cartSnapshotProvider.future);
   return snapshot?.items.map((item) => item.productId).toSet() ?? <int>{};
@@ -74,7 +74,7 @@ class CartButtonNotifier extends AsyncNotifier<bool> {
   Future<bool> build() async {
     if (_productId <= 0) return false;
 
-    final isLoggedIn = ref.watch(isLoggedInProvider);
+    final isLoggedIn = ref.watch(authSessionProvider).isLoggedIn;
     if (!isLoggedIn) return false;
 
     final productIds = await ref.watch(cartProductIdsProvider.future);

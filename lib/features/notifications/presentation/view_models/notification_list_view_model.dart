@@ -17,7 +17,7 @@ class NotificationListViewModel extends Notifier<NotificationListState> {
   NotificationListState build() {
     _generation++;
     _readIds.clear();
-    final loggedIn = ref.watch(isLoggedInProvider);
+    final loggedIn = ref.watch(authSessionProvider).isLoggedIn;
     if (!loggedIn) return const NotificationListState(isLast: true);
     Future.microtask(() {
       if (ref.mounted) refresh();

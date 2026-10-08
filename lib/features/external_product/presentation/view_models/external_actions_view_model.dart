@@ -37,7 +37,7 @@ class ExternalActionsViewModel extends Notifier<ExternalActionsState> {
   @override
   ExternalActionsState build() {
     _id = target.springProductId;
-    final loggedIn = ref.watch(isLoggedInProvider);
+    final loggedIn = ref.watch(authSessionProvider).isLoggedIn;
     final generation = ++_generation;
     if (loggedIn && _id != null) {
       Future.microtask(() => _initialize(generation));
