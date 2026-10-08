@@ -84,6 +84,9 @@ class ExternalReview {
     this.option,
     this.images = const [],
     this.helpfulCount,
+    this.rti,
+    this.level,
+    this.reasons = const [],
   });
 
   /// 쇼핑몰이 발급한 리뷰 번호. 숫자처럼 보여도 문자열이다.
@@ -95,6 +98,9 @@ class ExternalReview {
   final String? option;
   final List<String> images;
   final int? helpfulCount;
+  final double? rti;
+  final String? level;
+  final List<String> reasons;
 }
 
 /// 상품 상세 조회 한 번의 결과.
@@ -107,6 +113,8 @@ class ExternalProductSnapshot {
     this.job,
     this.springProductId,
     this.hasAnalysis = false,
+    this.analysisStatus = 'UNAVAILABLE',
+    this.analysis,
   });
 
   final CollectionStatus status;
@@ -122,6 +130,25 @@ class ExternalProductSnapshot {
   /// 찜·장바구니 API가 받는 번호. 아직 발급되지 않았으면 null이다.
   final int? springProductId;
 
-  /// 신뢰도 분석 결과가 왔는지. 아직 어떤 상품에도 오지 않는다.
+  final String analysisStatus;
+  final ExternalAnalysis? analysis;
+
+  /// 서버가 결과 메타정보를 제공했는지.
   final bool hasAnalysis;
+}
+
+/// v2 응답의 분석 메타정보. 페이지 리뷰 평균을 상품 평균으로 만들지 않는다.
+class ExternalAnalysis {
+  const ExternalAnalysis({
+    this.modelVersion,
+    this.policyVersion,
+    this.reviewCount,
+    this.sampled,
+    this.sourceReviewCount,
+  });
+  final String? modelVersion;
+  final String? policyVersion;
+  final int? reviewCount;
+  final bool? sampled;
+  final int? sourceReviewCount;
 }

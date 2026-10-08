@@ -1,3 +1,6 @@
+import 'package:re_view_front/features/product_detail/presentation/widgets/analysis_report/analysis_report_content.dart';
+import 'package:re_view_front/features/product_detail/domain/entities/product_analysis_result.dart';
+import 'package:re_view_front/shared/widgets/product_report_card.dart';
 import 'package:re_view_front/features/external_product/domain/entities/external_product_ref.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -91,6 +94,7 @@ class _ProductDetailPageState extends ConsumerState<ProductDetailPage> {
                   :final safeCount,
                   :final warnCount,
                   :final dangerCount,
+                  :final trend,
                 ) =>
                   _DetailContent(
                     detail: detail,
@@ -102,6 +106,7 @@ class _ProductDetailPageState extends ConsumerState<ProductDetailPage> {
                     safeCount: safeCount,
                     warnCount: warnCount,
                     dangerCount: dangerCount,
+                    trend: trend,
                     onTabChanged: (tab) => setState(() => _selectedTab = tab),
                     onFeedback: (reviewId, feedbackType) => ref
                         .read(
@@ -132,9 +137,11 @@ class _DetailContent extends StatelessWidget {
     required this.warnCount,
     required this.dangerCount,
     required this.onTabChanged,
+    required this.trend,
     this.onFeedback,
   });
 
+  final List<AnalysisTrendPoint> trend;
   final ProductDetail detail;
   final List<ProductReview> reviews;
   final ReviewInsight reviewInsight;
@@ -167,18 +174,56 @@ class _DetailContent extends StatelessWidget {
         isMobile
             ? _MobileAnalysisSection(
                 detail: detail,
+                loadedAnalysisCount: reviews
+                    .where(
+                      (r) =>
+                          r.rtiScore != null ||
+                          r.rtiLabel != null ||
+                          r.reasons.isNotEmpty,
+                    )
+                    .length,
                 isAnalyzing: isAnalyzing,
-                onDetailPressed: () => context.goNamed(
-                  RouteNames.analysisReport,
-                  pathParameters: {'id': detail.id.toString()},
+                onDetailPressed: () => showProductReport(
+                  context,
+                  AnalysisReportContent(
+                    productId: detail.id,
+                    detail: detail,
+                    reviews: reviews,
+                    isAnalyzing: isAnalyzing,
+                    safeCount: safeCount,
+                    warnCount: warnCount,
+                    dangerCount: dangerCount,
+                    trend: trend,
+                    onBackToProduct: () =>
+                        Navigator.of(context, rootNavigator: true).pop(),
+                  ),
                 ),
               )
             : _DesktopAnalysisSection(
                 detail: detail,
+                loadedAnalysisCount: reviews
+                    .where(
+                      (r) =>
+                          r.rtiScore != null ||
+                          r.rtiLabel != null ||
+                          r.reasons.isNotEmpty,
+                    )
+                    .length,
                 isAnalyzing: isAnalyzing,
-                onDetailPressed: () => context.goNamed(
-                  RouteNames.analysisReport,
-                  pathParameters: {'id': detail.id.toString()},
+                onDetailPressed: () => showProductReport(
+                  context,
+                  AnalysisReportContent(
+                    productId: detail.id,
+                    detail: detail,
+                    reviews: reviews,
+                    isAnalyzing: isAnalyzing,
+                    safeCount: safeCount,
+                    warnCount: warnCount,
+                    dangerCount: dangerCount,
+                    trend: trend,
+                    onBackToProduct: () =>
+                        Navigator.of(context, rootNavigator: true).pop(),
+                  ),
                 ),
               ),
         const SizedBox(height: AppSpacing.xl),
@@ -350,10 +395,12 @@ class _MobileHeroSection extends StatelessWidget {
 class _DesktopAnalysisSection extends StatelessWidget {
   const _DesktopAnalysisSection({
     required this.detail,
+    required this.loadedAnalysisCount,
     required this.isAnalyzing,
     required this.onDetailPressed,
   });
 
+  final int loadedAnalysisCount;
   final ProductDetail detail;
   final bool isAnalyzing;
   final VoidCallback onDetailPressed;
@@ -370,6 +417,8 @@ class _DesktopAnalysisSection extends StatelessWidget {
             Expanded(
               child: RtiSummaryCard(
                 rtiSummary: detail.rtiSummary,
+                loadedAnalysisCount: loadedAnalysisCount,
+                isAnalyzing: isAnalyzing,
                 onDetailPressed: onDetailPressed,
               ),
             ),
@@ -393,10 +442,12 @@ class _DesktopAnalysisSection extends StatelessWidget {
 class _MobileAnalysisSection extends StatelessWidget {
   const _MobileAnalysisSection({
     required this.detail,
+    required this.loadedAnalysisCount,
     required this.isAnalyzing,
     required this.onDetailPressed,
   });
 
+  final int loadedAnalysisCount;
   final ProductDetail detail;
   final bool isAnalyzing;
   final VoidCallback onDetailPressed;
@@ -411,6 +462,8 @@ class _MobileAnalysisSection extends StatelessWidget {
         ],
         RtiSummaryCard(
           rtiSummary: detail.rtiSummary,
+          loadedAnalysisCount: loadedAnalysisCount,
+          isAnalyzing: isAnalyzing,
           onDetailPressed: onDetailPressed,
         ),
         const SizedBox(height: AppSpacing.md),
