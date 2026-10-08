@@ -22,6 +22,10 @@ class SearchResultProductDto {
     this.dataPlatform,
     this.dataProductId,
     this.subCategory,
+    this.analysisStatus,
+    this.analysisSampled = false,
+    this.analysisReviewCount,
+    this.analysisSourceReviewCount,
   });
 
   factory SearchResultProductDto.fromJson(Map<String, dynamic> json) {
@@ -31,6 +35,11 @@ class SearchResultProductDto {
       dataPlatform: json['dataPlatform'] as String?,
       dataProductId: json['dataProductId']?.toString(),
       subCategory: json['subCategory'] as String?,
+      analysisStatus: json['analysisStatus'] as String?,
+      analysisSampled: json['analysisSampled'] == true,
+      analysisReviewCount: (json['analysisReviewCount'] as num?)?.toInt(),
+      analysisSourceReviewCount: (json['analysisSourceReviewCount'] as num?)
+          ?.toInt(),
       id: _readInt(json, ['id', 'productId']),
       name: _readString(json, ['name', 'productName', 'title']),
       imageUrl: _readString(json, [
@@ -65,6 +74,10 @@ class SearchResultProductDto {
   final String? dataPlatform;
   final String? dataProductId;
   final String? subCategory;
+  final String? analysisStatus;
+  final bool analysisSampled;
+  final int? analysisReviewCount;
+  final int? analysisSourceReviewCount;
 
   final int id;
   final String name;
@@ -98,6 +111,10 @@ class SearchResultProductDto {
       dataPlatform: dataPlatform,
       dataProductId: dataProductId,
       subCategory: subCategory,
+      analysisStatus: analysisStatus,
+      analysisSampled: analysisSampled,
+      analysisReviewCount: analysisReviewCount,
+      analysisSourceReviewCount: analysisSourceReviewCount,
       id: id,
       name: name,
       imageUrl: imageUrl,

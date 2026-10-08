@@ -1,3 +1,4 @@
+import 'package:re_view_front/shared/utils/list_analysis_label.dart';
 import 'package:re_view_front/features/external_product/domain/entities/external_product_ref.dart';
 import 'package:re_view_front/app/router/app_shell.dart';
 
@@ -212,9 +213,11 @@ class _HomePageState extends ConsumerState<HomePage> {
                                         p.avgRating?.toStringAsFixed(1) ?? '',
                                     reviewCountLabel:
                                         p.reviewCount?.toString() ?? '',
-                                    rtiLabel: p.avgRti == null
-                                        ? '분석 전'
-                                        : 'RTI ${p.avgRti!.round()}',
+                                    rtiLabel: listAnalysisLabel(
+                                      score: p.avgRti,
+                                      status: p.analysisStatus,
+                                      sampled: p.analysisSampled,
+                                    ),
                                     imageUrl: p.imageUrl,
                                     label: p.subCategory ?? '',
                                   ),
@@ -507,7 +510,11 @@ class _HomePageState extends ConsumerState<HomePage> {
       priceLabel: _formatPrice(product.price),
       ratingLabel: product.rating?.toStringAsFixed(1) ?? '-',
       reviewCountLabel: product.reviewCount?.toString() ?? '-',
-      rtiLabel: product.rtiScore == null ? '' : 'RTI ${product.rtiScore}',
+      rtiLabel: listAnalysisLabel(
+        score: product.rtiScore,
+        status: product.analysisStatus,
+        sampled: product.analysisSampled,
+      ),
       imageUrl: product.imageUrl,
       label: product.label ?? '',
     );

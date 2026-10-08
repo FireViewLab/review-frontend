@@ -1,3 +1,4 @@
+import 'package:re_view_front/shared/utils/list_analysis_label.dart';
 import 'package:re_view_front/features/settings/presentation/providers/settings_providers.dart';
 import 'package:re_view_front/app/theme/app_motion.dart';
 import 'package:flutter/material.dart';
@@ -84,6 +85,8 @@ class _SearchProductCardState extends State<SearchProductCard> {
                         child: RtiBadge(
                           value: product.avgRti?.round(),
                           color: rtiColor,
+                          status: product.analysisStatus,
+                          sampled: product.analysisSampled,
                         ),
                       ),
                       Positioned.fill(
@@ -267,7 +270,12 @@ class _SearchProductListTileState extends State<SearchProductListTile> {
           Positioned(
             top: AppSpacing.xs,
             right: AppSpacing.xs,
-            child: RtiBadge(value: product.avgRti?.round(), color: rtiColor),
+            child: RtiBadge(
+              value: product.avgRti?.round(),
+              color: rtiColor,
+              status: product.analysisStatus,
+              sampled: product.analysisSampled,
+            ),
           ),
           Positioned.fill(
             child: _HoverTapLayer(
@@ -487,13 +495,26 @@ class _ProductQuickActions extends StatelessWidget {
 }
 
 class RtiBadge extends ConsumerWidget {
-  const RtiBadge({super.key, required this.value, required this.color});
+  const RtiBadge({
+    super.key,
+    required this.value,
+    required this.color,
+    this.status,
+    this.sampled = false,
+  });
 
   final int? value;
   final Color color;
+  final String? status;
+  final bool sampled;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final hasScore =
+        value != null &&
+        value! >= 0 &&
+        value! <= 100 &&
+        (status == null || status?.toUpperCase() == 'DONE');
     final preferences = ref.watch(confirmedDisplayPreferencesProvider);
     if (preferences?.rtiLabelStyle == 'NONE') return const SizedBox.shrink();
     final large = preferences?.rtiLabelStyle == 'BADGE_LARGE';
@@ -512,17 +533,15 @@ class RtiBadge extends ConsumerWidget {
           mainAxisSize: MainAxisSize.min,
           children: [
             Icon(
-              value == null
-                  ? Icons.hourglass_empty
-                  : Icons.verified_user_outlined,
-              color: value == null ? AppColors.textTertiary : color,
+              !hasScore ? Icons.hourglass_empty : Icons.verified_user_outlined,
+              color: !hasScore ? AppColors.textTertiary : color,
               size: 14,
             ),
             const SizedBox(width: AppSpacing.xxs),
             Text(
-              value == null ? '분석 전' : 'RTI $value',
+              listAnalysisLabel(score: value, status: status, sampled: sampled),
               style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                color: value == null ? AppColors.textTertiary : color,
+                color: !hasScore ? AppColors.textTertiary : color,
                 fontWeight: FontWeight.w900,
                 fontSize: large ? 15 : 12,
               ),

@@ -16,6 +16,10 @@ class DashboardProduct {
     this.dataPlatform,
     this.dataProductId,
     this.subCategory,
+    this.analysisStatus,
+    this.analysisSampled = false,
+    this.analysisReviewCount,
+    this.analysisSourceReviewCount,
   });
 
   final ProductSummary? summary;
@@ -23,6 +27,10 @@ class DashboardProduct {
   final String? dataPlatform;
   final String? dataProductId;
   final String? subCategory;
+  final String? analysisStatus;
+  final bool analysisSampled;
+  final int? analysisReviewCount;
+  final int? analysisSourceReviewCount;
   ExternalProductRef? get externalRef => ExternalProductRef.resolve(
     dataPlatform: dataPlatform,
     dataProductId: dataProductId,
