@@ -61,7 +61,7 @@ String? normalizeSearchPlatform(String? value) {
     'kurly' || '컬리' || '마켓컬리' => '컬리',
     'oliveyoung' || '올리브영' => '올리브영',
     'musinsa' || '무신사' => '무신사',
-    '11st' || '11street' || '11번가' => '11번가',
+    '11st' || '11street' || 'elevenst' || '11번가' => '11번가',
     _ => raw,
   };
 }

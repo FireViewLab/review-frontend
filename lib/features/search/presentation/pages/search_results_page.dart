@@ -182,8 +182,9 @@ class _SearchResultsPageState extends ConsumerState<SearchResultsPage> {
                   setState(() {
                     _selectedRtiMinimum = value;
                     _selectedAttributeFilters.remove('분석 전만');
-                    if (_selectedQuickFilter == '분석 전')
+                    if (_selectedQuickFilter == '분석 전') {
                       _selectedQuickFilter = '전체';
+                    }
                     _isRtiFilterActive = true;
                     _currentPage = 1;
                   });
