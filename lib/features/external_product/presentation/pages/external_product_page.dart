@@ -1,3 +1,4 @@
+import 'package:re_view_front/features/external_product/presentation/widgets/external_product_report.dart';
 import 'package:re_view_front/shared/widgets/review_photo_view.dart';
 import 'package:re_view_front/core/providers/core_providers.dart';
 import 'package:re_view_front/features/recent_products/presentation/providers/recent_products_providers.dart';
@@ -402,8 +403,7 @@ class _ReadyState extends ConsumerState<_Ready> {
             ],
           ),
         const SizedBox(height: AppSpacing.xl),
-        // 분석 결과의 모양은 서버에서 아직 정해지지 않아, 올 때까지 안내만 둔다.
-        if (!state.hasAnalysis) const ExternalAnalysisPending(),
+        ExternalProductReport(state: state),
         const SizedBox(height: AppSpacing.xl),
         Text(
           l10n.extProductReviewsTitle,

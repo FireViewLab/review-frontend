@@ -3287,6 +3287,132 @@ abstract class AppLocalizations {
   /// In ko, this message translates to:
   /// **'요청 시간이 초과됐어요. 다시 시도해주세요.'**
   String get externalTimeout;
+
+  /// No description provided for @reportTitle.
+  ///
+  /// In ko, this message translates to:
+  /// **'짧은 report'**
+  String get reportTitle;
+
+  /// No description provided for @reportDetails.
+  ///
+  /// In ko, this message translates to:
+  /// **'상세 분석 보기'**
+  String get reportDetails;
+
+  /// No description provided for @reportClose.
+  ///
+  /// In ko, this message translates to:
+  /// **'닫기'**
+  String get reportClose;
+
+  /// No description provided for @reportBefore.
+  ///
+  /// In ko, this message translates to:
+  /// **'분석 전'**
+  String get reportBefore;
+
+  /// No description provided for @reportCollecting.
+  ///
+  /// In ko, this message translates to:
+  /// **'상품·리뷰 정보를 수집하고 있어요. 분석 진행 상태와는 별개예요.'**
+  String get reportCollecting;
+
+  /// No description provided for @reportRunning.
+  ///
+  /// In ko, this message translates to:
+  /// **'분석이 진행 중이에요.'**
+  String get reportRunning;
+
+  /// No description provided for @reportFailed.
+  ///
+  /// In ko, this message translates to:
+  /// **'분석 결과를 가져오지 못했어요.'**
+  String get reportFailed;
+
+  /// No description provided for @reportDisabled.
+  ///
+  /// In ko, this message translates to:
+  /// **'현재 분석 기능이 비활성화되어 있어요.'**
+  String get reportDisabled;
+
+  /// No description provided for @reportStale.
+  ///
+  /// In ko, this message translates to:
+  /// **'기존 분석 결과가 최신 상태가 아니에요.'**
+  String get reportStale;
+
+  /// No description provided for @reportUnavailable.
+  ///
+  /// In ko, this message translates to:
+  /// **'분석 상태를 확인할 수 없어요.'**
+  String get reportUnavailable;
+
+  /// No description provided for @reportDone.
+  ///
+  /// In ko, this message translates to:
+  /// **'분석 결과 제공됨'**
+  String get reportDone;
+
+  /// No description provided for @reportLoadedScope.
+  ///
+  /// In ko, this message translates to:
+  /// **'현재 불러온 리뷰의 결과만 표시해요. 상품 전체 평균이나 긍정·부정률이 아니에요.'**
+  String get reportLoadedScope;
+
+  /// No description provided for @reportInputCount.
+  ///
+  /// In ko, this message translates to:
+  /// **'분석에 입력한 리뷰'**
+  String get reportInputCount;
+
+  /// No description provided for @reportSourceCount.
+  ///
+  /// In ko, this message translates to:
+  /// **'수집된 원본 리뷰'**
+  String get reportSourceCount;
+
+  /// No description provided for @reportSampled.
+  ///
+  /// In ko, this message translates to:
+  /// **'일부 리뷰 표본 분석'**
+  String get reportSampled;
+
+  /// No description provided for @reportFull.
+  ///
+  /// In ko, this message translates to:
+  /// **'전체 수집 리뷰 분석'**
+  String get reportFull;
+
+  /// No description provided for @reportModel.
+  ///
+  /// In ko, this message translates to:
+  /// **'모델 버전'**
+  String get reportModel;
+
+  /// No description provided for @reportPolicy.
+  ///
+  /// In ko, this message translates to:
+  /// **'정책 버전'**
+  String get reportPolicy;
+
+  /// No description provided for @reportNoReviewResults.
+  ///
+  /// In ko, this message translates to:
+  /// **'현재 불러온 리뷰에 제공된 분석 결과가 없어요.'**
+  String get reportNoReviewResults;
+
+  /// No description provided for @reportReasons.
+  ///
+  /// In ko, this message translates to:
+  /// **'제공된 판단 근거'**
+  String get reportReasons;
+
+  /// No description provided for @reportCurrentCount.
+  ///
+  /// In ko, this message translates to:
+  /// **'현재 불러온 분석 리뷰'**
+  String get reportCurrentCount;
 }
 
 class _AppLocalizationsDelegate

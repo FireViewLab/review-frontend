@@ -1684,4 +1684,67 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String get externalTimeout => 'リクエストがタイムアウトしました。再試行してください。';
+
+  @override
+  String get reportTitle => '短いレポート';
+
+  @override
+  String get reportDetails => '詳細分析を見る';
+
+  @override
+  String get reportClose => '閉じる';
+
+  @override
+  String get reportBefore => '分析前';
+
+  @override
+  String get reportCollecting => '商品とレビューを収集中です。分析の進行状況とは別です。';
+
+  @override
+  String get reportRunning => '分析中です。';
+
+  @override
+  String get reportFailed => '分析結果を取得できませんでした。';
+
+  @override
+  String get reportDisabled => '現在分析は無効です。';
+
+  @override
+  String get reportStale => '以前の分析結果は最新ではありません。';
+
+  @override
+  String get reportUnavailable => '分析状況を確認できません。';
+
+  @override
+  String get reportDone => '分析結果あり';
+
+  @override
+  String get reportLoadedScope => '読み込み済みレビューの結果のみ表示します。商品全体の平均や感情比率ではありません。';
+
+  @override
+  String get reportInputCount => '分析対象レビュー';
+
+  @override
+  String get reportSourceCount => '収集した元レビュー';
+
+  @override
+  String get reportSampled => '一部レビューをサンプル分析';
+
+  @override
+  String get reportFull => '収集レビュー全件を分析';
+
+  @override
+  String get reportModel => 'モデル版';
+
+  @override
+  String get reportPolicy => 'ポリシー版';
+
+  @override
+  String get reportNoReviewResults => '読み込み済みレビューの分析結果がありません。';
+
+  @override
+  String get reportReasons => '提供された判断根拠';
+
+  @override
+  String get reportCurrentCount => '読み込み済み分析レビュー';
 }
