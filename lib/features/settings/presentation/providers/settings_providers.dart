@@ -29,7 +29,7 @@ final settingsViewModelProvider =
 final accountLoginMethodProvider = FutureProvider.autoDispose<String?>((
   ref,
 ) async {
-  if (!ref.watch(isLoggedInProvider)) return null;
+  if (!ref.watch(authSessionProvider).isLoggedIn) return null;
   final result = await ref.read(settingsRepositoryProvider).getLoginMethod();
   return result.when(success: (method) => method, failure: (_) => null);
 });

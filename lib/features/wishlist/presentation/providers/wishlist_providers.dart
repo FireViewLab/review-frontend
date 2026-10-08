@@ -39,7 +39,7 @@ typedef WishlistSnapshot = ({
 final _wishlistSnapshotProvider = FutureProvider.autoDispose<WishlistSnapshot?>(
   (ref) async {
     ref.keepAlive();
-    final isLoggedIn = ref.watch(isLoggedInProvider);
+    final isLoggedIn = ref.watch(authSessionProvider).isLoggedIn;
     if (!isLoggedIn) return null;
 
     final result = await ref.read(getWishlistUseCaseProvider)();
@@ -51,7 +51,7 @@ final _wishlistSnapshotProvider = FutureProvider.autoDispose<WishlistSnapshot?>(
 );
 
 final wishlistItemCountProvider = FutureProvider.autoDispose<int>((ref) async {
-  final isLoggedIn = ref.watch(isLoggedInProvider);
+  final isLoggedIn = ref.watch(authSessionProvider).isLoggedIn;
   if (!isLoggedIn) return 0;
   final snapshot = await ref.watch(_wishlistSnapshotProvider.future);
   return snapshot?.items.length ?? 0;
@@ -60,7 +60,7 @@ final wishlistItemCountProvider = FutureProvider.autoDispose<int>((ref) async {
 final wishlistProductIdsProvider = FutureProvider.autoDispose<Set<int>>((
   ref,
 ) async {
-  final isLoggedIn = ref.watch(isLoggedInProvider);
+  final isLoggedIn = ref.watch(authSessionProvider).isLoggedIn;
   if (!isLoggedIn) return <int>{};
   final snapshot = await ref.watch(_wishlistSnapshotProvider.future);
   return snapshot?.items.map((item) => item.productId).toSet() ?? <int>{};
@@ -84,7 +84,7 @@ class WishlistButtonNotifier extends AsyncNotifier<bool> {
     _isToggling = false;
     if (_productId <= 0) return false;
 
-    final isLoggedIn = ref.watch(isLoggedInProvider);
+    final isLoggedIn = ref.watch(authSessionProvider).isLoggedIn;
     if (!isLoggedIn) return false;
 
     final productIds = await ref.watch(wishlistProductIdsProvider.future);

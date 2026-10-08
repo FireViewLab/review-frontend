@@ -31,7 +31,7 @@ final unreadNotificationCountProvider =
 class UnreadNotificationCount extends AsyncNotifier<int> {
   @override
   Future<int> build() async {
-    if (!ref.watch(isLoggedInProvider)) return 0;
+    if (!ref.watch(authSessionProvider).isLoggedIn) return 0;
     final result = await ref
         .read(notificationRepositoryProvider)
         .getUnreadCount();

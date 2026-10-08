@@ -14,7 +14,7 @@ class OnboardingViewModel extends Notifier<OnboardingState> {
   @override
   OnboardingState build() {
     _generation++;
-    ref.watch(isLoggedInProvider);
+    ref.watch(authSessionProvider).isLoggedIn;
     Future.microtask(() {
       if (ref.mounted) load();
     });
