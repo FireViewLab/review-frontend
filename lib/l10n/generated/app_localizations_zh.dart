@@ -1648,4 +1648,21 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get recentRecordUnavailable => '无法获取服务器浏览记录所需的商品标识。';
+
+  @override
+  String get reviewPhotoOnly => '仅带图评论';
+
+  @override
+  String get reviewListView => '评论列表';
+
+  @override
+  String get reviewPhotosView => '仅看图片';
+
+  @override
+  String reviewPhotoScope(int loaded, int photos) {
+    return '已加载$loaded条评论，其中$photos条带图。这不是商品评论总数，可继续加载更多。';
+  }
+
+  @override
+  String get reviewPhotosEmpty => '当前已加载评论没有有效图片。';
 }

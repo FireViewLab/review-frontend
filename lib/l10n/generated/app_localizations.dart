@@ -3233,6 +3233,36 @@ abstract class AppLocalizations {
   /// In ko, this message translates to:
   /// **'최근 본 기록에 필요한 상품 식별 정보를 확인하지 못했어요.'**
   String get recentRecordUnavailable;
+
+  /// No description provided for @reviewPhotoOnly.
+  ///
+  /// In ko, this message translates to:
+  /// **'사진 리뷰만 보기'**
+  String get reviewPhotoOnly;
+
+  /// No description provided for @reviewListView.
+  ///
+  /// In ko, this message translates to:
+  /// **'리뷰 목록'**
+  String get reviewListView;
+
+  /// No description provided for @reviewPhotosView.
+  ///
+  /// In ko, this message translates to:
+  /// **'사진만 보기'**
+  String get reviewPhotosView;
+
+  /// No description provided for @reviewPhotoScope.
+  ///
+  /// In ko, this message translates to:
+  /// **'불러온 리뷰 {loaded}개 중 사진 리뷰 {photos}개예요. 전체 상품 리뷰 수와 다르며 더보기를 눌러 계속 확인할 수 있어요.'**
+  String reviewPhotoScope(int loaded, int photos);
+
+  /// No description provided for @reviewPhotosEmpty.
+  ///
+  /// In ko, this message translates to:
+  /// **'현재 불러온 리뷰에 유효한 사진이 없어요.'**
+  String get reviewPhotosEmpty;
 }
 
 class _AppLocalizationsDelegate

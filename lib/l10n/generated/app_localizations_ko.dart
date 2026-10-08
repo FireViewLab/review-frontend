@@ -1656,4 +1656,21 @@ class AppLocalizationsKo extends AppLocalizations {
 
   @override
   String get recentRecordUnavailable => '최근 본 기록에 필요한 상품 식별 정보를 확인하지 못했어요.';
+
+  @override
+  String get reviewPhotoOnly => '사진 리뷰만 보기';
+
+  @override
+  String get reviewListView => '리뷰 목록';
+
+  @override
+  String get reviewPhotosView => '사진만 보기';
+
+  @override
+  String reviewPhotoScope(int loaded, int photos) {
+    return '불러온 리뷰 $loaded개 중 사진 리뷰 $photos개예요. 전체 상품 리뷰 수와 다르며 더보기를 눌러 계속 확인할 수 있어요.';
+  }
+
+  @override
+  String get reviewPhotosEmpty => '현재 불러온 리뷰에 유효한 사진이 없어요.';
 }

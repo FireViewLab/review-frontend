@@ -522,5 +522,11 @@
   "extProductListSummary": "一覧で取得した商品情報です。最新の詳細情報とレビューを確認しています。",
   "extProductPreviousSummary": "以前表示した商品情報です。最新の詳細情報とレビューを確認しています。",
   "recentRecordFailed": "閲覧履歴を確認できませんでした。再試行",
-  "recentRecordUnavailable": "閲覧履歴に必要な商品識別情報を確認できません。"
+  "recentRecordUnavailable": "閲覧履歴に必要な商品識別情報を確認できません。",
+  "reviewPhotoOnly": "写真付きレビューのみ",
+  "reviewListView": "レビュー一覧",
+  "reviewPhotosView": "写真のみ",
+  "reviewPhotoScope": "読み込み済み{loaded}件中、写真付きは{photos}件です。商品全体の件数ではありません。追加読み込みで続けられます。",
+  "reviewPhotosEmpty": "読み込み済みレビューに有効な写真がありません。",
+  "@reviewPhotoScope": {"placeholders": {"loaded": {"type": "int"}, "photos": {"type": "int"}}}
 }
