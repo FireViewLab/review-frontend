@@ -522,5 +522,9 @@
   "extProductListSummary": "一覧で取得した商品情報です。最新の詳細情報とレビューを確認しています。",
   "extProductPreviousSummary": "以前表示した商品情報です。最新の詳細情報とレビューを確認しています。",
   "recentRecordFailed": "閲覧履歴を確認できませんでした。再試行",
-  "recentRecordUnavailable": "閲覧履歴に必要な商品識別情報を確認できません。"
+  "recentRecordUnavailable": "閲覧履歴に必要な商品識別情報を確認できません。",
+  "externalForbidden": "この操作の権限がありません。",
+  "externalAuthRequestFailed": "このリクエストの認証を確認できませんでした。現在のログイン状態を確認して再試行してください。",
+  "externalNetworkFailure": "ネットワーク接続を確認して再試行してください。",
+  "externalTimeout": "リクエストがタイムアウトしました。再試行してください。"
 }
