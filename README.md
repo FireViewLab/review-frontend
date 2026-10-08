@@ -105,10 +105,16 @@ Actions concurrency는 **동일 ref의 Actions 실행만** 직렬화합니다. �
 
 ## TEST 서비스 결제
 
-`/plan` → `/payments/test`는 토스페이먼츠 v2 주문서형 SDK를 연결한 웹 전용 TEST 흐름입니다. 현재 서버 주문/승인 API·결제 대상 가격·상점 TEST 공개키는 없으며 결제 시작은 비활성 상태입니다. 외부 쇼핑몰 상품 결제와 기존 플랜 직접 변경은 연결하지 않습니다.
+`/plan` → `/payments/test`는 토스페이먼츠 v2 주문서형 SDK를 연결한 웹 전용 TEST 흐름입니다. 현재 서버 주문/승인 API·결제 대상 가격·상점 TEST 공개키는 없으며 결제 시작은 비활성 상태입니다. 이 서비스 결제는 기존 직접 플랜 변경과 별도입니다. 장바구니 선택 상품 TEST 주문은 별도 계약으로 준비합니다.
 
 계약 확정 후 공개 `TOSS_TEST_CLIENT_KEY`(`test_gck_`만 허용)와 `PAYMENT_TEST_CATALOG_PATH`, `PAYMENT_TEST_ORDERS_PATH`, `PAYMENT_TEST_CONFIRM_PATH`를 빌드 define으로 설정합니다. API 경로는 현재 지원되는 URL이 아니라 합의한 계약을 명시 설정하는 경계입니다. 서버가 제공한 TEST offer·가격·무작위 고객키·주문만 SDK로 전달합니다. 모든 요청/응답 본문 로깅은 제거했습니다. secretKey 및 서버간 토큰을 프론트에 넣지 마세요.
 
 SDK success callback은 성공 확정이 아닙니다. 프론트는 인증 사용자 주문을 조회하고 orderId/금액을 비교한 뒤 자체 서버 승인 API만 호출합니다. 서버는 주문 소유자/금액/TEST 모드 검증 및 동일 주문 중복승인 방지를 수행해야 합니다. `PAID` 응답만 승인 확인으로 표시하며 TEST 결제로 실제 플랜·quota를 조작하지 않습니다. 실패·취소는 미완료 안내, 승인 timeout은 상태 조회, callback 새로고침은 먼저 서버 상태를 조회합니다.
 
 공식 문서: [SDK 초기화](https://docs.tosspayments.com/sdk/v2/js/environment), [주문서형 SDK](https://docs.tosspayments.com/sdk/v2/js/payment-widget), [인증·승인 흐름](https://docs.tosspayments.com/guides/v2/get-started/payment-flow). 실제 결제 실행과 화면 테스트는 사용자 담당이며 미검증입니다.
+
+### 장바구니 선택 상품 TEST 주문
+
+`/cart`에서 선택 상품·수량을 확인한 뒤 `/cart/checkout`으로 이동합니다. 주소 입력, 서버 견적·선택 항목/수량·확정 가격/배송비·판매자/배송 가능 여부 검증, TEST 주문 생성·토스 위젯·콜백 복구 경계를 연결했습니다. 현재 공개 TEST 키와 상품 주문/판매·배송·승인 API가 없어 주소 전송·주문 저장·결제는 비활성화됩니다. 외부몰 상품이 실제 주문·배송 가능한 것으로 표시하거나 가짜 성공으로 처리하지 않습니다.
+
+계약 확정 뒤 `CART_TEST_QUOTES_PATH`, `CART_TEST_ORDERS_PATH`, `CART_TEST_CONFIRM_PATH`와 공개 `TOSS_TEST_CLIENT_KEY`를 설정합니다. 이 경로들은 현재 존재하는 API가 아니라 명시적인 합의·설정이 필요한 경계입니다. 서버 견적은 `purpose:CART`, `testOnly:true`, `currency:KRW`, 선택 항목별 상품/수량/확정 가격, 상품합계·배송비·총액을 제공합니다. 주문은 동일 견적 ID와 TEST 금액을 유지하고 승인 시 서버가 해당 선택 수량만 처리한 `cartReconciled:true`를 반환해야 합니다. 프론트는 전체 장바구니를 임의 삭제하지 않고 서버 상태를 재조회합니다. 주소는 메모리에만 유지하며 계정 전환 시 비웁니다. TEST 승인도 실제 상품 배송·실결제 완료를 뜻하지 않습니다.

@@ -160,7 +160,11 @@ class _CartCheckoutPageState extends ConsumerState<CartCheckoutPage> {
                           final text = value?.trim() ?? '';
                           if (text.isEmpty) return '입력해 주세요.';
                           if (i == 1 &&
-                              !RegExp(r'^[0-9+\- ]{8,20}$').hasMatch(text)) {
+                              (!RegExp(r'^\+?[0-9\- ]+$').hasMatch(text) ||
+                                  text.replaceAll(RegExp(r'\D'), '').length <
+                                      8 ||
+                                  text.replaceAll(RegExp(r'\D'), '').length >
+                                      15)) {
                             return '연락처 형식을 확인해 주세요.';
                           }
                           if (i == 2 && !RegExp(r'^\d{5}$').hasMatch(text)) {
