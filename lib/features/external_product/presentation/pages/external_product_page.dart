@@ -1,3 +1,4 @@
+import 'package:re_view_front/shared/widgets/review_photo_view.dart';
 import 'package:re_view_front/core/providers/core_providers.dart';
 import 'package:re_view_front/features/recent_products/presentation/providers/recent_products_providers.dart';
 import 'package:flutter/material.dart';
@@ -188,6 +189,7 @@ class _ExternalProductContentState
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         _Ready(
+          key: ValueKey(product.ref),
           state: state,
           product: product,
           onLoadMore: vm.loadMoreReviews,
@@ -282,8 +284,9 @@ class _Collecting extends StatelessWidget {
   }
 }
 
-class _Ready extends ConsumerWidget {
+class _Ready extends ConsumerStatefulWidget {
   const _Ready({
+    super.key,
     required this.state,
     required this.product,
     required this.onLoadMore,
@@ -296,7 +299,17 @@ class _Ready extends ConsumerWidget {
   final Widget? collectionStatus;
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<_Ready> createState() => _ReadyState();
+}
+
+class _ReadyState extends ConsumerState<_Ready> {
+  bool _photoOnly = false, _photoView = false;
+  ExternalProductState get state => widget.state;
+  ExternalProduct get product => widget.product;
+  VoidCallback get onLoadMore => widget.onLoadMore;
+  Widget? get collectionStatus => widget.collectionStatus;
+  @override
+  Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);
     final textTheme = Theme.of(context).textTheme;
     final url = Uri.tryParse(product.url ?? '');
@@ -325,7 +338,13 @@ class _Ready extends ConsumerWidget {
       });
     }
 
+    final visibleReviews = [
+      for (final entry in reviews)
+        if (!_photoOnly || validReviewImages(entry.$2.images).isNotEmpty)
+          entry.$2,
+    ];
     final image = ProductImageViewer(imageUrls: product.galleryImages);
+
     final summary = ExternalProductSummary(
       product: product,
       isStale: state.isStale,
@@ -403,6 +422,23 @@ class _Ready extends ConsumerWidget {
           ),
           const SizedBox(height: AppSpacing.sm),
         ],
+        ReviewPhotoToolbar(
+          photoOnly: _photoOnly,
+          photoView: _photoView,
+          loadedCount: state.reviews.length,
+          photoReviewCount: state.reviews
+              .where((r) => validReviewImages(r.images).isNotEmpty)
+              .length,
+          onPhotoOnlyChanged: (v) => setState(() {
+            _photoOnly = v;
+            if (!v) _photoView = false;
+          }),
+          onPhotoViewChanged: (v) => setState(() {
+            _photoView = v;
+            if (v) _photoOnly = true;
+          }),
+        ),
+        const SizedBox(height: AppSpacing.sm),
         if (collectionStatus != null) ...[
           ExternalPanel(child: collectionStatus!),
           const SizedBox(height: AppSpacing.md),
@@ -420,13 +456,25 @@ class _Ready extends ConsumerWidget {
               ),
             ),
           )
-        else if (state.reviews.isNotEmpty)
+        else if (_photoView)
+          ReviewPhotoGrid(
+            entries: [
+              for (final review in visibleReviews)
+                ReviewPhotoEntry(
+                  reviewKey: review.reviewId,
+                  label: review.author ?? '',
+                  images: review.images,
+                ),
+            ],
+          )
+        else if (_photoOnly && visibleReviews.isEmpty)
+          Text(l10n.reviewPhotosEmpty)
+        else if (visibleReviews.isNotEmpty)
           ExternalPanel(
             padding: const EdgeInsets.symmetric(horizontal: AppSpacing.lg),
             child: Column(
               children: [
-                for (final (index, review)
-                    in reviews.map((entry) => entry.$2).indexed) ...[
+                for (final (index, review) in visibleReviews.indexed) ...[
                   if (index > 0)
                     const Divider(height: 1, color: AppColors.border),
                   ExternalReviewTile(

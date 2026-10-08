@@ -1,3 +1,4 @@
+import 'package:re_view_front/shared/widgets/review_photo_view.dart';
 import 'package:re_view_front/shared/widgets/rti_criteria_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -251,10 +252,7 @@ class _SelectedReviewSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final images = review.imageUrls
-        .map((url) => url.trim())
-        .where((url) => url.isNotEmpty)
-        .toList(growable: false);
+    final images = validReviewImages(review.imageUrls);
     return _SectionCard(
       title: '선택된 리뷰',
       child: Column(
