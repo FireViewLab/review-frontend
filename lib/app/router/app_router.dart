@@ -194,6 +194,9 @@ final appRouterProvider = Provider<GoRouter>((ref) {
             pageBuilder: (context, state) => _buildContentPage(
               state,
               ExternalProductPage(
+                summary: state.extra is ProductRouteContext
+                    ? (state.extra as ProductRouteContext).summary
+                    : null,
                 productRef: ExternalProductRef(
                   platform: state.pathParameters['platform'] ?? '',
                   productId: state.pathParameters['productId'] ?? '',

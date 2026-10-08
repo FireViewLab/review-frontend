@@ -24,3 +24,7 @@ final externalProductViewModelProvider = NotifierProvider.autoDispose
     .family<ExternalProductViewModel, ExternalProductState, ExternalProductRef>(
       ExternalProductViewModel.new,
     );
+
+final productSummaryCacheProvider = Provider<ProductSummaryCache>(
+  (ref) => ProductSummaryCache(),
+);
