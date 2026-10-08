@@ -1648,4 +1648,10 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String get extProductPreviousSummary => '以前表示した商品情報です。最新の詳細情報とレビューを確認しています。';
+
+  @override
+  String get recentRecordFailed => '閲覧履歴を確認できませんでした。再試行';
+
+  @override
+  String get recentRecordUnavailable => '閲覧履歴に必要な商品識別情報を確認できません。';
 }

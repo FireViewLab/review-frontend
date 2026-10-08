@@ -1,3 +1,5 @@
+import 'package:re_view_front/core/providers/core_providers.dart';
+import 'package:re_view_front/features/recent_products/presentation/providers/recent_products_providers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:re_view_front/app/theme/app_colors.dart';
@@ -24,10 +26,12 @@ class ExternalProductPage extends ConsumerStatefulWidget {
     super.key,
     required this.productRef,
     this.summary,
+    this.viewAlreadyRecorded = false,
   });
 
   final ExternalProductRef productRef;
   final ProductSummary? summary;
+  final bool viewAlreadyRecorded;
 
   @override
   ConsumerState<ExternalProductPage> createState() =>
@@ -69,7 +73,11 @@ class _ExternalProductPageState extends ConsumerState<ExternalProductPage> {
                 context.isMobile ? AppSpacing.md : AppSpacing.xxl,
                 AppSpacing.xxxl,
               ),
-              child: ExternalProductContent(productRef: widget.productRef),
+              child: ExternalProductContent(
+                key: ValueKey(widget.productRef),
+                productRef: widget.productRef,
+                viewAlreadyRecorded: widget.viewAlreadyRecorded,
+              ),
             ),
           ),
         ],
@@ -79,13 +87,35 @@ class _ExternalProductPageState extends ConsumerState<ExternalProductPage> {
 }
 
 /// 상품 상세의 본문. 수집 상태에 따라 화면을 가른다.
-class ExternalProductContent extends ConsumerWidget {
-  const ExternalProductContent({super.key, required this.productRef});
+class ExternalProductContent extends ConsumerStatefulWidget {
+  const ExternalProductContent({
+    super.key,
+    required this.productRef,
+    this.viewAlreadyRecorded = false,
+  });
 
   final ExternalProductRef productRef;
 
+  final bool viewAlreadyRecorded;
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<ExternalProductContent> createState() =>
+      _ExternalProductContentState();
+}
+
+class _ExternalProductContentState
+    extends ConsumerState<ExternalProductContent> {
+  bool _usedInheritedRecord = false;
+  ExternalProductRef get productRef => widget.productRef;
+  @override
+  void initState() {
+    super.initState();
+    ref.listenManual(authTokenStoreProvider, (_, _) {
+      _usedInheritedRecord = true;
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);
     final provider = externalProductViewModelProvider(productRef);
     final state = ref.watch(provider);
@@ -134,11 +164,53 @@ class ExternalProductContent extends ConsumerWidget {
         ],
       );
     }
-    return _Ready(
-      state: state,
-      product: product,
-      onLoadMore: vm.loadMoreReviews,
-      collectionStatus: status,
+    final recentProvider = recentViewRecordProvider(productRef);
+    final recordStatus = ref.watch(recentProvider);
+    final numericId = state.product == null
+        ? state.displayNumericId
+        : state.springProductId;
+    final loggedIn = ref.watch(isLoggedInProvider);
+    if (loggedIn &&
+        numericId != null &&
+        recordStatus == RecentViewStatus.idle) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (context.mounted && ref.exists(recentProvider)) {
+          if (widget.viewAlreadyRecorded && !_usedInheritedRecord) {
+            _usedInheritedRecord = true;
+            ref.read(recentProvider.notifier).acknowledgeInheritedView();
+          } else {
+            ref.read(recentProvider.notifier).record(numericId);
+          }
+        }
+      });
+    }
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        _Ready(
+          state: state,
+          product: product,
+          onLoadMore: vm.loadMoreReviews,
+          collectionStatus: status,
+        ),
+        if (loggedIn && recordStatus == RecentViewStatus.failed)
+          TextButton.icon(
+            icon: const Icon(Icons.refresh),
+            onPressed: numericId == null
+                ? null
+                : () => ref
+                      .read(recentProvider.notifier)
+                      .record(numericId, retry: true),
+            label: Text(l10n.recentRecordFailed),
+          ),
+        if (loggedIn && numericId == null)
+          Text(
+            l10n.recentRecordUnavailable,
+            style: Theme.of(
+              context,
+            ).textTheme.bodySmall?.copyWith(color: AppColors.textSecondary),
+          ),
+      ],
     );
   }
 }

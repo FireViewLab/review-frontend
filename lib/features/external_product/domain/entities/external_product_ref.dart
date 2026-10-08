@@ -73,7 +73,12 @@ class ExternalProductRef {
 
 /// Product context carried alongside navigation; numeric IDs stay out of chat.
 class ProductRouteContext {
-  const ProductRouteContext({this.chatProductId, this.summary});
+  const ProductRouteContext({
+    this.chatProductId,
+    this.summary,
+    this.viewAlreadyRecorded = false,
+  });
   final String? chatProductId;
   final ProductSummary? summary;
+  final bool viewAlreadyRecorded;
 }

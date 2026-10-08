@@ -1642,4 +1642,10 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get extProductPreviousSummary => '这是之前查看的商品信息。正在获取最新详情和评论。';
+
+  @override
+  String get recentRecordFailed => '无法确认最近浏览记录。重试';
+
+  @override
+  String get recentRecordUnavailable => '无法获取服务器浏览记录所需的商品标识。';
 }

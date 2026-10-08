@@ -1,3 +1,4 @@
+import 'package:re_view_front/features/external_product/domain/entities/external_product_ref.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -42,7 +43,16 @@ class _ProductDetailPageState extends ConsumerState<ProductDetailPage> {
     if (state is ProductDetailSuccess && state.detail.externalRef != null) {
       final path = state.detail.detailPath;
       WidgetsBinding.instance.addPostFrameCallback((_) {
-        if (mounted) context.go(path, extra: state.detail.routeContext);
+        if (mounted) {
+          context.go(
+            path,
+            extra: ProductRouteContext(
+              chatProductId: state.detail.chatProductId,
+              summary: state.detail.summary,
+              viewAlreadyRecorded: state.viewRecorded,
+            ),
+          );
+        }
       });
       return const Center(child: CircularProgressIndicator());
     }

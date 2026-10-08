@@ -1698,4 +1698,12 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get extProductPreviousSummary =>
       'Previously viewed product information. Checking current details and reviews.';
+
+  @override
+  String get recentRecordFailed =>
+      'Could not confirm recently viewed history. Retry';
+
+  @override
+  String get recentRecordUnavailable =>
+      'The product ID needed for server view history is unavailable.';
 }
