@@ -570,6 +570,8 @@
   "reportNoReviewResults": "No analysis results were provided for the loaded reviews.",
   "reportReasons": "Provided reasons",
   "reportCurrentCount": "Loaded analyzed reviews",
+  "reportCatalogAverage": "Catalog product average RTI",
+  "reportCatalogSource": "This aggregate is supplied by the catalog server, not calculated from the loaded review page. Its observation time may differ from the detail analysis.",
   "reviewAnalysisSafe": "High trust",
   "reviewAnalysisWarn": "Caution",
   "reviewAnalysisDanger": "Low trust",

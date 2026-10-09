@@ -1806,6 +1806,13 @@ class AppLocalizationsEn extends AppLocalizations {
   String get reportCurrentCount => 'Loaded analyzed reviews';
 
   @override
+  String get reportCatalogAverage => 'Catalog product average RTI';
+
+  @override
+  String get reportCatalogSource =>
+      'This aggregate is supplied by the catalog server, not calculated from the loaded review page. Its observation time may differ from the detail analysis.';
+
+  @override
   String get reviewAnalysisSafe => 'High trust';
 
   @override

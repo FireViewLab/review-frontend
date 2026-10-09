@@ -1749,6 +1749,13 @@ class AppLocalizationsJa extends AppLocalizations {
   String get reportCurrentCount => '読み込み済み分析レビュー';
 
   @override
+  String get reportCatalogAverage => '一覧から受け取った商品平均RTI';
+
+  @override
+  String get reportCatalogSource =>
+      'カタログサーバーが提供した集計です。読み込んだレビューの平均ではなく、詳細分析と取得時点が異なる場合があります。';
+
+  @override
   String get reviewAnalysisSafe => '信頼度が高い';
 
   @override

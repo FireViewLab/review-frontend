@@ -1752,6 +1752,13 @@ class AppLocalizationsKo extends AppLocalizations {
   String get reportCurrentCount => '현재 불러온 분석 리뷰';
 
   @override
+  String get reportCatalogAverage => '목록에서 받은 상품 평균 RTI';
+
+  @override
+  String get reportCatalogSource =>
+      '카탈로그 서버가 제공한 집계예요. 현재 리뷰 페이지로 계산한 평균이 아니며, 상세 분석 정보와 조회 시점이 다를 수 있어요.';
+
+  @override
   String get reviewAnalysisSafe => '신뢰도 높음';
 
   @override

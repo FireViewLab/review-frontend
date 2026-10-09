@@ -60,6 +60,11 @@ class ExternalProductState {
 
   ExternalProductState copyWith({
     ExternalProductPhase? phase,
+    ProductSummary? summary,
+    bool? hasAnalysis,
+    String? analysisStatus,
+    ExternalAnalysis? analysis,
+    bool clearAnalysis = false,
     String? collectionError,
     bool clearCollectionError = false,
     List<ExternalReview>? reviews,
@@ -72,11 +77,11 @@ class ExternalProductState {
     return ExternalProductState(
       phase: phase ?? this.phase,
       product: product,
-      summary: summary,
+      summary: summary ?? this.summary,
       isStale: isStale,
-      hasAnalysis: hasAnalysis,
-      analysisStatus: analysisStatus,
-      analysis: analysis,
+      hasAnalysis: hasAnalysis ?? this.hasAnalysis,
+      analysisStatus: analysisStatus ?? this.analysisStatus,
+      analysis: clearAnalysis ? null : (analysis ?? this.analysis),
       springProductId: springProductId,
       reviews: reviews ?? this.reviews,
       nextCursor: clearNextCursor ? null : (nextCursor ?? this.nextCursor),

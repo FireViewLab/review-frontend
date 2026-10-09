@@ -6,10 +6,12 @@ class ProductSummary {
   const ProductSummary({
     required this.product,
     this.springProductId,
+    this.catalogAnalysis,
     this.observedAt,
     this.source = ProductSummarySource.list,
   });
   final ExternalProduct product;
+  final ProductCatalogAnalysis? catalogAnalysis;
   final int? springProductId;
   final DateTime? observedAt;
   final ProductSummarySource source;
@@ -49,4 +51,22 @@ class ProductSummaryCache {
     }
     return entry.$1;
   }
+}
+
+/// Aggregate supplied by the catalog API, independent of a v2 review page.
+class ProductCatalogAnalysis {
+  const ProductCatalogAnalysis({
+    required this.averageRti,
+    required this.observedAt,
+    this.sampled,
+    this.reviewCount,
+    this.sourceReviewCount,
+  });
+  final double averageRti;
+  final DateTime observedAt;
+  final bool? sampled;
+  final int? reviewCount;
+  final int? sourceReviewCount;
+  bool get isCurrent =>
+      DateTime.now().difference(observedAt) < const Duration(minutes: 5);
 }

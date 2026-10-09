@@ -554,6 +554,8 @@
   "reportNoReviewResults": "読み込み済みレビューの分析結果がありません。",
   "reportReasons": "提供された判断根拠",
   "reportCurrentCount": "読み込み済み分析レビュー",
+  "reportCatalogAverage": "一覧から受け取った商品平均RTI",
+  "reportCatalogSource": "カタログサーバーが提供した集計です。読み込んだレビューの平均ではなく、詳細分析と取得時点が異なる場合があります。",
   "reviewAnalysisSafe": "信頼度が高い",
   "reviewAnalysisWarn": "注意",
   "reviewAnalysisDanger": "信頼度が低い",
