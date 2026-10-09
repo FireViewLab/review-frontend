@@ -573,5 +573,9 @@
   "reportPendingBody": "暂无分析结果。结果准备好后，您可以在这里查看评论可信度和判断依据。",
   "reportOverview": "分析摘要",
   "reportCoverage": "分析范围",
-  "reportReviewResults": "逐条评论结果与依据"
+  "reportReviewResults": "逐条评论结果与依据",
+  "reviewOriginal": "评论原文",
+  "reviewResultTitle": "此评论的分析结果",
+  "reviewIndividualScope": "结果仅针对所选评论，分析范围与商品报告不同。",
+  "reviewLoadedAggregate": "已加载评论的汇总"
 }

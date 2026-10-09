@@ -3533,6 +3533,30 @@ abstract class AppLocalizations {
   /// In ko, this message translates to:
   /// **'리뷰별 결과와 근거'**
   String get reportReviewResults;
+
+  /// No description provided for @reviewOriginal.
+  ///
+  /// In ko, this message translates to:
+  /// **'리뷰 원문'**
+  String get reviewOriginal;
+
+  /// No description provided for @reviewResultTitle.
+  ///
+  /// In ko, this message translates to:
+  /// **'이 리뷰의 분석 결과'**
+  String get reviewResultTitle;
+
+  /// No description provided for @reviewIndividualScope.
+  ///
+  /// In ko, this message translates to:
+  /// **'선택한 리뷰 한 건의 결과예요. 상품 전체 리포트와 분석 범위가 달라요.'**
+  String get reviewIndividualScope;
+
+  /// No description provided for @reviewLoadedAggregate.
+  ///
+  /// In ko, this message translates to:
+  /// **'함께 불러온 리뷰의 집계'**
+  String get reviewLoadedAggregate;
 }
 
 class _AppLocalizationsDelegate

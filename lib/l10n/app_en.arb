@@ -589,5 +589,9 @@
   "reportPendingBody": "No analysis results yet. Review trust and supporting reasons will appear here when available.",
   "reportOverview": "Analysis summary",
   "reportCoverage": "Analysis coverage",
-  "reportReviewResults": "Review results and reasons"
+  "reportReviewResults": "Review results and reasons",
+  "reviewOriginal": "Original review",
+  "reviewResultTitle": "Analysis of this review",
+  "reviewIndividualScope": "These results apply to the selected review. Their scope differs from the product report.",
+  "reviewLoadedAggregate": "Aggregate of loaded reviews"
 }

@@ -1868,4 +1868,17 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get reportReviewResults => 'Review results and reasons';
+
+  @override
+  String get reviewOriginal => 'Original review';
+
+  @override
+  String get reviewResultTitle => 'Analysis of this review';
+
+  @override
+  String get reviewIndividualScope =>
+      'These results apply to the selected review. Their scope differs from the product report.';
+
+  @override
+  String get reviewLoadedAggregate => 'Aggregate of loaded reviews';
 }

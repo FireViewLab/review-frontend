@@ -379,54 +379,55 @@ class ReportFactRow extends StatelessWidget {
   );
 }
 
-Future<void> showProductReport(BuildContext context, Widget details) =>
-    showDialog<void>(
-      context: context,
-      builder: (context) => Dialog(
-        backgroundColor: AppColors.surface,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-        insetPadding: const EdgeInsets.all(AppSpacing.md),
-        child: ConstrainedBox(
-          constraints: BoxConstraints(
-            maxWidth: 800,
-            maxHeight: MediaQuery.sizeOf(context).height * .85,
-          ),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Padding(
-                padding: const EdgeInsets.all(AppSpacing.md),
-                child: Row(
-                  children: [
-                    const Icon(
-                      Icons.fact_check_outlined,
-                      color: AppColors.primary,
-                    ),
-                    const SizedBox(width: AppSpacing.sm),
-                    Expanded(
-                      child: Text(
-                        AppLocalizations.of(context).reportDetails,
-                        style: Theme.of(context).textTheme.titleMedium
-                            ?.copyWith(fontWeight: FontWeight.w800),
-                      ),
-                    ),
-                    IconButton(
-                      tooltip: AppLocalizations.of(context).reportClose,
-                      onPressed: () => Navigator.of(context).pop(),
-                      icon: const Icon(Icons.close),
-                    ),
-                  ],
-                ),
-              ),
-              const Divider(height: 1),
-              Flexible(
-                child: SingleChildScrollView(
-                  padding: const EdgeInsets.all(AppSpacing.lg),
-                  child: details,
-                ),
-              ),
-            ],
-          ),
-        ),
+Future<void> showProductReport(
+  BuildContext context,
+  Widget details, {
+  String? title,
+}) => showDialog<void>(
+  context: context,
+  builder: (context) => Dialog(
+    backgroundColor: AppColors.surface,
+    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+    insetPadding: const EdgeInsets.all(AppSpacing.md),
+    child: ConstrainedBox(
+      constraints: BoxConstraints(
+        maxWidth: 800,
+        maxHeight: MediaQuery.sizeOf(context).height * .85,
       ),
-    );
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Padding(
+            padding: const EdgeInsets.all(AppSpacing.md),
+            child: Row(
+              children: [
+                const Icon(Icons.fact_check_outlined, color: AppColors.primary),
+                const SizedBox(width: AppSpacing.sm),
+                Expanded(
+                  child: Text(
+                    title ?? AppLocalizations.of(context).reportDetails,
+                    style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                      fontWeight: FontWeight.w800,
+                    ),
+                  ),
+                ),
+                IconButton(
+                  tooltip: AppLocalizations.of(context).reportClose,
+                  onPressed: () => Navigator.of(context).pop(),
+                  icon: const Icon(Icons.close),
+                ),
+              ],
+            ),
+          ),
+          const Divider(height: 1),
+          Flexible(
+            child: SingleChildScrollView(
+              padding: const EdgeInsets.all(AppSpacing.lg),
+              child: details,
+            ),
+          ),
+        ],
+      ),
+    ),
+  ),
+);

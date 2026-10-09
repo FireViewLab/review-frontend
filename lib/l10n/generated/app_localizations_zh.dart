@@ -1800,4 +1800,16 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get reportReviewResults => '逐条评论结果与依据';
+
+  @override
+  String get reviewOriginal => '评论原文';
+
+  @override
+  String get reviewResultTitle => '此评论的分析结果';
+
+  @override
+  String get reviewIndividualScope => '结果仅针对所选评论，分析范围与商品报告不同。';
+
+  @override
+  String get reviewLoadedAggregate => '已加载评论的汇总';
 }

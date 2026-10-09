@@ -1808,4 +1808,16 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String get reportReviewResults => 'レビュー別の結果と根拠';
+
+  @override
+  String get reviewOriginal => 'レビュー原文';
+
+  @override
+  String get reviewResultTitle => 'このレビューの分析結果';
+
+  @override
+  String get reviewIndividualScope => '選択した1件のレビューの結果です。商品のレポートとは分析範囲が異なります。';
+
+  @override
+  String get reviewLoadedAggregate => '読み込んだレビューの集計';
 }
