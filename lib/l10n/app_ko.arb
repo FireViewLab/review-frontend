@@ -1069,5 +1069,9 @@
   "reportReasons": "제공된 판단 근거",
   "reportCurrentCount": "현재 불러온 분석 리뷰",
   "reportCatalogAverage": "목록에서 받은 상품 평균 RTI",
-  "reportCatalogSource": "카탈로그 서버가 제공한 집계예요. 현재 리뷰 페이지로 계산한 평균이 아니며, 상세 분석 정보와 조회 시점이 다를 수 있어요."
+  "reportCatalogSource": "카탈로그 서버가 제공한 집계예요. 현재 리뷰 페이지로 계산한 평균이 아니며, 상세 분석 정보와 조회 시점이 다를 수 있어요.",
+  "reviewAnalysisSafe": "신뢰도 높음",
+  "reviewAnalysisWarn": "주의",
+  "reviewAnalysisDanger": "신뢰도 낮음",
+  "reviewAnalysisMissing": "이 리뷰에 제공된 분석 결과가 없어요."
 }

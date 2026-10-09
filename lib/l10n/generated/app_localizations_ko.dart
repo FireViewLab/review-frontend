@@ -1757,4 +1757,16 @@ class AppLocalizationsKo extends AppLocalizations {
   @override
   String get reportCatalogSource =>
       '카탈로그 서버가 제공한 집계예요. 현재 리뷰 페이지로 계산한 평균이 아니며, 상세 분석 정보와 조회 시점이 다를 수 있어요.';
+
+  @override
+  String get reviewAnalysisSafe => '신뢰도 높음';
+
+  @override
+  String get reviewAnalysisWarn => '주의';
+
+  @override
+  String get reviewAnalysisDanger => '신뢰도 낮음';
+
+  @override
+  String get reviewAnalysisMissing => '이 리뷰에 제공된 분석 결과가 없어요.';
 }

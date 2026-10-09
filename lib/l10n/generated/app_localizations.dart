@@ -3425,6 +3425,30 @@ abstract class AppLocalizations {
   /// In ko, this message translates to:
   /// **'카탈로그 서버가 제공한 집계예요. 현재 리뷰 페이지로 계산한 평균이 아니며, 상세 분석 정보와 조회 시점이 다를 수 있어요.'**
   String get reportCatalogSource;
+
+  /// No description provided for @reviewAnalysisSafe.
+  ///
+  /// In ko, this message translates to:
+  /// **'신뢰도 높음'**
+  String get reviewAnalysisSafe;
+
+  /// No description provided for @reviewAnalysisWarn.
+  ///
+  /// In ko, this message translates to:
+  /// **'주의'**
+  String get reviewAnalysisWarn;
+
+  /// No description provided for @reviewAnalysisDanger.
+  ///
+  /// In ko, this message translates to:
+  /// **'신뢰도 낮음'**
+  String get reviewAnalysisDanger;
+
+  /// No description provided for @reviewAnalysisMissing.
+  ///
+  /// In ko, this message translates to:
+  /// **'이 리뷰에 제공된 분석 결과가 없어요.'**
+  String get reviewAnalysisMissing;
 }
 
 class _AppLocalizationsDelegate

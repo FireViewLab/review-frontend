@@ -1811,4 +1811,17 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get reportCatalogSource =>
       'This aggregate is supplied by the catalog server, not calculated from the loaded review page. Its observation time may differ from the detail analysis.';
+
+  @override
+  String get reviewAnalysisSafe => 'High trust';
+
+  @override
+  String get reviewAnalysisWarn => 'Caution';
+
+  @override
+  String get reviewAnalysisDanger => 'Low trust';
+
+  @override
+  String get reviewAnalysisMissing =>
+      'No analysis result was provided for this review.';
 }
