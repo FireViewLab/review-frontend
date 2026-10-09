@@ -1,3 +1,5 @@
+import 'package:re_view_front/l10n/generated/app_localizations.dart';
+import 'package:re_view_front/shared/widgets/review_analysis_section.dart';
 import 'package:re_view_front/shared/widgets/review_photo_view.dart';
 import 'package:re_view_front/shared/widgets/rti_criteria_dialog.dart';
 import 'package:flutter/material.dart';
@@ -63,7 +65,7 @@ class ReviewRtiAnalysisDialog extends StatelessWidget {
         vertical: 16,
       ),
       child: ConstrainedBox(
-        constraints: const BoxConstraints(maxWidth: 1100, maxHeight: 860),
+        constraints: const BoxConstraints(maxWidth: 800, maxHeight: 860),
         child: ClipRRect(
           borderRadius: AppRadius.large,
           child: Material(
@@ -140,7 +142,7 @@ class _DialogHeader extends StatelessWidget {
                 ),
                 const SizedBox(height: AppSpacing.xxs),
                 Text(
-                  'RTI는 구매 인증, 텍스트 신뢰도, 반복 표현, 시점 패턴 등 다양한 신호를 종합해 리뷰를 분석합니다.',
+                  AppLocalizations.of(context).reviewIndividualScope,
                   style: Theme.of(context).textTheme.bodySmall?.copyWith(
                     color: AppColors.textSecondary,
                   ),
@@ -150,6 +152,7 @@ class _DialogHeader extends StatelessWidget {
           ),
           IconButton(
             onPressed: onClose,
+            tooltip: AppLocalizations.of(context).reportClose,
             icon: const Icon(Icons.close, size: 20),
             color: AppColors.textSecondary,
             style: IconButton.styleFrom(
@@ -184,60 +187,43 @@ class _DialogBody extends StatelessWidget {
     final detail = review.rtiDetail;
     final total = safeCount + warnCount + dangerCount;
 
-    final panels = <Widget>[
-      // Left panel: selected review + risk summary
-      Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          _SelectedReviewSection(review: review),
-          if (total > 0) ...[
-            const SizedBox(height: AppSpacing.sm),
-            _RiskSummarySection(
-              safeCount: safeCount,
-              warnCount: warnCount,
-              dangerCount: dangerCount,
-            ),
-          ],
-        ],
-      ),
-      // Right panel: score card + signal bars + judgment bases
-      Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          _RtiScoreCard(review: review),
-          if (detail != null && detail.signals.isNotEmpty) ...[
-            const SizedBox(height: AppSpacing.sm),
-            _RtiSignalsSection(signals: detail.signals),
-          ],
-          if (detail != null && detail.judgmentBases.isNotEmpty) ...[
-            const SizedBox(height: AppSpacing.sm),
-            _JudgmentBasisSection(bases: detail.judgmentBases),
-          ] else if (detail == null && review.reasons.isNotEmpty) ...[
-            const SizedBox(height: AppSpacing.sm),
-            _ReasonsSection(
-              reasons: review.reasons,
-              color: colorFromHex(review.rtiColor),
-            ),
-          ],
-        ],
-      ),
-    ];
-    if (MediaQuery.sizeOf(context).width < 700) {
-      return Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          panels[0],
-          const SizedBox(height: AppSpacing.md),
-          panels[1],
-        ],
-      );
-    }
-    return Row(
-      crossAxisAlignment: CrossAxisAlignment.start,
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        Expanded(child: panels[0]),
-        const SizedBox(width: AppSpacing.md),
-        Expanded(child: panels[1]),
+        _SelectedReviewSection(review: review),
+        const SizedBox(height: AppSpacing.md),
+        _RtiScoreCard(review: review),
+        if (detail != null && detail.signals.isNotEmpty) ...[
+          const SizedBox(height: AppSpacing.md),
+          _RtiSignalsSection(signals: detail.signals),
+        ],
+        if (detail != null && detail.judgmentBases.isNotEmpty) ...[
+          const SizedBox(height: AppSpacing.md),
+          _JudgmentBasisSection(bases: detail.judgmentBases),
+        ] else if (review.reasons.isNotEmpty) ...[
+          const SizedBox(height: AppSpacing.md),
+          _ReasonsSection(
+            reasons: review.reasons,
+            color: colorFromHex(review.rtiColor),
+          ),
+        ],
+        if (total > 0) ...[
+          const SizedBox(height: AppSpacing.md),
+          ExpansionTile(
+            tilePadding: const EdgeInsets.symmetric(horizontal: AppSpacing.sm),
+            title: Text(
+              AppLocalizations.of(context).reviewLoadedAggregate,
+              style: Theme.of(context).textTheme.titleSmall,
+            ),
+            children: [
+              _RiskSummarySection(
+                safeCount: safeCount,
+                warnCount: warnCount,
+                dangerCount: dangerCount,
+              ),
+            ],
+          ),
+        ],
       ],
     );
   }
@@ -254,15 +240,15 @@ class _SelectedReviewSection extends StatelessWidget {
   Widget build(BuildContext context) {
     final images = validReviewImages(review.imageUrls);
     return _SectionCard(
-      title: '선택된 리뷰',
+      title: AppLocalizations.of(context).reviewOriginal,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           _ReviewAuthorRow(review: review),
           const SizedBox(height: AppSpacing.sm),
-          Text(
+          SelectableText(
             review.content,
-            style: Theme.of(context).textTheme.bodySmall?.copyWith(
+            style: Theme.of(context).textTheme.bodyMedium?.copyWith(
               color: AppColors.textPrimary,
               height: 1.65,
             ),
@@ -288,7 +274,7 @@ class _SelectedReviewSection extends StatelessWidget {
                         style: Theme.of(context).textTheme.labelSmall?.copyWith(
                           color: AppColors.primary,
                           fontWeight: FontWeight.w600,
-                          fontSize: 11,
+                          fontSize: 12,
                         ),
                       ),
                     ),
@@ -378,7 +364,10 @@ class _ReviewAuthorRow extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Row(
+              Wrap(
+                spacing: AppSpacing.xxs,
+                runSpacing: AppSpacing.xxs,
+                crossAxisAlignment: WrapCrossAlignment.center,
                 children: [
                   Text(
                     review.authorName,
@@ -392,7 +381,10 @@ class _ReviewAuthorRow extends StatelessWidget {
                 ],
               ),
               const SizedBox(height: 2),
-              Row(
+              Wrap(
+                spacing: AppSpacing.xxs,
+                runSpacing: AppSpacing.xxs,
+                crossAxisAlignment: WrapCrossAlignment.center,
                 children: [
                   if (review.isVerifiedPurchase) ...[
                     const Icon(
@@ -424,7 +416,7 @@ class _ReviewAuthorRow extends StatelessWidget {
                     review.createdAt,
                     style: Theme.of(context).textTheme.labelSmall?.copyWith(
                       color: AppColors.textSecondary,
-                      fontSize: 11,
+                      fontSize: 12,
                     ),
                   ),
                 ],
@@ -549,7 +541,7 @@ class _RiskBar extends StatelessWidget {
             style: Theme.of(context).textTheme.labelSmall?.copyWith(
               color: color,
               fontWeight: FontWeight.w700,
-              fontSize: 11,
+              fontSize: 12,
             ),
           ),
         ),
@@ -559,7 +551,9 @@ class _RiskBar extends StatelessWidget {
             borderRadius: BorderRadius.circular(4),
             child: TweenAnimationBuilder<double>(
               tween: Tween(begin: 0, end: ratio),
-              duration: AppMotion.slow,
+              duration: MediaQuery.disableAnimationsOf(context)
+                  ? Duration.zero
+                  : AppMotion.slow,
               curve: Curves.easeOutCubic,
               builder: (_, v, _) => LinearProgressIndicator(
                 value: v,
@@ -578,7 +572,7 @@ class _RiskBar extends StatelessWidget {
             style: Theme.of(context).textTheme.labelSmall?.copyWith(
               color: AppColors.textSecondary,
               fontWeight: FontWeight.w600,
-              fontSize: 11,
+              fontSize: 12,
             ),
             textAlign: TextAlign.end,
           ),
@@ -600,18 +594,20 @@ class _RtiScoreCard extends StatelessWidget {
     final color = colorFromHex(review.rtiColor);
 
     return _SectionCard(
-      title: 'RTI 신뢰도 점수',
+      title: AppLocalizations.of(context).reviewResultTitle,
       showInfo: true,
       infoTooltip: 'RTI 신뢰도 점수는 구매 인증, 텍스트 신뢰도,\n반복 표현, 시점 패턴 등을 종합해 산출됩니다.',
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.end,
+      child: Wrap(
+        spacing: AppSpacing.sm,
+        runSpacing: AppSpacing.sm,
+        crossAxisAlignment: WrapCrossAlignment.center,
         children: [
           Text(
             review.rtiScore != null ? 'RTI ${review.rtiScore}' : '분석 전',
             style: Theme.of(context).textTheme.displayLarge?.copyWith(
               color: color,
               fontWeight: FontWeight.w900,
-              fontSize: MediaQuery.sizeOf(context).width < 700 ? 32 : 52,
+              fontSize: 36,
               height: 1,
             ),
           ),
@@ -654,7 +650,7 @@ class _RtiGradeBadge extends StatelessWidget {
             style: Theme.of(context).textTheme.labelSmall?.copyWith(
               color: color,
               fontWeight: FontWeight.w700,
-              fontSize: 12,
+              fontSize: 13,
             ),
           ),
         ],
@@ -673,7 +669,7 @@ class _RtiSignalsSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return _SectionCard(
-      title: 'A. RTI 구성 신호',
+      title: 'RTI 구성 신호',
       showInfo: true,
       infoTooltip: 'RTI 점수를 구성하는 신호와 각각의 점수입니다.\n텍스트·행동·네트워크 분석을 종합해 산출합니다.',
       child: Column(
@@ -733,7 +729,7 @@ class _SignalBar extends StatelessWidget {
                       style: Theme.of(context).textTheme.labelSmall?.copyWith(
                         color: AppColors.textPrimary,
                         fontWeight: FontWeight.w600,
-                        fontSize: 12,
+                        fontSize: 13,
                       ),
                     ),
                   ),
@@ -752,7 +748,9 @@ class _SignalBar extends StatelessWidget {
                 borderRadius: BorderRadius.circular(4),
                 child: TweenAnimationBuilder<double>(
                   tween: Tween(begin: 0, end: ratio),
-                  duration: AppMotion.slow,
+                  duration: MediaQuery.disableAnimationsOf(context)
+                      ? Duration.zero
+                      : AppMotion.slow,
                   curve: Curves.easeOutCubic,
                   builder: (_, v, _) => LinearProgressIndicator(
                     value: v,
@@ -782,7 +780,7 @@ class _JudgmentBasisSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return _SectionCard(
-      title: 'B. 판단 근거',
+      title: AppLocalizations.of(context).reportReasons,
       showInfo: true,
       infoTooltip: '리뷰 신뢰도를 판단한 구체적인 근거와\n각 근거가 점수에 기여한 비중입니다.',
       child: Column(
@@ -812,63 +810,65 @@ class _JudgmentBasisItem extends StatelessWidget {
     _ => Icons.info_outline,
   };
 
-  Color _percentageColor(Color dataColor) {
-    if (basis.percentage >= 80) return AppColors.success;
-    if (basis.percentage >= 65) return const Color(0xFFD97706);
-    return AppColors.error;
-  }
-
   @override
   Widget build(BuildContext context) {
     final color = colorFromHex(basis.color);
 
-    return Row(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Container(
-          width: 28,
-          height: 28,
-          decoration: BoxDecoration(
-            color: color.withValues(alpha: 0.1),
-            shape: BoxShape.circle,
+    return Container(
+      margin: const EdgeInsets.only(bottom: AppSpacing.sm),
+      padding: const EdgeInsets.all(AppSpacing.md),
+      decoration: BoxDecoration(
+        color: AppColors.surfaceMuted,
+        borderRadius: AppRadius.medium,
+      ),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Container(
+            width: 28,
+            height: 28,
+            decoration: BoxDecoration(
+              color: color.withValues(alpha: 0.1),
+              shape: BoxShape.circle,
+            ),
+            child: Icon(_icon, size: 14, color: color),
           ),
-          child: Icon(_icon, size: 14, color: color),
-        ),
-        const SizedBox(width: AppSpacing.xs),
-        Expanded(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                basis.label,
-                style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                  color: AppColors.textPrimary,
-                  fontWeight: FontWeight.w700,
-                  fontSize: 12,
+          const SizedBox(width: AppSpacing.xs),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  basis.label,
+                  style: Theme.of(context).textTheme.labelSmall?.copyWith(
+                    color: AppColors.textPrimary,
+                    fontWeight: FontWeight.w700,
+                    fontSize: 13,
+                  ),
                 ),
-              ),
-              const SizedBox(height: 2),
-              Text(
-                basis.description,
-                style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                  color: AppColors.textSecondary,
-                  fontSize: 11,
-                  height: 1.5,
+                const SizedBox(height: 2),
+                SelectableText(
+                  basis.description,
+                  style: Theme.of(context).textTheme.labelSmall?.copyWith(
+                    color: AppColors.textSecondary,
+                    fontSize: 12,
+                    height: 1.5,
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
-        ),
-        const SizedBox(width: AppSpacing.xs),
-        Text(
-          '${basis.percentage}%',
-          style: Theme.of(context).textTheme.labelSmall?.copyWith(
-            color: _percentageColor(color),
-            fontWeight: FontWeight.w800,
-            fontSize: 13,
+          const SizedBox(width: AppSpacing.xs),
+          Text(
+            '${basis.percentage}%',
+            style: Theme.of(context).textTheme.labelSmall?.copyWith(
+              color: color,
+              fontWeight: FontWeight.w800,
+              fontSize: 13,
+            ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 }
@@ -877,46 +877,18 @@ class _JudgmentBasisItem extends StatelessWidget {
 
 class _ReasonsSection extends StatelessWidget {
   const _ReasonsSection({required this.reasons, required this.color});
-
   final List<String> reasons;
   final Color color;
-
   @override
-  Widget build(BuildContext context) {
-    return _SectionCard(
-      title: '판단 근거',
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: reasons
-            .map(
-              (r) => Padding(
-                padding: const EdgeInsets.only(bottom: AppSpacing.xs),
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.only(top: 5),
-                      child: Icon(Icons.circle, size: 5, color: color),
-                    ),
-                    const SizedBox(width: AppSpacing.xs),
-                    Expanded(
-                      child: Text(
-                        r,
-                        style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                          color: AppColors.textSecondary,
-                          fontSize: 12,
-                          height: 1.55,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            )
-            .toList(),
-      ),
-    );
-  }
+  Widget build(BuildContext context) => _SectionCard(
+    title: AppLocalizations.of(context).reportReasons,
+    child: Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        for (final reason in reasons) ReviewEvidenceText(text: reason),
+      ],
+    ),
+  );
 }
 
 // ─── Footer ───────────────────────────────────────────────────────────────────
@@ -948,7 +920,10 @@ class _DialogFooter extends ConsumerWidget {
         color: AppColors.surface,
         border: Border(top: BorderSide(color: AppColors.border)),
       ),
-      child: Row(
+      child: Wrap(
+        spacing: AppSpacing.sm,
+        runSpacing: AppSpacing.sm,
+        crossAxisAlignment: WrapCrossAlignment.center,
         children: [
           const Icon(
             Icons.info_outline,
@@ -956,12 +931,13 @@ class _DialogFooter extends ConsumerWidget {
             color: AppColors.textTertiary,
           ),
           const SizedBox(width: 4),
-          Expanded(
+          SizedBox(
+            width: double.infinity,
             child: Text(
               '분석 결과는 참고용이며 최종 판단은 여러 리뷰를 함께 확인해주세요.',
               style: Theme.of(context).textTheme.labelSmall?.copyWith(
                 color: AppColors.textTertiary,
-                fontSize: 11,
+                fontSize: 12,
               ),
             ),
           ),
@@ -1062,66 +1038,24 @@ class _SectionCard extends StatelessWidget {
     this.showInfo = false,
     this.infoTooltip,
   });
-
   final String title;
   final Widget child;
   final bool showInfo;
   final String? infoTooltip;
-
   @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.all(AppSpacing.sm),
-      decoration: BoxDecoration(
-        color: AppColors.surface,
-        borderRadius: AppRadius.medium,
-        border: Border.all(color: AppColors.border),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            children: [
-              Text(
-                title,
-                style: Theme.of(context).textTheme.labelMedium?.copyWith(
-                  color: AppColors.textPrimary,
-                  fontWeight: FontWeight.w800,
-                ),
-              ),
-              if (showInfo) ...[
-                const SizedBox(width: AppSpacing.xxs),
-                Tooltip(
-                  message: infoTooltip ?? '',
-                  triggerMode: TooltipTriggerMode.tap,
-                  showDuration: const Duration(seconds: 4),
-                  preferBelow: true,
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 10,
-                    vertical: 8,
-                  ),
-                  decoration: BoxDecoration(
-                    color: AppColors.textPrimary,
-                    borderRadius: BorderRadius.circular(6),
-                  ),
-                  textStyle: const TextStyle(
-                    color: Colors.white,
-                    fontSize: 11,
-                    height: 1.4,
-                  ),
-                  child: const Icon(
-                    Icons.info_outline,
-                    size: 14,
-                    color: AppColors.textTertiary,
-                  ),
-                ),
-              ],
-            ],
-          ),
-          const SizedBox(height: AppSpacing.sm),
-          child,
-        ],
-      ),
-    );
-  }
+  Widget build(BuildContext context) => ReviewAnalysisSection(
+    title: title,
+    trailing: showInfo
+        ? Tooltip(
+            message: infoTooltip ?? '',
+            triggerMode: TooltipTriggerMode.tap,
+            child: const Icon(
+              Icons.info_outline,
+              size: 18,
+              color: AppColors.textSecondary,
+            ),
+          )
+        : null,
+    child: child,
+  );
 }

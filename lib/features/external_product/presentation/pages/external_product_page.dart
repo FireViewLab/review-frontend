@@ -1,3 +1,4 @@
+import 'package:re_view_front/shared/widgets/product_detail_hero.dart';
 import 'package:re_view_front/features/external_product/presentation/widgets/external_product_report.dart';
 import 'package:re_view_front/shared/widgets/review_photo_view.dart';
 import 'package:re_view_front/core/providers/core_providers.dart';
@@ -63,12 +64,12 @@ class _ExternalProductPageState extends ConsumerState<ExternalProductPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.background,
+      backgroundColor: AppColors.surface,
       body: CustomScrollView(
         slivers: [
           SliverToBoxAdapter(
             child: AppContentView(
-              maxWidth: 1120,
+              maxWidth: 1200,
               padding: EdgeInsets.fromLTRB(
                 context.isMobile ? AppSpacing.md : AppSpacing.xxl,
                 context.isMobile ? AppSpacing.lg : AppSpacing.xl,
@@ -389,22 +390,11 @@ class _ReadyState extends ConsumerState<_Ready> {
           ),
           const SizedBox(height: AppSpacing.md),
         ],
-        if (context.isMobile) ...[
-          image,
-          const SizedBox(height: AppSpacing.lg),
-          summary,
-        ] else
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              SizedBox(width: 420, child: image),
-              const SizedBox(width: AppSpacing.xl),
-              Expanded(child: summary),
-            ],
-          ),
+        ProductDetailHero(gallery: image, information: summary),
         const SizedBox(height: AppSpacing.xl),
         ExternalProductReport(state: state),
         const SizedBox(height: AppSpacing.xl),
+        const Divider(height: AppSpacing.xxl, color: AppColors.border),
         Text(
           l10n.extProductReviewsTitle,
           style: textTheme.titleLarge?.copyWith(
