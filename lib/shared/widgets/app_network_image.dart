@@ -94,21 +94,26 @@ class _WebImageState extends State<_WebImage> {
   @override
   Widget build(BuildContext context) {
     if (_failed) return widget.placeholder;
-    return ColoredBox(
-      color: AppColors.surfaceMuted,
-      child: HtmlElementView.fromTagName(
-        // Images are display content; the surrounding Flutter button owns input.
-        hitTestBehavior: PlatformViewHitTestBehavior.transparent,
-        // url이 바뀌면 새 <img>를 만들어 이전 오류 리스너가 남지 않게 한다.
-        key: ValueKey(widget.url),
-        tagName: 'img',
-        onElementCreated: (element) => configureWebImageElement(
-          element,
-          url: widget.url,
-          objectFit: widget.objectFit,
-          onError: () {
-            if (mounted) setState(() => _failed = true);
-          },
+    final loadedUrl = widget.url;
+    return ClipRect(
+      child: ColoredBox(
+        color: AppColors.surfaceMuted,
+        child: HtmlElementView.fromTagName(
+          // Images are display content; Flutter owns card/chat/zoom input.
+          hitTestBehavior: PlatformViewHitTestBehavior.transparent,
+          // Keep a DOM viewport separate from the image's intrinsic dimensions.
+          key: ValueKey(widget.url),
+          tagName: 'div',
+          onElementCreated: (element) => configureWebImageElement(
+            element,
+            url: loadedUrl,
+            objectFit: widget.objectFit,
+            onError: () {
+              if (mounted && widget.url == loadedUrl) {
+                setState(() => _failed = true);
+              }
+            },
+          ),
         ),
       ),
     );

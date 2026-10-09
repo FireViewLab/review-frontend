@@ -177,7 +177,13 @@ class _ChatLauncherLayout extends ConsumerWidget {
           Positioned(
             right: edge,
             bottom: edge + media.padding.bottom,
-            width: _panelWidth,
+            width: math.min(
+              _panelWidth,
+              math.max(
+                0,
+                media.size.width - media.padding.horizontal - 2 * edge,
+              ),
+            ),
             // 창이 낮으면 화면 밖으로 나가지 않게 창 높이에 맞춘다.
             height: math.min(
               math.max(
@@ -213,12 +219,11 @@ class _Appear extends StatelessWidget {
       duration: const Duration(milliseconds: 180),
       curve: Curves.easeOutCubic,
       child: child,
-      builder: (context, value, child) => Opacity(
-        opacity: value,
-        child: Transform.translate(
-          offset: Offset(0, 16 * (1 - value)),
-          child: child,
-        ),
+      // Keep the panel's Material opaque over underlying DOM image views.
+      // Animate position only; fading the whole panel exposes home imagery.
+      builder: (context, value, child) => Transform.translate(
+        offset: Offset(0, 16 * (1 - value)),
+        child: child,
       ),
     );
   }
