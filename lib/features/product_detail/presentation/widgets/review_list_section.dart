@@ -57,6 +57,7 @@ class _ReviewListSectionState extends ConsumerState<ReviewListSection> {
         review.rtiScore! < settings!.rtiThreshold;
   }
 
+  // The last list filter stays independent of the gallery view.
   bool _photoOnly = false;
   bool _photoView = false;
   int _visibleCount = _pageSize;
@@ -81,7 +82,7 @@ class _ReviewListSectionState extends ConsumerState<ReviewListSection> {
       ];
     }
 
-    if (_photoOnly) {
+    if (_photoOnly || _photoView) {
       list = list
           .where((r) => validReviewImages(r.imageUrls).isNotEmpty)
           .toList();
@@ -140,23 +141,15 @@ class _ReviewListSectionState extends ConsumerState<ReviewListSection> {
           photoReviewCount: widget.reviews
               .where((r) => validReviewImages(r.imageUrls).isNotEmpty)
               .length,
-          onPhotoOnlyChanged: (v) => setState(() {
-            _photoOnly = v;
-            if (!v) _photoView = false;
-            _visibleCount = _pageSize;
-          }),
-          onPhotoViewChanged: (v) => setState(() {
-            _photoView = v;
-            if (v) _photoOnly = true;
-            _visibleCount = _pageSize;
-          }),
-        ),
-        _FilterRow(
-          sortOption: _sortOption,
-          onSortChanged: (v) => setState(() {
-            _selectedSort = v;
-            _visibleCount = _pageSize;
-          }),
+          onPhotoOnlyChanged: (v) => setState(() => _photoOnly = v),
+          onPhotoViewChanged: (v) => setState(() => _photoView = v),
+          sortControls: _FilterRow(
+            sortOption: _sortOption,
+            onSortChanged: (v) => setState(() {
+              _selectedSort = v;
+              _visibleCount = _pageSize;
+            }),
+          ),
         ),
         const SizedBox(height: AppSpacing.md),
         if (widget.reviews.isEmpty)
@@ -296,29 +289,12 @@ class _FilterChip extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: onTap,
-      child: AnimatedContainer(
-        duration: const Duration(milliseconds: 150),
-        padding: const EdgeInsets.symmetric(
-          horizontal: AppSpacing.sm,
-          vertical: AppSpacing.xxs + 2,
-        ),
-        decoration: BoxDecoration(
-          color: selected ? AppColors.primary : AppColors.surface,
-          borderRadius: AppRadius.small,
-          border: Border.all(
-            color: selected ? AppColors.primary : AppColors.borderStrong,
-          ),
-        ),
-        child: Text(
-          label,
-          style: Theme.of(context).textTheme.labelSmall?.copyWith(
-            color: selected ? AppColors.onPrimary : AppColors.textPrimary,
-            fontWeight: FontWeight.w700,
-          ),
-        ),
-      ),
+    return ChoiceChip(
+      label: Text(label),
+      selected: selected,
+      showCheckmark: false,
+      materialTapTargetSize: MaterialTapTargetSize.padded,
+      onSelected: (_) => onTap(),
     );
   }
 }

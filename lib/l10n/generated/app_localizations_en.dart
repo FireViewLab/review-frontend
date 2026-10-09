@@ -1711,17 +1711,17 @@ class AppLocalizationsEn extends AppLocalizations {
       'The product ID needed for server view history is unavailable.';
 
   @override
-  String get reviewPhotoOnly => 'Photo reviews only';
+  String get reviewPhotoOnly => 'Reviews with photos';
 
   @override
   String get reviewListView => 'Review list';
 
   @override
-  String get reviewPhotosView => 'Photos only';
+  String get reviewPhotosView => 'Photo gallery';
 
   @override
   String reviewPhotoScope(int loaded, int photos) {
-    return '$photos photo reviews among $loaded loaded reviews. This is not the total product review count. Load more to continue.';
+    return '$loaded loaded reviews · $photos with photos';
   }
 
   @override
