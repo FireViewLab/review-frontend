@@ -1,3 +1,5 @@
+import 'chat_recommendation.dart';
+
 enum ChatRole { user, assistant }
 
 /// 전송 실패 종류. 화면에서 문구로 바꿔 보여 준다.
@@ -23,8 +25,9 @@ class ChatMessage {
     this.createdAt,
     this.blocked = false,
     this.blockReason,
+    List<ChatRecommendation> recommendations = const [],
     this.error,
-  });
+  }) : _recommendations = recommendations;
 
   final ChatRole role;
   final String content;
@@ -39,4 +42,9 @@ class ChatMessage {
 
   /// 전송 실패를 알리는 로컬 메시지면 실패 종류. 서버에는 저장되지 않는다.
   final ChatErrorKind? error;
+  final List<ChatRecommendation> _recommendations;
+  List<ChatRecommendation> get recommendations =>
+      blocked || error != null || role != ChatRole.assistant
+      ? const []
+      : _recommendations;
 }

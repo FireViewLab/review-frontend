@@ -1,3 +1,5 @@
+import 'package:re_view_front/features/chat/domain/entities/chat_recommendation.dart';
+import 'package:re_view_front/features/external_product/domain/entities/external_product_ref.dart';
 import 'dart:async';
 
 import 'package:dio/dio.dart';
@@ -727,6 +729,64 @@ void main() {
       repository.pending = null;
       await viewModel.retry();
       expect(repository.modes, [ChatMode.pro, ChatMode.standard]);
+    },
+  );
+
+  const alternative = ChatRecommendation(
+    ref: ExternalProductRef(platform: 'kurly', productId: 'alternative'),
+    name: '대체 상품',
+  );
+  test(
+    'recommendations propagate in basic and pro without rebinding the session',
+    () async {
+      repository.result = const Success(
+        ChatReply(
+          sessionId: 7,
+          answer: '추천 안내',
+          blocked: false,
+          recommendations: [alternative],
+        ),
+      );
+      repository.quota = Success(quotaOf(plan: 'PRO', limit: 300, pro: true));
+      for (final mode in ChatMode.values) {
+        viewModel.startNew(productId: 'kurly-original');
+        await viewModel.refreshQuota();
+        viewModel.setMode(mode);
+        await viewModel.send('대체 상품 추천');
+        final state = container.read(chatViewModelProvider);
+        expect(state.messages.last.recommendations.single.ref, alternative.ref);
+        expect(state.sessionProductId, 'kurly-original');
+        await viewModel.send('이전 상품 질문', productId: 'kurly-alternative');
+        expect(repository.requests.last.productId, isNull);
+        expect(
+          container.read(chatViewModelProvider).sessionProductId,
+          'kurly-original',
+        );
+      }
+      expect(repository.modes, containsAll(ChatMode.values));
+    },
+  );
+  test(
+    'late recommendations cannot enter a new product conversation',
+    () async {
+      repository.pending = Completer<Result<ChatReply>>();
+      final sending = viewModel.send('대체 상품 추천', productId: 'kurly-original');
+      viewModel.openConversation(productId: 'kurly-new');
+      repository.pending!.complete(
+        const Success(
+          ChatReply(
+            sessionId: 7,
+            answer: '이전 요청 결과',
+            blocked: false,
+            recommendations: [alternative],
+          ),
+        ),
+      );
+      await sending;
+      final state = container.read(chatViewModelProvider);
+      expect(state.messages, isEmpty);
+      expect(state.sessionProductId, 'kurly-new');
+      expect(state.sessionId, isNull);
     },
   );
 
