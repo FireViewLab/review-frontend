@@ -176,14 +176,53 @@ class ExternalProductViewModel extends Notifier<ExternalProductState> {
         final next = snapshot.nextCursor;
         final exhausted =
             next == null || next.isEmpty || _loadedCursors.contains(next);
-        final seen = {for (final review in state.reviews) review.reviewId};
+        final before = state.analysis;
+        final after = snapshot.analysis;
+        final changed =
+            state.analysisStatus != snapshot.analysisStatus ||
+            before?.modelVersion != after?.modelVersion ||
+            before?.policyVersion != after?.policyVersion ||
+            before?.reviewCount != after?.reviewCount ||
+            before?.sampled != after?.sampled ||
+            before?.sourceReviewCount != after?.sourceReviewCount;
+        final summary = state.summary;
+        final safeSummary = changed && summary != null
+            ? ProductSummary(
+                product: summary.product,
+                springProductId: summary.springProductId,
+                observedAt: summary.observedAt,
+                source: summary.source,
+              )
+            : summary;
+        if (changed && safeSummary != null) {
+          ref.read(productSummaryCacheProvider).remember(safeSummary);
+        }
+        final merged = <String, ExternalReview>{
+          for (final review in state.reviews)
+            review.reviewId: changed
+                ? ExternalReview(
+                    reviewId: review.reviewId,
+                    content: review.content,
+                    rating: review.rating,
+                    author: review.author,
+                    writtenAt: review.writtenAt,
+                    option: review.option,
+                    images: review.images,
+                    helpfulCount: review.helpfulCount,
+                  )
+                : review,
+        };
+        for (final review in snapshot.reviews) {
+          merged[review.reviewId] = review;
+        }
         state = state.copyWith(
           isLoadingMore: false,
-          reviews: [
-            ...state.reviews,
-            for (final review in snapshot.reviews)
-              if (seen.add(review.reviewId)) review,
-          ],
+          summary: safeSummary,
+          hasAnalysis: snapshot.hasAnalysis,
+          analysisStatus: snapshot.analysisStatus,
+          analysis: after,
+          clearAnalysis: after == null,
+          reviews: merged.values.toList(),
           nextCursor: exhausted ? null : next,
           clearNextCursor: exhausted,
         );
