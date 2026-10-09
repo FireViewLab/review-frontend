@@ -1,3 +1,4 @@
+import 'package:re_view_front/features/external_product/presentation/widgets/external_review_analysis.dart';
 import 'package:re_view_front/shared/widgets/review_photo_view.dart';
 import 'package:flutter/material.dart';
 import 'package:re_view_front/app/theme/app_colors.dart';
@@ -265,9 +266,15 @@ class ExternalAnalysisPending extends StatelessWidget {
 
 /// 리뷰 한 건. [trailing]에는 신고·피드백 메뉴가 들어간다.
 class ExternalReviewTile extends StatelessWidget {
-  const ExternalReviewTile({super.key, required this.review, this.trailing});
+  const ExternalReviewTile({
+    super.key,
+    required this.review,
+    this.trailing,
+    this.analysisStatus = 'UNAVAILABLE',
+  });
 
   final ExternalReview review;
+  final String analysisStatus;
   final Widget? trailing;
 
   @override
@@ -330,6 +337,11 @@ class ExternalReviewTile extends StatelessWidget {
               color: AppColors.textPrimary,
               height: 1.6,
             ),
+          ),
+          const SizedBox(height: AppSpacing.sm),
+          ExternalReviewAnalysis(
+            review: review,
+            analysisStatus: analysisStatus,
           ),
           if (images.isNotEmpty) ...[
             const SizedBox(height: AppSpacing.sm),

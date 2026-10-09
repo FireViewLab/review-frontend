@@ -1750,4 +1750,16 @@ class AppLocalizationsKo extends AppLocalizations {
 
   @override
   String get reportCurrentCount => '현재 불러온 분석 리뷰';
+
+  @override
+  String get reviewAnalysisSafe => '신뢰도 높음';
+
+  @override
+  String get reviewAnalysisWarn => '주의';
+
+  @override
+  String get reviewAnalysisDanger => '신뢰도 낮음';
+
+  @override
+  String get reviewAnalysisMissing => '이 리뷰에 제공된 분석 결과가 없어요.';
 }

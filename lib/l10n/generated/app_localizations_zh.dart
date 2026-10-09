@@ -1740,4 +1740,16 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get reportCurrentCount => '已加载的分析评论';
+
+  @override
+  String get reviewAnalysisSafe => '可信度高';
+
+  @override
+  String get reviewAnalysisWarn => '注意';
+
+  @override
+  String get reviewAnalysisDanger => '可信度低';
+
+  @override
+  String get reviewAnalysisMissing => '此评论尚无分析结果。';
 }

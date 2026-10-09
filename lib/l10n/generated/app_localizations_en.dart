@@ -1804,4 +1804,17 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get reportCurrentCount => 'Loaded analyzed reviews';
+
+  @override
+  String get reviewAnalysisSafe => 'High trust';
+
+  @override
+  String get reviewAnalysisWarn => 'Caution';
+
+  @override
+  String get reviewAnalysisDanger => 'Low trust';
+
+  @override
+  String get reviewAnalysisMissing =>
+      'No analysis result was provided for this review.';
 }

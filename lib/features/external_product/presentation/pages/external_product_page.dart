@@ -479,6 +479,7 @@ class _ReadyState extends ConsumerState<_Ready> {
                     const Divider(height: 1, color: AppColors.border),
                   ExternalReviewTile(
                     review: review,
+                    analysisStatus: state.analysisStatus,
                     trailing: ExternalReviewActions(
                       product: product.ref,
                       reviewId: review.reviewId,

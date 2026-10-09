@@ -1,3 +1,4 @@
+import 'package:re_view_front/features/external_product/presentation/widgets/external_review_analysis.dart';
 import 'package:flutter/material.dart';
 import 'package:re_view_front/app/theme/app_spacing.dart';
 import 'package:re_view_front/features/external_product/presentation/view_models/external_product_state.dart';
@@ -67,28 +68,7 @@ class ExternalProductReport extends StatelessWidget {
               Card(
                 child: Padding(
                   padding: const EdgeInsets.all(AppSpacing.md),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        review.content,
-                        maxLines: 4,
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                      const SizedBox(height: AppSpacing.sm),
-                      Wrap(
-                        spacing: AppSpacing.md,
-                        children: [
-                          if (review.rti != null) Text('RTI ${review.rti}'),
-                          if (review.level != null) Text(review.level!),
-                        ],
-                      ),
-                      if (review.reasons.isNotEmpty) ...[
-                        Text(l.reportReasons),
-                        for (final reason in review.reasons) Text('• $reason'),
-                      ],
-                    ],
-                  ),
+                  child: ExternalReviewAnalysisDetails(review: review),
                 ),
               ),
           ],
