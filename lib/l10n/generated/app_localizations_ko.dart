@@ -610,6 +610,9 @@ class AppLocalizationsKo extends AppLocalizations {
   String get chatSuggestProduct2 => '광고성 리뷰가 많아?';
 
   @override
+  String get chatSuggestProduct4 => '비슷한 상품 추천해줘';
+
+  @override
   String get chatSuggestProduct3 => '실사용자들이 말하는 단점은?';
 
   @override

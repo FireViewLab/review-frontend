@@ -26,6 +26,7 @@ class ChatEmptyState extends StatelessWidget {
             (Icons.verified_outlined, l10n.chatSuggestProduct1),
             (Icons.campaign_outlined, l10n.chatSuggestProduct2),
             (Icons.thumbs_up_down_outlined, l10n.chatSuggestProduct3),
+            (Icons.compare_arrows_rounded, l10n.chatSuggestProduct4),
           ]
         : [
             (Icons.speed_rounded, l10n.chatSuggestGeneral1),

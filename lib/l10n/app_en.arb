@@ -210,6 +210,7 @@
   "chatEmptyBody": "Suggestions only fill the input. Review the question before sending.",
   "chatSuggestProduct1": "Are this product's reviews trustworthy?",
   "chatSuggestProduct2": "Are there many sponsored reviews?",
+  "chatSuggestProduct4": "Recommend similar products",
   "chatSuggestProduct3": "What downsides do real buyers mention?",
   "chatSuggestGeneral1": "How is the RTI score calculated?",
   "chatSuggestGeneral2": "How do I spot sponsored reviews?",
