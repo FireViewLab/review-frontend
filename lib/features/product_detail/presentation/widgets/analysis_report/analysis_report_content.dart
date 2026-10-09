@@ -6,6 +6,7 @@ import 'package:re_view_front/features/product_detail/domain/entities/product_an
 import 'package:re_view_front/features/product_detail/presentation/widgets/analysis_report/analysis_report_reviews.dart';
 import 'package:re_view_front/features/product_detail/presentation/widgets/analysis_report/analysis_report_trend.dart';
 import 'package:re_view_front/l10n/generated/app_localizations.dart';
+import 'package:re_view_front/shared/widgets/product_report_card.dart';
 
 /// Read-only report from results already supplied by the product/review APIs.
 /// Does not turn loaded review counts into product-wide ratios or evidence.
@@ -46,19 +47,38 @@ class AnalysisReportContent extends StatelessWidget {
       children: [
         Text(detail.name, style: Theme.of(context).textTheme.titleLarge),
         const SizedBox(height: AppSpacing.md),
-        if (isAnalyzing) Text(l.reportRunning),
-        if (detail.avgRti != null)
-          Text('RTI ${detail.avgRti}')
-        else if (analyzed.isEmpty &&
-            detail.trustSignals.isEmpty &&
-            !isAnalyzing)
-          Text(l.reportBefore),
-        if (detail.rtiGrade != null) Text(detail.rtiGrade!),
-        for (final signal in detail.trustSignals)
-          Text('${signal.label}: ${signal.value}'),
+        ReportDetailSection(
+          title: l.reportOverview,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              if (isAnalyzing) Text(l.reportRunning),
+              if (detail.avgRti != null)
+                ReportFactRow(
+                  label: l.reportScoreLabel,
+                  value: '${detail.avgRti} / 100',
+                )
+              else if (analyzed.isEmpty &&
+                  detail.trustSignals.isEmpty &&
+                  !isAnalyzing)
+                Text(l.reportPendingBody),
+              if (detail.rtiGrade != null) Text(detail.rtiGrade!),
+              for (final signal in detail.trustSignals)
+                ReportFactRow(label: signal.label, value: signal.value),
+            ],
+          ),
+        ),
+        ReportDetailSection(
+          title: l.reportCoverage,
+          child: Text(l.reportLoadedScope),
+        ),
+        Text(
+          l.reportReviewResults,
+          style: Theme.of(
+            context,
+          ).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w700),
+        ),
         const SizedBox(height: AppSpacing.md),
-        Text(l.reportLoadedScope),
-        const SizedBox(height: AppSpacing.sm),
         if (analyzed.isEmpty)
           Text(l.reportNoReviewResults)
         else ...[

@@ -610,6 +610,9 @@ class AppLocalizationsKo extends AppLocalizations {
   String get chatSuggestProduct2 => '광고성 리뷰가 많아?';
 
   @override
+  String get chatSuggestProduct4 => '비슷한 상품 추천해줘';
+
+  @override
   String get chatSuggestProduct3 => '실사용자들이 말하는 단점은?';
 
   @override
@@ -1688,7 +1691,7 @@ class AppLocalizationsKo extends AppLocalizations {
   String get externalTimeout => '요청 시간이 초과됐어요. 다시 시도해주세요.';
 
   @override
-  String get reportTitle => '짧은 report';
+  String get reportTitle => '리뷰 신뢰도 리포트';
 
   @override
   String get reportDetails => '상세 분석 보기';
@@ -1718,11 +1721,10 @@ class AppLocalizationsKo extends AppLocalizations {
   String get reportUnavailable => '분석 상태를 확인할 수 없어요.';
 
   @override
-  String get reportDone => '분석 결과 제공됨';
+  String get reportDone => '리뷰 분석 결과가 준비됐어요. 상세 분석에서 판단 근거를 확인해보세요.';
 
   @override
-  String get reportLoadedScope =>
-      '현재 불러온 리뷰의 결과만 표시해요. 상품 전체 평균이나 긍정·부정률이 아니에요.';
+  String get reportLoadedScope => '현재 불러온 리뷰의 분석 결과예요. 상품 전체 분석 범위와 다를 수 있어요.';
 
   @override
   String get reportInputCount => '분석에 입력한 리뷰';
@@ -1752,11 +1754,11 @@ class AppLocalizationsKo extends AppLocalizations {
   String get reportCurrentCount => '현재 불러온 분석 리뷰';
 
   @override
-  String get reportCatalogAverage => '목록에서 받은 상품 평균 RTI';
+  String get reportCatalogAverage => '상품 평균 RTI';
 
   @override
   String get reportCatalogSource =>
-      '카탈로그 서버가 제공한 집계예요. 현재 리뷰 페이지로 계산한 평균이 아니며, 상세 분석 정보와 조회 시점이 다를 수 있어요.';
+      '상품 목록에서 제공된 집계입니다. 상세 리뷰 결과와 업데이트 시점이 다를 수 있어요.';
 
   @override
   String get reviewAnalysisSafe => '신뢰도 높음';
@@ -1769,4 +1771,44 @@ class AppLocalizationsKo extends AppLocalizations {
 
   @override
   String get reviewAnalysisMissing => '이 리뷰에 제공된 분석 결과가 없어요.';
+
+  @override
+  String get reportIntro => '구매 전, 리뷰의 신뢰도를 살펴보세요.';
+
+  @override
+  String get reportScoreLabel => '상품 리뷰 신뢰도';
+
+  @override
+  String get reportStateReady => '분석 결과';
+
+  @override
+  String get reportStateCollecting => '리뷰 수집 중';
+
+  @override
+  String get reportStateRunning => '분석 중';
+
+  @override
+  String get reportStateFailed => '결과 확인 필요';
+
+  @override
+  String get reportStateStale => '업데이트 필요';
+
+  @override
+  String get reportStateDisabled => '분석 미제공';
+
+  @override
+  String get reportStateUnavailable => '상태 확인 필요';
+
+  @override
+  String get reportPendingBody =>
+      '아직 분석 결과가 없어요. 결과가 준비되면 리뷰 신뢰도와 판단 근거를 여기에서 확인할 수 있어요.';
+
+  @override
+  String get reportOverview => '분석 요약';
+
+  @override
+  String get reportCoverage => '분석 범위';
+
+  @override
+  String get reportReviewResults => '리뷰별 결과와 근거';
 }
