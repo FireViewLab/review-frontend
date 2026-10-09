@@ -1,3 +1,5 @@
+import 'package:re_view_front/app/theme/app_colors.dart';
+import 'package:re_view_front/app/theme/app_spacing.dart';
 import 'package:flutter/material.dart';
 import 'package:re_view_front/l10n/generated/app_localizations.dart';
 import 'package:re_view_front/shared/widgets/image_preview_dialog.dart';
@@ -33,36 +35,67 @@ class ReviewPhotoToolbar extends StatelessWidget {
     required this.onPhotoViewChanged,
     required this.loadedCount,
     required this.photoReviewCount,
+    this.sortControls,
   });
   final bool photoOnly, photoView;
   final ValueChanged<bool> onPhotoOnlyChanged, onPhotoViewChanged;
   final int loadedCount, photoReviewCount;
+  final Widget? sortControls;
   @override
   Widget build(BuildContext context) {
     final l = AppLocalizations.of(context);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Wrap(
-          spacing: 8,
-          runSpacing: 8,
-          children: [
-            FilterChip(
-              label: Text(l.reviewPhotoOnly),
-              selected: photoOnly,
-              onSelected: onPhotoOnlyChanged,
-            ),
-            ChoiceChip(
-              label: Text(l.reviewListView),
-              selected: !photoView,
-              onSelected: (_) => onPhotoViewChanged(false),
-            ),
-            ChoiceChip(
-              label: Text(l.reviewPhotosView),
-              selected: photoView,
-              onSelected: (_) => onPhotoViewChanged(true),
-            ),
-          ],
+        LayoutBuilder(
+          builder: (context, constraints) => Wrap(
+            spacing: AppSpacing.sm,
+            runSpacing: AppSpacing.sm,
+            crossAxisAlignment: WrapCrossAlignment.center,
+            children: [
+              SizedBox(
+                width: constraints.maxWidth.clamp(0.0, 360.0),
+                child: DecoratedBox(
+                  decoration: BoxDecoration(
+                    color: AppColors.surfaceMuted,
+                    borderRadius: AppRadius.medium,
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.all(3),
+                    child: Row(
+                      children: [
+                        Expanded(
+                          child: _ReviewViewButton(
+                            label: l.reviewListView,
+                            icon: Icons.view_list_outlined,
+                            selected: !photoView,
+                            onPressed: () => onPhotoViewChanged(false),
+                          ),
+                        ),
+                        Expanded(
+                          child: _ReviewViewButton(
+                            label: l.reviewPhotosView,
+                            icon: Icons.photo_library_outlined,
+                            selected: photoView,
+                            onPressed: () => onPhotoViewChanged(true),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+              if (!photoView)
+                FilterChip(
+                  avatar: const Icon(Icons.photo_camera_outlined, size: 18),
+                  label: Text(l.reviewPhotoOnly),
+                  selected: photoOnly,
+                  onSelected: onPhotoOnlyChanged,
+                  materialTapTargetSize: MaterialTapTargetSize.padded,
+                ),
+              ?sortControls,
+            ],
+          ),
         ),
         const SizedBox(height: 8),
         Text(
@@ -72,6 +105,54 @@ class ReviewPhotoToolbar extends StatelessWidget {
       ],
     );
   }
+}
+
+/// A single view-mode group, with wrapping text and keyboard activation.
+class _ReviewViewButton extends StatelessWidget {
+  const _ReviewViewButton({
+    required this.label,
+    required this.icon,
+    required this.selected,
+    required this.onPressed,
+  });
+  final String label;
+  final IconData icon;
+  final bool selected;
+  final VoidCallback onPressed;
+  @override
+  Widget build(BuildContext context) => Semantics(
+    selected: selected,
+    inMutuallyExclusiveGroup: true,
+    child: TextButton(
+      onPressed: onPressed,
+      style: TextButton.styleFrom(
+        backgroundColor: selected ? AppColors.surface : Colors.transparent,
+        foregroundColor: selected ? AppColors.primary : AppColors.textSecondary,
+        minimumSize: const Size(0, 48),
+        padding: const EdgeInsets.symmetric(
+          horizontal: AppSpacing.xs,
+          vertical: AppSpacing.sm,
+        ),
+        shape: RoundedRectangleBorder(borderRadius: AppRadius.small),
+      ),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Icon(icon, size: 18),
+          const SizedBox(width: AppSpacing.xs),
+          Flexible(
+            child: Text(
+              label,
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                fontWeight: selected ? FontWeight.w700 : FontWeight.w500,
+              ),
+            ),
+          ),
+        ],
+      ),
+    ),
+  );
 }
 
 class ReviewPhotoGrid extends StatelessWidget {

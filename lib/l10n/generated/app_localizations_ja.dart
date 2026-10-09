@@ -1659,17 +1659,17 @@ class AppLocalizationsJa extends AppLocalizations {
   String get recentRecordUnavailable => '閲覧履歴に必要な商品識別情報を確認できません。';
 
   @override
-  String get reviewPhotoOnly => '写真付きレビューのみ';
+  String get reviewPhotoOnly => '写真付きレビュー';
 
   @override
   String get reviewListView => 'レビュー一覧';
 
   @override
-  String get reviewPhotosView => '写真のみ';
+  String get reviewPhotosView => '写真一覧';
 
   @override
   String reviewPhotoScope(int loaded, int photos) {
-    return '読み込み済み$loaded件中、写真付きは$photos件です。商品全体の件数ではありません。追加読み込みで続けられます。';
+    return '読み込み済みレビュー$loaded件 · 写真付き$photos件';
   }
 
   @override

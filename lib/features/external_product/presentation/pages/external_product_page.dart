@@ -305,6 +305,7 @@ class _Ready extends ConsumerStatefulWidget {
 }
 
 class _ReadyState extends ConsumerState<_Ready> {
+  // The last list filter stays independent of the gallery view.
   bool _photoOnly = false, _photoView = false;
   ExternalProductState get state => widget.state;
   ExternalProduct get product => widget.product;
@@ -342,7 +343,8 @@ class _ReadyState extends ConsumerState<_Ready> {
 
     final visibleReviews = [
       for (final entry in reviews)
-        if (!_photoOnly || validReviewImages(entry.$2.images).isNotEmpty)
+        if (!(_photoOnly || _photoView) ||
+            validReviewImages(entry.$2.images).isNotEmpty)
           entry.$2,
     ];
     final image = ProductImageViewer(imageUrls: product.galleryImages);
@@ -419,14 +421,8 @@ class _ReadyState extends ConsumerState<_Ready> {
           photoReviewCount: state.reviews
               .where((r) => validReviewImages(r.images).isNotEmpty)
               .length,
-          onPhotoOnlyChanged: (v) => setState(() {
-            _photoOnly = v;
-            if (!v) _photoView = false;
-          }),
-          onPhotoViewChanged: (v) => setState(() {
-            _photoView = v;
-            if (v) _photoOnly = true;
-          }),
+          onPhotoOnlyChanged: (v) => setState(() => _photoOnly = v),
+          onPhotoViewChanged: (v) => setState(() => _photoView = v),
         ),
         const SizedBox(height: AppSpacing.sm),
         if (collectionStatus != null) ...[
