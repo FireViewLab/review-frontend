@@ -145,6 +145,9 @@ class ProductReportCard extends StatelessWidget {
             const SizedBox(height: AppSpacing.lg),
             LayoutBuilder(
               builder: (context, constraints) {
+                final stacked =
+                    constraints.maxWidth < 440 ||
+                    MediaQuery.textScalerOf(context).scale(16) > 24;
                 final result = Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -186,7 +189,7 @@ class ProductReportCard extends StatelessWidget {
                 );
                 if (!validScore) return result;
                 final scoreCard = Container(
-                  width: constraints.maxWidth < 440 ? double.infinity : 160,
+                  width: stacked ? double.infinity : 160,
                   padding: const EdgeInsets.all(AppSpacing.md),
                   decoration: BoxDecoration(
                     color: AppColors.primaryLight,
@@ -220,7 +223,7 @@ class ProductReportCard extends StatelessWidget {
                     ],
                   ),
                 );
-                if (constraints.maxWidth < 440) {
+                if (stacked) {
                   return Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
