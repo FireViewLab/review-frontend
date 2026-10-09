@@ -3291,7 +3291,7 @@ abstract class AppLocalizations {
   /// No description provided for @reportTitle.
   ///
   /// In ko, this message translates to:
-  /// **'짧은 report'**
+  /// **'리뷰 신뢰도 리포트'**
   String get reportTitle;
 
   /// No description provided for @reportDetails.
@@ -3351,13 +3351,13 @@ abstract class AppLocalizations {
   /// No description provided for @reportDone.
   ///
   /// In ko, this message translates to:
-  /// **'분석 결과 제공됨'**
+  /// **'리뷰 분석 결과가 준비됐어요. 상세 분석에서 판단 근거를 확인해보세요.'**
   String get reportDone;
 
   /// No description provided for @reportLoadedScope.
   ///
   /// In ko, this message translates to:
-  /// **'현재 불러온 리뷰의 결과만 표시해요. 상품 전체 평균이나 긍정·부정률이 아니에요.'**
+  /// **'현재 불러온 리뷰의 분석 결과예요. 상품 전체 분석 범위와 다를 수 있어요.'**
   String get reportLoadedScope;
 
   /// No description provided for @reportInputCount.
@@ -3417,13 +3417,13 @@ abstract class AppLocalizations {
   /// No description provided for @reportCatalogAverage.
   ///
   /// In ko, this message translates to:
-  /// **'목록에서 받은 상품 평균 RTI'**
+  /// **'상품 평균 RTI'**
   String get reportCatalogAverage;
 
   /// No description provided for @reportCatalogSource.
   ///
   /// In ko, this message translates to:
-  /// **'카탈로그 서버가 제공한 집계예요. 현재 리뷰 페이지로 계산한 평균이 아니며, 상세 분석 정보와 조회 시점이 다를 수 있어요.'**
+  /// **'상품 목록에서 제공된 집계입니다. 상세 리뷰 결과와 업데이트 시점이 다를 수 있어요.'**
   String get reportCatalogSource;
 
   /// No description provided for @reviewAnalysisSafe.
@@ -3449,6 +3449,84 @@ abstract class AppLocalizations {
   /// In ko, this message translates to:
   /// **'이 리뷰에 제공된 분석 결과가 없어요.'**
   String get reviewAnalysisMissing;
+
+  /// No description provided for @reportIntro.
+  ///
+  /// In ko, this message translates to:
+  /// **'구매 전, 리뷰의 신뢰도를 살펴보세요.'**
+  String get reportIntro;
+
+  /// No description provided for @reportScoreLabel.
+  ///
+  /// In ko, this message translates to:
+  /// **'상품 리뷰 신뢰도'**
+  String get reportScoreLabel;
+
+  /// No description provided for @reportStateReady.
+  ///
+  /// In ko, this message translates to:
+  /// **'분석 결과'**
+  String get reportStateReady;
+
+  /// No description provided for @reportStateCollecting.
+  ///
+  /// In ko, this message translates to:
+  /// **'리뷰 수집 중'**
+  String get reportStateCollecting;
+
+  /// No description provided for @reportStateRunning.
+  ///
+  /// In ko, this message translates to:
+  /// **'분석 중'**
+  String get reportStateRunning;
+
+  /// No description provided for @reportStateFailed.
+  ///
+  /// In ko, this message translates to:
+  /// **'결과 확인 필요'**
+  String get reportStateFailed;
+
+  /// No description provided for @reportStateStale.
+  ///
+  /// In ko, this message translates to:
+  /// **'업데이트 필요'**
+  String get reportStateStale;
+
+  /// No description provided for @reportStateDisabled.
+  ///
+  /// In ko, this message translates to:
+  /// **'분석 미제공'**
+  String get reportStateDisabled;
+
+  /// No description provided for @reportStateUnavailable.
+  ///
+  /// In ko, this message translates to:
+  /// **'상태 확인 필요'**
+  String get reportStateUnavailable;
+
+  /// No description provided for @reportPendingBody.
+  ///
+  /// In ko, this message translates to:
+  /// **'아직 분석 결과가 없어요. 결과가 준비되면 리뷰 신뢰도와 판단 근거를 여기에서 확인할 수 있어요.'**
+  String get reportPendingBody;
+
+  /// No description provided for @reportOverview.
+  ///
+  /// In ko, this message translates to:
+  /// **'분석 요약'**
+  String get reportOverview;
+
+  /// No description provided for @reportCoverage.
+  ///
+  /// In ko, this message translates to:
+  /// **'분석 범위'**
+  String get reportCoverage;
+
+  /// No description provided for @reportReviewResults.
+  ///
+  /// In ko, this message translates to:
+  /// **'리뷰별 결과와 근거'**
+  String get reportReviewResults;
 }
 
 class _AppLocalizationsDelegate
