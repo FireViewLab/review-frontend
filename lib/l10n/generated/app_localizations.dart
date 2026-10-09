@@ -3413,6 +3413,18 @@ abstract class AppLocalizations {
   /// In ko, this message translates to:
   /// **'현재 불러온 분석 리뷰'**
   String get reportCurrentCount;
+
+  /// No description provided for @reportCatalogAverage.
+  ///
+  /// In ko, this message translates to:
+  /// **'목록에서 받은 상품 평균 RTI'**
+  String get reportCatalogAverage;
+
+  /// No description provided for @reportCatalogSource.
+  ///
+  /// In ko, this message translates to:
+  /// **'카탈로그 서버가 제공한 집계예요. 현재 리뷰 페이지로 계산한 평균이 아니며, 상세 분석 정보와 조회 시점이 다를 수 있어요.'**
+  String get reportCatalogSource;
 }
 
 class _AppLocalizationsDelegate

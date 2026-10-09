@@ -24,6 +24,14 @@ class ExternalProductReport extends StatelessWidget {
             'NOT_ANALYZED' => l.reportBefore,
             _ => l.reportUnavailable,
           };
+    final display = state.displayProduct;
+    final candidate =
+        display != null && state.summary?.matches(display.ref) == true
+        ? state.summary?.catalogAnalysis
+        : null;
+    final catalog = status == 'DONE' && candidate?.isCurrent == true
+        ? candidate
+        : null;
     final hasResults = status == 'DONE' && analysis != null;
     final reviews = hasResults
         ? state.reviews
@@ -33,6 +41,7 @@ class ExternalProductReport extends StatelessWidget {
               .toList()
         : [];
     final facts = <String>[
+      if (catalog != null) '${l.reportCatalogAverage}: ${catalog.averageRti}',
       if (hasResults && analysis.reviewCount != null)
         '${l.reportInputCount}: ${analysis.reviewCount}',
       if (hasResults && analysis.sampled != null)
@@ -56,6 +65,16 @@ class ExternalProductReport extends StatelessWidget {
             Text('${l.reportModel}: ${analysis.modelVersion}'),
           if (hasResults && analysis.policyVersion != null)
             Text('${l.reportPolicy}: ${analysis.policyVersion}'),
+          if (catalog != null) ...[
+            const SizedBox(height: AppSpacing.md),
+            Text(l.reportCatalogSource),
+            if (catalog.reviewCount != null)
+              Text('${l.reportInputCount}: ${catalog.reviewCount}'),
+            if (catalog.sourceReviewCount != null)
+              Text('${l.reportSourceCount}: ${catalog.sourceReviewCount}'),
+            if (catalog.sampled != null)
+              Text(catalog.sampled! ? l.reportSampled : l.reportFull),
+          ],
           const SizedBox(height: AppSpacing.md),
           Text(l.reportLoadedScope),
           const SizedBox(height: AppSpacing.sm),

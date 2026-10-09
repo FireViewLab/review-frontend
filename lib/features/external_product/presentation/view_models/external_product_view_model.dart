@@ -64,6 +64,11 @@ class ExternalProductViewModel extends Notifier<ExternalProductState> {
         if (product != null && product.ref == productRef) {
           final summary = ProductSummary(
             product: product,
+            catalogAnalysis:
+                snapshot.analysisStatus.toUpperCase() == 'DONE' &&
+                    state.summary?.matches(productRef) == true
+                ? state.summary?.catalogAnalysis
+                : null,
             springProductId: snapshot.springProductId,
             observedAt: DateTime.now(),
             source: ProductSummarySource.previousDetail,

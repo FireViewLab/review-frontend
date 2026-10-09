@@ -28,7 +28,25 @@ class ProductSummaryDto {
         }
       }
     }
+    final average = number(json['avgRti']);
+    final done = text(json['analysisStatus'])?.toUpperCase() == 'DONE';
     return ProductSummary(
+      catalogAnalysis:
+          done &&
+              average != null &&
+              average.isFinite &&
+              average >= 0 &&
+              average <= 100
+          ? ProductCatalogAnalysis(
+              averageRti: average,
+              observedAt: DateTime.now(),
+              sampled: json['analysisSampled'] is bool
+                  ? json['analysisSampled'] as bool
+                  : null,
+              reviewCount: integer(json['analysisReviewCount']),
+              sourceReviewCount: integer(json['analysisSourceReviewCount']),
+            )
+          : null,
       springProductId: integer(rawId),
       observedAt: DateTime.now(),
       product: ExternalProduct(

@@ -553,5 +553,7 @@
   "reportPolicy": "策略版本",
   "reportNoReviewResults": "已加载评论尚无分析结果。",
   "reportReasons": "提供的判断依据",
-  "reportCurrentCount": "已加载的分析评论"
+  "reportCurrentCount": "已加载的分析评论",
+  "reportCatalogAverage": "目录提供的商品平均RTI",
+  "reportCatalogSource": "此汇总由目录服务器提供，并非已加载评论页面的平均值，获取时间可能与详情分析不同。"
 }
