@@ -22,16 +22,22 @@ class RtiSummaryCard extends StatelessWidget {
     final l = AppLocalizations.of(context);
     final summary = rtiSummary;
     return ProductReportCard(
+      status: isAnalyzing
+          ? ProductReportStatus.running
+          : summary != null || loadedAnalysisCount > 0
+          ? ProductReportStatus.ready
+          : ProductReportStatus.pending,
+      score: summary?.rtiScore.toDouble(),
       summary: isAnalyzing
           ? l.reportRunning
           : summary != null
-          ? 'RTI ${summary.rtiScore}'
+          ? l.reportDone
           : loadedAnalysisCount > 0
           ? l.reportDone
-          : l.reportBefore,
-      facts: [
+          : l.reportPendingBody,
+      metrics: [
         if (loadedAnalysisCount > 0)
-          '${l.reportCurrentCount}: $loadedAnalysisCount',
+          ProductReportMetric(l.reportCurrentCount, '$loadedAnalysisCount'),
       ],
       details: const SizedBox.shrink(),
       onDetailPressed: onDetailPressed,

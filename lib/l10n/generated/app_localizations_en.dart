@@ -1743,7 +1743,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get externalTimeout => 'The request timed out. Please try again.';
 
   @override
-  String get reportTitle => 'Short report';
+  String get reportTitle => 'Review trust report';
 
   @override
   String get reportDetails => 'View detailed analysis';
@@ -1774,11 +1774,12 @@ class AppLocalizationsEn extends AppLocalizations {
   String get reportUnavailable => 'Analysis status is unavailable.';
 
   @override
-  String get reportDone => 'Analysis results available';
+  String get reportDone =>
+      'Review results are ready. Explore the detailed analysis for supporting reasons.';
 
   @override
   String get reportLoadedScope =>
-      'Only results for loaded reviews are shown. These are not a product-wide average or sentiment ratio.';
+      'Results cover the reviews currently loaded and may differ from the full product analysis.';
 
   @override
   String get reportInputCount => 'Analysis input reviews';
@@ -1809,11 +1810,11 @@ class AppLocalizationsEn extends AppLocalizations {
   String get reportCurrentCount => 'Loaded analyzed reviews';
 
   @override
-  String get reportCatalogAverage => 'Catalog product average RTI';
+  String get reportCatalogAverage => 'Product average RTI';
 
   @override
   String get reportCatalogSource =>
-      'This aggregate is supplied by the catalog server, not calculated from the loaded review page. Its observation time may differ from the detail analysis.';
+      'This aggregate comes from the product listing. Its update time may differ from the detailed review results.';
 
   @override
   String get reviewAnalysisSafe => 'High trust';
@@ -1827,4 +1828,44 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get reviewAnalysisMissing =>
       'No analysis result was provided for this review.';
+
+  @override
+  String get reportIntro => 'Understand review reliability before you buy.';
+
+  @override
+  String get reportScoreLabel => 'Product review trust';
+
+  @override
+  String get reportStateReady => 'Results ready';
+
+  @override
+  String get reportStateCollecting => 'Collecting reviews';
+
+  @override
+  String get reportStateRunning => 'Analyzing';
+
+  @override
+  String get reportStateFailed => 'Results unavailable';
+
+  @override
+  String get reportStateStale => 'Update needed';
+
+  @override
+  String get reportStateDisabled => 'Analysis unavailable';
+
+  @override
+  String get reportStateUnavailable => 'Status unavailable';
+
+  @override
+  String get reportPendingBody =>
+      'No analysis results yet. Review trust and supporting reasons will appear here when available.';
+
+  @override
+  String get reportOverview => 'Analysis summary';
+
+  @override
+  String get reportCoverage => 'Analysis coverage';
+
+  @override
+  String get reportReviewResults => 'Review results and reasons';
 }

@@ -1682,7 +1682,7 @@ class AppLocalizationsZh extends AppLocalizations {
   String get externalTimeout => '请求超时，请重试。';
 
   @override
-  String get reportTitle => '简短报告';
+  String get reportTitle => '评论可信度报告';
 
   @override
   String get reportDetails => '查看详细分析';
@@ -1712,10 +1712,10 @@ class AppLocalizationsZh extends AppLocalizations {
   String get reportUnavailable => '无法确认分析状态。';
 
   @override
-  String get reportDone => '已有分析结果';
+  String get reportDone => '评论分析结果已准备好。请在详细分析中查看判断依据。';
 
   @override
-  String get reportLoadedScope => '仅显示已加载评论的结果，并非商品整体平均分或情感比例。';
+  String get reportLoadedScope => '这里展示当前加载评论的分析结果，可能与商品整体分析范围不同。';
 
   @override
   String get reportInputCount => '分析输入评论';
@@ -1745,10 +1745,10 @@ class AppLocalizationsZh extends AppLocalizations {
   String get reportCurrentCount => '已加载的分析评论';
 
   @override
-  String get reportCatalogAverage => '目录提供的商品平均RTI';
+  String get reportCatalogAverage => '商品平均RTI';
 
   @override
-  String get reportCatalogSource => '此汇总由目录服务器提供，并非已加载评论页面的平均值，获取时间可能与详情分析不同。';
+  String get reportCatalogSource => '此汇总由商品列表提供，更新时间可能与详细评论结果不同。';
 
   @override
   String get reviewAnalysisSafe => '可信度高';
@@ -1761,4 +1761,43 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get reviewAnalysisMissing => '此评论尚无分析结果。';
+
+  @override
+  String get reportIntro => '购买前，了解评论的可信度。';
+
+  @override
+  String get reportScoreLabel => '商品评论可信度';
+
+  @override
+  String get reportStateReady => '分析结果';
+
+  @override
+  String get reportStateCollecting => '评论收集中';
+
+  @override
+  String get reportStateRunning => '分析中';
+
+  @override
+  String get reportStateFailed => '无法获取结果';
+
+  @override
+  String get reportStateStale => '需要更新';
+
+  @override
+  String get reportStateDisabled => '暂未提供分析';
+
+  @override
+  String get reportStateUnavailable => '无法确认状态';
+
+  @override
+  String get reportPendingBody => '暂无分析结果。结果准备好后，您可以在这里查看评论可信度和判断依据。';
+
+  @override
+  String get reportOverview => '分析摘要';
+
+  @override
+  String get reportCoverage => '分析范围';
+
+  @override
+  String get reportReviewResults => '逐条评论结果与依据';
 }

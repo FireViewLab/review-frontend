@@ -1689,7 +1689,7 @@ class AppLocalizationsJa extends AppLocalizations {
   String get externalTimeout => 'リクエストがタイムアウトしました。再試行してください。';
 
   @override
-  String get reportTitle => '短いレポート';
+  String get reportTitle => 'レビュー信頼度レポート';
 
   @override
   String get reportDetails => '詳細分析を見る';
@@ -1719,10 +1719,10 @@ class AppLocalizationsJa extends AppLocalizations {
   String get reportUnavailable => '分析状況を確認できません。';
 
   @override
-  String get reportDone => '分析結果あり';
+  String get reportDone => 'レビューの分析結果が届きました。詳細分析で判断の根拠をご確認ください。';
 
   @override
-  String get reportLoadedScope => '読み込み済みレビューの結果のみ表示します。商品全体の平均や感情比率ではありません。';
+  String get reportLoadedScope => '現在読み込んだレビューの結果です。商品全体の分析範囲と異なる場合があります。';
 
   @override
   String get reportInputCount => '分析対象レビュー';
@@ -1752,11 +1752,11 @@ class AppLocalizationsJa extends AppLocalizations {
   String get reportCurrentCount => '読み込み済み分析レビュー';
 
   @override
-  String get reportCatalogAverage => '一覧から受け取った商品平均RTI';
+  String get reportCatalogAverage => '商品の平均RTI';
 
   @override
   String get reportCatalogSource =>
-      'カタログサーバーが提供した集計です。読み込んだレビューの平均ではなく、詳細分析と取得時点が異なる場合があります。';
+      '商品一覧から提供された集計です。詳細レビューの結果と更新時点が異なる場合があります。';
 
   @override
   String get reviewAnalysisSafe => '信頼度が高い';
@@ -1769,4 +1769,43 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String get reviewAnalysisMissing => 'このレビューの分析結果はありません。';
+
+  @override
+  String get reportIntro => '購入前に、レビューの信頼度を確認しましょう。';
+
+  @override
+  String get reportScoreLabel => '商品レビューの信頼度';
+
+  @override
+  String get reportStateReady => '分析結果';
+
+  @override
+  String get reportStateCollecting => 'レビュー収集中';
+
+  @override
+  String get reportStateRunning => '分析中';
+
+  @override
+  String get reportStateFailed => '結果を確認できません';
+
+  @override
+  String get reportStateStale => '更新が必要';
+
+  @override
+  String get reportStateDisabled => '分析未提供';
+
+  @override
+  String get reportStateUnavailable => '状態を確認できません';
+
+  @override
+  String get reportPendingBody => '分析結果はまだありません。準備ができると信頼度と判断の根拠をここで確認できます。';
+
+  @override
+  String get reportOverview => '分析のまとめ';
+
+  @override
+  String get reportCoverage => '分析範囲';
+
+  @override
+  String get reportReviewResults => 'レビュー別の結果と根拠';
 }
