@@ -1,3 +1,5 @@
+import 'package:re_view_front/features/chat/domain/entities/chat_recommendation.dart';
+import 'package:re_view_front/features/chat/presentation/widgets/chat_recommendation_card.dart';
 import 'dart:async';
 
 import 'package:flutter/material.dart';
@@ -39,7 +41,7 @@ class ChatMessageBubble extends StatelessWidget {
       );
     }
     if (message.blocked) return _BlockedNotice(message.content);
-    return _AssistantAnswer(message.content);
+    return _AssistantAnswer(message.content, message.recommendations);
   }
 }
 
@@ -108,7 +110,9 @@ class _AssistantLabel extends StatelessWidget {
 
 /// 말풍선 없이 패널 폭을 그대로 쓰는 답변.
 class _AssistantAnswer extends StatelessWidget {
-  const _AssistantAnswer(this.text);
+  const _AssistantAnswer(this.text, this.recommendations);
+
+  final List<ChatRecommendation> recommendations;
 
   final String text;
 
@@ -129,6 +133,11 @@ class _AssistantAnswer extends StatelessWidget {
         ),
         const SizedBox(height: AppSpacing.xxs),
         _CopyButton(text),
+        if (recommendations.isNotEmpty) ...[
+          const SizedBox(height: AppSpacing.sm),
+          for (final product in recommendations.take(3))
+            ChatRecommendationCard(product: product),
+        ],
       ],
     );
   }

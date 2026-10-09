@@ -168,6 +168,7 @@ class ChatViewModel extends Notifier<ChatState> {
               content: reply.answer,
               blocked: reply.blocked,
               blockReason: reply.blockReason,
+              recommendations: reply.blocked ? const [] : reply.recommendations,
             ),
           ],
         );
