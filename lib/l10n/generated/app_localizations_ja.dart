@@ -1747,4 +1747,16 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String get reportCurrentCount => '読み込み済み分析レビュー';
+
+  @override
+  String get reviewAnalysisSafe => '信頼度が高い';
+
+  @override
+  String get reviewAnalysisWarn => '注意';
+
+  @override
+  String get reviewAnalysisDanger => '信頼度が低い';
+
+  @override
+  String get reviewAnalysisMissing => 'このレビューの分析結果はありません。';
 }

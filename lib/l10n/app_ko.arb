@@ -1067,5 +1067,9 @@
   "reportPolicy": "정책 버전",
   "reportNoReviewResults": "현재 불러온 리뷰에 제공된 분석 결과가 없어요.",
   "reportReasons": "제공된 판단 근거",
-  "reportCurrentCount": "현재 불러온 분석 리뷰"
+  "reportCurrentCount": "현재 불러온 분석 리뷰",
+  "reviewAnalysisSafe": "신뢰도 높음",
+  "reviewAnalysisWarn": "주의",
+  "reviewAnalysisDanger": "신뢰도 낮음",
+  "reviewAnalysisMissing": "이 리뷰에 제공된 분석 결과가 없어요."
 }

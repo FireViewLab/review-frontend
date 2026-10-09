@@ -3413,6 +3413,30 @@ abstract class AppLocalizations {
   /// In ko, this message translates to:
   /// **'현재 불러온 분석 리뷰'**
   String get reportCurrentCount;
+
+  /// No description provided for @reviewAnalysisSafe.
+  ///
+  /// In ko, this message translates to:
+  /// **'신뢰도 높음'**
+  String get reviewAnalysisSafe;
+
+  /// No description provided for @reviewAnalysisWarn.
+  ///
+  /// In ko, this message translates to:
+  /// **'주의'**
+  String get reviewAnalysisWarn;
+
+  /// No description provided for @reviewAnalysisDanger.
+  ///
+  /// In ko, this message translates to:
+  /// **'신뢰도 낮음'**
+  String get reviewAnalysisDanger;
+
+  /// No description provided for @reviewAnalysisMissing.
+  ///
+  /// In ko, this message translates to:
+  /// **'이 리뷰에 제공된 분석 결과가 없어요.'**
+  String get reviewAnalysisMissing;
 }
 
 class _AppLocalizationsDelegate
