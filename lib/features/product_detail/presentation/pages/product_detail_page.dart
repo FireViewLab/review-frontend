@@ -1,3 +1,4 @@
+import 'package:re_view_front/shared/widgets/product_detail_hero.dart';
 import 'package:re_view_front/features/product_detail/presentation/widgets/analysis_report/analysis_report_content.dart';
 import 'package:re_view_front/features/product_detail/domain/entities/product_analysis_result.dart';
 import 'package:re_view_front/shared/widgets/product_report_card.dart';
@@ -66,7 +67,7 @@ class _ProductDetailPageState extends ConsumerState<ProductDetailPage> {
         slivers: [
           SliverToBoxAdapter(
             child: AppContentView(
-              maxWidth: 1680,
+              maxWidth: 1200,
               padding: EdgeInsets.fromLTRB(
                 context.isMobile ? AppSpacing.md : AppSpacing.xxl,
                 AppSpacing.md,
@@ -163,13 +164,29 @@ class _DetailContent extends StatelessWidget {
       children: [
         _Breadcrumb(breadcrumbs: detail.breadcrumbs),
         const SizedBox(height: AppSpacing.md),
-        isMobile
-            ? _MobileHeroSection(detail: detail)
-            : _DesktopHeroSection(detail: detail),
-        if (!isMobile && detail.specChips.isNotEmpty) ...[
-          const SizedBox(height: AppSpacing.md),
-          ProductSpecChipsStrip(chips: detail.specChips),
-        ],
+        ProductDetailHero(
+          gallery: ProductImageGallery(
+            productId: detail.id,
+            imageUrls: detail.imageUrls,
+          ),
+          information: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              ProductInfoSection(detail: detail),
+              if (detail.specChips.isNotEmpty) ...[
+                const SizedBox(height: AppSpacing.md),
+                ProductSpecChips(chips: detail.specChips),
+              ],
+              const SizedBox(height: AppSpacing.lg),
+              ProductPurchaseArea(
+                child: PriceComparisonTable(
+                  comparisons: detail.priceComparisons,
+                  totalSellerCount: detail.totalSellerCount,
+                ),
+              ),
+            ],
+          ),
+        ),
         const SizedBox(height: AppSpacing.xl),
         isMobile
             ? _MobileAnalysisSection(
@@ -323,70 +340,6 @@ class _Breadcrumb extends StatelessWidget {
             ),
           ),
         ],
-      ],
-    );
-  }
-}
-
-class _DesktopHeroSection extends StatelessWidget {
-  const _DesktopHeroSection({required this.detail});
-
-  final ProductDetail detail;
-
-  @override
-  Widget build(BuildContext context) {
-    return IntrinsicHeight(
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Expanded(
-            flex: 5,
-            child: ProductImageGallery(
-              productId: detail.id,
-              imageUrls: detail.imageUrls,
-            ),
-          ),
-          const SizedBox(width: AppSpacing.xl),
-          Expanded(
-            flex: 5,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                ProductInfoSection(detail: detail),
-                const SizedBox(height: AppSpacing.lg),
-                PriceComparisonTable(
-                  comparisons: detail.priceComparisons,
-                  totalSellerCount: detail.totalSellerCount,
-                ),
-              ],
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-class _MobileHeroSection extends StatelessWidget {
-  const _MobileHeroSection({required this.detail});
-
-  final ProductDetail detail;
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        ProductImageGallery(productId: detail.id, imageUrls: detail.imageUrls),
-        const SizedBox(height: AppSpacing.md),
-        ProductInfoSection(detail: detail),
-        const SizedBox(height: AppSpacing.md),
-        ProductSpecChips(chips: detail.specChips),
-        const SizedBox(height: AppSpacing.md),
-        PriceComparisonTable(
-          comparisons: detail.priceComparisons,
-          totalSellerCount: detail.totalSellerCount,
-        ),
       ],
     );
   }
@@ -619,7 +572,8 @@ class _ProductTabBar extends StatelessWidget {
       decoration: const BoxDecoration(
         border: Border(bottom: BorderSide(color: AppColors.border)),
       ),
-      child: Row(
+      child: Wrap(
+        spacing: AppSpacing.sm,
         children: tabs.map((entry) {
           final (tab, label) = entry;
           final isSelected = tab == selectedTab;
@@ -654,27 +608,33 @@ class _TabItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: onTap,
-      child: AnimatedContainer(
-        duration: const Duration(milliseconds: 150),
-        padding: const EdgeInsets.symmetric(
-          horizontal: AppSpacing.md,
-          vertical: AppSpacing.sm,
-        ),
-        decoration: BoxDecoration(
-          border: Border(
-            bottom: BorderSide(
-              color: isSelected ? AppColors.primary : Colors.transparent,
-              width: 2,
+    return Semantics(
+      selected: isSelected,
+      button: true,
+      child: InkWell(
+        onTap: onTap,
+        child: AnimatedContainer(
+          duration: MediaQuery.disableAnimationsOf(context)
+              ? Duration.zero
+              : const Duration(milliseconds: 150),
+          padding: const EdgeInsets.symmetric(
+            horizontal: AppSpacing.md,
+            vertical: AppSpacing.sm,
+          ),
+          decoration: BoxDecoration(
+            border: Border(
+              bottom: BorderSide(
+                color: isSelected ? AppColors.primary : Colors.transparent,
+                width: 2,
+              ),
             ),
           ),
-        ),
-        child: Text(
-          label,
-          style: Theme.of(context).textTheme.labelMedium?.copyWith(
-            color: isSelected ? AppColors.primary : AppColors.textSecondary,
-            fontWeight: isSelected ? FontWeight.w900 : FontWeight.w600,
+          child: Text(
+            label,
+            style: Theme.of(context).textTheme.labelMedium?.copyWith(
+              color: isSelected ? AppColors.primary : AppColors.textSecondary,
+              fontWeight: isSelected ? FontWeight.w900 : FontWeight.w600,
+            ),
           ),
         ),
       ),

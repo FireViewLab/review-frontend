@@ -1,3 +1,4 @@
+import 'package:re_view_front/shared/widgets/product_detail_hero.dart';
 import 'package:re_view_front/features/external_product/presentation/widgets/external_review_analysis.dart';
 import 'package:re_view_front/shared/widgets/review_photo_view.dart';
 import 'package:flutter/material.dart';
@@ -99,8 +100,8 @@ class ExternalProductSummary extends StatelessWidget {
           product.name,
           style: textTheme.headlineSmall?.copyWith(
             color: AppColors.textPrimary,
-            fontWeight: FontWeight.w900,
-            height: 1.3,
+            fontWeight: FontWeight.w700,
+            height: 1.35,
           ),
         ),
         if (meta.isNotEmpty) ...[
@@ -114,7 +115,10 @@ class ExternalProductSummary extends StatelessWidget {
         ],
         if (rating != null || reviewCount != null) ...[
           const SizedBox(height: AppSpacing.xs),
-          Row(
+          Wrap(
+            spacing: AppSpacing.xxs,
+            runSpacing: AppSpacing.xs,
+            crossAxisAlignment: WrapCrossAlignment.center,
             children: [
               if (rating != null) ...[
                 const Icon(Icons.star_rounded, size: 18, color: Colors.amber),
@@ -149,19 +153,30 @@ class ExternalProductSummary extends StatelessWidget {
           ),
         ],
         const SizedBox(height: AppSpacing.lg),
-        if (onVisitShop != null)
-          SizedBox(
-            height: 48,
-            child: FilledButton.icon(
-              onPressed: onVisitShop,
-              icon: const Icon(Icons.open_in_new_rounded, size: 18),
-              label: Text(l10n.extProductVisitShop(shop)),
-            ),
+        ProductPurchaseArea(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              if (onVisitShop != null)
+                FilledButton.icon(
+                  style: FilledButton.styleFrom(
+                    minimumSize: const Size.fromHeight(48),
+                    padding: const EdgeInsets.all(AppSpacing.md),
+                  ),
+                  onPressed: onVisitShop,
+                  icon: const Icon(Icons.open_in_new_rounded, size: 18),
+                  label: Text(
+                    l10n.extProductVisitShop(shop),
+                    textAlign: TextAlign.center,
+                  ),
+                ),
+              for (final action in actions) ...[
+                const SizedBox(height: AppSpacing.sm),
+                action,
+              ],
+            ],
           ),
-        for (final action in actions) ...[
-          const SizedBox(height: AppSpacing.sm),
-          action,
-        ],
+        ),
       ],
     );
   }
