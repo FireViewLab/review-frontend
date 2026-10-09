@@ -1740,4 +1740,22 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get reportCurrentCount => '已加载的分析评论';
+
+  @override
+  String get reportCatalogAverage => '目录提供的商品平均RTI';
+
+  @override
+  String get reportCatalogSource => '此汇总由目录服务器提供，并非已加载评论页面的平均值，获取时间可能与详情分析不同。';
+
+  @override
+  String get reviewAnalysisSafe => '可信度高';
+
+  @override
+  String get reviewAnalysisWarn => '注意';
+
+  @override
+  String get reviewAnalysisDanger => '可信度低';
+
+  @override
+  String get reviewAnalysisMissing => '此评论尚无分析结果。';
 }
