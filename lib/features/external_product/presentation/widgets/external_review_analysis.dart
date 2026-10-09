@@ -1,3 +1,4 @@
+import 'package:re_view_front/shared/presentation/review_evidence_formatter.dart';
 import 'package:re_view_front/shared/widgets/review_analysis_section.dart';
 import 'package:re_view_front/shared/widgets/review_photo_view.dart';
 import 'package:re_view_front/shared/widgets/image_preview_dialog.dart';
@@ -46,7 +47,7 @@ class ExternalReviewAnalysis extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.only(top: AppSpacing.xs),
             child: Text(
-              review.reasons.first,
+              ReviewEvidenceFormatter.text(context, review.reasons.first),
               maxLines: 2,
               overflow: TextOverflow.ellipsis,
             ),
@@ -134,7 +135,11 @@ class ExternalReviewAnalysisDetails extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                for (final reason in review.reasons)
+                for (final reason in ReviewEvidenceFormatter.list(
+                  context,
+                  review.reasons,
+                  detailed: true,
+                ))
                   ReviewEvidenceText(text: reason),
               ],
             ),

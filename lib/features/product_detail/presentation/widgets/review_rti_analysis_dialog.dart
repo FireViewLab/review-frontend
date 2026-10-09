@@ -1,3 +1,4 @@
+import 'package:re_view_front/shared/presentation/review_evidence_formatter.dart';
 import 'package:re_view_front/l10n/generated/app_localizations.dart';
 import 'package:re_view_front/shared/widgets/review_analysis_section.dart';
 import 'package:re_view_front/shared/widgets/review_photo_view.dart';
@@ -839,7 +840,10 @@ class _JudgmentBasisItem extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  basis.label,
+                  ReviewEvidenceFormatter.text(
+                    context,
+                    basis.label.isNotEmpty ? basis.label : basis.description,
+                  ),
                   style: Theme.of(context).textTheme.labelSmall?.copyWith(
                     color: AppColors.textPrimary,
                     fontWeight: FontWeight.w700,
@@ -848,7 +852,11 @@ class _JudgmentBasisItem extends StatelessWidget {
                 ),
                 const SizedBox(height: 2),
                 SelectableText(
-                  basis.description,
+                  ReviewEvidenceFormatter.text(
+                    context,
+                    basis.description,
+                    detailed: true,
+                  ),
                   style: Theme.of(context).textTheme.labelSmall?.copyWith(
                     color: AppColors.textSecondary,
                     fontSize: 12,
@@ -885,7 +893,12 @@ class _ReasonsSection extends StatelessWidget {
     child: Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        for (final reason in reasons) ReviewEvidenceText(text: reason),
+        for (final reason in ReviewEvidenceFormatter.list(
+          context,
+          reasons,
+          detailed: true,
+        ))
+          ReviewEvidenceText(text: reason),
       ],
     ),
   );

@@ -1820,4 +1820,94 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String get reviewLoadedAggregate => '読み込んだレビューの集計';
+
+  @override
+  String get evidenceRepetitionLabel => '繰り返し表現';
+
+  @override
+  String get evidenceRepetitionBody => '同じ表現が繰り返し使われています。';
+
+  @override
+  String get evidenceShortLabel => '短いレビュー';
+
+  @override
+  String get evidenceShortBody => 'レビューが短く、確認できる情報が限られています。';
+
+  @override
+  String get evidenceExclamationLabel => '感嘆符が多い';
+
+  @override
+  String get evidenceExclamationBody => '感嘆符が多く使われています。';
+
+  @override
+  String get evidencePositiveLabel => '強い肯定表現';
+
+  @override
+  String get evidencePositiveBody => '強い肯定表現が検出されました。これだけで広告とは判断できません。';
+
+  @override
+  String get evidencePurchaseLabel => '購入認証未確認';
+
+  @override
+  String get evidencePurchaseBody => '購入認証が確認されていないレビューです。';
+
+  @override
+  String get evidenceNewAccountLabel => '登録直後の投稿';
+
+  @override
+  String get evidenceNewAccountBody => 'レビュー投稿時、登録から間もないアカウントでした。';
+
+  @override
+  String get evidenceDailyLabel => '同日に複数のレビュー';
+
+  @override
+  String get evidenceDailyBody => '同じ投稿者が同日に複数のレビューを書いています。';
+
+  @override
+  String get evidenceSimilarLabel => '似ているレビュー内容';
+
+  @override
+  String get evidenceSimilarBody => '内容が似ている別のレビューが見つかりました。類似性だけで不正とは判断できません。';
+
+  @override
+  String get evidenceClusterLabel => '類似レビューの集まり';
+
+  @override
+  String get evidenceClusterBody => '内容が似たレビューの集まりが見つかりました。不正が確定したわけではありません。';
+
+  @override
+  String get evidenceQualityLabel => '内容品質スコアが低い';
+
+  @override
+  String get evidenceQualityBody => 'レビュー内容の品質スコアが低く評価されました。';
+
+  @override
+  String get evidenceUnknownPurchaseLabel => '購入の有無が不明';
+
+  @override
+  String get evidenceUnknownPurchaseBody => '提供された情報では購入の有無を確認できません。';
+
+  @override
+  String get evidenceTrialLabel => '体験・無償提供の可能性';
+
+  @override
+  String get evidenceTrialBody => '体験または無償提供によるレビューの可能性が示されています。';
+
+  @override
+  String get evidenceNoImageLabel => '添付写真なし';
+
+  @override
+  String get evidenceNoImageBody => 'レビューに写真が添付されていません。';
+
+  @override
+  String get evidenceRepurchaseLabel => '再購入の手がかり';
+
+  @override
+  String get evidenceRepurchaseBody => '再購入を示す情報が確認されました。';
+
+  @override
+  String get evidenceUnknownLabel => '追加の分析根拠';
+
+  @override
+  String get evidenceUnknownBody => '追加の根拠が提供されましたが、説明文にはまだ対応していません。';
 }
