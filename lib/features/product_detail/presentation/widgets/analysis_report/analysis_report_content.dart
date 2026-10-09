@@ -1,3 +1,4 @@
+import 'package:re_view_front/shared/presentation/review_evidence_formatter.dart';
 import 'package:flutter/material.dart';
 import 'package:re_view_front/app/theme/app_spacing.dart';
 import 'package:re_view_front/features/product_detail/domain/entities/product_detail.dart';
@@ -64,7 +65,10 @@ class AnalysisReportContent extends StatelessWidget {
                 Text(l.reportPendingBody),
               if (detail.rtiGrade != null) Text(detail.rtiGrade!),
               for (final signal in detail.trustSignals)
-                ReportFactRow(label: signal.label, value: signal.value),
+                ReportFactRow(
+                  label: ReviewEvidenceFormatter.text(context, signal.label),
+                  value: ReviewEvidenceFormatter.text(context, signal.value),
+                ),
             ],
           ),
         ),
@@ -96,7 +100,11 @@ class AnalysisReportContent extends StatelessWidget {
               ),
               subtitle: Text(l.reportReasons),
               children: [
-                for (final reason in review.reasons)
+                for (final reason in ReviewEvidenceFormatter.list(
+                  context,
+                  review.reasons,
+                  detailed: true,
+                ))
                   ListTile(title: Text(reason)),
               ],
             ),

@@ -1,6 +1,7 @@
 // ignore_for_file: use_key_in_widget_constructors
 
 import 'package:flutter/material.dart';
+import 'package:re_view_front/shared/presentation/review_evidence_formatter.dart';
 import 'package:re_view_front/app/theme/app_colors.dart';
 import 'package:re_view_front/app/theme/app_spacing.dart';
 import 'package:re_view_front/features/product_detail/domain/entities/product_detail.dart';
@@ -133,9 +134,10 @@ class AnalysisReportSummaryCard extends StatelessWidget {
                 : Wrap(
                     spacing: AppSpacing.xs,
                     runSpacing: AppSpacing.xs,
-                    children: topReasons
-                        .map((r) => AnalysisReportSignalChip(label: r))
-                        .toList(),
+                    children: ReviewEvidenceFormatter.list(
+                      context,
+                      topReasons,
+                    ).map((r) => AnalysisReportSignalChip(label: r)).toList(),
                   ),
           ],
         ),

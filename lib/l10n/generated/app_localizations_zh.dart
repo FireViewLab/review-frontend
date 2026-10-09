@@ -1812,4 +1812,94 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get reviewLoadedAggregate => '已加载评论的汇总';
+
+  @override
+  String get evidenceRepetitionLabel => '重复表达';
+
+  @override
+  String get evidenceRepetitionBody => '相同表达被反复使用。';
+
+  @override
+  String get evidenceShortLabel => '简短评价';
+
+  @override
+  String get evidenceShortBody => '评价较短，可核实的信息有限。';
+
+  @override
+  String get evidenceExclamationLabel => '频繁使用感叹号';
+
+  @override
+  String get evidenceExclamationBody => '使用了较多感叹号。';
+
+  @override
+  String get evidencePositiveLabel => '强烈正面表达';
+
+  @override
+  String get evidencePositiveBody => '检测到强烈正面表达，仅凭这一点不能认定为广告。';
+
+  @override
+  String get evidencePurchaseLabel => '购买认证未确认';
+
+  @override
+  String get evidencePurchaseBody => '这条评价未确认购买认证。';
+
+  @override
+  String get evidenceNewAccountLabel => '新账号评价';
+
+  @override
+  String get evidenceNewAccountBody => '发布评价时，该账号注册时间较短。';
+
+  @override
+  String get evidenceDailyLabel => '同日多条评价';
+
+  @override
+  String get evidenceDailyBody => '同一作者在一天内发布了多条评价。';
+
+  @override
+  String get evidenceSimilarLabel => '相似评价内容';
+
+  @override
+  String get evidenceSimilarBody => '发现了内容相似的其他评价，不能仅凭相似性认定为操纵。';
+
+  @override
+  String get evidenceClusterLabel => '相似评价群组';
+
+  @override
+  String get evidenceClusterBody => '发现了一组内容相似的评价，并不代表已确认操纵。';
+
+  @override
+  String get evidenceQualityLabel => '内容质量评分较低';
+
+  @override
+  String get evidenceQualityBody => '评价内容的质量评分较低。';
+
+  @override
+  String get evidenceUnknownPurchaseLabel => '购买状态未知';
+
+  @override
+  String get evidenceUnknownPurchaseBody => '无法通过提供的信息确认是否购买。';
+
+  @override
+  String get evidenceTrialLabel => '可能为试用或赠品评价';
+
+  @override
+  String get evidenceTrialBody => '该评价可能与试用或免费提供的商品有关。';
+
+  @override
+  String get evidenceNoImageLabel => '无附加照片';
+
+  @override
+  String get evidenceNoImageBody => '评价未附加照片。';
+
+  @override
+  String get evidenceRepurchaseLabel => '再次购买信号';
+
+  @override
+  String get evidenceRepurchaseBody => '发现了表明再次购买的信息。';
+
+  @override
+  String get evidenceUnknownLabel => '其他分析依据';
+
+  @override
+  String get evidenceUnknownBody => '已提供其他依据，但暂不支持其说明。';
 }

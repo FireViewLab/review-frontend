@@ -1,3 +1,4 @@
+import 'package:re_view_front/shared/presentation/review_evidence_formatter.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:re_view_front/app/theme/app_colors.dart';
@@ -122,8 +123,14 @@ class SuspiciousReviewDetailPanel extends StatelessWidget {
                 spacing: AppSpacing.xs,
                 runSpacing: AppSpacing.xs,
                 children: [
-                  for (final reason in r.reasons)
-                    AdminStatusBadge(label: reason, tone: AdminBadgeTone.danger),
+                  for (final reason in ReviewEvidenceFormatter.list(
+                    context,
+                    r.reasons,
+                  ))
+                    AdminStatusBadge(
+                      label: reason,
+                      tone: AdminBadgeTone.danger,
+                    ),
                 ],
               ),
             ),

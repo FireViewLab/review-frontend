@@ -1,6 +1,7 @@
 // ignore_for_file: use_key_in_widget_constructors
 
 import 'package:flutter/material.dart';
+import 'package:re_view_front/shared/presentation/review_evidence_formatter.dart';
 import 'package:re_view_front/app/theme/app_colors.dart';
 import 'package:re_view_front/app/theme/app_spacing.dart';
 import 'package:re_view_front/features/product_detail/domain/entities/product_review.dart';
@@ -160,32 +161,33 @@ class AnalysisReportReviewRow extends StatelessWidget {
                 Wrap(
                   spacing: AppSpacing.xxs,
                   runSpacing: AppSpacing.xxs,
-                  children: review.reasons
-                      .take(2)
-                      .map(
-                        (r) => DecoratedBox(
-                          decoration: BoxDecoration(
-                            color: AppColors.errorSoft,
-                            borderRadius: BorderRadius.circular(4),
-                          ),
-                          child: Padding(
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: 5,
-                              vertical: 1,
+                  children:
+                      ReviewEvidenceFormatter.list(context, review.reasons)
+                          .take(2)
+                          .map(
+                            (r) => DecoratedBox(
+                              decoration: BoxDecoration(
+                                color: AppColors.errorSoft,
+                                borderRadius: BorderRadius.circular(4),
+                              ),
+                              child: Padding(
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 5,
+                                  vertical: 1,
+                                ),
+                                child: Text(
+                                  r,
+                                  style: Theme.of(context).textTheme.labelSmall
+                                      ?.copyWith(
+                                        color: AppColors.error,
+                                        fontWeight: FontWeight.w600,
+                                        fontSize: 10,
+                                      ),
+                                ),
+                              ),
                             ),
-                            child: Text(
-                              r,
-                              style: Theme.of(context).textTheme.labelSmall
-                                  ?.copyWith(
-                                    color: AppColors.error,
-                                    fontWeight: FontWeight.w600,
-                                    fontSize: 10,
-                                  ),
-                            ),
-                          ),
-                        ),
-                      )
-                      .toList(),
+                          )
+                          .toList(),
                 ),
               ],
             ],
