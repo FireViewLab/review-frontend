@@ -611,6 +611,9 @@ class AppLocalizationsJa extends AppLocalizations {
   String get chatSuggestProduct2 => '広告っぽいレビューは多い？';
 
   @override
+  String get chatSuggestProduct4 => '似た商品をおすすめして';
+
+  @override
   String get chatSuggestProduct3 => '実際の購入者が挙げる欠点は？';
 
   @override

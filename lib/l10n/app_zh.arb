@@ -194,6 +194,7 @@
   "chatEmptyBody": "推荐问题仅填入输入框。请确认内容后发送。",
   "chatSuggestProduct1": "这个商品的评论可信吗？",
   "chatSuggestProduct2": "广告评论多吗？",
+  "chatSuggestProduct4": "推荐类似商品",
   "chatSuggestProduct3": "真实用户提到的缺点是什么？",
   "chatSuggestGeneral1": "RTI 分数是如何计算的？",
   "chatSuggestGeneral2": "如何识别广告评论？",

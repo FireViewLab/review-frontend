@@ -194,6 +194,7 @@
   "chatEmptyBody": "おすすめの質問は入力欄に入るだけです。内容を確認してから送信してください。",
   "chatSuggestProduct1": "この商品のレビューは信頼できる？",
   "chatSuggestProduct2": "広告っぽいレビューは多い？",
+  "chatSuggestProduct4": "似た商品をおすすめして",
   "chatSuggestProduct3": "実際の購入者が挙げる欠点は？",
   "chatSuggestGeneral1": "RTIスコアはどう決まる？",
   "chatSuggestGeneral2": "広告レビューはどう見分ける？",

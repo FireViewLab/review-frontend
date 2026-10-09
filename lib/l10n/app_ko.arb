@@ -633,6 +633,7 @@
   "chatSuggestProduct2": "광고성 리뷰가 많아?",
   "@chatSuggestProduct2": { "description": "상품 대화 추천 질문 2" },
 
+  "chatSuggestProduct4": "비슷한 상품 추천해줘",
   "chatSuggestProduct3": "실사용자들이 말하는 단점은?",
   "@chatSuggestProduct3": { "description": "상품 대화 추천 질문 3" },
 

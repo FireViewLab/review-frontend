@@ -610,6 +610,9 @@ class AppLocalizationsZh extends AppLocalizations {
   String get chatSuggestProduct2 => '广告评论多吗？';
 
   @override
+  String get chatSuggestProduct4 => '推荐类似商品';
+
+  @override
   String get chatSuggestProduct3 => '真实用户提到的缺点是什么？';
 
   @override

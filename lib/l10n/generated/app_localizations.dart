@@ -1260,6 +1260,12 @@ abstract class AppLocalizations {
   /// **'광고성 리뷰가 많아?'**
   String get chatSuggestProduct2;
 
+  /// No description provided for @chatSuggestProduct4.
+  ///
+  /// In ko, this message translates to:
+  /// **'비슷한 상품 추천해줘'**
+  String get chatSuggestProduct4;
+
   /// 상품 대화 추천 질문 3
   ///
   /// In ko, this message translates to:

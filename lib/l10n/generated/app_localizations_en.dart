@@ -633,6 +633,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get chatSuggestProduct2 => 'Are there many sponsored reviews?';
 
   @override
+  String get chatSuggestProduct4 => 'Recommend similar products';
+
+  @override
   String get chatSuggestProduct3 => 'What downsides do real buyers mention?';
 
   @override
