@@ -1087,5 +1087,9 @@
   "reportPendingBody": "아직 분석 결과가 없어요. 결과가 준비되면 리뷰 신뢰도와 판단 근거를 여기에서 확인할 수 있어요.",
   "reportOverview": "분석 요약",
   "reportCoverage": "분석 범위",
-  "reportReviewResults": "리뷰별 결과와 근거"
+  "reportReviewResults": "리뷰별 결과와 근거",
+  "reviewOriginal": "리뷰 원문",
+  "reviewResultTitle": "이 리뷰의 분석 결과",
+  "reviewIndividualScope": "선택한 리뷰 한 건의 결과예요. 상품 전체 리포트와 분석 범위가 달라요.",
+  "reviewLoadedAggregate": "함께 불러온 리뷰의 집계"
 }

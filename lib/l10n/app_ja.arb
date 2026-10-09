@@ -573,5 +573,9 @@
   "reportPendingBody": "分析結果はまだありません。準備ができると信頼度と判断の根拠をここで確認できます。",
   "reportOverview": "分析のまとめ",
   "reportCoverage": "分析範囲",
-  "reportReviewResults": "レビュー別の結果と根拠"
+  "reportReviewResults": "レビュー別の結果と根拠",
+  "reviewOriginal": "レビュー原文",
+  "reviewResultTitle": "このレビューの分析結果",
+  "reviewIndividualScope": "選択した1件のレビューの結果です。商品のレポートとは分析範囲が異なります。",
+  "reviewLoadedAggregate": "読み込んだレビューの集計"
 }

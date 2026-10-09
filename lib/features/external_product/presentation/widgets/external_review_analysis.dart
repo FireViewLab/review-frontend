@@ -1,3 +1,6 @@
+import 'package:re_view_front/shared/widgets/review_analysis_section.dart';
+import 'package:re_view_front/shared/widgets/review_photo_view.dart';
+import 'package:re_view_front/shared/widgets/image_preview_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:re_view_front/app/theme/app_colors.dart';
 import 'package:re_view_front/app/theme/app_spacing.dart';
@@ -54,6 +57,7 @@ class ExternalReviewAnalysis extends StatelessWidget {
           onPressed: () => showProductReport(
             context,
             ExternalReviewAnalysisDetails(review: review),
+            title: l.reviewResultTitle,
           ),
         ),
       ],
@@ -66,31 +70,85 @@ class ExternalReviewAnalysisDetails extends StatelessWidget {
   const ExternalReviewAnalysisDetails({super.key, required this.review});
   final ExternalReview review;
   @override
-  Widget build(BuildContext context) => Column(
-    crossAxisAlignment: CrossAxisAlignment.start,
-    children: [
-      SelectableText(review.content),
-      const SizedBox(height: AppSpacing.sm),
-      _ResultBadges(review: review),
-      if (review.reasons.isNotEmpty) ...[
-        const SizedBox(height: AppSpacing.sm),
+  Widget build(BuildContext context) {
+    final l = AppLocalizations.of(context);
+    final images = validReviewImages(review.images);
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
         Text(
-          AppLocalizations.of(context).reportReasons,
-          style: Theme.of(context).textTheme.titleSmall,
-        ),
-        for (final reason in review.reasons)
-          Padding(
-            padding: const EdgeInsets.symmetric(vertical: AppSpacing.xxs),
-            child: SelectableText('• $reason'),
+          l.reviewIndividualScope,
+          style: Theme.of(context).textTheme.bodySmall?.copyWith(
+            color: AppColors.textSecondary,
+            height: 1.5,
           ),
+        ),
+        const SizedBox(height: AppSpacing.md),
+        ReviewAnalysisSection(
+          title: l.reviewOriginal,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              if (review.author?.trim().isNotEmpty == true) ...[
+                Text(
+                  review.author!,
+                  style: Theme.of(context).textTheme.labelLarge,
+                ),
+                const SizedBox(height: AppSpacing.sm),
+              ],
+              SelectableText(
+                review.content,
+                style: Theme.of(
+                  context,
+                ).textTheme.bodyMedium?.copyWith(height: 1.7),
+              ),
+              if (images.isNotEmpty) ...[
+                const SizedBox(height: AppSpacing.md),
+                SizedBox(
+                  height: 80,
+                  child: ListView.separated(
+                    scrollDirection: Axis.horizontal,
+                    itemCount: images.length,
+                    separatorBuilder: (_, _) =>
+                        const SizedBox(width: AppSpacing.sm),
+                    itemBuilder: (_, index) => ImagePreviewThumbnail(
+                      imageUrls: images,
+                      index: index,
+                      size: 80,
+                    ),
+                  ),
+                ),
+              ],
+            ],
+          ),
+        ),
+        const SizedBox(height: AppSpacing.md),
+        ReviewAnalysisSection(
+          title: l.reviewResultTitle,
+          child: _ResultBadges(review: review, prominent: true),
+        ),
+        if (review.reasons.isNotEmpty) ...[
+          const SizedBox(height: AppSpacing.md),
+          ReviewAnalysisSection(
+            title: l.reportReasons,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                for (final reason in review.reasons)
+                  ReviewEvidenceText(text: reason),
+              ],
+            ),
+          ),
+        ],
       ],
-    ],
-  );
+    );
+  }
 }
 
 class _ResultBadges extends StatelessWidget {
-  const _ResultBadges({required this.review});
+  const _ResultBadges({required this.review, this.prominent = false});
   final ExternalReview review;
+  final bool prominent;
   @override
   Widget build(BuildContext context) {
     final l = AppLocalizations.of(context);
@@ -105,7 +163,17 @@ class _ResultBadges extends StatelessWidget {
       spacing: AppSpacing.sm,
       runSpacing: AppSpacing.xs,
       children: [
-        if (review.rti != null) Chip(label: Text('RTI ${review.rti}')),
+        if (review.rti != null)
+          if (prominent)
+            Text(
+              'RTI ${review.rti}',
+              style: Theme.of(context).textTheme.headlineMedium?.copyWith(
+                fontWeight: FontWeight.w800,
+                color: color,
+              ),
+            )
+          else
+            Chip(label: Text('RTI ${review.rti}')),
         if (label != null && label.isNotEmpty)
           Chip(
             label: Text(label, style: TextStyle(color: color)),

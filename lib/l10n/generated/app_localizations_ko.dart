@@ -1811,4 +1811,17 @@ class AppLocalizationsKo extends AppLocalizations {
 
   @override
   String get reportReviewResults => '리뷰별 결과와 근거';
+
+  @override
+  String get reviewOriginal => '리뷰 원문';
+
+  @override
+  String get reviewResultTitle => '이 리뷰의 분석 결과';
+
+  @override
+  String get reviewIndividualScope =>
+      '선택한 리뷰 한 건의 결과예요. 상품 전체 리포트와 분석 범위가 달라요.';
+
+  @override
+  String get reviewLoadedAggregate => '함께 불러온 리뷰의 집계';
 }
