@@ -16,7 +16,10 @@ class ProductInfoSection extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Row(
+        Wrap(
+          spacing: AppSpacing.sm,
+          runSpacing: AppSpacing.xs,
+          crossAxisAlignment: WrapCrossAlignment.center,
           children: [
             if (detail.sellerName != null && detail.sellerName!.isNotEmpty)
               Text(
@@ -30,7 +33,6 @@ class ProductInfoSection extends StatelessWidget {
               const SizedBox(width: AppSpacing.xs),
               _OfficialBadge(),
             ],
-            const Spacer(),
             detail.avgRti == null
                 ? const Text('분석 전')
                 : _RtiBadgeLarge(
@@ -44,11 +46,11 @@ class ProductInfoSection extends StatelessWidget {
           detail.name,
           style: Theme.of(context).textTheme.headlineSmall?.copyWith(
             color: AppColors.textPrimary,
-            fontWeight: FontWeight.w900,
-            height: 1.3,
+            fontWeight: FontWeight.w700,
+            height: 1.35,
           ),
         ),
-        const SizedBox(height: AppSpacing.xs),
+        const SizedBox(height: AppSpacing.sm),
         _RatingRow(detail: detail),
         const SizedBox(height: AppSpacing.md),
         _PriceRow(detail: detail),
