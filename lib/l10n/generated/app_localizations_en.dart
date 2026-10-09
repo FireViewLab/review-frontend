@@ -1881,4 +1881,106 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get reviewLoadedAggregate => 'Aggregate of loaded reviews';
+
+  @override
+  String get evidenceRepetitionLabel => 'Repeated wording';
+
+  @override
+  String get evidenceRepetitionBody => 'The same wording appears repeatedly.';
+
+  @override
+  String get evidenceShortLabel => 'Short review';
+
+  @override
+  String get evidenceShortBody =>
+      'The review is short and provides limited information.';
+
+  @override
+  String get evidenceExclamationLabel => 'Frequent exclamation marks';
+
+  @override
+  String get evidenceExclamationBody => 'Many exclamation marks are used.';
+
+  @override
+  String get evidencePositiveLabel => 'Strong positive wording';
+
+  @override
+  String get evidencePositiveBody =>
+      'Strong positive wording was detected. This alone does not establish advertising.';
+
+  @override
+  String get evidencePurchaseLabel => 'Purchase not verified';
+
+  @override
+  String get evidencePurchaseBody =>
+      'This review does not have a verified purchase.';
+
+  @override
+  String get evidenceNewAccountLabel => 'New-account review';
+
+  @override
+  String get evidenceNewAccountBody =>
+      'The account was recently created when the review was posted.';
+
+  @override
+  String get evidenceDailyLabel => 'Multiple reviews in one day';
+
+  @override
+  String get evidenceDailyBody =>
+      'The same author posted multiple reviews in one day.';
+
+  @override
+  String get evidenceSimilarLabel => 'Similar review wording';
+
+  @override
+  String get evidenceSimilarBody =>
+      'Other reviews with similar wording were found. Similarity alone does not establish manipulation.';
+
+  @override
+  String get evidenceClusterLabel => 'Group of similar reviews';
+
+  @override
+  String get evidenceClusterBody =>
+      'A group of reviews with similar wording was found. Manipulation has not been established.';
+
+  @override
+  String get evidenceQualityLabel => 'Low content-quality score';
+
+  @override
+  String get evidenceQualityBody =>
+      'The review received a low content-quality score.';
+
+  @override
+  String get evidenceUnknownPurchaseLabel => 'Purchase status unknown';
+
+  @override
+  String get evidenceUnknownPurchaseBody =>
+      'Purchase status cannot be determined from the supplied information.';
+
+  @override
+  String get evidenceTrialLabel => 'Possible trial or free sample';
+
+  @override
+  String get evidenceTrialBody =>
+      'The review may relate to a trial or free sample.';
+
+  @override
+  String get evidenceNoImageLabel => 'No attached photo';
+
+  @override
+  String get evidenceNoImageBody => 'No photo is attached to the review.';
+
+  @override
+  String get evidenceRepurchaseLabel => 'Repurchase signal';
+
+  @override
+  String get evidenceRepurchaseBody =>
+      'Information indicating a repurchase was found.';
+
+  @override
+  String get evidenceUnknownLabel => 'Additional analysis evidence';
+
+  @override
+  String get evidenceUnknownBody =>
+      'Additional evidence was supplied, but a description is not yet available.';
 }

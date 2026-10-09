@@ -1,3 +1,4 @@
+import 'package:re_view_front/shared/presentation/review_evidence_formatter.dart';
 import 'package:flutter/material.dart';
 import 'package:re_view_front/app/theme/app_colors.dart';
 import 'package:re_view_front/app/theme/app_spacing.dart';
@@ -58,7 +59,7 @@ class ReviewEvidenceText extends StatelessWidget {
       borderRadius: AppRadius.medium,
     ),
     child: SelectableText(
-      text,
+      ReviewEvidenceFormatter.text(context, text, detailed: true),
       style: Theme.of(context).textTheme.bodyMedium?.copyWith(
         color: AppColors.textPrimary,
         height: 1.65,

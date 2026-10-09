@@ -3557,6 +3557,186 @@ abstract class AppLocalizations {
   /// In ko, this message translates to:
   /// **'함께 불러온 리뷰의 집계'**
   String get reviewLoadedAggregate;
+
+  /// No description provided for @evidenceRepetitionLabel.
+  ///
+  /// In ko, this message translates to:
+  /// **'반복 표현'**
+  String get evidenceRepetitionLabel;
+
+  /// No description provided for @evidenceRepetitionBody.
+  ///
+  /// In ko, this message translates to:
+  /// **'같은 표현이 반복해서 사용됐어요.'**
+  String get evidenceRepetitionBody;
+
+  /// No description provided for @evidenceShortLabel.
+  ///
+  /// In ko, this message translates to:
+  /// **'짧은 리뷰'**
+  String get evidenceShortLabel;
+
+  /// No description provided for @evidenceShortBody.
+  ///
+  /// In ko, this message translates to:
+  /// **'리뷰 내용이 짧아 확인할 정보가 적어요.'**
+  String get evidenceShortBody;
+
+  /// No description provided for @evidenceExclamationLabel.
+  ///
+  /// In ko, this message translates to:
+  /// **'잦은 느낌표'**
+  String get evidenceExclamationLabel;
+
+  /// No description provided for @evidenceExclamationBody.
+  ///
+  /// In ko, this message translates to:
+  /// **'느낌표가 많이 사용됐어요.'**
+  String get evidenceExclamationBody;
+
+  /// No description provided for @evidencePositiveLabel.
+  ///
+  /// In ko, this message translates to:
+  /// **'강한 긍정 표현'**
+  String get evidencePositiveLabel;
+
+  /// No description provided for @evidencePositiveBody.
+  ///
+  /// In ko, this message translates to:
+  /// **'강한 긍정 표현이 감지됐어요. 이것만으로 광고를 뜻하지는 않아요.'**
+  String get evidencePositiveBody;
+
+  /// No description provided for @evidencePurchaseLabel.
+  ///
+  /// In ko, this message translates to:
+  /// **'구매 인증 미확인'**
+  String get evidencePurchaseLabel;
+
+  /// No description provided for @evidencePurchaseBody.
+  ///
+  /// In ko, this message translates to:
+  /// **'구매 인증이 확인되지 않은 리뷰예요.'**
+  String get evidencePurchaseBody;
+
+  /// No description provided for @evidenceNewAccountLabel.
+  ///
+  /// In ko, this message translates to:
+  /// **'가입 초기 작성'**
+  String get evidenceNewAccountLabel;
+
+  /// No description provided for @evidenceNewAccountBody.
+  ///
+  /// In ko, this message translates to:
+  /// **'리뷰 작성 당시 가입한 지 얼마 되지 않은 계정이었어요.'**
+  String get evidenceNewAccountBody;
+
+  /// No description provided for @evidenceDailyLabel.
+  ///
+  /// In ko, this message translates to:
+  /// **'하루에 여러 리뷰'**
+  String get evidenceDailyLabel;
+
+  /// No description provided for @evidenceDailyBody.
+  ///
+  /// In ko, this message translates to:
+  /// **'같은 작성자가 하루에 여러 리뷰를 작성했어요.'**
+  String get evidenceDailyBody;
+
+  /// No description provided for @evidenceSimilarLabel.
+  ///
+  /// In ko, this message translates to:
+  /// **'비슷한 리뷰 내용'**
+  String get evidenceSimilarLabel;
+
+  /// No description provided for @evidenceSimilarBody.
+  ///
+  /// In ko, this message translates to:
+  /// **'내용이 비슷한 다른 리뷰가 확인됐어요. 유사성만으로 조작을 단정하지 않아요.'**
+  String get evidenceSimilarBody;
+
+  /// No description provided for @evidenceClusterLabel.
+  ///
+  /// In ko, this message translates to:
+  /// **'유사 리뷰 묶음'**
+  String get evidenceClusterLabel;
+
+  /// No description provided for @evidenceClusterBody.
+  ///
+  /// In ko, this message translates to:
+  /// **'내용이 서로 비슷한 리뷰 묶음이 확인됐어요. 조작 여부가 확정된 것은 아니에요.'**
+  String get evidenceClusterBody;
+
+  /// No description provided for @evidenceQualityLabel.
+  ///
+  /// In ko, this message translates to:
+  /// **'낮은 내용 품질 점수'**
+  String get evidenceQualityLabel;
+
+  /// No description provided for @evidenceQualityBody.
+  ///
+  /// In ko, this message translates to:
+  /// **'리뷰 내용의 품질 점수가 낮게 평가됐어요.'**
+  String get evidenceQualityBody;
+
+  /// No description provided for @evidenceUnknownPurchaseLabel.
+  ///
+  /// In ko, this message translates to:
+  /// **'구매 여부 불명확'**
+  String get evidenceUnknownPurchaseLabel;
+
+  /// No description provided for @evidenceUnknownPurchaseBody.
+  ///
+  /// In ko, this message translates to:
+  /// **'제공된 정보로는 구매 여부를 확인할 수 없어요.'**
+  String get evidenceUnknownPurchaseBody;
+
+  /// No description provided for @evidenceTrialLabel.
+  ///
+  /// In ko, this message translates to:
+  /// **'체험·무상 제공 가능성'**
+  String get evidenceTrialLabel;
+
+  /// No description provided for @evidenceTrialBody.
+  ///
+  /// In ko, this message translates to:
+  /// **'체험단 또는 무상 제공 리뷰일 가능성이 제시됐어요.'**
+  String get evidenceTrialBody;
+
+  /// No description provided for @evidenceNoImageLabel.
+  ///
+  /// In ko, this message translates to:
+  /// **'첨부 사진 없음'**
+  String get evidenceNoImageLabel;
+
+  /// No description provided for @evidenceNoImageBody.
+  ///
+  /// In ko, this message translates to:
+  /// **'리뷰에 첨부된 사진이 없어요.'**
+  String get evidenceNoImageBody;
+
+  /// No description provided for @evidenceRepurchaseLabel.
+  ///
+  /// In ko, this message translates to:
+  /// **'재구매 신호'**
+  String get evidenceRepurchaseLabel;
+
+  /// No description provided for @evidenceRepurchaseBody.
+  ///
+  /// In ko, this message translates to:
+  /// **'재구매를 나타내는 정보가 확인됐어요.'**
+  String get evidenceRepurchaseBody;
+
+  /// No description provided for @evidenceUnknownLabel.
+  ///
+  /// In ko, this message translates to:
+  /// **'추가 분석 근거'**
+  String get evidenceUnknownLabel;
+
+  /// No description provided for @evidenceUnknownBody.
+  ///
+  /// In ko, this message translates to:
+  /// **'추가 근거가 제공됐지만 아직 설명 문구를 지원하지 않아요.'**
+  String get evidenceUnknownBody;
 }
 
 class _AppLocalizationsDelegate

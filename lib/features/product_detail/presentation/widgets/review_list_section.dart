@@ -1,3 +1,4 @@
+import 'package:re_view_front/shared/presentation/review_evidence_formatter.dart';
 import 'package:re_view_front/shared/widgets/review_photo_view.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:re_view_front/features/settings/domain/entities/settings_data.dart';
@@ -488,9 +489,10 @@ class ReviewCard extends StatelessWidget {
                 Wrap(
                   spacing: AppSpacing.xs,
                   runSpacing: AppSpacing.xs,
-                  children: review.reasons
-                      .map((r) => _ReasonChip(label: r, color: rtiColor))
-                      .toList(),
+                  children: ReviewEvidenceFormatter.list(
+                    context,
+                    review.reasons,
+                  ).map((r) => _ReasonChip(label: r, color: rtiColor)).toList(),
                 ),
               ],
               if (images.isNotEmpty) ...[

@@ -1824,4 +1824,96 @@ class AppLocalizationsKo extends AppLocalizations {
 
   @override
   String get reviewLoadedAggregate => '함께 불러온 리뷰의 집계';
+
+  @override
+  String get evidenceRepetitionLabel => '반복 표현';
+
+  @override
+  String get evidenceRepetitionBody => '같은 표현이 반복해서 사용됐어요.';
+
+  @override
+  String get evidenceShortLabel => '짧은 리뷰';
+
+  @override
+  String get evidenceShortBody => '리뷰 내용이 짧아 확인할 정보가 적어요.';
+
+  @override
+  String get evidenceExclamationLabel => '잦은 느낌표';
+
+  @override
+  String get evidenceExclamationBody => '느낌표가 많이 사용됐어요.';
+
+  @override
+  String get evidencePositiveLabel => '강한 긍정 표현';
+
+  @override
+  String get evidencePositiveBody => '강한 긍정 표현이 감지됐어요. 이것만으로 광고를 뜻하지는 않아요.';
+
+  @override
+  String get evidencePurchaseLabel => '구매 인증 미확인';
+
+  @override
+  String get evidencePurchaseBody => '구매 인증이 확인되지 않은 리뷰예요.';
+
+  @override
+  String get evidenceNewAccountLabel => '가입 초기 작성';
+
+  @override
+  String get evidenceNewAccountBody => '리뷰 작성 당시 가입한 지 얼마 되지 않은 계정이었어요.';
+
+  @override
+  String get evidenceDailyLabel => '하루에 여러 리뷰';
+
+  @override
+  String get evidenceDailyBody => '같은 작성자가 하루에 여러 리뷰를 작성했어요.';
+
+  @override
+  String get evidenceSimilarLabel => '비슷한 리뷰 내용';
+
+  @override
+  String get evidenceSimilarBody =>
+      '내용이 비슷한 다른 리뷰가 확인됐어요. 유사성만으로 조작을 단정하지 않아요.';
+
+  @override
+  String get evidenceClusterLabel => '유사 리뷰 묶음';
+
+  @override
+  String get evidenceClusterBody =>
+      '내용이 서로 비슷한 리뷰 묶음이 확인됐어요. 조작 여부가 확정된 것은 아니에요.';
+
+  @override
+  String get evidenceQualityLabel => '낮은 내용 품질 점수';
+
+  @override
+  String get evidenceQualityBody => '리뷰 내용의 품질 점수가 낮게 평가됐어요.';
+
+  @override
+  String get evidenceUnknownPurchaseLabel => '구매 여부 불명확';
+
+  @override
+  String get evidenceUnknownPurchaseBody => '제공된 정보로는 구매 여부를 확인할 수 없어요.';
+
+  @override
+  String get evidenceTrialLabel => '체험·무상 제공 가능성';
+
+  @override
+  String get evidenceTrialBody => '체험단 또는 무상 제공 리뷰일 가능성이 제시됐어요.';
+
+  @override
+  String get evidenceNoImageLabel => '첨부 사진 없음';
+
+  @override
+  String get evidenceNoImageBody => '리뷰에 첨부된 사진이 없어요.';
+
+  @override
+  String get evidenceRepurchaseLabel => '재구매 신호';
+
+  @override
+  String get evidenceRepurchaseBody => '재구매를 나타내는 정보가 확인됐어요.';
+
+  @override
+  String get evidenceUnknownLabel => '추가 분석 근거';
+
+  @override
+  String get evidenceUnknownBody => '추가 근거가 제공됐지만 아직 설명 문구를 지원하지 않아요.';
 }
