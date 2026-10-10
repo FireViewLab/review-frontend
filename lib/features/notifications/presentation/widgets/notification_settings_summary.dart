@@ -64,6 +64,7 @@ class NotificationSettingsSummary extends ConsumerWidget {
               ),
           ],
         ),
+        const Text('위험 변화 자동 감시는 서버 연동이 필요해요. 수신 설정을 켜는 것만으로 감시가 시작되지는 않아요.'),
         const Text('알림함에 저장된 알림을 확인해요. 브라우저 푸시·이메일·문자는 지원하지 않아요.'),
       ],
     );

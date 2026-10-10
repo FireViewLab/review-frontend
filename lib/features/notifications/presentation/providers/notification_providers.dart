@@ -1,3 +1,4 @@
+import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:re_view_front/core/providers/core_providers.dart';
 import 'package:re_view_front/features/notifications/data/datasources/notification_remote_data_source.dart';
@@ -29,9 +30,14 @@ final unreadNotificationCountProvider =
     );
 
 class UnreadNotificationCount extends AsyncNotifier<int> {
+  DateTime? _requestedAt;
+
   @override
   Future<int> build() async {
     if (!ref.watch(authSessionProvider).isLoggedIn) return 0;
+    final listener = AppLifecycleListener(onResume: refreshIfStale);
+    ref.onDispose(listener.dispose);
+    _requestedAt = DateTime.now();
     final result = await ref
         .read(notificationRepositoryProvider)
         .getUnreadCount();
@@ -40,6 +46,18 @@ class UnreadNotificationCount extends AsyncNotifier<int> {
       success: (count) => count,
       failure: (failure) => throw failure,
     );
+  }
+
+  /// Event-driven refresh only. Never create a background polling timer.
+  void refreshIfStale() {
+    if (!ref.mounted || !ref.read(isLoggedInProvider) || state.isLoading) {
+      return;
+    }
+    final requested = _requestedAt;
+    if (requested == null ||
+        DateTime.now().difference(requested) >= const Duration(minutes: 1)) {
+      synchronize();
+    }
   }
 
   void adjust(int delta) {
