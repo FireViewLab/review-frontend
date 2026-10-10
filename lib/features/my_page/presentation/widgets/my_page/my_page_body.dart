@@ -1,3 +1,4 @@
+import 'package:re_view_front/features/price_watch/presentation/widgets/price_watch_section.dart';
 import 'package:re_view_front/features/my_page/presentation/widgets/my_page/warning_products_section.dart';
 import 'package:re_view_front/features/wishlist/presentation/providers/wishlist_providers.dart';
 import 'package:re_view_front/features/recent_products/presentation/widgets/recent_products_section.dart';
@@ -118,6 +119,8 @@ class MyPageBody extends StatelessWidget {
         ),
         const SizedBox(height: AppSpacing.xl),
         const WarningProductsSection(),
+        const SizedBox(height: AppSpacing.xl),
+        const PriceWatchSection(),
         const SizedBox(height: AppSpacing.xl),
         MyPageResponsiveTwoColumn(
           left: KeyedSubtree(

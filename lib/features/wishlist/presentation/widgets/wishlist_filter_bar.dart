@@ -77,7 +77,22 @@ class WishlistFilterBar extends StatelessWidget {
                           ? priceDropCount
                           : null,
                       selected: selectedFilter == filter,
-                      onTap: () => onFilterSelected(filter),
+                      onTap: () {
+                        if (filter == WishlistFilterOption.priceDrop &&
+                            !items.any(
+                              (item) => item.hasPriceDropInformation,
+                            )) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(
+                              content: Text(
+                                '서버에서 가격하락 비교 정보를 제공하지 않고 있어요. 가격이 변하지 않았다는 뜻은 아니에요.',
+                              ),
+                            ),
+                          );
+                          return;
+                        }
+                        onFilterSelected(filter);
+                      },
                     ),
                   ),
               ],

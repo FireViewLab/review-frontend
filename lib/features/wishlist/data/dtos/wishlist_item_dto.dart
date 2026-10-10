@@ -17,6 +17,7 @@ class WishlistItemDto {
     required this.avgRating,
     required this.isPriceDrop,
     required this.isNewAlert,
+    this.priceDropStatus,
     this.platform,
     this.savedAt,
     this.summary,
@@ -54,14 +55,20 @@ class WishlistItemDto {
       rtiColor: _readNullableString(json, ['rtiColor', 'color']),
       reviewCount: _readNullableInt(json, ['reviewCount', 'review_count']),
       avgRating: _readDouble(json, ['avgRating', 'rating', 'starRating']),
-      isPriceDrop: json['isPriceDrop'] == true || json['priceDrop'] == true,
+      priceDropStatus: _priceDrop(json),
+      isPriceDrop: _priceDrop(json) ?? false,
       isNewAlert: json['isNewAlert'] == true || json['newAlert'] == true,
       platform: _readNullableString(json, [
         'platform',
         'storeName',
         'brandName',
       ]),
-      savedAt: _readDateTime(json, ['savedAt', 'createdAt', 'wishlistAt']),
+      savedAt: _readDateTime(json, [
+        'savedAt',
+        'addedAt',
+        'createdAt',
+        'wishlistAt',
+      ]),
     );
   }
 
@@ -82,6 +89,7 @@ class WishlistItemDto {
   final String? rtiColor;
   final int? reviewCount;
   final double? avgRating;
+  final bool? priceDropStatus;
   final bool isPriceDrop;
   final bool isNewAlert;
   final String? platform;
@@ -105,6 +113,7 @@ class WishlistItemDto {
       rtiColor: rtiColor,
       reviewCount: reviewCount,
       avgRating: avgRating,
+      priceDropStatus: priceDropStatus,
       isPriceDrop: isPriceDrop,
       isNewAlert: isNewAlert,
       platform: platform,
@@ -155,4 +164,9 @@ DateTime? _readDateTime(Map<String, dynamic> json, List<String> keys) {
     }
   }
   return null;
+}
+
+bool? _priceDrop(Map<String, dynamic> json) {
+  final value = json['isPriceDrop'] ?? json['priceDrop'];
+  return value is bool ? value : null;
 }

@@ -15,6 +15,7 @@ class WishlistItem {
     required this.avgRating,
     required this.isPriceDrop,
     required this.isNewAlert,
+    this.priceDropStatus,
     this.platform,
     this.savedAt,
     this.summary,
@@ -61,6 +62,9 @@ class WishlistItem {
       avgRti! <= 100 &&
       const {'SUSPICIOUS', 'DANGER'}.contains(rtiGrade?.trim().toUpperCase());
 
+  /// Null means the server did not provide a comparison, not a confirmed false.
+  final bool? priceDropStatus;
+  bool get hasPriceDropInformation => priceDropStatus != null || isPriceDrop;
   final bool isPriceDrop;
   final bool isNewAlert;
   final String? platform;
