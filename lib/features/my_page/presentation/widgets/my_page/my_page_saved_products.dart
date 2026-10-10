@@ -5,7 +5,6 @@ import 'package:re_view_front/app/theme/app_colors.dart';
 import 'package:re_view_front/app/theme/app_spacing.dart';
 import 'package:re_view_front/features/wishlist/domain/entities/wishlist_item.dart';
 import 'package:re_view_front/l10n/generated/app_localizations.dart';
-import 'package:re_view_front/shared/extensions/context_extensions.dart';
 import 'package:re_view_front/shared/widgets/app_network_image.dart';
 import 'package:re_view_front/shared/widgets/loading_view.dart';
 import 'package:re_view_front/features/my_page/presentation/widgets/my_page/my_page_common.dart';
@@ -39,41 +38,43 @@ class MyPageSavedProductsSection extends StatelessWidget {
       );
     }
 
-    final columns = context.viewportSize.width < 760
-        ? 1
-        : context.viewportSize.width < 1120
-        ? 2
-        : 4;
     final displayItems = items.take(4).toList(growable: false);
-
-    return GridView.builder(
-      itemCount: displayItems.length,
-      shrinkWrap: true,
-      physics: const NeverScrollableScrollPhysics(),
-      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisCount: columns,
-        mainAxisExtent: 166,
-        crossAxisSpacing: AppSpacing.md,
-        mainAxisSpacing: AppSpacing.md,
-      ),
-      itemBuilder: (context, index) {
-        final item = displayItems[index];
-        return MyPageCompactProductCard(
-          title: item.name,
-          subtitle:
-              item.platform ??
-              item.categoryDisplayName ??
-              AppLocalizations.of(context).externalUnanalyzed,
-          imageUrl: item.imageUrl,
-          price: item.price,
-          rating: item.avgRating,
-          reviewCount: item.reviewCount,
-          rtiLabel: item.avgRti == null
-              ? AppLocalizations.of(context).externalUnanalyzed
-              : 'RTI ${item.avgRti!.round()}',
-          onTap: () => onProductTap(item),
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        final columns = constraints.maxWidth < 600
+            ? 1
+            : constraints.maxWidth < 1000
+            ? 2
+            : 4;
+        final width =
+            (constraints.maxWidth - (columns - 1) * AppSpacing.md) / columns;
+        return Wrap(
+          spacing: AppSpacing.md,
+          runSpacing: AppSpacing.md,
+          children: [
+            for (final item in displayItems)
+              SizedBox(width: width, child: _card(context, item)),
+          ],
         );
       },
+    );
+  }
+
+  Widget _card(BuildContext context, WishlistItem item) {
+    return MyPageCompactProductCard(
+      title: item.name,
+      subtitle:
+          item.platform ??
+          item.categoryDisplayName ??
+          AppLocalizations.of(context).externalUnanalyzed,
+      imageUrl: item.imageUrl,
+      price: item.price,
+      rating: item.avgRating,
+      reviewCount: item.reviewCount,
+      rtiLabel: item.avgRti == null
+          ? AppLocalizations.of(context).externalUnanalyzed
+          : 'RTI ${item.avgRti!.round()}',
+      onTap: () => onProductTap(item),
     );
   }
 }
@@ -105,6 +106,7 @@ class MyPageCompactProductCard extends StatelessWidget {
       onTap: onTap,
       padding: const EdgeInsets.all(AppSpacing.md),
       child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           ClipRRect(
             borderRadius: BorderRadius.circular(8),
@@ -147,18 +149,24 @@ class MyPageCompactProductCard extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(height: AppSpacing.xs),
-                Row(
+                Wrap(
+                  spacing: 4,
+                  runSpacing: 4,
+                  crossAxisAlignment: WrapCrossAlignment.center,
                   children: [
-                    const Icon(Icons.star, color: Color(0xFFF59E0B), size: 14),
-                    const SizedBox(width: 2),
-                    Expanded(
-                      child: Text(
+                    if (rating != null)
+                      const Icon(
+                        Icons.star,
+                        color: Color(0xFFF59E0B),
+                        size: 14,
+                      ),
+                    if (rating != null || reviewCount != null)
+                      Text(
                         '${rating?.toStringAsFixed(1) ?? ""}${reviewCount == null ? "" : " ($reviewCount)"}',
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
                         style: Theme.of(context).textTheme.labelSmall,
                       ),
-                    ),
                     if (rtiLabel.isNotEmpty)
                       Text(
                         rtiLabel,

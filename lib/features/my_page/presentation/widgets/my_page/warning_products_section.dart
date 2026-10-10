@@ -5,14 +5,13 @@ import 'package:re_view_front/features/wishlist/domain/entities/wishlist_item.da
 import 'package:re_view_front/features/wishlist/presentation/providers/wishlist_providers.dart';
 import 'package:re_view_front/features/wishlist/presentation/view_models/wishlist_state.dart';
 import 'my_page_saved_products.dart';
+import 'personal_products_page.dart';
+import 'package:re_view_front/app/router/route_paths.dart';
 
 const _scope = '찜한 상품 중 서버가 의심·위험 등급으로 분석한 상품이에요. 분석 전 상품은 포함하지 않아요.';
 
-void showWarningProducts(BuildContext context) => showDialog<void>(
-  context: context,
-  builder: (context) =>
-      const Dialog(insetPadding: EdgeInsets.all(16), child: _WarningList()),
-);
+void showWarningProducts(BuildContext context) =>
+    context.push(RoutePaths.warningProducts);
 
 class WarningProductsSection extends ConsumerWidget {
   const WarningProductsSection({super.key});
@@ -47,13 +46,14 @@ class WarningProductsSection extends ConsumerWidget {
   }
 }
 
-class _WarningList extends ConsumerStatefulWidget {
-  const _WarningList();
+class WarningProductsPage extends ConsumerStatefulWidget {
+  const WarningProductsPage({super.key});
   @override
-  ConsumerState<_WarningList> createState() => _WarningListState();
+  ConsumerState<WarningProductsPage> createState() =>
+      WarningProductsPageState();
 }
 
-class _WarningListState extends ConsumerState<_WarningList> {
+class WarningProductsPageState extends ConsumerState<WarningProductsPage> {
   String? _grade;
   @override
   Widget build(BuildContext context) {
@@ -73,111 +73,74 @@ class _WarningListState extends ConsumerState<_WarningList> {
         : state is WishlistSuccess
         ? state.errorMessage
         : null;
-    return SizedBox(
-      width: 720,
-      height: MediaQuery.sizeOf(context).height * .8,
-      child: Column(
+    return PersonalProductsPage(
+      title: '주의 상품',
+      scope: _scope,
+      onRefresh: () => ref.read(wishlistViewModelProvider.notifier).load(),
+      controls: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          Padding(
-            padding: const EdgeInsets.all(16),
-            child: Row(
-              children: [
-                const Expanded(
-                  child: Text(
-                    '주의 상품',
-                    style: TextStyle(fontWeight: FontWeight.w700),
-                  ),
+          Wrap(
+            spacing: 8,
+            runSpacing: 8,
+            children: [
+              for (final entry in <String?, String>{
+                null: '전체 주의',
+                'SUSPICIOUS': '의심',
+                'DANGER': '위험',
+              }.entries)
+                ChoiceChip(
+                  label: Text(entry.value),
+                  selected: _grade == entry.key,
+                  onSelected: (_) => setState(() => _grade = entry.key),
                 ),
-                IconButton(
-                  tooltip: '새로고침',
-                  onPressed: () =>
-                      ref.read(wishlistViewModelProvider.notifier).load(),
-                  icon: const Icon(Icons.refresh),
-                ),
-                IconButton(
-                  tooltip: '닫기',
-                  onPressed: () => Navigator.of(context).pop(),
-                  icon: const Icon(Icons.close),
-                ),
-              ],
-            ),
-          ),
-          const Padding(
-            padding: EdgeInsets.symmetric(horizontal: 16),
-            child: Text(_scope),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(16),
-            child: Wrap(
-              spacing: 8,
-              children: [
-                for (final entry in <String?, String>{
-                  null: '전체 주의',
-                  'SUSPICIOUS': '의심',
-                  'DANGER': '위험',
-                }.entries)
-                  ChoiceChip(
-                    label: Text(entry.value),
-                    selected: _grade == entry.key,
-                    onSelected: (_) => setState(() => _grade = entry.key),
-                  ),
-              ],
-            ),
+            ],
           ),
           if (failed != null) ...[
-            Padding(padding: const EdgeInsets.all(16), child: Text(failed)),
+            Text(failed),
             TextButton(
               onPressed: () =>
                   ref.read(wishlistViewModelProvider.notifier).load(),
               child: const Text('다시 시도'),
             ),
           ],
-          Expanded(
-            child: state is WishlistLoading || state is WishlistInitial
-                ? const Center(child: CircularProgressIndicator())
-                : items.isEmpty
-                ? Center(
-                    child: Text(
-                      failed == null
-                          ? '해당 등급의 찜 상품이 없어요.'
-                          : '주의 상품을 확인할 수 없어요.',
-                    ),
-                  )
-                : ListView.builder(
-                    padding: const EdgeInsets.all(16),
-                    itemCount: items.length,
-                    itemBuilder: (context, index) {
-                      final item = items[index];
-                      return Padding(
-                        padding: const EdgeInsets.only(bottom: 12),
-                        child: SizedBox(
-                          height: 166,
-                          child: MyPageCompactProductCard(
-                            title: item.name,
-                            subtitle:
-                                item.platform ?? item.categoryDisplayName ?? '',
-                            imageUrl: item.imageUrl,
-                            price: item.price,
-                            rating: item.avgRating,
-                            reviewCount: item.reviewCount,
-                            rtiLabel:
-                                '${item.rtiGrade?.trim().toUpperCase() == 'DANGER' ? '위험' : '의심'} · RTI ${item.avgRti!.round()}',
-                            onTap: () {
-                              Navigator.of(context).pop();
-                              context.go(
-                                item.detailPath,
-                                extra: item.routeContext,
-                              );
-                            },
-                          ),
-                        ),
-                      );
-                    },
-                  ),
-          ),
         ],
       ),
+      sliver: state is WishlistLoading || state is WishlistInitial
+          ? const SliverToBoxAdapter(
+              child: Center(child: CircularProgressIndicator()),
+            )
+          : items.isEmpty
+          ? SliverToBoxAdapter(
+              child: Padding(
+                padding: const EdgeInsets.all(24),
+                child: Text(
+                  failed == null ? '해당 등급의 찜 상품이 없어요.' : '주의 상품을 확인할 수 없어요.',
+                ),
+              ),
+            )
+          : SliverList.builder(
+              itemCount: items.length,
+              itemBuilder: (context, index) {
+                final item = items[index];
+                return Padding(
+                  padding: const EdgeInsets.only(bottom: 12),
+                  child: MyPageCompactProductCard(
+                    title: item.name,
+                    subtitle: item.platform ?? item.categoryDisplayName ?? '',
+                    imageUrl: item.imageUrl,
+                    price: item.price,
+                    rating: item.avgRating,
+                    reviewCount: item.reviewCount,
+                    rtiLabel:
+                        '${item.rtiGrade?.trim().toUpperCase() == 'DANGER' ? '위험' : '의심'} · RTI ${item.avgRti!.round()}',
+                    onTap: () {
+                      context.go(item.detailPath, extra: item.routeContext);
+                    },
+                  ),
+                );
+              },
+            ),
     );
   }
 }
