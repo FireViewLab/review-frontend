@@ -1,3 +1,5 @@
+import 'package:re_view_front/features/my_page/presentation/widgets/my_page/warning_products_section.dart';
+import 'package:re_view_front/features/wishlist/presentation/providers/wishlist_providers.dart';
 import 'package:re_view_front/features/recent_products/presentation/widgets/recent_products_section.dart';
 import 'package:re_view_front/features/recent_products/presentation/providers/recent_products_providers.dart';
 // ignore_for_file: use_key_in_widget_constructors
@@ -7,8 +9,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:re_view_front/app/router/route_paths.dart';
 import 'package:re_view_front/app/theme/app_spacing.dart';
-import 'package:re_view_front/features/home/domain/entities/dashboard_product.dart';
-import 'package:re_view_front/features/home/presentation/view_models/home_dashboard_state.dart';
 import 'package:re_view_front/features/my_page/domain/entities/user_profile.dart';
 import 'package:re_view_front/features/wishlist/domain/entities/wishlist_item.dart';
 import 'package:re_view_front/features/wishlist/presentation/view_models/wishlist_state.dart';
@@ -25,7 +25,6 @@ import 'package:re_view_front/features/my_page/presentation/widgets/my_page/my_p
 class MyPageBody extends StatelessWidget {
   const MyPageBody({
     required this.profile,
-    required this.dashboardState,
     required this.wishlistState,
     required this.wishlistCount,
     required this.onProductTap,
@@ -43,9 +42,8 @@ class MyPageBody extends StatelessWidget {
   });
 
   final UserProfile profile;
-  final HomeDashboardState dashboardState;
   final WishlistState wishlistState;
-  final int wishlistCount;
+  final int? wishlistCount;
   final ValueChanged<String> onProductTap;
   final VoidCallback onWishlistTap;
   final VoidCallback onPasswordTap;
@@ -71,7 +69,7 @@ class MyPageBody extends StatelessWidget {
           builder: (context, ref, _) => MyPageStatGrid(
             wishlistCount: wishlistCount,
             recentCount: ref.watch(recentProductsProvider).asData?.value.length,
-            riskyCount: riskyProducts.length,
+            riskyCount: wishlistCount == null ? null : riskyProducts.length,
             notificationCount:
                 ref.watch(unreadNotificationCountProvider).value ?? 0,
             onWishlistTap: onWishlistTap,
@@ -91,17 +89,33 @@ class MyPageBody extends StatelessWidget {
                 onMore: onWishlistTap,
               ),
               const SizedBox(height: AppSpacing.md),
-              MyPageSavedProductsSection(
-                items: savedItems,
-                isLoading:
-                    wishlistState is WishlistLoading ||
-                    wishlistState is WishlistInitial,
-                onProductTap: (item) =>
-                    context.go(item.detailPath, extra: item.routeContext),
-              ),
+              if (wishlistState is WishlistFailure)
+                Consumer(
+                  builder: (context, ref, _) => Column(
+                    children: [
+                      Text((wishlistState as WishlistFailure).failure.message),
+                      TextButton(
+                        onPressed: () =>
+                            ref.read(wishlistViewModelProvider.notifier).load(),
+                        child: const Text('다시 시도'),
+                      ),
+                    ],
+                  ),
+                )
+              else
+                MyPageSavedProductsSection(
+                  items: savedItems,
+                  isLoading:
+                      wishlistState is WishlistLoading ||
+                      wishlistState is WishlistInitial,
+                  onProductTap: (item) =>
+                      context.go(item.detailPath, extra: item.routeContext),
+                ),
             ],
           ),
         ),
+        const SizedBox(height: AppSpacing.xl),
+        const WarningProductsSection(),
         const SizedBox(height: AppSpacing.xl),
         MyPageResponsiveTwoColumn(
           left: KeyedSubtree(
@@ -119,7 +133,7 @@ class MyPageBody extends StatelessWidget {
             key: settingsKey,
             child: MyPageTrustSummaryPanel(
               savedAverageRti: savedAverageRti,
-              riskyCount: riskyProducts.length,
+              riskyCount: wishlistCount == null ? null : riskyProducts.length,
             ),
           ),
         ),
@@ -155,12 +169,9 @@ class MyPageBody extends StatelessWidget {
     };
   }
 
-  List<DashboardProduct> get _riskyProducts {
-    return switch (dashboardState) {
-      HomeDashboardSuccess(:final dashboard) => dashboard.riskyProducts,
-      _ => const [],
-    };
-  }
+  List<WishlistItem> get _riskyProducts => _wishlistItems
+      .where((item) => item.needsAttention)
+      .toList(growable: false);
 
   double? get _savedAverageRti {
     final scoredItems = _wishlistItems.where((item) => item.avgRti != null);

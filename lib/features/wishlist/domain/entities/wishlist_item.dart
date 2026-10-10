@@ -52,6 +52,15 @@ class WishlistItem {
   final String? rtiColor;
   final int? reviewCount;
   final double? avgRating;
+
+  /// The server owns grade thresholds. An unanalysed product is never a warning.
+  bool get needsAttention =>
+      avgRti != null &&
+      avgRti!.isFinite &&
+      avgRti! >= 0 &&
+      avgRti! <= 100 &&
+      const {'SUSPICIOUS', 'DANGER'}.contains(rtiGrade?.trim().toUpperCase());
+
   final bool isPriceDrop;
   final bool isNewAlert;
   final String? platform;
