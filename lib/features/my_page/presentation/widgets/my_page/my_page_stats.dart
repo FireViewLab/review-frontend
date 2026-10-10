@@ -22,7 +22,7 @@ class MyPageStatGrid extends StatelessWidget {
   final int? wishlistCount;
   final int? recentCount;
   final int? riskyCount;
-  final int notificationCount;
+  final int? notificationCount;
   final VoidCallback onWishlistTap;
   final VoidCallback onRecentTap;
   final VoidCallback onReviewTap;
@@ -59,7 +59,7 @@ class MyPageStatGrid extends StatelessWidget {
       MyPageStatItem(
         icon: Icons.notifications_none,
         label: l10n.myPageSideNavAlerts,
-        value: notificationCount.toString(),
+        value: notificationCount?.toString() ?? '—',
         onTap: onNotificationTap,
       ),
     ];

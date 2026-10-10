@@ -70,8 +70,10 @@ class MyPageBody extends StatelessWidget {
             wishlistCount: wishlistCount,
             recentCount: ref.watch(recentProductsProvider).asData?.value.length,
             riskyCount: wishlistCount == null ? null : riskyProducts.length,
-            notificationCount:
-                ref.watch(unreadNotificationCountProvider).value ?? 0,
+            notificationCount: ref
+                .watch(unreadNotificationCountProvider)
+                .asData
+                ?.value,
             onWishlistTap: onWishlistTap,
             onRecentTap: onRecentTap,
             onReviewTap: onReviewTap,

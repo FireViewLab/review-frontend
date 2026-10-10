@@ -28,7 +28,11 @@ class NotificationsPage extends ConsumerWidget {
       body: NotificationListener<ScrollNotification>(
         // 바닥 근처까지 스크롤하면 다음 페이지를 불러온다.
         onNotification: (notification) {
-          if (notification.metrics.extentAfter < 400) vm.loadMore();
+          if (notification.depth == 0 &&
+              notification.metrics.axis == Axis.vertical &&
+              notification.metrics.extentAfter < 400) {
+            vm.loadMore();
+          }
           return false;
         },
         child: CustomScrollView(
@@ -108,25 +112,37 @@ class NotificationsPage extends ConsumerWidget {
                         child: const Text('더 보기'),
                       ),
                     const SizedBox(height: AppSpacing.lg),
-                    _Body(
-                      state: state,
-                      onRetry: vm.refresh,
-                      onTap: (notification) {
-                        vm.markRead(notification.id);
-                        final route = notificationRoute(notification.targetUrl);
-                        if (route != null) {
-                          context.push(route);
-                        } else if (notification.targetUrl != null) {
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(
-                              content: Text('이 알림의 이동 대상은 아직 지원되지 않습니다.'),
-                            ),
-                          );
-                        }
-                      },
-                    ),
                   ],
                 ),
+              ),
+            ),
+            SliverPadding(
+              padding: EdgeInsets.fromLTRB(
+                MediaQuery.sizeOf(context).width > 872
+                    ? (MediaQuery.sizeOf(context).width - 840) / 2
+                    : 16,
+                0,
+                MediaQuery.sizeOf(context).width > 872
+                    ? (MediaQuery.sizeOf(context).width - 840) / 2
+                    : 16,
+                32,
+              ),
+              sliver: _Body(
+                state: state,
+                onRetry: vm.refresh,
+                onTap: (notification) {
+                  vm.markRead(notification.id);
+                  final route = notificationRoute(notification.targetUrl);
+                  if (route != null) {
+                    context.push(route);
+                  } else if (notification.targetUrl != null) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        content: Text('이 알림의 이동 대상은 아직 지원되지 않습니다.'),
+                      ),
+                    );
+                  }
+                },
               ),
             ),
           ],
@@ -151,80 +167,78 @@ class _Body extends StatelessWidget {
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);
     if (state.isLoading && state.items.isEmpty) {
-      return SizedBox(
-        height: 320,
-        child: AppLoadingView(message: l10n.notificationsLoading),
+      return SliverToBoxAdapter(
+        child: SizedBox(
+          height: 320,
+          child: AppLoadingView(message: l10n.notificationsLoading),
+        ),
       );
     }
     if (state.errorMessage != null && state.items.isEmpty) {
-      return SizedBox(
-        height: 320,
-        child: AppErrorView(message: state.errorMessage!, onRetry: onRetry),
+      return SliverToBoxAdapter(
+        child: SizedBox(
+          height: 320,
+          child: AppErrorView(message: state.errorMessage!, onRetry: onRetry),
+        ),
       );
     }
     if (state.items.isEmpty) {
-      return Padding(
-        padding: const EdgeInsets.symmetric(vertical: AppSpacing.xxxl),
-        child: Column(
-          children: [
-            const Icon(
-              Icons.notifications_none_rounded,
-              size: 48,
-              color: AppColors.textTertiary,
-            ),
-            const SizedBox(height: AppSpacing.md),
-            Text(
-              l10n.notificationsEmpty,
-              style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                color: AppColors.textPrimary,
-                fontWeight: FontWeight.w700,
+      return SliverToBoxAdapter(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(vertical: AppSpacing.xxxl),
+          child: Column(
+            children: [
+              const Icon(
+                Icons.notifications_none_rounded,
+                size: 48,
+                color: AppColors.textTertiary,
               ),
-            ),
-            const SizedBox(height: AppSpacing.xs),
-            Text(
-              l10n.notificationsEmptyBody,
-              textAlign: TextAlign.center,
-              style: Theme.of(
-                context,
-              ).textTheme.bodyMedium?.copyWith(color: AppColors.textSecondary),
-            ),
-          ],
+              const SizedBox(height: AppSpacing.md),
+              Text(
+                l10n.notificationsEmpty,
+                style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                  color: AppColors.textPrimary,
+                  fontWeight: FontWeight.w700,
+                ),
+              ),
+              const SizedBox(height: AppSpacing.xs),
+              Text(
+                l10n.notificationsEmptyBody,
+                textAlign: TextAlign.center,
+                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                  color: AppColors.textSecondary,
+                ),
+              ),
+            ],
+          ),
         ),
       );
     }
 
-    return Container(
-      decoration: BoxDecoration(
-        color: AppColors.surface,
-        borderRadius: AppRadius.large,
-        border: Border.all(color: AppColors.border),
-      ),
-      clipBehavior: Clip.antiAlias,
-      child: Column(
-        children: [
-          for (final (index, notification) in state.items.indexed) ...[
-            if (index > 0) const Divider(height: 1, color: AppColors.border),
-            _NotificationTile(
-              notification: notification,
-              onTap: () => onTap(notification),
+    return SliverList.separated(
+      itemCount: state.items.length + (state.isLoadingMore ? 1 : 0),
+      separatorBuilder: (_, _) =>
+          const Divider(height: 1, color: AppColors.border),
+      itemBuilder: (context, index) => index == state.items.length
+          ? const Padding(
+              padding: EdgeInsets.all(16),
+              child: Center(child: CircularProgressIndicator()),
+            )
+          : _NotificationTile(
+              key: ValueKey(state.items[index].id),
+              notification: state.items[index],
+              onTap: () => onTap(state.items[index]),
             ),
-          ],
-          if (state.isLoadingMore)
-            const Padding(
-              padding: EdgeInsets.all(AppSpacing.md),
-              child: SizedBox.square(
-                dimension: 20,
-                child: CircularProgressIndicator(strokeWidth: 2),
-              ),
-            ),
-        ],
-      ),
     );
   }
 }
 
 class _NotificationTile extends StatelessWidget {
-  const _NotificationTile({required this.notification, required this.onTap});
+  const _NotificationTile({
+    super.key,
+    required this.notification,
+    required this.onTap,
+  });
 
   final AppNotification notification;
   final VoidCallback onTap;

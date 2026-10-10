@@ -29,14 +29,6 @@ class _MyPageState extends ConsumerState<MyPage> {
   final _accountKey = GlobalKey();
 
   @override
-  void initState() {
-    super.initState();
-    Future.microtask(() {
-      ref.read(wishlistViewModelProvider.notifier).load();
-    });
-  }
-
-  @override
   Widget build(BuildContext context) {
     final myPageState = ref.watch(myPageViewModelProvider);
     final wishlistState = ref.watch(wishlistViewModelProvider);
