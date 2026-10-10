@@ -35,6 +35,23 @@ class _HeroBannerCarouselState extends State<HeroBannerCarousel> {
   bool _isInteracting = false;
   bool _hovered = false;
   bool _reduceMotion = false;
+  bool _ticksEnabled = true;
+  ScrollPosition? _outerScroll;
+
+  void _onOuterScrollActivity() {
+    if (_outerScroll?.isScrollingNotifier.value == true) {
+      _autoTimer?.cancel();
+    } else {
+      _scheduleAuto();
+    }
+  }
+
+  bool get _isVisible {
+    final box = context.findRenderObject();
+    if (box is! RenderBox || !box.attached || !box.hasSize) return false;
+    final rect = box.localToGlobal(Offset.zero) & box.size;
+    return rect.overlaps(Offset.zero & MediaQuery.sizeOf(context));
+  }
 
   @override
   void initState() {
@@ -51,6 +68,13 @@ class _HeroBannerCarouselState extends State<HeroBannerCarousel> {
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
+    final outerScroll = Scrollable.maybeOf(context)?.position;
+    if (!identical(outerScroll, _outerScroll)) {
+      _outerScroll?.isScrollingNotifier.removeListener(_onOuterScrollActivity);
+      _outerScroll = outerScroll;
+      _outerScroll?.isScrollingNotifier.addListener(_onOuterScrollActivity);
+    }
+    _ticksEnabled = TickerMode.valuesOf(context).enabled;
     final reduceMotion = MediaQuery.disableAnimationsOf(context);
     if (reduceMotion && !_reduceMotion && _isMoving) {
       _moveRequest++;
@@ -82,7 +106,10 @@ class _HeroBannerCarouselState extends State<HeroBannerCarousel> {
         initialPage: _currentPage,
       );
     }
-    _scheduleAuto();
+    // Initial visibility is available only after layout. No per-pixel listener.
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (mounted) _scheduleAuto();
+    });
   }
 
   @override
@@ -162,6 +189,10 @@ class _HeroBannerCarouselState extends State<HeroBannerCarousel> {
                         final item = widget.items[_realIndexFor(index)];
                         return AnimatedBuilder(
                           animation: _controller,
+                          child: _BannerImage(
+                            item: item,
+                            onPressed: () => widget.onBannerPressed?.call(item),
+                          ),
                           builder: (context, child) {
                             final page = _controller.hasClients
                                 ? (_controller.page ?? _currentPage.toDouble())
@@ -176,6 +207,7 @@ class _HeroBannerCarouselState extends State<HeroBannerCarousel> {
                               child: _BannerCard(
                                 item: item,
                                 focus: focus,
+                                child: child!,
                                 onPressed: () =>
                                     widget.onBannerPressed?.call(item),
                               ),
@@ -269,7 +301,10 @@ class _HeroBannerCarouselState extends State<HeroBannerCarousel> {
 
   void _scheduleAuto() {
     _autoTimer?.cancel();
-    if (_isPaused ||
+    if (!_ticksEnabled ||
+        _outerScroll?.isScrollingNotifier.value == true ||
+        !_isVisible ||
+        _isPaused ||
         _reduceMotion ||
         _hovered ||
         _isInteracting ||
@@ -278,7 +313,12 @@ class _HeroBannerCarouselState extends State<HeroBannerCarousel> {
       return;
     }
     _autoTimer = Timer(const Duration(seconds: 5), () {
-      if (mounted) _moveBy(1);
+      if (mounted &&
+          _ticksEnabled &&
+          _outerScroll?.isScrollingNotifier.value != true &&
+          _isVisible) {
+        _moveBy(1);
+      }
     });
   }
 
@@ -290,6 +330,7 @@ class _HeroBannerCarouselState extends State<HeroBannerCarousel> {
   void dispose() {
     _moveRequest++;
     _autoTimer?.cancel();
+    _outerScroll?.isScrollingNotifier.removeListener(_onOuterScrollActivity);
     _controller.dispose();
     super.dispose();
   }
@@ -418,17 +459,17 @@ class _BannerCard extends StatelessWidget {
   const _BannerCard({
     required this.item,
     required this.focus,
+    required this.child,
     required this.onPressed,
   });
 
   final HomeBannerData item;
   final double focus;
+  final Widget child;
   final VoidCallback onPressed;
 
   @override
   Widget build(BuildContext context) {
-    final useCompactText = context.viewportSize.width < 1280;
-
     return Semantics(
       button: true,
       label: '${item.title} ${item.emphasis}',
@@ -452,115 +493,110 @@ class _BannerCard extends StatelessWidget {
           ),
           child: ClipRRect(
             borderRadius: BorderRadius.circular(24),
-            child: item.imageUrl != null
-                ? AppNetworkImage(
-                    url: context.isMobile
-                        ? item.mobileImageUrl ?? item.imageUrl!
-                        : item.imageUrl!,
-                    fit: BoxFit.cover,
-                    alignment: Alignment.center,
-                    placeholderIcon: Icons.image_not_supported_outlined,
-                  )
-                : Image.asset(
-                    item.assetPath!,
-                    fit: BoxFit.cover,
-                    alignment: Alignment.center,
-                    errorBuilder: (context, error, stackTrace) =>
-                        context.isMobile
-                        ? Padding(
-                            padding: const EdgeInsets.all(12),
-                            child: Center(
-                              child: Text(
-                                '${item.title}\n${item.emphasis}',
-                                textAlign: TextAlign.center,
-                                style: Theme.of(context).textTheme.titleSmall,
-                              ),
-                            ),
-                          )
-                        : Padding(
-                            padding: const EdgeInsets.all(38),
-                            child: Row(
-                              children: [
-                                Expanded(
-                                  flex: 11,
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Text(
-                                        item.title,
-                                        style: Theme.of(context)
-                                            .textTheme
-                                            .titleMedium
-                                            ?.copyWith(
-                                              color: AppColors.textPrimary,
-                                              fontWeight: FontWeight.w800,
-                                            ),
-                                      ),
-                                      const SizedBox(height: AppSpacing.xs),
-                                      Text(
-                                        item.emphasis,
-                                        style:
-                                            (context.isMobile || useCompactText
-                                                    ? Theme.of(
-                                                        context,
-                                                      ).textTheme.headlineSmall
-                                                    : Theme.of(
-                                                        context,
-                                                      ).textTheme.displayMedium)
-                                                ?.copyWith(
-                                                  color: item.accentColor,
-                                                  fontWeight: FontWeight.w900,
-                                                ),
-                                        maxLines: 2,
-                                        overflow: TextOverflow.ellipsis,
-                                      ),
-                                      const SizedBox(height: AppSpacing.md),
-                                      Text(
-                                        item.description,
-                                        style: Theme.of(context)
-                                            .textTheme
-                                            .bodyMedium
-                                            ?.copyWith(
-                                              color: AppColors.textSecondary,
-                                            ),
-                                      ),
-                                      const SizedBox(height: AppSpacing.lg),
-                                      OutlinedButton(
-                                        onPressed: onPressed,
-                                        child: Row(
-                                          mainAxisSize: MainAxisSize.min,
-                                          children: [
-                                            Text(item.ctaLabel),
-                                            const SizedBox(
-                                              width: AppSpacing.xxs,
-                                            ),
-                                            const Icon(
-                                              Icons.chevron_right,
-                                              size: 18,
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                                if (!context.isMobile) ...[
-                                  const SizedBox(width: AppSpacing.md),
-                                  Expanded(
-                                    flex: 8,
-                                    child: _BannerVisual(item: item),
-                                  ),
-                                ],
-                              ],
-                            ),
-                          ),
-                  ),
+            child: child,
           ),
         ),
       ),
     );
+  }
+}
+
+class _BannerImage extends StatelessWidget {
+  const _BannerImage({required this.item, required this.onPressed});
+  final HomeBannerData item;
+  final VoidCallback onPressed;
+  @override
+  Widget build(BuildContext context) {
+    final useCompactText = context.viewportSize.width < 1280;
+    return item.imageUrl != null
+        ? AppNetworkImage(
+            url: context.isMobile
+                ? item.mobileImageUrl ?? item.imageUrl!
+                : item.imageUrl!,
+            fit: BoxFit.cover,
+            alignment: Alignment.center,
+            placeholderIcon: Icons.image_not_supported_outlined,
+          )
+        : Image.asset(
+            item.assetPath!,
+            fit: BoxFit.cover,
+            alignment: Alignment.center,
+            errorBuilder: (context, error, stackTrace) => context.isMobile
+                ? Padding(
+                    padding: const EdgeInsets.all(12),
+                    child: Center(
+                      child: Text(
+                        '${item.title}\n${item.emphasis}',
+                        textAlign: TextAlign.center,
+                        style: Theme.of(context).textTheme.titleSmall,
+                      ),
+                    ),
+                  )
+                : Padding(
+                    padding: const EdgeInsets.all(38),
+                    child: Row(
+                      children: [
+                        Expanded(
+                          flex: 11,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text(
+                                item.title,
+                                style: Theme.of(context).textTheme.titleMedium
+                                    ?.copyWith(
+                                      color: AppColors.textPrimary,
+                                      fontWeight: FontWeight.w800,
+                                    ),
+                              ),
+                              const SizedBox(height: AppSpacing.xs),
+                              Text(
+                                item.emphasis,
+                                style:
+                                    (context.isMobile || useCompactText
+                                            ? Theme.of(
+                                                context,
+                                              ).textTheme.headlineSmall
+                                            : Theme.of(
+                                                context,
+                                              ).textTheme.displayMedium)
+                                        ?.copyWith(
+                                          color: item.accentColor,
+                                          fontWeight: FontWeight.w900,
+                                        ),
+                                maxLines: 2,
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                              const SizedBox(height: AppSpacing.md),
+                              Text(
+                                item.description,
+                                style: Theme.of(context).textTheme.bodyMedium
+                                    ?.copyWith(color: AppColors.textSecondary),
+                              ),
+                              const SizedBox(height: AppSpacing.lg),
+                              OutlinedButton(
+                                onPressed: onPressed,
+                                child: Row(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    Text(item.ctaLabel),
+                                    const SizedBox(width: AppSpacing.xxs),
+                                    const Icon(Icons.chevron_right, size: 18),
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        if (!context.isMobile) ...[
+                          const SizedBox(width: AppSpacing.md),
+                          Expanded(flex: 8, child: _BannerVisual(item: item)),
+                        ],
+                      ],
+                    ),
+                  ),
+          );
   }
 }
 
