@@ -1,3 +1,4 @@
+import 'package:re_view_front/features/recent_products/presentation/widgets/recent_products_section.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -63,7 +64,7 @@ class _MyPageState extends ConsumerState<MyPage> {
         onProductTap: _goProductDetail,
         onWishlistTap: () => context.go(RoutePaths.wishlist),
         onPasswordTap: () => context.go(RoutePaths.passwordReset),
-        onRecentTap: () => _scrollTo(_recentKey),
+        onRecentTap: () => showRecentProducts(context),
         onReviewTap: () => _scrollTo(_recentKey),
         onSettingsTap: () => _scrollTo(_settingsKey),
         onAccountTap: () => _scrollTo(_accountKey),

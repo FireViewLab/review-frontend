@@ -1,3 +1,4 @@
+import 'package:re_view_front/features/recent_products/presentation/providers/recent_products_providers.dart';
 import 'package:re_view_front/core/providers/core_providers.dart';
 import 'package:re_view_front/features/home/presentation/providers/home_providers.dart';
 import 'package:re_view_front/features/settings/presentation/providers/settings_providers.dart';
@@ -62,6 +63,7 @@ class ProductDetailViewModel extends Notifier<ProductDetailState> {
         viewingSession != null &&
         viewingSession == ref.read(authTokenStoreProvider.notifier).accessToken;
     ref.invalidate(homeDashboardViewModelProvider);
+    if (viewRecorded) ref.invalidate(recentProductsProvider);
 
     if (detail.externalRef != null) {
       state = ProductDetailSuccess(
