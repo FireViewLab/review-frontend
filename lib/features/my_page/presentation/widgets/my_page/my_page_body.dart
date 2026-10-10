@@ -1,3 +1,5 @@
+import 'package:re_view_front/features/recent_products/presentation/widgets/recent_products_section.dart';
+import 'package:re_view_front/features/recent_products/presentation/providers/recent_products_providers.dart';
 // ignore_for_file: use_key_in_widget_constructors
 
 import 'package:flutter/material.dart';
@@ -60,7 +62,6 @@ class MyPageBody extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final savedItems = _wishlistItems;
-    final recentProducts = _recentProducts;
     final riskyProducts = _riskyProducts;
     final savedAverageRti = _savedAverageRti;
     final mainContent = Column(
@@ -69,7 +70,7 @@ class MyPageBody extends StatelessWidget {
         Consumer(
           builder: (context, ref, _) => MyPageStatGrid(
             wishlistCount: wishlistCount,
-            recentCount: recentProducts.length,
+            recentCount: ref.watch(recentProductsProvider).asData?.value.length,
             riskyCount: riskyProducts.length,
             notificationCount:
                 ref.watch(unreadNotificationCountProvider).value ?? 0,
@@ -105,10 +106,13 @@ class MyPageBody extends StatelessWidget {
         MyPageResponsiveTwoColumn(
           left: KeyedSubtree(
             key: recentKey,
-            child: MyPageRecentActivitySection(
-              savedItems: savedItems,
-              recentProducts: recentProducts,
-              onProductTap: onProductTap,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                const RecentProductsSection(),
+                const SizedBox(height: AppSpacing.xl),
+                MyPageRecentActivitySection(onProductTap: onProductTap),
+              ],
             ),
           ),
           right: KeyedSubtree(
@@ -147,13 +151,6 @@ class MyPageBody extends StatelessWidget {
   List<WishlistItem> get _wishlistItems {
     return switch (wishlistState) {
       WishlistSuccess(:final items) => items,
-      _ => const [],
-    };
-  }
-
-  List<DashboardProduct> get _recentProducts {
-    return switch (dashboardState) {
-      HomeDashboardSuccess(:final dashboard) => dashboard.recentProducts,
       _ => const [],
     };
   }
