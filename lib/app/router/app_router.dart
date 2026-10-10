@@ -1,3 +1,5 @@
+import 'package:re_view_front/features/recent_products/presentation/widgets/recent_products_section.dart';
+import 'package:re_view_front/features/my_page/presentation/widgets/my_page/warning_products_section.dart';
 import 'package:re_view_front/features/payments/presentation/pages/cart_checkout_page.dart';
 import 'package:re_view_front/features/payments/domain/entities/cart_checkout.dart';
 import 'package:re_view_front/features/payments/presentation/pages/test_payment_page.dart';
@@ -79,6 +81,8 @@ final appRouterProvider = Provider<GoRouter>((ref) {
       }
       const protectedPages = {
         RoutePaths.myPage,
+        RoutePaths.recentProducts,
+        RoutePaths.warningProducts,
         RoutePaths.wishlist,
         RoutePaths.cart,
         RoutePaths.cartCheckout,
@@ -255,6 +259,16 @@ final appRouterProvider = Provider<GoRouter>((ref) {
                 ),
               );
             },
+          ),
+          GoRoute(
+            path: RoutePaths.recentProducts,
+            pageBuilder: (context, state) =>
+                _buildContentPage(state, const RecentProductsPage()),
+          ),
+          GoRoute(
+            path: RoutePaths.warningProducts,
+            pageBuilder: (context, state) =>
+                _buildContentPage(state, const WarningProductsPage()),
           ),
           GoRoute(
             path: RoutePaths.notifications,

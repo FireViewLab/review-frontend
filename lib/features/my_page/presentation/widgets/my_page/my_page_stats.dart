@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:re_view_front/app/theme/app_colors.dart';
 import 'package:re_view_front/app/theme/app_spacing.dart';
 import 'package:re_view_front/l10n/generated/app_localizations.dart';
-import 'package:re_view_front/shared/extensions/context_extensions.dart';
 import 'package:re_view_front/features/my_page/presentation/widgets/my_page/my_page_common.dart';
 
 class MyPageStatGrid extends StatelessWidget {
@@ -30,12 +29,6 @@ class MyPageStatGrid extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final width = context.viewportSize.width;
-    final columns = width < 700
-        ? 1
-        : width < 1100
-        ? 2
-        : 4;
     final l10n = AppLocalizations.of(context);
     final stats = [
       MyPageStatItem(
@@ -64,17 +57,27 @@ class MyPageStatGrid extends StatelessWidget {
       ),
     ];
 
-    return GridView.builder(
-      itemCount: stats.length,
-      shrinkWrap: true,
-      physics: const NeverScrollableScrollPhysics(),
-      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisCount: columns,
-        mainAxisExtent: 92,
-        crossAxisSpacing: AppSpacing.md,
-        mainAxisSpacing: AppSpacing.md,
-      ),
-      itemBuilder: (context, index) => MyPageStatCard(item: stats[index]),
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        final columns = constraints.maxWidth < 600
+            ? 1
+            : constraints.maxWidth < 1000
+            ? 2
+            : 4;
+        final width =
+            (constraints.maxWidth - (columns - 1) * AppSpacing.md) / columns;
+        return Wrap(
+          spacing: AppSpacing.md,
+          runSpacing: AppSpacing.md,
+          children: [
+            for (final item in stats)
+              SizedBox(
+                width: width,
+                child: MyPageStatCard(item: item),
+              ),
+          ],
+        );
+      },
     );
   }
 }

@@ -6,6 +6,8 @@ abstract final class RoutePaths {
   static const onboarding = '/onboarding';
   static const dashboard = '/dashboard';
   static const myPage = '/my-page';
+  static const recentProducts = '/my-page/recent';
+  static const warningProducts = '/my-page/warnings';
   static const search = '/search';
   static const productDetail = '/product/:id';
   static const oauthCallback = '/auth/callback';
