@@ -7,11 +7,37 @@ import 'package:re_view_front/features/notifications/presentation/providers/noti
 
 /// Shows only persisted server preferences, never an unsaved/default toggle.
 class NotificationSettingsSummary extends ConsumerWidget {
-  const NotificationSettingsSummary({super.key});
+  const NotificationSettingsSummary({super.key, this.entryOnly = false});
+  final bool entryOnly;
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final settings = ref.watch(savedDisplayPreferencesProvider);
     final unread = ref.watch(unreadNotificationCountProvider);
+    if (entryOnly) {
+      return Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          Text('알림', style: Theme.of(context).textTheme.titleSmall),
+          Text(
+            unread.isLoading
+                ? '읽지 않은 알림 확인 중'
+                : unread.hasError
+                ? '알림 수를 확인하지 못했어요.'
+                : '읽지 않은 알림 ${unread.value ?? 0}개',
+          ),
+          TextButton.icon(
+            onPressed: () => context.push(RoutePaths.notifications),
+            icon: const Icon(Icons.notifications_outlined),
+            label: const Text('알림함 · 가격 알림 관리'),
+          ),
+          if (unread.hasError)
+            TextButton(
+              onPressed: () => ref.invalidate(unreadNotificationCountProvider),
+              child: const Text('다시 시도'),
+            ),
+        ],
+      );
+    }
+    final settings = ref.watch(savedDisplayPreferencesProvider);
     final data = settings.isLoading || settings.hasError
         ? null
         : settings.value;
@@ -40,11 +66,6 @@ class NotificationSettingsSummary extends ConsumerWidget {
         Wrap(
           spacing: 8,
           children: [
-            TextButton.icon(
-              onPressed: () => context.push(RoutePaths.notifications),
-              icon: const Icon(Icons.notifications_outlined),
-              label: const Text('알림함 열기'),
-            ),
             TextButton.icon(
               onPressed: () => context.push(RoutePaths.settings),
               icon: const Icon(Icons.settings_outlined),
