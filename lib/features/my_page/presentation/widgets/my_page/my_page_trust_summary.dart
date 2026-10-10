@@ -74,7 +74,7 @@ class MyPageTrustSummaryPanel extends ConsumerWidget {
           ),
           const Text('찜한 상품 중 분석된 RTI의 평균과 서버 주의 등급 기준입니다.'),
           const Divider(color: AppColors.border),
-          const NotificationSettingsSummary(),
+          const NotificationSettingsSummary(entryOnly: true),
         ],
       ),
     );
