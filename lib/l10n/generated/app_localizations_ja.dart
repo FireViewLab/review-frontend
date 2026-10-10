@@ -1910,4 +1910,14 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String get evidenceUnknownBody => '追加の根拠が提供されましたが、説明文にはまだ対応していません。';
+
+  @override
+  String get homeSearchSuggestionsEmpty => '関連検索語はありません。入力した言葉で検索できます。';
+
+  @override
+  String get homeSearchSuggestionsError =>
+      '関連検索語を読み込めませんでした。入力した言葉で検索するか、再試行してください。';
+
+  @override
+  String get homeSearchSuggestionsRetry => '関連検索語を再読み込み';
 }

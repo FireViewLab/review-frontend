@@ -1902,4 +1902,13 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get evidenceUnknownBody => '已提供其他依据，但暂不支持其说明。';
+
+  @override
+  String get homeSearchSuggestionsEmpty => '没有相关搜索词。您可以搜索已输入的内容。';
+
+  @override
+  String get homeSearchSuggestionsError => '无法加载相关搜索词。您可以搜索已输入的内容或重试。';
+
+  @override
+  String get homeSearchSuggestionsRetry => '重新加载相关搜索词';
 }

@@ -1983,4 +1983,15 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get evidenceUnknownBody =>
       'Additional evidence was supplied, but a description is not yet available.';
+
+  @override
+  String get homeSearchSuggestionsEmpty =>
+      'No related searches. You can search for the text you entered.';
+
+  @override
+  String get homeSearchSuggestionsError =>
+      'Related searches are unavailable. Search for your text or try again.';
+
+  @override
+  String get homeSearchSuggestionsRetry => 'Reload related searches';
 }
