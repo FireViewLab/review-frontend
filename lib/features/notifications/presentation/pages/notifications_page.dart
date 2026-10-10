@@ -1,3 +1,5 @@
+import 'package:re_view_front/features/price_watch/presentation/widgets/price_watch_section.dart';
+import 'package:re_view_front/features/notifications/presentation/widgets/notification_settings_summary.dart';
 import 'package:re_view_front/app/router/route_paths.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -14,11 +16,18 @@ import 'package:re_view_front/shared/widgets/app_content_view.dart';
 import 'package:re_view_front/shared/widgets/error_view.dart';
 import 'package:re_view_front/shared/widgets/loading_view.dart';
 
-class NotificationsPage extends ConsumerWidget {
+class NotificationsPage extends ConsumerStatefulWidget {
   const NotificationsPage({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<NotificationsPage> createState() => _NotificationsPageState();
+}
+
+class _NotificationsPageState extends ConsumerState<NotificationsPage> {
+  bool _priceMode = false;
+
+  @override
+  Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);
     final state = ref.watch(notificationListViewModelProvider);
     final vm = ref.read(notificationListViewModelProvider.notifier);
@@ -28,7 +37,8 @@ class NotificationsPage extends ConsumerWidget {
       body: NotificationListener<ScrollNotification>(
         // 바닥 근처까지 스크롤하면 다음 페이지를 불러온다.
         onNotification: (notification) {
-          if (notification.depth == 0 &&
+          if (!_priceMode &&
+              notification.depth == 0 &&
               notification.metrics.axis == Axis.vertical &&
               notification.metrics.extentAfter < 400) {
             vm.loadMore();
@@ -36,6 +46,9 @@ class NotificationsPage extends ConsumerWidget {
           return false;
         },
         child: CustomScrollView(
+          key: PageStorageKey(
+            _priceMode ? 'price-alerts' : 'all-notifications',
+          ),
           slivers: [
             SliverToBoxAdapter(
               child: AppContentView(
@@ -63,7 +76,8 @@ class NotificationsPage extends ConsumerWidget {
                         ),
                         TextButton.icon(
                           onPressed:
-                              !state.isLoading &&
+                              !_priceMode &&
+                                  !state.isLoading &&
                                   !state.isLoadingMore &&
                                   !state.isMutating
                               ? vm.markAllRead
@@ -73,44 +87,69 @@ class NotificationsPage extends ConsumerWidget {
                         ),
                       ],
                     ),
+                    const SizedBox(height: 16),
                     Wrap(
                       spacing: 8,
+                      runSpacing: 8,
                       children: [
-                        TextButton.icon(
-                          onPressed: state.isLoading || state.isMutating
-                              ? null
-                              : vm.refresh,
-                          icon: const Icon(Icons.refresh),
-                          label: const Text('새로고침'),
+                        ChoiceChip(
+                          label: const Text('전체 알림'),
+                          selected: !_priceMode,
+                          onSelected: (_) => setState(() => _priceMode = false),
                         ),
-                        TextButton.icon(
-                          onPressed: () => context.push(RoutePaths.settings),
-                          icon: const Icon(Icons.settings_outlined),
-                          label: const Text('알림 설정'),
+                        ChoiceChip(
+                          label: const Text('가격 알림'),
+                          selected: _priceMode,
+                          onSelected: (_) => setState(() => _priceMode = true),
                         ),
                       ],
                     ),
-                    const Text('앱 안의 알림함입니다. 브라우저 푸시·이메일·문자는 현재 제공되지 않습니다.'),
-                    if (state.errorMessage != null &&
-                        state.items.isNotEmpty) ...[
-                      Text(
-                        state.errorMessage!,
-                        style: const TextStyle(color: AppColors.error),
+                    if (!_priceMode) ...[
+                      Wrap(
+                        spacing: 8,
+                        children: [
+                          TextButton.icon(
+                            onPressed: state.isLoading || state.isMutating
+                                ? null
+                                : vm.refresh,
+                            icon: const Icon(Icons.refresh),
+                            label: const Text('새로고침'),
+                          ),
+                          TextButton.icon(
+                            onPressed: () => context.push(RoutePaths.settings),
+                            icon: const Icon(Icons.settings_outlined),
+                            label: const Text('알림 설정'),
+                          ),
+                        ],
                       ),
-                      TextButton(
-                        onPressed: state.failedPage ? vm.retryMore : vm.refresh,
-                        child: const Text('다시 시도'),
+                      const ExpansionTile(
+                        title: Text('저장된 알림 수신 설정'),
+                        childrenPadding: EdgeInsets.all(12),
+                        children: [NotificationSettingsSummary()],
                       ),
+                      if (state.errorMessage != null &&
+                          state.items.isNotEmpty) ...[
+                        Text(
+                          state.errorMessage!,
+                          style: const TextStyle(color: AppColors.error),
+                        ),
+                        TextButton(
+                          onPressed: state.failedPage
+                              ? vm.retryMore
+                              : vm.refresh,
+                          child: const Text('다시 시도'),
+                        ),
+                      ],
+                      if (!state.isLast &&
+                          !state.isLoading &&
+                          state.errorMessage == null)
+                        TextButton(
+                          onPressed: state.isLoadingMore || state.isMutating
+                              ? null
+                              : vm.loadMore,
+                          child: const Text('더 보기'),
+                        ),
                     ],
-                    if (!state.isLast &&
-                        !state.isLoading &&
-                        state.errorMessage == null)
-                      TextButton(
-                        onPressed: state.isLoadingMore || state.isMutating
-                            ? null
-                            : vm.loadMore,
-                        child: const Text('더 보기'),
-                      ),
                     const SizedBox(height: AppSpacing.lg),
                   ],
                 ),
@@ -127,23 +166,25 @@ class NotificationsPage extends ConsumerWidget {
                     : 16,
                 32,
               ),
-              sliver: _Body(
-                state: state,
-                onRetry: vm.refresh,
-                onTap: (notification) {
-                  vm.markRead(notification.id);
-                  final route = notificationRoute(notification.targetUrl);
-                  if (route != null) {
-                    context.push(route);
-                  } else if (notification.targetUrl != null) {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(
-                        content: Text('이 알림의 이동 대상은 아직 지원되지 않습니다.'),
-                      ),
-                    );
-                  }
-                },
-              ),
+              sliver: _priceMode
+                  ? const PriceWatchSliver()
+                  : _Body(
+                      state: state,
+                      onRetry: vm.refresh,
+                      onTap: (notification) {
+                        vm.markRead(notification.id);
+                        final route = notificationRoute(notification.targetUrl);
+                        if (route != null) {
+                          context.push(route);
+                        } else if (notification.targetUrl != null) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(
+                              content: Text('이 알림의 이동 대상은 아직 지원되지 않습니다.'),
+                            ),
+                          );
+                        }
+                      },
+                    ),
             ),
           ],
         ),
