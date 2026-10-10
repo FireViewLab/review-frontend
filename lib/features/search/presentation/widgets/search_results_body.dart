@@ -13,6 +13,7 @@ import 'package:re_view_front/shared/widgets/shimmer_box.dart';
 class SearchResultsBody extends StatelessWidget {
   const SearchResultsBody({
     super.key,
+    this.resultsKey,
     required this.state,
     required this.products,
     required this.selectedQuickFilter,
@@ -43,6 +44,7 @@ class SearchResultsBody extends StatelessWidget {
     required this.onResetFilters,
   });
 
+  final GlobalKey? resultsKey;
   final SearchResultsState state;
   final List<SearchResultProduct> products;
   final String selectedQuickFilter;
@@ -75,19 +77,21 @@ class SearchResultsBody extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (state.isLoading) {
-      return const _SearchResultsSkeleton();
+      return const SliverToBoxAdapter(child: _SearchResultsSkeleton());
     }
-
     if (state.hasError) {
-      return SizedBox(
-        height: 420,
-        child: AppErrorView(message: state.errorMessage!, retryLabel: '다시 검색'),
+      return SliverToBoxAdapter(
+        child: SizedBox(
+          height: 420,
+          child: AppErrorView(
+            message: state.errorMessage!,
+            retryLabel: '다시 검색',
+          ),
+        ),
       );
     }
-
-    final resultsKey = GlobalKey();
     void showResults() {
-      final target = resultsKey.currentContext;
+      final target = resultsKey?.currentContext;
       if (target != null) {
         Scrollable.ensureVisible(
           target,
@@ -101,92 +105,31 @@ class SearchResultsBody extends StatelessWidget {
 
     final useSingleColumn =
         context.isMobile || MediaQuery.sizeOf(context).width < 1080;
-
-    if (useSingleColumn) {
-      return Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          SearchSummary(state: state),
-          const SizedBox(height: AppSpacing.lg),
-          QuickFilterRow(
-            filters: state.quickFilters,
-            selectedFilter: selectedQuickFilter,
-            onSelected: onQuickFilterSelected,
-          ),
-          const SizedBox(height: AppSpacing.lg),
-          if (state.isEmpty)
-            SearchEmptyState(state: state)
-          else ...[
-            FilterPanel(
-              onShowResults: showResults,
-              state: state,
-              selectedCategories: selectedCategories,
-              selectedPriceRanges: selectedPriceRanges,
-              selectedReviewConditions: selectedReviewConditions,
-              selectedAttributeFilters: selectedAttributeFilters,
-              selectedBrand: selectedBrand,
-              minPriceController: minPriceController,
-              maxPriceController: maxPriceController,
-              selectedRtiMinimum: selectedRtiMinimum,
-              resultCount: products.length,
-              compact: true,
-              onCategoryToggled: onCategoryToggled,
-              onPriceRangeToggled: onPriceRangeToggled,
-              onReviewConditionToggled: onReviewConditionToggled,
-              onAttributeToggled: onAttributeToggled,
-              onBrandSelected: onBrandSelected,
-              onPriceChanged: onPriceChanged,
-              onRtiMinimumChanged: onRtiMinimumChanged,
-              onResetFilters: onResetFilters,
-            ),
-            const SizedBox(height: AppSpacing.md),
-            ResultColumn(
-              key: resultsKey,
-              state: state,
-              products: products,
-              sortOption: sortOption,
-              viewMode: viewMode,
-              currentPage: currentPage,
-              pageSize: pageSize,
-              onSortChanged: onSortChanged,
-              onPageSelected: onPageSelected,
-              onPageSizeChanged: onPageSizeChanged,
-              onViewModeChanged: onViewModeChanged,
-            ),
-          ],
-        ],
-      );
-    }
-
-    return Row(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        SizedBox(
-          width: 252,
-          child: FilterPanel(
-            onShowResults: showResults,
-            state: state,
-            selectedCategories: selectedCategories,
-            selectedPriceRanges: selectedPriceRanges,
-            selectedReviewConditions: selectedReviewConditions,
-            selectedAttributeFilters: selectedAttributeFilters,
-            selectedBrand: selectedBrand,
-            minPriceController: minPriceController,
-            maxPriceController: maxPriceController,
-            selectedRtiMinimum: selectedRtiMinimum,
-            resultCount: products.length,
-            onCategoryToggled: onCategoryToggled,
-            onPriceRangeToggled: onPriceRangeToggled,
-            onReviewConditionToggled: onReviewConditionToggled,
-            onAttributeToggled: onAttributeToggled,
-            onBrandSelected: onBrandSelected,
-            onPriceChanged: onPriceChanged,
-            onRtiMinimumChanged: onRtiMinimumChanged,
-            onResetFilters: onResetFilters,
-          ),
-        ),
-        const SizedBox(width: AppSpacing.xl),
-        Expanded(
+    Widget filters({bool compact = false}) => FilterPanel(
+      onShowResults: showResults,
+      state: state,
+      selectedCategories: selectedCategories,
+      selectedPriceRanges: selectedPriceRanges,
+      selectedReviewConditions: selectedReviewConditions,
+      selectedAttributeFilters: selectedAttributeFilters,
+      selectedBrand: selectedBrand,
+      minPriceController: minPriceController,
+      maxPriceController: maxPriceController,
+      selectedRtiMinimum: selectedRtiMinimum,
+      resultCount: products.length,
+      compact: compact,
+      onCategoryToggled: onCategoryToggled,
+      onPriceRangeToggled: onPriceRangeToggled,
+      onReviewConditionToggled: onReviewConditionToggled,
+      onAttributeToggled: onAttributeToggled,
+      onBrandSelected: onBrandSelected,
+      onPriceChanged: onPriceChanged,
+      onRtiMinimumChanged: onRtiMinimumChanged,
+      onResetFilters: onResetFilters,
+    );
+    final results = SliverMainAxisGroup(
+      slivers: [
+        SliverToBoxAdapter(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
@@ -198,25 +141,43 @@ class SearchResultsBody extends StatelessWidget {
                 onSelected: onQuickFilterSelected,
               ),
               const SizedBox(height: AppSpacing.lg),
-              if (state.isEmpty)
-                SearchEmptyState(state: state)
-              else
-                ResultColumn(
-                  key: resultsKey,
-                  state: state,
-                  products: products,
-                  sortOption: sortOption,
-                  viewMode: viewMode,
-                  currentPage: currentPage,
-                  pageSize: pageSize,
-                  onSortChanged: onSortChanged,
-                  onPageSelected: onPageSelected,
-                  onPageSizeChanged: onPageSizeChanged,
-                  onViewModeChanged: onViewModeChanged,
-                ),
+              if (useSingleColumn && !state.isEmpty) ...[
+                filters(compact: true),
+                const SizedBox(height: AppSpacing.md),
+              ],
             ],
           ),
         ),
+        if (state.isEmpty)
+          SliverToBoxAdapter(child: SearchEmptyState(state: state))
+        else
+          ResultColumn(
+            key: resultsKey,
+            state: state,
+            products: products,
+            sortOption: sortOption,
+            viewMode: viewMode,
+            currentPage: currentPage,
+            pageSize: pageSize,
+            onSortChanged: onSortChanged,
+            onPageSelected: onPageSelected,
+            onPageSizeChanged: onPageSizeChanged,
+            onViewModeChanged: onViewModeChanged,
+          ),
+      ],
+    );
+    if (useSingleColumn) return results;
+    return SliverCrossAxisGroup(
+      slivers: [
+        SliverConstrainedCrossAxis(
+          maxExtent: 252,
+          sliver: SliverToBoxAdapter(child: filters()),
+        ),
+        const SliverConstrainedCrossAxis(
+          maxExtent: AppSpacing.xl,
+          sliver: SliverToBoxAdapter(child: SizedBox.shrink()),
+        ),
+        SliverCrossAxisExpanded(flex: 1, sliver: results),
       ],
     );
   }

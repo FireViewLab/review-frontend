@@ -155,58 +155,105 @@ class _ReviewViewButton extends StatelessWidget {
   );
 }
 
-class ReviewPhotoGrid extends StatelessWidget {
-  const ReviewPhotoGrid({super.key, required this.entries});
+class ReviewPhotoGrid extends StatefulWidget {
+  const ReviewPhotoGrid({
+    super.key,
+    required this.entries,
+    this.asSliver = false,
+  });
   final List<ReviewPhotoEntry> entries;
+  final bool asSliver;
+  @override
+  State<ReviewPhotoGrid> createState() => _ReviewPhotoGridState();
+}
+
+class _ReviewPhotoGridState extends State<ReviewPhotoGrid> {
+  late List<({ReviewPhotoEntry entry, List<String> images, int index})> _photos;
+  void _prepare() {
+    _photos = [];
+    for (final entry in widget.entries) {
+      final images = validReviewImages(entry.images);
+      for (var index = 0; index < images.length; index++) {
+        _photos.add((entry: entry, images: images, index: index));
+      }
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _prepare();
+  }
+
+  @override
+  void didUpdateWidget(covariant ReviewPhotoGrid oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    final old = oldWidget.entries, next = widget.entries;
+    if (old.length != next.length) {
+      _prepare();
+      return;
+    }
+    for (var i = 0; i < next.length; i++) {
+      if (old[i].reviewKey != next[i].reviewKey ||
+          old[i].label != next[i].label ||
+          !identical(old[i].images, next[i].images)) {
+        _prepare();
+        return;
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    final photos = [
-      for (final entry in entries)
-        for (final index in validReviewImages(entry.images).asMap().keys)
-          (entry: entry, images: validReviewImages(entry.images), index: index),
-    ];
-    if (photos.isEmpty) {
-      return Padding(
+    if (_photos.isEmpty) {
+      final empty = Padding(
         padding: const EdgeInsets.all(16),
         child: Text(AppLocalizations.of(context).reviewPhotosEmpty),
+      );
+      return widget.asSliver ? SliverToBoxAdapter(child: empty) : empty;
+    }
+    const grid = SliverGridDelegateWithMaxCrossAxisExtent(
+      maxCrossAxisExtent: 160,
+      mainAxisExtent: 180,
+      crossAxisSpacing: 8,
+      mainAxisSpacing: 8,
+    );
+    if (widget.asSliver) {
+      return SliverGrid.builder(
+        gridDelegate: grid,
+        itemCount: _photos.length,
+        itemBuilder: _buildPhoto,
       );
     }
     return GridView.builder(
       shrinkWrap: true,
       physics: const NeverScrollableScrollPhysics(),
-      gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
-        maxCrossAxisExtent: 160,
-        mainAxisExtent: 180,
-        crossAxisSpacing: 8,
-        mainAxisSpacing: 8,
-      ),
-      itemCount: photos.length,
-      itemBuilder: (context, i) {
-        final photo = photos[i];
-        return Column(
-          key: ValueKey((photo.entry.reviewKey, photo.index)),
-          children: [
-            Expanded(
-              child: LayoutBuilder(
-                builder: (context, constraints) => ImagePreviewThumbnail(
-                  imageUrls: photo.images,
-                  index: photo.index,
-                  size: constraints.maxWidth,
-                ),
-              ),
+      gridDelegate: grid,
+      itemCount: _photos.length,
+      itemBuilder: _buildPhoto,
+    );
+  }
+
+  Widget _buildPhoto(BuildContext context, int i) {
+    final photo = _photos[i];
+    return Column(
+      key: ValueKey((photo.entry.reviewKey, photo.index)),
+      children: [
+        Expanded(
+          child: LayoutBuilder(
+            builder: (context, constraints) => ImagePreviewThumbnail(
+              imageUrls: photo.images,
+              index: photo.index,
+              size: constraints.maxWidth,
             ),
-            Text(
-              photo.entry.label,
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
-            ),
-            Text(
-              '${photo.index + 1}/${photo.images.length}',
-              style: Theme.of(context).textTheme.labelSmall,
-            ),
-          ],
-        );
-      },
+          ),
+        ),
+        Text(photo.entry.label, maxLines: 1, overflow: TextOverflow.ellipsis),
+        Text(
+          '${photo.index + 1}/${photo.images.length}',
+          style: Theme.of(context).textTheme.labelSmall,
+        ),
+      ],
     );
   }
 }
