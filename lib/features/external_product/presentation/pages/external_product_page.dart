@@ -18,7 +18,8 @@ import 'package:re_view_front/features/external_product/presentation/widgets/ext
 import 'package:re_view_front/l10n/generated/app_localizations.dart';
 import 'package:re_view_front/features/settings/presentation/providers/settings_providers.dart';
 import 'package:re_view_front/shared/extensions/context_extensions.dart';
-import 'package:re_view_front/shared/widgets/app_content_view.dart';
+import 'package:re_view_front/shared/widgets/sliver_width_builder.dart';
+import 'dart:math' as math;
 import 'package:re_view_front/shared/widgets/product_image_viewer.dart';
 import 'package:re_view_front/shared/widgets/error_view.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -67,21 +68,25 @@ class _ExternalProductPageState extends ConsumerState<ExternalProductPage> {
       backgroundColor: AppColors.surface,
       body: CustomScrollView(
         slivers: [
-          SliverToBoxAdapter(
-            child: AppContentView(
-              maxWidth: 1200,
-              padding: EdgeInsets.fromLTRB(
-                context.isMobile ? AppSpacing.md : AppSpacing.xxl,
-                context.isMobile ? AppSpacing.lg : AppSpacing.xl,
-                context.isMobile ? AppSpacing.md : AppSpacing.xxl,
-                AppSpacing.xxxl,
-              ),
-              child: ExternalProductContent(
-                key: ValueKey(widget.productRef),
-                productRef: widget.productRef,
-                viewAlreadyRecorded: widget.viewAlreadyRecorded,
-              ),
-            ),
+          SliverWidthBuilder(
+            builder: (context, width) {
+              final inset = math.max(0.0, (width - 1200) / 2);
+              final edge = context.isMobile ? AppSpacing.md : AppSpacing.xxl;
+              return SliverPadding(
+                padding: EdgeInsets.fromLTRB(
+                  inset + edge,
+                  context.isMobile ? AppSpacing.lg : AppSpacing.xl,
+                  inset + edge,
+                  AppSpacing.xxxl,
+                ),
+                sliver: ExternalProductContent(
+                  asSliver: true,
+                  key: ValueKey(widget.productRef),
+                  productRef: widget.productRef,
+                  viewAlreadyRecorded: widget.viewAlreadyRecorded,
+                ),
+              );
+            },
           ),
         ],
       ),
@@ -95,11 +100,16 @@ class ExternalProductContent extends ConsumerStatefulWidget {
     super.key,
     required this.productRef,
     this.viewAlreadyRecorded = false,
+    this.asSliver = false,
   });
 
   final ExternalProductRef productRef;
 
   final bool viewAlreadyRecorded;
+
+  /// The product route uses the parent viewport. Box embedding is kept for
+  /// existing isolated consumers that do not supply a sliver viewport.
+  final bool asSliver;
   @override
   ConsumerState<ExternalProductContent> createState() =>
       _ExternalProductContentState();
@@ -119,6 +129,17 @@ class _ExternalProductContentState
 
   @override
   Widget build(BuildContext context) {
+    final content = _buildSliver(context);
+    if (widget.asSliver) return content;
+    return CustomScrollView(
+      shrinkWrap: true,
+      primary: false,
+      physics: const NeverScrollableScrollPhysics(),
+      slivers: [content],
+    );
+  }
+
+  Widget _buildSliver(BuildContext context) {
     final l10n = AppLocalizations.of(context);
     final provider = externalProductViewModelProvider(productRef);
     final state = ref.watch(provider);
@@ -152,19 +173,21 @@ class _ExternalProductContentState
               ),
     };
     if (product == null) {
-      return Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          // A direct link has no list snapshot. Keep the basic information area
-          // separate without inventing a name, price, photo or purchase link.
-          const _SummarySkeleton(),
-          ChatAskButton(productId: productRef.externalId),
-          const SizedBox(height: AppSpacing.lg),
-          const ExternalAnalysisPending(),
-          const SizedBox(height: AppSpacing.lg),
-          Text(l10n.extProductReviewsTitle),
-          ?status,
-        ],
+      return SliverToBoxAdapter(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            // A direct link has no list snapshot. Keep the basic information area
+            // separate without inventing a name, price, photo or purchase link.
+            const _SummarySkeleton(),
+            ChatAskButton(productId: productRef.externalId),
+            const SizedBox(height: AppSpacing.lg),
+            const ExternalAnalysisPending(),
+            const SizedBox(height: AppSpacing.lg),
+            Text(l10n.extProductReviewsTitle),
+            ?status,
+          ],
+        ),
       );
     }
     final recentProvider = recentViewRecordProvider(productRef);
@@ -187,9 +210,8 @@ class _ExternalProductContentState
         }
       });
     }
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: [
+    return SliverMainAxisGroup(
+      slivers: [
         _Ready(
           key: ValueKey(product.ref),
           state: state,
@@ -197,23 +219,30 @@ class _ExternalProductContentState
           onLoadMore: vm.loadMoreReviews,
           collectionStatus: status,
         ),
-        if (loggedIn && recordStatus == RecentViewStatus.failed)
-          TextButton.icon(
-            icon: const Icon(Icons.refresh),
-            onPressed: numericId == null
-                ? null
-                : () => ref
-                      .read(recentProvider.notifier)
-                      .record(numericId, retry: true),
-            label: Text(l10n.recentRecordFailed),
+        SliverToBoxAdapter(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              if (loggedIn && recordStatus == RecentViewStatus.failed)
+                TextButton.icon(
+                  icon: const Icon(Icons.refresh),
+                  onPressed: numericId == null
+                      ? null
+                      : () => ref
+                            .read(recentProvider.notifier)
+                            .record(numericId, retry: true),
+                  label: Text(l10n.recentRecordFailed),
+                ),
+              if (loggedIn && numericId == null)
+                Text(
+                  l10n.recentRecordUnavailable,
+                  style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                    color: AppColors.textSecondary,
+                  ),
+                ),
+            ],
           ),
-        if (loggedIn && numericId == null)
-          Text(
-            l10n.recentRecordUnavailable,
-            style: Theme.of(
-              context,
-            ).textTheme.bodySmall?.copyWith(color: AppColors.textSecondary),
-          ),
+        ),
       ],
     );
   }
@@ -311,17 +340,26 @@ class _ReadyState extends ConsumerState<_Ready> {
   ExternalProduct get product => widget.product;
   VoidCallback get onLoadMore => widget.onLoadMore;
   Widget? get collectionStatus => widget.collectionStatus;
-  @override
-  Widget build(BuildContext context) {
-    final l10n = AppLocalizations.of(context);
-    final textTheme = Theme.of(context).textTheme;
-    final url = Uri.tryParse(product.url ?? '');
-    final category = product.category;
-    final preferences = ref.watch(confirmedDisplayPreferencesProvider);
+  List<ExternalReview>? _cachedSource;
+  Object? _cachedOptions;
+  List<ExternalReview> _cachedReviews = const [];
+  int _photoReviewCount = 0;
+  List<ExternalReview> _prepareReviews(String? sortOrder, bool hasPreferences) {
+    final options = (sortOrder, hasPreferences, _photoOnly || _photoView);
+    if (identical(_cachedSource, state.reviews) && _cachedOptions == options) {
+      return _cachedReviews;
+    }
+    _cachedSource = state.reviews;
+    _cachedOptions = options;
+    final hasPhotos = {
+      for (final review in state.reviews)
+        review: validReviewImages(review.images).isNotEmpty,
+    };
+    _photoReviewCount = hasPhotos.values.where((v) => v).length;
     final reviews = state.reviews.indexed.toList();
-    if (preferences != null) {
+    if (hasPreferences) {
       reviews.sort((a, b) {
-        if (preferences.reviewSortOrder == 'HELPFUL') {
+        if (sortOrder == 'HELPFUL') {
           final left = a.$2.helpfulCount;
           final right = b.$2.helpfulCount;
           if (left == null && right != null) return 1;
@@ -341,12 +379,24 @@ class _ReadyState extends ConsumerState<_Ready> {
       });
     }
 
-    final visibleReviews = [
+    return _cachedReviews = [
       for (final entry in reviews)
-        if (!(_photoOnly || _photoView) ||
-            validReviewImages(entry.$2.images).isNotEmpty)
+        if (!(_photoOnly || _photoView) || hasPhotos[entry.$2] == true)
           entry.$2,
     ];
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
+    final textTheme = Theme.of(context).textTheme;
+    final url = Uri.tryParse(product.url ?? '');
+    final category = product.category;
+    final preferences = ref.watch(confirmedDisplayPreferencesProvider);
+    final visibleReviews = _prepareReviews(
+      preferences?.reviewSortOrder,
+      preferences != null,
+    );
     final image = ProductImageViewer(imageUrls: product.galleryImages);
 
     final summary = ExternalProductSummary(
@@ -369,81 +419,88 @@ class _ReadyState extends ConsumerState<_Ready> {
       ],
     );
 
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: [
-        if (state.phase != ExternalProductPhase.ready) ...[
-          Text(
-            state.summary?.source == ProductSummarySource.previousDetail
-                ? l10n.extProductPreviousSummary
-                : l10n.extProductListSummary,
-            style: textTheme.bodySmall?.copyWith(
-              color: AppColors.textSecondary,
-            ),
-          ),
-          const SizedBox(height: AppSpacing.sm),
-        ],
-        if (category != null) ...[
-          Text(
-            category,
-            style: textTheme.labelMedium?.copyWith(
-              color: AppColors.textSecondary,
-            ),
-          ),
-          const SizedBox(height: AppSpacing.md),
-        ],
-        ProductDetailHero(gallery: image, information: summary),
-        const SizedBox(height: AppSpacing.xl),
-        ExternalProductReport(state: state),
-        const SizedBox(height: AppSpacing.xl),
-        const Divider(height: AppSpacing.xxl, color: AppColors.border),
-        Text(
-          l10n.extProductReviewsTitle,
-          style: textTheme.titleLarge?.copyWith(
-            color: AppColors.textPrimary,
-            fontWeight: FontWeight.w900,
+    return SliverMainAxisGroup(
+      slivers: [
+        SliverToBoxAdapter(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              if (state.phase != ExternalProductPhase.ready) ...[
+                Text(
+                  state.summary?.source == ProductSummarySource.previousDetail
+                      ? l10n.extProductPreviousSummary
+                      : l10n.extProductListSummary,
+                  style: textTheme.bodySmall?.copyWith(
+                    color: AppColors.textSecondary,
+                  ),
+                ),
+                const SizedBox(height: AppSpacing.sm),
+              ],
+              if (category != null) ...[
+                Text(
+                  category,
+                  style: textTheme.labelMedium?.copyWith(
+                    color: AppColors.textSecondary,
+                  ),
+                ),
+                const SizedBox(height: AppSpacing.md),
+              ],
+              ProductDetailHero(gallery: image, information: summary),
+              const SizedBox(height: AppSpacing.xl),
+              ExternalProductReport(state: state),
+              const SizedBox(height: AppSpacing.xl),
+              const Divider(height: AppSpacing.xxl, color: AppColors.border),
+              Text(
+                l10n.extProductReviewsTitle,
+                style: textTheme.titleLarge?.copyWith(
+                  color: AppColors.textPrimary,
+                  fontWeight: FontWeight.w900,
+                ),
+              ),
+              const SizedBox(height: AppSpacing.xs),
+              if (preferences != null) ...[
+                Text(
+                  l10n.extProductReviewPreferencesNote,
+                  style: textTheme.bodySmall?.copyWith(
+                    color: AppColors.textSecondary,
+                  ),
+                ),
+                const SizedBox(height: AppSpacing.sm),
+              ],
+              ReviewPhotoToolbar(
+                photoOnly: _photoOnly,
+                photoView: _photoView,
+                loadedCount: state.reviews.length,
+                photoReviewCount: _photoReviewCount,
+                onPhotoOnlyChanged: (v) => setState(() => _photoOnly = v),
+                onPhotoViewChanged: (v) => setState(() => _photoView = v),
+              ),
+              const SizedBox(height: AppSpacing.sm),
+              if (collectionStatus != null) ...[
+                ExternalPanel(child: collectionStatus!),
+                const SizedBox(height: AppSpacing.md),
+              ],
+            ],
           ),
         ),
-        const SizedBox(height: AppSpacing.xs),
-        if (preferences != null) ...[
-          Text(
-            l10n.extProductReviewPreferencesNote,
-            style: textTheme.bodySmall?.copyWith(
-              color: AppColors.textSecondary,
-            ),
-          ),
-          const SizedBox(height: AppSpacing.sm),
-        ],
-        ReviewPhotoToolbar(
-          photoOnly: _photoOnly,
-          photoView: _photoView,
-          loadedCount: state.reviews.length,
-          photoReviewCount: state.reviews
-              .where((r) => validReviewImages(r.images).isNotEmpty)
-              .length,
-          onPhotoOnlyChanged: (v) => setState(() => _photoOnly = v),
-          onPhotoViewChanged: (v) => setState(() => _photoView = v),
-        ),
-        const SizedBox(height: AppSpacing.sm),
-        if (collectionStatus != null) ...[
-          ExternalPanel(child: collectionStatus!),
-          const SizedBox(height: AppSpacing.md),
-        ],
         if (state.reviews.isEmpty &&
             state.phase == ExternalProductPhase.ready &&
             state.collectionError == null)
-          Padding(
-            padding: const EdgeInsets.symmetric(vertical: AppSpacing.xl),
-            child: Text(
-              l10n.extProductReviewsEmpty,
-              textAlign: TextAlign.center,
-              style: textTheme.bodyMedium?.copyWith(
-                color: AppColors.textSecondary,
+          SliverToBoxAdapter(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(vertical: AppSpacing.xl),
+              child: Text(
+                l10n.extProductReviewsEmpty,
+                textAlign: TextAlign.center,
+                style: textTheme.bodyMedium?.copyWith(
+                  color: AppColors.textSecondary,
+                ),
               ),
             ),
           )
         else if (_photoView)
           ReviewPhotoGrid(
+            asSliver: true,
             entries: [
               for (final review in visibleReviews)
                 ReviewPhotoEntry(
@@ -454,16 +511,24 @@ class _ReadyState extends ConsumerState<_Ready> {
             ],
           )
         else if (_photoOnly && visibleReviews.isEmpty)
-          Text(l10n.reviewPhotosEmpty)
+          SliverToBoxAdapter(child: Text(l10n.reviewPhotosEmpty))
         else if (visibleReviews.isNotEmpty)
-          ExternalPanel(
-            padding: const EdgeInsets.symmetric(horizontal: AppSpacing.lg),
-            child: Column(
-              children: [
-                for (final (index, review) in visibleReviews.indexed) ...[
-                  if (index > 0)
+          DecoratedSliver(
+            decoration: BoxDecoration(
+              color: AppColors.surface,
+              borderRadius: AppRadius.large,
+              border: Border.all(color: AppColors.border),
+            ),
+            sliver: SliverPadding(
+              padding: const EdgeInsets.symmetric(horizontal: AppSpacing.lg),
+              sliver: SliverList.separated(
+                itemCount: visibleReviews.length,
+                separatorBuilder: (context, index) =>
                     const Divider(height: 1, color: AppColors.border),
-                  ExternalReviewTile(
+                itemBuilder: (context, index) {
+                  final review = visibleReviews[index];
+                  return ExternalReviewTile(
+                    key: ValueKey(review.reviewId),
                     review: review,
                     analysisStatus: state.analysisStatus,
                     trailing: ExternalReviewActions(
@@ -472,35 +537,44 @@ class _ReadyState extends ConsumerState<_Ready> {
                       productName: product.name,
                       reviewContent: review.content,
                     ),
+                  );
+                },
+              ),
+            ),
+          ),
+        SliverToBoxAdapter(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              if (state.loadMoreFailed)
+                Padding(
+                  padding: const EdgeInsets.only(top: AppSpacing.sm),
+                  child: Text(
+                    l10n.extProductReviewsMoreFailed,
+                    textAlign: TextAlign.center,
+                    style: textTheme.bodySmall?.copyWith(
+                      color: AppColors.error,
+                    ),
                   ),
-                ],
+                ),
+              if (state.hasMoreReviews &&
+                  state.phase == ExternalProductPhase.ready) ...[
+                const SizedBox(height: AppSpacing.md),
+                Center(
+                  child: OutlinedButton(
+                    onPressed: state.isLoadingMore ? null : onLoadMore,
+                    child: state.isLoadingMore
+                        ? const SizedBox.square(
+                            dimension: 16,
+                            child: CircularProgressIndicator(strokeWidth: 2),
+                          )
+                        : Text(l10n.extProductReviewsMore),
+                  ),
+                ),
               ],
-            ),
+            ],
           ),
-        if (state.loadMoreFailed)
-          Padding(
-            padding: const EdgeInsets.only(top: AppSpacing.sm),
-            child: Text(
-              l10n.extProductReviewsMoreFailed,
-              textAlign: TextAlign.center,
-              style: textTheme.bodySmall?.copyWith(color: AppColors.error),
-            ),
-          ),
-        if (state.hasMoreReviews &&
-            state.phase == ExternalProductPhase.ready) ...[
-          const SizedBox(height: AppSpacing.md),
-          Center(
-            child: OutlinedButton(
-              onPressed: state.isLoadingMore ? null : onLoadMore,
-              child: state.isLoadingMore
-                  ? const SizedBox.square(
-                      dimension: 16,
-                      child: CircularProgressIndicator(strokeWidth: 2),
-                    )
-                  : Text(l10n.extProductReviewsMore),
-            ),
-          ),
-        ],
+        ),
       ],
     );
   }
