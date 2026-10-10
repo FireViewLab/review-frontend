@@ -14,10 +14,15 @@ class WishlistViewModel extends Notifier<WishlistState> {
   @override
   WishlistState build() {
     _generation++;
-    ref.watch(authSessionProvider).isLoggedIn;
+    final loggedIn = ref.watch(authSessionProvider).isLoggedIn;
     _getWishlistUseCase = ref.watch(getWishlistUseCaseProvider);
     _toggleWishlistUseCase = ref.watch(toggleWishlistUseCaseProvider);
-    return const WishlistInitial();
+    if (loggedIn) {
+      Future.microtask(() {
+        if (ref.mounted) load();
+      });
+    }
+    return loggedIn ? const WishlistInitial() : const WishlistEmpty();
   }
 
   Future<void> load() async {
