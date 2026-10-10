@@ -1,3 +1,4 @@
+import 'package:re_view_front/shared/widgets/sliver_width_builder.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:re_view_front/features/settings/presentation/providers/settings_providers.dart';
 import 'package:flutter/material.dart';
@@ -41,46 +42,47 @@ class ResultColumn extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return LayoutBuilder(
-      builder: (context, constraints) {
-        final columns = ProductGrid.columnsForWidth(constraints.maxWidth);
+    return SliverWidthBuilder(
+      builder: (context, width) {
+        final columns = ProductGrid.columnsForWidth(width);
         final totalPages = products.isEmpty
             ? 1
             : (products.length / pageSize).ceil();
-        final activePage = currentPage < 1
-            ? 1
-            : currentPage > totalPages
-            ? totalPages
-            : currentPage;
+        final activePage = currentPage.clamp(1, totalPages);
         final pageStart = (activePage - 1) * pageSize;
-        final pageEnd = pageStart + pageSize > products.length
-            ? products.length
-            : pageStart + pageSize;
+        final pageEnd = (pageStart + pageSize).clamp(0, products.length);
         final pageProducts = products.sublist(pageStart, pageEnd);
-
-        return Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            if (products.isNotEmpty && constraints.maxWidth >= 760) ...[
-              ReviewComparisonBanner(products: products),
-              const SizedBox(height: AppSpacing.md),
-            ],
-            ResultToolbar(
-              resultCount: products.length,
-              sortOption: sortOption,
-              viewMode: viewMode,
-              pageSize: pageSize,
-              onSortChanged: onSortChanged,
-              onPageSizeChanged: onPageSizeChanged,
-              onViewModeChanged: onViewModeChanged,
+        return SliverMainAxisGroup(
+          slivers: [
+            SliverToBoxAdapter(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  if (products.isNotEmpty && width >= 760) ...[
+                    ReviewComparisonBanner(products: products),
+                    const SizedBox(height: AppSpacing.md),
+                  ],
+                  ResultToolbar(
+                    resultCount: products.length,
+                    sortOption: sortOption,
+                    viewMode: viewMode,
+                    pageSize: pageSize,
+                    onSortChanged: onSortChanged,
+                    onPageSizeChanged: onPageSizeChanged,
+                    onViewModeChanged: onViewModeChanged,
+                  ),
+                  const SizedBox(height: AppSpacing.md),
+                ],
+              ),
             ),
-            const SizedBox(height: AppSpacing.md),
             if (products.isEmpty)
-              const SizedBox(
-                height: 360,
-                child: AppEmptyView(
-                  title: '필터에 맞는 상품이 없어요',
-                  message: '필터를 초기화하거나 조건을 조금 넓혀보세요.',
+              const SliverToBoxAdapter(
+                child: SizedBox(
+                  height: 360,
+                  child: AppEmptyView(
+                    title: '필터에 맞는 상품이 없어요',
+                    message: '필터를 초기화하거나 조건을 조금 넓혀보세요.',
+                  ),
                 ),
               )
             else ...[
@@ -88,14 +90,17 @@ class ResultColumn extends StatelessWidget {
                 ProductGrid(products: pageProducts, columns: columns)
               else
                 ProductList(products: pageProducts),
-              if (totalPages > 1) ...[
-                const SizedBox(height: AppSpacing.lg),
-                Pagination(
-                  currentPage: activePage,
-                  totalPages: totalPages,
-                  onPageSelected: onPageSelected,
+              if (totalPages > 1)
+                SliverToBoxAdapter(
+                  child: Padding(
+                    padding: const EdgeInsets.only(top: AppSpacing.lg),
+                    child: Pagination(
+                      currentPage: activePage,
+                      totalPages: totalPages,
+                      onPageSelected: onPageSelected,
+                    ),
+                  ),
                 ),
-              ],
             ],
           ],
         );
@@ -135,9 +140,7 @@ class ProductGrid extends ConsumerWidget {
       _ => 425.0,
     };
 
-    return GridView.builder(
-      shrinkWrap: true,
-      physics: const NeverScrollableScrollPhysics(),
+    return SliverGrid.builder(
       itemCount: products.length,
       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
         crossAxisCount: columns,
@@ -163,17 +166,18 @@ class ProductList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
+    return SliverList.separated(
       key: const ValueKey('search-product-list'),
-      children: [
-        for (final product in products) ...[
-          RepaintBoundary(
-            key: ValueKey('search-product-list-tile-${product.id}'),
-            child: SearchProductListTile(product: product),
-          ),
+      itemCount: products.length,
+      itemBuilder: (context, index) {
+        final product = products[index];
+        return RepaintBoundary(
+          key: ValueKey('search-product-list-tile-${product.id}'),
+          child: SearchProductListTile(product: product),
+        );
+      },
+      separatorBuilder: (context, index) =>
           const SizedBox(height: AppSpacing.sm),
-        ],
-      ],
     );
   }
 }
