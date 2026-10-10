@@ -623,5 +623,8 @@
   "evidenceRepurchaseLabel": "Repurchase signal",
   "evidenceRepurchaseBody": "Information indicating a repurchase was found.",
   "evidenceUnknownLabel": "Additional analysis evidence",
-  "evidenceUnknownBody": "Additional evidence was supplied, but a description is not yet available."
+  "evidenceUnknownBody": "Additional evidence was supplied, but a description is not yet available.",
+  "homeSearchSuggestionsEmpty": "No related searches. You can search for the text you entered.",
+  "homeSearchSuggestionsError": "Related searches are unavailable. Search for your text or try again.",
+  "homeSearchSuggestionsRetry": "Reload related searches"
 }

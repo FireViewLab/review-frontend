@@ -1121,5 +1121,8 @@
   "evidenceRepurchaseLabel": "재구매 신호",
   "evidenceRepurchaseBody": "재구매를 나타내는 정보가 확인됐어요.",
   "evidenceUnknownLabel": "추가 분석 근거",
-  "evidenceUnknownBody": "추가 근거가 제공됐지만 아직 설명 문구를 지원하지 않아요."
+  "evidenceUnknownBody": "추가 근거가 제공됐지만 아직 설명 문구를 지원하지 않아요.",
+  "homeSearchSuggestionsEmpty": "연관 검색어가 없어요. 입력한 단어로 검색할 수 있어요.",
+  "homeSearchSuggestionsError": "연관 검색어를 불러오지 못했어요. 입력한 단어로 검색하거나 다시 시도해 주세요.",
+  "homeSearchSuggestionsRetry": "연관 검색어 다시 불러오기"
 }

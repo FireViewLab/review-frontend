@@ -1,54 +1,141 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
   "outputDirectory": "build/web",
-  "headers": [
-    {
-      "source": "/deployment.json",
-      "headers": [
-        { "key": "Cache-Control", "value": "no-store" }
-      ]
-    },
-    {
-      "source": "/api/:path*",
-      "headers": [
-        { "key": "Access-Control-Allow-Origin", "value": "*" },
-        { "key": "Access-Control-Allow-Methods", "value": "GET, POST, PUT, DELETE, OPTIONS" },
-        { "key": "Access-Control-Allow-Headers", "value": "Content-Type, Authorization" }
-      ]
-    },
-    {
-      "source": "/oauth2/:path*",
-      "headers": [
-        { "key": "Access-Control-Allow-Origin", "value": "*" },
-        { "key": "Access-Control-Allow-Methods", "value": "GET, POST, OPTIONS" },
-        { "key": "Access-Control-Allow-Headers", "value": "Content-Type, Authorization" }
-      ]
-    },
-    {
-      "source": "/assets/assets/:path*",
-      "headers": [
-        { "key": "Cache-Control", "value": "public, max-age=86400, stale-while-revalidate=604800" }
-      ]
-    }
-  ],
-  "rewrites": [
-    {
-      "source": "/api/:path*",
-      "destination": "https://api.re-view.kr/api/:path*"
-    },
-    {
-      "source": "/oauth2/:path*",
-      "destination": "https://api.re-view.kr/oauth2/:path*"
-    },
-    {
-      "source": "/login/oauth2/:path*",
-      "destination": "https://api.re-view.kr/login/oauth2/:path*"
-    },
-    {
-      "source": "/(.*)",
-      "destination": "/index.html"
-    }
-  ],
   "buildCommand": "bash build.sh",
-  "git": { "deploymentEnabled": false }
+  "git": {
+    "deploymentEnabled": false
+  },
+  "routes": [
+    {
+      "src": "/deployment.json",
+      "headers": {
+        "Cache-Control": "no-store"
+      },
+      "continue": true
+    },
+    {
+      "src": "/api/(.*)",
+      "headers": {
+        "Access-Control-Allow-Origin": "*",
+        "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, OPTIONS",
+        "Access-Control-Allow-Headers": "Content-Type, Authorization"
+      },
+      "continue": true
+    },
+    {
+      "src": "/oauth2/(.*)",
+      "headers": {
+        "Access-Control-Allow-Origin": "*",
+        "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
+        "Access-Control-Allow-Headers": "Content-Type, Authorization"
+      },
+      "continue": true
+    },
+    {
+      "src": "/assets/assets/(.*)",
+      "headers": {
+        "Cache-Control": "public, max-age=86400, stale-while-revalidate=604800"
+      },
+      "continue": true
+    },
+    {
+      "src": "^/search-suggestions$",
+      "methods": [
+        "GET"
+      ],
+      "dest": "https://suggestqueries.google.com/complete/search",
+      "transforms": [
+        {
+          "type": "request.headers",
+          "op": "delete",
+          "target": {
+            "key": {
+              "inc": [
+                "authorization",
+                "cookie",
+                "proxy-authorization",
+                "x-internal-token",
+                "x-data-server-token",
+                "referer",
+                "origin"
+              ]
+            }
+          }
+        },
+        {
+          "type": "request.query",
+          "op": "delete",
+          "target": {
+            "key": {
+              "ninc": [
+                "q"
+              ]
+            }
+          }
+        },
+        {
+          "type": "request.query",
+          "op": "set",
+          "target": {
+            "key": "client"
+          },
+          "args": "firefox"
+        },
+        {
+          "type": "request.query",
+          "op": "set",
+          "target": {
+            "key": "hl"
+          },
+          "args": "ko"
+        },
+        {
+          "type": "request.query",
+          "op": "set",
+          "target": {
+            "key": "ie"
+          },
+          "args": "utf-8"
+        },
+        {
+          "type": "request.query",
+          "op": "set",
+          "target": {
+            "key": "oe"
+          },
+          "args": "utf-8"
+        }
+      ],
+      "headers": {
+        "Cache-Control": "no-store"
+      }
+    },
+    {
+      "src": "^/search-suggestions$",
+      "status": 405,
+      "headers": {
+        "Allow": "GET",
+        "Cache-Control": "no-store"
+      }
+    },
+    {
+      "src": "/api/(.*)",
+      "dest": "https://api.re-view.kr/api/$1"
+    },
+    {
+      "src": "/oauth2/(.*)",
+      "dest": "https://api.re-view.kr/oauth2/$1"
+    },
+    {
+      "src": "/login/oauth2/(.*)",
+      "dest": "https://api.re-view.kr/login/oauth2/$1"
+    },
+    {
+      "handle": "filesystem"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "/index.html"
+    }
+  ]
 }

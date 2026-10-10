@@ -3737,6 +3737,24 @@ abstract class AppLocalizations {
   /// In ko, this message translates to:
   /// **'추가 근거가 제공됐지만 아직 설명 문구를 지원하지 않아요.'**
   String get evidenceUnknownBody;
+
+  /// No description provided for @homeSearchSuggestionsEmpty.
+  ///
+  /// In ko, this message translates to:
+  /// **'연관 검색어가 없어요. 입력한 단어로 검색할 수 있어요.'**
+  String get homeSearchSuggestionsEmpty;
+
+  /// No description provided for @homeSearchSuggestionsError.
+  ///
+  /// In ko, this message translates to:
+  /// **'연관 검색어를 불러오지 못했어요. 입력한 단어로 검색하거나 다시 시도해 주세요.'**
+  String get homeSearchSuggestionsError;
+
+  /// No description provided for @homeSearchSuggestionsRetry.
+  ///
+  /// In ko, this message translates to:
+  /// **'연관 검색어 다시 불러오기'**
+  String get homeSearchSuggestionsRetry;
 }
 
 class _AppLocalizationsDelegate

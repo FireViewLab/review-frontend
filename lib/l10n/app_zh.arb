@@ -607,5 +607,8 @@
   "evidenceRepurchaseLabel": "再次购买信号",
   "evidenceRepurchaseBody": "发现了表明再次购买的信息。",
   "evidenceUnknownLabel": "其他分析依据",
-  "evidenceUnknownBody": "已提供其他依据，但暂不支持其说明。"
+  "evidenceUnknownBody": "已提供其他依据，但暂不支持其说明。",
+  "homeSearchSuggestionsEmpty": "没有相关搜索词。您可以搜索已输入的内容。",
+  "homeSearchSuggestionsError": "无法加载相关搜索词。您可以搜索已输入的内容或重试。",
+  "homeSearchSuggestionsRetry": "重新加载相关搜索词"
 }

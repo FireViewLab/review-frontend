@@ -21,7 +21,7 @@ final homeRemoteDataSourceProvider = Provider<HomeRemoteDataSource>((ref) {
 
 final searchAutocompleteRemoteDataSourceProvider =
     Provider<SearchAutocompleteRemoteDataSource>((ref) {
-      return GoogleSearchAutocompleteRemoteDataSource(
+      final source = GoogleSearchAutocompleteRemoteDataSource(
         dio: Dio(
           BaseOptions(
             connectTimeout: const Duration(seconds: 2),
@@ -30,6 +30,8 @@ final searchAutocompleteRemoteDataSourceProvider =
           ),
         ),
       );
+      ref.onDispose(source.dispose);
+      return source;
     });
 
 final homeRepositoryProvider = Provider<HomeRepository>((ref) {
