@@ -13,7 +13,7 @@ class MyPageTrustSummaryPanel extends StatefulWidget {
   });
 
   final double? savedAverageRti;
-  final int riskyCount;
+  final int? riskyCount;
 
   @override
   State<MyPageTrustSummaryPanel> createState() =>
@@ -69,16 +69,19 @@ class MyPageTrustSummaryPanelState extends State<MyPageTrustSummaryPanel> {
           Text(
             score == null
                 ? AppLocalizations.of(context).myPageRtiSaveHint
+                : widget.riskyCount == null
+                ? '찜 상품의 분석 정보를 확인할 수 없어요.'
                 : widget.riskyCount == 0
                 ? AppLocalizations.of(context).myPageRiskyNone
                 : AppLocalizations.of(
                     context,
-                  ).myPageRiskyCount(widget.riskyCount),
+                  ).myPageRiskyCount(widget.riskyCount!),
             style: Theme.of(context).textTheme.labelMedium?.copyWith(
               color: AppColors.textSecondary,
               fontWeight: FontWeight.w700,
             ),
           ),
+          const Text('찜한 상품 중 분석된 RTI의 평균과 서버 주의 등급 기준입니다.'),
           const Divider(color: AppColors.border),
           MyPageSettingRow(
             label: AppLocalizations.of(context).myPageHighlightLowRti,

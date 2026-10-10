@@ -1,10 +1,11 @@
+import 'package:re_view_front/features/wishlist/presentation/view_models/wishlist_state.dart';
+import 'package:re_view_front/features/my_page/presentation/widgets/my_page/warning_products_section.dart';
 import 'package:re_view_front/features/recent_products/presentation/widgets/recent_products_section.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:re_view_front/app/theme/app_motion.dart';
 import 'package:re_view_front/app/router/route_paths.dart';
-import 'package:re_view_front/features/home/presentation/providers/home_providers.dart';
 import 'package:re_view_front/features/my_page/presentation/providers/my_page_providers.dart';
 import 'package:re_view_front/features/my_page/presentation/view_models/my_page_state.dart';
 import 'package:re_view_front/features/wishlist/presentation/providers/wishlist_providers.dart';
@@ -38,9 +39,12 @@ class _MyPageState extends ConsumerState<MyPage> {
   @override
   Widget build(BuildContext context) {
     final myPageState = ref.watch(myPageViewModelProvider);
-    final dashboardState = ref.watch(homeDashboardViewModelProvider);
     final wishlistState = ref.watch(wishlistViewModelProvider);
-    final wishlistCount = ref.watch(wishlistItemCountProvider).value ?? 0;
+    final wishlistCount = switch (wishlistState) {
+      WishlistSuccess(:final items) => items.length,
+      WishlistEmpty() => 0,
+      _ => null,
+    };
 
     return switch (myPageState) {
       MyPageLoading() => SizedBox(
@@ -58,14 +62,13 @@ class _MyPageState extends ConsumerState<MyPage> {
       ),
       MyPageSuccess(:final profile) => MyPageBody(
         profile: profile,
-        dashboardState: dashboardState,
         wishlistState: wishlistState,
         wishlistCount: wishlistCount,
         onProductTap: _goProductDetail,
         onWishlistTap: () => context.go(RoutePaths.wishlist),
         onPasswordTap: () => context.go(RoutePaths.passwordReset),
         onRecentTap: () => showRecentProducts(context),
-        onReviewTap: () => _scrollTo(_recentKey),
+        onReviewTap: () => showWarningProducts(context),
         onSettingsTap: () => _scrollTo(_settingsKey),
         onAccountTap: () => _scrollTo(_accountKey),
         topKey: _topKey,
