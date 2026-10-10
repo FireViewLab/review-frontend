@@ -1,3 +1,4 @@
+import 'package:re_view_front/features/notifications/presentation/providers/notification_providers.dart';
 import 'package:re_view_front/features/wishlist/presentation/view_models/wishlist_state.dart';
 import 'package:re_view_front/features/my_page/presentation/widgets/my_page/warning_products_section.dart';
 import 'package:re_view_front/features/recent_products/presentation/widgets/recent_products_section.dart';
@@ -27,6 +28,16 @@ class _MyPageState extends ConsumerState<MyPage> {
   final _recentKey = GlobalKey();
   final _settingsKey = GlobalKey();
   final _accountKey = GlobalKey();
+
+  @override
+  void initState() {
+    super.initState();
+    Future.microtask(() {
+      if (mounted) {
+        ref.read(unreadNotificationCountProvider.notifier).refreshIfStale();
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {

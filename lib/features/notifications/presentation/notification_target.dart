@@ -1,20 +1,31 @@
 import 'package:re_view_front/app/router/route_paths.dart';
+import 'package:re_view_front/features/external_product/domain/entities/external_product_ref.dart';
 
-/// 서버가 내려주는 알림 이동 경로를 앱 라우트로 바꾼다. 모르는 경로면 null.
-///
-/// 서버 기준: /products/{id}, /reports/me/{id}, /feedback/me/{id}
+/// Resolve only a known product or personal feedback target, without a request.
 String? notificationRoute(String? targetUrl) {
   if (targetUrl == null) return null;
-  final path = Uri.tryParse(targetUrl)?.path ?? targetUrl;
-
-  final external = RegExp(r'^/products?/([^/]+)/([^/]+)$').firstMatch(path);
-  if (external != null) {
-    return '/product/${Uri.encodeComponent(external.group(1)!)}/${Uri.encodeComponent(external.group(2)!)}';
+  final uri = Uri.tryParse(targetUrl);
+  if (uri == null) return null;
+  final segments = uri.pathSegments;
+  if (segments.isNotEmpty &&
+      const {'product', 'products'}.contains(segments.first)) {
+    if (segments.length == 3) {
+      return ExternalProductRef.resolve(
+        dataPlatform: segments[1],
+        dataProductId: segments[2],
+      )?.routePath;
+    }
+    if (segments.length == 2) {
+      final numeric = int.tryParse(segments[1]);
+      if (numeric != null && numeric > 0 && numeric <= 9007199254740991) {
+        return '/product/$numeric';
+      }
+      return ExternalProductRef.resolve(externalId: segments[1])?.routePath;
+    }
   }
-  final product = RegExp(r'^/products?/(\d+)$').firstMatch(path);
-  if (product != null) return '/product/${product.group(1)}';
-
-  if (path.startsWith('/reports/me') || path.startsWith('/feedback/me')) {
+  if (segments.length >= 2 &&
+      const {'reports', 'feedback'}.contains(segments[0]) &&
+      segments[1] == 'me') {
     return RoutePaths.feedbackHistory;
   }
   return null;
