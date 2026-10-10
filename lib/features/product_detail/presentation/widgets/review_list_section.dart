@@ -43,8 +43,11 @@ class _ReviewListSectionState extends ConsumerState<ReviewListSection> {
 
   ReviewSortOption? _selectedSort;
   bool _showHidden = false;
-  SettingsData? get _preferences =>
-      ref.watch(confirmedDisplayPreferencesProvider);
+  SettingsData? _preferences;
+  List<ProductReview>? _cachedSource;
+  Object? _cachedOptions;
+  List<ProductReview> _cachedReviews = const [];
+  int _hiddenCount = 0, _photoReviewCount = 0;
   ReviewSortOption get _sortOption =>
       _selectedSort ??
       (_preferences?.reviewSortOrder == 'HELPFUL'
@@ -64,10 +67,35 @@ class _ReviewListSectionState extends ConsumerState<ReviewListSection> {
   int _visibleCount = _pageSize;
 
   List<ProductReview> get _filteredSortedReviews {
+    final settings = _preferences;
+    final options = (
+      _selectedSort,
+      _showHidden,
+      _photoOnly || _photoView,
+      settings?.hideRiskyReviews,
+      settings?.rtiThreshold,
+      settings?.prioritizeVerifiedReviews,
+      settings?.reviewSortOrder,
+    );
+    if (identical(_cachedSource, widget.reviews) && _cachedOptions == options) {
+      return _cachedReviews;
+    }
+    _cachedSource = widget.reviews;
+    _cachedOptions = options;
+    final hasPhotos = {
+      for (final r in widget.reviews)
+        r: validReviewImages(r.imageUrls).isNotEmpty,
+    };
+    _photoReviewCount = hasPhotos.values.where((v) => v).length;
+    _hiddenCount = widget.reviews.where(_isHidden).length;
     var list = widget.reviews.where((r) => !_isHidden(r)).toList();
+    final dates = {
+      for (final r in list)
+        r: DateTime.tryParse(r.createdAt.replaceAll('.', '-')),
+    };
     list.sort((a, b) {
-      final first = DateTime.tryParse(a.createdAt.replaceAll('.', '-'));
-      final second = DateTime.tryParse(b.createdAt.replaceAll('.', '-'));
+      final first = dates[a];
+      final second = dates[b];
       if (first == null) return second == null ? 0 : 1;
       if (second == null) return -1;
       return second.compareTo(first);
@@ -84,17 +112,15 @@ class _ReviewListSectionState extends ConsumerState<ReviewListSection> {
     }
 
     if (_photoOnly || _photoView) {
-      list = list
-          .where((r) => validReviewImages(r.imageUrls).isNotEmpty)
-          .toList();
+      list = list.where((r) => hasPhotos[r] == true).toList();
     }
 
-    return switch (_sortOption) {
+    return _cachedReviews = switch (_sortOption) {
       ReviewSortOption.newest => list,
       ReviewSortOption.verified =>
         list.where((r) => r.isVerifiedPurchase).toList(),
       ReviewSortOption.withPhoto =>
-        list.where((r) => validReviewImages(r.imageUrls).isNotEmpty).toList(),
+        list.where((r) => hasPhotos[r] == true).toList(),
       ReviewSortOption.helpful =>
         (list..sort((a, b) {
           if (a.helpfulCount == null) return b.helpfulCount == null ? 0 : 1;
@@ -112,9 +138,10 @@ class _ReviewListSectionState extends ConsumerState<ReviewListSection> {
 
   @override
   Widget build(BuildContext context) {
+    _preferences = ref.watch(confirmedDisplayPreferencesProvider);
     final preferences = _preferences;
     final reviews = _filteredSortedReviews;
-    final hiddenCount = widget.reviews.where(_isHidden).length;
+    final hiddenCount = _hiddenCount;
     final preferencesState = ref.watch(savedDisplayPreferencesProvider);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -139,9 +166,7 @@ class _ReviewListSectionState extends ConsumerState<ReviewListSection> {
           photoOnly: _photoOnly,
           photoView: _photoView,
           loadedCount: widget.reviews.length,
-          photoReviewCount: widget.reviews
-              .where((r) => validReviewImages(r.imageUrls).isNotEmpty)
-              .length,
+          photoReviewCount: _photoReviewCount,
           onPhotoOnlyChanged: (v) => setState(() => _photoOnly = v),
           onPhotoViewChanged: (v) => setState(() => _photoView = v),
           sortControls: _FilterRow(
