@@ -40,6 +40,10 @@ class SearchBar extends StatefulWidget {
 class _SearchBarState extends State<SearchBar> {
   late final TextEditingController _controller;
   late final FocusNode _fallbackFocusNode;
+  final _suggestions = SuggestionsController<String>();
+  int _relatedGeneration = 0;
+  bool _relatedFailed = false;
+  bool _relatedResolved = false;
   bool _isFocused = false;
   bool _isHovered = false;
   List<String> _recentQueries = const [];
@@ -51,6 +55,7 @@ class _SearchBarState extends State<SearchBar> {
   void initState() {
     super.initState();
     _controller = TextEditingController(text: widget.initialValue ?? '');
+    _controller.addListener(_invalidateRelated);
     _fallbackFocusNode = FocusNode();
     _effectiveFocusNode.addListener(_syncFocusState);
     _isFocused = _effectiveFocusNode.hasFocus;
@@ -81,6 +86,9 @@ class _SearchBarState extends State<SearchBar> {
   void dispose() {
     _effectiveFocusNode.removeListener(_syncFocusState);
     _fallbackFocusNode.dispose();
+    _relatedGeneration++;
+    _controller.removeListener(_invalidateRelated);
+    _suggestions.dispose();
     _controller.dispose();
     super.dispose();
   }
@@ -122,12 +130,13 @@ class _SearchBarState extends State<SearchBar> {
             color: backgroundColor,
             child: TypeAheadField<String>(
               controller: _controller,
+              suggestionsController: _suggestions,
               focusNode: _effectiveFocusNode,
               debounceDuration: const Duration(milliseconds: 300),
               hideOnEmpty: false,
               hideOnError: false,
               hideOnLoading: false,
-              retainOnLoading: true,
+              retainOnLoading: false,
               hideOnSelect: true,
               offset: const Offset(0, 8),
               constraints: const BoxConstraints(maxHeight: 520),
@@ -138,9 +147,19 @@ class _SearchBarState extends State<SearchBar> {
                   return const SizedBox.shrink();
                 }
 
-                return const SizedBox.shrink();
+                return Padding(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 8,
+                    vertical: 12,
+                  ),
+                  child: Text(
+                    keyword,
+                    style: Theme.of(context).textTheme.bodyMedium,
+                  ),
+                );
               },
-              listBuilder: (context, children) => _buildSuggestionPanel(),
+              listBuilder: (context, children) =>
+                  _buildSuggestionPanel(suggestionItems: children),
               loadingBuilder: (context) =>
                   _buildSuggestionPanel(isLoadingRelated: true),
               emptyBuilder: (context) => _buildSuggestionPanel(),
@@ -190,7 +209,7 @@ class _SearchBarState extends State<SearchBar> {
 
   void _submitQuery(String value, {bool byIcon = false}) {
     final query = value.trim();
-    if (query.isEmpty) {
+    if (query.isEmpty || query == _suggestionPanelPlaceholder) {
       return;
     }
 
@@ -290,42 +309,74 @@ class _SearchBarState extends State<SearchBar> {
     });
   }
 
+  void _invalidateRelated() {
+    _relatedGeneration++;
+    if (!mounted) return;
+    setState(() {
+      _relatedKeywords = const [];
+      _relatedFailed = false;
+      _relatedResolved = false;
+    });
+  }
+
   Future<List<String>> _loadRelatedKeywords(String pattern) async {
+    final generation = ++_relatedGeneration;
     final query = pattern.trim();
-    if (query.length < 2 || widget.onSuggestionsRequested == null) {
-      if (_relatedKeywords.isNotEmpty && mounted) {
-        setState(() => _relatedKeywords = const []);
-      }
+    if (query.length < 2 ||
+        query.length > 120 ||
+        widget.onSuggestionsRequested == null) {
       return const [_suggestionPanelPlaceholder];
     }
-
+    bool current() =>
+        mounted &&
+        generation == _relatedGeneration &&
+        _controller.text.trim() == query;
     try {
       final keywords = await widget.onSuggestionsRequested!(query);
+      final seen = <String>{query.toLowerCase()};
       final visibleKeywords = keywords
           .map((keyword) => keyword.trim())
-          .where((keyword) => keyword.isNotEmpty)
+          .where(
+            (keyword) =>
+                keyword.isNotEmpty &&
+                keyword != _suggestionPanelPlaceholder &&
+                seen.add(keyword.toLowerCase()),
+          )
           .take(6)
           .toList(growable: false);
-
-      if (mounted && _controller.text.trim() == query) {
-        setState(() => _relatedKeywords = visibleKeywords);
-      }
-
-      if (visibleKeywords.isEmpty) {
-        return const [_suggestionPanelPlaceholder];
-      }
-      return visibleKeywords;
+      if (!current()) return const [_suggestionPanelPlaceholder];
+      setState(() {
+        _relatedKeywords = visibleKeywords;
+        _relatedFailed = false;
+        _relatedResolved = true;
+      });
+      return visibleKeywords.isEmpty
+          ? const [_suggestionPanelPlaceholder]
+          : visibleKeywords;
     } catch (_) {
-      if (mounted && _controller.text.trim() == query) {
-        setState(() => _relatedKeywords = const []);
+      if (current()) {
+        setState(() {
+          _relatedKeywords = const [];
+          _relatedFailed = true;
+          _relatedResolved = true;
+        });
       }
       return const [_suggestionPanelPlaceholder];
     }
   }
 
-  Widget _buildSuggestionPanel({bool isLoadingRelated = false}) {
+  Widget _buildSuggestionPanel({
+    bool isLoadingRelated = false,
+    List<Widget> suggestionItems = const [],
+  }) {
     return _SearchSuggestionPanel(
       relatedKeywords: _relatedKeywords,
+      suggestionItems: suggestionItems,
+      relatedFailed: _relatedFailed,
+      relatedResolved: _relatedResolved,
+      onRelatedRetry: _controller.text.trim().length >= 2
+          ? _suggestions.refresh
+          : null,
       popularKeywords: widget.popularKeywords,
       recentQueries: _recentQueries,
       products: widget.recommendedProducts.take(2).toList(),
@@ -342,6 +393,10 @@ class _SearchBarState extends State<SearchBar> {
 class _SearchSuggestionPanel extends StatelessWidget {
   const _SearchSuggestionPanel({
     required this.relatedKeywords,
+    required this.suggestionItems,
+    required this.relatedFailed,
+    required this.relatedResolved,
+    required this.onRelatedRetry,
     required this.popularKeywords,
     required this.recentQueries,
     required this.products,
@@ -354,6 +409,10 @@ class _SearchSuggestionPanel extends StatelessWidget {
   });
 
   final List<String> relatedKeywords;
+  final List<Widget> suggestionItems;
+  final bool relatedFailed;
+  final bool relatedResolved;
+  final VoidCallback? onRelatedRetry;
   final List<String> popularKeywords;
   final List<String> recentQueries;
   final List<HomeProductData> products;
@@ -396,26 +455,39 @@ class _SearchSuggestionPanel extends StatelessWidget {
             children: [
               _PanelSectionTitle(
                 title: AppLocalizations.of(context).homeSearchSuggestionsTitle,
-                trailing: const Icon(
-                  Icons.refresh,
-                  size: 16,
-                  color: AppColors.textTertiary,
+                trailing: IconButton(
+                  tooltip: AppLocalizations.of(
+                    context,
+                  ).homeSearchSuggestionsRetry,
+                  onPressed: isLoadingRelated ? null : onRelatedRetry,
+                  icon: const Icon(Icons.refresh, size: 18),
                 ),
               ),
               const SizedBox(height: AppSpacing.sm),
               if (isLoadingRelated)
-                visibleRelatedKeywords.isEmpty
-                    ? _PanelEmptyRow(message: AppLocalizations.of(context).homeSearchSuggestionsLoading)
-                    : _KeywordWrap(
-                        keywords: visibleRelatedKeywords,
-                        onKeywordPressed: onKeywordPressed,
-                      )
+                _PanelEmptyRow(
+                  message: AppLocalizations.of(
+                    context,
+                  ).homeSearchSuggestionsLoading,
+                )
+              else if (relatedFailed)
+                _PanelEmptyRow(
+                  message: AppLocalizations.of(
+                    context,
+                  ).homeSearchSuggestionsError,
+                )
               else if (visibleRelatedKeywords.isEmpty)
-                _PanelEmptyRow(message: AppLocalizations.of(context).homeSearchSuggestionsHint)
+                _PanelEmptyRow(
+                  message: relatedResolved
+                      ? AppLocalizations.of(context).homeSearchSuggestionsEmpty
+                      : AppLocalizations.of(context).homeSearchSuggestionsHint,
+                )
               else
-                _KeywordWrap(
-                  keywords: visibleRelatedKeywords,
-                  onKeywordPressed: onKeywordPressed,
+                FocusTraversalGroup(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: suggestionItems,
+                  ),
                 ),
               const SizedBox(height: AppSpacing.md),
               const Divider(height: 1, color: AppColors.border),
@@ -427,7 +499,11 @@ class _SearchSuggestionPanel extends StatelessWidget {
                     : TextButton.icon(
                         onPressed: onRecentQueriesCleared,
                         icon: const Icon(Icons.delete_outline, size: 14),
-                        label: Text(AppLocalizations.of(context).homeRecentSearchDeleteAll),
+                        label: Text(
+                          AppLocalizations.of(
+                            context,
+                          ).homeRecentSearchDeleteAll,
+                        ),
                         style: TextButton.styleFrom(
                           minimumSize: Size.zero,
                           padding: EdgeInsets.zero,
@@ -440,7 +516,9 @@ class _SearchSuggestionPanel extends StatelessWidget {
               ),
               const SizedBox(height: AppSpacing.sm),
               if (recentQueries.isEmpty)
-                _PanelEmptyRow(message: AppLocalizations.of(context).homeRecentSearchEmpty)
+                _PanelEmptyRow(
+                  message: AppLocalizations.of(context).homeRecentSearchEmpty,
+                )
               else
                 Wrap(
                   spacing: AppSpacing.xs,
@@ -457,10 +535,14 @@ class _SearchSuggestionPanel extends StatelessWidget {
               const SizedBox(height: AppSpacing.md),
               const Divider(height: 1, color: AppColors.border),
               const SizedBox(height: AppSpacing.md),
-              _PanelSectionTitle(title: AppLocalizations.of(context).homePopularSearchTitle),
+              _PanelSectionTitle(
+                title: AppLocalizations.of(context).homePopularSearchTitle,
+              ),
               const SizedBox(height: AppSpacing.sm),
               if (visiblePopularKeywords.isEmpty)
-                _PanelEmptyRow(message: AppLocalizations.of(context).homePopularSearchTitle)
+                _PanelEmptyRow(
+                  message: AppLocalizations.of(context).homePopularSearchTitle,
+                )
               else
                 _KeywordWrap(
                   keywords: visiblePopularKeywords,
@@ -469,7 +551,9 @@ class _SearchSuggestionPanel extends StatelessWidget {
               const SizedBox(height: AppSpacing.md),
               const Divider(height: 1, color: AppColors.border),
               const SizedBox(height: AppSpacing.md),
-              _PanelSectionTitle(title: AppLocalizations.of(context).homeSearchProductsTitle),
+              _PanelSectionTitle(
+                title: AppLocalizations.of(context).homeSearchProductsTitle,
+              ),
               const SizedBox(height: AppSpacing.sm),
               if (products.isEmpty)
                 const _PanelEmptyRow(message: '추천상품 API 연결 대기 중')

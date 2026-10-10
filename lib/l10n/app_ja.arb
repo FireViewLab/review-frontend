@@ -607,5 +607,8 @@
   "evidenceRepurchaseLabel": "再購入の手がかり",
   "evidenceRepurchaseBody": "再購入を示す情報が確認されました。",
   "evidenceUnknownLabel": "追加の分析根拠",
-  "evidenceUnknownBody": "追加の根拠が提供されましたが、説明文にはまだ対応していません。"
+  "evidenceUnknownBody": "追加の根拠が提供されましたが、説明文にはまだ対応していません。",
+  "homeSearchSuggestionsEmpty": "関連検索語はありません。入力した言葉で検索できます。",
+  "homeSearchSuggestionsError": "関連検索語を読み込めませんでした。入力した言葉で検索するか、再試行してください。",
+  "homeSearchSuggestionsRetry": "関連検索語を再読み込み"
 }
