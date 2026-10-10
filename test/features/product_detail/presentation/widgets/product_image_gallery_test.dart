@@ -1,4 +1,9 @@
+import 'dart:ui' show PointerDeviceKind;
+
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:re_view_front/shared/widgets/product_image_viewer.dart';
+import 'package:re_view_front/l10n/generated/app_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:re_view_front/app/theme/app_theme.dart';
@@ -25,6 +30,9 @@ void main() {
         ],
         child: MaterialApp(
           theme: AppTheme.light,
+          locale: const Locale('ko'),
+          localizationsDelegates: AppLocalizations.localizationsDelegates,
+          supportedLocales: AppLocalizations.supportedLocales,
           home: const Scaffold(
             body: Center(
               child: SizedBox(
@@ -41,11 +49,122 @@ void main() {
     );
     await tester.pump();
 
+    expect(find.byTooltip('찜하기'), findsOneWidget);
     await tester.tap(find.byIcon(Icons.favorite_border));
     await tester.pumpAndSettle();
 
+    expect(find.byTooltip('찜 취소'), findsOneWidget);
     expect(repository.addWishlistCalls, 1);
     expect(repository.addedProductIds, [42]);
+  });
+
+  Future<void> pumpGallery(WidgetTester tester, {required bool reduced}) async {
+    await tester.pumpWidget(
+      ProviderScope(
+        overrides: [isLoggedInProvider.overrideWithValue(false)],
+        child: MaterialApp(
+          theme: AppTheme.light,
+          locale: const Locale('ko'),
+          localizationsDelegates: AppLocalizations.localizationsDelegates,
+          supportedLocales: AppLocalizations.supportedLocales,
+          builder: (context, child) => MediaQuery(
+            data: MediaQuery.of(context).copyWith(disableAnimations: reduced),
+            child: child!,
+          ),
+          home: const Scaffold(
+            body: Center(
+              child: SizedBox(
+                width: 360,
+                child: ProductImageGallery(
+                  productId: 42,
+                  imageUrls: [
+                    'https://example.com/one.png',
+                    'https://example.com/two.png',
+                    'https://example.com/three.png',
+                  ],
+                ),
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+    await tester.pump();
+  }
+
+  testWidgets(
+    'reduced motion stops the gallery timer and keeps manual navigation',
+    (tester) async {
+      await pumpGallery(tester, reduced: false);
+      expect(find.text('1 / 3'), findsOneWidget);
+      await tester.pump(const Duration(seconds: 3));
+      expect(find.text('2 / 3'), findsOneWidget);
+
+      await pumpGallery(tester, reduced: true);
+      await tester.pump(const Duration(seconds: 9));
+      expect(find.text('2 / 3'), findsOneWidget);
+      await tester.tap(find.byTooltip('다음 상품 이미지'));
+      await tester.pump();
+      expect(find.text('3 / 3'), findsOneWidget);
+      await tester.pump(const Duration(seconds: 9));
+      expect(find.text('3 / 3'), findsOneWidget);
+
+      await pumpGallery(tester, reduced: false);
+      await tester.pump(const Duration(seconds: 3));
+      expect(find.text('1 / 3'), findsOneWidget);
+      expect(tester.takeException(), isNull);
+    },
+  );
+
+  testWidgets(
+    'reduced motion preserves keyboard enlargement and mobile close',
+    (tester) async {
+      tester.view.physicalSize = const Size(390, 850);
+      tester.view.devicePixelRatio = 1;
+      addTearDown(tester.view.resetPhysicalSize);
+      addTearDown(tester.view.resetDevicePixelRatio);
+      await pumpGallery(tester, reduced: true);
+      final target = find
+          .descendant(
+            of: find.byType(ProductImageViewer),
+            matching: find.byType(InkWell),
+          )
+          .first;
+      final content = tester.widget<InkWell>(target).child!;
+      Focus.of(tester.element(find.byWidget(content))).requestFocus();
+      await tester.pump();
+      await tester.sendKeyEvent(LogicalKeyboardKey.enter);
+      await tester.pumpAndSettle();
+      expect(find.byType(Dialog), findsOneWidget);
+      await tester.tap(find.byIcon(Icons.close));
+      await tester.pumpAndSettle();
+      expect(find.byType(Dialog), findsNothing);
+      expect(find.text('1 / 3'), findsOneWidget);
+      expect(tester.takeException(), isNull);
+    },
+  );
+
+  testWidgets('reduced motion removes the moving hover magnifier', (
+    tester,
+  ) async {
+    final mouse = await tester.createGesture(kind: PointerDeviceKind.mouse);
+    addTearDown(mouse.removePointer);
+    await pumpGallery(tester, reduced: false);
+    await mouse.addPointer(location: Offset.zero);
+    await mouse.moveTo(tester.getCenter(find.byType(ProductImageGallery)));
+    await tester.pump();
+    Finder magnifier() => find.byWidgetPredicate(
+      (widget) =>
+          widget is Transform && widget.transform.getMaxScaleOnAxis() == 2.8,
+    );
+    expect(magnifier(), findsOneWidget);
+    await pumpGallery(tester, reduced: true);
+    await mouse.moveTo(
+      tester.getCenter(find.byType(ProductImageGallery)) + const Offset(10, 10),
+    );
+    await tester.pump();
+    expect(magnifier(), findsNothing);
+    expect(tester.takeException(), isNull);
   });
 }
 
@@ -59,9 +178,27 @@ class _FakeWishlistRepository implements WishlistRepository {
   Future<Result<({List<WishlistItem> items, WishlistSummary summary})>>
   getWishlist() async {
     getWishlistCalls += 1;
-    return const Success((
-      items: <WishlistItem>[],
-      summary: WishlistSummary(
+    return Success((
+      items: addedProductIds
+          .map(
+            (id) => WishlistItem(
+              productId: id,
+              name: "Test product",
+              imageUrl: "",
+              price: 0,
+              category: "test",
+              categoryDisplayName: null,
+              avgRti: null,
+              rtiGrade: null,
+              rtiColor: null,
+              reviewCount: 0,
+              avgRating: 0,
+              isPriceDrop: false,
+              isNewAlert: false,
+            ),
+          )
+          .toList(),
+      summary: const WishlistSummary(
         priceDropCount: 0,
         newAlertCount: 0,
         totalReviewCount: 0,

@@ -1,3 +1,4 @@
+import 'package:re_view_front/shared/presentation/review_evidence_formatter.dart';
 import 'package:flutter/material.dart';
 import 'package:re_view_front/app/theme/app_colors.dart';
 import 'package:re_view_front/app/theme/app_spacing.dart';
@@ -87,7 +88,7 @@ class _SignalRow extends StatelessWidget {
         const SizedBox(width: AppSpacing.xs),
         Expanded(
           child: Text(
-            signal.label,
+            ReviewEvidenceFormatter.text(context, signal.label),
             style: Theme.of(context).textTheme.labelSmall?.copyWith(
               color: AppColors.textPrimary,
               fontWeight: FontWeight.w600,
@@ -102,7 +103,7 @@ class _SignalRow extends StatelessWidget {
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
             child: Text(
-              signal.value,
+              ReviewEvidenceFormatter.text(context, signal.value),
               style: Theme.of(context).textTheme.labelSmall?.copyWith(
                 color: color,
                 fontWeight: FontWeight.w800,

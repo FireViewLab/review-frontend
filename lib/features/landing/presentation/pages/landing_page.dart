@@ -1,5 +1,3 @@
-import 'dart:ui';
-
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:re_view_front/app/responsive/breakpoints.dart';
@@ -7,10 +5,8 @@ import 'package:re_view_front/app/responsive/responsive_layout.dart';
 import 'package:re_view_front/app/router/route_paths.dart';
 import 'package:re_view_front/app/theme/app_colors.dart';
 import 'package:re_view_front/app/theme/app_spacing.dart';
-import 'package:re_view_front/features/home/presentation/pages/home_page.dart';
 import 'package:re_view_front/features/landing/presentation/widgets/landing_hero_section.dart';
 import 'package:re_view_front/features/landing/presentation/widgets/landing_rti_demo_card.dart';
-import 'package:re_view_front/shared/widgets/app_network_image.dart';
 
 class LandingPage extends StatelessWidget {
   const LandingPage({super.key});
@@ -19,13 +15,7 @@ class LandingPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Stack(
       children: [
-        const Positioned.fill(
-          child: ClipRect(
-            child: IgnorePointer(
-              child: AppNetworkImagePlaceholderScope(child: HomePage()),
-            ),
-          ),
-        ),
+        const Positioned.fill(child: _HomePreviewBackground()),
         _Backdrop(onDismiss: () => context.go(RoutePaths.home)),
         _LandingCard(
           onClose: () => context.go(RoutePaths.home),
@@ -37,6 +27,31 @@ class LandingPage extends StatelessWidget {
   }
 }
 
+/// 랜딩 뒤에 보이는 홈 화면 미리보기.
+///
+/// 실제 HomePage를 그리면 홈 API 호출과 전체 위젯 빌드, BackdropFilter 합성
+/// 비용이 첫 화면에 붙는다. 미리 블러 처리한 스크린샷으로 대신한다.
+class _HomePreviewBackground extends StatelessWidget {
+  const _HomePreviewBackground();
+
+  @override
+  Widget build(BuildContext context) {
+    final isMobile = AppBreakpoints.isMobile(MediaQuery.sizeOf(context).width);
+    return ColoredBox(
+      color: AppColors.background,
+      child: Image.asset(
+        isMobile
+            ? 'assets/images/landing/home_mobile.webp'
+            : 'assets/images/landing/home_desktop.webp',
+        fit: BoxFit.cover,
+        alignment: Alignment.topCenter,
+        filterQuality: FilterQuality.medium,
+        excludeFromSemantics: true,
+      ),
+    );
+  }
+}
+
 class _Backdrop extends StatelessWidget {
   const _Backdrop({required this.onDismiss});
 
@@ -44,17 +59,10 @@ class _Backdrop extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // HtmlElementView 기반 div는 Chrome Mac(Metal GPU 백엔드)에서
-    // WebGL canvas 합성 순서 차이로 인해 보이지 않음.
-    // BackdropFilter는 Flutter 캔버스 레이어에서 동작하므로 모든 브라우저/플랫폼에서 일관적.
-    // 랜딩 배경 HomePage의 HTML 이미지는 AppNetworkImagePlaceholderScope로 비활성화한다.
     return GestureDetector(
       onTap: onDismiss,
       behavior: HitTestBehavior.opaque,
-      child: BackdropFilter(
-        filter: ImageFilter.blur(sigmaX: 2, sigmaY: 2),
-        child: Container(color: const Color(0x660F172A)),
-      ),
+      child: Container(color: const Color(0x660F172A)),
     );
   }
 }

@@ -39,16 +39,19 @@ typedef WishlistSnapshot = ({
 final _wishlistSnapshotProvider = FutureProvider.autoDispose<WishlistSnapshot?>(
   (ref) async {
     ref.keepAlive();
-    final isLoggedIn = ref.watch(isLoggedInProvider);
+    final isLoggedIn = ref.watch(authSessionProvider).isLoggedIn;
     if (!isLoggedIn) return null;
 
     final result = await ref.read(getWishlistUseCaseProvider)();
-    return result.when(success: (data) => data, failure: (_) => null);
+    return result.when(
+      success: (data) => data,
+      failure: (failure) => throw failure,
+    );
   },
 );
 
 final wishlistItemCountProvider = FutureProvider.autoDispose<int>((ref) async {
-  final isLoggedIn = ref.watch(isLoggedInProvider);
+  final isLoggedIn = ref.watch(authSessionProvider).isLoggedIn;
   if (!isLoggedIn) return 0;
   final snapshot = await ref.watch(_wishlistSnapshotProvider.future);
   return snapshot?.items.length ?? 0;
@@ -57,7 +60,7 @@ final wishlistItemCountProvider = FutureProvider.autoDispose<int>((ref) async {
 final wishlistProductIdsProvider = FutureProvider.autoDispose<Set<int>>((
   ref,
 ) async {
-  final isLoggedIn = ref.watch(isLoggedInProvider);
+  final isLoggedIn = ref.watch(authSessionProvider).isLoggedIn;
   if (!isLoggedIn) return <int>{};
   final snapshot = await ref.watch(_wishlistSnapshotProvider.future);
   return snapshot?.items.map((item) => item.productId).toSet() ?? <int>{};
@@ -73,24 +76,32 @@ class WishlistButtonNotifier extends AsyncNotifier<bool> {
 
   final int _productId;
   bool _isToggling = false;
+  int _generation = 0;
 
   @override
   Future<bool> build() async {
+    _generation++;
+    _isToggling = false;
     if (_productId <= 0) return false;
 
-    final isLoggedIn = ref.watch(isLoggedInProvider);
+    final isLoggedIn = ref.watch(authSessionProvider).isLoggedIn;
     if (!isLoggedIn) return false;
 
     final productIds = await ref.watch(wishlistProductIdsProvider.future);
     return productIds.contains(_productId);
   }
 
-  Future<void> toggle() async {
-    if (_isToggling) return;
-    if (_productId <= 0) return;
-    if (!ref.read(isLoggedInProvider)) return;
+  Future<String?> toggle() async {
+    if (_isToggling) return null;
+    if (_productId <= 0) return null;
+    if (!ref.read(isLoggedInProvider)) return '로그인이 필요합니다.';
 
-    final current = state.value ?? false;
+    if (!state.hasValue) {
+      ref.invalidateSelf();
+      return '찜 상태를 확인하지 못했습니다. 다시 불러온 뒤 시도해 주세요.';
+    }
+    final generation = _generation;
+    final current = state.value!;
     _isToggling = true;
 
     final toggleUseCase = ref.read(toggleWishlistUseCaseProvider);
@@ -98,21 +109,28 @@ class WishlistButtonNotifier extends AsyncNotifier<bool> {
         ? await toggleUseCase.remove(_productId)
         : await toggleUseCase.add(_productId);
 
-    if (!ref.mounted) return;
+    if (!ref.mounted || generation != _generation) return null;
     _isToggling = false;
-    result.when(
+    return result.when<String?>(
       success: (_) {
         state = AsyncData(!current);
         ref.invalidate(_wishlistSnapshotProvider);
+        ref.invalidate(wishlistViewModelProvider);
+        return null;
       },
       failure: (failure) {
         if (!current && failure.code == 'WISHLIST_ALREADY_EXISTS') {
           state = const AsyncData(true);
           ref.invalidate(_wishlistSnapshotProvider);
-          return;
+          return null;
         }
         state = AsyncData(current);
+        return failure.message;
       },
     );
   }
+}
+
+void refreshWishlistSnapshot(Ref ref) {
+  ref.invalidate(_wishlistSnapshotProvider);
 }

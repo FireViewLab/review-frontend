@@ -1,6 +1,8 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:re_view_front/app/theme/app_colors.dart';
+import 'package:re_view_front/core/platform/web_image_element.dart';
 
 class AppNetworkImage extends StatelessWidget {
   const AppNetworkImage({
@@ -38,17 +40,10 @@ class AppNetworkImage extends StatelessWidget {
       child = _Placeholder(icon: placeholderIcon, iconSize: iconSize);
     } else if (kIsWeb) {
       // HtmlElementView로 <img> 태그 직접 렌더링 → 외부 CDN 이미지 CORS 우회
-      final objectFit = _objectFit;
-      child = HtmlElementView.fromTagName(
-        tagName: 'img',
-        onElementCreated: (Object element) {
-          final img = element as dynamic;
-          img.src = url;
-          img.style.width = '100%';
-          img.style.height = '100%';
-          img.style.objectFit = objectFit;
-          img.style.display = 'block';
-        },
+      child = _WebImage(
+        url: url,
+        objectFit: _objectFit,
+        placeholder: _Placeholder(icon: placeholderIcon, iconSize: iconSize),
       );
     } else {
       child = Image.network(
@@ -68,6 +63,60 @@ class AppNetworkImage extends StatelessWidget {
       return ClipRRect(borderRadius: borderRadius!, child: child);
     }
     return child;
+  }
+}
+
+/// 웹 `<img>` 렌더링. 받는 동안에는 배경색을 깔고, 실패하면 [placeholder]로 바꾼다.
+class _WebImage extends StatefulWidget {
+  const _WebImage({
+    required this.url,
+    required this.objectFit,
+    required this.placeholder,
+  });
+
+  final String url;
+  final String objectFit;
+  final Widget placeholder;
+
+  @override
+  State<_WebImage> createState() => _WebImageState();
+}
+
+class _WebImageState extends State<_WebImage> {
+  bool _failed = false;
+
+  @override
+  void didUpdateWidget(_WebImage oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.url != widget.url) _failed = false;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    if (_failed) return widget.placeholder;
+    final loadedUrl = widget.url;
+    return ClipRect(
+      child: ColoredBox(
+        color: AppColors.surfaceMuted,
+        child: HtmlElementView.fromTagName(
+          // Images are display content; Flutter owns card/chat/zoom input.
+          hitTestBehavior: PlatformViewHitTestBehavior.transparent,
+          // Keep a DOM viewport separate from the image's intrinsic dimensions.
+          key: ValueKey(widget.url),
+          tagName: 'div',
+          onElementCreated: (element) => configureWebImageElement(
+            element,
+            url: loadedUrl,
+            objectFit: widget.objectFit,
+            onError: () {
+              if (mounted && widget.url == loadedUrl) {
+                setState(() => _failed = true);
+              }
+            },
+          ),
+        ),
+      ),
+    );
   }
 }
 
@@ -104,8 +153,19 @@ class _ShimmerState extends State<_Shimmer>
     _controller = AnimationController(
       vsync: this,
       duration: const Duration(milliseconds: 1200),
-    )..repeat(reverse: true);
+    );
     _animation = CurvedAnimation(parent: _controller, curve: Curves.easeInOut);
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    if (MediaQuery.disableAnimationsOf(context)) {
+      _controller.stop();
+      _controller.value = 0.5;
+    } else if (!_controller.isAnimating) {
+      _controller.repeat(reverse: true);
+    }
   }
 
   @override

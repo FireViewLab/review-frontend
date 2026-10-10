@@ -1,0 +1,1128 @@
+{
+  "@@locale": "ko",
+
+  "appTitle": "Re:view",
+  "@appTitle": { "description": "앱 이름" },
+
+  "navHome": "홈",
+  "@navHome": { "description": "홈 네비게이션 항목" },
+
+  "navSearch": "검색",
+  "@navSearch": { "description": "검색 네비게이션 항목" },
+
+  "navCart": "장바구니",
+  "@navCart": { "description": "장바구니 네비게이션 항목" },
+
+  "navWishlist": "저장한 상품",
+  "@navWishlist": { "description": "위시리스트 네비게이션 항목" },
+
+  "navMyPage": "마이페이지",
+  "@navMyPage": { "description": "마이페이지 네비게이션 항목" },
+
+  "navSettings": "설정",
+  "@navSettings": { "description": "설정 네비게이션 항목" },
+
+  "actionSave": "저장",
+  "@actionSave": { "description": "저장 버튼" },
+
+  "actionCancel": "취소",
+  "@actionCancel": { "description": "취소 버튼" },
+
+  "actionConfirm": "확인",
+  "@actionConfirm": { "description": "확인 버튼" },
+
+  "actionRetry": "다시 시도",
+  "@actionRetry": { "description": "재시도 버튼" },
+
+  "actionBack": "뒤로",
+  "@actionBack": { "description": "뒤로가기 버튼" },
+
+  "actionLogin": "로그인",
+  "@actionLogin": { "description": "로그인 버튼" },
+
+  "actionLogout": "로그아웃",
+  "@actionLogout": { "description": "로그아웃 버튼" },
+
+  "actionSignup": "회원가입",
+  "@actionSignup": { "description": "회원가입 버튼" },
+
+  "actionViewAll": "전체 보기",
+  "@actionViewAll": { "description": "전체 보기 버튼" },
+
+  "stateLoading": "불러오는 중입니다.",
+  "@stateLoading": { "description": "로딩 메시지" },
+
+  "stateError": "오류가 발생했습니다.",
+  "@stateError": { "description": "오류 메시지" },
+
+  "stateEmpty": "표시할 항목이 없습니다.",
+  "@stateEmpty": { "description": "빈 상태 메시지" },
+
+  "settingsSaved": "설정이 저장되었습니다.",
+  "@settingsSaved": { "description": "설정 저장 완료 메시지" },
+
+  "settingsLanguage": "언어",
+  "@settingsLanguage": { "description": "언어 설정 레이블" },
+
+  "settingsNotifications": "알림 설정",
+  "@settingsNotifications": { "description": "알림 설정 섹션 제목" },
+
+  "settingsFilters": "분석 필터 설정",
+  "@settingsFilters": { "description": "분석 필터 설정 섹션 제목" },
+
+  "langKorean": "한국어",
+  "@langKorean": { "description": "언어명 한국어" },
+
+  "langEnglish": "English",
+  "@langEnglish": { "description": "언어명 영어" },
+
+  "langJapanese": "日本語",
+  "@langJapanese": { "description": "언어명 일본어" },
+
+  "langChinese": "中文(简体)",
+  "@langChinese": { "description": "언어명 중국어 간체" },
+
+  "sideNavOrders": "주문/배송",
+  "@sideNavOrders": { "description": "사이드 네비게이션 주문/배송" },
+
+  "sideNavRecentlyViewed": "최근 본 상품",
+  "@sideNavRecentlyViewed": { "description": "사이드 네비게이션 최근 본 상품" },
+
+  "sideNavReviewActivity": "리뷰 활동",
+  "@sideNavReviewActivity": { "description": "사이드 네비게이션 리뷰 활동" },
+
+  "sideNavAccountSettings": "계정 설정",
+  "@sideNavAccountSettings": { "description": "사이드 네비게이션 계정 설정" },
+
+  "sideNavFeedbackHistory": "피드백 내역",
+  "@sideNavFeedbackHistory": { "description": "사이드 네비게이션 피드백 내역" },
+
+  "settingsSubtitle": "알림, 필터, 계정 설정을 관리해요.",
+  "@settingsSubtitle": { "description": "설정 페이지 부제목 (비로그인)" },
+
+  "settingsSubtitleNamed": "{nickname}님의 알림, 필터, 계정 설정을 관리해요.",
+  "@settingsSubtitleNamed": {
+    "description": "설정 페이지 부제목 (로그인)",
+    "placeholders": {
+      "nickname": { "type": "String" }
+    }
+  },
+
+  "settingsNotificationEmail": "이메일 알림 받기",
+  "@settingsNotificationEmail": { "description": "이메일 알림 토글 레이블" },
+
+  "settingsNotificationEmailDesc": "상품 가격 변동, 리뷰 업데이트를 이메일로 받아요.",
+  "@settingsNotificationEmailDesc": { "description": "이메일 알림 토글 설명" },
+
+  "settingsNotificationPush": "앱 푸시 알림 받기",
+  "@settingsNotificationPush": { "description": "푸시 알림 토글 레이블" },
+
+  "settingsNotificationPushDesc": "저장한 상품의 실시간 알림을 브라우저에서 받아요.",
+  "@settingsNotificationPushDesc": { "description": "푸시 알림 토글 설명" },
+
+  "settingsNotificationAdEmail": "이메일 광고 수신",
+  "@settingsNotificationAdEmail": { "description": "광고 이메일 토글 레이블" },
+
+  "settingsNotificationAdEmailDesc": "프로모션 및 맞춤 혜택 정보를 이메일로 받아요.",
+  "@settingsNotificationAdEmailDesc": { "description": "광고 이메일 토글 설명" },
+
+  "settingsFilterHighlightLowRti": "주의 상품 먼저 보기",
+  "@settingsFilterHighlightLowRti": { "description": "주의 상품 강조 토글 레이블" },
+
+  "settingsFilterHighlightLowRtiDesc": "리뷰 신뢰도가 낮은 상품을 목록 상단에 표시해요.",
+  "@settingsFilterHighlightLowRtiDesc": { "description": "주의 상품 강조 토글 설명" },
+
+  "settingsFilterWishlistAlert": "저장 상품 알림 받기",
+  "@settingsFilterWishlistAlert": { "description": "저장 상품 알림 토글 레이블" },
+
+  "settingsFilterWishlistAlertDesc": "관심 상품의 RTI 변화가 있을 때 알림을 드려요.",
+  "@settingsFilterWishlistAlertDesc": { "description": "저장 상품 알림 토글 설명" },
+
+  "settingsFilterCategory": "카테고리 필터",
+  "@settingsFilterCategory": { "description": "카테고리 필터 레이블" },
+
+  "settingsFilterCategoryDesc": "선택한 카테고리 상품을 기준으로 분석 결과를 우선 표시해요.",
+  "@settingsFilterCategoryDesc": { "description": "카테고리 필터 설명" },
+
+  "settingsFilterCategoryAll": "전체 카테고리",
+  "@settingsFilterCategoryAll": { "description": "카테고리 전체 선택 옵션" },
+
+  "settingsFilterMinReview": "리뷰 최소 개수",
+  "@settingsFilterMinReview": { "description": "최소 리뷰 개수 필터 레이블" },
+
+  "settingsFilterMinReviewDesc": "이 개수 이상 리뷰가 있는 상품만 분석 결과에 반영해요.",
+  "@settingsFilterMinReviewDesc": { "description": "최소 리뷰 개수 필터 설명" },
+
+  "settingsFilterMinReviewSuffix": "개",
+  "@settingsFilterMinReviewSuffix": { "description": "리뷰 개수 단위" },
+
+  "settingsFilterLowRti": "낮은 RTI 경고 기준",
+  "@settingsFilterLowRti": { "description": "낮은 RTI 경고 기준 레이블" },
+
+  "settingsFilterLowRtiDesc": "RTI 점수가 이 값 이하면 주의 상품으로 분류해요.",
+  "@settingsFilterLowRtiDesc": { "description": "낮은 RTI 경고 기준 설명" },
+
+  "settingsFilterLowRtiSuffix": "점",
+  "@settingsFilterLowRtiSuffix": { "description": "RTI 점수 단위" },
+
+  "settingsAccountTitle": "계정",
+  "@settingsAccountTitle": { "description": "계정 섹션 제목" },
+
+  "settingsAccountChangePassword": "비밀번호 변경",
+  "@settingsAccountChangePassword": { "description": "비밀번호 변경 링크" },
+
+  "settingsAccountLabelName": "이름",
+  "@settingsAccountLabelName": { "description": "계정 이름 레이블" },
+
+  "settingsAccountLabelEmail": "이메일",
+  "@settingsAccountLabelEmail": { "description": "계정 이메일 레이블" },
+
+  "settingsAccountLabelJoinDate": "가입일",
+  "@settingsAccountLabelJoinDate": { "description": "계정 가입일 레이블" },
+
+  "settingsAccountLabelMemberType": "회원 유형",
+  "@settingsAccountLabelMemberType": { "description": "회원 유형 레이블" },
+
+  "settingsAccountDefaultName": "사용자",
+  "@settingsAccountDefaultName": { "description": "닉네임 미설정 시 기본 이름" },
+
+  "settingsAccountMemberLabel": "{role} 회원",
+  "@settingsAccountMemberLabel": {
+    "description": "회원 유형 표시 (역할 포함)",
+    "placeholders": {
+      "role": { "type": "String" }
+    }
+  },
+
+  "settingsLanguageSection": "언어 설정",
+  "@settingsLanguageSection": { "description": "언어 설정 섹션 제목" },
+
+  "settingsLanguageApplyNow": "변경 즉시 적용됩니다.",
+  "@settingsLanguageApplyNow": { "description": "언어 변경 즉시 적용 안내" },
+
+  "settingsSavedFeedback": "저장됐어요",
+  "@settingsSavedFeedback": { "description": "설정 저장 완료 피드백 메시지" },
+
+  "wishlistTitle": "찜한 상품",
+  "@wishlistTitle": { "description": "위시리스트 페이지 제목" },
+
+  "wishlistSubtitle": "저장된 상품을 한눈에 보고 가격과 리뷰 신뢰도를 확인해보세요.",
+  "@wishlistSubtitle": { "description": "위시리스트 페이지 부제목" },
+
+  "wishlistCount": "찜한 상품 {count}개",
+  "@wishlistCount": {
+    "description": "찜한 상품 개수 표시",
+    "placeholders": {
+      "count": { "type": "int" }
+    }
+  },
+
+  "wishlistEmpty": "찜한 상품이 없습니다",
+  "@wishlistEmpty": { "description": "위시리스트 빈 상태 제목" },
+
+  "wishlistEmptyDesc": "상품 카드의 하트를 눌러 찜 목록에 추가해보세요.",
+  "@wishlistEmptyDesc": { "description": "위시리스트 빈 상태 설명" },
+
+  "wishlistBrowse": "상품 탐색하러 가기",
+  "@wishlistBrowse": { "description": "위시리스트 빈 상태 탐색 버튼" },
+
+  "wishlistFilteredEmpty": "선택한 필터에 해당하는 찜 상품이 없습니다.",
+  "@wishlistFilteredEmpty": { "description": "필터 결과 없음 메시지" },
+
+  "wishlistSummaryTitle": "찜 리스트 요약",
+  "@wishlistSummaryTitle": { "description": "위시리스트 요약 카드 제목" },
+
+  "wishlistSummaryTotal": "총 {count}개",
+  "@wishlistSummaryTotal": {
+    "description": "위시리스트 총 개수",
+    "placeholders": {
+      "count": { "type": "int" }
+    }
+  },
+
+  "wishlistSummaryPriceDrop": "가격 하락",
+  "@wishlistSummaryPriceDrop": { "description": "가격 하락 통계 레이블" },
+
+  "wishlistSummaryNewAlert": "신규 알림",
+  "@wishlistSummaryNewAlert": { "description": "신규 알림 통계 레이블" },
+
+  "wishlistSummaryTotalReview": "총 리뷰",
+  "@wishlistSummaryTotalReview": { "description": "총 리뷰 통계 레이블" },
+
+  "wishlistProductView": "상품 보기",
+  "@wishlistProductView": { "description": "위시리스트 상품 보기 버튼" },
+
+  "wishlistProductPriceDrop": "가격 하락",
+  "@wishlistProductPriceDrop": { "description": "상품 카드 가격 하락 뱃지" },
+
+  "wishlistSortRecent": "최근 저장 순",
+  "@wishlistSortRecent": { "description": "최근 저장 순 정렬 옵션" },
+
+  "wishlistSortPriceLow": "낮은 가격 순",
+  "@wishlistSortPriceLow": { "description": "낮은 가격 순 정렬 옵션" },
+
+  "wishlistSortPriceHigh": "높은 가격 순",
+  "@wishlistSortPriceHigh": { "description": "높은 가격 순 정렬 옵션" },
+
+  "wishlistSortRti": "RTI 높은 순",
+  "@wishlistSortRti": { "description": "RTI 높은 순 정렬 옵션" },
+
+  "wishlistSortReviewCount": "리뷰 많은 순",
+  "@wishlistSortReviewCount": { "description": "리뷰 많은 순 정렬 옵션" },
+
+  "wishlistFilterAll": "전체",
+  "@wishlistFilterAll": { "description": "전체 필터 옵션" },
+
+  "wishlistFilterPriceDrop": "가격 하락",
+  "@wishlistFilterPriceDrop": { "description": "가격 하락 필터 옵션" },
+
+  "wishlistFilterRti": "RTI 점수",
+  "@wishlistFilterRti": { "description": "RTI 점수 필터 옵션" },
+
+  "wishlistFilterLowestPrice": "최저 가격",
+  "@wishlistFilterLowestPrice": { "description": "최저 가격 필터 옵션" },
+
+  "wishlistFilterBrand": "브랜드",
+  "@wishlistFilterBrand": { "description": "브랜드 필터 옵션" },
+
+  "wishlistFilterCategory": "카테고리",
+  "@wishlistFilterCategory": { "description": "카테고리 필터 옵션" },
+
+  "myPageTitle": "마이페이지",
+  "@myPageTitle": { "description": "마이페이지 제목" },
+
+  "myPageLoading": "마이페이지 정보를 불러오는 중입니다.",
+  "@myPageLoading": { "description": "마이페이지 로딩 메시지" },
+
+  "myPageWishlistLoading": "저장한 상품을 불러오는 중입니다.",
+  "@myPageWishlistLoading": { "description": "위시리스트 로딩 메시지" },
+
+  "myPageWishlistEmpty": "저장한 상품이 없습니다.",
+  "@myPageWishlistEmpty": { "description": "위시리스트 빈 상태 메시지" },
+
+  "myPageInterestProducts": "관심 상품",
+  "@myPageInterestProducts": { "description": "관심 상품 섹션 제목" },
+
+  "myPageDefaultName": "사용자",
+  "@myPageDefaultName": { "description": "닉네임 미설정 시 기본 이름" },
+
+  "myPageMemberBasic": "일반 회원 (무료)",
+  "@myPageMemberBasic": { "description": "일반 회원 표시 문구" },
+
+  "myPageSideNavMyPage": "마이페이지",
+  "@myPageSideNavMyPage": { "description": "사이드 네비게이션 마이페이지" },
+
+  "myPageSideNavOrders": "주문/배송",
+  "@myPageSideNavOrders": { "description": "사이드 네비게이션 주문/배송" },
+
+  "myPageSideNavWishlist": "저장한 상품",
+  "@myPageSideNavWishlist": { "description": "사이드 네비게이션 저장한 상품" },
+
+  "myPageSideNavRecentlyViewed": "최근 본 상품",
+  "@myPageSideNavRecentlyViewed": { "description": "사이드 네비게이션 최근 본 상품" },
+
+  "myPageSideNavRiskyProducts": "주의 상품",
+  "@myPageSideNavRiskyProducts": { "description": "사이드 네비게이션 주의 상품" },
+
+  "myPageSideNavAlerts": "알림",
+  "@myPageSideNavAlerts": { "description": "사이드 네비게이션 알림" },
+
+  "myPageRecentActivity": "최근 활동",
+  "@myPageRecentActivity": { "description": "최근 활동 섹션 제목" },
+
+  "myPageRecentActivityEmpty": "최근 활동이 없습니다.",
+  "@myPageRecentActivityEmpty": { "description": "최근 활동 빈 상태" },
+
+  "myPageRecentLabel": "최근",
+  "@myPageRecentLabel": { "description": "최근 날짜 표시" },
+
+  "myPageReviewTrustSummary": "리뷰 신뢰 요약",
+  "@myPageReviewTrustSummary": { "description": "리뷰 신뢰 요약 섹션 제목" },
+
+  "myPageAvgRti": "관심 상품 평균 RTI",
+  "@myPageAvgRti": { "description": "관심 상품 평균 RTI 레이블" },
+
+  "myPageRtiSaveHint": "관심 상품을 저장하면 리뷰 신뢰도 요약이 표시됩니다.",
+  "@myPageRtiSaveHint": { "description": "RTI 요약 저장 안내" },
+
+  "myPageRiskyNone": "현재 대시보드에 주의가 필요한 상품이 없습니다.",
+  "@myPageRiskyNone": { "description": "주의 상품 없음 메시지" },
+
+  "myPageRiskyCount": "주의 상품 {count}개를 확인해보세요.",
+  "@myPageRiskyCount": {
+    "description": "주의 상품 개수 안내",
+    "placeholders": {
+      "count": { "type": "int" }
+    }
+  },
+
+  "myPageHighlightLowRti": "주의 상품 먼저 보기",
+  "@myPageHighlightLowRti": { "description": "주의 상품 먼저 보기 레이블" },
+
+  "myPageWishlistAlertLabel": "저장 상품 알림 받기",
+  "@myPageWishlistAlertLabel": { "description": "저장 상품 알림 레이블" },
+
+  "myPageAccountInfo": "계정 정보",
+  "@myPageAccountInfo": { "description": "계정 정보 섹션 제목" },
+
+  "myPageAccountInfoSubtitle": "개인 정보 및 기본 정보를 관리해요.",
+  "@myPageAccountInfoSubtitle": { "description": "계정 정보 섹션 부제목" },
+
+  "myPageAccountNickname": "닉네임: {nickname}",
+  "@myPageAccountNickname": {
+    "description": "닉네임 표시",
+    "placeholders": {
+      "nickname": { "type": "String" }
+    }
+  },
+
+  "myPageAccountEmail": "이메일: {email}",
+  "@myPageAccountEmail": {
+    "description": "이메일 표시",
+    "placeholders": {
+      "email": { "type": "String" }
+    }
+  },
+
+  "myPageAccountMemberType": "회원 유형: {role}",
+  "@myPageAccountMemberType": {
+    "description": "회원 유형 표시",
+    "placeholders": {
+      "role": { "type": "String" }
+    }
+  },
+
+  "myPageDefaultMemberRole": "일반 회원",
+  "@myPageDefaultMemberRole": { "description": "기본 회원 유형" },
+
+  "myPageLoginInfo": "로그인 정보",
+  "@myPageLoginInfo": { "description": "로그인 정보 섹션 제목" },
+
+  "myPageLoginInfoSubtitle": "이메일, 로그인 수단을 관리해요.",
+  "@myPageLoginInfoSubtitle": { "description": "로그인 정보 섹션 부제목" },
+
+  "myPageLoginEmail": "로그인 이메일: {email}",
+  "@myPageLoginEmail": {
+    "description": "로그인 이메일 표시",
+    "placeholders": {
+      "email": { "type": "String" }
+    }
+  },
+
+  "myPageLoginStatus": "인증 상태: 로그인됨",
+  "@myPageLoginStatus": { "description": "로그인 상태 표시" },
+
+  "myPageOnboardingComplete": "완료",
+  "@myPageOnboardingComplete": { "description": "온보딩 완료 상태" },
+
+  "myPageOnboardingIncomplete": "미완료",
+  "@myPageOnboardingIncomplete": { "description": "온보딩 미완료 상태" },
+
+  "myPageOnboarding": "온보딩: {status}",
+  "@myPageOnboarding": {
+    "description": "온보딩 상태 표시",
+    "placeholders": {
+      "status": { "type": "String" }
+    }
+  },
+
+  "myPageChangePassword": "비밀번호 변경",
+  "@myPageChangePassword": { "description": "비밀번호 변경 섹션 제목" },
+
+  "myPageChangePasswordSubtitle": "안전한 비밀번호로 관리하세요.",
+  "@myPageChangePasswordSubtitle": { "description": "비밀번호 변경 부제목" },
+
+  "myPageNotificationSettings": "알림 설정",
+  "@myPageNotificationSettings": { "description": "알림 설정 섹션 제목" },
+
+  "myPageNotificationSettingsSubtitle": "이메일 및 푸시 알림을 설정해요.",
+  "@myPageNotificationSettingsSubtitle": { "description": "알림 설정 부제목" },
+
+  "myPageAccountSecurity": "계정 / 보안",
+  "@myPageAccountSecurity": { "description": "계정/보안 섹션 헤더" },
+
+  "navCategory": "카테고리",
+  "@navCategory": { "description": "모바일 하단 네비게이션 카테고리" },
+
+  "navWishShort": "찜",
+  "@navWishShort": { "description": "모바일 하단 네비게이션 찜 (짧은 표현)" },
+
+  "navMyShort": "마이",
+  "@navMyShort": { "description": "모바일 하단 네비게이션 마이페이지 (짧은 표현)" },
+
+  "homeSearchHint": "찾고 있는 상품을 리뷰 기반으로 검색해보세요",
+  "@homeSearchHint": { "description": "홈 검색바 힌트 텍스트" },
+
+  "homeSearchSuggestionsTitle": "연관 검색어",
+  "@homeSearchSuggestionsTitle": { "description": "검색 패널 연관 검색어 섹션 제목" },
+
+  "homeSearchSuggestionsLoading": "연관 검색어를 불러오는 중입니다.",
+  "@homeSearchSuggestionsLoading": { "description": "연관 검색어 로딩 중 메시지" },
+
+  "homeSearchSuggestionsHint": "두 글자 이상 입력하면 연관 검색어가 표시됩니다.",
+  "@homeSearchSuggestionsHint": { "description": "연관 검색어 입력 유도 메시지" },
+
+  "homeRecentSearchTitle": "최근 검색",
+  "@homeRecentSearchTitle": { "description": "최근 검색 섹션 제목" },
+
+  "homeRecentSearchDeleteAll": "전체 삭제",
+  "@homeRecentSearchDeleteAll": { "description": "최근 검색어 전체 삭제 버튼" },
+
+  "homeRecentSearchEmpty": "최근 검색어가 없습니다.",
+  "@homeRecentSearchEmpty": { "description": "최근 검색어 없음 메시지" },
+
+  "homePopularSearchTitle": "인기 검색",
+  "@homePopularSearchTitle": { "description": "인기 검색 섹션 제목" },
+
+  "homeSearchProductsTitle": "추천 상품",
+  "@homeSearchProductsTitle": { "description": "검색 패널 추천 상품 섹션 제목" },
+
+  "homeTrendingTitle": "지금 많이 찾는 키워드",
+  "@homeTrendingTitle": { "description": "트렌딩 키워드 섹션 제목" },
+
+  "homeKeywordsEmpty": "표시할 키워드가 없습니다.",
+  "@homeKeywordsEmpty": { "description": "트렌딩 키워드 빈 상태 메시지" },
+
+  "homeRecommendedTitle": "에디터가 고른 리뷰 기반 추천 상품",
+  "@homeRecommendedTitle": { "description": "추천 상품 섹션 제목" },
+
+  "homeViewAll": "전체보기",
+  "@homeViewAll": { "description": "전체보기 버튼" },
+
+  "homeLoginRequired": "로그인이 필요합니다.",
+  "@homeLoginRequired": { "description": "로그인 필요 메시지" },
+
+  "homeBenefitTitle": "첫 구매 고객을 위한 혜택",
+  "@homeBenefitTitle": { "description": "혜택 카드 제목" },
+
+  "homeBenefitSubtitle": "리뷰 기반 쇼핑을 시작하면 받을 수 있는 회원 혜택입니다.",
+  "@homeBenefitSubtitle": { "description": "혜택 카드 부제목" },
+
+  "homeBenefitButton": "혜택 받기",
+  "@homeBenefitButton": { "description": "혜택 받기 버튼" },
+
+  "homeTrustDescription": "광고·조작 리뷰를 필터링하고 실사용 리뷰를 분석해 신뢰도를 제공합니다.",
+  "@homeTrustDescription": { "description": "리뷰 신뢰도 설명" },
+
+  "homeTrustViewMore": "자세히 보기",
+  "@homeTrustViewMore": { "description": "자세히 보기 링크" },
+
+  "homeTrustLabel1": "실사용 리뷰 분석",
+  "@homeTrustLabel1": { "description": "신뢰도 기능 레이블 1" },
+
+  "homeTrustLabel2": "광고/조작 필터링",
+  "@homeTrustLabel2": { "description": "신뢰도 기능 레이블 2" },
+
+  "homeTrustLabel3": "신뢰도 점수 제공",
+  "@homeTrustLabel3": { "description": "신뢰도 기능 레이블 3" },
+
+  "homePopularCategoryTitle": "인기 카테고리",
+  "@homePopularCategoryTitle": { "description": "인기 카테고리 섹션 제목" },
+
+  "homeCategoryEmpty": "표시할 카테고리가 없습니다.",
+  "@homeCategoryEmpty": { "description": "카테고리 빈 상태 메시지" },
+
+  "feedbackHistoryTitle": "내 피드백 내역",
+  "@feedbackHistoryTitle": { "description": "피드백 내역 페이지 제목" },
+
+  "feedbackHistorySubtitle": "제출한 상품/리뷰 피드백 내역을 확인할 수 있습니다.",
+  "@feedbackHistorySubtitle": { "description": "피드백 내역 페이지 부제목" },
+
+  "feedbackHistoryLoading": "피드백 내역을 불러오는 중입니다.",
+  "@feedbackHistoryLoading": { "description": "피드백 내역 로딩 메시지" },
+
+  "feedbackHistoryEmpty": "제출한 피드백이 없습니다.",
+  "@feedbackHistoryEmpty": { "description": "피드백 내역 없을 때 메시지" },
+
+  "feedbackHistoryEmptyDesc": "상품 상세 페이지에서 리뷰 피드백을 제출할 수 있습니다.",
+  "@feedbackHistoryEmptyDesc": { "description": "피드백 내역 없을 때 안내 문구" },
+
+  "feedbackHistoryCount": "{count}건의 피드백",
+  "@feedbackHistoryCount": {
+    "description": "피드백 건수",
+    "placeholders": {
+      "count": { "type": "int" }
+    }
+  },
+
+  "feedbackHistoryViewProduct": "상품 보기",
+  "@feedbackHistoryViewProduct": { "description": "피드백 카드 상품 보기 버튼" },
+
+  "feedbackStatusSubmitted": "접수",
+  "feedbackStatusPending": "검토 중",
+  "@feedbackStatusPending": { "description": "피드백 상태: 검토 중" },
+
+  "feedbackStatusAccepted": "처리됨",
+  "@feedbackStatusAccepted": { "description": "피드백 상태: 처리됨" },
+
+  "feedbackStatusRejected": "반려됨",
+  "@feedbackStatusRejected": { "description": "피드백 상태: 반려됨" },
+
+  "adminSidebarTitle": "관리자",
+  "@adminSidebarTitle": { "description": "관리자 사이드바 타이틀" },
+
+  "adminMenuDashboard": "대시보드",
+  "@adminMenuDashboard": { "description": "관리자 메뉴 — 대시보드" },
+
+  "adminMenuSuspiciousReviews": "의심 리뷰 관리",
+  "@adminMenuSuspiciousReviews": { "description": "관리자 메뉴 — 의심 리뷰 관리" },
+
+  "adminMenuReports": "신고 관리",
+  "@adminMenuReports": { "description": "관리자 메뉴 — 신고 관리" },
+
+  "adminMenuAnalysisFeedbacks": "분석 피드백 관리",
+  "@adminMenuAnalysisFeedbacks": { "description": "관리자 메뉴 — 분석 피드백 관리" },
+
+  "adminMenuUsers": "사용자 관리",
+  "@adminMenuUsers": { "description": "관리자 메뉴 — 사용자 관리" },
+
+  "adminMenuLogout": "로그아웃",
+  "@adminMenuLogout": { "description": "관리자 사이드바 로그아웃 버튼" },
+
+  "adminDashboardTitle": "운영 대시보드",
+  "@adminDashboardTitle": { "description": "관리자 대시보드 페이지 타이틀" },
+
+  "adminPlaceholderMessage": "준비 중인 화면입니다.",
+  "@adminPlaceholderMessage": { "description": "구현 대기 중인 관리자 페이지 안내" },
+
+  "adminTopBarSearchHint": "사용자, 리뷰, 신고 ID로 검색",
+  "@adminTopBarSearchHint": { "description": "관리자 상단 검색바 안내 문구" },
+
+  "adminTopBarNotifications": "알림",
+  "@adminTopBarNotifications": { "description": "관리자 상단 알림 벨 툴팁" },
+
+  "chatLauncherTooltip": "AI 어시스턴트 열기",
+  "@chatLauncherTooltip": { "description": "우측 하단 챗봇 버튼 툴팁" },
+
+  "chatTitle": "Re:view AI",
+  "@chatTitle": { "description": "챗봇 패널 제목" },
+
+  "chatSubtitle": "리뷰와 구매 판단을 도와드려요",
+  "@chatSubtitle": { "description": "챗봇 패널 부제" },
+
+  "chatNewConversation": "새 대화",
+  "@chatNewConversation": { "description": "새 대화 시작 버튼" },
+
+  "chatClose": "닫기",
+  "@chatClose": { "description": "패널 닫기 버튼" },
+
+  "chatInputHint": "질문을 입력하세요",
+  "@chatInputHint": { "description": "질문 입력창 힌트" },
+
+  "chatSend": "보내기",
+  "@chatSend": { "description": "전송 버튼" },
+
+  "chatProductContext": "이 상품의 리뷰를 바탕으로 답해요",
+  "@chatProductContext": { "description": "상품 상세에서 연 대화 안내" },
+
+  "chatOtherProductNotice": "현재 화면과 다른 대화 문맥을 유지하고 있어요.",
+  "@chatOtherProductNotice": { "description": "현재 화면 상품과 대화 상품이 다를 때 안내" },
+
+  "chatStartWithThisProduct": "이 상품으로 새 대화",
+  "@chatStartWithThisProduct": { "description": "현재 상품으로 새 대화 시작" },
+
+  "chatEmptyTitle": "리뷰에서 궁금한 점을 물어보세요",
+  "@chatEmptyTitle": { "description": "대화가 없을 때 제목" },
+
+  "chatEmptyBody": "추천 질문은 입력창에만 채워져요. 내용을 확인한 뒤 전송해주세요.",
+  "@chatEmptyBody": { "description": "대화가 없을 때 설명" },
+
+  "chatSuggestProduct1": "이 상품 리뷰 믿을 만해?",
+  "@chatSuggestProduct1": { "description": "상품 대화 추천 질문 1" },
+
+  "chatSuggestProduct2": "광고성 리뷰가 많아?",
+  "@chatSuggestProduct2": { "description": "상품 대화 추천 질문 2" },
+
+  "chatSuggestProduct4": "비슷한 상품 추천해줘",
+  "chatSuggestProduct3": "실사용자들이 말하는 단점은?",
+  "@chatSuggestProduct3": { "description": "상품 대화 추천 질문 3" },
+
+  "chatSuggestGeneral1": "RTI 점수는 어떻게 매겨져?",
+  "@chatSuggestGeneral1": { "description": "일반 대화 추천 질문 1" },
+
+  "chatSuggestGeneral2": "광고성 리뷰는 어떻게 구별해?",
+  "@chatSuggestGeneral2": { "description": "일반 대화 추천 질문 2" },
+
+  "chatThinking": "답변을 준비하고 있어요",
+  "@chatThinking": { "description": "응답 대기 중 표시" },
+
+  "chatLoginTitle": "로그인하고 AI에게 물어보세요",
+  "@chatLoginTitle": { "description": "비로그인 안내 제목" },
+
+  "chatLoginBody": "대화 내용은 내 계정에 저장돼요.",
+  "@chatLoginBody": { "description": "비로그인 안내 설명" },
+
+  "chatLoginButton": "로그인",
+  "@chatLoginButton": { "description": "비로그인 안내 버튼" },
+
+  "chatErrorUnavailable": "챗봇이 잠시 응답할 수 없어요. 잠시 후 다시 시도해 주세요.",
+  "@chatErrorUnavailable": { "description": "503 오류" },
+
+  "chatErrorTimeout": "답변이 너무 오래 걸리고 있어요. 다시 시도해 주세요.",
+  "@chatErrorTimeout": { "description": "응답 시간 초과" },
+
+  "chatErrorNetwork": "네트워크 연결을 확인해 주세요.",
+  "@chatErrorNetwork": { "description": "네트워크 오류" },
+
+  "chatErrorUnknown": "답변을 받지 못했어요.",
+  "@chatErrorUnknown": { "description": "기타 오류" },
+
+  "chatRetry": "다시 시도",
+  "@chatRetry": { "description": "다시 시도 버튼" },
+
+  "chatDisclaimer": "AI 답변은 참고용이며 틀릴 수 있어요.",
+  "@chatDisclaimer": { "description": "입력창 아래 안내" },
+  "settingsReviewDisplay": "리뷰 표시",
+  "settingsPrivacy": "개인정보",
+  "settingsRtiThreshold": "최소 RTI 기준",
+  "settingsRtiThresholdDesc": "이 기준 미만의 리뷰를 걸러내는 기준입니다.",
+  "settingsReviewSort": "리뷰 기본 정렬",
+  "settingsSortVerifiedRecent": "구매확인 최신순",
+  "settingsSortRecent": "최신순",
+  "settingsSortHelpful": "도움순",
+  "settingsRtiLabel": "RTI 라벨 표시",
+  "settingsLabelSmall": "작은 배지",
+  "settingsLabelLarge": "큰 배지",
+  "settingsLabelNone": "표시 안 함",
+  "settingsCardDensity": "상품 카드 밀도",
+  "settingsDensityComfortable": "여유롭게",
+  "settingsDensityCompact": "촘촘하게",
+  "settingsLoading": "설정을 불러오는 중입니다.",
+  "settingsLoadFailed": "설정을 불러오지 못했습니다.",
+  "settingsSaveFailed": "설정을 저장하지 못했습니다.",
+  "settingsRiskyProduct": "위험 상품 알림",
+  "settingsRiskyProductDesc": "찜한 상품의 위험 비율이 높아지면 알림을 받습니다.",
+  "settingsAnalysisComplete": "분석 완료 알림",
+  "settingsAnalysisCompleteDesc": "새 상품의 분석이 완료되면 알림을 받습니다.",
+  "settingsFeedbackResult": "피드백 결과 알림",
+  "settingsFeedbackResultDesc": "제출한 신고와 피드백의 처리 결과를 받습니다.",
+  "settingsMarketing": "마케팅 알림",
+  "settingsMarketingDesc": "추천 상품과 마케팅 알림을 받습니다.",
+  "settingsHideRisky": "위험 리뷰 숨김",
+  "settingsHideRiskyDesc": "위험 리뷰를 기본적으로 접어서 표시합니다.",
+  "settingsSuspiciousLabel": "의심 리뷰 라벨 표시",
+  "settingsSuspiciousLabelDesc": "의심스러운 리뷰에 구분 라벨을 표시합니다.",
+  "settingsVerifiedFirst": "구매확인 리뷰 우선",
+  "settingsVerifiedFirstDesc": "구매가 확인된 리뷰를 먼저 표시합니다.",
+  "settingsAutoAnalysis": "분석 팝업 자동 열기",
+  "settingsAutoAnalysisDesc": "위험 리뷰를 클릭하면 분석 상세를 자동으로 엽니다.",
+  "settingsDataAnalysis": "리뷰 분석 데이터 활용 동의",
+  "settingsDataAnalysisDesc": "리뷰 분석을 위한 데이터 활용에 동의합니다.",
+
+
+  "notificationsTitle": "알림",
+  "@notificationsTitle": { "description": "알림 화면 제목" },
+
+  "notificationsMarkAllRead": "모두 읽음",
+  "@notificationsMarkAllRead": { "description": "모두 읽음 처리 버튼" },
+
+  "notificationsLoading": "알림을 불러오는 중이에요",
+  "@notificationsLoading": { "description": "알림 로딩 문구" },
+
+  "notificationsEmpty": "새 알림이 없어요",
+  "@notificationsEmpty": { "description": "알림이 없을 때 제목" },
+
+  "notificationsEmptyBody": "신고·피드백 처리 결과와 분석 완료 소식을 여기서 알려드려요.",
+  "@notificationsEmptyBody": { "description": "알림이 없을 때 설명" },
+
+  "headerNotifications": "알림",
+  "@headerNotifications": { "description": "헤더 알림 버튼 라벨" },
+  "chatPreviousConversations": "이전 대화",
+  "chatBackToConversation": "대화로 돌아가기",
+  "chatHistoryLoading": "이전 대화를 불러오는 중입니다.",
+  "chatHistoryEmpty": "이전 대화가 없습니다.",
+  "chatHistoryLoadError": "이전 대화를 불러오지 못했습니다. 다시 시도해 주세요.",
+  "chatHistoryLoadMore": "더 불러오기",
+  "chatHistoryUntitled": "제목 없는 대화",
+  "adminUsersSubtitle": "가입한 사용자를 최신 가입순으로 확인하세요.",
+  "adminRefresh": "새로고침",
+  "adminTotalUsers": "전체 사용자",
+  "adminRetry": "다시 시도",
+  "adminEmail": "이메일",
+  "adminNickname": "닉네임",
+  "adminRole": "권한",
+  "adminSignupProvider": "가입 경로",
+  "adminAtiScore": "ATI 점수",
+  "adminJoinedAt": "가입일",
+  "adminUserRole": "사용자",
+  "adminUsersEmpty": "가입한 사용자가 없습니다.",
+  "adminNaver": "네이버",
+  "adminReportPending": "검토 대기",
+  "adminUnderReview": "검토 중",
+  "adminReportAccepted": "접수 (인정)",
+  "adminReportRejected": "기각 (미인정)",
+  "adminDanger": "위험",
+  "adminWarning": "경고",
+  "adminSafe": "안전",
+  "adminFeedbackSubmitted": "접수",
+  "adminFeedbackResolved": "처리 완료",
+  "adminFeedbackRejected": "반려",
+  "adminJudgmentTrustworthy": "신뢰도가 더 높아요",
+  "adminJudgmentRisky": "위험도가 더 높아요",
+  "adminJudgmentUndecided": "판단 보류",
+  "adminReviewDetails": "리뷰 상세 정보",
+  "adminViewProduct": "상품 페이지 보기",
+  "adminRtiAnalysis": "RTI 분석 결과",
+  "adminScoreUnit": "점",
+  "adminReviewContent": "리뷰 내용",
+  "adminDetectedSignals": "탐지 신호 ({count})",
+  "@adminDetectedSignals": {"placeholders":{"count":{"type":"int"}}},
+  "adminVerifiedPurchase": "구매 인증",
+  "adminVerified": "인증됨",
+  "adminNotVerified": "인증 안됨",
+  "adminReviewerInfo": "작성자 정보",
+  "adminReviewer": "작성자",
+  "adminRating": "별점",
+  "adminWrittenAt": "작성일",
+  "adminSelectedCount": "{count}개 선택됨",
+  "@adminSelectedCount": {"placeholders":{"count":{"type":"int"}}},
+  "adminSaved": "변경 사항이 저장되었습니다.",
+  "adminSaveFailed": "저장에 실패했습니다.",
+  "adminFeedbackDetails": "피드백 상세 정보",
+  "adminSaveChanges": "변경 사항 저장",
+  "adminFeedbackId": "피드백 ID",
+  "adminReviewId": "리뷰 ID",
+  "adminProductName": "상품명",
+  "adminCreatedAt": "등록일",
+  "adminUpdatedAt": "수정일",
+  "adminFeedbackType": "피드백 유형",
+  "adminUserJudgment": "사용자 판단",
+  "adminRelatedSignals": "관련 신호 ({count})",
+  "@adminRelatedSignals": {"placeholders":{"count":{"type":"int"}}},
+  "adminFeedbackContent": "피드백 내용",
+  "adminAttachmentLink": "첨부 파일 / 링크",
+  "adminReplyEmail": "회신 이메일",
+  "adminComment": "관리자 메모",
+  "adminCommentHint": "검토 내용이나 조치 사항을 입력하세요...",
+  "adminChangeStatus": "상태 변경",
+  "adminReportDetails": "신고 상세 정보",
+  "adminSave": "저장하기",
+  "adminReportInfo": "신고 정보",
+  "adminReportId": "신고 ID",
+  "adminReportReason": "신고 사유",
+  "adminReportedAt": "신고 시간",
+  "adminUpdatedTime": "수정 시간",
+  "adminReportedReview": "신고 대상 리뷰",
+  "adminReportContent": "신고 내용",
+  "adminAttachment": "첨부 파일",
+  "adminEvidenceIncluded": "AI 증거 포함",
+  "adminIncluded": "포함",
+  "adminNotIncluded": "미포함",
+  "adminOptionalCommentHint": "메모를 입력하세요. (선택사항)",
+  "adminSuspiciousReviewsSubtitle": "RTI 분석을 통해 탐지된 의심 리뷰를 검토하고 적절한 조치를 취하세요.",
+  "adminRtiUpperBound": "RTI 점수 상한",
+  "adminScoreBelow": "{score}점 미만",
+  "@adminScoreBelow": {"placeholders":{"score":{"type":"int"}}},
+  "adminAll": "전체",
+  "adminTotalSuspiciousReviews": "전체 의심 리뷰",
+  "adminCurrentFilter": "현재 조회 기준",
+  "adminRtiScore": "RTI 점수",
+  "adminTrustGrade": "신뢰 등급",
+  "adminSuspiciousReviewsEmpty": "표시할 의심 리뷰가 없습니다.",
+  "adminFeedbacksSubtitle": "사용자가 RTI 분석 결과에 대해 제공한 피드백을 검토하고 처리하세요.",
+  "adminTotalFeedbacks": "전체 피드백",
+  "adminAllTime": "전체 기간 기준",
+  "adminStatus": "상태",
+  "adminFeedbacksEmpty": "표시할 분석 피드백이 없습니다.",
+  "adminReportsSubtitle": "사용자 신고를 검토하고 처리 상태를 변경하세요.",
+  "adminTotalReports": "전체 신고",
+  "adminReportsCountHelper": "전체 신고 건수",
+  "adminPendingReportsHelper": "검토가 필요한 신고",
+  "adminUnderReviewReportsHelper": "현재 검토 중인 신고",
+  "adminAcceptedReportsHelper": "신고가 접수된 건",
+  "adminRejectedReportsHelper": "신고가 기각된 건",
+  "adminBulkSuccess": "{total}건을 처리했습니다.",
+  "@adminBulkSuccess": {"placeholders":{"total":{"type":"int"}}},
+  "adminBulkFailure": "{total}건 중 {failed}건 처리에 실패했습니다. 실패한 항목은 선택된 상태로 남겨 두었습니다.",
+  "@adminBulkFailure": {"placeholders":{"total":{"type":"int"},"failed":{"type":"int"}}},
+  "adminAcceptReports": "접수 처리",
+  "adminRejectReports": "기각 처리",
+  "adminEvidence": "AI 증거",
+  "adminReportsEmpty": "표시할 신고가 없습니다.",
+  "adminDashboardSubtitle": "리뷰 분석 현황과 처리 대기 업무를 한눈에 확인하세요.",
+  "adminModelPerformance": "AI 모델 성능",
+  "adminPeriodDays": "{days}일",
+  "@adminPeriodDays": {"placeholders":{"days":{"type":"int"}}},
+  "adminTotalReviews": "전체 리뷰",
+  "adminTotalReviewsHelper": "분석 대상 리뷰 전체",
+  "adminSuspiciousReviews": "의심 리뷰",
+  "adminRiskyReviews": "위험 리뷰",
+  "adminPendingReports": "처리 대기 신고",
+  "adminPendingFeedbacks": "처리 대기 분석 피드백",
+  "adminOpenSection": "눌러서 바로가기",
+  "adminCountPercent": "{count}건 · {percent}%",
+  "@adminCountPercent": {"placeholders":{"count":{"type":"String"},"percent":{"type":"String"}}},
+  "adminRtiDistribution": "RTI 등급 분포",
+  "adminAnalyzedCount": "분석 리뷰 {count}건",
+  "@adminAnalyzedCount": {"placeholders":{"count":{"type":"String"}}},
+  "adminSuspicious": "의심",
+  "adminAverageRti": "전체 평균 RTI",
+  "adminDailyTrendTitle": "일별 평균 RTI · 분석 건수 (최근 {days}일)",
+  "@adminDailyTrendTitle": {"placeholders":{"days":{"type":"int"}}},
+  "adminTrendEmpty": "기간 내 분석된 리뷰가 없습니다.",
+  "adminTrendTooltip": "{date}\n평균 RTI {score} · {count}건",
+  "@adminTrendTooltip": {"placeholders":{"date":{"type":"String"},"score":{"type":"String"},"count":{"type":"String"}}},
+  "adminUserAgreement": "사용자 판정 동의율",
+  "adminFeedbackCount": "피드백 {count}건",
+  "@adminFeedbackCount": {"placeholders":{"count":{"type":"String"}}},
+  "adminAgree": "동의",
+  "adminDisagree": "이의",
+  "adminFeedbackStats": "분석 피드백 처리 현황",
+  "adminResolutionRate": "처리율 {percent}%",
+  "@adminResolutionRate": {"placeholders":{"percent":{"type":"String"}}},
+  "adminApplied": "반영",
+  "adminDismissed": "기각",
+
+
+  "sessionExpiredMessage": "로그인이 만료됐어요. 다시 로그인해 주세요.",
+  "@sessionExpiredMessage": { "description": "401로 로그아웃됐을 때 알림" },
+
+  "sessionExpiredLogin": "로그인",
+  "@sessionExpiredLogin": { "description": "로그인 만료 알림의 이동 버튼" },
+
+  "settingsAccountLabelLoginMethod": "로그인 방식",
+  "@settingsAccountLabelLoginMethod": { "description": "계정 카드 로그인 방식 라벨" },
+
+  "settingsLoginMethodEmail": "이메일",
+  "@settingsLoginMethodEmail": { "description": "이메일 가입 로그인 방식" },
+
+  "settingsLoginMethodNaver": "네이버",
+  "@settingsLoginMethodNaver": { "description": "네이버 로그인 방식" },
+  "chatLauncherLabel": "AI에게 물어보기",
+  "chatLauncherProductLabel": "이 상품 리뷰 물어보기",
+  "chatProductCta": "AI에게 이 상품 물어보기",
+  "chatEmptyProductTitle": "이 상품, 무엇이 궁금하세요?",
+  "chatCopy": "복사",
+  "chatCopied": "복사했어요",
+  "chatThinkingLong": "답변을 만드는 데 시간이 조금 걸리고 있어요",
+  "chatThinkingVeryLong": "아직 답변을 기다리고 있어요. 창을 닫아도 대화는 유지돼요",
+  "chatBlockedTitle": "답변할 수 없는 질문이에요",
+  "chatModeStandard": "기본",
+  "chatModePro": "프로",
+  "chatModeProActive": "프로 모드로 더 자세히 답해요",
+  "chatModeProLocked": "프로 모드는 프로 요금제에서 쓸 수 있어요",
+  "chatPlanFree": "무료",
+  "chatPlanPlus": "플러스",
+  "chatPlanPro": "프로",
+  "planTitle": "요금제",
+  "planSubtitle": "AI 어시스턴트를 얼마나 쓸지 고르세요.",
+  "planCurrent": "현재 요금제",
+  "planUsageToday": "오늘 {used}/{limit}회 사용",
+  "@planUsageToday": {"placeholders": {"used": {"type": "int"}, "limit": {"type": "int"}}},
+  "planUsageUnlimited": "오늘 {used}회 사용 · 횟수 제한 없음",
+  "@planUsageUnlimited": {"placeholders": {"used": {"type": "int"}}},
+  "planResetAt": "{time}에 초기화",
+  "@planResetAt": {"placeholders": {"time": {"type": "String"}}},
+  "planExpiresAt": "{date}까지 이용",
+  "@planExpiresAt": {"placeholders": {"date": {"type": "String"}}},
+  "planDailyQuestions": "하루 질문 {count}회",
+  "@planDailyQuestions": {"placeholders": {"count": {"type": "int"}}},
+  "planDailyUnlimited": "하루 질문 횟수 제한 없음",
+  "planFeatureStandard": "기본 답변",
+  "planFeatureLimited": "하루 질문 수가 가장 적어요",
+  "planFeatureMore": "무료보다 더 많은 하루 질문",
+  "planFeatureMost": "가장 많은 하루 질문",
+  "planFeaturePro": "프로 모드: 더 자세한 답변",
+  "planSelect": "이 요금제로 변경",
+  "planCurrentBadge": "이용 중",
+  "planConfirmTitle": "{plan} 요금제로 변경할까요?",
+  "@planConfirmTitle": {"placeholders": {"plan": {"type": "String"}}},
+  "planConfirmBody": "지금은 결제 없이 바로 바뀌어요.",
+  "planConfirmAction": "변경",
+  "planCancel": "취소",
+  "planChanged": "{plan} 요금제로 바뀌었어요",
+  "@planChanged": {"placeholders": {"plan": {"type": "String"}}},
+  "planChangeUnavailable": "요금제 변경은 아직 준비 중이에요.",
+  "planChangeFailed": "요금제를 바꾸지 못했어요. 다시 시도해 주세요.",
+  "planLoadFailed": "요금제 정보를 불러오지 못했어요.",
+  "planRetry": "다시 시도",
+  "myPageSideNavPlan": "요금제",
+  "chatViewPlans": "요금제 보기",
+  "extProductCollectingTitle": "상품 정보를 가져오고 있어요",
+  "extProductCollectingBody": "쇼핑몰에서 상품과 리뷰 정보를 가져오고 있어요. 상품 정보가 준비되면 자동으로 표시돼요.",
+  "extProductCollectingSlow": "쇼핑몰에서 상품 정보를 기다리고 있어요. 상품 정보가 준비되면 자동으로 표시돼요.",
+  "extProductUnavailableTitle": "상품 정보를 가져오지 못했어요",
+  "extProductUnavailableBody": "상품이 없는 것이 아니라 지금 쇼핑몰에서 정보를 받지 못했어요. 잠시 후 다시 시도해 주세요.",
+  "extProductLoadFailed": "상품을 불러오지 못했어요.",
+  "extProductRetry": "다시 시도",
+  "extProductStale": "최신 정보로 갱신하고 있어요",
+  "extProductVisitShop": "{shop}에서 보기",
+  "@extProductVisitShop": {"placeholders": {"shop": {"type": "String"}}},
+  "extProductReviewCount": "리뷰 {count}개",
+  "@extProductReviewCount": {"placeholders": {"count": {"type": "int"}}},
+  "extProductPrice": "{price}원",
+  "@extProductPrice": {"placeholders": {"price": {"type": "String"}}},
+  "extProductAnalysisPendingTitle": "신뢰도 분석 전",
+  "extProductAnalysisPendingBody": "이 상품의 리뷰는 아직 분석되지 않았어요. 신뢰도 점수는 제공되지 않아요.",
+  "extProductReviewsTitle": "리뷰",
+  "extProductReviewsEmpty": "수집된 리뷰가 없어요.",
+  "extProductReviewsMore": "리뷰 더 보기",
+  "extProductReviewsMoreFailed": "리뷰를 더 불러오지 못했어요.",
+  "extProductReviewOption": "옵션: {option}",
+  "@extProductReviewOption": {"placeholders": {"option": {"type": "String"}}},
+  "chatQuotaRemaining": "오늘 남은 질문 {remaining}/{limit}",
+  "@chatQuotaRemaining": {"placeholders": {"remaining": {"type": "int"}, "limit": {"type": "int"}}},
+  "chatQuotaUnlimited": "질문 횟수 제한 없음",
+  "chatQuotaExceededTitle": "오늘 질문을 모두 사용했어요",
+  "chatQuotaExceededBody": "{time}에 다시 물어볼 수 있어요",
+  "@chatQuotaExceededBody": {"placeholders": {"time": {"type": "String"}}},
+  "chatQuotaExceededBodyNoTime": "한도가 초기화되면 다시 물어볼 수 있어요",
+  "chatPlanRequiredTitle": "프로 요금제에서 이용할 수 있어요",
+  "chatPlanRequiredAction": "기본 모드로 다시 묻기",
+  "chatSuggestGeneral3": "믿을 만한 리뷰는 어떻게 골라?",
+  "adminUserPlanColumn": "요금제",
+  "adminUserPlanChange": "요금제 변경",
+  "adminUserPlanTitle": "요금제 변경",
+  "adminUserPlanExpiry": "만료일",
+  "adminUserPlanUnlimited": "무기한",
+  "adminUserPlanThirtyDays": "30일",
+  "adminUserPlanCustomDate": "날짜 직접 선택",
+  "adminUserPlanSelectDate": "날짜 선택",
+  "adminUserPlanExpired": "만료됨",
+  "adminUserPlanUnknown": "확인되지 않음",
+  "adminUserPlanSave": "저장",
+  "adminUserPlanCancel": "취소",
+  "adminUserPlanSaving": "저장 중",
+  "adminUserPlanDateRequired": "오늘 이후의 만료일을 선택해주세요.",
+  "externalWishAdd": "찜하기",
+  "externalWishRemove": "찜 취소",
+  "externalCartAdd": "장바구니 담기",
+  "externalCartAdded": "장바구니에 담김",
+  "externalReviewMenu": "리뷰 메뉴",
+  "externalReport": "신고하기",
+  "externalReal": "실제 리뷰 같아요",
+  "externalFake": "가짜 리뷰 같아요",
+  "externalNotCollected": "상품 수집이 끝난 뒤 다시 시도해주세요.",
+  "externalUnavailable": "데이터 서버에 연결할 수 없습니다. 잠시 후 다시 시도해주세요.",
+  "externalReportDuplicate": "이미 신고한 리뷰입니다.",
+  "externalFeedbackDuplicate": "이미 피드백을 남긴 리뷰입니다.",
+  "externalFailed": "요청을 처리하지 못했습니다. 다시 시도해주세요.",
+  "externalSuccess": "처리되었습니다.",
+  "externalUnanalyzed": "분석 전",
+  "externalReason": "신고 사유",
+  "externalDetail": "상세 내용",
+  "externalDetailValidation": "상세 내용을 20자 이상 500자 이내로 작성해주세요.",
+  "externalAttachment": "첨부 URL (선택)",
+  "externalAttachmentValidation": "올바른 http 또는 https URL을 입력해주세요.",
+  "externalEvidence": "분석 근거 포함",
+  "externalCancel": "취소",
+  "externalSubmit": "제출",
+  "externalReasonFake": "가짜 리뷰 의심",
+  "externalReasonAi": "자동 생성 의심",
+  "externalReasonIrrelevant": "상품과 무관한 내용",
+  "externalReasonInappropriate": "부적절한 표현 / 개인정보",
+  "externalReasonAd": "광고성 리뷰",
+  "externalReasonRepeated": "반복 내용",
+  "externalReasonOffensive": "모욕적인 내용",
+  "externalReasonOther": "기타",
+  "productImageEnlarge": "상품 이미지 확대",
+  "productImagePrevious": "이전 상품 이미지",
+  "productImageNext": "다음 상품 이미지",
+  "imagePreviewOpen": "사진 확대",
+  "imagePreviewTitle": "사진 미리보기",
+  "imagePreviewPrevious": "이전 사진",
+  "imagePreviewNext": "다음 사진",
+  "chatFreshContext": "새 대화 · 이전 기록은 유지돼요",
+  "chatHistoryContext": "기록에서 연 대화",
+  "chatActiveContext": "진행 중인 대화",
+  "chatGeneralContext": "일반 대화 · 상품 지정 없음",
+  "chatTargetProduct": "질문 대상 상품",
+  "chatQuotaLoading": "질문 한도를 확인하고 있어요.",
+  "chatQuotaUnavailable": "한도를 다시 확인하지 못했어요. 마지막 확인 값은 유지돼요.",
+  "chatQuotaRefresh": "다시 확인",
+  "chatClosePreserve": "닫기 (대화는 유지)",
+  "chatHistoryWait": "대화 기록은 전송이 끝난 뒤 열 수 있어요.",
+  "extProductReviewPreferencesNote": "정렬 설정은 불러온 리뷰에 적용돼요. 제공되지 않은 구매 인증·신뢰도 정보로 리뷰를 숨기거나 분류하지 않아요.",
+  "extProductSummaryLoading": "상품 기본 정보를 확인하고 있어요.",
+  "extProductListSummary": "목록에서 받은 상품 정보예요. 최신 상세 정보와 리뷰를 확인하고 있어요.",
+  "extProductPreviousSummary": "이전에 확인한 상품 정보예요. 최신 상세 정보와 리뷰를 확인하고 있어요.",
+  "recentRecordFailed": "최근 본 기록을 확인하지 못했어요. 다시 시도",
+  "recentRecordUnavailable": "최근 본 기록에 필요한 상품 식별 정보를 확인하지 못했어요.",
+  "reviewPhotoOnly": "사진 있는 리뷰",
+  "reviewListView": "리뷰 목록",
+  "reviewPhotosView": "사진 모아보기",
+  "reviewPhotoScope": "불러온 리뷰 {loaded}개 · 사진 있는 리뷰 {photos}개",
+  "reviewPhotosEmpty": "현재 불러온 리뷰에 유효한 사진이 없어요.",
+  "@reviewPhotoScope": {"placeholders": {"loaded": {"type": "int"}, "photos": {"type": "int"}}},
+  "externalForbidden": "이 작업을 할 권한이 없어요.",
+  "externalAuthRequestFailed": "이 요청의 인증을 확인하지 못했어요. 현재 로그인 상태를 확인한 뒤 다시 시도해주세요.",
+  "externalNetworkFailure": "네트워크 연결을 확인하고 다시 시도해주세요.",
+  "externalTimeout": "요청 시간이 초과됐어요. 다시 시도해주세요.",
+  "reportTitle": "리뷰 신뢰도 리포트",
+  "reportDetails": "상세 분석 보기",
+  "reportClose": "닫기",
+  "reportBefore": "분석 전",
+  "reportCollecting": "상품·리뷰 정보를 수집하고 있어요. 분석 진행 상태와는 별개예요.",
+  "reportRunning": "분석이 진행 중이에요.",
+  "reportFailed": "분석 결과를 가져오지 못했어요.",
+  "reportDisabled": "현재 분석 기능이 비활성화되어 있어요.",
+  "reportStale": "기존 분석 결과가 최신 상태가 아니에요.",
+  "reportUnavailable": "분석 상태를 확인할 수 없어요.",
+  "reportDone": "리뷰 분석 결과가 준비됐어요. 상세 분석에서 판단 근거를 확인해보세요.",
+  "reportLoadedScope": "현재 불러온 리뷰의 분석 결과예요. 상품 전체 분석 범위와 다를 수 있어요.",
+  "reportInputCount": "분석에 입력한 리뷰",
+  "reportSourceCount": "수집된 원본 리뷰",
+  "reportSampled": "일부 리뷰 표본 분석",
+  "reportFull": "전체 수집 리뷰 분석",
+  "reportModel": "모델 버전",
+  "reportPolicy": "정책 버전",
+  "reportNoReviewResults": "현재 불러온 리뷰에 제공된 분석 결과가 없어요.",
+  "reportReasons": "제공된 판단 근거",
+  "reportCurrentCount": "현재 불러온 분석 리뷰",
+  "reportCatalogAverage": "상품 평균 RTI",
+  "reportCatalogSource": "상품 목록에서 제공된 집계입니다. 상세 리뷰 결과와 업데이트 시점이 다를 수 있어요.",
+  "reviewAnalysisSafe": "신뢰도 높음",
+  "reviewAnalysisWarn": "주의",
+  "reviewAnalysisDanger": "신뢰도 낮음",
+  "reviewAnalysisMissing": "이 리뷰에 제공된 분석 결과가 없어요.",
+  "reportIntro": "구매 전, 리뷰의 신뢰도를 살펴보세요.",
+  "reportScoreLabel": "상품 리뷰 신뢰도",
+  "reportStateReady": "분석 결과",
+  "reportStateCollecting": "리뷰 수집 중",
+  "reportStateRunning": "분석 중",
+  "reportStateFailed": "결과 확인 필요",
+  "reportStateStale": "업데이트 필요",
+  "reportStateDisabled": "분석 미제공",
+  "reportStateUnavailable": "상태 확인 필요",
+  "reportPendingBody": "아직 분석 결과가 없어요. 결과가 준비되면 리뷰 신뢰도와 판단 근거를 여기에서 확인할 수 있어요.",
+  "reportOverview": "분석 요약",
+  "reportCoverage": "분석 범위",
+  "reportReviewResults": "리뷰별 결과와 근거",
+  "reviewOriginal": "리뷰 원문",
+  "reviewResultTitle": "이 리뷰의 분석 결과",
+  "reviewIndividualScope": "선택한 리뷰 한 건의 결과예요. 상품 전체 리포트와 분석 범위가 달라요.",
+  "reviewLoadedAggregate": "함께 불러온 리뷰의 집계",
+  "evidenceRepetitionLabel": "반복 표현",
+  "evidenceRepetitionBody": "같은 표현이 반복해서 사용됐어요.",
+  "evidenceShortLabel": "짧은 리뷰",
+  "evidenceShortBody": "리뷰 내용이 짧아 확인할 정보가 적어요.",
+  "evidenceExclamationLabel": "잦은 느낌표",
+  "evidenceExclamationBody": "느낌표가 많이 사용됐어요.",
+  "evidencePositiveLabel": "강한 긍정 표현",
+  "evidencePositiveBody": "강한 긍정 표현이 감지됐어요. 이것만으로 광고를 뜻하지는 않아요.",
+  "evidencePurchaseLabel": "구매 인증 미확인",
+  "evidencePurchaseBody": "구매 인증이 확인되지 않은 리뷰예요.",
+  "evidenceNewAccountLabel": "가입 초기 작성",
+  "evidenceNewAccountBody": "리뷰 작성 당시 가입한 지 얼마 되지 않은 계정이었어요.",
+  "evidenceDailyLabel": "하루에 여러 리뷰",
+  "evidenceDailyBody": "같은 작성자가 하루에 여러 리뷰를 작성했어요.",
+  "evidenceSimilarLabel": "비슷한 리뷰 내용",
+  "evidenceSimilarBody": "내용이 비슷한 다른 리뷰가 확인됐어요. 유사성만으로 조작을 단정하지 않아요.",
+  "evidenceClusterLabel": "유사 리뷰 묶음",
+  "evidenceClusterBody": "내용이 서로 비슷한 리뷰 묶음이 확인됐어요. 조작 여부가 확정된 것은 아니에요.",
+  "evidenceQualityLabel": "낮은 내용 품질 점수",
+  "evidenceQualityBody": "리뷰 내용의 품질 점수가 낮게 평가됐어요.",
+  "evidenceUnknownPurchaseLabel": "구매 여부 불명확",
+  "evidenceUnknownPurchaseBody": "제공된 정보로는 구매 여부를 확인할 수 없어요.",
+  "evidenceTrialLabel": "체험·무상 제공 가능성",
+  "evidenceTrialBody": "체험단 또는 무상 제공 리뷰일 가능성이 제시됐어요.",
+  "evidenceNoImageLabel": "첨부 사진 없음",
+  "evidenceNoImageBody": "리뷰에 첨부된 사진이 없어요.",
+  "evidenceRepurchaseLabel": "재구매 신호",
+  "evidenceRepurchaseBody": "재구매를 나타내는 정보가 확인됐어요.",
+  "evidenceUnknownLabel": "추가 분석 근거",
+  "evidenceUnknownBody": "추가 근거가 제공됐지만 아직 설명 문구를 지원하지 않아요.",
+  "homeSearchSuggestionsEmpty": "연관 검색어가 없어요. 입력한 단어로 검색할 수 있어요.",
+  "homeSearchSuggestionsError": "연관 검색어를 불러오지 못했어요. 입력한 단어로 검색하거나 다시 시도해 주세요.",
+  "homeSearchSuggestionsRetry": "연관 검색어 다시 불러오기"
+}

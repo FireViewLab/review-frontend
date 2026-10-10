@@ -1,33 +1,38 @@
-import 'dart:async';
+import 'package:re_view_front/features/external_product/domain/entities/external_product_ref.dart';
+import 'package:re_view_front/app/router/app_shell.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:re_view_front/app/theme/app_motion.dart';
+import 'package:re_view_front/shared/widgets/app_fade_in.dart';
 import 'package:re_view_front/app/router/route_paths.dart';
 import 'package:re_view_front/app/theme/app_colors.dart';
 import 'package:re_view_front/app/theme/app_spacing.dart';
-import 'package:re_view_front/features/category/domain/entities/product_category_resolver.dart';
 import 'package:re_view_front/features/home/domain/entities/dashboard_product.dart';
 import 'package:re_view_front/features/home/domain/entities/trending_keyword.dart';
 import 'package:re_view_front/features/home/presentation/data/home_content.dart';
 import 'package:re_view_front/core/providers/core_providers.dart';
-import 'package:re_view_front/features/cart/presentation/providers/cart_providers.dart';
 import 'package:re_view_front/features/home/presentation/providers/home_providers.dart';
 import 'package:re_view_front/features/home/presentation/view_models/home_dashboard_state.dart';
 import 'package:re_view_front/features/home/presentation/widgets/home/benefit_cta.dart';
 import 'package:re_view_front/features/home/presentation/widgets/home/banners/hero_banner_carousel.dart';
 import 'package:re_view_front/features/home/presentation/widgets/home/home_footer.dart';
-import 'package:re_view_front/features/home/presentation/widgets/home/home_header.dart';
 import 'package:re_view_front/features/home/presentation/widgets/home/popular_category_section.dart';
 import 'package:re_view_front/features/home/presentation/widgets/home/product_recommendation_section.dart';
 import 'package:re_view_front/features/home/presentation/widgets/home/quick_category_row.dart';
 import 'package:re_view_front/features/home/presentation/widgets/home/review_trust_info_card.dart';
 import 'package:re_view_front/features/home/presentation/widgets/home/trending_keyword_chips.dart';
-import 'package:re_view_front/features/wishlist/presentation/providers/wishlist_providers.dart';
+import 'package:re_view_front/l10n/generated/app_localizations.dart';
 import 'package:re_view_front/shared/extensions/context_extensions.dart';
 import 'package:re_view_front/shared/widgets/app_content_view.dart';
 import 'package:re_view_front/shared/widgets/error_view.dart';
 import 'package:re_view_front/shared/widgets/product_card_skeleton.dart';
+import 'package:re_view_front/features/home/presentation/home_navigation.dart';
+import 'package:re_view_front/features/home/presentation/widgets/home/home_category_sheet.dart';
+import 'package:re_view_front/features/search/presentation/view_models/search_results_state.dart';
+import 'package:re_view_front/features/banners/presentation/providers/banner_providers.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class HomePage extends ConsumerStatefulWidget {
   const HomePage({super.key});
@@ -38,18 +43,16 @@ class HomePage extends ConsumerStatefulWidget {
 
 class _HomePageState extends ConsumerState<HomePage> {
   final _scrollController = ScrollController();
-  final _searchFocusNode = FocusNode();
   final _heroKey = GlobalKey();
   final _categoryKey = GlobalKey();
   final _recommendationKey = GlobalKey();
   final _benefitKey = GlobalKey();
   final _popularCategoryKey = GlobalKey();
-  String _selectedNavItem = '홈';
+  // locale-independent: 'home' = main content; anything else = placeholder tab label
 
   @override
   void dispose() {
     _scrollController.dispose();
-    _searchFocusNode.dispose();
     super.dispose();
   }
 
@@ -70,235 +73,300 @@ class _HomePageState extends ConsumerState<HomePage> {
   Widget build(BuildContext context) {
     final useWideCommerceGrid = context.viewportSize.width >= 1120;
     final isLoggedIn = ref.watch(isLoggedInProvider);
-    final nickname = ref.watch(userNicknameProvider).value;
-    final cartCount = ref.watch(cartItemCountProvider).value ?? 0;
-    final wishlistCount = ref.watch(wishlistItemCountProvider).value ?? 0;
+    final catalog = ref.watch(homeCatalogProvider);
+    final bannerFeed = ref.watch(publicBannersProvider);
+    final bannerContract = ref.watch(bannerApiContractProvider);
+    final registeredBanners = bannerFeed.hasError
+        ? const <HomeBannerData>[]
+        : (bannerFeed.value ?? [])
+              .map(
+                (banner) => HomeBannerData(
+                  title: banner.title,
+                  emphasis: '',
+                  description: '',
+                  ctaLabel: '',
+                  badgeLabel: '',
+                  imageUrl: banner.imageUrl,
+                  mobileImageUrl: banner.mobileImageUrl,
+                  targetUrl: banner.targetUrl,
+                  color: AppColors.surface,
+                  accentColor: AppColors.textPrimary,
+                  icon: Icons.image_outlined,
+                ),
+              )
+              .toList();
     final dashboardState = ref.watch(homeDashboardViewModelProvider);
     final dashboardProducts = _recommendedProductsFrom(dashboardState);
     final dashboardKeywords = _trendingKeywordsFrom(dashboardState);
+    final dashboardExtras = <Widget>[
+      if (dashboardState is HomeDashboardLoading) ...[
+        const ProductCardGridSkeleton(itemCount: 5),
+        const SizedBox(height: AppSpacing.xl),
+      ] else if (dashboardState is HomeDashboardFailure) ...[
+        SizedBox(
+          height: 280,
+          child: AppErrorView(
+            message: dashboardState.failure.message,
+            onRetry: () =>
+                ref.read(homeDashboardViewModelProvider.notifier).refresh(),
+          ),
+        ),
+        const SizedBox(height: AppSpacing.xl),
+      ] else ...[
+        AppFadeIn(
+          delay: 120,
+          child: TrendingKeywordChips(
+            keywords: dashboardKeywords,
+            onKeywordTap: _handleKeywordSearch,
+          ),
+        ),
+        const SizedBox(height: AppSpacing.xl),
+      ],
+    ];
     final page = Scaffold(
       backgroundColor: AppColors.background,
       body: CustomScrollView(
         controller: _scrollController,
         slivers: [
           SliverToBoxAdapter(
-            child: HomeHeader(
-              navItems: homeNavItems,
-              selectedNavItem: _selectedNavItem,
-              onLoginPressed: () => context.go(RoutePaths.login),
-              onWishPressed: () => context.go(RoutePaths.wishlist),
-              onCartPressed: () => context.go(RoutePaths.cart),
-              onNavItemPressed: _handleNavItemPressed,
-              onLogoPressed: () => context.go(RoutePaths.home),
-              onSearchSubmitted: _handleSearchSubmitted,
-              searchKeywords: dashboardKeywords,
-              searchRecommendedProducts: dashboardProducts,
-              onSearchSuggestionsRequested: _handleSearchSuggestionsRequested,
-              searchFocusNode: _searchFocusNode,
-              cartCount: cartCount,
-              wishlistCount: wishlistCount,
-              isLoggedIn: isLoggedIn,
-              nickname: nickname,
-              onMyPagePressed: () =>
-                  context.go(isLoggedIn ? RoutePaths.myPage : RoutePaths.login),
-              onProfileWishPressed: () => context.go(RoutePaths.wishlist),
-              onProfileOrderPressed: () => context.go(RoutePaths.cart),
-              onLogoutPressed: _handleLogout,
-            ),
-          ),
-          if (_selectedNavItem == '홈') ...[
-            SliverToBoxAdapter(
-              child: Padding(
-                padding: EdgeInsets.only(top: context.isMobile ? 20 : 28),
-                child: _FadeUp(
-                  key: _heroKey,
-                  delay: 0,
-                  child: HeroBannerCarousel(
-                    items: banners,
-                    onBannerPressed: _handleBannerPressed,
-                  ),
+            child: Padding(
+              padding: EdgeInsets.only(top: context.isMobile ? 20 : 28),
+              child: AppFadeIn(
+                key: _heroKey,
+                delay: 0,
+                child: HeroBannerCarousel(
+                  items: registeredBanners.isEmpty
+                      ? banners
+                      : registeredBanners,
+                  onBannerPressed: _handleBannerPressed,
                 ),
               ),
             ),
+          ),
+          if (bannerContract != null && bannerFeed.hasError)
             SliverToBoxAdapter(
-              child: AppContentView(
-                maxWidth: 1440,
-                padding: _homeContentPadding(context),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
+              child: Padding(
+                padding: context.pagePadding,
+                child: Wrap(
+                  crossAxisAlignment: WrapCrossAlignment.center,
                   children: [
-                    _FadeUp(
-                      key: _categoryKey,
-                      delay: 60,
-                      child: QuickCategoryRow(
-                        items: quickCategories,
-                        onCategoryPressed: _handleCategoryPressed,
-                      ),
+                    const Text('배너를 불러오지 못해 기본 배너를 표시합니다.'),
+                    TextButton(
+                      onPressed: () => ref.invalidate(publicBannersProvider),
+                      child: const Text('다시 시도'),
                     ),
-                    const SizedBox(height: AppSpacing.xl),
-                    if (dashboardState is HomeDashboardLoading) ...[
-                      const ProductCardGridSkeleton(itemCount: 5),
-                      const SizedBox(height: AppSpacing.xl),
-                    ] else if (dashboardState is HomeDashboardFailure) ...[
-                      SizedBox(
-                        height: 280,
-                        child: AppErrorView(
-                          message: dashboardState.failure.message,
-                          onRetry: () => ref
-                              .read(homeDashboardViewModelProvider.notifier)
-                              .refresh(),
-                        ),
-                      ),
-                      const SizedBox(height: AppSpacing.xl),
-                    ] else ...[
-                      _FadeUp(
-                        delay: 120,
-                        child: TrendingKeywordChips(
-                          keywords: dashboardKeywords,
-                          onKeywordTap: _handleKeywordSearch,
-                        ),
-                      ),
-                      const SizedBox(height: AppSpacing.xl),
-                    ],
-                    if (useWideCommerceGrid) ...[
-                      _FadeUp(
-                        key: _recommendationKey,
-                        delay: 180,
-                        child: Row(
-                          children: [
-                            const Icon(
-                              Icons.verified_outlined,
-                              color: AppColors.primary,
-                              size: 22,
-                            ),
-                            const SizedBox(width: AppSpacing.xs),
-                            Expanded(
-                              child: Text(
-                                '에디터가 고른 리뷰 기반 추천 상품',
-                                style: Theme.of(context).textTheme.titleMedium,
-                              ),
-                            ),
-                            TextButton(
-                              onPressed: () {},
-                              style: TextButton.styleFrom(
-                                padding: const EdgeInsets.symmetric(
-                                  horizontal: AppSpacing.xs,
-                                  vertical: AppSpacing.xxs,
-                                ),
-                                minimumSize: Size.zero,
-                                tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                                foregroundColor: AppColors.textSecondary,
-                              ),
-                              child: Row(
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  Text(
-                                    '전체보기',
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .labelMedium
-                                        ?.copyWith(
-                                          color: AppColors.textSecondary,
-                                          fontWeight: FontWeight.w700,
-                                        ),
-                                  ),
-                                  const SizedBox(width: 2),
-                                  const Icon(Icons.chevron_right, size: 16),
-                                ],
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      const SizedBox(height: AppSpacing.md),
-                      ProductRecommendationSection(
-                        showHeader: false,
-                        products: dashboardProducts,
-                        onProductTap: _handleProductPressed,
-                      ),
-                      const SizedBox(height: 20),
-                      Row(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          const Expanded(
-                            child: _FadeUp(
-                              delay: 240,
-                              child: ReviewTrustInfoCard(),
-                            ),
-                          ),
-                          const SizedBox(width: 20),
-                          Expanded(
-                            child: _FadeUp(
-                              key: _benefitKey,
-                              delay: 300,
-                              child: BenefitCTA(
-                                items: benefitItems,
-                                onBenefitPressed: () =>
-                                    context.go(RoutePaths.login),
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                      const SizedBox(height: 20),
-                      _FadeUp(
-                        key: _popularCategoryKey,
-                        delay: 360,
-                        child: PopularCategorySection(
-                          items: popularCategories,
-                          onCategoryPressed: _handleCategoryPressed,
-                        ),
-                      ),
-                    ] else ...[
-                      _FadeUp(
-                        key: _recommendationKey,
-                        delay: 180,
-                        child: ProductRecommendationSection(
-                          products: dashboardProducts,
-                          onProductTap: _handleProductPressed,
-                        ),
-                      ),
-                      const SizedBox(height: AppSpacing.xl),
-                      const _FadeUp(delay: 240, child: ReviewTrustInfoCard()),
-                      const SizedBox(height: AppSpacing.xl),
-                      _FadeUp(
-                        key: _benefitKey,
-                        delay: 300,
-                        child: BenefitCTA(
-                          items: benefitItems,
-                          onBenefitPressed: () => context.go(RoutePaths.login),
-                        ),
-                      ),
-                    ],
-                    if (!useWideCommerceGrid) ...[
-                      const SizedBox(height: AppSpacing.xl),
-                      _FadeUp(
-                        key: _popularCategoryKey,
-                        delay: 360,
-                        child: PopularCategorySection(
-                          items: popularCategories,
-                          onCategoryPressed: _handleCategoryPressed,
-                        ),
-                      ),
-                    ],
-                    SizedBox(height: context.isMobile ? 96 : AppSpacing.xxxl),
                   ],
                 ),
               ),
             ),
-          ] else ...[
-            SliverToBoxAdapter(
-              child: _HomeTabPlaceholder(tab: _selectedNavItem),
+          SliverToBoxAdapter(
+            child: AppContentView(
+              maxWidth: 1440,
+              padding: _homeContentPadding(context),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  AppFadeIn(
+                    key: _categoryKey,
+                    delay: 60,
+                    child: QuickCategoryRow(
+                      items: quickCategories,
+                      onCategoryPressed: _handleCategoryPressed,
+                    ),
+                  ),
+                  SizedBox(
+                    height: context.isMobile ? AppSpacing.md : AppSpacing.xl,
+                  ),
+                  if (!context.isMobile) ...dashboardExtras,
+                  Text(
+                    '상품 둘러보기',
+                    style: Theme.of(context).textTheme.titleMedium,
+                  ),
+                  const SizedBox(height: AppSpacing.md),
+                  catalog.when(
+                    loading: () => const ProductCardGridSkeleton(itemCount: 5),
+                    error: (_, _) => SizedBox(
+                      height: 280,
+                      child: AppErrorView(
+                        message: '상품을 불러오지 못했습니다.',
+                        onRetry: () => ref.invalidate(homeCatalogProvider),
+                      ),
+                    ),
+                    data: (products) => products.isEmpty
+                        ? const Text('표시할 상품이 없습니다.')
+                        : ProductRecommendationSection(
+                            showHeader: false,
+                            products: products
+                                .take(10)
+                                .map(
+                                  (p) => HomeProductData(
+                                    productId: p.id.toString(),
+                                    detailPath: p.detailPath,
+                                    chatProductId: p.chatProductId,
+                                    routeContext: p.routeContext,
+                                    name: p.name,
+                                    storeName:
+                                        p.platform ?? p.dataPlatform ?? '',
+                                    priceLabel: _formatPrice(p.price),
+                                    ratingLabel:
+                                        p.avgRating?.toStringAsFixed(1) ?? '',
+                                    reviewCountLabel:
+                                        p.reviewCount?.toString() ?? '',
+                                    rtiLabel: p.avgRti == null
+                                        ? '분석 전'
+                                        : 'RTI ${p.avgRti!.round()}',
+                                    imageUrl: p.imageUrl,
+                                    label: p.subCategory ?? '',
+                                  ),
+                                )
+                                .toList(),
+                            onProductTap: _handleProductPressed,
+                          ),
+                  ),
+                  Align(
+                    alignment: Alignment.centerRight,
+                    child: TextButton(
+                      onPressed: () => context.goNamed(
+                        RouteNames.search,
+                        queryParameters: {'sort': 'accuracy'},
+                      ),
+                      child: const Text('전체 상품 보기'),
+                    ),
+                  ),
+                  if (context.isMobile) ...dashboardExtras,
+                  const SizedBox(height: AppSpacing.xl),
+                  if (useWideCommerceGrid) ...[
+                    AppFadeIn(
+                      key: _recommendationKey,
+                      delay: 180,
+                      child: Row(
+                        children: [
+                          const Icon(
+                            Icons.verified_outlined,
+                            color: AppColors.primary,
+                            size: 22,
+                          ),
+                          const SizedBox(width: AppSpacing.xs),
+                          Expanded(
+                            child: Text(
+                              AppLocalizations.of(context).homeRecommendedTitle,
+                              style: Theme.of(context).textTheme.titleMedium,
+                            ),
+                          ),
+                          TextButton(
+                            onPressed: () => context.push(RoutePaths.search),
+                            style: TextButton.styleFrom(
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: AppSpacing.xs,
+                                vertical: AppSpacing.xxs,
+                              ),
+                              minimumSize: Size.zero,
+                              tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                              foregroundColor: AppColors.textSecondary,
+                            ),
+                            child: Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                Text(
+                                  AppLocalizations.of(context).homeViewAll,
+                                  style: Theme.of(context).textTheme.labelMedium
+                                      ?.copyWith(
+                                        color: AppColors.textSecondary,
+                                        fontWeight: FontWeight.w700,
+                                      ),
+                                ),
+                                const SizedBox(width: 2),
+                                const Icon(Icons.chevron_right, size: 16),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    const SizedBox(height: AppSpacing.md),
+                    ProductRecommendationSection(
+                      showHeader: false,
+                      products: dashboardProducts,
+                      onProductTap: _handleProductPressed,
+                    ),
+                    const SizedBox(height: 20),
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const Expanded(
+                          child: AppFadeIn(
+                            delay: 240,
+                            child: ReviewTrustInfoCard(),
+                          ),
+                        ),
+                        const SizedBox(width: 20),
+                        Expanded(
+                          child: AppFadeIn(
+                            key: _benefitKey,
+                            delay: 300,
+                            child: BenefitCTA(
+                              items: benefitItems,
+                              onBenefitPressed: () =>
+                                  context.go(RoutePaths.login),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 20),
+                    AppFadeIn(
+                      key: _popularCategoryKey,
+                      delay: 360,
+                      child: PopularCategorySection(
+                        items: popularCategories,
+                        onCategoryPressed: _handleCategoryPressed,
+                      ),
+                    ),
+                  ] else ...[
+                    AppFadeIn(
+                      key: _recommendationKey,
+                      delay: 180,
+                      child: ProductRecommendationSection(
+                        products: dashboardProducts,
+                        onProductTap: _handleProductPressed,
+                      ),
+                    ),
+                    const SizedBox(height: AppSpacing.xl),
+                    const AppFadeIn(delay: 240, child: ReviewTrustInfoCard()),
+                    const SizedBox(height: AppSpacing.xl),
+                    AppFadeIn(
+                      key: _benefitKey,
+                      delay: 300,
+                      child: BenefitCTA(
+                        items: benefitItems,
+                        onBenefitPressed: () => context.go(RoutePaths.login),
+                      ),
+                    ),
+                  ],
+                  if (!useWideCommerceGrid) ...[
+                    const SizedBox(height: AppSpacing.xl),
+                    AppFadeIn(
+                      key: _popularCategoryKey,
+                      delay: 360,
+                      child: PopularCategorySection(
+                        items: popularCategories,
+                        onCategoryPressed: _handleCategoryPressed,
+                      ),
+                    ),
+                  ],
+                  SizedBox(height: context.isMobile ? 96 : AppSpacing.xxxl),
+                ],
+              ),
             ),
-          ],
+          ),
           const SliverToBoxAdapter(child: HomeFooter()),
         ],
       ),
       bottomNavigationBar: context.isMobile
           ? _HomeBottomTabs(
               onHomePressed: () => _handleNavItemPressed('홈'),
-              onCategoryPressed: () => _scrollTo(_categoryKey),
-              onSearchPressed: () => _searchFocusNode.requestFocus(),
+              onCategoryPressed: _openCategories,
+              onSearchPressed: () => AppShell.focusSearch(context),
               onWishPressed: () => context.go(RoutePaths.wishlist),
               onMyPressed: () =>
                   context.go(isLoggedIn ? RoutePaths.myPage : RoutePaths.login),
@@ -322,61 +390,75 @@ class _HomePageState extends ConsumerState<HomePage> {
   }
 
   void _handleNavItemPressed(String item) {
-    final category = resolveProductCategory(item);
-    if (category != null) {
-      context.goNamed(
-        RouteNames.search,
-        queryParameters: {
-          'categoryId': category.id,
-          'category': category.label,
-        },
-      );
+    if (item == '홈') {
+      _scrollController.jumpTo(0);
       return;
     }
+    openHomeNavItem(context, item);
+  }
 
-    setState(() => _selectedNavItem = item);
-    _scrollController.jumpTo(0);
+  Future<void> _openCategories() async {
+    final selection = await showHomeCategorySheet(context);
+    if (!mounted || selection == null) return;
+    final category = selection.category;
+    context.goNamed(
+      RouteNames.search,
+      queryParameters: category == null
+          ? {'sort': SearchSortOption.accuracy.name}
+          : {'categoryId': category.id, 'category': category.label},
+    );
   }
 
   void _handleCategoryPressed(String label) {
-    if (label == '전체보기') {
-      _scrollTo(_popularCategoryKey);
+    if (label == AppLocalizations.of(context).homeViewAll ||
+        label == quickCategories.last.label) {
+      _openCategories();
       return;
     }
 
     _handleNavItemPressed(label);
   }
 
-  void _handleBannerPressed(HomeBannerData banner) {
+  Future<void> _handleBannerPressed(HomeBannerData banner) async {
+    final target = banner.targetUrl;
+    if (target != null) {
+      if (target.startsWith('/')) {
+        context.go(target);
+      } else {
+        try {
+          final opened = await launchUrl(
+            Uri.parse(target),
+            mode: LaunchMode.externalApplication,
+          );
+          if (!opened && mounted) {
+            ScaffoldMessenger.of(
+              context,
+            ).showSnackBar(const SnackBar(content: Text('배너 링크를 열지 못했습니다.')));
+          }
+        } catch (_) {
+          if (mounted) {
+            ScaffoldMessenger.of(
+              context,
+            ).showSnackBar(const SnackBar(content: Text('배너 링크를 열지 못했습니다.')));
+          }
+        }
+      }
+      return;
+    }
     _scrollTo(_recommendationKey);
   }
 
-  void _handleLogout() {
-    ref.read(authTokenStoreProvider.notifier).clear();
-    context.go(RoutePaths.landing);
-  }
-
   void _handleProductPressed(HomeProductData product) {
-    context.go('/product/${product.productId}');
-  }
-
-  Future<List<String>> _handleSearchSuggestionsRequested(String query) {
-    return ref
-        .read(searchAutocompleteRemoteDataSourceProvider)
-        .fetchSuggestions(query);
+    context.go(
+      product.detailPath ?? '/product/${product.productId}',
+      extra:
+          product.routeContext ??
+          ProductRouteContext(chatProductId: product.chatProductId),
+    );
   }
 
   void _handleKeywordSearch(String keyword) {
     context.goNamed(RouteNames.search, queryParameters: {'q': keyword});
-  }
-
-  void _handleSearchSubmitted(String value) {
-    final query = value.trim();
-    if (query.isEmpty) {
-      return;
-    }
-
-    context.goNamed(RouteNames.search, queryParameters: {'q': query});
   }
 
   void _scrollTo(GlobalKey key) {
@@ -387,7 +469,7 @@ class _HomePageState extends ConsumerState<HomePage> {
 
     Scrollable.ensureVisible(
       targetContext,
-      duration: const Duration(milliseconds: 360),
+      duration: AppMotion.slow,
       curve: Curves.easeOutCubic,
       alignment: 0.04,
     );
@@ -417,6 +499,9 @@ class _HomePageState extends ConsumerState<HomePage> {
   HomeProductData _toHomeProductData(DashboardProduct product) {
     return HomeProductData(
       productId: product.id,
+      detailPath: product.detailPath,
+      chatProductId: product.chatProductId,
+      routeContext: product.routeContext,
       name: product.name,
       storeName: product.storeName,
       priceLabel: _formatPrice(product.price),
@@ -430,7 +515,8 @@ class _HomePageState extends ConsumerState<HomePage> {
 
   String _toKeywordLabel(TrendingKeyword keyword) => keyword.keyword;
 
-  String _formatPrice(int price) {
+  String _formatPrice(int? price) {
+    if (price == null) return '가격 정보 없음';
     final digits = price.toString();
     final buffer = StringBuffer();
     for (var i = 0; i < digits.length; i++) {
@@ -441,96 +527,6 @@ class _HomePageState extends ConsumerState<HomePage> {
     }
 
     return '$buffer원';
-  }
-}
-
-class _FadeUp extends StatefulWidget {
-  const _FadeUp({required this.child, required this.delay, super.key});
-
-  final Widget child;
-  final int delay;
-
-  @override
-  State<_FadeUp> createState() => _FadeUpState();
-}
-
-class _FadeUpState extends State<_FadeUp> with SingleTickerProviderStateMixin {
-  late final AnimationController _controller;
-  late final Animation<double> _opacity;
-  late final Animation<Offset> _offset;
-  Timer? _timer;
-
-  @override
-  void initState() {
-    super.initState();
-    _controller = AnimationController(
-      vsync: this,
-      duration: const Duration(milliseconds: 420),
-    );
-    _opacity = CurvedAnimation(parent: _controller, curve: Curves.easeOutCubic);
-    _offset = Tween<Offset>(
-      begin: const Offset(0, 0.04),
-      end: Offset.zero,
-    ).animate(CurvedAnimation(parent: _controller, curve: Curves.easeOutCubic));
-
-    _timer = Timer(Duration(milliseconds: widget.delay), () {
-      if (mounted) {
-        _controller.forward();
-      }
-    });
-  }
-
-  @override
-  void dispose() {
-    _timer?.cancel();
-    _controller.dispose();
-    super.dispose();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return FadeTransition(
-      opacity: _opacity,
-      child: SlideTransition(position: _offset, child: widget.child),
-    );
-  }
-}
-
-class _HomeTabPlaceholder extends StatelessWidget {
-  const _HomeTabPlaceholder({required this.tab});
-
-  final String tab;
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(top: AppSpacing.xxxl),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Icon(
-            Icons.construction_outlined,
-            size: 48,
-            color: AppColors.textTertiary,
-          ),
-          const SizedBox(height: AppSpacing.md),
-          Text(
-            tab,
-            style: Theme.of(context).textTheme.titleMedium?.copyWith(
-              color: AppColors.textPrimary,
-              fontWeight: FontWeight.w800,
-            ),
-          ),
-          const SizedBox(height: AppSpacing.xs),
-          Text(
-            '준비 중인 콘텐츠입니다.',
-            style: Theme.of(
-              context,
-            ).textTheme.bodyMedium?.copyWith(color: AppColors.textSecondary),
-          ),
-        ],
-      ),
-    );
   }
 }
 
@@ -551,12 +547,13 @@ class _HomeBottomTabs extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    const items = [
-      (Icons.home_filled, '홈'),
-      (Icons.grid_view_outlined, '카테고리'),
-      (Icons.search, '검색'),
-      (Icons.favorite_border, '찜'),
-      (Icons.person_outline, '마이'),
+    final l10n = AppLocalizations.of(context);
+    final items = [
+      (Icons.home_filled, l10n.navHome),
+      (Icons.grid_view_outlined, l10n.navCategory),
+      (Icons.search, l10n.navSearch),
+      (Icons.favorite_border, l10n.navWishShort),
+      (Icons.person_outline, l10n.navMyShort),
     ];
     final callbacks = [
       onHomePressed,
@@ -591,7 +588,7 @@ class _HomeBottomTabs extends StatelessWidget {
                   children: [
                     Icon(
                       items[i].$1,
-                      color: items[i].$2 == '홈'
+                      color: i == 0
                           ? AppColors.textPrimary
                           : AppColors.textSecondary,
                       size: 27,
@@ -600,12 +597,10 @@ class _HomeBottomTabs extends StatelessWidget {
                     Text(
                       items[i].$2,
                       style: Theme.of(context).textTheme.labelMedium?.copyWith(
-                        color: items[i].$2 == '홈'
+                        color: i == 0
                             ? AppColors.textPrimary
                             : AppColors.textSecondary,
-                        fontWeight: items[i].$2 == '홈'
-                            ? FontWeight.w900
-                            : FontWeight.w700,
+                        fontWeight: i == 0 ? FontWeight.w900 : FontWeight.w700,
                       ),
                     ),
                   ],

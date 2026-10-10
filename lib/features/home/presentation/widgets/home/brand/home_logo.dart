@@ -15,7 +15,7 @@ class HomeLogo extends StatelessWidget {
           child: Transform.scale(
             scale: 2,
             child: Image.asset(
-              'assets/images/home/brand/review_web_header_logo.png',
+              'assets/images/home/brand/review_web_header_logo.webp',
               height: 32,
               fit: BoxFit.contain,
             ),

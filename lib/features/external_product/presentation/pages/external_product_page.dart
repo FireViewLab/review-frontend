@@ -1,0 +1,581 @@
+import 'package:re_view_front/shared/widgets/product_detail_hero.dart';
+import 'package:re_view_front/features/external_product/presentation/widgets/external_product_report.dart';
+import 'package:re_view_front/shared/widgets/review_photo_view.dart';
+import 'package:re_view_front/core/providers/core_providers.dart';
+import 'package:re_view_front/features/recent_products/presentation/providers/recent_products_providers.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:re_view_front/app/theme/app_colors.dart';
+import 'package:re_view_front/app/theme/app_spacing.dart';
+import 'package:re_view_front/features/chat/presentation/widgets/chat_ask_button.dart';
+import 'package:re_view_front/features/external_product/domain/entities/external_product.dart';
+import 'package:re_view_front/features/external_product/domain/entities/external_product_ref.dart';
+import 'package:re_view_front/features/external_product/presentation/providers/external_product_providers.dart';
+import 'package:re_view_front/features/external_product/presentation/view_models/external_product_state.dart';
+import 'package:re_view_front/features/external_product/presentation/widgets/external_product_action_bar.dart';
+import 'package:re_view_front/features/external_product/presentation/widgets/external_product_sections.dart';
+import 'package:re_view_front/features/external_product/presentation/widgets/external_review_actions.dart';
+import 'package:re_view_front/l10n/generated/app_localizations.dart';
+import 'package:re_view_front/features/settings/presentation/providers/settings_providers.dart';
+import 'package:re_view_front/shared/extensions/context_extensions.dart';
+import 'package:re_view_front/shared/widgets/sliver_width_builder.dart';
+import 'dart:math' as math;
+import 'package:re_view_front/shared/widgets/product_image_viewer.dart';
+import 'package:re_view_front/shared/widgets/error_view.dart';
+import 'package:url_launcher/url_launcher.dart';
+
+/// Data 서버가 수집한 쇼핑몰 상품의 상세 화면.
+class ExternalProductPage extends ConsumerStatefulWidget {
+  const ExternalProductPage({
+    super.key,
+    required this.productRef,
+    this.summary,
+    this.viewAlreadyRecorded = false,
+  });
+
+  final ExternalProductRef productRef;
+  final ProductSummary? summary;
+  final bool viewAlreadyRecorded;
+
+  @override
+  ConsumerState<ExternalProductPage> createState() =>
+      _ExternalProductPageState();
+}
+
+class _ExternalProductPageState extends ConsumerState<ExternalProductPage> {
+  void _rememberSummary() {
+    final summary = widget.summary;
+    if (summary != null && summary.matches(widget.productRef)) {
+      ref.read(productSummaryCacheProvider).remember(summary);
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _rememberSummary();
+  }
+
+  @override
+  void didUpdateWidget(covariant ExternalProductPage oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    _rememberSummary();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: AppColors.surface,
+      body: CustomScrollView(
+        slivers: [
+          SliverWidthBuilder(
+            builder: (context, width) {
+              final inset = math.max(0.0, (width - 1200) / 2);
+              final edge = context.isMobile ? AppSpacing.md : AppSpacing.xxl;
+              return SliverPadding(
+                padding: EdgeInsets.fromLTRB(
+                  inset + edge,
+                  context.isMobile ? AppSpacing.lg : AppSpacing.xl,
+                  inset + edge,
+                  AppSpacing.xxxl,
+                ),
+                sliver: ExternalProductContent(
+                  asSliver: true,
+                  key: ValueKey(widget.productRef),
+                  productRef: widget.productRef,
+                  viewAlreadyRecorded: widget.viewAlreadyRecorded,
+                ),
+              );
+            },
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+/// 상품 상세의 본문. 수집 상태에 따라 화면을 가른다.
+class ExternalProductContent extends ConsumerStatefulWidget {
+  const ExternalProductContent({
+    super.key,
+    required this.productRef,
+    this.viewAlreadyRecorded = false,
+    this.asSliver = false,
+  });
+
+  final ExternalProductRef productRef;
+
+  final bool viewAlreadyRecorded;
+
+  /// The product route uses the parent viewport. Box embedding is kept for
+  /// existing isolated consumers that do not supply a sliver viewport.
+  final bool asSliver;
+  @override
+  ConsumerState<ExternalProductContent> createState() =>
+      _ExternalProductContentState();
+}
+
+class _ExternalProductContentState
+    extends ConsumerState<ExternalProductContent> {
+  bool _usedInheritedRecord = false;
+  ExternalProductRef get productRef => widget.productRef;
+  @override
+  void initState() {
+    super.initState();
+    ref.listenManual(authTokenStoreProvider, (_, _) {
+      _usedInheritedRecord = true;
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final content = _buildSliver(context);
+    if (widget.asSliver) return content;
+    return CustomScrollView(
+      shrinkWrap: true,
+      primary: false,
+      physics: const NeverScrollableScrollPhysics(),
+      slivers: [content],
+    );
+  }
+
+  Widget _buildSliver(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
+    final provider = externalProductViewModelProvider(productRef);
+    final state = ref.watch(provider);
+    final vm = ref.read(provider.notifier);
+    final product = state.displayProduct;
+    final status = switch (state.phase) {
+      ExternalProductPhase.loading => const Padding(
+        padding: EdgeInsets.all(AppSpacing.lg),
+        child: LinearProgressIndicator(),
+      ),
+      ExternalProductPhase.collecting => _Collecting(isSlow: state.isSlow),
+      ExternalProductPhase.unavailable => AppErrorView(
+        title: l10n.extProductUnavailableTitle,
+        message: state.collectionError ?? l10n.extProductUnavailableBody,
+        retryLabel: l10n.extProductRetry,
+        onRetry: vm.load,
+      ),
+      ExternalProductPhase.failure => AppErrorView(
+        message: l10n.extProductLoadFailed,
+        retryLabel: l10n.extProductRetry,
+        onRetry: vm.load,
+      ),
+      ExternalProductPhase.ready =>
+        state.collectionError == null
+            ? null
+            : Text(
+                state.collectionError!,
+                style: Theme.of(
+                  context,
+                ).textTheme.bodyMedium?.copyWith(color: AppColors.error),
+              ),
+    };
+    if (product == null) {
+      return SliverToBoxAdapter(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            // A direct link has no list snapshot. Keep the basic information area
+            // separate without inventing a name, price, photo or purchase link.
+            const _SummarySkeleton(),
+            ChatAskButton(productId: productRef.externalId),
+            const SizedBox(height: AppSpacing.lg),
+            const ExternalAnalysisPending(),
+            const SizedBox(height: AppSpacing.lg),
+            Text(l10n.extProductReviewsTitle),
+            ?status,
+          ],
+        ),
+      );
+    }
+    final recentProvider = recentViewRecordProvider(productRef);
+    final recordStatus = ref.watch(recentProvider);
+    final numericId = state.product == null
+        ? state.displayNumericId
+        : state.springProductId;
+    final loggedIn = ref.watch(isLoggedInProvider);
+    if (loggedIn &&
+        numericId != null &&
+        recordStatus == RecentViewStatus.idle) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (context.mounted && ref.exists(recentProvider)) {
+          if (widget.viewAlreadyRecorded && !_usedInheritedRecord) {
+            _usedInheritedRecord = true;
+            ref.read(recentProvider.notifier).acknowledgeInheritedView();
+          } else {
+            ref.read(recentProvider.notifier).record(numericId);
+          }
+        }
+      });
+    }
+    return SliverMainAxisGroup(
+      slivers: [
+        _Ready(
+          key: ValueKey(product.ref),
+          state: state,
+          product: product,
+          onLoadMore: vm.loadMoreReviews,
+          collectionStatus: status,
+        ),
+        SliverToBoxAdapter(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              if (loggedIn && recordStatus == RecentViewStatus.failed)
+                TextButton.icon(
+                  icon: const Icon(Icons.refresh),
+                  onPressed: numericId == null
+                      ? null
+                      : () => ref
+                            .read(recentProvider.notifier)
+                            .record(numericId, retry: true),
+                  label: Text(l10n.recentRecordFailed),
+                ),
+              if (loggedIn && numericId == null)
+                Text(
+                  l10n.recentRecordUnavailable,
+                  style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                    color: AppColors.textSecondary,
+                  ),
+                ),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+class _SummarySkeleton extends StatelessWidget {
+  const _SummarySkeleton();
+  @override
+  Widget build(BuildContext context) => Semantics(
+    label: AppLocalizations.of(context).extProductSummaryLoading,
+    child: Padding(
+      padding: const EdgeInsets.only(bottom: AppSpacing.lg),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          Container(
+            height: context.isMobile ? 180 : 240,
+            color: AppColors.border,
+          ),
+          const SizedBox(height: AppSpacing.md),
+          Text(AppLocalizations.of(context).extProductSummaryLoading),
+        ],
+      ),
+    ),
+  );
+}
+
+/// 상품 정보가 준비되기를 기다리는 동안 보여 준다. 진행률은 서버가 알려 주지 않는다.
+class _Collecting extends StatelessWidget {
+  const _Collecting({required this.isSlow});
+
+  final bool isSlow;
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
+    final textTheme = Theme.of(context).textTheme;
+    return ConstrainedBox(
+      constraints: const BoxConstraints(maxWidth: 420),
+      child: Semantics(
+        liveRegion: true,
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            const CircularProgressIndicator(),
+            const SizedBox(height: AppSpacing.lg),
+            Text(
+              l10n.extProductCollectingTitle,
+              textAlign: TextAlign.center,
+              style: textTheme.titleMedium?.copyWith(
+                color: AppColors.textPrimary,
+                fontWeight: FontWeight.w800,
+              ),
+            ),
+            const SizedBox(height: AppSpacing.xs),
+            Text(
+              isSlow
+                  ? l10n.extProductCollectingSlow
+                  : l10n.extProductCollectingBody,
+              textAlign: TextAlign.center,
+              style: textTheme.bodyMedium?.copyWith(
+                color: AppColors.textSecondary,
+                height: 1.5,
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class _Ready extends ConsumerStatefulWidget {
+  const _Ready({
+    super.key,
+    required this.state,
+    required this.product,
+    required this.onLoadMore,
+    this.collectionStatus,
+  });
+
+  final ExternalProductState state;
+  final ExternalProduct product;
+  final VoidCallback onLoadMore;
+  final Widget? collectionStatus;
+
+  @override
+  ConsumerState<_Ready> createState() => _ReadyState();
+}
+
+class _ReadyState extends ConsumerState<_Ready> {
+  // The last list filter stays independent of the gallery view.
+  bool _photoOnly = false, _photoView = false;
+  ExternalProductState get state => widget.state;
+  ExternalProduct get product => widget.product;
+  VoidCallback get onLoadMore => widget.onLoadMore;
+  Widget? get collectionStatus => widget.collectionStatus;
+  List<ExternalReview>? _cachedSource;
+  Object? _cachedOptions;
+  List<ExternalReview> _cachedReviews = const [];
+  int _photoReviewCount = 0;
+  List<ExternalReview> _prepareReviews(String? sortOrder, bool hasPreferences) {
+    final options = (sortOrder, hasPreferences, _photoOnly || _photoView);
+    if (identical(_cachedSource, state.reviews) && _cachedOptions == options) {
+      return _cachedReviews;
+    }
+    _cachedSource = state.reviews;
+    _cachedOptions = options;
+    final hasPhotos = {
+      for (final review in state.reviews)
+        review: validReviewImages(review.images).isNotEmpty,
+    };
+    _photoReviewCount = hasPhotos.values.where((v) => v).length;
+    final reviews = state.reviews.indexed.toList();
+    if (hasPreferences) {
+      reviews.sort((a, b) {
+        if (sortOrder == 'HELPFUL') {
+          final left = a.$2.helpfulCount;
+          final right = b.$2.helpfulCount;
+          if (left == null && right != null) return 1;
+          if (right == null && left != null) return -1;
+          if (left != null && right != null && left != right) {
+            return right.compareTo(left);
+          }
+        }
+        final left = a.$2.writtenAt;
+        final right = b.$2.writtenAt;
+        if (left == null && right != null) return 1;
+        if (right == null && left != null) return -1;
+        if (left != null && right != null && left != right) {
+          return right.compareTo(left);
+        }
+        return a.$1.compareTo(b.$1);
+      });
+    }
+
+    return _cachedReviews = [
+      for (final entry in reviews)
+        if (!(_photoOnly || _photoView) || hasPhotos[entry.$2] == true)
+          entry.$2,
+    ];
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
+    final textTheme = Theme.of(context).textTheme;
+    final url = Uri.tryParse(product.url ?? '');
+    final category = product.category;
+    final preferences = ref.watch(confirmedDisplayPreferencesProvider);
+    final visibleReviews = _prepareReviews(
+      preferences?.reviewSortOrder,
+      preferences != null,
+    );
+    final image = ProductImageViewer(imageUrls: product.galleryImages);
+
+    final summary = ExternalProductSummary(
+      product: product,
+      isStale: state.isStale,
+      onVisitShop:
+          url == null ||
+              !['https', 'http'].contains(url.scheme) ||
+              url.host.isEmpty
+          ? null
+          : () => launchUrl(url, mode: LaunchMode.externalApplication),
+      actions: [
+        ExternalProductActionBar(
+          product: product.ref,
+          springProductId: state.product == null
+              ? state.displayNumericId
+              : state.springProductId,
+        ),
+        ChatAskButton(productId: product.ref.externalId),
+      ],
+    );
+
+    return SliverMainAxisGroup(
+      slivers: [
+        SliverToBoxAdapter(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              if (state.phase != ExternalProductPhase.ready) ...[
+                Text(
+                  state.summary?.source == ProductSummarySource.previousDetail
+                      ? l10n.extProductPreviousSummary
+                      : l10n.extProductListSummary,
+                  style: textTheme.bodySmall?.copyWith(
+                    color: AppColors.textSecondary,
+                  ),
+                ),
+                const SizedBox(height: AppSpacing.sm),
+              ],
+              if (category != null) ...[
+                Text(
+                  category,
+                  style: textTheme.labelMedium?.copyWith(
+                    color: AppColors.textSecondary,
+                  ),
+                ),
+                const SizedBox(height: AppSpacing.md),
+              ],
+              ProductDetailHero(gallery: image, information: summary),
+              const SizedBox(height: AppSpacing.xl),
+              ExternalProductReport(state: state),
+              const SizedBox(height: AppSpacing.xl),
+              const Divider(height: AppSpacing.xxl, color: AppColors.border),
+              Text(
+                l10n.extProductReviewsTitle,
+                style: textTheme.titleLarge?.copyWith(
+                  color: AppColors.textPrimary,
+                  fontWeight: FontWeight.w900,
+                ),
+              ),
+              const SizedBox(height: AppSpacing.xs),
+              if (preferences != null) ...[
+                Text(
+                  l10n.extProductReviewPreferencesNote,
+                  style: textTheme.bodySmall?.copyWith(
+                    color: AppColors.textSecondary,
+                  ),
+                ),
+                const SizedBox(height: AppSpacing.sm),
+              ],
+              ReviewPhotoToolbar(
+                photoOnly: _photoOnly,
+                photoView: _photoView,
+                loadedCount: state.reviews.length,
+                photoReviewCount: _photoReviewCount,
+                onPhotoOnlyChanged: (v) => setState(() => _photoOnly = v),
+                onPhotoViewChanged: (v) => setState(() => _photoView = v),
+              ),
+              const SizedBox(height: AppSpacing.sm),
+              if (collectionStatus != null) ...[
+                ExternalPanel(child: collectionStatus!),
+                const SizedBox(height: AppSpacing.md),
+              ],
+            ],
+          ),
+        ),
+        if (state.reviews.isEmpty &&
+            state.phase == ExternalProductPhase.ready &&
+            state.collectionError == null)
+          SliverToBoxAdapter(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(vertical: AppSpacing.xl),
+              child: Text(
+                l10n.extProductReviewsEmpty,
+                textAlign: TextAlign.center,
+                style: textTheme.bodyMedium?.copyWith(
+                  color: AppColors.textSecondary,
+                ),
+              ),
+            ),
+          )
+        else if (_photoView)
+          ReviewPhotoGrid(
+            asSliver: true,
+            entries: [
+              for (final review in visibleReviews)
+                ReviewPhotoEntry(
+                  reviewKey: review.reviewId,
+                  label: review.author ?? '',
+                  images: review.images,
+                ),
+            ],
+          )
+        else if (_photoOnly && visibleReviews.isEmpty)
+          SliverToBoxAdapter(child: Text(l10n.reviewPhotosEmpty))
+        else if (visibleReviews.isNotEmpty)
+          DecoratedSliver(
+            decoration: BoxDecoration(
+              color: AppColors.surface,
+              borderRadius: AppRadius.large,
+              border: Border.all(color: AppColors.border),
+            ),
+            sliver: SliverPadding(
+              padding: const EdgeInsets.symmetric(horizontal: AppSpacing.lg),
+              sliver: SliverList.separated(
+                itemCount: visibleReviews.length,
+                separatorBuilder: (context, index) =>
+                    const Divider(height: 1, color: AppColors.border),
+                itemBuilder: (context, index) {
+                  final review = visibleReviews[index];
+                  return ExternalReviewTile(
+                    key: ValueKey(review.reviewId),
+                    review: review,
+                    analysisStatus: state.analysisStatus,
+                    trailing: ExternalReviewActions(
+                      product: product.ref,
+                      reviewId: review.reviewId,
+                      productName: product.name,
+                      reviewContent: review.content,
+                    ),
+                  );
+                },
+              ),
+            ),
+          ),
+        SliverToBoxAdapter(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              if (state.loadMoreFailed)
+                Padding(
+                  padding: const EdgeInsets.only(top: AppSpacing.sm),
+                  child: Text(
+                    l10n.extProductReviewsMoreFailed,
+                    textAlign: TextAlign.center,
+                    style: textTheme.bodySmall?.copyWith(
+                      color: AppColors.error,
+                    ),
+                  ),
+                ),
+              if (state.hasMoreReviews &&
+                  state.phase == ExternalProductPhase.ready) ...[
+                const SizedBox(height: AppSpacing.md),
+                Center(
+                  child: OutlinedButton(
+                    onPressed: state.isLoadingMore ? null : onLoadMore,
+                    child: state.isLoadingMore
+                        ? const SizedBox.square(
+                            dimension: 16,
+                            child: CircularProgressIndicator(strokeWidth: 2),
+                          )
+                        : Text(l10n.extProductReviewsMore),
+                  ),
+                ),
+              ],
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+}

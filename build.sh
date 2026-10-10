@@ -13,3 +13,5 @@ fi
 flutter config --enable-web
 flutter pub get
 flutter build web --release
+
+bash scripts/write-deployment-marker.sh

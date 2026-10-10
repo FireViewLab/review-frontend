@@ -19,21 +19,26 @@ class WishlistSuccess extends WishlistState {
     required this.items,
     required this.summary,
     this.togglingProductIds = const {},
+    this.errorMessage,
   });
 
   final List<WishlistItem> items;
   final WishlistSummary summary;
   final Set<int> togglingProductIds;
+  final String? errorMessage;
 
   WishlistSuccess copyWith({
     List<WishlistItem>? items,
     WishlistSummary? summary,
     Set<int>? togglingProductIds,
+    String? errorMessage,
+    bool clearError = false,
   }) {
     return WishlistSuccess(
       items: items ?? this.items,
       summary: summary ?? this.summary,
       togglingProductIds: togglingProductIds ?? this.togglingProductIds,
+      errorMessage: clearError ? null : errorMessage ?? this.errorMessage,
     );
   }
 }

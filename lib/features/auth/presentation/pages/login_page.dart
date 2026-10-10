@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:re_view_front/shared/widgets/app_fade_in.dart';
 import 'package:re_view_front/core/platform/external_redirect.dart';
 import 'package:re_view_front/app/router/route_paths.dart';
 import 'package:re_view_front/app/theme/app_colors.dart';
@@ -11,13 +12,14 @@ import 'package:re_view_front/features/auth/presentation/widgets/login_footer.da
 import 'package:re_view_front/features/auth/presentation/widgets/login_value_panel.dart';
 import 'package:re_view_front/features/auth/presentation/providers/auth_providers.dart';
 import 'package:re_view_front/features/auth/presentation/view_models/login_state.dart';
-import 'package:re_view_front/features/home/presentation/data/home_content.dart';
-import 'package:re_view_front/features/home/presentation/widgets/home/home_header.dart';
 import 'package:re_view_front/shared/extensions/context_extensions.dart';
 import 'package:re_view_front/shared/widgets/app_content_view.dart';
 
 class LoginPage extends ConsumerStatefulWidget {
-  const LoginPage({super.key});
+  const LoginPage({super.key, this.from});
+
+  /// 로그인 후 돌아갈 앱 내부 경로. 로그인이 필요한 화면에서 넘어왔을 때만 있다.
+  final String? from;
 
   @override
   ConsumerState<LoginPage> createState() => _LoginPageState();
@@ -50,27 +52,29 @@ class _LoginPageState extends ConsumerState<LoginPage> {
 
     ref.listen<LoginState>(loginViewModelProvider, (previous, next) {
       if (next.status == LoginSubmissionStatus.success) {
+        final from = widget.from;
+        // 외부 주소로 보내지 않도록 앱 내부 경로만 허용한다.
+        final canReturn =
+            from != null &&
+            from.startsWith('/') &&
+            !from.startsWith('//') &&
+            !from.startsWith(RoutePaths.login);
         context.go(
-          next.onboardingCompleted
-              ? RoutePaths.home
-              : RoutePaths.onboarding,
+          !next.onboardingCompleted
+              ? RoutePaths.onboarding
+              : canReturn
+              ? from
+              : RoutePaths.home,
         );
       }
     });
 
     return Scaffold(
       backgroundColor: AppColors.background,
+      // AppShell already resizes the nested route for the keyboard.
+      resizeToAvoidBottomInset: false,
       body: Column(
         children: [
-          HomeHeader(
-            navItems: homeNavItems,
-            selectedNavItem: '홈',
-            onLoginPressed: () {},
-            onWishPressed: () => context.go(RoutePaths.home),
-            onCartPressed: () => context.go(RoutePaths.home),
-            onNavItemPressed: (_) => context.go(RoutePaths.home),
-            onLogoPressed: () => context.go(RoutePaths.home),
-          ),
           Expanded(
             child: SingleChildScrollView(
               child: AppContentView(
@@ -80,12 +84,20 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                     ? Column(
                         crossAxisAlignment: CrossAxisAlignment.stretch,
                         children: [
-                          const _FadeUp(delay: 0, child: LoginValuePanel()),
-                          const SizedBox(height: AppSpacing.xl),
-                          _FadeUp(
+                          AppFadeIn(
+                            delay: 0,
+                            child: LoginValuePanel(compact: context.isMobile),
+                          ),
+                          SizedBox(
+                            height: context.isMobile
+                                ? AppSpacing.md
+                                : AppSpacing.xl,
+                          ),
+                          AppFadeIn(
                             delay: 90,
                             child: _buildLoginCard(context, loginState),
                           ),
+                          if (context.isMobile) const LoginFooter(),
                         ],
                       )
                     : Row(
@@ -93,14 +105,17 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                         children: [
                           const Expanded(
                             flex: 12,
-                            child: _FadeUp(delay: 0, child: LoginValuePanel()),
+                            child: AppFadeIn(
+                              delay: 0,
+                              child: LoginValuePanel(),
+                            ),
                           ),
                           const SizedBox(width: 64),
                           Expanded(
                             flex: 8,
                             child: Align(
                               alignment: Alignment.centerRight,
-                              child: _FadeUp(
+                              child: AppFadeIn(
                                 delay: 120,
                                 child: _buildLoginCard(context, loginState),
                               ),
@@ -111,7 +126,8 @@ class _LoginPageState extends ConsumerState<LoginPage> {
               ),
             ),
           ),
-          const _FadeUp(delay: 220, child: LoginFooter()),
+          if (!context.isMobile)
+            const AppFadeIn(delay: 220, child: LoginFooter()),
         ],
       ),
     );
@@ -142,7 +158,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
 
   EdgeInsets _pagePadding(BuildContext context) {
     if (context.isMobile) {
-      return const EdgeInsets.fromLTRB(16, 28, 16, 48);
+      return const EdgeInsets.fromLTRB(16, 16, 16, 24);
     }
 
     if (context.isTablet) {
@@ -177,55 +193,5 @@ class _LoginPageState extends ConsumerState<LoginPage> {
     }
 
     redirectToExternalUrl(uri);
-  }
-}
-
-class _FadeUp extends StatefulWidget {
-  const _FadeUp({required this.child, required this.delay});
-
-  final Widget child;
-  final int delay;
-
-  @override
-  State<_FadeUp> createState() => _FadeUpState();
-}
-
-class _FadeUpState extends State<_FadeUp> with SingleTickerProviderStateMixin {
-  late final AnimationController _controller;
-  late final Animation<double> _opacity;
-  late final Animation<Offset> _offset;
-
-  @override
-  void initState() {
-    super.initState();
-    _controller = AnimationController(
-      vsync: this,
-      duration: const Duration(milliseconds: 420),
-    );
-    _opacity = CurvedAnimation(parent: _controller, curve: Curves.easeOutCubic);
-    _offset = Tween<Offset>(
-      begin: const Offset(0, 0.04),
-      end: Offset.zero,
-    ).animate(CurvedAnimation(parent: _controller, curve: Curves.easeOutCubic));
-
-    Future<void>.delayed(Duration(milliseconds: widget.delay), () {
-      if (mounted) {
-        _controller.forward();
-      }
-    });
-  }
-
-  @override
-  void dispose() {
-    _controller.dispose();
-    super.dispose();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return FadeTransition(
-      opacity: _opacity,
-      child: SlideTransition(position: _offset, child: widget.child),
-    );
   }
 }

@@ -1,7 +1,8 @@
+import 'package:re_view_front/features/settings/presentation/providers/settings_providers.dart';
+import 'package:re_view_front/app/theme/app_motion.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:re_view_front/app/router/route_paths.dart';
 import 'package:re_view_front/app/theme/app_colors.dart';
 import 'package:re_view_front/app/theme/app_spacing.dart';
 import 'package:re_view_front/core/providers/core_providers.dart';
@@ -33,8 +34,8 @@ class _SearchProductCardState extends State<SearchProductCard> {
       onEnter: (_) => setState(() => _hovered = true),
       onExit: (_) => setState(() => _hovered = false),
       child: AnimatedContainer(
-        duration: const Duration(milliseconds: 160),
-        curve: Curves.easeOut,
+        duration: AppMotion.of(context, AppMotion.fast),
+        curve: AppMotion.enter,
         decoration: BoxDecoration(
           color: AppColors.surface,
           borderRadius: BorderRadius.circular(10),
@@ -59,7 +60,7 @@ class _SearchProductCardState extends State<SearchProductCard> {
           borderRadius: BorderRadius.circular(10),
           clipBehavior: Clip.antiAlias,
           child: InkWell(
-            onTap: () => _openProductDetail(context, product.id),
+            onTap: () => _openProductDetail(context, product),
             borderRadius: BorderRadius.circular(10),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -69,16 +70,19 @@ class _SearchProductCardState extends State<SearchProductCard> {
                     fit: StackFit.expand,
                     children: [
                       AnimatedScale(
-                        scale: _hovered ? 1.035 : 1,
-                        duration: const Duration(milliseconds: 180),
-                        curve: Curves.easeOut,
+                        scale:
+                            _hovered && !MediaQuery.disableAnimationsOf(context)
+                            ? 1.035
+                            : 1,
+                        duration: AppMotion.of(context, AppMotion.fast),
+                        curve: AppMotion.enter,
                         child: AppNetworkImage(url: product.imageUrl),
                       ),
                       Positioned(
                         top: AppSpacing.xs,
                         right: AppSpacing.xs,
                         child: RtiBadge(
-                          value: product.avgRti.round(),
+                          value: product.avgRti?.round(),
                           color: rtiColor,
                         ),
                       ),
@@ -86,7 +90,7 @@ class _SearchProductCardState extends State<SearchProductCard> {
                         child: _HoverTapLayer(
                           onEnter: () => setState(() => _hovered = true),
                           onExit: () => setState(() => _hovered = false),
-                          onTap: () => _openProductDetail(context, product.id),
+                          onTap: () => _openProductDetail(context, product),
                         ),
                       ),
                     ],
@@ -108,6 +112,13 @@ class _SearchProductCardState extends State<SearchProductCard> {
                           fontSize: 11,
                         ),
                       ),
+                      if (product.subCategory?.isNotEmpty ?? false)
+                        Text(
+                          product.subCategory!,
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                          style: Theme.of(context).textTheme.labelSmall,
+                        ),
                       const SizedBox(height: 2),
                       Row(
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -133,14 +144,15 @@ class _SearchProductCardState extends State<SearchProductCard> {
                       const SizedBox(height: AppSpacing.xs),
                       Row(
                         children: [
-                          const Icon(
-                            Icons.star,
-                            color: Color(0xFFF59E0B),
-                            size: 13,
-                          ),
+                          if (product.avgRating != null)
+                            const Icon(
+                              Icons.star,
+                              color: Color(0xFFF59E0B),
+                              size: 13,
+                            ),
                           const SizedBox(width: AppSpacing.xxs),
                           Text(
-                            product.avgRating.toStringAsFixed(1),
+                            product.avgRating?.toStringAsFixed(1) ?? '',
                             style: Theme.of(context).textTheme.labelSmall
                                 ?.copyWith(
                                   color: AppColors.textPrimary,
@@ -151,7 +163,9 @@ class _SearchProductCardState extends State<SearchProductCard> {
                           const SizedBox(width: AppSpacing.xxs),
                           Flexible(
                             child: Text(
-                              '(리뷰 ${formatSearchCount(product.reviewCount)})',
+                              product.reviewCount == null
+                                  ? ''
+                                  : '(리뷰 ${formatSearchCount(product.reviewCount)})',
                               overflow: TextOverflow.ellipsis,
                               style: Theme.of(context).textTheme.labelSmall
                                   ?.copyWith(
@@ -211,11 +225,8 @@ class _HoverTapLayer extends StatelessWidget {
   }
 }
 
-void _openProductDetail(BuildContext context, int productId) {
-  context.goNamed(
-    RouteNames.productDetail,
-    pathParameters: {'id': productId.toString()},
-  );
+void _openProductDetail(BuildContext context, SearchResultProduct product) {
+  context.go(product.detailPath, extra: product.routeContext);
 }
 
 class SearchProductListTile extends StatefulWidget {
@@ -242,9 +253,11 @@ class _SearchProductListTileState extends State<SearchProductListTile> {
         children: [
           Positioned.fill(
             child: AnimatedScale(
-              scale: _hovered ? 1.035 : 1,
-              duration: const Duration(milliseconds: 180),
-              curve: Curves.easeOut,
+              scale: _hovered && !MediaQuery.disableAnimationsOf(context)
+                  ? 1.035
+                  : 1,
+              duration: AppMotion.of(context, AppMotion.fast),
+              curve: AppMotion.enter,
               child: AppNetworkImage(
                 url: product.imageUrl,
                 borderRadius: AppRadius.medium,
@@ -254,13 +267,13 @@ class _SearchProductListTileState extends State<SearchProductListTile> {
           Positioned(
             top: AppSpacing.xs,
             right: AppSpacing.xs,
-            child: RtiBadge(value: product.avgRti.round(), color: rtiColor),
+            child: RtiBadge(value: product.avgRti?.round(), color: rtiColor),
           ),
           Positioned.fill(
             child: _HoverTapLayer(
               onEnter: () => setState(() => _hovered = true),
               onExit: () => setState(() => _hovered = false),
-              onTap: () => _openProductDetail(context, product.id),
+              onTap: () => _openProductDetail(context, product),
             ),
           ),
         ],
@@ -277,10 +290,10 @@ class _SearchProductListTileState extends State<SearchProductListTile> {
         color: Colors.transparent,
         child: InkWell(
           borderRadius: BorderRadius.circular(10),
-          onTap: () => _openProductDetail(context, product.id),
+          onTap: () => _openProductDetail(context, product),
           child: AnimatedContainer(
-            duration: const Duration(milliseconds: 160),
-            curve: Curves.easeOut,
+            duration: AppMotion.of(context, AppMotion.fast),
+            curve: AppMotion.enter,
             decoration: BoxDecoration(
               color: AppColors.surface,
               borderRadius: BorderRadius.circular(10),
@@ -353,6 +366,13 @@ class ListTileDetails extends StatelessWidget {
             fontSize: 11,
           ),
         ),
+        if (product.subCategory?.isNotEmpty ?? false)
+          Text(
+            product.subCategory!,
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+            style: Theme.of(context).textTheme.labelSmall,
+          ),
         const SizedBox(height: AppSpacing.xxs),
         Text(
           product.name,
@@ -374,10 +394,11 @@ class ListTileDetails extends StatelessWidget {
             Row(
               mainAxisSize: MainAxisSize.min,
               children: [
-                const Icon(Icons.star, color: Color(0xFFF59E0B), size: 15),
+                if (product.avgRating != null)
+                  const Icon(Icons.star, color: Color(0xFFF59E0B), size: 15),
                 const SizedBox(width: AppSpacing.xxs),
                 Text(
-                  product.avgRating.toStringAsFixed(1),
+                  product.avgRating?.toStringAsFixed(1) ?? '',
                   style: Theme.of(context).textTheme.labelSmall?.copyWith(
                     color: AppColors.textPrimary,
                     fontWeight: FontWeight.w900,
@@ -386,7 +407,9 @@ class ListTileDetails extends StatelessWidget {
                 ),
                 const SizedBox(width: AppSpacing.xxs),
                 Text(
-                  '(리뷰 ${formatSearchCount(product.reviewCount)})',
+                  product.reviewCount == null
+                      ? ''
+                      : '(리뷰 ${formatSearchCount(product.reviewCount)})',
                   style: Theme.of(context).textTheme.labelSmall?.copyWith(
                     color: AppColors.textSecondary,
                     fontWeight: FontWeight.w700,
@@ -463,14 +486,17 @@ class _ProductQuickActions extends StatelessWidget {
   }
 }
 
-class RtiBadge extends StatelessWidget {
+class RtiBadge extends ConsumerWidget {
   const RtiBadge({super.key, required this.value, required this.color});
 
-  final int value;
+  final int? value;
   final Color color;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final preferences = ref.watch(confirmedDisplayPreferencesProvider);
+    if (preferences?.rtiLabelStyle == 'NONE') return const SizedBox.shrink();
+    final large = preferences?.rtiLabelStyle == 'BADGE_LARGE';
     return DecoratedBox(
       decoration: BoxDecoration(
         color: AppColors.surface.withValues(alpha: 0.82),
@@ -485,14 +511,20 @@ class RtiBadge extends StatelessWidget {
         child: Row(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Icon(Icons.verified_user_outlined, color: color, size: 14),
+            Icon(
+              value == null
+                  ? Icons.hourglass_empty
+                  : Icons.verified_user_outlined,
+              color: value == null ? AppColors.textTertiary : color,
+              size: 14,
+            ),
             const SizedBox(width: AppSpacing.xxs),
             Text(
-              'RTI $value',
+              value == null ? '분석 전' : 'RTI $value',
               style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                color: color,
+                color: value == null ? AppColors.textTertiary : color,
                 fontWeight: FontWeight.w900,
-                fontSize: 12,
+                fontSize: large ? 15 : 12,
               ),
             ),
           ],
@@ -621,15 +653,14 @@ class _WishlistSquareButton extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final asyncStatus = ref.watch(wishlistButtonProvider(productId));
     final liked = asyncStatus.value ?? false;
-    final isLoggedIn = ref.watch(isLoggedInProvider);
 
     return SizedBox.square(
       dimension: 36,
       child: OutlinedButton(
         onPressed: asyncStatus.isLoading
             ? null
-            : () {
-                if (!isLoggedIn) {
+            : () async {
+                if (!ref.read(authSessionProvider).isLoggedIn) {
                   ScaffoldMessenger.of(context).showSnackBar(
                     const SnackBar(
                       content: Text('로그인이 필요합니다.'),
@@ -638,11 +669,21 @@ class _WishlistSquareButton extends ConsumerWidget {
                   );
                   return;
                 }
-                ref.read(wishlistButtonProvider(productId).notifier).toggle();
+                final session = ref.read(authSessionProvider);
+                final error = await ref
+                    .read(wishlistButtonProvider(productId).notifier)
+                    .toggle();
+                if (context.mounted &&
+                    ref.read(authSessionProvider) == session &&
+                    error != null) {
+                  ScaffoldMessenger.of(
+                    context,
+                  ).showSnackBar(SnackBar(content: Text(error)));
+                }
               },
         style: _wishlistButtonStyle(liked),
         child: AnimatedSwitcher(
-          duration: const Duration(milliseconds: 180),
+          duration: AppMotion.of(context, AppMotion.fast),
           transitionBuilder: (child, animation) =>
               ScaleTransition(scale: animation, child: child),
           child: Icon(
@@ -714,12 +755,14 @@ class _CartSquareButtonState extends ConsumerState<_CartSquareButton> {
         ref.read(cartButtonProvider(widget.productId)).value ?? false;
     if (alreadyInCart) return;
 
+    final session = ref.read(authSessionProvider);
     setState(() => _loading = true);
 
     await ref.read(cartButtonProvider(widget.productId).notifier).add();
 
     if (!mounted) return;
     setState(() => _loading = false);
+    if (ref.read(authSessionProvider) != session) return;
 
     final inCart =
         ref.read(cartButtonProvider(widget.productId)).value ?? false;
@@ -744,12 +787,15 @@ class _CartSquareButtonState extends ConsumerState<_CartSquareButton> {
             : _addToCart,
         style: _cartButtonStyle(inCart),
         child: _loading || asyncStatus.isLoading
-            ? const SizedBox.square(
+            ? SizedBox.square(
                 dimension: 14,
-                child: CircularProgressIndicator(strokeWidth: 2),
+                child: TickerMode(
+                  enabled: !MediaQuery.disableAnimationsOf(context),
+                  child: const CircularProgressIndicator(strokeWidth: 2),
+                ),
               )
             : AnimatedSwitcher(
-                duration: const Duration(milliseconds: 180),
+                duration: AppMotion.of(context, AppMotion.fast),
                 transitionBuilder: (child, animation) =>
                     ScaleTransition(scale: animation, child: child),
                 child: Icon(

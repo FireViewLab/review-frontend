@@ -35,6 +35,7 @@ class ShimmerWrapper extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Shimmer.fromColors(
+      enabled: !MediaQuery.disableAnimationsOf(context),
       baseColor: _baseColor,
       highlightColor: _highlightColor,
       period: const Duration(milliseconds: 1400),

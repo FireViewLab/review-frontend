@@ -1,3 +1,8 @@
+import 'package:re_view_front/shared/widgets/product_detail_hero.dart';
+import 'package:re_view_front/features/product_detail/presentation/widgets/analysis_report/analysis_report_content.dart';
+import 'package:re_view_front/features/product_detail/domain/entities/product_analysis_result.dart';
+import 'package:re_view_front/shared/widgets/product_report_card.dart';
+import 'package:re_view_front/features/external_product/domain/entities/external_product_ref.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -19,13 +24,10 @@ import 'package:re_view_front/features/product_detail/presentation/widgets/revie
 import 'package:re_view_front/features/product_detail/presentation/widgets/rti_summary_card.dart';
 import 'package:re_view_front/features/product_detail/presentation/widgets/similar_products_section.dart';
 import 'package:re_view_front/features/product_detail/presentation/widgets/trust_signal_card.dart';
-import 'package:re_view_front/core/providers/core_providers.dart';
-import 'package:re_view_front/features/home/presentation/data/home_content.dart';
-import 'package:re_view_front/features/home/presentation/widgets/home/home_header.dart';
 import 'package:re_view_front/shared/widgets/app_content_view.dart';
 import 'package:re_view_front/shared/extensions/context_extensions.dart';
 
-enum _ProductDetailTab { review, priceComparison, spec, qa }
+enum _ProductDetailTab { review, priceComparison, info }
 
 class ProductDetailPage extends ConsumerStatefulWidget {
   const ProductDetailPage({super.key, required this.productId});
@@ -42,46 +44,30 @@ class _ProductDetailPageState extends ConsumerState<ProductDetailPage> {
   @override
   Widget build(BuildContext context) {
     final state = ref.watch(productDetailViewModelProvider(widget.productId));
-    final isLoggedIn = ref.watch(isLoggedInProvider);
-    final nickname = ref.watch(userNicknameProvider).value;
+    if (state is ProductDetailSuccess && state.detail.externalRef != null) {
+      final path = state.detail.detailPath;
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (mounted) {
+          context.go(
+            path,
+            extra: ProductRouteContext(
+              chatProductId: state.detail.chatProductId,
+              summary: state.detail.summary,
+              viewAlreadyRecorded: state.viewRecorded,
+            ),
+          );
+        }
+      });
+      return const Center(child: CircularProgressIndicator());
+    }
 
     return Scaffold(
       backgroundColor: AppColors.surface,
       body: CustomScrollView(
         slivers: [
           SliverToBoxAdapter(
-            child: HomeHeader(
-              navItems: homeNavItems,
-              selectedNavItem: '',
-              showCategoryNav: false,
-              isLoggedIn: isLoggedIn,
-              nickname: nickname,
-              onLoginPressed: () => context.go(RoutePaths.login),
-              onWishPressed: () => context.go(RoutePaths.wishlist),
-              onCartPressed: () => context.go(RoutePaths.cart),
-              onMyPagePressed: () => context.go(RoutePaths.myPage),
-              onProfileWishPressed: () => context.go(RoutePaths.wishlist),
-              onProfileOrderPressed: () => context.go(RoutePaths.dashboard),
-              onLogoutPressed: () =>
-                  ref.read(authTokenStoreProvider.notifier).clear(),
-              onNavItemPressed: (item) => context.goNamed(
-                RouteNames.search,
-                queryParameters: {'q': item},
-              ),
-              onSearchSubmitted: (q) {
-                if (q.trim().isNotEmpty) {
-                  context.goNamed(
-                    RouteNames.search,
-                    queryParameters: {'q': q.trim()},
-                  );
-                }
-              },
-              onLogoPressed: () => context.goNamed(RouteNames.home),
-            ),
-          ),
-          SliverToBoxAdapter(
             child: AppContentView(
-              maxWidth: 1680,
+              maxWidth: 1200,
               padding: EdgeInsets.fromLTRB(
                 context.isMobile ? AppSpacing.md : AppSpacing.xxl,
                 AppSpacing.md,
@@ -109,6 +95,7 @@ class _ProductDetailPageState extends ConsumerState<ProductDetailPage> {
                   :final safeCount,
                   :final warnCount,
                   :final dangerCount,
+                  :final trend,
                 ) =>
                   _DetailContent(
                     detail: detail,
@@ -120,6 +107,7 @@ class _ProductDetailPageState extends ConsumerState<ProductDetailPage> {
                     safeCount: safeCount,
                     warnCount: warnCount,
                     dangerCount: dangerCount,
+                    trend: trend,
                     onTabChanged: (tab) => setState(() => _selectedTab = tab),
                     onFeedback: (reviewId, feedbackType) => ref
                         .read(
@@ -150,9 +138,11 @@ class _DetailContent extends StatelessWidget {
     required this.warnCount,
     required this.dangerCount,
     required this.onTabChanged,
+    required this.trend,
     this.onFeedback,
   });
 
+  final List<AnalysisTrendPoint> trend;
   final ProductDetail detail;
   final List<ProductReview> reviews;
   final ReviewInsight reviewInsight;
@@ -174,29 +164,83 @@ class _DetailContent extends StatelessWidget {
       children: [
         _Breadcrumb(breadcrumbs: detail.breadcrumbs),
         const SizedBox(height: AppSpacing.md),
-        isMobile
-            ? _MobileHeroSection(detail: detail)
-            : _DesktopHeroSection(detail: detail),
-        if (!isMobile && detail.specChips.isNotEmpty) ...[
-          const SizedBox(height: AppSpacing.md),
-          ProductSpecChipsStrip(chips: detail.specChips),
-        ],
+        ProductDetailHero(
+          gallery: ProductImageGallery(
+            productId: detail.id,
+            imageUrls: detail.imageUrls,
+          ),
+          information: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              ProductInfoSection(detail: detail),
+              if (detail.specChips.isNotEmpty) ...[
+                const SizedBox(height: AppSpacing.md),
+                ProductSpecChips(chips: detail.specChips),
+              ],
+              const SizedBox(height: AppSpacing.lg),
+              ProductPurchaseArea(
+                child: PriceComparisonTable(
+                  comparisons: detail.priceComparisons,
+                  totalSellerCount: detail.totalSellerCount,
+                ),
+              ),
+            ],
+          ),
+        ),
         const SizedBox(height: AppSpacing.xl),
         isMobile
             ? _MobileAnalysisSection(
                 detail: detail,
+                loadedAnalysisCount: reviews
+                    .where(
+                      (r) =>
+                          r.rtiScore != null ||
+                          r.rtiLabel != null ||
+                          r.reasons.isNotEmpty,
+                    )
+                    .length,
                 isAnalyzing: isAnalyzing,
-                onDetailPressed: () => context.goNamed(
-                  RouteNames.analysisReport,
-                  pathParameters: {'id': detail.id.toString()},
+                onDetailPressed: () => showProductReport(
+                  context,
+                  AnalysisReportContent(
+                    productId: detail.id,
+                    detail: detail,
+                    reviews: reviews,
+                    isAnalyzing: isAnalyzing,
+                    safeCount: safeCount,
+                    warnCount: warnCount,
+                    dangerCount: dangerCount,
+                    trend: trend,
+                    onBackToProduct: () =>
+                        Navigator.of(context, rootNavigator: true).pop(),
+                  ),
                 ),
               )
             : _DesktopAnalysisSection(
                 detail: detail,
+                loadedAnalysisCount: reviews
+                    .where(
+                      (r) =>
+                          r.rtiScore != null ||
+                          r.rtiLabel != null ||
+                          r.reasons.isNotEmpty,
+                    )
+                    .length,
                 isAnalyzing: isAnalyzing,
-                onDetailPressed: () => context.goNamed(
-                  RouteNames.analysisReport,
-                  pathParameters: {'id': detail.id.toString()},
+                onDetailPressed: () => showProductReport(
+                  context,
+                  AnalysisReportContent(
+                    productId: detail.id,
+                    detail: detail,
+                    reviews: reviews,
+                    isAnalyzing: isAnalyzing,
+                    safeCount: safeCount,
+                    warnCount: warnCount,
+                    dangerCount: dangerCount,
+                    trend: trend,
+                    onBackToProduct: () =>
+                        Navigator.of(context, rootNavigator: true).pop(),
+                  ),
                 ),
               ),
         const SizedBox(height: AppSpacing.xl),
@@ -215,6 +259,8 @@ class _DetailContent extends StatelessWidget {
                   warnCount: warnCount,
                   dangerCount: dangerCount,
                   onFeedback: onFeedback,
+                  productId: detail.id,
+                  productName: detail.name,
                 )
               : _DesktopReviewSection(
                   reviews: reviews,
@@ -223,6 +269,8 @@ class _DetailContent extends StatelessWidget {
                   warnCount: warnCount,
                   dangerCount: dangerCount,
                   onFeedback: onFeedback,
+                  productId: detail.id,
+                  productName: detail.name,
                 )
         else if (selectedTab == _ProductDetailTab.priceComparison)
           PriceComparisonTable(
@@ -230,7 +278,7 @@ class _DetailContent extends StatelessWidget {
             totalSellerCount: detail.totalSellerCount,
           )
         else
-          const _ComingSoonPlaceholder(),
+          _ProductInfoTable(detail: detail),
         if (similarProducts.isNotEmpty) ...[
           const SizedBox(height: AppSpacing.xxl),
           const Divider(color: AppColors.border),
@@ -297,77 +345,15 @@ class _Breadcrumb extends StatelessWidget {
   }
 }
 
-class _DesktopHeroSection extends StatelessWidget {
-  const _DesktopHeroSection({required this.detail});
-
-  final ProductDetail detail;
-
-  @override
-  Widget build(BuildContext context) {
-    return IntrinsicHeight(
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Expanded(
-            flex: 5,
-            child: ProductImageGallery(
-              productId: detail.id,
-              imageUrls: detail.imageUrls,
-            ),
-          ),
-          const SizedBox(width: AppSpacing.xl),
-          Expanded(
-            flex: 5,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                ProductInfoSection(detail: detail),
-                const SizedBox(height: AppSpacing.lg),
-                PriceComparisonTable(
-                  comparisons: detail.priceComparisons,
-                  totalSellerCount: detail.totalSellerCount,
-                ),
-              ],
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-class _MobileHeroSection extends StatelessWidget {
-  const _MobileHeroSection({required this.detail});
-
-  final ProductDetail detail;
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        ProductImageGallery(productId: detail.id, imageUrls: detail.imageUrls),
-        const SizedBox(height: AppSpacing.md),
-        ProductInfoSection(detail: detail),
-        const SizedBox(height: AppSpacing.md),
-        ProductSpecChips(chips: detail.specChips),
-        const SizedBox(height: AppSpacing.md),
-        PriceComparisonTable(
-          comparisons: detail.priceComparisons,
-          totalSellerCount: detail.totalSellerCount,
-        ),
-      ],
-    );
-  }
-}
-
 class _DesktopAnalysisSection extends StatelessWidget {
   const _DesktopAnalysisSection({
     required this.detail,
+    required this.loadedAnalysisCount,
     required this.isAnalyzing,
     required this.onDetailPressed,
   });
 
+  final int loadedAnalysisCount;
   final ProductDetail detail;
   final bool isAnalyzing;
   final VoidCallback onDetailPressed;
@@ -384,16 +370,20 @@ class _DesktopAnalysisSection extends StatelessWidget {
             Expanded(
               child: RtiSummaryCard(
                 rtiSummary: detail.rtiSummary,
+                loadedAnalysisCount: loadedAnalysisCount,
+                isAnalyzing: isAnalyzing,
                 onDetailPressed: onDetailPressed,
               ),
             ),
             const SizedBox(width: AppSpacing.md),
             SizedBox(
               width: 280,
-              child: TrustSignalCard(
-                signals: detail.trustSignals,
-                onDetailPressed: onDetailPressed,
-              ),
+              child: detail.rtiSummary == null
+                  ? const SizedBox.shrink()
+                  : TrustSignalCard(
+                      signals: detail.trustSignals,
+                      onDetailPressed: onDetailPressed,
+                    ),
             ),
           ],
         ),
@@ -405,10 +395,12 @@ class _DesktopAnalysisSection extends StatelessWidget {
 class _MobileAnalysisSection extends StatelessWidget {
   const _MobileAnalysisSection({
     required this.detail,
+    required this.loadedAnalysisCount,
     required this.isAnalyzing,
     required this.onDetailPressed,
   });
 
+  final int loadedAnalysisCount;
   final ProductDetail detail;
   final bool isAnalyzing;
   final VoidCallback onDetailPressed;
@@ -423,13 +415,16 @@ class _MobileAnalysisSection extends StatelessWidget {
         ],
         RtiSummaryCard(
           rtiSummary: detail.rtiSummary,
+          loadedAnalysisCount: loadedAnalysisCount,
+          isAnalyzing: isAnalyzing,
           onDetailPressed: onDetailPressed,
         ),
         const SizedBox(height: AppSpacing.md),
-        TrustSignalCard(
-          signals: detail.trustSignals,
-          onDetailPressed: onDetailPressed,
-        ),
+        if (detail.rtiSummary != null)
+          TrustSignalCard(
+            signals: detail.trustSignals,
+            onDetailPressed: onDetailPressed,
+          ),
       ],
     );
   }
@@ -451,8 +446,19 @@ class _AnalyzingBannerState extends State<_AnalyzingBanner>
     _controller = AnimationController(
       vsync: this,
       duration: const Duration(milliseconds: 1400),
-    )..repeat(reverse: true);
+    );
     _pulse = CurvedAnimation(parent: _controller, curve: Curves.easeInOut);
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    if (MediaQuery.disableAnimationsOf(context)) {
+      _controller.stop();
+      _controller.value = 0.5;
+    } else if (!_controller.isAnimating) {
+      _controller.repeat(reverse: true);
+    }
   }
 
   @override
@@ -488,17 +494,21 @@ class _AnalyzingBannerState extends State<_AnalyzingBanner>
                 width: 40,
                 height: 40,
                 decoration: BoxDecoration(
-                  color: AppColors.primary
-                      .withValues(alpha: 0.1 + _pulse.value * 0.08),
+                  color: AppColors.primary.withValues(
+                    alpha: 0.1 + _pulse.value * 0.08,
+                  ),
                   shape: BoxShape.circle,
                 ),
-                child: const Center(
-                  child: SizedBox(
-                    width: 20,
-                    height: 20,
-                    child: CircularProgressIndicator(
-                      strokeWidth: 2.5,
-                      color: AppColors.primary,
+                child: TickerMode(
+                  enabled: !MediaQuery.disableAnimationsOf(context),
+                  child: const Center(
+                    child: SizedBox(
+                      width: 20,
+                      height: 20,
+                      child: CircularProgressIndicator(
+                        strokeWidth: 2.5,
+                        color: AppColors.primary,
+                      ),
                     ),
                   ),
                 ),
@@ -548,17 +558,22 @@ class _ProductTabBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final tabs = [
-      (_ProductDetailTab.review, '리뷰 ${_formatTabCount(detail.reviewCount)}'),
+      (
+        _ProductDetailTab.review,
+        detail.reviewCount == null
+            ? '리뷰'
+            : '리뷰 ${_formatTabCount(detail.reviewCount!)}',
+      ),
       (_ProductDetailTab.priceComparison, '가격비교 ${detail.totalSellerCount}'),
-      (_ProductDetailTab.spec, '스펙'),
-      (_ProductDetailTab.qa, 'Q&A ${detail.qaCount}'),
+      (_ProductDetailTab.info, '상품 정보'),
     ];
 
     return DecoratedBox(
       decoration: const BoxDecoration(
         border: Border(bottom: BorderSide(color: AppColors.border)),
       ),
-      child: Row(
+      child: Wrap(
+        spacing: AppSpacing.sm,
         children: tabs.map((entry) {
           final (tab, label) = entry;
           final isSelected = tab == selectedTab;
@@ -593,27 +608,33 @@ class _TabItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: onTap,
-      child: AnimatedContainer(
-        duration: const Duration(milliseconds: 150),
-        padding: const EdgeInsets.symmetric(
-          horizontal: AppSpacing.md,
-          vertical: AppSpacing.sm,
-        ),
-        decoration: BoxDecoration(
-          border: Border(
-            bottom: BorderSide(
-              color: isSelected ? AppColors.primary : Colors.transparent,
-              width: 2,
+    return Semantics(
+      selected: isSelected,
+      button: true,
+      child: InkWell(
+        onTap: onTap,
+        child: AnimatedContainer(
+          duration: MediaQuery.disableAnimationsOf(context)
+              ? Duration.zero
+              : const Duration(milliseconds: 150),
+          padding: const EdgeInsets.symmetric(
+            horizontal: AppSpacing.md,
+            vertical: AppSpacing.sm,
+          ),
+          decoration: BoxDecoration(
+            border: Border(
+              bottom: BorderSide(
+                color: isSelected ? AppColors.primary : Colors.transparent,
+                width: 2,
+              ),
             ),
           ),
-        ),
-        child: Text(
-          label,
-          style: Theme.of(context).textTheme.labelMedium?.copyWith(
-            color: isSelected ? AppColors.primary : AppColors.textSecondary,
-            fontWeight: isSelected ? FontWeight.w900 : FontWeight.w600,
+          child: Text(
+            label,
+            style: Theme.of(context).textTheme.labelMedium?.copyWith(
+              color: isSelected ? AppColors.primary : AppColors.textSecondary,
+              fontWeight: isSelected ? FontWeight.w900 : FontWeight.w600,
+            ),
           ),
         ),
       ),
@@ -629,6 +650,8 @@ class _DesktopReviewSection extends StatelessWidget {
     required this.warnCount,
     required this.dangerCount,
     this.onFeedback,
+    this.productId,
+    this.productName = '',
   });
 
   final List<ProductReview> reviews;
@@ -637,6 +660,8 @@ class _DesktopReviewSection extends StatelessWidget {
   final int warnCount;
   final int dangerCount;
   final Future<bool> Function(int reviewId, String feedbackType)? onFeedback;
+  final int? productId;
+  final String productName;
 
   @override
   Widget build(BuildContext context) {
@@ -651,6 +676,8 @@ class _DesktopReviewSection extends StatelessWidget {
             warnCount: warnCount,
             dangerCount: dangerCount,
             onFeedback: onFeedback,
+            productId: productId,
+            productName: productName,
           ),
         ),
         const SizedBox(width: AppSpacing.lg),
@@ -671,6 +698,8 @@ class _MobileReviewSection extends StatelessWidget {
     required this.warnCount,
     required this.dangerCount,
     this.onFeedback,
+    this.productId,
+    this.productName = '',
   });
 
   final List<ProductReview> reviews;
@@ -679,6 +708,8 @@ class _MobileReviewSection extends StatelessWidget {
   final int warnCount;
   final int dangerCount;
   final Future<bool> Function(int reviewId, String feedbackType)? onFeedback;
+  final int? productId;
+  final String productName;
 
   @override
   Widget build(BuildContext context) {
@@ -692,28 +723,110 @@ class _MobileReviewSection extends StatelessWidget {
           warnCount: warnCount,
           dangerCount: dangerCount,
           onFeedback: onFeedback,
+          productId: productId,
+          productName: productName,
         ),
       ],
     );
   }
 }
 
-class _ComingSoonPlaceholder extends StatelessWidget {
-  const _ComingSoonPlaceholder();
+/// 서버가 내려주는 상품 기본 정보. 값이 없는 항목은 표시하지 않는다.
+class _ProductInfoTable extends StatelessWidget {
+  const _ProductInfoTable({required this.detail});
+
+  final ProductDetail detail;
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      height: 200,
-      child: Center(
-        child: Text(
-          '준비 중입니다.',
-          style: Theme.of(
-            context,
-          ).textTheme.bodyMedium?.copyWith(color: AppColors.textSecondary),
+    final category = detail.breadcrumbs.isNotEmpty
+        ? detail.breadcrumbs.join(' > ')
+        : detail.categoryDisplayName;
+    final rows = <(String, String)>[
+      ('상품명', detail.name),
+      if (detail.brand.isNotEmpty) ('브랜드', detail.brand),
+      if (category.isNotEmpty) ('카테고리', category),
+      if (detail.price > 0) ('최저가', '${_formatWon(detail.price)}원'),
+      if (detail.totalSellerCount > 0) ('판매처', '${detail.totalSellerCount}곳'),
+      if (detail.avgRating != null)
+        (
+          '평균 별점',
+          '${detail.avgRating!.toStringAsFixed(1)} '
+              '(리뷰 ${_formatWon(detail.reviewCount ?? 0)}개)',
         ),
+      if (detail.avgRti != null)
+        (
+          'RTI',
+          (detail.rtiGrade?.isEmpty ?? true)
+              ? detail.avgRti!.toStringAsFixed(1)
+              : '${detail.avgRti!.toStringAsFixed(1)} · '
+                    '${_gradeLabel(detail.rtiGrade!)}',
+        ),
+      if (detail.deliveryInfo?.isNotEmpty ?? false)
+        ('배송', detail.deliveryInfo!),
+    ];
+    final textTheme = Theme.of(context).textTheme;
+
+    return Container(
+      decoration: BoxDecoration(
+        color: AppColors.surface,
+        borderRadius: AppRadius.medium,
+        border: Border.all(color: AppColors.border),
+      ),
+      child: Column(
+        children: [
+          for (final (index, (label, value)) in rows.indexed) ...[
+            if (index > 0) const Divider(height: 1, color: AppColors.border),
+            Padding(
+              padding: const EdgeInsets.symmetric(
+                horizontal: AppSpacing.md,
+                vertical: AppSpacing.sm,
+              ),
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  SizedBox(
+                    width: 96,
+                    child: Text(
+                      label,
+                      style: textTheme.bodyMedium?.copyWith(
+                        color: AppColors.textSecondary,
+                      ),
+                    ),
+                  ),
+                  Expanded(
+                    child: Text(
+                      value,
+                      style: textTheme.bodyMedium?.copyWith(
+                        color: AppColors.textPrimary,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ],
       ),
     );
+  }
+
+  static String _gradeLabel(String grade) => switch (grade) {
+    'SAFE' => '안전',
+    'SUSPICIOUS' => '의심',
+    'DANGER' => '위험',
+    _ => grade,
+  };
+
+  static String _formatWon(int value) {
+    final digits = value.toString();
+    final buffer = StringBuffer();
+    for (var i = 0; i < digits.length; i++) {
+      if (i > 0 && (digits.length - i) % 3 == 0) buffer.write(',');
+      buffer.write(digits[i]);
+    }
+    return buffer.toString();
   }
 }
 

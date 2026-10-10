@@ -20,7 +20,10 @@ class AppLoadingView extends StatelessWidget {
       children: [
         SizedBox.square(
           dimension: indicatorSize,
-          child: const CircularProgressIndicator(strokeWidth: 3),
+          child: TickerMode(
+            enabled: !MediaQuery.disableAnimationsOf(context),
+            child: const CircularProgressIndicator(strokeWidth: 3),
+          ),
         ),
         if (message != null) ...[
           const SizedBox(height: AppSpacing.md),

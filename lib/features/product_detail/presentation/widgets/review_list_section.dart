@@ -1,14 +1,19 @@
+import 'package:re_view_front/shared/presentation/review_evidence_formatter.dart';
+import 'package:re_view_front/shared/widgets/review_photo_view.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:re_view_front/features/settings/domain/entities/settings_data.dart';
+import 'package:re_view_front/features/settings/presentation/providers/settings_providers.dart';
 import 'package:flutter/material.dart';
 import 'package:re_view_front/app/theme/app_colors.dart';
 import 'package:re_view_front/app/theme/app_spacing.dart';
 import 'package:re_view_front/features/product_detail/domain/entities/product_review.dart';
 import 'package:re_view_front/features/product_detail/presentation/widgets/review_rti_analysis_dialog.dart';
 import 'package:re_view_front/features/search/presentation/utils/search_formatters.dart';
-import 'package:re_view_front/shared/widgets/app_network_image.dart';
+import 'package:re_view_front/shared/widgets/image_preview_dialog.dart';
 
-enum ReviewSortOption { newest, verified, withPhoto, rtiHigh }
+enum ReviewSortOption { newest, verified, withPhoto, rtiHigh, helpful }
 
-class ReviewListSection extends StatefulWidget {
+class ReviewListSection extends ConsumerStatefulWidget {
   const ReviewListSection({
     super.key,
     required this.reviews,
@@ -16,6 +21,8 @@ class ReviewListSection extends StatefulWidget {
     this.warnCount = 0,
     this.dangerCount = 0,
     this.onFeedback,
+    this.productId,
+    this.productName = '',
   });
 
   final List<ProductReview> reviews;
@@ -23,44 +30,152 @@ class ReviewListSection extends StatefulWidget {
   final int warnCount;
   final int dangerCount;
   final Future<bool> Function(int reviewId, String feedbackType)? onFeedback;
+  final int? productId;
+  final String productName;
 
   @override
-  State<ReviewListSection> createState() => _ReviewListSectionState();
+  ConsumerState<ReviewListSection> createState() => _ReviewListSectionState();
 }
 
-class _ReviewListSectionState extends State<ReviewListSection> {
-  ReviewSortOption _sortOption = ReviewSortOption.newest;
+class _ReviewListSectionState extends ConsumerState<ReviewListSection> {
+  /// 처음에 그리는 리뷰 수. 리뷰가 많아도 첫 화면을 빨리 그리기 위해 나눠서 보여 준다.
+  static const _pageSize = 10;
+
+  ReviewSortOption? _selectedSort;
+  bool _showHidden = false;
+  SettingsData? _preferences;
+  List<ProductReview>? _cachedSource;
+  Object? _cachedOptions;
+  List<ProductReview> _cachedReviews = const [];
+  int _hiddenCount = 0, _photoReviewCount = 0;
+  ReviewSortOption get _sortOption =>
+      _selectedSort ??
+      (_preferences?.reviewSortOrder == 'HELPFUL'
+          ? ReviewSortOption.helpful
+          : ReviewSortOption.newest);
+  bool _isHidden(ProductReview review) {
+    final settings = _preferences;
+    return !_showHidden &&
+        settings?.hideRiskyReviews == true &&
+        review.rtiScore != null &&
+        review.rtiScore! < settings!.rtiThreshold;
+  }
+
+  // The last list filter stays independent of the gallery view.
   bool _photoOnly = false;
+  bool _photoView = false;
+  int _visibleCount = _pageSize;
 
   List<ProductReview> get _filteredSortedReviews {
-    var list = List<ProductReview>.from(widget.reviews);
-
-    if (_photoOnly) {
-      list = list.where((r) => r.imageUrls.isNotEmpty).toList();
+    final settings = _preferences;
+    final options = (
+      _selectedSort,
+      _showHidden,
+      _photoOnly || _photoView,
+      settings?.hideRiskyReviews,
+      settings?.rtiThreshold,
+      settings?.prioritizeVerifiedReviews,
+      settings?.reviewSortOrder,
+    );
+    if (identical(_cachedSource, widget.reviews) && _cachedOptions == options) {
+      return _cachedReviews;
+    }
+    _cachedSource = widget.reviews;
+    _cachedOptions = options;
+    final hasPhotos = {
+      for (final r in widget.reviews)
+        r: validReviewImages(r.imageUrls).isNotEmpty,
+    };
+    _photoReviewCount = hasPhotos.values.where((v) => v).length;
+    _hiddenCount = widget.reviews.where(_isHidden).length;
+    var list = widget.reviews.where((r) => !_isHidden(r)).toList();
+    final dates = {
+      for (final r in list)
+        r: DateTime.tryParse(r.createdAt.replaceAll('.', '-')),
+    };
+    list.sort((a, b) {
+      final first = dates[a];
+      final second = dates[b];
+      if (first == null) return second == null ? 0 : 1;
+      if (second == null) return -1;
+      return second.compareTo(first);
+    });
+    if (_selectedSort == null &&
+        (_preferences?.prioritizeVerifiedReviews == true ||
+            _preferences?.reviewSortOrder == 'VERIFIED_RECENT')) {
+      list = [
+        for (final r in list)
+          if (r.isVerifiedPurchase) r,
+        for (final r in list)
+          if (!r.isVerifiedPurchase) r,
+      ];
     }
 
-    return switch (_sortOption) {
+    if (_photoOnly || _photoView) {
+      list = list.where((r) => hasPhotos[r] == true).toList();
+    }
+
+    return _cachedReviews = switch (_sortOption) {
       ReviewSortOption.newest => list,
       ReviewSortOption.verified =>
         list.where((r) => r.isVerifiedPurchase).toList(),
       ReviewSortOption.withPhoto =>
-        list.where((r) => r.imageUrls.isNotEmpty).toList(),
+        list.where((r) => hasPhotos[r] == true).toList(),
+      ReviewSortOption.helpful =>
+        (list..sort((a, b) {
+          if (a.helpfulCount == null) return b.helpfulCount == null ? 0 : 1;
+          if (b.helpfulCount == null) return -1;
+          return b.helpfulCount!.compareTo(a.helpfulCount!);
+        })),
       ReviewSortOption.rtiHigh =>
-        (list..sort((a, b) => b.rtiScore.compareTo(a.rtiScore))),
+        (list..sort((a, b) {
+          if (a.rtiScore == null) return b.rtiScore == null ? 0 : 1;
+          if (b.rtiScore == null) return -1;
+          return b.rtiScore!.compareTo(a.rtiScore!);
+        })),
     };
   }
 
   @override
   Widget build(BuildContext context) {
+    _preferences = ref.watch(confirmedDisplayPreferencesProvider);
+    final preferences = _preferences;
     final reviews = _filteredSortedReviews;
+    final hiddenCount = _hiddenCount;
+    final preferencesState = ref.watch(savedDisplayPreferencesProvider);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        _FilterRow(
-          sortOption: _sortOption,
+        if (preferencesState.hasError)
+          TextButton.icon(
+            onPressed: () => ref.invalidate(savedDisplayPreferencesProvider),
+            icon: const Icon(Icons.refresh),
+            label: const Text('표시 설정을 불러오지 못했습니다. 재시도'),
+          ),
+        if (hiddenCount > 0)
+          TextButton(
+            onPressed: () => setState(() {
+              _showHidden = true;
+            }),
+            child: Text('설정 기준 이하 리뷰 $hiddenCount개 표시'),
+          ),
+        if (_sortOption == ReviewSortOption.helpful &&
+            !widget.reviews.any((r) => r.helpfulCount != null))
+          const Text('도움 횟수가 제공되지 않아 기존 리뷰 순서로 표시합니다.'),
+        ReviewPhotoToolbar(
           photoOnly: _photoOnly,
-          onSortChanged: (v) => setState(() => _sortOption = v),
+          photoView: _photoView,
+          loadedCount: widget.reviews.length,
+          photoReviewCount: _photoReviewCount,
           onPhotoOnlyChanged: (v) => setState(() => _photoOnly = v),
+          onPhotoViewChanged: (v) => setState(() => _photoView = v),
+          sortControls: _FilterRow(
+            sortOption: _sortOption,
+            onSortChanged: (v) => setState(() {
+              _selectedSort = v;
+              _visibleCount = _pageSize;
+            }),
+          ),
         ),
         const SizedBox(height: AppSpacing.md),
         if (widget.reviews.isEmpty)
@@ -92,39 +207,57 @@ class _ReviewListSectionState extends State<ReviewListSection> {
             child: Center(
               child: Text(
                 '해당 조건에 맞는 리뷰가 없습니다.',
-                style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                  color: AppColors.textSecondary,
-                ),
+                style: Theme.of(
+                  context,
+                ).textTheme.bodySmall?.copyWith(color: AppColors.textSecondary),
               ),
             ),
           )
         else ...[
-          ...reviews.map(
-            (review) => Padding(
-              padding: const EdgeInsets.only(bottom: AppSpacing.md),
-              child: ReviewCard(
-                review: review,
-                safeCount: widget.safeCount,
-                warnCount: widget.warnCount,
-                dangerCount: widget.dangerCount,
-                onFeedback: widget.onFeedback != null
-                    ? (feedbackType) =>
-                          widget.onFeedback!(review.id, feedbackType)
-                    : null,
+          if (_photoView)
+            ReviewPhotoGrid(
+              entries: [
+                for (final review in reviews.take(_visibleCount))
+                  ReviewPhotoEntry(
+                    reviewKey: review.id.toString(),
+                    label: review.authorName,
+                    images: review.imageUrls,
+                  ),
+              ],
+            )
+          else
+            ...reviews
+                .take(_visibleCount)
+                .map(
+                  (review) => Padding(
+                    padding: const EdgeInsets.only(bottom: AppSpacing.md),
+                    child: ReviewCard(
+                      review: review,
+                      preferences: preferences,
+                      safeCount: widget.safeCount,
+                      warnCount: widget.warnCount,
+                      dangerCount: widget.dangerCount,
+                      onFeedback: widget.onFeedback != null
+                          ? (feedbackType) =>
+                                widget.onFeedback!(review.id, feedbackType)
+                          : null,
+                      productId: widget.productId,
+                      productName: widget.productName,
+                    ),
+                  ),
+                ),
+          if (reviews.length > _visibleCount)
+            Center(
+              child: OutlinedButton(
+                onPressed: () => setState(() => _visibleCount += _pageSize),
+                style: OutlinedButton.styleFrom(
+                  side: const BorderSide(color: AppColors.borderStrong),
+                  shape: RoundedRectangleBorder(borderRadius: AppRadius.small),
+                  foregroundColor: AppColors.textPrimary,
+                ),
+                child: Text('리뷰 더보기 (${reviews.length - _visibleCount}개 남음)'),
               ),
             ),
-          ),
-          Center(
-            child: OutlinedButton(
-              onPressed: () {},
-              style: OutlinedButton.styleFrom(
-                side: const BorderSide(color: AppColors.borderStrong),
-                shape: RoundedRectangleBorder(borderRadius: AppRadius.small),
-                foregroundColor: AppColors.textPrimary,
-              ),
-              child: const Text('리뷰 더보기'),
-            ),
-          ),
         ],
       ],
     );
@@ -132,17 +265,10 @@ class _ReviewListSectionState extends State<ReviewListSection> {
 }
 
 class _FilterRow extends StatelessWidget {
-  const _FilterRow({
-    required this.sortOption,
-    required this.photoOnly,
-    required this.onSortChanged,
-    required this.onPhotoOnlyChanged,
-  });
+  const _FilterRow({required this.sortOption, required this.onSortChanged});
 
   final ReviewSortOption sortOption;
-  final bool photoOnly;
   final ValueChanged<ReviewSortOption> onSortChanged;
-  final ValueChanged<bool> onPhotoOnlyChanged;
 
   @override
   Widget build(BuildContext context) {
@@ -162,41 +288,14 @@ class _FilterRow extends StatelessWidget {
           onTap: () => onSortChanged(ReviewSortOption.verified),
         ),
         _FilterChip(
-          label: '사진 포함',
-          selected: sortOption == ReviewSortOption.withPhoto,
-          onTap: () => onSortChanged(ReviewSortOption.withPhoto),
+          label: '도움순',
+          selected: sortOption == ReviewSortOption.helpful,
+          onTap: () => onSortChanged(ReviewSortOption.helpful),
         ),
         _FilterChip(
           label: 'RTI 높은순',
           selected: sortOption == ReviewSortOption.rtiHigh,
           onTap: () => onSortChanged(ReviewSortOption.rtiHigh),
-        ),
-        const _Divider(),
-        GestureDetector(
-          onTap: () => onPhotoOnlyChanged(!photoOnly),
-          child: Row(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              SizedBox(
-                width: 18,
-                height: 18,
-                child: Checkbox(
-                  value: photoOnly,
-                  onChanged: (v) => onPhotoOnlyChanged(v ?? false),
-                  materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                  activeColor: AppColors.primary,
-                ),
-              ),
-              const SizedBox(width: AppSpacing.xxs),
-              Text(
-                '사진 리뷰만 보기',
-                style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                  color: AppColors.textSecondary,
-                  fontWeight: FontWeight.w600,
-                ),
-              ),
-            ],
-          ),
         ),
       ],
     );
@@ -216,43 +315,12 @@ class _FilterChip extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: onTap,
-      child: AnimatedContainer(
-        duration: const Duration(milliseconds: 150),
-        padding: const EdgeInsets.symmetric(
-          horizontal: AppSpacing.sm,
-          vertical: AppSpacing.xxs + 2,
-        ),
-        decoration: BoxDecoration(
-          color: selected ? AppColors.primary : AppColors.surface,
-          borderRadius: AppRadius.small,
-          border: Border.all(
-            color: selected ? AppColors.primary : AppColors.borderStrong,
-          ),
-        ),
-        child: Text(
-          label,
-          style: Theme.of(context).textTheme.labelSmall?.copyWith(
-            color: selected ? AppColors.onPrimary : AppColors.textPrimary,
-            fontWeight: FontWeight.w700,
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-class _Divider extends StatelessWidget {
-  const _Divider();
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      width: 1,
-      height: 16,
-      color: AppColors.borderStrong,
-      margin: const EdgeInsets.symmetric(horizontal: AppSpacing.xxs),
+    return ChoiceChip(
+      label: Text(label),
+      selected: selected,
+      showCheckmark: false,
+      materialTapTargetSize: MaterialTapTargetSize.padded,
+      onSelected: (_) => onTap(),
     );
   }
 }
@@ -265,174 +333,212 @@ class ReviewCard extends StatelessWidget {
     this.warnCount = 0,
     this.dangerCount = 0,
     this.onFeedback,
+    this.productId,
+    this.productName = '',
+    this.preferences,
   });
 
+  final SettingsData? preferences;
   final ProductReview review;
   final int safeCount;
   final int warnCount;
   final int dangerCount;
   final Future<bool> Function(String feedbackType)? onFeedback;
+  final int? productId;
+  final String productName;
 
   @override
   Widget build(BuildContext context) {
+    final images = validReviewImages(review.imageUrls);
     final rtiColor = colorFromHex(review.rtiColor);
 
-    return DecoratedBox(
-      decoration: BoxDecoration(
-        color: AppColors.surface,
-        borderRadius: AppRadius.medium,
-        border: Border.all(color: AppColors.border),
-      ),
-      child: Padding(
-        padding: const EdgeInsets.all(AppSpacing.md),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                _Avatar(name: review.authorName),
-                const SizedBox(width: AppSpacing.sm),
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Row(
-                        children: [
-                          Text(
-                            review.authorName,
-                            style: Theme.of(context).textTheme.labelSmall
-                                ?.copyWith(
-                                  color: AppColors.textPrimary,
-                                  fontWeight: FontWeight.w800,
-                                ),
-                          ),
-                          if (review.isVerifiedPurchase) ...[
-                            const SizedBox(width: AppSpacing.xxs),
-                            _VerifiedBadge(),
-                          ],
-                        ],
-                      ),
-                      const SizedBox(height: 2),
-                      Row(
-                        children: [
-                          for (var i = 0; i < 5; i++)
-                            Icon(
-                              i < review.rating
-                                  ? Icons.star
-                                  : Icons.star_border,
-                              color: const Color(0xFFF59E0B),
-                              size: 13,
+    final risky =
+        review.rtiScore != null &&
+        review.rtiScore! < (preferences?.rtiThreshold ?? 0);
+    return GestureDetector(
+      onTap:
+          preferences?.autoOpenAnalysisPopup == true &&
+              risky &&
+              review.rtiDetail != null
+          ? () => showReviewRtiAnalysisDialog(
+              context,
+              review,
+              safeCount: safeCount,
+              warnCount: warnCount,
+              dangerCount: dangerCount,
+              productId: productId,
+              productName: productName,
+            )
+          : null,
+      child: DecoratedBox(
+        decoration: BoxDecoration(
+          color: AppColors.surface,
+          borderRadius: AppRadius.medium,
+          border: Border.all(color: AppColors.border),
+        ),
+        child: Padding(
+          padding: const EdgeInsets.all(AppSpacing.md),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  _Avatar(name: review.authorName),
+                  const SizedBox(width: AppSpacing.sm),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Row(
+                          children: [
+                            Text(
+                              review.authorName,
+                              style: Theme.of(context).textTheme.labelSmall
+                                  ?.copyWith(
+                                    color: AppColors.textPrimary,
+                                    fontWeight: FontWeight.w800,
+                                  ),
                             ),
-                          const SizedBox(width: AppSpacing.xs),
-                          Text(
-                            review.platform.isNotEmpty
-                                ? '${review.createdAt} · ${review.platform}'
-                                : review.createdAt,
-                            style: Theme.of(context).textTheme.labelSmall
-                                ?.copyWith(
-                                  color: AppColors.textSecondary,
-                                  fontSize: 11,
-                                ),
-                          ),
-                        ],
+                            if (review.isVerifiedPurchase) ...[
+                              const SizedBox(width: AppSpacing.xxs),
+                              _VerifiedBadge(),
+                            ],
+                          ],
+                        ),
+                        const SizedBox(height: 2),
+                        Row(
+                          children: [
+                            for (var i = 0; i < 5; i++)
+                              Icon(
+                                i < review.rating
+                                    ? Icons.star
+                                    : Icons.star_border,
+                                color: const Color(0xFFF59E0B),
+                                size: 13,
+                              ),
+                            const SizedBox(width: AppSpacing.xs),
+                            Text(
+                              review.platform.isNotEmpty
+                                  ? '${review.createdAt} · ${review.platform}'
+                                  : review.createdAt,
+                              style: Theme.of(context).textTheme.labelSmall
+                                  ?.copyWith(
+                                    color: AppColors.textSecondary,
+                                    fontSize: 11,
+                                  ),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                  const SizedBox(width: AppSpacing.xs),
+                  if (preferences?.rtiLabelStyle != 'NONE')
+                    GestureDetector(
+                      onTap: () => showReviewRtiAnalysisDialog(
+                        context,
+                        review,
+                        safeCount: safeCount,
+                        warnCount: warnCount,
+                        dangerCount: dangerCount,
+                        productId: productId,
+                        productName: productName,
+                      ),
+                      child: _RtiBadgeSmall(
+                        score: review.rtiScore,
+                        label: review.rtiLabel,
+                        color: rtiColor,
+                        hasDetail: review.rtiDetail != null,
+                        large: preferences?.rtiLabelStyle == 'BADGE_LARGE',
+                      ),
+                    ),
+                  const SizedBox(width: AppSpacing.xxs),
+                  PopupMenuButton<String>(
+                    icon: Icon(
+                      Icons.more_vert,
+                      size: 18,
+                      color: AppColors.textTertiary,
+                    ),
+                    padding: EdgeInsets.zero,
+                    itemBuilder: (_) => const [
+                      PopupMenuItem(value: 'ANALYSIS', child: Text('리뷰 분석 보기')),
+                      PopupMenuItem(value: 'HELPFUL', child: Text('도움이 됐어요')),
+                      PopupMenuItem(
+                        value: 'NOT_HELPFUL',
+                        child: Text('도움이 안 됐어요'),
                       ),
                     ],
+                    onSelected: (value) async {
+                      if (value == 'ANALYSIS') {
+                        showReviewRtiAnalysisDialog(
+                          context,
+                          review,
+                          safeCount: safeCount,
+                          warnCount: warnCount,
+                          dangerCount: dangerCount,
+                          productId: productId,
+                          productName: productName,
+                        );
+                        return;
+                      }
+                      if (onFeedback == null) return;
+                      final success = await onFeedback!(value);
+                      if (context.mounted) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text(
+                              success
+                                  ? '피드백이 제출됐습니다.'
+                                  : '피드백 제출에 실패했습니다. 다시 시도해주세요.',
+                            ),
+                            duration: const Duration(seconds: 2),
+                          ),
+                        );
+                      }
+                    },
                   ),
+                ],
+              ),
+              const SizedBox(height: AppSpacing.sm),
+              Text(
+                review.content,
+                style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                  color: AppColors.textPrimary,
+                  height: 1.6,
                 ),
-                const SizedBox(width: AppSpacing.xs),
-                GestureDetector(
-                  onTap: () => showReviewRtiAnalysisDialog(
+              ),
+              if (review.reasons.isNotEmpty &&
+                  preferences?.showSuspiciousLabel != false) ...[
+                const SizedBox(height: AppSpacing.xs),
+                Wrap(
+                  spacing: AppSpacing.xs,
+                  runSpacing: AppSpacing.xs,
+                  children: ReviewEvidenceFormatter.list(
                     context,
-                    review,
-                    safeCount: safeCount,
-                    warnCount: warnCount,
-                    dangerCount: dangerCount,
-                  ),
-                  child: _RtiBadgeSmall(
-                    score: review.rtiScore,
-                    label: review.rtiLabel,
-                    color: rtiColor,
-                    hasDetail: true,
-                  ),
-                ),
-                const SizedBox(width: AppSpacing.xxs),
-                PopupMenuButton<String>(
-                  icon: Icon(
-                    Icons.more_vert,
-                    size: 18,
-                    color: AppColors.textTertiary,
-                  ),
-                  padding: EdgeInsets.zero,
-                  itemBuilder: (_) => const [
-                    PopupMenuItem(value: 'HELPFUL', child: Text('도움이 됐어요')),
-                    PopupMenuItem(
-                      value: 'NOT_HELPFUL',
-                      child: Text('도움이 안 됐어요'),
-                    ),
-                  ],
-                  onSelected: onFeedback == null
-                      ? null
-                      : (value) async {
-                          final success = await onFeedback!(value);
-                          if (context.mounted) {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(
-                                content: Text(
-                                  success
-                                      ? '피드백이 제출됐습니다.'
-                                      : '피드백 제출에 실패했습니다. 다시 시도해주세요.',
-                                ),
-                                duration: const Duration(seconds: 2),
-                              ),
-                            );
-                          }
-                        },
+                    review.reasons,
+                  ).map((r) => _ReasonChip(label: r, color: rtiColor)).toList(),
                 ),
               ],
-            ),
-            const SizedBox(height: AppSpacing.sm),
-            Text(
-              review.content,
-              style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                color: AppColors.textPrimary,
-                height: 1.6,
-              ),
-            ),
-            if (review.reasons.isNotEmpty) ...[
-              const SizedBox(height: AppSpacing.xs),
-              Wrap(
-                spacing: AppSpacing.xs,
-                runSpacing: AppSpacing.xs,
-                children: review.reasons
-                    .map((r) => _ReasonChip(label: r, color: rtiColor))
-                    .toList(),
-              ),
-            ],
-            if (review.imageUrls.isNotEmpty) ...[
-              const SizedBox(height: AppSpacing.sm),
-              SizedBox(
-                height: 80,
-                child: ListView.separated(
-                  scrollDirection: Axis.horizontal,
-                  itemCount: review.imageUrls.length,
-                  separatorBuilder: (_, _) =>
-                      const SizedBox(width: AppSpacing.xs),
-                  itemBuilder: (context, index) => GestureDetector(
-                    onTap: () =>
-                        _showImageDialog(context, review.imageUrls, index),
-                    child: ClipRRect(
-                      borderRadius: AppRadius.small,
-                      child: SizedBox.square(
-                        dimension: 80,
-                        child: AppNetworkImage(url: review.imageUrls[index]),
-                      ),
+              if (images.isNotEmpty) ...[
+                const SizedBox(height: AppSpacing.sm),
+                SizedBox(
+                  height: 80,
+                  child: ListView.separated(
+                    scrollDirection: Axis.horizontal,
+                    itemCount: images.length,
+                    separatorBuilder: (_, _) =>
+                        const SizedBox(width: AppSpacing.xs),
+                    itemBuilder: (context, index) => ImagePreviewThumbnail(
+                      imageUrls: images,
+                      index: index,
+                      size: 80,
                     ),
                   ),
                 ),
-              ),
+              ],
             ],
-          ],
+          ),
         ),
       ),
     );
@@ -489,12 +595,14 @@ class _RtiBadgeSmall extends StatelessWidget {
     required this.label,
     required this.color,
     this.hasDetail = false,
+    this.large = false,
   });
 
-  final int score;
-  final String label;
+  final int? score;
+  final String? label;
   final Color color;
   final bool hasDetail;
+  final bool large;
 
   @override
   Widget build(BuildContext context) {
@@ -511,19 +619,19 @@ class _RtiBadgeSmall extends StatelessWidget {
           Icon(Icons.verified_user_outlined, size: 11, color: color),
           const SizedBox(width: 3),
           Text(
-            score > 0 ? 'RTI $score' : 'RTI -',
+            score != null ? 'RTI $score' : '분석 전',
             style: Theme.of(context).textTheme.labelSmall?.copyWith(
               color: color,
               fontWeight: FontWeight.w900,
-              fontSize: 11,
+              fontSize: large ? 14 : 11,
             ),
           ),
-          if (label.isNotEmpty) ...[
+          if (score != null && label?.isNotEmpty == true) ...[
             const SizedBox(width: 4),
             Container(width: 1, height: 9, color: color.withValues(alpha: 0.3)),
             const SizedBox(width: 4),
             Text(
-              label,
+              label!,
               style: Theme.of(context).textTheme.labelSmall?.copyWith(
                 color: color,
                 fontSize: 10,
@@ -564,147 +672,6 @@ class _ReasonChip extends StatelessWidget {
             fontWeight: FontWeight.w700,
             fontSize: 11,
           ),
-        ),
-      ),
-    );
-  }
-}
-
-void _showImageDialog(
-  BuildContext context,
-  List<String> imageUrls,
-  int initialIndex,
-) {
-  showDialog<void>(
-    context: context,
-    builder: (_) =>
-        _ReviewImageDialog(imageUrls: imageUrls, initialIndex: initialIndex),
-  );
-}
-
-class _ReviewImageDialog extends StatefulWidget {
-  const _ReviewImageDialog({
-    required this.imageUrls,
-    required this.initialIndex,
-  });
-
-  final List<String> imageUrls;
-  final int initialIndex;
-
-  @override
-  State<_ReviewImageDialog> createState() => _ReviewImageDialogState();
-}
-
-class _ReviewImageDialogState extends State<_ReviewImageDialog> {
-  late int _current;
-
-  @override
-  void initState() {
-    super.initState();
-    _current = widget.initialIndex;
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Dialog(
-      backgroundColor: Colors.transparent,
-      insetPadding: const EdgeInsets.all(AppSpacing.md),
-      child: Stack(
-        alignment: Alignment.center,
-        children: [
-          GestureDetector(
-            onTap: () => Navigator.of(context).pop(),
-            child: Container(color: Colors.black54),
-          ),
-          ConstrainedBox(
-            constraints: BoxConstraints(
-              maxWidth: 680,
-              maxHeight: MediaQuery.of(context).size.height * 0.85,
-            ),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Flexible(
-                  child: ClipRRect(
-                    borderRadius: AppRadius.medium,
-                    child: AppNetworkImage(
-                      url: widget.imageUrls[_current],
-                      fit: BoxFit.contain,
-                    ),
-                  ),
-                ),
-                if (widget.imageUrls.length > 1) ...[
-                  const SizedBox(height: AppSpacing.md),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      _NavButton(
-                        icon: Icons.chevron_left,
-                        enabled: _current > 0,
-                        onTap: () => setState(() => _current--),
-                      ),
-                      const SizedBox(width: AppSpacing.md),
-                      Text(
-                        '${_current + 1} / ${widget.imageUrls.length}',
-                        style: const TextStyle(
-                          color: Colors.white,
-                          fontWeight: FontWeight.w700,
-                        ),
-                      ),
-                      const SizedBox(width: AppSpacing.md),
-                      _NavButton(
-                        icon: Icons.chevron_right,
-                        enabled: _current < widget.imageUrls.length - 1,
-                        onTap: () => setState(() => _current++),
-                      ),
-                    ],
-                  ),
-                ],
-              ],
-            ),
-          ),
-          Positioned(
-            top: 0,
-            right: 0,
-            child: GestureDetector(
-              onTap: () => Navigator.of(context).pop(),
-              child: const CircleAvatar(
-                radius: 18,
-                backgroundColor: Colors.black45,
-                child: Icon(Icons.close, color: Colors.white, size: 18),
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-class _NavButton extends StatelessWidget {
-  const _NavButton({
-    required this.icon,
-    required this.enabled,
-    required this.onTap,
-  });
-
-  final IconData icon;
-  final bool enabled;
-  final VoidCallback onTap;
-
-  @override
-  Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: enabled ? onTap : null,
-      child: CircleAvatar(
-        radius: 20,
-        backgroundColor: enabled
-            ? Colors.white.withValues(alpha: 0.2)
-            : Colors.white.withValues(alpha: 0.08),
-        child: Icon(
-          icon,
-          color: enabled ? Colors.white : Colors.white38,
-          size: 22,
         ),
       ),
     );

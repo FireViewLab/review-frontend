@@ -1,3 +1,6 @@
+import 'package:re_view_front/features/search/presentation/view_models/search_results_state.dart';
+import 'package:re_view_front/features/search/data/dtos/search_result_product_dto.dart';
+import 'package:re_view_front/app/router/app_shell.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -11,37 +14,49 @@ import 'package:re_view_front/features/search/domain/repositories/search_reposit
 import 'package:re_view_front/features/search/domain/usecases/search_products_use_case.dart';
 import 'package:re_view_front/features/search/presentation/pages/search_results_page.dart';
 import 'package:re_view_front/features/search/presentation/providers/search_providers.dart';
+import 'package:re_view_front/features/search/presentation/widgets/search_results_body.dart';
+
+import '../../../../helpers/pump_app.dart';
 
 void main() {
   late GoRouter router;
+  late _FakeSearchRepository repository;
 
-  Widget buildSubject(String query) {
+  Widget buildSubject(String query, {String? categoryId}) {
+    repository = _FakeSearchRepository();
     router = GoRouter(
       initialLocation: Uri(
         path: RoutePaths.search,
         queryParameters: {'q': query},
       ).toString(),
       routes: [
-        GoRoute(
-          path: RoutePaths.home,
-          builder: (context, state) => const Scaffold(body: Text('home page')),
-        ),
-        GoRoute(
-          path: RoutePaths.search,
-          name: RouteNames.search,
-          builder: (context, state) =>
-              SearchResultsPage(query: state.uri.queryParameters['q'] ?? ''),
+        ShellRoute(
+          builder: (context, state, child) =>
+              AppShell(uri: state.uri, child: child),
+          routes: [
+            GoRoute(
+              path: RoutePaths.home,
+              builder: (context, state) =>
+                  const Scaffold(body: Text('home page')),
+            ),
+            GoRoute(
+              path: RoutePaths.search,
+              name: RouteNames.search,
+              builder: (context, state) => SearchResultsPage(
+                query: state.uri.queryParameters['q'] ?? '',
+                categoryId: categoryId,
+              ),
+            ),
+          ],
         ),
       ],
     );
 
     return ProviderScope(
-      overrides: [
-        searchRepositoryProvider.overrideWithValue(_FakeSearchRepository()),
-      ],
-      child: MaterialApp.router(
+      overrides: [searchRepositoryProvider.overrideWithValue(repository)],
+      child: localizedApp(
         theme: AppTheme.light.copyWith(splashFactory: NoSplash.splashFactory),
-        routerConfig: router,
+        router: router,
       ),
     );
   }
@@ -57,6 +72,43 @@ void main() {
     expect(find.text('추천순'), findsOneWidget);
     expect(find.textContaining('RTI 80+'), findsOneWidget);
   });
+
+  testWidgets(
+    'enum category navigation keeps unclassified mall results with an explanation',
+    (tester) async {
+      await tester.pumpWidget(buildSubject('실상품', categoryId: 'electronics'));
+      await tester.pumpAndSettle();
+      final body = tester.widget<SearchResultsBody>(
+        find.byType(SearchResultsBody),
+      );
+      expect(body.products, hasLength(3));
+      expect(find.textContaining('분류가 확정되지 않은 결과'), findsOneWidget);
+    },
+  );
+
+  testWidgets(
+    'RTI filter excludes unknown but retains a real zero at minimum zero',
+    (tester) async {
+      await tester.pumpWidget(buildSubject('실상품'));
+      await tester.pumpAndSettle();
+      var body = tester.widget<SearchResultsBody>(
+        find.byType(SearchResultsBody),
+      );
+      expect(body.products.map((p) => p.avgRti), [null, 0, 80]);
+      body.onSortChanged(SearchSortOption.rti);
+      await tester.pumpAndSettle();
+      body = tester.widget<SearchResultsBody>(find.byType(SearchResultsBody));
+      expect(body.products.map((p) => p.avgRti), [80, 0, null]);
+      body.onRtiMinimumChanged(0);
+      await tester.pumpAndSettle();
+      body = tester.widget<SearchResultsBody>(find.byType(SearchResultsBody));
+      expect(body.products.map((p) => p.avgRti), [80, 0]);
+      body.onRtiMinimumChanged(80);
+      await tester.pumpAndSettle();
+      body = tester.widget<SearchResultsBody>(find.byType(SearchResultsBody));
+      expect(body.products.map((p) => p.avgRti), [80]);
+    },
+  );
 
   testWidgets('renders empty state when mock search has no match', (
     tester,
@@ -84,6 +136,34 @@ void main() {
       '가전',
     );
     expect(find.text('가전'), findsWidgets);
+  });
+
+  testWidgets('submitting the same query resets filters and fetches again', (
+    tester,
+  ) async {
+    await tester.pumpWidget(buildSubject('이어폰'));
+    await tester.pumpAndSettle();
+    final filter = find.textContaining('RTI 80+');
+    await tester.ensureVisible(filter);
+    await tester.tap(filter);
+    await tester.pumpAndSettle();
+    expect(
+      tester
+          .widget<SearchResultsBody>(find.byType(SearchResultsBody))
+          .selectedQuickFilter,
+      'RTI 80+',
+    );
+    final requests = repository.requests;
+    await tester.enterText(find.byType(TextField).first, '이어폰');
+    await tester.testTextInput.receiveAction(TextInputAction.search);
+    await tester.pumpAndSettle();
+    expect(repository.requests, requests + 1);
+    expect(
+      tester
+          .widget<SearchResultsBody>(find.byType(SearchResultsBody))
+          .selectedQuickFilter,
+      '전체',
+    );
   });
 
   testWidgets('changes visible page size from the result toolbar dropdown', (
@@ -123,14 +203,29 @@ void main() {
 }
 
 class _FakeSearchRepository implements SearchRepository {
+  int requests = 0;
   @override
   Future<Result<SearchResponse>> searchProducts(SearchParams params) async {
+    requests++;
     final query = params.query.trim();
-    final products = switch (query) {
-      '이어폰' => _products('AeroFit ANC 무선 블루투스 이어폰'),
-      '가전' => _products('프리미엄 가전 상품'),
-      _ => const <SearchResultProduct>[],
-    };
+    final products = query == '실상품'
+        ? [
+            for (final score in [null, 0, 80])
+              SearchResultProductDto.fromJson({
+                'id': score == null ? 1 : score + 2,
+                'name': '실상품 $score',
+                'dataPlatform': 'kurly',
+                'dataProductId': 'item-$score',
+                'avgRti': score,
+                'category': null,
+                'subCategory': '몰 원문 카테고리',
+              }).toEntity(),
+          ]
+        : switch (query) {
+            '이어폰' => _products('AeroFit ANC 무선 블루투스 이어폰'),
+            '가전' => _products('프리미엄 가전 상품'),
+            _ => const <SearchResultProduct>[],
+          };
     return Success(
       SearchResponse(products: products, totalCount: products.length),
     );

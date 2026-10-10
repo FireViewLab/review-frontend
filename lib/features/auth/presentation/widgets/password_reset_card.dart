@@ -152,7 +152,7 @@ class _FormView extends StatelessWidget {
           _EmailSentStep(
             email: state.email,
             isLoading: state.isLoading,
-            onProceed: onProceed,
+            onProceed: state.resetToken?.isNotEmpty == true ? onProceed : null,
             onResendCode: onResendCode,
           )
         else
@@ -180,9 +180,9 @@ class _FormView extends StatelessWidget {
           children: [
             Text(
               '계정이 기억났나요?',
-              style: Theme.of(context).textTheme.labelMedium?.copyWith(
-                color: AppColors.textSecondary,
-              ),
+              style: Theme.of(
+                context,
+              ).textTheme.labelMedium?.copyWith(color: AppColors.textSecondary),
             ),
             TextButton(
               onPressed: onLoginPressed,
@@ -225,12 +225,15 @@ class _StepIndicator extends StatelessWidget {
         final idx = i ~/ 2;
         final isActive = currentIndex == idx;
         final isDone = currentIndex > idx;
-        final bgColor =
-            (isActive || isDone) ? AppColors.primary : AppColors.border;
-        final fgColor =
-            (isActive || isDone) ? Colors.white : AppColors.textSecondary;
-        final labelColor =
-            (isActive || isDone) ? AppColors.primary : AppColors.textSecondary;
+        final bgColor = (isActive || isDone)
+            ? AppColors.primary
+            : AppColors.border;
+        final fgColor = (isActive || isDone)
+            ? Colors.white
+            : AppColors.textSecondary;
+        final labelColor = (isActive || isDone)
+            ? AppColors.primary
+            : AppColors.textSecondary;
 
         return Column(
           mainAxisSize: MainAxisSize.min,
@@ -347,11 +350,11 @@ class _EmailSentStep extends StatelessWidget {
                     children: [
                       Text(
                         '이메일을 발송했습니다',
-                        style:
-                            Theme.of(context).textTheme.labelMedium?.copyWith(
-                          color: AppColors.success,
-                          fontWeight: FontWeight.w900,
-                        ),
+                        style: Theme.of(context).textTheme.labelMedium
+                            ?.copyWith(
+                              color: AppColors.success,
+                              fontWeight: FontWeight.w900,
+                            ),
                       ),
                       const SizedBox(height: AppSpacing.xxs),
                       Text(
@@ -376,11 +379,7 @@ class _EmailSentStep extends StatelessWidget {
           ),
         ),
         const SizedBox(height: AppSpacing.lg),
-        _PrimaryButton(
-          label: '다음',
-          isLoading: isLoading,
-          onPressed: onProceed,
-        ),
+        _PrimaryButton(label: '다음', isLoading: isLoading, onPressed: onProceed),
         const SizedBox(height: AppSpacing.md),
         OutlinedButton(
           onPressed: isLoading ? null : onResendCode,
@@ -554,8 +553,8 @@ class _RequirementRow extends StatelessWidget {
     final color = !hasInput
         ? AppColors.textTertiary
         : isMet
-            ? AppColors.success
-            : (isOptional ? AppColors.textTertiary : AppColors.error);
+        ? AppColors.success
+        : (isOptional ? AppColors.textTertiary : AppColors.error);
 
     return Row(
       children: [
@@ -812,9 +811,9 @@ class _SuccessView extends StatelessWidget {
         Text(
           '비밀번호가 변경되었습니다',
           textAlign: TextAlign.center,
-          style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-            fontWeight: FontWeight.w900,
-          ),
+          style: Theme.of(
+            context,
+          ).textTheme.headlineSmall?.copyWith(fontWeight: FontWeight.w900),
         ),
         const SizedBox(height: AppSpacing.sm),
         Text(

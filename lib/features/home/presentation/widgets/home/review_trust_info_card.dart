@@ -1,6 +1,8 @@
+import 'package:re_view_front/shared/widgets/rti_criteria_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:re_view_front/app/theme/app_colors.dart';
 import 'package:re_view_front/app/theme/app_spacing.dart';
+import 'package:re_view_front/l10n/generated/app_localizations.dart';
 import 'package:re_view_front/shared/extensions/context_extensions.dart';
 
 class ReviewTrustInfoCard extends StatelessWidget {
@@ -85,23 +87,23 @@ class _TrustMain extends StatelessWidget {
                   ),
                   const SizedBox(height: AppSpacing.xs),
                   Text(
-                    '광고·조작 리뷰를 필터링하고 실사용 리뷰를 분석해 신뢰도를 제공합니다.',
+                    AppLocalizations.of(context).homeTrustDescription,
                     style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                       color: AppColors.textSecondary,
                     ),
                   ),
                   const SizedBox(height: AppSpacing.sm),
                   TextButton(
-                    onPressed: () {},
+                    onPressed: () => showRtiCriteriaDialog(context),
                     style: TextButton.styleFrom(
                       padding: EdgeInsets.zero,
                       minimumSize: Size.zero,
                       tapTargetSize: MaterialTapTargetSize.shrinkWrap,
                     ),
-                    child: const Row(
+                    child: Row(
                       mainAxisSize: MainAxisSize.min,
                       children: [
-                        Text('자세히 보기'),
+                        Text(AppLocalizations.of(context).homeTrustViewMore),
                         SizedBox(width: AppSpacing.xxs),
                         Icon(Icons.chevron_right, size: 16),
                       ],
@@ -120,7 +122,7 @@ class _TrustMain extends StatelessWidget {
                 shape: BoxShape.circle,
               ),
               child: Image.asset(
-                'assets/images/home/brand/RTI.png',
+                'assets/images/home/brand/RTI.webp',
                 fit: BoxFit.cover,
                 errorBuilder: (context, error, stackTrace) => Icon(
                   Icons.shield_outlined,
@@ -141,18 +143,19 @@ class _TrustFeatures extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    const items = [
+    final l10n = AppLocalizations.of(context);
+    final items = [
       _FeatureItem(
-        iconAssetPath: 'assets/images/home/icons/icon-review-analysis.png',
-        label: '실사용 리뷰 분석',
+        iconAssetPath: 'assets/images/home/icons/icon-review-analysis.webp',
+        label: l10n.homeTrustLabel1,
       ),
       _FeatureItem(
-        iconAssetPath: 'assets/images/home/icons/icon-fraud-filter.png',
-        label: '광고/조작 필터링',
+        iconAssetPath: 'assets/images/home/icons/icon-fraud-filter.webp',
+        label: l10n.homeTrustLabel2,
       ),
       _FeatureItem(
-        iconAssetPath: 'assets/images/home/icons/icon-trust-score.png',
-        label: '신뢰도 점수 제공',
+        iconAssetPath: 'assets/images/home/icons/icon-trust-score.webp',
+        label: l10n.homeTrustLabel3,
       ),
     ];
 

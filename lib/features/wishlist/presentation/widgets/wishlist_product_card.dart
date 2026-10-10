@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:re_view_front/app/router/route_paths.dart';
 import 'package:re_view_front/app/theme/app_colors.dart';
 import 'package:re_view_front/app/theme/app_spacing.dart';
 import 'package:re_view_front/features/search/presentation/utils/search_formatters.dart';
 import 'package:re_view_front/features/search/presentation/widgets/search_product_card.dart';
 import 'package:re_view_front/features/wishlist/domain/entities/wishlist_item.dart';
+import 'package:re_view_front/l10n/generated/app_localizations.dart';
 import 'package:re_view_front/shared/widgets/app_network_image.dart';
 
 class WishlistProductCard extends StatelessWidget {
@@ -22,7 +22,9 @@ class WishlistProductCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final rtiColor = colorFromHex(item.rtiColor);
+    final rtiColor = item.rtiColor == null
+        ? AppColors.textTertiary
+        : colorFromHex(item.rtiColor!);
 
     return ClipRRect(
       borderRadius: BorderRadius.circular(10),
@@ -50,10 +52,12 @@ class WishlistProductCard extends StatelessWidget {
                   Positioned(
                     top: AppSpacing.xs,
                     left: AppSpacing.xs,
-                    child: RtiBadge(
-                      value: item.avgRti.round(),
-                      color: rtiColor,
-                    ),
+                    child: item.avgRti == null
+                        ? Text(AppLocalizations.of(context).externalUnanalyzed)
+                        : RtiBadge(
+                            value: item.avgRti!.round(),
+                            color: rtiColor,
+                          ),
                   ),
                   if (item.isPriceDrop)
                     Positioned(
@@ -95,14 +99,15 @@ class WishlistProductCard extends StatelessWidget {
                   const SizedBox(height: AppSpacing.xs),
                   Row(
                     children: [
-                      const Icon(
-                        Icons.star,
-                        color: Color(0xFFF59E0B),
-                        size: 13,
-                      ),
+                      if (item.avgRating != null)
+                        const Icon(
+                          Icons.star,
+                          color: Color(0xFFF59E0B),
+                          size: 13,
+                        ),
                       const SizedBox(width: AppSpacing.xxs),
                       Text(
-                        item.avgRating.toStringAsFixed(1),
+                        item.avgRating?.toStringAsFixed(1) ?? '',
                         style: Theme.of(context).textTheme.labelSmall?.copyWith(
                           color: AppColors.textPrimary,
                           fontWeight: FontWeight.w900,
@@ -112,7 +117,9 @@ class WishlistProductCard extends StatelessWidget {
                       const SizedBox(width: AppSpacing.xxs),
                       Flexible(
                         child: Text(
-                          '(리뷰 ${formatSearchCount(item.reviewCount)})',
+                          item.reviewCount == null
+                              ? ''
+                              : '(리뷰 ${formatSearchCount(item.reviewCount)})',
                           overflow: TextOverflow.ellipsis,
                           style: Theme.of(context).textTheme.labelSmall
                               ?.copyWith(
@@ -126,7 +133,9 @@ class WishlistProductCard extends StatelessWidget {
                   ),
                   const SizedBox(height: AppSpacing.xs),
                   Text(
-                    formatSearchPrice(item.price),
+                    item.price == null
+                        ? '가격 정보 없음'
+                        : formatSearchPrice(item.price!),
                     style: Theme.of(context).textTheme.titleMedium?.copyWith(
                       color: AppColors.textPrimary,
                       fontWeight: FontWeight.w900,
@@ -164,9 +173,9 @@ class WishlistProductCard extends StatelessWidget {
                         child: SizedBox(
                           height: 36,
                           child: OutlinedButton(
-                            onPressed: () => context.goNamed(
-                              RouteNames.productDetail,
-                              pathParameters: {'id': item.productId.toString()},
+                            onPressed: () => context.go(
+                              item.detailPath,
+                              extra: item.routeContext,
                             ),
                             style: outlineHoverButtonStyle(
                               padding: const EdgeInsets.symmetric(
@@ -174,7 +183,7 @@ class WishlistProductCard extends StatelessWidget {
                               ),
                             ),
                             child: Text(
-                              '상품 보기',
+                              AppLocalizations.of(context).wishlistProductView,
                               style: Theme.of(context).textTheme.labelSmall
                                   ?.copyWith(fontWeight: FontWeight.w900),
                             ),
@@ -217,7 +226,7 @@ class _PriceDropBadge extends StatelessWidget {
             ),
             const SizedBox(width: 2),
             Text(
-              '가격 하락',
+              AppLocalizations.of(context).wishlistProductPriceDrop,
               style: Theme.of(context).textTheme.labelSmall?.copyWith(
                 color: AppColors.error,
                 fontWeight: FontWeight.w900,

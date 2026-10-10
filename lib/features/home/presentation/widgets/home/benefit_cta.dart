@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:re_view_front/app/theme/app_colors.dart';
 import 'package:re_view_front/app/theme/app_spacing.dart';
 import 'package:re_view_front/features/home/presentation/data/home_content.dart';
+import 'package:re_view_front/l10n/generated/app_localizations.dart';
 import 'package:re_view_front/shared/extensions/context_extensions.dart';
 
 class BenefitCTA extends StatelessWidget {
@@ -73,10 +74,10 @@ class BenefitCTA extends StatelessWidget {
     final itemWidth = maxWidth < 520 ? 96.0 : 124.0;
 
     return [
-      Text('첫 구매 고객을 위한 혜택', style: Theme.of(context).textTheme.titleMedium),
+      Text(AppLocalizations.of(context).homeBenefitTitle, style: Theme.of(context).textTheme.titleMedium),
       const SizedBox(height: AppSpacing.xs),
       Text(
-        '리뷰 기반 쇼핑을 시작하면 받을 수 있는 회원 혜택입니다.',
+        AppLocalizations.of(context).homeBenefitSubtitle,
         style: Theme.of(
           context,
         ).textTheme.bodyMedium?.copyWith(color: AppColors.textSecondary),
@@ -118,7 +119,7 @@ class BenefitCTA extends StatelessWidget {
         ],
       ),
       const SizedBox(height: AppSpacing.md),
-      FilledButton(onPressed: onBenefitPressed, child: const Text('혜택 받기')),
+      FilledButton(onPressed: onBenefitPressed, child: Text(AppLocalizations.of(context).homeBenefitButton)),
     ];
   }
 }

@@ -1,19 +1,16 @@
+import 'package:re_view_front/features/payments/domain/entities/cart_checkout.dart';
+import 'package:re_view_front/core/providers/core_providers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:re_view_front/app/router/route_paths.dart';
 import 'package:re_view_front/app/theme/app_colors.dart';
 import 'package:re_view_front/app/theme/app_spacing.dart';
-import 'package:re_view_front/core/providers/core_providers.dart';
 import 'package:re_view_front/features/cart/presentation/providers/cart_providers.dart';
 import 'package:re_view_front/features/cart/presentation/view_models/cart_state.dart';
 import 'package:re_view_front/features/cart/presentation/widgets/cart_item_card.dart';
 import 'package:re_view_front/features/cart/presentation/widgets/cart_list_header.dart';
 import 'package:re_view_front/features/cart/presentation/widgets/cart_order_summary.dart';
-import 'package:re_view_front/features/home/presentation/data/home_content.dart';
-import 'package:re_view_front/features/home/presentation/providers/home_providers.dart';
-import 'package:re_view_front/features/home/presentation/view_models/home_dashboard_state.dart';
-import 'package:re_view_front/features/home/presentation/widgets/home/home_header.dart';
 import 'package:re_view_front/shared/extensions/context_extensions.dart';
 import 'package:re_view_front/shared/widgets/app_content_view.dart';
 import 'package:re_view_front/shared/widgets/error_view.dart';
@@ -36,47 +33,11 @@ class _CartPageState extends ConsumerState<CartPage> {
   @override
   Widget build(BuildContext context) {
     final cartState = ref.watch(cartViewModelProvider);
-    final isLoggedIn = ref.watch(isLoggedInProvider);
-    final nickname = ref.watch(userNicknameProvider).value;
-    final dashboardState = ref.watch(homeDashboardViewModelProvider);
-
-    final keywords = _keywordsFrom(dashboardState);
-    final products = _productsFrom(dashboardState);
 
     return Scaffold(
       backgroundColor: AppColors.background,
       body: CustomScrollView(
         slivers: [
-          SliverToBoxAdapter(
-            child: HomeHeader(
-              navItems: homeNavItems,
-              selectedNavItem: '',
-              isLoggedIn: isLoggedIn,
-              nickname: nickname,
-              onLoginPressed: () => context.go(RoutePaths.login),
-              onWishPressed: () => context.go(RoutePaths.wishlist),
-              onCartPressed: () {},
-              onNavItemPressed: (_) => context.go(RoutePaths.home),
-              onLogoPressed: () => context.go(RoutePaths.home),
-              onSearchSubmitted: (q) {
-                if (q.trim().isNotEmpty) {
-                  context.goNamed(
-                    RouteNames.search,
-                    queryParameters: {'q': q.trim()},
-                  );
-                }
-              },
-              searchKeywords: keywords,
-              searchRecommendedProducts: products,
-              onMyPagePressed: () => context.go(RoutePaths.login),
-              onProfileWishPressed: () => context.go(RoutePaths.wishlist),
-              onProfileOrderPressed: () => context.go(RoutePaths.login),
-              onLogoutPressed: () {
-                ref.read(authTokenStoreProvider.notifier).clear();
-                context.go(RoutePaths.landing);
-              },
-            ),
-          ),
           SliverToBoxAdapter(
             child: AppContentView(
               maxWidth: 1760,
@@ -107,42 +68,48 @@ class _CartPageState extends ConsumerState<CartPage> {
       ),
     );
   }
-
-  List<String> _keywordsFrom(HomeDashboardState state) {
-    return switch (state) {
-      HomeDashboardSuccess(:final dashboard) =>
-        dashboard.trendingKeywords.map((k) => k.keyword).toList(),
-      _ => const [],
-    };
-  }
-
-  List<HomeProductData> _productsFrom(HomeDashboardState state) {
-    return switch (state) {
-      HomeDashboardSuccess(:final dashboard) =>
-        dashboard.recommendedProducts
-            .map(
-              (p) => HomeProductData(
-                productId: p.id,
-                name: p.name,
-                storeName: p.storeName,
-                priceLabel: '${p.price}원',
-                ratingLabel: p.rating?.toStringAsFixed(1) ?? '-',
-                reviewCountLabel: p.reviewCount?.toString() ?? '-',
-                rtiLabel: p.rtiScore == null ? '' : 'RTI ${p.rtiScore}',
-                imageUrl: p.imageUrl,
-                label: p.label ?? '',
-              ),
-            )
-            .toList(),
-      _ => const [],
-    };
-  }
 }
 
 class _CartBody extends ConsumerWidget {
   const _CartBody({required this.cartState});
 
   final CartSuccess cartState;
+
+  Future<void> _showPurchaseChoices(BuildContext context) => showDialog<void>(
+    context: context,
+    builder: (dialogContext) => AlertDialog(
+      title: const Text('구매처 확인'),
+      content: SizedBox(
+        width: 420,
+        child: SingleChildScrollView(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              const Text(
+                '상품 상세에서 제공되는 쇼핑몰 구매 링크를 이용해 주세요. TEST 주문 기능은 별도 화면에서 준비하며 현재 서버 판매·배송 계약은 없습니다.',
+              ),
+              for (final item in cartState.selectedItems)
+                ListTile(
+                  title: Text(item.name),
+                  subtitle: Text('상품 상세 및 구매처 보기'),
+                  trailing: const Icon(Icons.chevron_right),
+                  onTap: () {
+                    Navigator.of(dialogContext).pop();
+                    context.push(item.detailPath, extra: item.routeContext);
+                  },
+                ),
+            ],
+          ),
+        ),
+      ),
+      actions: [
+        TextButton(
+          onPressed: () => Navigator.of(dialogContext).pop(),
+          child: const Text('닫기'),
+        ),
+      ],
+    ),
+  );
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -154,6 +121,17 @@ class _CartBody extends ConsumerWidget {
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         _CartPageHeader(totalCount: cartState.items.length),
+        if (cartState.errorMessage != null) ...[
+          const SizedBox(height: AppSpacing.sm),
+          Text(
+            cartState.errorMessage!,
+            style: const TextStyle(color: AppColors.error),
+          ),
+          TextButton(
+            onPressed: cartState.isUpdating ? null : () => vm.load(),
+            child: const Text('다시 불러오기'),
+          ),
+        ],
         const SizedBox(height: AppSpacing.md),
         _RtiCheckBanner(),
         const SizedBox(height: AppSpacing.sm),
@@ -177,15 +155,14 @@ class _CartBody extends ConsumerWidget {
                 CartItemCard(
                   item: item,
                   isSelected: cartState.selectedIds.contains(item.productId),
-                  isUpdating: cartState.updatingProductIds.contains(
-                    item.productId,
-                  ),
+                  isUpdating: cartState.isUpdating,
                   onToggleSelect: () => vm.toggleSelectItem(item.productId),
                   onQuantityChanged: (qty) =>
                       vm.updateQuantity(item.productId, qty),
                   onRemove: () => vm.removeItem(item.productId),
-                  onMoveToWishlist: () {},
-                  onSaveForLater: () {},
+                  onMoveToWishlist: () => vm.saveToWishlist(item.productId),
+                  onSaveForLater: () =>
+                      vm.saveToWishlist(item.productId, removeFromCart: true),
                 ),
             ],
           ),
@@ -202,7 +179,16 @@ class _CartBody extends ConsumerWidget {
           CartOrderSummary(
             summary: cartState.selectedSummary,
             selectedCount: cartState.selectedIds.length,
-            onCheckout: () async {},
+            hasUnknownPrice: cartState.hasUnknownSelectedPrice,
+            isUpdating: cartState.isUpdating,
+            onCheckout: () => _showPurchaseChoices(context),
+            onTestCheckout: () => context.push(
+              RoutePaths.cartCheckout,
+              extra: CartCheckoutSelection(
+                cartState.selectedItems,
+                ref.read(authSessionProvider).revision,
+              ),
+            ),
             onContinueShopping: () => context.go(RoutePaths.home),
           ),
         ],
@@ -219,7 +205,16 @@ class _CartBody extends ConsumerWidget {
           child: CartOrderSummary(
             summary: cartState.selectedSummary,
             selectedCount: cartState.selectedIds.length,
-            onCheckout: () async {},
+            hasUnknownPrice: cartState.hasUnknownSelectedPrice,
+            isUpdating: cartState.isUpdating,
+            onCheckout: () => _showPurchaseChoices(context),
+            onTestCheckout: () => context.push(
+              RoutePaths.cartCheckout,
+              extra: CartCheckoutSelection(
+                cartState.selectedItems,
+                ref.read(authSessionProvider).revision,
+              ),
+            ),
             onContinueShopping: () => context.go(RoutePaths.home),
           ),
         ),
@@ -382,45 +377,45 @@ class _CartSkeleton extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           for (var i = 0; i < 3; i++) ...[
-          DecoratedBox(
-            decoration: BoxDecoration(
-              color: AppColors.surface,
-              border: Border(bottom: BorderSide(color: AppColors.border)),
-            ),
-            child: Padding(
-              padding: const EdgeInsets.symmetric(
-                horizontal: AppSpacing.md,
-                vertical: AppSpacing.md,
+            DecoratedBox(
+              decoration: BoxDecoration(
+                color: AppColors.surface,
+                border: Border(bottom: BorderSide(color: AppColors.border)),
               ),
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const ShimmerBox(width: 20, height: 20, radius: 4),
-                  const SizedBox(width: AppSpacing.sm),
-                  ShimmerBox(
-                    width: isMobile ? 120 : 100,
-                    height: isMobile ? 92 : 80,
-                    radius: 8,
-                  ),
-                  const SizedBox(width: AppSpacing.md),
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                      children: const [
-                        SizedBox(height: 14, child: ShimmerBox(radius: 4)),
-                        SizedBox(height: 6),
-                        ShimmerBox(width: 120, height: 12, radius: 4),
-                        SizedBox(height: AppSpacing.sm),
-                        ShimmerBox(width: 80, height: 18, radius: 4),
-                      ],
+              child: Padding(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: AppSpacing.md,
+                  vertical: AppSpacing.md,
+                ),
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const ShimmerBox(width: 20, height: 20, radius: 4),
+                    const SizedBox(width: AppSpacing.sm),
+                    ShimmerBox(
+                      width: isMobile ? 120 : 100,
+                      height: isMobile ? 92 : 80,
+                      radius: 8,
                     ),
-                  ),
-                ],
+                    const SizedBox(width: AppSpacing.md),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: const [
+                          SizedBox(height: 14, child: ShimmerBox(radius: 4)),
+                          SizedBox(height: 6),
+                          ShimmerBox(width: 120, height: 12, radius: 4),
+                          SizedBox(height: AppSpacing.sm),
+                          ShimmerBox(width: 80, height: 18, radius: 4),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ),
-          ),
+          ],
         ],
-      ],
       ),
     );
   }

@@ -4,10 +4,6 @@ import 'package:go_router/go_router.dart';
 import 'package:re_view_front/app/router/route_paths.dart';
 import 'package:re_view_front/app/theme/app_colors.dart';
 import 'package:re_view_front/app/theme/app_spacing.dart';
-import 'package:re_view_front/features/home/presentation/data/home_content.dart';
-import 'package:re_view_front/features/home/presentation/providers/home_providers.dart';
-import 'package:re_view_front/features/home/presentation/view_models/home_dashboard_state.dart';
-import 'package:re_view_front/features/home/presentation/widgets/home/home_header.dart';
 import 'package:re_view_front/features/wishlist/domain/entities/wishlist_item.dart';
 import 'package:re_view_front/features/wishlist/domain/entities/wishlist_summary.dart';
 import 'package:re_view_front/features/wishlist/presentation/providers/wishlist_providers.dart';
@@ -15,11 +11,11 @@ import 'package:re_view_front/features/wishlist/presentation/view_models/wishlis
 import 'package:re_view_front/features/wishlist/presentation/widgets/wishlist_filter_bar.dart';
 import 'package:re_view_front/features/wishlist/presentation/widgets/wishlist_product_card.dart';
 import 'package:re_view_front/features/wishlist/presentation/widgets/wishlist_summary_card.dart';
+import 'package:re_view_front/l10n/generated/app_localizations.dart';
 import 'package:re_view_front/shared/extensions/context_extensions.dart';
 import 'package:re_view_front/shared/widgets/app_content_view.dart';
 import 'package:re_view_front/shared/widgets/error_view.dart';
 import 'package:re_view_front/shared/widgets/shimmer_box.dart';
-import 'package:re_view_front/core/providers/core_providers.dart';
 
 class WishlistPage extends ConsumerStatefulWidget {
   const WishlistPage({super.key});
@@ -31,58 +27,16 @@ class WishlistPage extends ConsumerStatefulWidget {
 class _WishlistPageState extends ConsumerState<WishlistPage> {
   WishlistFilterOption _selectedFilter = WishlistFilterOption.all;
   WishlistSortOption _sortOption = WishlistSortOption.recent;
-
-  @override
-  void initState() {
-    super.initState();
-    Future.microtask(() => ref.read(wishlistViewModelProvider.notifier).load());
-  }
+  String? _facet;
 
   @override
   Widget build(BuildContext context) {
     final wishlistState = ref.watch(wishlistViewModelProvider);
-    final isLoggedIn = ref.watch(isLoggedInProvider);
-    final nickname = ref.watch(userNicknameProvider).value;
-    final dashboardState = ref.watch(homeDashboardViewModelProvider);
-
-    final keywords = _keywordsFrom(dashboardState);
-    final products = _productsFrom(dashboardState);
 
     return Scaffold(
       backgroundColor: AppColors.background,
       body: CustomScrollView(
         slivers: [
-          SliverToBoxAdapter(
-            child: HomeHeader(
-              navItems: homeNavItems,
-              selectedNavItem: '',
-              isLoggedIn: isLoggedIn,
-              nickname: nickname,
-              onLoginPressed: () => context.go(RoutePaths.login),
-              onWishPressed: () {},
-              onCartPressed: () => context.go(RoutePaths.login),
-              onNavItemPressed: (_) => context.go(RoutePaths.home),
-              onLogoPressed: () => context.go(RoutePaths.home),
-              onSearchSubmitted: (q) {
-                if (q.trim().isNotEmpty) {
-                  context.goNamed(
-                    RouteNames.search,
-                    queryParameters: {'q': q.trim()},
-                  );
-                }
-              },
-              searchKeywords: keywords,
-              searchRecommendedProducts: products,
-              onMyPagePressed: () =>
-                  context.go(isLoggedIn ? RoutePaths.myPage : RoutePaths.login),
-              onProfileWishPressed: () {},
-              onProfileOrderPressed: () => context.go(RoutePaths.login),
-              onLogoutPressed: () {
-                ref.read(authTokenStoreProvider.notifier).clear();
-                context.go(RoutePaths.landing);
-              },
-            ),
-          ),
           SliverToBoxAdapter(
             child: AppContentView(
               maxWidth: 1760,
@@ -93,8 +47,8 @@ class _WishlistPageState extends ConsumerState<WishlistPage> {
                 AppSpacing.xxxl,
               ),
               child: switch (wishlistState) {
-                WishlistLoading() || WishlistInitial() =>
-                  const _WishlistGridSkeleton(),
+                WishlistLoading() ||
+                WishlistInitial() => const _WishlistGridSkeleton(),
                 WishlistFailure(:final failure) => SizedBox(
                   height: 320,
                   child: AppErrorView(
@@ -110,6 +64,7 @@ class _WishlistPageState extends ConsumerState<WishlistPage> {
                   :final items,
                   :final summary,
                   :final togglingProductIds,
+                  :final errorMessage,
                 ) =>
                   _WishlistBody(
                     items: items,
@@ -117,8 +72,21 @@ class _WishlistPageState extends ConsumerState<WishlistPage> {
                     togglingProductIds: togglingProductIds,
                     selectedFilter: _selectedFilter,
                     sortOption: _sortOption,
-                    onFilterSelected: (f) =>
-                        setState(() => _selectedFilter = f),
+                    facet: _facet,
+                    errorMessage: errorMessage,
+                    onRetry: () =>
+                        ref.read(wishlistViewModelProvider.notifier).load(),
+                    onFacetSelected: (value) => setState(() => _facet = value),
+                    onFilterSelected: (f) => setState(() {
+                      _selectedFilter = f;
+                      _facet = null;
+                      if (f == WishlistFilterOption.rti) {
+                        _sortOption = WishlistSortOption.rti;
+                      }
+                      if (f == WishlistFilterOption.lowestPrice) {
+                        _sortOption = WishlistSortOption.priceLow;
+                      }
+                    }),
                     onSortChanged: (s) => setState(() => _sortOption = s),
                     onRemove: (productId) => ref
                         .read(wishlistViewModelProvider.notifier)
@@ -130,36 +98,6 @@ class _WishlistPageState extends ConsumerState<WishlistPage> {
         ],
       ),
     );
-  }
-
-  List<String> _keywordsFrom(HomeDashboardState state) {
-    return switch (state) {
-      HomeDashboardSuccess(:final dashboard) =>
-        dashboard.trendingKeywords.map((k) => k.keyword).toList(),
-      _ => const [],
-    };
-  }
-
-  List<HomeProductData> _productsFrom(HomeDashboardState state) {
-    return switch (state) {
-      HomeDashboardSuccess(:final dashboard) =>
-        dashboard.recommendedProducts
-            .map(
-              (p) => HomeProductData(
-                productId: p.id,
-                name: p.name,
-                storeName: p.storeName,
-                priceLabel: '${p.price}원',
-                ratingLabel: p.rating?.toStringAsFixed(1) ?? '-',
-                reviewCountLabel: p.reviewCount?.toString() ?? '-',
-                rtiLabel: p.rtiScore == null ? '' : 'RTI ${p.rtiScore}',
-                imageUrl: p.imageUrl,
-                label: p.label ?? '',
-              ),
-            )
-            .toList(),
-      _ => const [],
-    };
   }
 }
 
@@ -173,6 +111,10 @@ class _WishlistBody extends StatelessWidget {
     required this.onFilterSelected,
     required this.onSortChanged,
     required this.onRemove,
+    this.facet,
+    this.errorMessage,
+    required this.onRetry,
+    required this.onFacetSelected,
   });
 
   final List<WishlistItem> items;
@@ -183,6 +125,25 @@ class _WishlistBody extends StatelessWidget {
   final ValueChanged<WishlistFilterOption> onFilterSelected;
   final ValueChanged<WishlistSortOption> onSortChanged;
   final ValueChanged<int> onRemove;
+  final String? facet;
+  final String? errorMessage;
+  final VoidCallback onRetry;
+  final ValueChanged<String?> onFacetSelected;
+  String _category(WishlistItem item) =>
+      item.categoryDisplayName?.trim().isNotEmpty == true
+      ? item.categoryDisplayName!
+      : item.subCategory?.trim().isNotEmpty == true
+      ? item.subCategory!
+      : '미분류';
+  String _platform(WishlistItem item) =>
+      item.platform?.trim().isNotEmpty == true ? item.platform! : '쇼핑몰 정보 없음';
+  int _comparePrice(WishlistItem a, WishlistItem b, {bool descending = false}) {
+    if (a.price == null) return b.price == null ? 0 : 1;
+    if (b.price == null) return -1;
+    return descending
+        ? b.price!.compareTo(a.price!)
+        : a.price!.compareTo(b.price!);
+  }
 
   List<WishlistItem> get _filtered {
     var result = switch (selectedFilter) {
@@ -191,12 +152,14 @@ class _WishlistBody extends StatelessWidget {
         items.where((i) => i.isPriceDrop).toList(),
       WishlistFilterOption.rti => [
         ...items,
-      ]..sort((a, b) => b.avgRti.compareTo(a.avgRti)),
+      ]..sort((a, b) => (b.avgRti ?? -1).compareTo(a.avgRti ?? -1)),
       WishlistFilterOption.lowestPrice => [
         ...items,
-      ]..sort((a, b) => a.price.compareTo(b.price)),
-      WishlistFilterOption.brand => [...items],
-      WishlistFilterOption.category => [...items],
+      ]..sort((a, b) => _comparePrice(a, b)),
+      WishlistFilterOption.brand =>
+        items.where((i) => facet == null || _platform(i) == facet).toList(),
+      WishlistFilterOption.category =>
+        items.where((i) => facet == null || _category(i) == facet).toList(),
     };
 
     switch (sortOption) {
@@ -206,13 +169,15 @@ class _WishlistBody extends StatelessWidget {
               (b.savedAt ?? DateTime(0)).compareTo(a.savedAt ?? DateTime(0)),
         );
       case WishlistSortOption.priceLow:
-        result.sort((a, b) => a.price.compareTo(b.price));
+        result.sort((a, b) => _comparePrice(a, b));
       case WishlistSortOption.priceHigh:
-        result.sort((a, b) => b.price.compareTo(a.price));
+        result.sort((a, b) => _comparePrice(a, b, descending: true));
       case WishlistSortOption.rti:
-        result.sort((a, b) => b.avgRti.compareTo(a.avgRti));
+        result.sort((a, b) => (b.avgRti ?? -1).compareTo(a.avgRti ?? -1));
       case WishlistSortOption.reviewCount:
-        result.sort((a, b) => b.reviewCount.compareTo(a.reviewCount));
+        result.sort(
+          (a, b) => (b.reviewCount ?? -1).compareTo(a.reviewCount ?? -1),
+        );
     }
 
     return result;
@@ -227,6 +192,13 @@ class _WishlistBody extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         _WishlistPageHeader(totalCount: items.length),
+        if (errorMessage != null) ...[
+          Text(errorMessage!, style: const TextStyle(color: AppColors.error)),
+          TextButton(
+            onPressed: togglingProductIds.isEmpty ? onRetry : null,
+            child: const Text('다시 불러오기'),
+          ),
+        ],
         const SizedBox(height: AppSpacing.md),
         if (!isMobile)
           WishlistSummaryCard(summary: summary, totalCount: items.length),
@@ -238,6 +210,30 @@ class _WishlistBody extends StatelessWidget {
           onFilterSelected: onFilterSelected,
           onSortChanged: onSortChanged,
         ),
+        if (selectedFilter == WishlistFilterOption.brand ||
+            selectedFilter == WishlistFilterOption.category)
+          Wrap(
+            spacing: 8,
+            runSpacing: 8,
+            children: [
+              ChoiceChip(
+                label: const Text('전체'),
+                selected: facet == null,
+                onSelected: (_) => onFacetSelected(null),
+              ),
+              for (final value in {
+                for (final item in items)
+                  selectedFilter == WishlistFilterOption.brand
+                      ? _platform(item)
+                      : _category(item),
+              })
+                ChoiceChip(
+                  label: Text(value),
+                  selected: facet == value,
+                  onSelected: (_) => onFacetSelected(value),
+                ),
+            ],
+          ),
         const SizedBox(height: AppSpacing.md),
         if (isMobile)
           WishlistSummaryCard(summary: summary, totalCount: items.length),
@@ -247,7 +243,7 @@ class _WishlistBody extends StatelessWidget {
             padding: const EdgeInsets.symmetric(vertical: AppSpacing.xxxl),
             child: Center(
               child: Text(
-                '선택한 필터에 해당하는 찜 상품이 없습니다.',
+                AppLocalizations.of(context).wishlistFilteredEmpty,
                 style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                   color: AppColors.textSecondary,
                 ),
@@ -321,7 +317,7 @@ class _WishlistPageHeader extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          '찜한 상품',
+          AppLocalizations.of(context).wishlistTitle,
           style: Theme.of(context).textTheme.headlineSmall?.copyWith(
             color: AppColors.textPrimary,
             fontWeight: FontWeight.w900,
@@ -329,7 +325,7 @@ class _WishlistPageHeader extends StatelessWidget {
         ),
         const SizedBox(height: AppSpacing.xxs),
         Text(
-          '저장된 상품을 한눈에 보고 가격과 리뷰 신뢰도를 확인해보세요.',
+          AppLocalizations.of(context).wishlistSubtitle,
           style: Theme.of(
             context,
           ).textTheme.bodyMedium?.copyWith(color: AppColors.textSecondary),
@@ -340,7 +336,7 @@ class _WishlistPageHeader extends StatelessWidget {
             const Icon(Icons.favorite, size: 14, color: AppColors.error),
             const SizedBox(width: AppSpacing.xxs),
             Text(
-              '찜한 상품 $totalCount개',
+              AppLocalizations.of(context).wishlistCount(totalCount),
               style: Theme.of(context).textTheme.labelMedium?.copyWith(
                 color: AppColors.textSecondary,
                 fontWeight: FontWeight.w700,
@@ -372,7 +368,7 @@ class _WishlistEmptyBody extends StatelessWidget {
           ),
           const SizedBox(height: AppSpacing.md),
           Text(
-            '찜한 상품이 없습니다',
+            AppLocalizations.of(context).wishlistEmpty,
             style: Theme.of(context).textTheme.titleMedium?.copyWith(
               color: AppColors.textPrimary,
               fontWeight: FontWeight.w800,
@@ -380,13 +376,16 @@ class _WishlistEmptyBody extends StatelessWidget {
           ),
           const SizedBox(height: AppSpacing.xs),
           Text(
-            '상품 카드의 하트를 눌러 찜 목록에 추가해보세요.',
+            AppLocalizations.of(context).wishlistEmptyDesc,
             style: Theme.of(
               context,
             ).textTheme.bodyMedium?.copyWith(color: AppColors.textSecondary),
           ),
           const SizedBox(height: AppSpacing.lg),
-          OutlinedButton(onPressed: onGoHome, child: const Text('상품 탐색하러 가기')),
+          OutlinedButton(
+            onPressed: onGoHome,
+            child: Text(AppLocalizations.of(context).wishlistBrowse),
+          ),
         ],
       ),
     );
@@ -469,7 +468,10 @@ class _WishlistCardSkeleton extends StatelessWidget {
                       ShimmerBox(width: 36, height: 36, radius: 6),
                       SizedBox(width: AppSpacing.xs),
                       Expanded(
-                        child: SizedBox(height: 36, child: ShimmerBox(radius: 6)),
+                        child: SizedBox(
+                          height: 36,
+                          child: ShimmerBox(radius: 6),
+                        ),
                       ),
                     ],
                   ),

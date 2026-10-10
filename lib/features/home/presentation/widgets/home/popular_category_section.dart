@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:re_view_front/app/theme/app_colors.dart';
 import 'package:re_view_front/app/theme/app_spacing.dart';
 import 'package:re_view_front/features/home/presentation/data/home_content.dart';
+import 'package:re_view_front/l10n/generated/app_localizations.dart';
 import 'package:re_view_front/shared/extensions/context_extensions.dart';
 
 class PopularCategorySection extends StatelessWidget {
@@ -25,7 +26,7 @@ class PopularCategorySection extends StatelessWidget {
             const SizedBox(width: AppSpacing.xs),
             Expanded(
               child: Text(
-                '인기 카테고리',
+                AppLocalizations.of(context).homePopularCategoryTitle,
                 style: Theme.of(context).textTheme.titleMedium,
               ),
             ),
@@ -33,7 +34,7 @@ class PopularCategorySection extends StatelessWidget {
         ),
         const SizedBox(height: AppSpacing.md),
         if (items.isEmpty)
-          const _PopularCategoryEmptyState()
+          _PopularCategoryEmptyState(message: AppLocalizations.of(context).homeCategoryEmpty)
         else
           GridView.builder(
             shrinkWrap: true,
@@ -100,7 +101,9 @@ class PopularCategorySection extends StatelessWidget {
 }
 
 class _PopularCategoryEmptyState extends StatelessWidget {
-  const _PopularCategoryEmptyState();
+  const _PopularCategoryEmptyState({required this.message});
+
+  final String message;
 
   @override
   Widget build(BuildContext context) {
@@ -134,7 +137,7 @@ class _PopularCategoryEmptyState extends StatelessWidget {
             const SizedBox(width: AppSpacing.md),
             Expanded(
               child: Text(
-                '표시할 카테고리가 없습니다.',
+                message,
                 style: Theme.of(context).textTheme.labelLarge?.copyWith(
                   color: AppColors.textSecondary,
                   fontWeight: FontWeight.w700,

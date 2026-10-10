@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:re_view_front/app/theme/app_colors.dart';
 
-String formatSearchPrice(int price) {
+String formatSearchPrice(int? price) {
+  if (price == null) return '가격 정보 없음';
   final digits = price.toString();
   final buffer = StringBuffer();
   for (var i = 0; i < digits.length; i++) {
@@ -14,7 +15,8 @@ String formatSearchPrice(int price) {
   return '$buffer원';
 }
 
-String formatSearchCount(int count) {
+String formatSearchCount(int? count) {
+  if (count == null) return '';
   final digits = count.toString();
   final buffer = StringBuffer();
   for (var i = 0; i < digits.length; i++) {
@@ -27,8 +29,8 @@ String formatSearchCount(int count) {
   return buffer.toString();
 }
 
-Color colorFromHex(String hex) {
-  final normalized = hex.replaceFirst('#', '');
+Color colorFromHex(String? hex) {
+  final normalized = (hex ?? '').replaceFirst('#', '');
   if (normalized.length == 6) {
     final value = int.tryParse('FF$normalized', radix: 16);
     if (value != null) return Color(value);
@@ -36,5 +38,5 @@ Color colorFromHex(String hex) {
     final value = int.tryParse(normalized, radix: 16);
     if (value != null) return Color(value);
   }
-  return AppColors.primary;
+  return AppColors.textTertiary;
 }

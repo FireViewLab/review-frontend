@@ -1,3 +1,5 @@
+import 'package:re_view_front/features/external_product/domain/entities/external_product_ref.dart';
+
 class CartItem {
   const CartItem({
     required this.cartItemId,
@@ -19,17 +21,39 @@ class CartItem {
     this.estimatedDelivery,
     this.stockCount,
     this.maxQuantity = 99,
+    this.summary,
+    this.externalId,
+    this.dataPlatform,
+    this.dataProductId,
+    this.subCategory,
   });
+
+  final ProductSummary? summary;
+  final String? externalId;
+  final String? dataPlatform;
+  final String? dataProductId;
+  final String? subCategory;
+  ExternalProductRef? get externalRef => ExternalProductRef.resolve(
+    dataPlatform: dataPlatform,
+    dataProductId: dataProductId,
+    externalId: externalId,
+  );
+  String get detailPath => externalRef?.routePath ?? '/product/$productId';
+  String? get chatProductId => (externalId?.trim().isNotEmpty ?? false)
+      ? externalId
+      : externalRef?.externalId;
+  ProductRouteContext get routeContext =>
+      ProductRouteContext(chatProductId: chatProductId, summary: summary);
 
   final int cartItemId;
   final int productId;
   final String name;
   final String imageUrl;
-  final int price;
+  final int? price;
   final int quantity;
-  final double avgRti;
-  final String rtiGrade;
-  final String rtiColor;
+  final double? avgRti;
+  final String? rtiGrade;
+  final String? rtiColor;
   final String trustLevel;
   final int shippingFee;
   final int? originalPrice;
@@ -46,6 +70,11 @@ class CartItem {
 
   CartItem copyWith({int? quantity}) {
     return CartItem(
+      summary: summary,
+      externalId: externalId,
+      dataPlatform: dataPlatform,
+      dataProductId: dataProductId,
+      subCategory: subCategory,
       cartItemId: cartItemId,
       productId: productId,
       name: name,

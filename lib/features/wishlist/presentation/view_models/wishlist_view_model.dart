@@ -6,14 +6,23 @@ import 'package:re_view_front/features/wishlist/presentation/providers/wishlist_
 import 'package:re_view_front/features/wishlist/presentation/view_models/wishlist_state.dart';
 
 class WishlistViewModel extends Notifier<WishlistState> {
-  late final GetWishlistUseCase _getWishlistUseCase;
-  late final ToggleWishlistUseCase _toggleWishlistUseCase;
+  late GetWishlistUseCase _getWishlistUseCase;
+  late ToggleWishlistUseCase _toggleWishlistUseCase;
+
+  int _generation = 0;
 
   @override
   WishlistState build() {
+    _generation++;
+    final loggedIn = ref.watch(authSessionProvider).isLoggedIn;
     _getWishlistUseCase = ref.watch(getWishlistUseCaseProvider);
     _toggleWishlistUseCase = ref.watch(toggleWishlistUseCaseProvider);
-    return const WishlistInitial();
+    if (loggedIn) {
+      Future.microtask(() {
+        if (ref.mounted) load();
+      });
+    }
+    return loggedIn ? const WishlistInitial() : const WishlistEmpty();
   }
 
   Future<void> load() async {
@@ -23,16 +32,23 @@ class WishlistViewModel extends Notifier<WishlistState> {
       return;
     }
 
-    state = const WishlistLoading();
+    final generation = ++_generation;
+    final previous = state is WishlistSuccess ? state as WishlistSuccess : null;
+    if (previous == null) state = const WishlistLoading();
 
     final result = await _getWishlistUseCase();
 
-    if (!ref.mounted) return;
+    if (!ref.mounted || generation != _generation) return;
     state = result.when(
       success: (data) => data.items.isEmpty
           ? const WishlistEmpty()
           : WishlistSuccess(items: data.items, summary: data.summary),
-      failure: WishlistFailure.new,
+      failure: (failure) =>
+          previous?.copyWith(
+            togglingProductIds: {},
+            errorMessage: failure.message,
+          ) ??
+          WishlistFailure(failure),
     );
   }
 
@@ -40,23 +56,28 @@ class WishlistViewModel extends Notifier<WishlistState> {
     if (!ref.read(isLoggedInProvider)) return;
 
     final current = state;
-    if (current is! WishlistSuccess) return;
+    if (current is! WishlistSuccess || current.togglingProductIds.isNotEmpty) {
+      return;
+    }
+    final generation = _generation;
 
-    state = current.copyWith(
-      togglingProductIds: {...current.togglingProductIds, productId},
-    );
+    state = current.copyWith(togglingProductIds: {productId}, clearError: true);
 
     final result = await _toggleWishlistUseCase.remove(productId);
 
-    if (!ref.mounted) return;
+    if (!ref.mounted || generation != _generation) return;
 
     result.when(
-      success: (_) => load(),
+      success: (_) {
+        refreshWishlistSnapshot(ref);
+        load();
+      },
       failure: (failure) {
         if (state is WishlistSuccess) {
           final s = state as WishlistSuccess;
           state = s.copyWith(
-            togglingProductIds: s.togglingProductIds.difference({productId}),
+            togglingProductIds: {},
+            errorMessage: failure.message,
           );
         }
       },

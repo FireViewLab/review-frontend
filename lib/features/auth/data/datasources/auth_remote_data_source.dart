@@ -64,7 +64,7 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
       return data['resetToken'] as String;
     }
 
-    throw const FormatException('Invalid password reset response');
+    return '';
   }
 
   @override

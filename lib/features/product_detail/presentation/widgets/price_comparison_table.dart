@@ -32,53 +32,56 @@ class _PriceComparisonTableState extends State<PriceComparisonTable> {
       ),
       child: Column(
         children: [
-          Padding(
-            padding: const EdgeInsets.symmetric(
-              horizontal: AppSpacing.md,
-              vertical: AppSpacing.xs,
+          if (MediaQuery.sizeOf(context).width >= 900 &&
+              MediaQuery.textScalerOf(context).scale(16) <= 24)
+            Padding(
+              padding: const EdgeInsets.symmetric(
+                horizontal: AppSpacing.md,
+                vertical: AppSpacing.xs,
+              ),
+              child: Row(
+                children: [
+                  Expanded(
+                    flex: 3,
+                    child: Text(
+                      '판매처',
+                      style: Theme.of(context).textTheme.labelSmall?.copyWith(
+                        color: AppColors.textSecondary,
+                        fontWeight: FontWeight.w700,
+                      ),
+                    ),
+                  ),
+                  Expanded(
+                    flex: 2,
+                    child: Text(
+                      '최저가',
+                      style: Theme.of(context).textTheme.labelSmall?.copyWith(
+                        color: AppColors.textSecondary,
+                        fontWeight: FontWeight.w700,
+                      ),
+                      textAlign: TextAlign.center,
+                    ),
+                  ),
+                  Expanded(
+                    flex: 3,
+                    child: Text(
+                      '배송',
+                      style: Theme.of(context).textTheme.labelSmall?.copyWith(
+                        color: AppColors.textSecondary,
+                        fontWeight: FontWeight.w700,
+                      ),
+                      textAlign: TextAlign.center,
+                    ),
+                  ),
+                  const SizedBox(width: 80),
+                ],
+              ),
             ),
-            child: Row(
-              children: [
-                Expanded(
-                  flex: 3,
-                  child: Text(
-                    '판매처',
-                    style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                      color: AppColors.textSecondary,
-                      fontWeight: FontWeight.w700,
-                    ),
-                  ),
-                ),
-                Expanded(
-                  flex: 2,
-                  child: Text(
-                    '최저가',
-                    style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                      color: AppColors.textSecondary,
-                      fontWeight: FontWeight.w700,
-                    ),
-                    textAlign: TextAlign.center,
-                  ),
-                ),
-                Expanded(
-                  flex: 3,
-                  child: Text(
-                    '배송',
-                    style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                      color: AppColors.textSecondary,
-                      fontWeight: FontWeight.w700,
-                    ),
-                    textAlign: TextAlign.center,
-                  ),
-                ),
-                const SizedBox(width: 80),
-              ],
-            ),
-          ),
           const Divider(height: 1, color: AppColors.border),
-          for (final item in (_expanded
-              ? widget.comparisons
-              : widget.comparisons.take(3).toList()))
+          for (final item
+              in (_expanded
+                  ? widget.comparisons
+                  : widget.comparisons.take(3).toList()))
             _PriceRow(comparison: item),
           const Divider(height: 1, color: AppColors.border),
           _ExpandButton(
@@ -99,6 +102,48 @@ class _PriceRow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    if (MediaQuery.sizeOf(context).width < 900 ||
+        MediaQuery.textScalerOf(context).scale(16) > 24) {
+      return Padding(
+        padding: const EdgeInsets.all(AppSpacing.md),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            Wrap(
+              spacing: AppSpacing.sm,
+              runSpacing: AppSpacing.xs,
+              crossAxisAlignment: WrapCrossAlignment.center,
+              children: [
+                _SellerLogo(tag: comparison.sellerLogoTag),
+                Text(
+                  comparison.sellerName,
+                  style: Theme.of(context).textTheme.titleSmall,
+                ),
+                if (comparison.isLowest) _LowestBadge(),
+              ],
+            ),
+            const SizedBox(height: AppSpacing.sm),
+            Text(
+              formatSearchPrice(comparison.price),
+              style: Theme.of(
+                context,
+              ).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.w800),
+            ),
+            if (comparison.deliveryInfo.isNotEmpty) ...[
+              const SizedBox(height: AppSpacing.xs),
+              Text(
+                comparison.deliveryInfo,
+                style: Theme.of(
+                  context,
+                ).textTheme.bodySmall?.copyWith(color: AppColors.textSecondary),
+              ),
+            ],
+            const SizedBox(height: AppSpacing.sm),
+            _BuyButton(comparison: comparison),
+          ],
+        ),
+      );
+    }
     return Column(
       children: [
         Padding(
@@ -151,10 +196,7 @@ class _PriceRow extends StatelessWidget {
                   textAlign: TextAlign.center,
                 ),
               ),
-              SizedBox(
-                width: 84,
-                child: _BuyButton(comparison: comparison),
-              ),
+              SizedBox(width: 84, child: _BuyButton(comparison: comparison)),
             ],
           ),
         ),
@@ -237,7 +279,7 @@ class _BuyButton extends StatelessWidget {
     const shape = RoundedRectangleBorder(
       borderRadius: BorderRadius.all(Radius.circular(8)),
     );
-    const buttonSize = Size(80, 32);
+    const buttonSize = Size(80, 44);
     const padding = EdgeInsets.symmetric(horizontal: AppSpacing.sm);
     const tapTarget = MaterialTapTargetSize.shrinkWrap;
 
@@ -257,7 +299,7 @@ class _BuyButton extends StatelessWidget {
           elevation: 0,
           padding: padding,
           minimumSize: buttonSize,
-          maximumSize: const Size(double.infinity, 32),
+
           tapTargetSize: tapTarget,
           shape: shape,
         ),
@@ -279,7 +321,7 @@ class _BuyButton extends StatelessWidget {
         side: const BorderSide(color: AppColors.primary),
         padding: padding,
         minimumSize: buttonSize,
-        maximumSize: const Size(double.infinity, 32),
+
         tapTargetSize: tapTarget,
         shape: shape,
       ),
@@ -321,11 +363,13 @@ class _ExpandButton extends StatelessWidget {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text(
-              '전체 $totalCount개 판매처 가격 비교',
-              style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                color: AppColors.textSecondary,
-                fontWeight: FontWeight.w700,
+            Flexible(
+              child: Text(
+                '전체 $totalCount개 판매처 가격 비교',
+                style: Theme.of(context).textTheme.labelSmall?.copyWith(
+                  color: AppColors.textSecondary,
+                  fontWeight: FontWeight.w700,
+                ),
               ),
             ),
             const SizedBox(width: AppSpacing.xxs),

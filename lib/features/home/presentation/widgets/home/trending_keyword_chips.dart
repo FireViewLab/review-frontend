@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:re_view_front/app/theme/app_colors.dart';
 import 'package:re_view_front/app/theme/app_spacing.dart';
+import 'package:re_view_front/l10n/generated/app_localizations.dart';
 
 class TrendingKeywordChips extends StatelessWidget {
   const TrendingKeywordChips({
@@ -15,10 +16,10 @@ class TrendingKeywordChips extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return _SectionBlock(
-      title: '지금 많이 찾는 키워드',
+      title: AppLocalizations.of(context).homeTrendingTitle,
       icon: Icons.auto_awesome,
       child: keywords.isEmpty
-          ? const _KeywordEmptyState()
+          ? _KeywordEmptyState(message: AppLocalizations.of(context).homeKeywordsEmpty)
           : Wrap(
               spacing: AppSpacing.sm,
               runSpacing: AppSpacing.sm,
@@ -38,7 +39,9 @@ class TrendingKeywordChips extends StatelessWidget {
 }
 
 class _KeywordEmptyState extends StatelessWidget {
-  const _KeywordEmptyState();
+  const _KeywordEmptyState({required this.message});
+
+  final String message;
 
   @override
   Widget build(BuildContext context) {
@@ -54,7 +57,7 @@ class _KeywordEmptyState extends StatelessWidget {
           vertical: AppSpacing.sm,
         ),
         child: Text(
-          '표시할 키워드가 없습니다.',
+          message,
           style: Theme.of(context).textTheme.labelLarge?.copyWith(
             color: AppColors.textSecondary,
             fontWeight: FontWeight.w600,

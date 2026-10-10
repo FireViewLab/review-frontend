@@ -168,8 +168,8 @@ class ReviewAnalysisItemDto {
     final bases = reasons
         .map(
           (r) => RtiJudgmentBasis(
-            label: r.message,
-            description: _codeToDescription(r.code),
+            label: r.message.trim().isNotEmpty ? r.message : r.code,
+            description: r.code,
             percentage: rti,
             iconType: _codeToIconType(r.code),
             color: color,
@@ -214,22 +214,6 @@ class ReviewAnalysisItemDto {
             RtiSummaryTag(label: '위험 리뷰', type: RtiTagType.warning),
           ],
         _ => const [],
-      };
-
-  static String _codeToDescription(String code) => switch (code) {
-        'REPETITIVE_KEYWORD' => '반복 표현 패턴이 감지되었습니다.',
-        'PURCHASE_NOT_VERIFIED' => '구매 이력이 확인되지 않았습니다.',
-        'MULTIPLE_REVIEWS_SAME_DAY' => '동일 작성자의 같은 날짜 다수 리뷰 작성이 감지되었습니다.',
-        'NO_IMAGE_ATTACHED' => '이미지 첨부가 없는 리뷰입니다.',
-        'SIMILAR_REVIEW_CLUSTER' => '유사 리뷰 네트워크 군집이 탐지되었습니다.',
-        'SIMILAR_REVIEW_PATTERN' => '일부 유사 리뷰 패턴이 탐지되었습니다.',
-        'EXCESSIVE_EXCLAMATION' => '과도한 느낌표 사용 패턴이 감지되었습니다.',
-        'SHORT_REVIEW' => '내용이 지나치게 짧은 리뷰입니다.',
-        'LOW_QUALITY_SCORE' => '리뷰 품질 점수가 낮습니다.',
-        'PURCHASE_UNKNOWN' => '구매 인증 여부가 불명확합니다.',
-        'FREE_TRIAL_REVIEW' => '체험단 리뷰로 의심됩니다.',
-        'REPURCHASE_SIGNAL' => '재구매 신호가 감지되었습니다.',
-        _ => code,
       };
 
   static String _codeToIconType(String code) => switch (code) {
