@@ -1,3 +1,6 @@
+import 'package:re_view_front/features/recent_products/data/repositories/recent_products_repository_impl.dart';
+import 'package:re_view_front/features/recent_products/domain/repositories/recent_products_repository.dart';
+import 'package:re_view_front/features/search/domain/entities/search_result_product.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:re_view_front/core/providers/core_providers.dart';
 import 'package:re_view_front/features/external_product/domain/entities/external_product_ref.dart';
@@ -57,6 +60,7 @@ class RecentViewRecorder extends Notifier<RecentViewStatus> {
       success: (_) {
         state = RecentViewStatus.recorded;
         ref.invalidate(homeDashboardViewModelProvider);
+        ref.invalidate(recentProductsProvider);
       },
       failure: (_) {
         state = RecentViewStatus.failed;
@@ -64,3 +68,22 @@ class RecentViewRecorder extends Notifier<RecentViewStatus> {
     );
   }
 }
+
+final recentProductsRepositoryProvider = Provider<RecentProductsRepository>(
+  (ref) => RecentProductsRepositoryImpl(
+    ref.watch(apiClientProvider),
+    ref.watch(appConfigProvider),
+  ),
+);
+
+final recentProductsProvider =
+    FutureProvider.autoDispose<List<SearchResultProduct>>((ref) async {
+      if (!ref.watch(authSessionProvider).isLoggedIn) return const [];
+      final result = await ref
+          .read(recentProductsRepositoryProvider)
+          .getRecentProducts();
+      return result.when(
+        success: (items) => items,
+        failure: (failure) => throw failure,
+      );
+    });

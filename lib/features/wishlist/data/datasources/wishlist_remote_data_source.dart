@@ -41,8 +41,11 @@ class WishlistRemoteDataSourceImpl implements WishlistRemoteDataSource {
     }
 
     if (body is Map<String, dynamic>) {
-      final rawItems = body['items'] ?? body['data'] ?? body['content'] ?? [];
-      final items = (rawItems as List<dynamic>)
+      final rawItems = body['items'] ?? body['data'] ?? body['content'];
+      if (rawItems is! List) {
+        throw const FormatException('Missing wishlist items');
+      }
+      final items = rawItems
           .whereType<Map<String, dynamic>>()
           .map(WishlistItemDto.fromJson)
           .toList();
@@ -99,6 +102,10 @@ class WishlistRemoteDataSourceImpl implements WishlistRemoteDataSource {
     List<WishlistItemDto> items,
   ) {
     return WishlistSummary(
+      hasPriceDropInformation:
+          _readInt(json, ['priceDropCount', 'priceDrop', 'dropCount']) !=
+              null ||
+          items.any((item) => item.priceDropStatus != null),
       priceDropCount:
           _readInt(json, ['priceDropCount', 'priceDrop', 'dropCount']) ??
           items.where((i) => i.isPriceDrop).length,
@@ -113,6 +120,9 @@ class WishlistRemoteDataSourceImpl implements WishlistRemoteDataSource {
 
   WishlistSummary _computeSummary(List<WishlistItemDto> items) {
     return WishlistSummary(
+      hasPriceDropInformation: items.any(
+        (item) => item.priceDropStatus != null,
+      ),
       priceDropCount: items.where((i) => i.isPriceDrop).length,
       newAlertCount: items.where((i) => i.isNewAlert).length,
       totalReviewCount: items.fold(0, (sum, i) => sum + (i.reviewCount ?? 0)),

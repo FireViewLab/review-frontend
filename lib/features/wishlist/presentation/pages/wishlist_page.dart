@@ -30,12 +30,6 @@ class _WishlistPageState extends ConsumerState<WishlistPage> {
   String? _facet;
 
   @override
-  void initState() {
-    super.initState();
-    Future.microtask(() => ref.read(wishlistViewModelProvider.notifier).load());
-  }
-
-  @override
   Widget build(BuildContext context) {
     final wishlistState = ref.watch(wishlistViewModelProvider);
 

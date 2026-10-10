@@ -1,3 +1,5 @@
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:re_view_front/features/notifications/presentation/widgets/notification_settings_summary.dart';
 // ignore_for_file: use_key_in_widget_constructors
 
 import 'package:flutter/material.dart';
@@ -6,27 +8,18 @@ import 'package:re_view_front/app/theme/app_spacing.dart';
 import 'package:re_view_front/l10n/generated/app_localizations.dart';
 import 'package:re_view_front/features/my_page/presentation/widgets/my_page/my_page_common.dart';
 
-class MyPageTrustSummaryPanel extends StatefulWidget {
+class MyPageTrustSummaryPanel extends ConsumerWidget {
   const MyPageTrustSummaryPanel({
     required this.savedAverageRti,
     required this.riskyCount,
   });
 
   final double? savedAverageRti;
-  final int riskyCount;
+  final int? riskyCount;
 
   @override
-  State<MyPageTrustSummaryPanel> createState() =>
-      MyPageTrustSummaryPanelState();
-}
-
-class MyPageTrustSummaryPanelState extends State<MyPageTrustSummaryPanel> {
-  bool _highlightRiskyReviews = true;
-  bool _wishlistNotifications = true;
-
-  @override
-  Widget build(BuildContext context) {
-    final score = widget.savedAverageRti?.clamp(0, 100).toDouble();
+  Widget build(BuildContext context, WidgetRef ref) {
+    final score = savedAverageRti?.clamp(0, 100).toDouble();
     final scoreText = score == null ? '-' : '${score.round()}점';
 
     return MyPagePanel(
@@ -69,63 +62,19 @@ class MyPageTrustSummaryPanelState extends State<MyPageTrustSummaryPanel> {
           Text(
             score == null
                 ? AppLocalizations.of(context).myPageRtiSaveHint
-                : widget.riskyCount == 0
+                : riskyCount == null
+                ? '찜 상품의 분석 정보를 확인할 수 없어요.'
+                : riskyCount == 0
                 ? AppLocalizations.of(context).myPageRiskyNone
-                : AppLocalizations.of(
-                    context,
-                  ).myPageRiskyCount(widget.riskyCount),
+                : AppLocalizations.of(context).myPageRiskyCount(riskyCount!),
             style: Theme.of(context).textTheme.labelMedium?.copyWith(
               color: AppColors.textSecondary,
               fontWeight: FontWeight.w700,
             ),
           ),
+          const Text('찜한 상품 중 분석된 RTI의 평균과 서버 주의 등급 기준입니다.'),
           const Divider(color: AppColors.border),
-          MyPageSettingRow(
-            label: AppLocalizations.of(context).myPageHighlightLowRti,
-            enabled: _highlightRiskyReviews,
-            onChanged: (value) =>
-                setState(() => _highlightRiskyReviews = value),
-          ),
-          const Divider(color: AppColors.border),
-          MyPageSettingRow(
-            label: AppLocalizations.of(context).myPageWishlistAlertLabel,
-            enabled: _wishlistNotifications,
-            onChanged: (value) =>
-                setState(() => _wishlistNotifications = value),
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-class MyPageSettingRow extends StatelessWidget {
-  const MyPageSettingRow({
-    required this.label,
-    required this.enabled,
-    required this.onChanged,
-  });
-
-  final String label;
-  final bool enabled;
-  final ValueChanged<bool> onChanged;
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: AppSpacing.xs),
-      child: Row(
-        children: [
-          Expanded(
-            child: Text(
-              label,
-              style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                color: AppColors.textPrimary,
-                fontWeight: FontWeight.w700,
-              ),
-            ),
-          ),
-          Switch(value: enabled, onChanged: onChanged),
+          const NotificationSettingsSummary(),
         ],
       ),
     );

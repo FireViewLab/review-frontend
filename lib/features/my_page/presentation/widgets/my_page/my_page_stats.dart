@@ -19,10 +19,10 @@ class MyPageStatGrid extends StatelessWidget {
     required this.onNotificationTap,
   });
 
-  final int wishlistCount;
-  final int recentCount;
-  final int riskyCount;
-  final int notificationCount;
+  final int? wishlistCount;
+  final int? recentCount;
+  final int? riskyCount;
+  final int? notificationCount;
   final VoidCallback onWishlistTap;
   final VoidCallback onRecentTap;
   final VoidCallback onReviewTap;
@@ -41,25 +41,25 @@ class MyPageStatGrid extends StatelessWidget {
       MyPageStatItem(
         icon: Icons.favorite_border,
         label: l10n.myPageSideNavWishlist,
-        value: wishlistCount.toString(),
+        value: wishlistCount?.toString() ?? '—',
         onTap: onWishlistTap,
       ),
       MyPageStatItem(
         icon: Icons.history,
         label: l10n.myPageSideNavRecentlyViewed,
-        value: recentCount.toString(),
+        value: recentCount?.toString() ?? '—',
         onTap: onRecentTap,
       ),
       MyPageStatItem(
         icon: Icons.warning_amber_rounded,
         label: l10n.myPageSideNavRiskyProducts,
-        value: riskyCount.toString(),
+        value: riskyCount?.toString() ?? '—',
         onTap: onReviewTap,
       ),
       MyPageStatItem(
         icon: Icons.notifications_none,
         label: l10n.myPageSideNavAlerts,
-        value: notificationCount.toString(),
+        value: notificationCount?.toString() ?? '—',
         onTap: onNotificationTap,
       ),
     ];

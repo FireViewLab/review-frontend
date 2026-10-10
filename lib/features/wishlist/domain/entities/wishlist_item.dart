@@ -15,6 +15,7 @@ class WishlistItem {
     required this.avgRating,
     required this.isPriceDrop,
     required this.isNewAlert,
+    this.priceDropStatus,
     this.platform,
     this.savedAt,
     this.summary,
@@ -52,6 +53,18 @@ class WishlistItem {
   final String? rtiColor;
   final int? reviewCount;
   final double? avgRating;
+
+  /// The server owns grade thresholds. An unanalysed product is never a warning.
+  bool get needsAttention =>
+      avgRti != null &&
+      avgRti!.isFinite &&
+      avgRti! >= 0 &&
+      avgRti! <= 100 &&
+      const {'SUSPICIOUS', 'DANGER'}.contains(rtiGrade?.trim().toUpperCase());
+
+  /// Null means the server did not provide a comparison, not a confirmed false.
+  final bool? priceDropStatus;
+  bool get hasPriceDropInformation => priceDropStatus != null || isPriceDrop;
   final bool isPriceDrop;
   final bool isNewAlert;
   final String? platform;

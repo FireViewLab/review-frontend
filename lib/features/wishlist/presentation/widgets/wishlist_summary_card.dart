@@ -5,7 +5,11 @@ import 'package:re_view_front/features/wishlist/domain/entities/wishlist_summary
 import 'package:re_view_front/l10n/generated/app_localizations.dart';
 
 class WishlistSummaryCard extends StatelessWidget {
-  const WishlistSummaryCard({super.key, required this.summary, required this.totalCount});
+  const WishlistSummaryCard({
+    super.key,
+    required this.summary,
+    required this.totalCount,
+  });
 
   final WishlistSummary summary;
   final int totalCount;
@@ -33,7 +37,11 @@ class WishlistSummaryCard extends StatelessWidget {
           children: [
             Row(
               children: [
-                const Icon(Icons.bar_chart_rounded, size: 16, color: AppColors.textSecondary),
+                const Icon(
+                  Icons.bar_chart_rounded,
+                  size: 16,
+                  color: AppColors.textSecondary,
+                ),
                 const SizedBox(width: AppSpacing.xxs),
                 Text(
                   AppLocalizations.of(context).wishlistSummaryTitle,
@@ -62,8 +70,12 @@ class WishlistSummaryCard extends StatelessWidget {
                     icon: Icons.trending_down_rounded,
                     iconColor: AppColors.error,
                     bgColor: AppColors.errorSoft,
-                    value: '${summary.priceDropCount}개',
-                    label: AppLocalizations.of(context).wishlistSummaryPriceDrop,
+                    value: summary.hasPriceDropInformation
+                        ? '${summary.priceDropCount}개'
+                        : '정보 없음',
+                    label: AppLocalizations.of(
+                      context,
+                    ).wishlistSummaryPriceDrop,
                   ),
                 ),
                 const SizedBox(width: AppSpacing.xs),
@@ -83,7 +95,9 @@ class WishlistSummaryCard extends StatelessWidget {
                     iconColor: AppColors.textSecondary,
                     bgColor: AppColors.surfaceMuted,
                     value: '${summary.totalReviewCount}개',
-                    label: AppLocalizations.of(context).wishlistSummaryTotalReview,
+                    label: AppLocalizations.of(
+                      context,
+                    ).wishlistSummaryTotalReview,
                   ),
                 ),
               ],

@@ -49,7 +49,9 @@ class NotificationRemoteDataSourceImpl implements NotificationRemoteDataSource {
     return NotificationPage(
       items: [
         for (final item in content.whereType<Map<String, dynamic>>())
-          AppNotificationDto(item).toEntity(),
+          if (item['notificationId'] is num &&
+              (item['notificationId'] as num) > 0)
+            AppNotificationDto(item).toEntity(),
       ],
       page: page,
       isLast: body['last'] != false,
