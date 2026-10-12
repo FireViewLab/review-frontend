@@ -1,20 +1,11 @@
 {
   "@@locale": "ko",
 
-  "appTitle": "Re:view",
-  "@appTitle": { "description": "앱 이름" },
-
   "navHome": "홈",
   "@navHome": { "description": "홈 네비게이션 항목" },
 
   "navSearch": "검색",
   "@navSearch": { "description": "검색 네비게이션 항목" },
-
-  "navCart": "장바구니",
-  "@navCart": { "description": "장바구니 네비게이션 항목" },
-
-  "navWishlist": "저장한 상품",
-  "@navWishlist": { "description": "위시리스트 네비게이션 항목" },
 
   "navMyPage": "마이페이지",
   "@navMyPage": { "description": "마이페이지 네비게이션 항목" },
@@ -25,71 +16,20 @@
   "actionSave": "저장",
   "@actionSave": { "description": "저장 버튼" },
 
-  "actionCancel": "취소",
-  "@actionCancel": { "description": "취소 버튼" },
-
   "actionConfirm": "확인",
   "@actionConfirm": { "description": "확인 버튼" },
 
   "actionRetry": "다시 시도",
   "@actionRetry": { "description": "재시도 버튼" },
 
-  "actionBack": "뒤로",
-  "@actionBack": { "description": "뒤로가기 버튼" },
-
   "actionLogin": "로그인",
   "@actionLogin": { "description": "로그인 버튼" },
-
-  "actionLogout": "로그아웃",
-  "@actionLogout": { "description": "로그아웃 버튼" },
-
-  "actionSignup": "회원가입",
-  "@actionSignup": { "description": "회원가입 버튼" },
 
   "actionViewAll": "전체 보기",
   "@actionViewAll": { "description": "전체 보기 버튼" },
 
-  "stateLoading": "불러오는 중입니다.",
-  "@stateLoading": { "description": "로딩 메시지" },
-
-  "stateError": "오류가 발생했습니다.",
-  "@stateError": { "description": "오류 메시지" },
-
-  "stateEmpty": "표시할 항목이 없습니다.",
-  "@stateEmpty": { "description": "빈 상태 메시지" },
-
-  "settingsSaved": "설정이 저장되었습니다.",
-  "@settingsSaved": { "description": "설정 저장 완료 메시지" },
-
-  "settingsLanguage": "언어",
-  "@settingsLanguage": { "description": "언어 설정 레이블" },
-
   "settingsNotifications": "알림 설정",
   "@settingsNotifications": { "description": "알림 설정 섹션 제목" },
-
-  "settingsFilters": "분석 필터 설정",
-  "@settingsFilters": { "description": "분석 필터 설정 섹션 제목" },
-
-  "langKorean": "한국어",
-  "@langKorean": { "description": "언어명 한국어" },
-
-  "langEnglish": "English",
-  "@langEnglish": { "description": "언어명 영어" },
-
-  "langJapanese": "日本語",
-  "@langJapanese": { "description": "언어명 일본어" },
-
-  "langChinese": "中文(简体)",
-  "@langChinese": { "description": "언어명 중국어 간체" },
-
-  "sideNavOrders": "주문/배송",
-  "@sideNavOrders": { "description": "사이드 네비게이션 주문/배송" },
-
-  "sideNavRecentlyViewed": "최근 본 상품",
-  "@sideNavRecentlyViewed": { "description": "사이드 네비게이션 최근 본 상품" },
-
-  "sideNavReviewActivity": "리뷰 활동",
-  "@sideNavReviewActivity": { "description": "사이드 네비게이션 리뷰 활동" },
 
   "sideNavAccountSettings": "계정 설정",
   "@sideNavAccountSettings": { "description": "사이드 네비게이션 계정 설정" },
@@ -107,63 +47,6 @@
       "nickname": { "type": "String" }
     }
   },
-
-  "settingsNotificationEmail": "이메일 알림 받기",
-  "@settingsNotificationEmail": { "description": "이메일 알림 토글 레이블" },
-
-  "settingsNotificationEmailDesc": "상품 가격 변동, 리뷰 업데이트를 이메일로 받아요.",
-  "@settingsNotificationEmailDesc": { "description": "이메일 알림 토글 설명" },
-
-  "settingsNotificationPush": "앱 푸시 알림 받기",
-  "@settingsNotificationPush": { "description": "푸시 알림 토글 레이블" },
-
-  "settingsNotificationPushDesc": "저장한 상품의 실시간 알림을 브라우저에서 받아요.",
-  "@settingsNotificationPushDesc": { "description": "푸시 알림 토글 설명" },
-
-  "settingsNotificationAdEmail": "이메일 광고 수신",
-  "@settingsNotificationAdEmail": { "description": "광고 이메일 토글 레이블" },
-
-  "settingsNotificationAdEmailDesc": "프로모션 및 맞춤 혜택 정보를 이메일로 받아요.",
-  "@settingsNotificationAdEmailDesc": { "description": "광고 이메일 토글 설명" },
-
-  "settingsFilterHighlightLowRti": "주의 상품 먼저 보기",
-  "@settingsFilterHighlightLowRti": { "description": "주의 상품 강조 토글 레이블" },
-
-  "settingsFilterHighlightLowRtiDesc": "리뷰 신뢰도가 낮은 상품을 목록 상단에 표시해요.",
-  "@settingsFilterHighlightLowRtiDesc": { "description": "주의 상품 강조 토글 설명" },
-
-  "settingsFilterWishlistAlert": "저장 상품 알림 받기",
-  "@settingsFilterWishlistAlert": { "description": "저장 상품 알림 토글 레이블" },
-
-  "settingsFilterWishlistAlertDesc": "관심 상품의 RTI 변화가 있을 때 알림을 드려요.",
-  "@settingsFilterWishlistAlertDesc": { "description": "저장 상품 알림 토글 설명" },
-
-  "settingsFilterCategory": "카테고리 필터",
-  "@settingsFilterCategory": { "description": "카테고리 필터 레이블" },
-
-  "settingsFilterCategoryDesc": "선택한 카테고리 상품을 기준으로 분석 결과를 우선 표시해요.",
-  "@settingsFilterCategoryDesc": { "description": "카테고리 필터 설명" },
-
-  "settingsFilterCategoryAll": "전체 카테고리",
-  "@settingsFilterCategoryAll": { "description": "카테고리 전체 선택 옵션" },
-
-  "settingsFilterMinReview": "리뷰 최소 개수",
-  "@settingsFilterMinReview": { "description": "최소 리뷰 개수 필터 레이블" },
-
-  "settingsFilterMinReviewDesc": "이 개수 이상 리뷰가 있는 상품만 분석 결과에 반영해요.",
-  "@settingsFilterMinReviewDesc": { "description": "최소 리뷰 개수 필터 설명" },
-
-  "settingsFilterMinReviewSuffix": "개",
-  "@settingsFilterMinReviewSuffix": { "description": "리뷰 개수 단위" },
-
-  "settingsFilterLowRti": "낮은 RTI 경고 기준",
-  "@settingsFilterLowRti": { "description": "낮은 RTI 경고 기준 레이블" },
-
-  "settingsFilterLowRtiDesc": "RTI 점수가 이 값 이하면 주의 상품으로 분류해요.",
-  "@settingsFilterLowRtiDesc": { "description": "낮은 RTI 경고 기준 설명" },
-
-  "settingsFilterLowRtiSuffix": "점",
-  "@settingsFilterLowRtiSuffix": { "description": "RTI 점수 단위" },
 
   "settingsAccountTitle": "계정",
   "@settingsAccountTitle": { "description": "계정 섹션 제목" },
@@ -282,9 +165,6 @@
   "wishlistFilterLowestPrice": "최저 가격",
   "@wishlistFilterLowestPrice": { "description": "최저 가격 필터 옵션" },
 
-  "wishlistFilterBrand": "브랜드",
-  "@wishlistFilterBrand": { "description": "브랜드 필터 옵션" },
-
   "wishlistFilterCategory": "카테고리",
   "@wishlistFilterCategory": { "description": "카테고리 필터 옵션" },
 
@@ -305,9 +185,6 @@
 
   "myPageDefaultName": "사용자",
   "@myPageDefaultName": { "description": "닉네임 미설정 시 기본 이름" },
-
-  "myPageMemberBasic": "일반 회원 (무료)",
-  "@myPageMemberBasic": { "description": "일반 회원 표시 문구" },
 
   "myPageSideNavMyPage": "마이페이지",
   "@myPageSideNavMyPage": { "description": "사이드 네비게이션 마이페이지" },
@@ -333,9 +210,6 @@
   "myPageRecentActivityEmpty": "최근 활동이 없습니다.",
   "@myPageRecentActivityEmpty": { "description": "최근 활동 빈 상태" },
 
-  "myPageRecentLabel": "최근",
-  "@myPageRecentLabel": { "description": "최근 날짜 표시" },
-
   "myPageReviewTrustSummary": "리뷰 신뢰 요약",
   "@myPageReviewTrustSummary": { "description": "리뷰 신뢰 요약 섹션 제목" },
 
@@ -355,12 +229,6 @@
       "count": { "type": "int" }
     }
   },
-
-  "myPageHighlightLowRti": "주의 상품 먼저 보기",
-  "@myPageHighlightLowRti": { "description": "주의 상품 먼저 보기 레이블" },
-
-  "myPageWishlistAlertLabel": "저장 상품 알림 받기",
-  "@myPageWishlistAlertLabel": { "description": "저장 상품 알림 레이블" },
 
   "myPageAccountInfo": "계정 정보",
   "@myPageAccountInfo": { "description": "계정 정보 섹션 제목" },
@@ -582,12 +450,6 @@
   "adminDashboardTitle": "운영 대시보드",
   "@adminDashboardTitle": { "description": "관리자 대시보드 페이지 타이틀" },
 
-  "adminPlaceholderMessage": "준비 중인 화면입니다.",
-  "@adminPlaceholderMessage": { "description": "구현 대기 중인 관리자 페이지 안내" },
-
-  "adminTopBarSearchHint": "사용자, 리뷰, 신고 ID로 검색",
-  "@adminTopBarSearchHint": { "description": "관리자 상단 검색바 안내 문구" },
-
   "adminTopBarNotifications": "알림",
   "@adminTopBarNotifications": { "description": "관리자 상단 알림 벨 툴팁" },
 
@@ -603,17 +465,11 @@
   "chatNewConversation": "새 대화",
   "@chatNewConversation": { "description": "새 대화 시작 버튼" },
 
-  "chatClose": "닫기",
-  "@chatClose": { "description": "패널 닫기 버튼" },
-
   "chatInputHint": "질문을 입력하세요",
   "@chatInputHint": { "description": "질문 입력창 힌트" },
 
   "chatSend": "보내기",
   "@chatSend": { "description": "전송 버튼" },
-
-  "chatProductContext": "이 상품의 리뷰를 바탕으로 답해요",
-  "@chatProductContext": { "description": "상품 상세에서 연 대화 안내" },
 
   "chatOtherProductNotice": "현재 화면과 다른 대화 문맥을 유지하고 있어요.",
   "@chatOtherProductNotice": { "description": "현재 화면 상품과 대화 상품이 다를 때 안내" },
@@ -708,7 +564,6 @@
   "settingsAutoAnalysisDesc": "위험 리뷰를 클릭하면 분석 상세를 자동으로 엽니다.",
   "settingsDataAnalysis": "리뷰 분석 데이터 활용 동의",
   "settingsDataAnalysisDesc": "리뷰 분석을 위한 데이터 활용에 동의합니다.",
-
 
   "notificationsTitle": "알림",
   "@notificationsTitle": { "description": "알림 화면 제목" },
@@ -873,7 +728,6 @@
   "adminApplied": "반영",
   "adminDismissed": "기각",
 
-
   "sessionExpiredMessage": "로그인이 만료됐어요. 다시 로그인해 주세요.",
   "@sessionExpiredMessage": { "description": "401로 로그아웃됐을 때 알림" },
 
@@ -889,7 +743,6 @@
   "settingsLoginMethodNaver": "네이버",
   "@settingsLoginMethodNaver": { "description": "네이버 로그인 방식" },
   "chatLauncherLabel": "AI에게 물어보기",
-  "chatLauncherProductLabel": "이 상품 리뷰 물어보기",
   "chatProductCta": "AI에게 이 상품 물어보기",
   "chatEmptyProductTitle": "이 상품, 무엇이 궁금하세요?",
   "chatCopy": "복사",
@@ -935,7 +788,6 @@
   "planChangeUnavailable": "요금제 변경은 아직 준비 중이에요.",
   "planChangeFailed": "요금제를 바꾸지 못했어요. 다시 시도해 주세요.",
   "planLoadFailed": "요금제 정보를 불러오지 못했어요.",
-  "planRetry": "다시 시도",
   "myPageSideNavPlan": "요금제",
   "chatViewPlans": "요금제 보기",
   "extProductCollectingTitle": "상품 정보를 가져오고 있어요",

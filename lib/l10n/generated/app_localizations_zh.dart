@@ -9,19 +9,10 @@ class AppLocalizationsZh extends AppLocalizations {
   AppLocalizationsZh([String locale = 'zh']) : super(locale);
 
   @override
-  String get appTitle => 'Re:view';
-
-  @override
   String get navHome => '首页';
 
   @override
   String get navSearch => '搜索';
-
-  @override
-  String get navCart => '购物车';
-
-  @override
-  String get navWishlist => '收藏';
 
   @override
   String get navMyPage => '我的页面';
@@ -33,70 +24,19 @@ class AppLocalizationsZh extends AppLocalizations {
   String get actionSave => '保存';
 
   @override
-  String get actionCancel => '取消';
-
-  @override
   String get actionConfirm => '确认';
 
   @override
   String get actionRetry => '重试';
 
   @override
-  String get actionBack => '返回';
-
-  @override
   String get actionLogin => '登录';
-
-  @override
-  String get actionLogout => '退出登录';
-
-  @override
-  String get actionSignup => '注册';
 
   @override
   String get actionViewAll => '查看全部';
 
   @override
-  String get stateLoading => '加载中…';
-
-  @override
-  String get stateError => '发生错误。';
-
-  @override
-  String get stateEmpty => '暂无内容。';
-
-  @override
-  String get settingsSaved => '设置已保存。';
-
-  @override
-  String get settingsLanguage => '语言';
-
-  @override
   String get settingsNotifications => '通知设置';
-
-  @override
-  String get settingsFilters => '分析筛选设置';
-
-  @override
-  String get langKorean => '한국어';
-
-  @override
-  String get langEnglish => 'English';
-
-  @override
-  String get langJapanese => '日本語';
-
-  @override
-  String get langChinese => '中文(简体)';
-
-  @override
-  String get sideNavOrders => '订单/配送';
-
-  @override
-  String get sideNavRecentlyViewed => '最近浏览的商品';
-
-  @override
-  String get sideNavReviewActivity => '评价活动';
 
   @override
   String get sideNavAccountSettings => '账户设置';
@@ -111,63 +51,6 @@ class AppLocalizationsZh extends AppLocalizations {
   String settingsSubtitleNamed(String nickname) {
     return '管理$nickname的通知、过滤器和账户设置。';
   }
-
-  @override
-  String get settingsNotificationEmail => '接收邮件通知';
-
-  @override
-  String get settingsNotificationEmailDesc => '通过邮件接收商品价格变动和评价更新。';
-
-  @override
-  String get settingsNotificationPush => '接收应用推送通知';
-
-  @override
-  String get settingsNotificationPushDesc => '在浏览器中接收已保存商品的实时通知。';
-
-  @override
-  String get settingsNotificationAdEmail => '接收邮件广告';
-
-  @override
-  String get settingsNotificationAdEmailDesc => '通过邮件接收促销和专属优惠信息。';
-
-  @override
-  String get settingsFilterHighlightLowRti => '优先显示注意商品';
-
-  @override
-  String get settingsFilterHighlightLowRtiDesc => '将评价可信度较低的商品显示在列表顶部。';
-
-  @override
-  String get settingsFilterWishlistAlert => '接收已保存商品通知';
-
-  @override
-  String get settingsFilterWishlistAlertDesc => '当收藏商品的RTI发生变化时发送通知。';
-
-  @override
-  String get settingsFilterCategory => '分类过滤器';
-
-  @override
-  String get settingsFilterCategoryDesc => '优先显示所选分类商品的分析结果。';
-
-  @override
-  String get settingsFilterCategoryAll => '全部分类';
-
-  @override
-  String get settingsFilterMinReview => '最低评价数量';
-
-  @override
-  String get settingsFilterMinReviewDesc => '仅将拥有该数量以上评价的商品纳入分析结果。';
-
-  @override
-  String get settingsFilterMinReviewSuffix => '条';
-
-  @override
-  String get settingsFilterLowRti => '低RTI警告标准';
-
-  @override
-  String get settingsFilterLowRtiDesc => 'RTI分数低于此值的商品将被分类为注意商品。';
-
-  @override
-  String get settingsFilterLowRtiSuffix => '分';
 
   @override
   String get settingsAccountTitle => '账户';
@@ -278,9 +161,6 @@ class AppLocalizationsZh extends AppLocalizations {
   String get wishlistFilterLowestPrice => '最低价格';
 
   @override
-  String get wishlistFilterBrand => '品牌';
-
-  @override
   String get wishlistFilterCategory => '分类';
 
   @override
@@ -300,9 +180,6 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get myPageDefaultName => '用户';
-
-  @override
-  String get myPageMemberBasic => '普通会员（免费）';
 
   @override
   String get myPageSideNavMyPage => '我的页面';
@@ -329,9 +206,6 @@ class AppLocalizationsZh extends AppLocalizations {
   String get myPageRecentActivityEmpty => '暂无最近活动。';
 
   @override
-  String get myPageRecentLabel => '最近';
-
-  @override
   String get myPageReviewTrustSummary => '评价信任概览';
 
   @override
@@ -347,12 +221,6 @@ class AppLocalizationsZh extends AppLocalizations {
   String myPageRiskyCount(int count) {
     return '请查看$count件注意商品。';
   }
-
-  @override
-  String get myPageHighlightLowRti => '优先显示注意商品';
-
-  @override
-  String get myPageWishlistAlertLabel => '接收已保存商品通知';
 
   @override
   String get myPageAccountInfo => '账户信息';
@@ -559,12 +427,6 @@ class AppLocalizationsZh extends AppLocalizations {
   String get adminDashboardTitle => '运营仪表盘';
 
   @override
-  String get adminPlaceholderMessage => '页面正在准备中。';
-
-  @override
-  String get adminTopBarSearchHint => '搜索用户、评论、举报 ID';
-
-  @override
   String get adminTopBarNotifications => '通知';
 
   @override
@@ -580,16 +442,10 @@ class AppLocalizationsZh extends AppLocalizations {
   String get chatNewConversation => '新对话';
 
   @override
-  String get chatClose => '关闭';
-
-  @override
   String get chatInputHint => '请输入问题';
 
   @override
   String get chatSend => '发送';
-
-  @override
-  String get chatProductContext => '基于该商品的评论回答';
 
   @override
   String get chatOtherProductNotice => '此对话保留了与当前页面不同的上下文。';
@@ -1218,9 +1074,6 @@ class AppLocalizationsZh extends AppLocalizations {
   String get chatLauncherLabel => '问问 AI';
 
   @override
-  String get chatLauncherProductLabel => '问问这件商品的评论';
-
-  @override
   String get chatProductCta => '向 AI 询问这件商品';
 
   @override
@@ -1347,9 +1200,6 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get planLoadFailed => '无法加载套餐信息。';
-
-  @override
-  String get planRetry => '重试';
 
   @override
   String get myPageSideNavPlan => '套餐';

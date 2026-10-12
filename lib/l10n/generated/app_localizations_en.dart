@@ -9,19 +9,10 @@ class AppLocalizationsEn extends AppLocalizations {
   AppLocalizationsEn([String locale = 'en']) : super(locale);
 
   @override
-  String get appTitle => 'Re:view';
-
-  @override
   String get navHome => 'Home';
 
   @override
   String get navSearch => 'Search';
-
-  @override
-  String get navCart => 'Cart';
-
-  @override
-  String get navWishlist => 'Saved';
 
   @override
   String get navMyPage => 'My Page';
@@ -33,70 +24,19 @@ class AppLocalizationsEn extends AppLocalizations {
   String get actionSave => 'Save';
 
   @override
-  String get actionCancel => 'Cancel';
-
-  @override
   String get actionConfirm => 'OK';
 
   @override
   String get actionRetry => 'Retry';
 
   @override
-  String get actionBack => 'Back';
-
-  @override
   String get actionLogin => 'Log in';
-
-  @override
-  String get actionLogout => 'Log out';
-
-  @override
-  String get actionSignup => 'Sign up';
 
   @override
   String get actionViewAll => 'View all';
 
   @override
-  String get stateLoading => 'Loading…';
-
-  @override
-  String get stateError => 'Something went wrong.';
-
-  @override
-  String get stateEmpty => 'Nothing to show.';
-
-  @override
-  String get settingsSaved => 'Settings saved.';
-
-  @override
-  String get settingsLanguage => 'Language';
-
-  @override
   String get settingsNotifications => 'Notifications';
-
-  @override
-  String get settingsFilters => 'Analysis Filters';
-
-  @override
-  String get langKorean => '한국어';
-
-  @override
-  String get langEnglish => 'English';
-
-  @override
-  String get langJapanese => '日本語';
-
-  @override
-  String get langChinese => '中文(简体)';
-
-  @override
-  String get sideNavOrders => 'Orders';
-
-  @override
-  String get sideNavRecentlyViewed => 'Recently Viewed';
-
-  @override
-  String get sideNavReviewActivity => 'Review Activity';
 
   @override
   String get sideNavAccountSettings => 'Account Settings';
@@ -112,71 +52,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String settingsSubtitleNamed(String nickname) {
     return 'Manage $nickname\'s notifications, filters, and account.';
   }
-
-  @override
-  String get settingsNotificationEmail => 'Email Notifications';
-
-  @override
-  String get settingsNotificationEmailDesc =>
-      'Receive price drops and review updates via email.';
-
-  @override
-  String get settingsNotificationPush => 'Push Notifications';
-
-  @override
-  String get settingsNotificationPushDesc =>
-      'Get real-time alerts for saved products in your browser.';
-
-  @override
-  String get settingsNotificationAdEmail => 'Promotional Emails';
-
-  @override
-  String get settingsNotificationAdEmailDesc =>
-      'Receive promotions and personalized deals via email.';
-
-  @override
-  String get settingsFilterHighlightLowRti => 'Show Risky Products First';
-
-  @override
-  String get settingsFilterHighlightLowRtiDesc =>
-      'Show products with low review trust scores at the top of the list.';
-
-  @override
-  String get settingsFilterWishlistAlert => 'Wishlist RTI Alerts';
-
-  @override
-  String get settingsFilterWishlistAlertDesc =>
-      'Get notified when your saved products\' RTI changes.';
-
-  @override
-  String get settingsFilterCategory => 'Category Filter';
-
-  @override
-  String get settingsFilterCategoryDesc =>
-      'Prioritize analysis results based on the selected category.';
-
-  @override
-  String get settingsFilterCategoryAll => 'All Categories';
-
-  @override
-  String get settingsFilterMinReview => 'Minimum Review Count';
-
-  @override
-  String get settingsFilterMinReviewDesc =>
-      'Only include products with at least this many reviews in analysis.';
-
-  @override
-  String get settingsFilterMinReviewSuffix => '';
-
-  @override
-  String get settingsFilterLowRti => 'Low RTI Warning Threshold';
-
-  @override
-  String get settingsFilterLowRtiDesc =>
-      'Products with RTI scores at or below this value are flagged.';
-
-  @override
-  String get settingsFilterLowRtiSuffix => '';
 
   @override
   String get settingsAccountTitle => 'Account';
@@ -290,9 +165,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get wishlistFilterLowestPrice => 'Lowest Price';
 
   @override
-  String get wishlistFilterBrand => 'Brand';
-
-  @override
   String get wishlistFilterCategory => 'Category';
 
   @override
@@ -312,9 +184,6 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get myPageDefaultName => 'User';
-
-  @override
-  String get myPageMemberBasic => 'Basic (Free)';
 
   @override
   String get myPageSideNavMyPage => 'My Page';
@@ -341,9 +210,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get myPageRecentActivityEmpty => 'No recent activity.';
 
   @override
-  String get myPageRecentLabel => 'Recent';
-
-  @override
   String get myPageReviewTrustSummary => 'Review Trust Summary';
 
   @override
@@ -360,12 +226,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String myPageRiskyCount(int count) {
     return 'Check $count risky products.';
   }
-
-  @override
-  String get myPageHighlightLowRti => 'Show Risky Products First';
-
-  @override
-  String get myPageWishlistAlertLabel => 'Wishlist RTI Alerts';
 
   @override
   String get myPageAccountInfo => 'Account Info';
@@ -579,12 +439,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get adminDashboardTitle => 'Operations Dashboard';
 
   @override
-  String get adminPlaceholderMessage => 'This screen is coming soon.';
-
-  @override
-  String get adminTopBarSearchHint => 'Search users, reviews, report IDs';
-
-  @override
   String get adminTopBarNotifications => 'Notifications';
 
   @override
@@ -600,17 +454,10 @@ class AppLocalizationsEn extends AppLocalizations {
   String get chatNewConversation => 'New chat';
 
   @override
-  String get chatClose => 'Close';
-
-  @override
   String get chatInputHint => 'Type your question';
 
   @override
   String get chatSend => 'Send';
-
-  @override
-  String get chatProductContext =>
-      'Answers are based on this product\'s reviews';
 
   @override
   String get chatOtherProductNotice =>
@@ -1258,9 +1105,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get chatLauncherLabel => 'Ask AI';
 
   @override
-  String get chatLauncherProductLabel => 'Ask about this product';
-
-  @override
   String get chatProductCta => 'Ask AI about this product';
 
   @override
@@ -1390,9 +1234,6 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get planLoadFailed => 'Could not load your plan.';
-
-  @override
-  String get planRetry => 'Retry';
 
   @override
   String get myPageSideNavPlan => 'Plans';
