@@ -225,34 +225,6 @@ class ProductSpecChips extends StatelessWidget {
   }
 }
 
-class ProductSpecChipsStrip extends StatelessWidget {
-  const ProductSpecChipsStrip({super.key, required this.chips});
-
-  final List<ProductSpecChip> chips;
-
-  @override
-  Widget build(BuildContext context) {
-    if (chips.isEmpty) return const SizedBox.shrink();
-    return DecoratedBox(
-      decoration: BoxDecoration(
-        color: AppColors.surface,
-        borderRadius: AppRadius.medium,
-        border: Border.all(color: AppColors.border),
-      ),
-      child: IntrinsicHeight(
-        child: Row(
-          children: [
-            for (var i = 0; i < chips.length; i++) ...[
-              if (i > 0) Container(width: 1, color: AppColors.border),
-              Expanded(child: _SpecChipStripItem(chip: chips[i])),
-            ],
-          ],
-        ),
-      ),
-    );
-  }
-}
-
 String _rtiLabel(int score) {
   if (score >= 80) return '리뷰 신뢰도 높음';
   if (score >= 60) return '리뷰 신뢰도 보통';
@@ -321,57 +293,6 @@ class _SpecChipItem extends StatelessWidget {
             ),
           ],
         ),
-      ),
-    );
-  }
-}
-
-class _SpecChipStripItem extends StatelessWidget {
-  const _SpecChipStripItem({required this.chip});
-
-  final ProductSpecChip chip;
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(
-        horizontal: AppSpacing.sm,
-        vertical: AppSpacing.sm,
-      ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Icon(
-            _iconDataFor(chip.iconData),
-            size: 18,
-            color: AppColors.textSecondary,
-          ),
-          const SizedBox(width: AppSpacing.xs),
-          Flexible(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Text(
-                  chip.label,
-                  style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                    color: AppColors.textPrimary,
-                    fontWeight: FontWeight.w800,
-                    fontSize: 12,
-                  ),
-                ),
-                if (chip.subtitle.isNotEmpty)
-                  Text(
-                    chip.subtitle,
-                    style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                      color: AppColors.textSecondary,
-                      fontSize: 11,
-                    ),
-                  ),
-              ],
-            ),
-          ),
-        ],
       ),
     );
   }
