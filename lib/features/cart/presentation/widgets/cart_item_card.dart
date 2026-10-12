@@ -4,7 +4,7 @@ import 'package:re_view_front/app/theme/app_colors.dart';
 import 'package:re_view_front/app/theme/app_spacing.dart';
 import 'package:re_view_front/features/cart/domain/entities/cart_item.dart';
 import 'package:re_view_front/shared/presentation/product_formatters.dart';
-import 'package:re_view_front/features/search/presentation/widgets/search_product_card.dart';
+import 'package:re_view_front/features/search/presentation/widgets/product_rti_badge.dart';
 import 'package:re_view_front/l10n/generated/app_localizations.dart';
 import 'package:re_view_front/shared/widgets/app_network_image.dart';
 

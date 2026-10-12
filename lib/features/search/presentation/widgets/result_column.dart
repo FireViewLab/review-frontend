@@ -7,10 +7,11 @@ import 'package:re_view_front/app/theme/app_spacing.dart';
 import 'package:re_view_front/features/search/domain/entities/search_result_product.dart';
 import 'package:re_view_front/features/search/presentation/models/search_view_mode.dart';
 import 'package:re_view_front/features/search/presentation/view_models/search_results_state.dart';
-import 'package:re_view_front/features/search/presentation/widgets/filter_panel.dart';
 import 'package:re_view_front/features/search/presentation/widgets/pagination.dart';
 import 'package:re_view_front/features/search/presentation/widgets/review_comparison_banner.dart';
 import 'package:re_view_front/features/search/presentation/widgets/search_product_card.dart';
+import 'package:re_view_front/features/search/presentation/widgets/search_product_list_tile.dart';
+import 'package:re_view_front/features/search/presentation/widgets/filter_select_widgets.dart';
 import 'package:re_view_front/shared/widgets/error_view.dart';
 import 'package:re_view_front/shared/widgets/shimmer_box.dart';
 
