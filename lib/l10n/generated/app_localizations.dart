@@ -102,12 +102,6 @@ abstract class AppLocalizations {
     Locale('zh'),
   ];
 
-  /// 앱 이름
-  ///
-  /// In ko, this message translates to:
-  /// **'Re:view'**
-  String get appTitle;
-
   /// 홈 네비게이션 항목
   ///
   /// In ko, this message translates to:
@@ -119,18 +113,6 @@ abstract class AppLocalizations {
   /// In ko, this message translates to:
   /// **'검색'**
   String get navSearch;
-
-  /// 장바구니 네비게이션 항목
-  ///
-  /// In ko, this message translates to:
-  /// **'장바구니'**
-  String get navCart;
-
-  /// 위시리스트 네비게이션 항목
-  ///
-  /// In ko, this message translates to:
-  /// **'저장한 상품'**
-  String get navWishlist;
 
   /// 마이페이지 네비게이션 항목
   ///
@@ -150,12 +132,6 @@ abstract class AppLocalizations {
   /// **'저장'**
   String get actionSave;
 
-  /// 취소 버튼
-  ///
-  /// In ko, this message translates to:
-  /// **'취소'**
-  String get actionCancel;
-
   /// 확인 버튼
   ///
   /// In ko, this message translates to:
@@ -168,29 +144,11 @@ abstract class AppLocalizations {
   /// **'다시 시도'**
   String get actionRetry;
 
-  /// 뒤로가기 버튼
-  ///
-  /// In ko, this message translates to:
-  /// **'뒤로'**
-  String get actionBack;
-
   /// 로그인 버튼
   ///
   /// In ko, this message translates to:
   /// **'로그인'**
   String get actionLogin;
-
-  /// 로그아웃 버튼
-  ///
-  /// In ko, this message translates to:
-  /// **'로그아웃'**
-  String get actionLogout;
-
-  /// 회원가입 버튼
-  ///
-  /// In ko, this message translates to:
-  /// **'회원가입'**
-  String get actionSignup;
 
   /// 전체 보기 버튼
   ///
@@ -198,89 +156,11 @@ abstract class AppLocalizations {
   /// **'전체 보기'**
   String get actionViewAll;
 
-  /// 로딩 메시지
-  ///
-  /// In ko, this message translates to:
-  /// **'불러오는 중입니다.'**
-  String get stateLoading;
-
-  /// 오류 메시지
-  ///
-  /// In ko, this message translates to:
-  /// **'오류가 발생했습니다.'**
-  String get stateError;
-
-  /// 빈 상태 메시지
-  ///
-  /// In ko, this message translates to:
-  /// **'표시할 항목이 없습니다.'**
-  String get stateEmpty;
-
-  /// 설정 저장 완료 메시지
-  ///
-  /// In ko, this message translates to:
-  /// **'설정이 저장되었습니다.'**
-  String get settingsSaved;
-
-  /// 언어 설정 레이블
-  ///
-  /// In ko, this message translates to:
-  /// **'언어'**
-  String get settingsLanguage;
-
   /// 알림 설정 섹션 제목
   ///
   /// In ko, this message translates to:
   /// **'알림 설정'**
   String get settingsNotifications;
-
-  /// 분석 필터 설정 섹션 제목
-  ///
-  /// In ko, this message translates to:
-  /// **'분석 필터 설정'**
-  String get settingsFilters;
-
-  /// 언어명 한국어
-  ///
-  /// In ko, this message translates to:
-  /// **'한국어'**
-  String get langKorean;
-
-  /// 언어명 영어
-  ///
-  /// In ko, this message translates to:
-  /// **'English'**
-  String get langEnglish;
-
-  /// 언어명 일본어
-  ///
-  /// In ko, this message translates to:
-  /// **'日本語'**
-  String get langJapanese;
-
-  /// 언어명 중국어 간체
-  ///
-  /// In ko, this message translates to:
-  /// **'中文(简体)'**
-  String get langChinese;
-
-  /// 사이드 네비게이션 주문/배송
-  ///
-  /// In ko, this message translates to:
-  /// **'주문/배송'**
-  String get sideNavOrders;
-
-  /// 사이드 네비게이션 최근 본 상품
-  ///
-  /// In ko, this message translates to:
-  /// **'최근 본 상품'**
-  String get sideNavRecentlyViewed;
-
-  /// 사이드 네비게이션 리뷰 활동
-  ///
-  /// In ko, this message translates to:
-  /// **'리뷰 활동'**
-  String get sideNavReviewActivity;
 
   /// 사이드 네비게이션 계정 설정
   ///
@@ -305,120 +185,6 @@ abstract class AppLocalizations {
   /// In ko, this message translates to:
   /// **'{nickname}님의 알림, 필터, 계정 설정을 관리해요.'**
   String settingsSubtitleNamed(String nickname);
-
-  /// 이메일 알림 토글 레이블
-  ///
-  /// In ko, this message translates to:
-  /// **'이메일 알림 받기'**
-  String get settingsNotificationEmail;
-
-  /// 이메일 알림 토글 설명
-  ///
-  /// In ko, this message translates to:
-  /// **'상품 가격 변동, 리뷰 업데이트를 이메일로 받아요.'**
-  String get settingsNotificationEmailDesc;
-
-  /// 푸시 알림 토글 레이블
-  ///
-  /// In ko, this message translates to:
-  /// **'앱 푸시 알림 받기'**
-  String get settingsNotificationPush;
-
-  /// 푸시 알림 토글 설명
-  ///
-  /// In ko, this message translates to:
-  /// **'저장한 상품의 실시간 알림을 브라우저에서 받아요.'**
-  String get settingsNotificationPushDesc;
-
-  /// 광고 이메일 토글 레이블
-  ///
-  /// In ko, this message translates to:
-  /// **'이메일 광고 수신'**
-  String get settingsNotificationAdEmail;
-
-  /// 광고 이메일 토글 설명
-  ///
-  /// In ko, this message translates to:
-  /// **'프로모션 및 맞춤 혜택 정보를 이메일로 받아요.'**
-  String get settingsNotificationAdEmailDesc;
-
-  /// 주의 상품 강조 토글 레이블
-  ///
-  /// In ko, this message translates to:
-  /// **'주의 상품 먼저 보기'**
-  String get settingsFilterHighlightLowRti;
-
-  /// 주의 상품 강조 토글 설명
-  ///
-  /// In ko, this message translates to:
-  /// **'리뷰 신뢰도가 낮은 상품을 목록 상단에 표시해요.'**
-  String get settingsFilterHighlightLowRtiDesc;
-
-  /// 저장 상품 알림 토글 레이블
-  ///
-  /// In ko, this message translates to:
-  /// **'저장 상품 알림 받기'**
-  String get settingsFilterWishlistAlert;
-
-  /// 저장 상품 알림 토글 설명
-  ///
-  /// In ko, this message translates to:
-  /// **'관심 상품의 RTI 변화가 있을 때 알림을 드려요.'**
-  String get settingsFilterWishlistAlertDesc;
-
-  /// 카테고리 필터 레이블
-  ///
-  /// In ko, this message translates to:
-  /// **'카테고리 필터'**
-  String get settingsFilterCategory;
-
-  /// 카테고리 필터 설명
-  ///
-  /// In ko, this message translates to:
-  /// **'선택한 카테고리 상품을 기준으로 분석 결과를 우선 표시해요.'**
-  String get settingsFilterCategoryDesc;
-
-  /// 카테고리 전체 선택 옵션
-  ///
-  /// In ko, this message translates to:
-  /// **'전체 카테고리'**
-  String get settingsFilterCategoryAll;
-
-  /// 최소 리뷰 개수 필터 레이블
-  ///
-  /// In ko, this message translates to:
-  /// **'리뷰 최소 개수'**
-  String get settingsFilterMinReview;
-
-  /// 최소 리뷰 개수 필터 설명
-  ///
-  /// In ko, this message translates to:
-  /// **'이 개수 이상 리뷰가 있는 상품만 분석 결과에 반영해요.'**
-  String get settingsFilterMinReviewDesc;
-
-  /// 리뷰 개수 단위
-  ///
-  /// In ko, this message translates to:
-  /// **'개'**
-  String get settingsFilterMinReviewSuffix;
-
-  /// 낮은 RTI 경고 기준 레이블
-  ///
-  /// In ko, this message translates to:
-  /// **'낮은 RTI 경고 기준'**
-  String get settingsFilterLowRti;
-
-  /// 낮은 RTI 경고 기준 설명
-  ///
-  /// In ko, this message translates to:
-  /// **'RTI 점수가 이 값 이하면 주의 상품으로 분류해요.'**
-  String get settingsFilterLowRtiDesc;
-
-  /// RTI 점수 단위
-  ///
-  /// In ko, this message translates to:
-  /// **'점'**
-  String get settingsFilterLowRtiSuffix;
 
   /// 계정 섹션 제목
   ///
@@ -624,12 +390,6 @@ abstract class AppLocalizations {
   /// **'최저 가격'**
   String get wishlistFilterLowestPrice;
 
-  /// 브랜드 필터 옵션
-  ///
-  /// In ko, this message translates to:
-  /// **'브랜드'**
-  String get wishlistFilterBrand;
-
   /// 카테고리 필터 옵션
   ///
   /// In ko, this message translates to:
@@ -671,12 +431,6 @@ abstract class AppLocalizations {
   /// In ko, this message translates to:
   /// **'사용자'**
   String get myPageDefaultName;
-
-  /// 일반 회원 표시 문구
-  ///
-  /// In ko, this message translates to:
-  /// **'일반 회원 (무료)'**
-  String get myPageMemberBasic;
 
   /// 사이드 네비게이션 마이페이지
   ///
@@ -726,12 +480,6 @@ abstract class AppLocalizations {
   /// **'최근 활동이 없습니다.'**
   String get myPageRecentActivityEmpty;
 
-  /// 최근 날짜 표시
-  ///
-  /// In ko, this message translates to:
-  /// **'최근'**
-  String get myPageRecentLabel;
-
   /// 리뷰 신뢰 요약 섹션 제목
   ///
   /// In ko, this message translates to:
@@ -761,18 +509,6 @@ abstract class AppLocalizations {
   /// In ko, this message translates to:
   /// **'주의 상품 {count}개를 확인해보세요.'**
   String myPageRiskyCount(int count);
-
-  /// 주의 상품 먼저 보기 레이블
-  ///
-  /// In ko, this message translates to:
-  /// **'주의 상품 먼저 보기'**
-  String get myPageHighlightLowRti;
-
-  /// 저장 상품 알림 레이블
-  ///
-  /// In ko, this message translates to:
-  /// **'저장 상품 알림 받기'**
-  String get myPageWishlistAlertLabel;
 
   /// 계정 정보 섹션 제목
   ///
@@ -1158,18 +894,6 @@ abstract class AppLocalizations {
   /// **'운영 대시보드'**
   String get adminDashboardTitle;
 
-  /// 구현 대기 중인 관리자 페이지 안내
-  ///
-  /// In ko, this message translates to:
-  /// **'준비 중인 화면입니다.'**
-  String get adminPlaceholderMessage;
-
-  /// 관리자 상단 검색바 안내 문구
-  ///
-  /// In ko, this message translates to:
-  /// **'사용자, 리뷰, 신고 ID로 검색'**
-  String get adminTopBarSearchHint;
-
   /// 관리자 상단 알림 벨 툴팁
   ///
   /// In ko, this message translates to:
@@ -1200,12 +924,6 @@ abstract class AppLocalizations {
   /// **'새 대화'**
   String get chatNewConversation;
 
-  /// 패널 닫기 버튼
-  ///
-  /// In ko, this message translates to:
-  /// **'닫기'**
-  String get chatClose;
-
   /// 질문 입력창 힌트
   ///
   /// In ko, this message translates to:
@@ -1217,12 +935,6 @@ abstract class AppLocalizations {
   /// In ko, this message translates to:
   /// **'보내기'**
   String get chatSend;
-
-  /// 상품 상세에서 연 대화 안내
-  ///
-  /// In ko, this message translates to:
-  /// **'이 상품의 리뷰를 바탕으로 답해요'**
-  String get chatProductContext;
 
   /// 현재 화면 상품과 대화 상품이 다를 때 안내
   ///
@@ -2424,12 +2136,6 @@ abstract class AppLocalizations {
   /// **'AI에게 물어보기'**
   String get chatLauncherLabel;
 
-  /// No description provided for @chatLauncherProductLabel.
-  ///
-  /// In ko, this message translates to:
-  /// **'이 상품 리뷰 물어보기'**
-  String get chatLauncherProductLabel;
-
   /// No description provided for @chatProductCta.
   ///
   /// In ko, this message translates to:
@@ -2657,12 +2363,6 @@ abstract class AppLocalizations {
   /// In ko, this message translates to:
   /// **'요금제 정보를 불러오지 못했어요.'**
   String get planLoadFailed;
-
-  /// No description provided for @planRetry.
-  ///
-  /// In ko, this message translates to:
-  /// **'다시 시도'**
-  String get planRetry;
 
   /// No description provided for @myPageSideNavPlan.
   ///

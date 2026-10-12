@@ -9,19 +9,10 @@ class AppLocalizationsKo extends AppLocalizations {
   AppLocalizationsKo([String locale = 'ko']) : super(locale);
 
   @override
-  String get appTitle => 'Re:view';
-
-  @override
   String get navHome => '홈';
 
   @override
   String get navSearch => '검색';
-
-  @override
-  String get navCart => '장바구니';
-
-  @override
-  String get navWishlist => '저장한 상품';
 
   @override
   String get navMyPage => '마이페이지';
@@ -33,70 +24,19 @@ class AppLocalizationsKo extends AppLocalizations {
   String get actionSave => '저장';
 
   @override
-  String get actionCancel => '취소';
-
-  @override
   String get actionConfirm => '확인';
 
   @override
   String get actionRetry => '다시 시도';
 
   @override
-  String get actionBack => '뒤로';
-
-  @override
   String get actionLogin => '로그인';
-
-  @override
-  String get actionLogout => '로그아웃';
-
-  @override
-  String get actionSignup => '회원가입';
 
   @override
   String get actionViewAll => '전체 보기';
 
   @override
-  String get stateLoading => '불러오는 중입니다.';
-
-  @override
-  String get stateError => '오류가 발생했습니다.';
-
-  @override
-  String get stateEmpty => '표시할 항목이 없습니다.';
-
-  @override
-  String get settingsSaved => '설정이 저장되었습니다.';
-
-  @override
-  String get settingsLanguage => '언어';
-
-  @override
   String get settingsNotifications => '알림 설정';
-
-  @override
-  String get settingsFilters => '분석 필터 설정';
-
-  @override
-  String get langKorean => '한국어';
-
-  @override
-  String get langEnglish => 'English';
-
-  @override
-  String get langJapanese => '日本語';
-
-  @override
-  String get langChinese => '中文(简体)';
-
-  @override
-  String get sideNavOrders => '주문/배송';
-
-  @override
-  String get sideNavRecentlyViewed => '최근 본 상품';
-
-  @override
-  String get sideNavReviewActivity => '리뷰 활동';
 
   @override
   String get sideNavAccountSettings => '계정 설정';
@@ -111,63 +51,6 @@ class AppLocalizationsKo extends AppLocalizations {
   String settingsSubtitleNamed(String nickname) {
     return '$nickname님의 알림, 필터, 계정 설정을 관리해요.';
   }
-
-  @override
-  String get settingsNotificationEmail => '이메일 알림 받기';
-
-  @override
-  String get settingsNotificationEmailDesc => '상품 가격 변동, 리뷰 업데이트를 이메일로 받아요.';
-
-  @override
-  String get settingsNotificationPush => '앱 푸시 알림 받기';
-
-  @override
-  String get settingsNotificationPushDesc => '저장한 상품의 실시간 알림을 브라우저에서 받아요.';
-
-  @override
-  String get settingsNotificationAdEmail => '이메일 광고 수신';
-
-  @override
-  String get settingsNotificationAdEmailDesc => '프로모션 및 맞춤 혜택 정보를 이메일로 받아요.';
-
-  @override
-  String get settingsFilterHighlightLowRti => '주의 상품 먼저 보기';
-
-  @override
-  String get settingsFilterHighlightLowRtiDesc => '리뷰 신뢰도가 낮은 상품을 목록 상단에 표시해요.';
-
-  @override
-  String get settingsFilterWishlistAlert => '저장 상품 알림 받기';
-
-  @override
-  String get settingsFilterWishlistAlertDesc => '관심 상품의 RTI 변화가 있을 때 알림을 드려요.';
-
-  @override
-  String get settingsFilterCategory => '카테고리 필터';
-
-  @override
-  String get settingsFilterCategoryDesc => '선택한 카테고리 상품을 기준으로 분석 결과를 우선 표시해요.';
-
-  @override
-  String get settingsFilterCategoryAll => '전체 카테고리';
-
-  @override
-  String get settingsFilterMinReview => '리뷰 최소 개수';
-
-  @override
-  String get settingsFilterMinReviewDesc => '이 개수 이상 리뷰가 있는 상품만 분석 결과에 반영해요.';
-
-  @override
-  String get settingsFilterMinReviewSuffix => '개';
-
-  @override
-  String get settingsFilterLowRti => '낮은 RTI 경고 기준';
-
-  @override
-  String get settingsFilterLowRtiDesc => 'RTI 점수가 이 값 이하면 주의 상품으로 분류해요.';
-
-  @override
-  String get settingsFilterLowRtiSuffix => '점';
 
   @override
   String get settingsAccountTitle => '계정';
@@ -278,9 +161,6 @@ class AppLocalizationsKo extends AppLocalizations {
   String get wishlistFilterLowestPrice => '최저 가격';
 
   @override
-  String get wishlistFilterBrand => '브랜드';
-
-  @override
   String get wishlistFilterCategory => '카테고리';
 
   @override
@@ -300,9 +180,6 @@ class AppLocalizationsKo extends AppLocalizations {
 
   @override
   String get myPageDefaultName => '사용자';
-
-  @override
-  String get myPageMemberBasic => '일반 회원 (무료)';
 
   @override
   String get myPageSideNavMyPage => '마이페이지';
@@ -329,9 +206,6 @@ class AppLocalizationsKo extends AppLocalizations {
   String get myPageRecentActivityEmpty => '최근 활동이 없습니다.';
 
   @override
-  String get myPageRecentLabel => '최근';
-
-  @override
   String get myPageReviewTrustSummary => '리뷰 신뢰 요약';
 
   @override
@@ -347,12 +221,6 @@ class AppLocalizationsKo extends AppLocalizations {
   String myPageRiskyCount(int count) {
     return '주의 상품 $count개를 확인해보세요.';
   }
-
-  @override
-  String get myPageHighlightLowRti => '주의 상품 먼저 보기';
-
-  @override
-  String get myPageWishlistAlertLabel => '저장 상품 알림 받기';
 
   @override
   String get myPageAccountInfo => '계정 정보';
@@ -559,12 +427,6 @@ class AppLocalizationsKo extends AppLocalizations {
   String get adminDashboardTitle => '운영 대시보드';
 
   @override
-  String get adminPlaceholderMessage => '준비 중인 화면입니다.';
-
-  @override
-  String get adminTopBarSearchHint => '사용자, 리뷰, 신고 ID로 검색';
-
-  @override
   String get adminTopBarNotifications => '알림';
 
   @override
@@ -580,16 +442,10 @@ class AppLocalizationsKo extends AppLocalizations {
   String get chatNewConversation => '새 대화';
 
   @override
-  String get chatClose => '닫기';
-
-  @override
   String get chatInputHint => '질문을 입력하세요';
 
   @override
   String get chatSend => '보내기';
-
-  @override
-  String get chatProductContext => '이 상품의 리뷰를 바탕으로 답해요';
 
   @override
   String get chatOtherProductNotice => '현재 화면과 다른 대화 문맥을 유지하고 있어요.';
@@ -1220,9 +1076,6 @@ class AppLocalizationsKo extends AppLocalizations {
   String get chatLauncherLabel => 'AI에게 물어보기';
 
   @override
-  String get chatLauncherProductLabel => '이 상품 리뷰 물어보기';
-
-  @override
   String get chatProductCta => 'AI에게 이 상품 물어보기';
 
   @override
@@ -1349,9 +1202,6 @@ class AppLocalizationsKo extends AppLocalizations {
 
   @override
   String get planLoadFailed => '요금제 정보를 불러오지 못했어요.';
-
-  @override
-  String get planRetry => '다시 시도';
 
   @override
   String get myPageSideNavPlan => '요금제';

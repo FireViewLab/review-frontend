@@ -9,19 +9,10 @@ class AppLocalizationsJa extends AppLocalizations {
   AppLocalizationsJa([String locale = 'ja']) : super(locale);
 
   @override
-  String get appTitle => 'Re:view';
-
-  @override
   String get navHome => 'ホーム';
 
   @override
   String get navSearch => '検索';
-
-  @override
-  String get navCart => 'カート';
-
-  @override
-  String get navWishlist => '保存済み';
 
   @override
   String get navMyPage => 'マイページ';
@@ -33,70 +24,19 @@ class AppLocalizationsJa extends AppLocalizations {
   String get actionSave => '保存';
 
   @override
-  String get actionCancel => 'キャンセル';
-
-  @override
   String get actionConfirm => '確認';
 
   @override
   String get actionRetry => '再試行';
 
   @override
-  String get actionBack => '戻る';
-
-  @override
   String get actionLogin => 'ログイン';
-
-  @override
-  String get actionLogout => 'ログアウト';
-
-  @override
-  String get actionSignup => '新規登録';
 
   @override
   String get actionViewAll => 'すべて見る';
 
   @override
-  String get stateLoading => '読み込み中…';
-
-  @override
-  String get stateError => 'エラーが発生しました。';
-
-  @override
-  String get stateEmpty => '表示する項目がありません。';
-
-  @override
-  String get settingsSaved => '設定を保存しました。';
-
-  @override
-  String get settingsLanguage => '言語';
-
-  @override
   String get settingsNotifications => '通知設定';
-
-  @override
-  String get settingsFilters => '分析フィルター設定';
-
-  @override
-  String get langKorean => '한국어';
-
-  @override
-  String get langEnglish => 'English';
-
-  @override
-  String get langJapanese => '日本語';
-
-  @override
-  String get langChinese => '中文(简体)';
-
-  @override
-  String get sideNavOrders => '注文/配送';
-
-  @override
-  String get sideNavRecentlyViewed => '最近見た商品';
-
-  @override
-  String get sideNavReviewActivity => 'レビュー活動';
 
   @override
   String get sideNavAccountSettings => 'アカウント設定';
@@ -111,63 +51,6 @@ class AppLocalizationsJa extends AppLocalizations {
   String settingsSubtitleNamed(String nickname) {
     return '$nicknameさんの通知、フィルター、アカウント設定を管理します。';
   }
-
-  @override
-  String get settingsNotificationEmail => 'メール通知を受け取る';
-
-  @override
-  String get settingsNotificationEmailDesc => '商品価格の変動、レビュー更新をメールで受け取ります。';
-
-  @override
-  String get settingsNotificationPush => 'アプリプッシュ通知を受け取る';
-
-  @override
-  String get settingsNotificationPushDesc => '保存した商品のリアルタイム通知をブラウザで受け取ります。';
-
-  @override
-  String get settingsNotificationAdEmail => 'メール広告の受信';
-
-  @override
-  String get settingsNotificationAdEmailDesc => 'プロモーションやカスタム特典情報をメールで受け取ります。';
-
-  @override
-  String get settingsFilterHighlightLowRti => '注意商品を先に表示';
-
-  @override
-  String get settingsFilterHighlightLowRtiDesc => 'レビュー信頼度が低い商品をリストの上部に表示します。';
-
-  @override
-  String get settingsFilterWishlistAlert => '保存商品の通知を受け取る';
-
-  @override
-  String get settingsFilterWishlistAlertDesc => 'お気に入り商品のRTI変化があるときに通知します。';
-
-  @override
-  String get settingsFilterCategory => 'カテゴリフィルター';
-
-  @override
-  String get settingsFilterCategoryDesc => '選択したカテゴリの商品を基準に分析結果を優先表示します。';
-
-  @override
-  String get settingsFilterCategoryAll => '全カテゴリ';
-
-  @override
-  String get settingsFilterMinReview => 'レビュー最小件数';
-
-  @override
-  String get settingsFilterMinReviewDesc => 'この件数以上のレビューがある商品のみ分析結果に反映します。';
-
-  @override
-  String get settingsFilterMinReviewSuffix => '件';
-
-  @override
-  String get settingsFilterLowRti => '低RTI警告基準';
-
-  @override
-  String get settingsFilterLowRtiDesc => 'RTIスコアがこの値以下の場合、注意商品として分類します。';
-
-  @override
-  String get settingsFilterLowRtiSuffix => '点';
 
   @override
   String get settingsAccountTitle => 'アカウント';
@@ -278,9 +161,6 @@ class AppLocalizationsJa extends AppLocalizations {
   String get wishlistFilterLowestPrice => '最安値';
 
   @override
-  String get wishlistFilterBrand => 'ブランド';
-
-  @override
   String get wishlistFilterCategory => 'カテゴリ';
 
   @override
@@ -300,9 +180,6 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String get myPageDefaultName => 'ユーザー';
-
-  @override
-  String get myPageMemberBasic => '一般会員（無料）';
 
   @override
   String get myPageSideNavMyPage => 'マイページ';
@@ -329,9 +206,6 @@ class AppLocalizationsJa extends AppLocalizations {
   String get myPageRecentActivityEmpty => '最近の活動はありません。';
 
   @override
-  String get myPageRecentLabel => '最近';
-
-  @override
   String get myPageReviewTrustSummary => 'レビュー信頼サマリー';
 
   @override
@@ -347,12 +221,6 @@ class AppLocalizationsJa extends AppLocalizations {
   String myPageRiskyCount(int count) {
     return '注意商品$count件を確認してください。';
   }
-
-  @override
-  String get myPageHighlightLowRti => '注意商品を先に表示';
-
-  @override
-  String get myPageWishlistAlertLabel => '保存商品の通知を受け取る';
 
   @override
   String get myPageAccountInfo => 'アカウント情報';
@@ -560,12 +428,6 @@ class AppLocalizationsJa extends AppLocalizations {
   String get adminDashboardTitle => '運営ダッシュボード';
 
   @override
-  String get adminPlaceholderMessage => '現在準備中の画面です。';
-
-  @override
-  String get adminTopBarSearchHint => 'ユーザー、レビュー、通報IDで検索';
-
-  @override
   String get adminTopBarNotifications => '通知';
 
   @override
@@ -581,16 +443,10 @@ class AppLocalizationsJa extends AppLocalizations {
   String get chatNewConversation => '新しい会話';
 
   @override
-  String get chatClose => '閉じる';
-
-  @override
   String get chatInputHint => '質問を入力してください';
 
   @override
   String get chatSend => '送信';
-
-  @override
-  String get chatProductContext => 'この商品のレビューをもとに回答します';
 
   @override
   String get chatOtherProductNotice => 'この会話は現在の画面とは異なる文脈を保持しています。';
@@ -1220,9 +1076,6 @@ class AppLocalizationsJa extends AppLocalizations {
   String get chatLauncherLabel => 'AIに聞く';
 
   @override
-  String get chatLauncherProductLabel => 'この商品のレビューを聞く';
-
-  @override
   String get chatProductCta => 'この商品についてAIに聞く';
 
   @override
@@ -1349,9 +1202,6 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String get planLoadFailed => 'プラン情報を読み込めませんでした。';
-
-  @override
-  String get planRetry => '再試行';
 
   @override
   String get myPageSideNavPlan => 'プラン';
