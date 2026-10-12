@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:re_view_front/app/theme/app_colors.dart';
 import 'package:re_view_front/app/theme/app_spacing.dart';
 import 'package:re_view_front/features/search/domain/entities/search_result_product.dart';
-import 'package:re_view_front/features/search/presentation/utils/search_formatters.dart';
+import 'package:re_view_front/shared/presentation/product_formatters.dart';
 import 'package:re_view_front/shared/extensions/context_extensions.dart';
 import 'package:re_view_front/shared/widgets/app_network_image.dart';
 

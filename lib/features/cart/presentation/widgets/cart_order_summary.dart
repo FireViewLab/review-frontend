@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:re_view_front/app/theme/app_spacing.dart';
 import 'package:re_view_front/features/cart/domain/entities/cart_summary.dart';
-import 'package:re_view_front/features/search/presentation/utils/search_formatters.dart';
+import 'package:re_view_front/shared/presentation/product_formatters.dart';
 
 class CartOrderSummary extends StatelessWidget {
   const CartOrderSummary({
