@@ -8,7 +8,7 @@ import 'package:re_view_front/app/theme/app_colors.dart';
 import 'package:re_view_front/app/theme/app_spacing.dart';
 import 'package:re_view_front/features/product_detail/domain/entities/product_review.dart';
 import 'package:re_view_front/features/product_detail/presentation/widgets/review_rti_analysis_dialog.dart';
-import 'package:re_view_front/features/search/presentation/utils/search_formatters.dart';
+import 'package:re_view_front/shared/presentation/product_formatters.dart';
 import 'package:re_view_front/shared/widgets/image_preview_dialog.dart';
 
 enum ReviewSortOption { newest, verified, withPhoto, rtiHigh, helpful }

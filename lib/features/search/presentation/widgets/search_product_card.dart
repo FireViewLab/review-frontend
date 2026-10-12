@@ -8,7 +8,7 @@ import 'package:re_view_front/app/theme/app_spacing.dart';
 import 'package:re_view_front/core/providers/core_providers.dart';
 import 'package:re_view_front/features/cart/presentation/providers/cart_providers.dart';
 import 'package:re_view_front/features/search/domain/entities/search_result_product.dart';
-import 'package:re_view_front/features/search/presentation/utils/search_formatters.dart';
+import 'package:re_view_front/shared/presentation/product_formatters.dart';
 import 'package:re_view_front/features/wishlist/presentation/providers/wishlist_providers.dart';
 import 'package:re_view_front/shared/widgets/app_network_image.dart';
 
