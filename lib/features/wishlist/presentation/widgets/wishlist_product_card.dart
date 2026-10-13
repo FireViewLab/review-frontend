@@ -48,6 +48,7 @@ class WishlistProductCard extends StatelessWidget {
             Expanded(
               child: AppNetworkImage(
                 url: item.imageUrl,
+                thumbnailWidth: 480,
                 borderRadius: const BorderRadius.vertical(
                   top: Radius.circular(9),
                 ),

@@ -75,6 +75,7 @@ class _SearchProductCardState extends State<SearchProductCard> {
                         curve: AppMotion.enter,
                         child: AppNetworkImage(
                           url: product.imageUrl,
+                          thumbnailWidth: 480,
                           borderRadius: const BorderRadius.vertical(
                             top: Radius.circular(9),
                           ),

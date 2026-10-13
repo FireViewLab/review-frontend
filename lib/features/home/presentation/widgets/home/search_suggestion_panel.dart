@@ -403,6 +403,7 @@ class _SuggestedProductTile extends StatelessWidget {
                 ),
                 child: AppNetworkImage(
                   url: product.imageUrl,
+                  thumbnailWidth: 160,
                   fit: BoxFit.contain,
                   placeholderIcon: Icons.inventory_2_outlined,
                   iconSize: 22,

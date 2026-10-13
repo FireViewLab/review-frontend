@@ -44,6 +44,7 @@ class ChatRecommendationCard extends ConsumerWidget {
                 height: 64,
                 child: AppNetworkImage(
                   url: product.thumbnailUrl ?? '',
+                  thumbnailWidth: 160,
                   borderRadius: BorderRadius.circular(8),
                 ),
               ),

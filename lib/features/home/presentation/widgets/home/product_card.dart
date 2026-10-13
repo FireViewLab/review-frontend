@@ -49,6 +49,7 @@ class ProductCard extends ConsumerWidget {
                   aspectRatio: 16 / 9,
                   child: AppNetworkImage(
                     url: product.imageUrl,
+                    thumbnailWidth: 480,
                     borderRadius: const BorderRadius.vertical(
                       top: Radius.circular(19),
                     ),

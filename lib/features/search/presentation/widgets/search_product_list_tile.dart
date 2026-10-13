@@ -39,6 +39,7 @@ class _SearchProductListTileState extends State<SearchProductListTile> {
               curve: AppMotion.enter,
               child: AppNetworkImage(
                 url: product.imageUrl,
+                thumbnailWidth: 360,
                 borderRadius: AppRadius.medium,
               ),
             ),

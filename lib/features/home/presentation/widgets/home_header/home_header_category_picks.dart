@@ -204,6 +204,7 @@ class HomeHeaderCategoryPickCard extends StatelessWidget {
                     child: item.usesNetworkImage
                         ? AppNetworkImage(
                             url: item.imageUrl,
+                            thumbnailWidth: 240,
                             fit: BoxFit.contain,
                             placeholderIcon: Icons.inventory_2_outlined,
                             iconSize: 26,
