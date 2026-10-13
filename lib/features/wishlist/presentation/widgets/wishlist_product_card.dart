@@ -46,27 +46,11 @@ class WishlistProductCard extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             Expanded(
-              child: Stack(
-                fit: StackFit.expand,
-                children: [
-                  AppNetworkImage(url: item.imageUrl),
-                  Positioned(
-                    top: AppSpacing.xs,
-                    left: AppSpacing.xs,
-                    child: item.avgRti == null
-                        ? Text(AppLocalizations.of(context).externalUnanalyzed)
-                        : RtiBadge(
-                            value: item.avgRti!.round(),
-                            color: rtiColor,
-                          ),
-                  ),
-                  if (item.isPriceDrop)
-                    Positioned(
-                      top: AppSpacing.xs,
-                      right: AppSpacing.xs,
-                      child: _PriceDropBadge(),
-                    ),
-                ],
+              child: AppNetworkImage(
+                url: item.imageUrl,
+                borderRadius: const BorderRadius.vertical(
+                  top: Radius.circular(9),
+                ),
               ),
             ),
             Padding(
@@ -75,15 +59,37 @@ class WishlistProductCard extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  Text(
-                    item.platform ?? '',
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                    style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                      color: AppColors.textSecondary,
-                      fontWeight: FontWeight.w800,
-                      fontSize: 11,
-                    ),
+                  // 배지는 이미지 위에 겹치지 않고 정보 영역에 둔다.
+                  Row(
+                    children: [
+                      Expanded(
+                        child: Text(
+                          item.platform ?? '',
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                          style: Theme.of(context).textTheme.labelSmall
+                              ?.copyWith(
+                                color: AppColors.textSecondary,
+                                fontWeight: FontWeight.w800,
+                                fontSize: 11,
+                              ),
+                        ),
+                      ),
+                      if (item.isPriceDrop) ...[
+                        const SizedBox(width: AppSpacing.xxs),
+                        _PriceDropBadge(),
+                      ],
+                      const SizedBox(width: AppSpacing.xxs),
+                      item.avgRti == null
+                          ? Text(
+                              AppLocalizations.of(context).externalUnanalyzed,
+                              style: Theme.of(context).textTheme.labelSmall,
+                            )
+                          : RtiBadge(
+                              value: item.avgRti!.round(),
+                              color: rtiColor,
+                            ),
+                    ],
                   ),
                   const SizedBox(height: 2),
                   Text(
