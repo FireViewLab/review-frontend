@@ -12,6 +12,7 @@ void configureWebImageElement(
   required String url,
   required String objectFit,
   required VoidCallback onError,
+  String? borderRadius,
 }) {
   final viewport = element as web.HTMLDivElement;
   // Own only this view's DOM. Never mutate Flutter's host/slot or global z-index.
@@ -27,6 +28,8 @@ void configureWebImageElement(
     ..overflow = 'hidden'
     ..contain = 'layout paint'
     ..pointerEvents = 'none';
+  // Flutter 쪽 clip과 별개로 DOM에서도 모서리를 잘라 카드 밖으로 보이지 않게 한다.
+  if (borderRadius != null) viewport.style.borderRadius = borderRadius;
   final img = web.HTMLImageElement()
     ..loading = 'lazy'
     ..decoding = 'async'

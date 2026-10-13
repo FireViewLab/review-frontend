@@ -6,4 +6,5 @@ void configureWebImageElement(
   required String url,
   required String objectFit,
   required VoidCallback onError,
+  String? borderRadius,
 }) {}
