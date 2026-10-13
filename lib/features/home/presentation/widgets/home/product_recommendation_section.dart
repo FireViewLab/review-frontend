@@ -37,7 +37,7 @@ class ProductRecommendationSection extends ConsumerWidget {
                   columns;
               const imageAspectRatio = 16.0 / 9.0;
               final imageHeight = cardWidth / imageAspectRatio;
-              final textAreaHeight = compact ? 154.0 : 170.0;
+              final textAreaHeight = compact ? 196.0 : 212.0;
 
               return GridView.builder(
                 shrinkWrap: true,
