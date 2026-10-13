@@ -24,7 +24,6 @@ class _SearchProductListTileState extends State<SearchProductListTile> {
   @override
   Widget build(BuildContext context) {
     final product = widget.product;
-    final rtiColor = colorFromHex(product.rtiColor);
     final isCompact = MediaQuery.sizeOf(context).width < 760;
     final image = SizedBox(
       width: isCompact ? 120 : 188,
@@ -43,11 +42,6 @@ class _SearchProductListTileState extends State<SearchProductListTile> {
                 borderRadius: AppRadius.medium,
               ),
             ),
-          ),
-          Positioned(
-            top: AppSpacing.xs,
-            right: AppSpacing.xs,
-            child: RtiBadge(value: product.avgRti?.round(), color: rtiColor),
           ),
           Positioned.fill(
             child: SearchProductHoverTapLayer(
@@ -136,15 +130,27 @@ class ListTileDetails extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
-          product.platform ?? '',
-          maxLines: 1,
-          overflow: TextOverflow.ellipsis,
-          style: Theme.of(context).textTheme.labelSmall?.copyWith(
-            color: AppColors.textSecondary,
-            fontWeight: FontWeight.w800,
-            fontSize: 11,
-          ),
+        // RTI 배지는 이미지 위에 겹치지 않고 정보 영역에 둔다.
+        Row(
+          children: [
+            Flexible(
+              child: Text(
+                product.platform ?? '',
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+                style: Theme.of(context).textTheme.labelSmall?.copyWith(
+                  color: AppColors.textSecondary,
+                  fontWeight: FontWeight.w800,
+                  fontSize: 11,
+                ),
+              ),
+            ),
+            const SizedBox(width: AppSpacing.xs),
+            RtiBadge(
+              value: product.avgRti?.round(),
+              color: colorFromHex(product.rtiColor),
+            ),
+          ],
         ),
         if (product.subCategory?.isNotEmpty ?? false)
           Text(

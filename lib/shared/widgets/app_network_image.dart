@@ -31,6 +31,13 @@ class AppNetworkImage extends StatelessWidget {
     _ => 'cover',
   };
 
+  String? get _cssBorderRadius {
+    final radius = borderRadius;
+    if (radius == null) return null;
+    return '${radius.topLeft.x}px ${radius.topRight.x}px '
+        '${radius.bottomRight.x}px ${radius.bottomLeft.x}px';
+  }
+
   @override
   Widget build(BuildContext context) {
     Widget child;
@@ -43,6 +50,7 @@ class AppNetworkImage extends StatelessWidget {
       child = _WebImage(
         url: url,
         objectFit: _objectFit,
+        cssBorderRadius: _cssBorderRadius,
         placeholder: _Placeholder(icon: placeholderIcon, iconSize: iconSize),
       );
     } else {
@@ -72,10 +80,12 @@ class _WebImage extends StatefulWidget {
     required this.url,
     required this.objectFit,
     required this.placeholder,
+    this.cssBorderRadius,
   });
 
   final String url;
   final String objectFit;
+  final String? cssBorderRadius;
   final Widget placeholder;
 
   @override
@@ -108,6 +118,7 @@ class _WebImageState extends State<_WebImage> {
             element,
             url: loadedUrl,
             objectFit: widget.objectFit,
+            borderRadius: widget.cssBorderRadius,
             onError: () {
               if (mounted && widget.url == loadedUrl) {
                 setState(() => _failed = true);

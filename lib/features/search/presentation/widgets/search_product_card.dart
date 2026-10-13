@@ -73,14 +73,11 @@ class _SearchProductCardState extends State<SearchProductCard> {
                             : 1,
                         duration: AppMotion.of(context, AppMotion.fast),
                         curve: AppMotion.enter,
-                        child: AppNetworkImage(url: product.imageUrl),
-                      ),
-                      Positioned(
-                        top: AppSpacing.xs,
-                        right: AppSpacing.xs,
-                        child: RtiBadge(
-                          value: product.avgRti?.round(),
-                          color: rtiColor,
+                        child: AppNetworkImage(
+                          url: product.imageUrl,
+                          borderRadius: const BorderRadius.vertical(
+                            top: Radius.circular(9),
+                          ),
                         ),
                       ),
                       Positioned.fill(
@@ -100,15 +97,28 @@ class _SearchProductCardState extends State<SearchProductCard> {
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      Text(
-                        product.platform ?? '',
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                        style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                          color: AppColors.textSecondary,
-                          fontWeight: FontWeight.w800,
-                          fontSize: 11,
-                        ),
+                      // RTI 배지는 이미지 위에 겹치지 않고 정보 영역에 둔다.
+                      Row(
+                        children: [
+                          Expanded(
+                            child: Text(
+                              product.platform ?? '',
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                              style: Theme.of(context).textTheme.labelSmall
+                                  ?.copyWith(
+                                    color: AppColors.textSecondary,
+                                    fontWeight: FontWeight.w800,
+                                    fontSize: 11,
+                                  ),
+                            ),
+                          ),
+                          const SizedBox(width: AppSpacing.xs),
+                          RtiBadge(
+                            value: product.avgRti?.round(),
+                            color: rtiColor,
+                          ),
+                        ],
                       ),
                       if (product.subCategory?.isNotEmpty ?? false)
                         Text(

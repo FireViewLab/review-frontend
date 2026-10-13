@@ -180,33 +180,35 @@ class _SimilarProductCard extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Stack(
-                  children: [
-                    AspectRatio(
-                      aspectRatio: 1,
-                      child: AppNetworkImage(
-                        url: product.imageUrl,
-                        borderRadius: AppRadius.small,
-                      ),
-                    ),
-                    Positioned(
-                      top: AppSpacing.xxs,
-                      right: AppSpacing.xxs,
-                      child: _RtiBadgeMini(
-                        score: product.avgRti?.round(),
-                        color: rtiColor,
-                      ),
-                    ),
-                  ],
+                AspectRatio(
+                  aspectRatio: 1,
+                  child: AppNetworkImage(
+                    url: product.imageUrl,
+                    borderRadius: AppRadius.small,
+                  ),
                 ),
                 const SizedBox(height: AppSpacing.xs),
-                Text(
-                  product.brand,
-                  style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                    color: AppColors.textSecondary,
-                    fontWeight: FontWeight.w700,
-                    fontSize: 11,
-                  ),
+                // RTI 배지는 이미지 위에 겹치지 않고 정보 영역에 둔다.
+                Row(
+                  children: [
+                    Expanded(
+                      child: Text(
+                        product.brand,
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: Theme.of(context).textTheme.labelSmall?.copyWith(
+                          color: AppColors.textSecondary,
+                          fontWeight: FontWeight.w700,
+                          fontSize: 11,
+                        ),
+                      ),
+                    ),
+                    const SizedBox(width: AppSpacing.xxs),
+                    _RtiBadgeMini(
+                      score: product.avgRti?.round(),
+                      color: rtiColor,
+                    ),
+                  ],
                 ),
                 const SizedBox(height: 2),
                 Text(
