@@ -112,7 +112,7 @@ class MyPageCompactProductCard extends StatelessWidget {
             borderRadius: BorderRadius.circular(8),
             child: SizedBox.square(
               dimension: 96,
-              child: AppNetworkImage(url: imageUrl),
+              child: AppNetworkImage(url: imageUrl, thumbnailWidth: 240),
             ),
           ),
           const SizedBox(width: AppSpacing.md),

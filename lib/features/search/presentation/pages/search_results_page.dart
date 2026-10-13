@@ -79,13 +79,14 @@ class _SearchResultsPageState extends ConsumerState<SearchResultsPage> {
     super.dispose();
   }
 
-  void _triggerSearch() {
+  void _triggerSearch({bool refresh = false}) {
     Future.microtask(
       () => ref
           .read(searchViewModelProvider.notifier)
           .search(
             _effectiveSearchQuery,
             allowEmpty: widget.categoryId != null || widget.initialSort != null,
+            refresh: refresh,
           ),
     );
   }
@@ -94,7 +95,8 @@ class _SearchResultsPageState extends ConsumerState<SearchResultsPage> {
   Widget build(BuildContext context) {
     ref.listen(searchResubmissionProvider, (_, _) {
       _resetFilters();
-      _triggerSearch();
+      // 같은 검색어를 다시 제출하면 저장된 결과 대신 새로 받는다.
+      _triggerSearch(refresh: true);
     });
     final searchState = ref.watch(searchViewModelProvider);
     final products = _resolveProducts(searchState);

@@ -184,6 +184,7 @@ class _SimilarProductCard extends StatelessWidget {
                   aspectRatio: 1,
                   child: AppNetworkImage(
                     url: product.imageUrl,
+                    thumbnailWidth: 360,
                     borderRadius: AppRadius.small,
                   ),
                 ),

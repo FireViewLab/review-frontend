@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:re_view_front/app/theme/app_colors.dart';
 import 'package:re_view_front/core/platform/web_image_element.dart';
+import 'package:re_view_front/core/utils/product_image_urls.dart';
 
 class AppNetworkImage extends StatelessWidget {
   const AppNetworkImage({
@@ -12,10 +13,15 @@ class AppNetworkImage extends StatelessWidget {
     this.placeholderIcon = Icons.image_outlined,
     this.iconSize = 28.0,
     this.borderRadius,
+    this.thumbnailWidth,
     super.key,
   });
 
   final String url;
+
+  /// 목록 카드처럼 작게 보이는 곳에서 받을 이미지 가로 픽셀. 지정하면 쇼핑몰 CDN의
+  /// 축소 주소를 먼저 받고, 실패하면 원본 [url]로 다시 시도한다.
+  final int? thumbnailWidth;
   final BoxFit fit;
   final Alignment alignment;
   final IconData placeholderIcon;
@@ -47,8 +53,12 @@ class AppNetworkImage extends StatelessWidget {
       child = _Placeholder(icon: placeholderIcon, iconSize: iconSize);
     } else if (kIsWeb) {
       // HtmlElementView로 <img> 태그 직접 렌더링 → 외부 CDN 이미지 CORS 우회
+      final width = thumbnailWidth;
       child = _WebImage(
         url: url,
+        thumbnailUrl: width == null
+            ? null
+            : productThumbnailUrl(url, width: width),
         objectFit: _objectFit,
         cssBorderRadius: _cssBorderRadius,
         placeholder: _Placeholder(icon: placeholderIcon, iconSize: iconSize),
@@ -80,10 +90,12 @@ class _WebImage extends StatefulWidget {
     required this.url,
     required this.objectFit,
     required this.placeholder,
+    this.thumbnailUrl,
     this.cssBorderRadius,
   });
 
   final String url;
+  final String? thumbnailUrl;
   final String objectFit;
   final String? cssBorderRadius;
   final Widget placeholder;
@@ -94,17 +106,25 @@ class _WebImage extends StatefulWidget {
 
 class _WebImageState extends State<_WebImage> {
   bool _failed = false;
+  bool _thumbnailFailed = false;
 
   @override
   void didUpdateWidget(_WebImage oldWidget) {
     super.didUpdateWidget(oldWidget);
-    if (oldWidget.url != widget.url) _failed = false;
+    if (oldWidget.url != widget.url ||
+        oldWidget.thumbnailUrl != widget.thumbnailUrl) {
+      _failed = false;
+      _thumbnailFailed = false;
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     if (_failed) return widget.placeholder;
-    final loadedUrl = widget.url;
+    final thumbnailUrl = widget.thumbnailUrl;
+    final useThumbnail =
+        thumbnailUrl != null && thumbnailUrl != widget.url && !_thumbnailFailed;
+    final loadedUrl = useThumbnail ? thumbnailUrl : widget.url;
     return ClipRect(
       child: ColoredBox(
         color: AppColors.surfaceMuted,
@@ -112,7 +132,7 @@ class _WebImageState extends State<_WebImage> {
           // Images are display content; Flutter owns card/chat/zoom input.
           hitTestBehavior: PlatformViewHitTestBehavior.transparent,
           // Keep a DOM viewport separate from the image's intrinsic dimensions.
-          key: ValueKey(widget.url),
+          key: ValueKey(loadedUrl),
           tagName: 'div',
           onElementCreated: (element) => configureWebImageElement(
             element,
@@ -120,9 +140,15 @@ class _WebImageState extends State<_WebImage> {
             objectFit: widget.objectFit,
             borderRadius: widget.cssBorderRadius,
             onError: () {
-              if (mounted && widget.url == loadedUrl) {
-                setState(() => _failed = true);
-              }
+              if (!mounted) return;
+              setState(() {
+                // 축소 주소가 실패하면 원본으로 한 번 더 받는다.
+                if (useThumbnail) {
+                  _thumbnailFailed = true;
+                } else {
+                  _failed = true;
+                }
+              });
             },
           ),
         ),

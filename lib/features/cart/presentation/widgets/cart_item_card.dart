@@ -129,7 +129,7 @@ class _ProductImage extends StatelessWidget {
           Positioned.fill(
             child: ClipRRect(
               borderRadius: BorderRadius.circular(8),
-              child: AppNetworkImage(url: item.imageUrl),
+              child: AppNetworkImage(url: item.imageUrl, thumbnailWidth: 240),
             ),
           ),
           if (item.badge != null)
