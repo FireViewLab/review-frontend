@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:re_view_front/l10n/generated/app_localizations.dart';
 import 'package:re_view_front/app/theme/app_theme.dart';
 import 'package:re_view_front/features/product_detail/domain/entities/product_detail.dart';
 import 'package:re_view_front/features/product_detail/presentation/widgets/rti_summary_card.dart';
@@ -11,6 +12,9 @@ void main() {
     await tester.pumpWidget(
       MaterialApp(
         theme: AppTheme.light,
+        locale: const Locale('ko'),
+        localizationsDelegates: AppLocalizations.localizationsDelegates,
+        supportedLocales: AppLocalizations.supportedLocales,
         home: Scaffold(
           body: RtiSummaryCard(
             rtiSummary: const RtiSummary(
@@ -32,7 +36,8 @@ void main() {
       ),
     );
 
-    expect(find.text('반복 표현 多'), findsNothing);
-    expect(find.text('반복 표현 많음'), findsOneWidget);
+    // 리포트 카드는 점수와 요약만 보여 주고 한자 표기를 쓰지 않는다.
+    expect(find.textContaining('多'), findsNothing);
+    expect(find.text('50'), findsOneWidget);
   });
 }
