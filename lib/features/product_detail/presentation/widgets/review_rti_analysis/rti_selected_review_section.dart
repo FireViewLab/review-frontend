@@ -173,7 +173,7 @@ class RtiReviewAuthorRow extends StatelessWidget {
                       '구매인증',
                       style: Theme.of(context).textTheme.labelSmall?.copyWith(
                         color: AppColors.primary,
-                        fontSize: 10,
+                        fontSize: 11,
                         fontWeight: FontWeight.w700,
                       ),
                     ),
@@ -233,7 +233,7 @@ class RtiPlatformBadge extends StatelessWidget {
         platform,
         style: Theme.of(context).textTheme.labelSmall?.copyWith(
           color: color,
-          fontSize: 10,
+          fontSize: 11,
           fontWeight: FontWeight.w700,
         ),
       ),

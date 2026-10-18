@@ -581,7 +581,7 @@ class _VerifiedBadge extends StatelessWidget {
           style: Theme.of(context).textTheme.labelSmall?.copyWith(
             color: AppColors.primary,
             fontWeight: FontWeight.w800,
-            fontSize: 10,
+            fontSize: 11,
           ),
         ),
       ),
@@ -634,7 +634,7 @@ class _RtiBadgeSmall extends StatelessWidget {
               label!,
               style: Theme.of(context).textTheme.labelSmall?.copyWith(
                 color: color,
-                fontSize: 10,
+                fontSize: 11,
                 fontWeight: FontWeight.w600,
               ),
             ),
