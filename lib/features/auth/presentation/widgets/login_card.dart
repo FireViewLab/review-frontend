@@ -1,3 +1,4 @@
+import 'package:re_view_front/l10n/generated/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:re_view_front/app/theme/app_colors.dart';
 import 'package:re_view_front/app/theme/app_spacing.dart';
@@ -41,10 +42,8 @@ class LoginCard extends StatelessWidget {
   void _showAccountHelp(BuildContext context) => showDialog<void>(
     context: context,
     builder: (dialogContext) => AlertDialog(
-      title: const Text('계정 도움말'),
-      content: const Text(
-        '이메일 계정의 비밀번호는 비밀번호 찾기에서 재설정할 수 있습니다. 구글·네이버 계정은 가입할 때 사용한 소셜 로그인 버튼을 이용해 주세요.',
-      ),
+      title: Text(AppLocalizations.of(context).authAccountHelp),
+      content: Text(AppLocalizations.of(context).authAccountHelpBody),
       actions: [
         if (onForgotPasswordPressed != null)
           TextButton(
@@ -52,18 +51,18 @@ class LoginCard extends StatelessWidget {
               Navigator.of(dialogContext).pop();
               onForgotPasswordPressed!();
             },
-            child: const Text('비밀번호 찾기'),
+            child: Text(AppLocalizations.of(context).authForgotPassword),
           ),
         TextButton(
           onPressed: () {
             Navigator.of(dialogContext).pop();
             onSignupPressed();
           },
-          child: const Text('회원가입'),
+          child: Text(AppLocalizations.of(context).authSignup),
         ),
         TextButton(
           onPressed: () => Navigator.of(dialogContext).pop(),
-          child: const Text('닫기'),
+          child: Text(AppLocalizations.of(context).authClose),
         ),
       ],
     ),
@@ -101,7 +100,7 @@ class LoginCard extends StatelessWidget {
               ),
               const SizedBox(height: AppSpacing.xs),
               Text(
-                '로그인',
+                AppLocalizations.of(context).authLogin,
                 style: Theme.of(context).textTheme.headlineSmall?.copyWith(
                   color: AppColors.textPrimary,
                   fontWeight: FontWeight.w900,
@@ -109,7 +108,7 @@ class LoginCard extends StatelessWidget {
               ),
               const SizedBox(height: AppSpacing.sm),
               Text(
-                'Re:view 계정으로 로그인하고 저장한 상품과 신뢰 필터를 불러오세요.',
+                AppLocalizations.of(context).authLoginDescription,
                 style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                   color: AppColors.textSecondary,
                   height: 1.55,
@@ -118,8 +117,8 @@ class LoginCard extends StatelessWidget {
               SizedBox(height: context.isMobile ? AppSpacing.lg : 30),
               _LoginInputField(
                 controller: emailController,
-                label: '이메일',
-                hintText: '이메일을 입력하세요',
+                label: AppLocalizations.of(context).authEmail,
+                hintText: AppLocalizations.of(context).authEmailHint,
                 keyboardType: TextInputType.emailAddress,
                 textInputAction: TextInputAction.next,
                 prefixIcon: Icons.mail_outline,
@@ -129,7 +128,7 @@ class LoginCard extends StatelessWidget {
               _LoginInputField(
                 controller: passwordController,
                 label: '비밀번호',
-                hintText: '비밀번호를 입력하세요',
+                hintText: AppLocalizations.of(context).authPasswordHint,
                 obscureText: obscurePassword,
                 textInputAction: TextInputAction.done,
                 prefixIcon: Icons.lock_outline,
@@ -138,7 +137,11 @@ class LoginCard extends StatelessWidget {
                 onSubmitted: onLoginPressed,
                 trailing: TextButton(
                   onPressed: onPasswordVisibilityPressed,
-                  child: Text(obscurePassword ? '보기' : '숨김'),
+                  child: Text(
+                    obscurePassword
+                        ? AppLocalizations.of(context).authShow
+                        : AppLocalizations.of(context).authHide,
+                  ),
                 ),
               ),
               const SizedBox(height: AppSpacing.md),
@@ -156,7 +159,7 @@ class LoginCard extends StatelessWidget {
                   ),
                   Expanded(
                     child: Text(
-                      '로그인 상태 유지',
+                      AppLocalizations.of(context).authRememberMe,
                       style: Theme.of(context).textTheme.labelMedium?.copyWith(
                         color: AppColors.textSecondary,
                         fontWeight: FontWeight.w700,
@@ -167,7 +170,7 @@ class LoginCard extends StatelessWidget {
                     onPressed: isLoading
                         ? null
                         : () => _showAccountHelp(context),
-                    child: const Text('계정 도움말'),
+                    child: Text(AppLocalizations.of(context).authAccountHelp),
                   ),
                 ],
               ),
@@ -191,14 +194,14 @@ class LoginCard extends StatelessWidget {
                             color: AppColors.onPrimary,
                           ),
                         )
-                      : const Text('로그인'),
+                      : Text(AppLocalizations.of(context).authLogin),
                 ),
               ),
               const SizedBox(height: AppSpacing.xl),
-              const _DividerLabel(label: '또는'),
+              _DividerLabel(label: AppLocalizations.of(context).authOr),
               const SizedBox(height: AppSpacing.xl),
               _SocialLoginButton(
-                label: '네이버 계정으로 계속하기',
+                label: AppLocalizations.of(context).authContinueNaver,
                 mark: 'N',
                 onPressed: onOAuthPressed == null
                     ? null
@@ -206,7 +209,7 @@ class LoginCard extends StatelessWidget {
               ),
               const SizedBox(height: AppSpacing.sm),
               _SocialLoginButton(
-                label: 'Google 계정으로 계속하기',
+                label: AppLocalizations.of(context).authContinueGoogle,
                 mark: 'G',
                 onPressed: onOAuthPressed == null
                     ? null
@@ -222,14 +225,14 @@ class LoginCard extends StatelessWidget {
                 crossAxisAlignment: WrapCrossAlignment.center,
                 children: [
                   Text(
-                    '아직 계정이 없나요?',
+                    AppLocalizations.of(context).authNoAccount,
                     style: Theme.of(context).textTheme.labelMedium?.copyWith(
                       color: AppColors.textSecondary,
                     ),
                   ),
                   TextButton(
                     onPressed: onSignupPressed,
-                    child: const Text('회원가입하기'),
+                    child: Text(AppLocalizations.of(context).authSignupAction),
                   ),
                 ],
               ),
@@ -277,7 +280,9 @@ class _LoginInputField extends StatelessWidget {
           children: [
             Expanded(
               child: Text(
-                label,
+                label == '비밀번호'
+                    ? AppLocalizations.of(context).authPassword
+                    : label,
                 style: Theme.of(context).textTheme.labelLarge?.copyWith(
                   color: AppColors.textPrimary,
                   fontWeight: FontWeight.w800,
@@ -287,7 +292,7 @@ class _LoginInputField extends StatelessWidget {
             if (label == '비밀번호')
               TextButton(
                 onPressed: onForgotPassword,
-                child: const Text('비밀번호 찾기'),
+                child: Text(AppLocalizations.of(context).authForgotPassword),
               ),
           ],
         ),
@@ -477,7 +482,7 @@ class _PrivacyNotice extends StatelessWidget {
             const SizedBox(width: AppSpacing.sm),
             Expanded(
               child: Text(
-                '개인화 정보는 계정에 안전하게 저장되며, 저장 상품과 분석 기록은 로그인한 사용자에게만 표시됩니다.',
+                AppLocalizations.of(context).authPrivacyNotice,
                 style: Theme.of(context).textTheme.bodySmall?.copyWith(
                   color: AppColors.textSecondary,
                   height: 1.45,

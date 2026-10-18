@@ -1,3 +1,4 @@
+import 'package:re_view_front/l10n/generated/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:re_view_front/app/theme/app_colors.dart';
 import 'package:re_view_front/app/theme/app_spacing.dart';
@@ -30,7 +31,7 @@ class PasswordResetSuccessView extends StatelessWidget {
         ),
         const SizedBox(height: AppSpacing.lg),
         Text(
-          '비밀번호가 변경되었습니다',
+          AppLocalizations.of(context).authResetSuccess,
           textAlign: TextAlign.center,
           style: Theme.of(
             context,
@@ -38,7 +39,7 @@ class PasswordResetSuccessView extends StatelessWidget {
         ),
         const SizedBox(height: AppSpacing.sm),
         Text(
-          '새 비밀번호로 로그인해 주세요.',
+          AppLocalizations.of(context).authResetSuccessGuide,
           textAlign: TextAlign.center,
           style: Theme.of(context).textTheme.bodyMedium?.copyWith(
             color: AppColors.textSecondary,
@@ -57,7 +58,7 @@ class PasswordResetSuccessView extends StatelessWidget {
                 borderRadius: BorderRadius.circular(16),
               ),
             ),
-            child: const Text('로그인하러 가기'),
+            child: Text(AppLocalizations.of(context).authGoToLogin),
           ),
         ),
       ],

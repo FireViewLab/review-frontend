@@ -3455,6 +3455,372 @@ abstract class AppLocalizations {
   /// In ko, this message translates to:
   /// **'연관 검색어 다시 불러오기'**
   String get homeSearchSuggestionsRetry;
+
+  /// No description provided for @authAccountHelp.
+  ///
+  /// In ko, this message translates to:
+  /// **'계정 도움말'**
+  String get authAccountHelp;
+
+  /// No description provided for @authAccountHelpBody.
+  ///
+  /// In ko, this message translates to:
+  /// **'이메일 계정의 비밀번호는 비밀번호 찾기에서 재설정할 수 있습니다. 구글·네이버 계정은 가입할 때 사용한 소셜 로그인 버튼을 이용해 주세요.'**
+  String get authAccountHelpBody;
+
+  /// No description provided for @authForgotPassword.
+  ///
+  /// In ko, this message translates to:
+  /// **'비밀번호 찾기'**
+  String get authForgotPassword;
+
+  /// No description provided for @authSignup.
+  ///
+  /// In ko, this message translates to:
+  /// **'회원가입'**
+  String get authSignup;
+
+  /// No description provided for @authClose.
+  ///
+  /// In ko, this message translates to:
+  /// **'닫기'**
+  String get authClose;
+
+  /// No description provided for @authLogin.
+  ///
+  /// In ko, this message translates to:
+  /// **'로그인'**
+  String get authLogin;
+
+  /// No description provided for @authLoginDescription.
+  ///
+  /// In ko, this message translates to:
+  /// **'Re:view 계정으로 로그인하고 저장한 상품과 신뢰 필터를 불러오세요.'**
+  String get authLoginDescription;
+
+  /// No description provided for @authEmail.
+  ///
+  /// In ko, this message translates to:
+  /// **'이메일'**
+  String get authEmail;
+
+  /// No description provided for @authEmailHint.
+  ///
+  /// In ko, this message translates to:
+  /// **'이메일을 입력하세요'**
+  String get authEmailHint;
+
+  /// No description provided for @authPassword.
+  ///
+  /// In ko, this message translates to:
+  /// **'비밀번호'**
+  String get authPassword;
+
+  /// No description provided for @authPasswordHint.
+  ///
+  /// In ko, this message translates to:
+  /// **'비밀번호를 입력하세요'**
+  String get authPasswordHint;
+
+  /// No description provided for @authShow.
+  ///
+  /// In ko, this message translates to:
+  /// **'보기'**
+  String get authShow;
+
+  /// No description provided for @authHide.
+  ///
+  /// In ko, this message translates to:
+  /// **'숨김'**
+  String get authHide;
+
+  /// No description provided for @authRememberMe.
+  ///
+  /// In ko, this message translates to:
+  /// **'로그인 상태 유지'**
+  String get authRememberMe;
+
+  /// No description provided for @authOr.
+  ///
+  /// In ko, this message translates to:
+  /// **'또는'**
+  String get authOr;
+
+  /// No description provided for @authContinueNaver.
+  ///
+  /// In ko, this message translates to:
+  /// **'네이버 계정으로 계속하기'**
+  String get authContinueNaver;
+
+  /// No description provided for @authContinueGoogle.
+  ///
+  /// In ko, this message translates to:
+  /// **'Google 계정으로 계속하기'**
+  String get authContinueGoogle;
+
+  /// No description provided for @authNoAccount.
+  ///
+  /// In ko, this message translates to:
+  /// **'아직 계정이 없나요?'**
+  String get authNoAccount;
+
+  /// No description provided for @authSignupAction.
+  ///
+  /// In ko, this message translates to:
+  /// **'회원가입하기'**
+  String get authSignupAction;
+
+  /// No description provided for @authPrivacyNotice.
+  ///
+  /// In ko, this message translates to:
+  /// **'개인화 정보는 계정에 안전하게 저장되며, 저장 상품과 분석 기록은 로그인한 사용자에게만 표시됩니다.'**
+  String get authPrivacyNotice;
+
+  /// No description provided for @authSignupDescription.
+  ///
+  /// In ko, this message translates to:
+  /// **'Re:view 계정을 만들고 저장 상품, 신뢰 필터, 알림 설정을 시작하세요.'**
+  String get authSignupDescription;
+
+  /// No description provided for @authName.
+  ///
+  /// In ko, this message translates to:
+  /// **'이름'**
+  String get authName;
+
+  /// No description provided for @authNameHint.
+  ///
+  /// In ko, this message translates to:
+  /// **'이름을 입력하세요'**
+  String get authNameHint;
+
+  /// No description provided for @authPasswordGuidance.
+  ///
+  /// In ko, this message translates to:
+  /// **'영문, 숫자, 특수문자를 포함해 8자 이상으로 설정해주세요.'**
+  String get authPasswordGuidance;
+
+  /// No description provided for @authConfirmPassword.
+  ///
+  /// In ko, this message translates to:
+  /// **'비밀번호 확인'**
+  String get authConfirmPassword;
+
+  /// No description provided for @authConfirmPasswordHint.
+  ///
+  /// In ko, this message translates to:
+  /// **'비밀번호를 한 번 더 입력하세요'**
+  String get authConfirmPasswordHint;
+
+  /// No description provided for @authSignupOnboarding.
+  ///
+  /// In ko, this message translates to:
+  /// **'회원가입하고 온보딩 시작'**
+  String get authSignupOnboarding;
+
+  /// No description provided for @authSignupNaver.
+  ///
+  /// In ko, this message translates to:
+  /// **'네이버 계정으로 가입하기'**
+  String get authSignupNaver;
+
+  /// No description provided for @authSignupGoogle.
+  ///
+  /// In ko, this message translates to:
+  /// **'Google 계정으로 가입하기'**
+  String get authSignupGoogle;
+
+  /// No description provided for @authHasAccount.
+  ///
+  /// In ko, this message translates to:
+  /// **'이미 계정이 있나요?'**
+  String get authHasAccount;
+
+  /// No description provided for @authLoginAction.
+  ///
+  /// In ko, this message translates to:
+  /// **'로그인하기'**
+  String get authLoginAction;
+
+  /// No description provided for @authTermsConsent.
+  ///
+  /// In ko, this message translates to:
+  /// **'이용약관 및 개인정보처리방침에 동의합니다. (필수)'**
+  String get authTermsConsent;
+
+  /// No description provided for @authMarketingConsent.
+  ///
+  /// In ko, this message translates to:
+  /// **'저장 상품 알림과 신뢰도 변화 알림을 받겠습니다. (선택)'**
+  String get authMarketingConsent;
+
+  /// No description provided for @authOnboardingNotice.
+  ///
+  /// In ko, this message translates to:
+  /// **'다음 단계는 온보딩입니다. 가입 후 관심 카테고리와 기본 RTI 필터를 설정합니다.'**
+  String get authOnboardingNotice;
+
+  /// No description provided for @authResetTitle.
+  ///
+  /// In ko, this message translates to:
+  /// **'비밀번호 재설정'**
+  String get authResetTitle;
+
+  /// No description provided for @authResetDescription.
+  ///
+  /// In ko, this message translates to:
+  /// **'가입한 이메일을 확인하고 새 비밀번호를 등록하세요.'**
+  String get authResetDescription;
+
+  /// No description provided for @authRememberAccount.
+  ///
+  /// In ko, this message translates to:
+  /// **'계정이 기억났나요?'**
+  String get authRememberAccount;
+
+  /// No description provided for @authBackToLogin.
+  ///
+  /// In ko, this message translates to:
+  /// **'로그인으로 돌아가기'**
+  String get authBackToLogin;
+
+  /// No description provided for @authRegisteredEmail.
+  ///
+  /// In ko, this message translates to:
+  /// **'가입 이메일'**
+  String get authRegisteredEmail;
+
+  /// No description provided for @authSendVerification.
+  ///
+  /// In ko, this message translates to:
+  /// **'인증 이메일 발송'**
+  String get authSendVerification;
+
+  /// No description provided for @authEmailSent.
+  ///
+  /// In ko, this message translates to:
+  /// **'이메일을 발송했습니다'**
+  String get authEmailSent;
+
+  /// No description provided for @authEmailSentGuide.
+  ///
+  /// In ko, this message translates to:
+  /// **'이메일의 링크를 클릭하거나, 받은 토큰을 확인한 후 다음 단계로 진행하세요.'**
+  String get authEmailSentGuide;
+
+  /// No description provided for @authNext.
+  ///
+  /// In ko, this message translates to:
+  /// **'다음'**
+  String get authNext;
+
+  /// No description provided for @authResendEmail.
+  ///
+  /// In ko, this message translates to:
+  /// **'이메일 다시 받기'**
+  String get authResendEmail;
+
+  /// No description provided for @authNewPassword.
+  ///
+  /// In ko, this message translates to:
+  /// **'새 비밀번호'**
+  String get authNewPassword;
+
+  /// No description provided for @authNewPasswordHint.
+  ///
+  /// In ko, this message translates to:
+  /// **'새 비밀번호를 입력하세요'**
+  String get authNewPasswordHint;
+
+  /// No description provided for @authNewPasswordGuide.
+  ///
+  /// In ko, this message translates to:
+  /// **'이전에 사용한 비밀번호와 다르게 설정하고, 영문·숫자·특수문자를 조합해 주세요.'**
+  String get authNewPasswordGuide;
+
+  /// No description provided for @authConfirmNewPassword.
+  ///
+  /// In ko, this message translates to:
+  /// **'새 비밀번호 확인'**
+  String get authConfirmNewPassword;
+
+  /// No description provided for @authConfirmNewPasswordHint.
+  ///
+  /// In ko, this message translates to:
+  /// **'새 비밀번호를 한 번 더 입력하세요'**
+  String get authConfirmNewPasswordHint;
+
+  /// No description provided for @authCompleteReset.
+  ///
+  /// In ko, this message translates to:
+  /// **'비밀번호 변경 완료'**
+  String get authCompleteReset;
+
+  /// No description provided for @authResendVerification.
+  ///
+  /// In ko, this message translates to:
+  /// **'인증 이메일 다시 받기'**
+  String get authResendVerification;
+
+  /// No description provided for @authMinLength.
+  ///
+  /// In ko, this message translates to:
+  /// **'8자 이상'**
+  String get authMinLength;
+
+  /// No description provided for @authLettersNumbers.
+  ///
+  /// In ko, this message translates to:
+  /// **'영문과 숫자 포함'**
+  String get authLettersNumbers;
+
+  /// No description provided for @authSymbolsRecommended.
+  ///
+  /// In ko, this message translates to:
+  /// **'특수문자 포함 권장'**
+  String get authSymbolsRecommended;
+
+  /// No description provided for @authNoEmail.
+  ///
+  /// In ko, this message translates to:
+  /// **'이메일을 받지 못했나요?'**
+  String get authNoEmail;
+
+  /// No description provided for @authNoEmailGuide.
+  ///
+  /// In ko, this message translates to:
+  /// **'스팸함을 확인하거나, 가입한 이메일이 맞는지 다시 확인해 주세요.'**
+  String get authNoEmailGuide;
+
+  /// No description provided for @authVerifyEmail.
+  ///
+  /// In ko, this message translates to:
+  /// **'이메일 확인'**
+  String get authVerifyEmail;
+
+  /// No description provided for @authVerificationCode.
+  ///
+  /// In ko, this message translates to:
+  /// **'인증 코드'**
+  String get authVerificationCode;
+
+  /// No description provided for @authResetSuccess.
+  ///
+  /// In ko, this message translates to:
+  /// **'비밀번호가 변경되었습니다'**
+  String get authResetSuccess;
+
+  /// No description provided for @authResetSuccessGuide.
+  ///
+  /// In ko, this message translates to:
+  /// **'새 비밀번호로 로그인해 주세요.'**
+  String get authResetSuccessGuide;
+
+  /// No description provided for @authGoToLogin.
+  ///
+  /// In ko, this message translates to:
+  /// **'로그인하러 가기'**
+  String get authGoToLogin;
 }
 
 class _AppLocalizationsDelegate

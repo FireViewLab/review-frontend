@@ -1,3 +1,4 @@
+import 'package:re_view_front/l10n/generated/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:re_view_front/app/theme/app_colors.dart';
 import 'package:re_view_front/app/theme/app_spacing.dart';
@@ -129,7 +130,7 @@ class _FormView extends StatelessWidget {
         ),
         const SizedBox(height: AppSpacing.xs),
         Text(
-          '비밀번호 재설정',
+          AppLocalizations.of(context).authResetTitle,
           style: Theme.of(context).textTheme.headlineSmall?.copyWith(
             color: AppColors.textPrimary,
             fontWeight: FontWeight.w900,
@@ -137,7 +138,7 @@ class _FormView extends StatelessWidget {
         ),
         const SizedBox(height: AppSpacing.sm),
         Text(
-          '가입한 이메일을 확인하고 새 비밀번호를 등록하세요.',
+          AppLocalizations.of(context).authResetDescription,
           style: Theme.of(context).textTheme.bodyMedium?.copyWith(
             color: AppColors.textSecondary,
             height: 1.55,
@@ -183,14 +184,14 @@ class _FormView extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text(
-              '계정이 기억났나요?',
+              AppLocalizations.of(context).authRememberAccount,
               style: Theme.of(
                 context,
               ).textTheme.labelMedium?.copyWith(color: AppColors.textSecondary),
             ),
             TextButton(
               onPressed: onLoginPressed,
-              child: const Text('로그인으로 돌아가기'),
+              child: Text(AppLocalizations.of(context).authBackToLogin),
             ),
           ],
         ),

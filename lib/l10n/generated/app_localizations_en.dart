@@ -1835,4 +1835,199 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get homeSearchSuggestionsRetry => 'Reload related searches';
+
+  @override
+  String get authAccountHelp => 'Account help';
+
+  @override
+  String get authAccountHelpBody =>
+      'Reset your email account password using Forgot password. For Google or Naver accounts, use the social login button you signed up with.';
+
+  @override
+  String get authForgotPassword => 'Forgot password';
+
+  @override
+  String get authSignup => 'Sign up';
+
+  @override
+  String get authClose => 'Close';
+
+  @override
+  String get authLogin => 'Log in';
+
+  @override
+  String get authLoginDescription =>
+      'Log in to your Re:view account to access saved products and trust filters.';
+
+  @override
+  String get authEmail => 'Email';
+
+  @override
+  String get authEmailHint => 'Enter your email';
+
+  @override
+  String get authPassword => 'Password';
+
+  @override
+  String get authPasswordHint => 'Enter your password';
+
+  @override
+  String get authShow => 'Show';
+
+  @override
+  String get authHide => 'Hide';
+
+  @override
+  String get authRememberMe => 'Keep me logged in';
+
+  @override
+  String get authOr => 'or';
+
+  @override
+  String get authContinueNaver => 'Continue with Naver';
+
+  @override
+  String get authContinueGoogle => 'Continue with Google';
+
+  @override
+  String get authNoAccount => 'Don’t have an account yet?';
+
+  @override
+  String get authSignupAction => 'Sign up';
+
+  @override
+  String get authPrivacyNotice =>
+      'Your preferences are securely stored in your account. Saved products and analysis history are only visible to you when logged in.';
+
+  @override
+  String get authSignupDescription =>
+      'Create a Re:view account to start saving products and setting up trust filters and notifications.';
+
+  @override
+  String get authName => 'Name';
+
+  @override
+  String get authNameHint => 'Enter your name';
+
+  @override
+  String get authPasswordGuidance =>
+      'Use at least 8 characters, including letters, numbers, and symbols.';
+
+  @override
+  String get authConfirmPassword => 'Confirm password';
+
+  @override
+  String get authConfirmPasswordHint => 'Enter your password again';
+
+  @override
+  String get authSignupOnboarding => 'Sign up and get started';
+
+  @override
+  String get authSignupNaver => 'Sign up with Naver';
+
+  @override
+  String get authSignupGoogle => 'Sign up with Google';
+
+  @override
+  String get authHasAccount => 'Already have an account?';
+
+  @override
+  String get authLoginAction => 'Log in';
+
+  @override
+  String get authTermsConsent =>
+      'I agree to the Terms of Service and Privacy Policy. (Required)';
+
+  @override
+  String get authMarketingConsent =>
+      'Send me alerts about saved products and trust score changes. (Optional)';
+
+  @override
+  String get authOnboardingNotice =>
+      'Next, you’ll set up your account. After signing up, choose your interests and default RTI filters.';
+
+  @override
+  String get authResetTitle => 'Reset password';
+
+  @override
+  String get authResetDescription =>
+      'Verify your registered email and set a new password.';
+
+  @override
+  String get authRememberAccount => 'Remember your account?';
+
+  @override
+  String get authBackToLogin => 'Back to login';
+
+  @override
+  String get authRegisteredEmail => 'Registered email';
+
+  @override
+  String get authSendVerification => 'Send verification email';
+
+  @override
+  String get authEmailSent => 'Email sent';
+
+  @override
+  String get authEmailSentGuide =>
+      'Click the link in the email or check the token you received, then continue to the next step.';
+
+  @override
+  String get authNext => 'Next';
+
+  @override
+  String get authResendEmail => 'Resend email';
+
+  @override
+  String get authNewPassword => 'New password';
+
+  @override
+  String get authNewPasswordHint => 'Enter a new password';
+
+  @override
+  String get authNewPasswordGuide =>
+      'Choose a different password from your previous one, combining letters, numbers, and symbols.';
+
+  @override
+  String get authConfirmNewPassword => 'Confirm new password';
+
+  @override
+  String get authConfirmNewPasswordHint => 'Enter your new password again';
+
+  @override
+  String get authCompleteReset => 'Change password';
+
+  @override
+  String get authResendVerification => 'Resend verification email';
+
+  @override
+  String get authMinLength => 'At least 8 characters';
+
+  @override
+  String get authLettersNumbers => 'Includes letters and numbers';
+
+  @override
+  String get authSymbolsRecommended => 'Symbols recommended';
+
+  @override
+  String get authNoEmail => 'Didn’t receive the email?';
+
+  @override
+  String get authNoEmailGuide =>
+      'Check your spam folder or make sure you entered your registered email.';
+
+  @override
+  String get authVerifyEmail => 'Verify email';
+
+  @override
+  String get authVerificationCode => 'Verification code';
+
+  @override
+  String get authResetSuccess => 'Your password has been changed';
+
+  @override
+  String get authResetSuccessGuide => 'Please log in with your new password.';
+
+  @override
+  String get authGoToLogin => 'Go to login';
 }

@@ -1776,4 +1776,192 @@ class AppLocalizationsKo extends AppLocalizations {
 
   @override
   String get homeSearchSuggestionsRetry => '연관 검색어 다시 불러오기';
+
+  @override
+  String get authAccountHelp => '계정 도움말';
+
+  @override
+  String get authAccountHelpBody =>
+      '이메일 계정의 비밀번호는 비밀번호 찾기에서 재설정할 수 있습니다. 구글·네이버 계정은 가입할 때 사용한 소셜 로그인 버튼을 이용해 주세요.';
+
+  @override
+  String get authForgotPassword => '비밀번호 찾기';
+
+  @override
+  String get authSignup => '회원가입';
+
+  @override
+  String get authClose => '닫기';
+
+  @override
+  String get authLogin => '로그인';
+
+  @override
+  String get authLoginDescription => 'Re:view 계정으로 로그인하고 저장한 상품과 신뢰 필터를 불러오세요.';
+
+  @override
+  String get authEmail => '이메일';
+
+  @override
+  String get authEmailHint => '이메일을 입력하세요';
+
+  @override
+  String get authPassword => '비밀번호';
+
+  @override
+  String get authPasswordHint => '비밀번호를 입력하세요';
+
+  @override
+  String get authShow => '보기';
+
+  @override
+  String get authHide => '숨김';
+
+  @override
+  String get authRememberMe => '로그인 상태 유지';
+
+  @override
+  String get authOr => '또는';
+
+  @override
+  String get authContinueNaver => '네이버 계정으로 계속하기';
+
+  @override
+  String get authContinueGoogle => 'Google 계정으로 계속하기';
+
+  @override
+  String get authNoAccount => '아직 계정이 없나요?';
+
+  @override
+  String get authSignupAction => '회원가입하기';
+
+  @override
+  String get authPrivacyNotice =>
+      '개인화 정보는 계정에 안전하게 저장되며, 저장 상품과 분석 기록은 로그인한 사용자에게만 표시됩니다.';
+
+  @override
+  String get authSignupDescription =>
+      'Re:view 계정을 만들고 저장 상품, 신뢰 필터, 알림 설정을 시작하세요.';
+
+  @override
+  String get authName => '이름';
+
+  @override
+  String get authNameHint => '이름을 입력하세요';
+
+  @override
+  String get authPasswordGuidance => '영문, 숫자, 특수문자를 포함해 8자 이상으로 설정해주세요.';
+
+  @override
+  String get authConfirmPassword => '비밀번호 확인';
+
+  @override
+  String get authConfirmPasswordHint => '비밀번호를 한 번 더 입력하세요';
+
+  @override
+  String get authSignupOnboarding => '회원가입하고 온보딩 시작';
+
+  @override
+  String get authSignupNaver => '네이버 계정으로 가입하기';
+
+  @override
+  String get authSignupGoogle => 'Google 계정으로 가입하기';
+
+  @override
+  String get authHasAccount => '이미 계정이 있나요?';
+
+  @override
+  String get authLoginAction => '로그인하기';
+
+  @override
+  String get authTermsConsent => '이용약관 및 개인정보처리방침에 동의합니다. (필수)';
+
+  @override
+  String get authMarketingConsent => '저장 상품 알림과 신뢰도 변화 알림을 받겠습니다. (선택)';
+
+  @override
+  String get authOnboardingNotice =>
+      '다음 단계는 온보딩입니다. 가입 후 관심 카테고리와 기본 RTI 필터를 설정합니다.';
+
+  @override
+  String get authResetTitle => '비밀번호 재설정';
+
+  @override
+  String get authResetDescription => '가입한 이메일을 확인하고 새 비밀번호를 등록하세요.';
+
+  @override
+  String get authRememberAccount => '계정이 기억났나요?';
+
+  @override
+  String get authBackToLogin => '로그인으로 돌아가기';
+
+  @override
+  String get authRegisteredEmail => '가입 이메일';
+
+  @override
+  String get authSendVerification => '인증 이메일 발송';
+
+  @override
+  String get authEmailSent => '이메일을 발송했습니다';
+
+  @override
+  String get authEmailSentGuide => '이메일의 링크를 클릭하거나, 받은 토큰을 확인한 후 다음 단계로 진행하세요.';
+
+  @override
+  String get authNext => '다음';
+
+  @override
+  String get authResendEmail => '이메일 다시 받기';
+
+  @override
+  String get authNewPassword => '새 비밀번호';
+
+  @override
+  String get authNewPasswordHint => '새 비밀번호를 입력하세요';
+
+  @override
+  String get authNewPasswordGuide =>
+      '이전에 사용한 비밀번호와 다르게 설정하고, 영문·숫자·특수문자를 조합해 주세요.';
+
+  @override
+  String get authConfirmNewPassword => '새 비밀번호 확인';
+
+  @override
+  String get authConfirmNewPasswordHint => '새 비밀번호를 한 번 더 입력하세요';
+
+  @override
+  String get authCompleteReset => '비밀번호 변경 완료';
+
+  @override
+  String get authResendVerification => '인증 이메일 다시 받기';
+
+  @override
+  String get authMinLength => '8자 이상';
+
+  @override
+  String get authLettersNumbers => '영문과 숫자 포함';
+
+  @override
+  String get authSymbolsRecommended => '특수문자 포함 권장';
+
+  @override
+  String get authNoEmail => '이메일을 받지 못했나요?';
+
+  @override
+  String get authNoEmailGuide => '스팸함을 확인하거나, 가입한 이메일이 맞는지 다시 확인해 주세요.';
+
+  @override
+  String get authVerifyEmail => '이메일 확인';
+
+  @override
+  String get authVerificationCode => '인증 코드';
+
+  @override
+  String get authResetSuccess => '비밀번호가 변경되었습니다';
+
+  @override
+  String get authResetSuccessGuide => '새 비밀번호로 로그인해 주세요.';
+
+  @override
+  String get authGoToLogin => '로그인하러 가기';
 }
