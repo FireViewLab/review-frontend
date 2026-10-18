@@ -61,7 +61,7 @@ class FilterPanel extends StatelessWidget {
       elevation: 2,
       shadowColor: const Color(0x080F172A),
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(12),
+        borderRadius: AppRadius.medium,
         side: const BorderSide(color: AppColors.border),
       ),
       child: Padding(

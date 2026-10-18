@@ -108,7 +108,7 @@ class _SearchBarState extends State<SearchBar> {
         height: 50,
         decoration: BoxDecoration(
           color: backgroundColor,
-          borderRadius: BorderRadius.circular(16),
+          borderRadius: AppRadius.large,
           border: Border.all(
             color: _isFocused || _isHovered
                 ? AppColors.primary

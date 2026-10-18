@@ -21,7 +21,7 @@ class ReviewAnalysisSection extends StatelessWidget {
     padding: const EdgeInsets.all(20),
     decoration: BoxDecoration(
       color: AppColors.surface,
-      borderRadius: BorderRadius.circular(16),
+      borderRadius: AppRadius.large,
       border: Border.all(color: AppColors.border),
     ),
     child: Column(
@@ -45,7 +45,7 @@ class ReviewEvidenceText extends StatelessWidget {
     padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
     decoration: BoxDecoration(
       color: AppColors.surfaceMuted,
-      borderRadius: BorderRadius.circular(12),
+      borderRadius: AppRadius.medium,
       border: Border.all(color: AppColors.border),
     ),
     child: Row(

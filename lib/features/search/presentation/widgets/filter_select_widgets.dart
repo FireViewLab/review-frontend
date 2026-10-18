@@ -28,7 +28,7 @@ class SelectBox extends StatelessWidget {
       constraints: const BoxConstraints(minWidth: 210, maxWidth: 230),
       position: PopupMenuPosition.under,
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(8),
+        borderRadius: AppRadius.small,
         side: const BorderSide(color: AppColors.border),
       ),
       itemBuilder: (context) => [

@@ -271,15 +271,15 @@ InputDecoration settingsInputDecoration({String? suffixText}) {
       vertical: AppSpacing.sm,
     ),
     border: OutlineInputBorder(
-      borderRadius: BorderRadius.circular(8),
+      borderRadius: AppRadius.small,
       borderSide: const BorderSide(color: AppColors.border),
     ),
     enabledBorder: OutlineInputBorder(
-      borderRadius: BorderRadius.circular(8),
+      borderRadius: AppRadius.small,
       borderSide: const BorderSide(color: AppColors.border),
     ),
     focusedBorder: OutlineInputBorder(
-      borderRadius: BorderRadius.circular(8),
+      borderRadius: AppRadius.small,
       borderSide: const BorderSide(color: AppColors.primary, width: 1.5),
     ),
     filled: true,

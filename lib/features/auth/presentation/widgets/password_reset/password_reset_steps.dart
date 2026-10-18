@@ -67,7 +67,7 @@ class PasswordResetEmailSentStep extends StatelessWidget {
         DecoratedBox(
           decoration: BoxDecoration(
             color: AppColors.successSoft,
-            borderRadius: BorderRadius.circular(16),
+            borderRadius: AppRadius.large,
             border: Border.all(color: const Color(0xFFA7D7A9)),
           ),
           child: Padding(
@@ -126,9 +126,7 @@ class PasswordResetEmailSentStep extends StatelessWidget {
           style: OutlinedButton.styleFrom(
             minimumSize: const Size.fromHeight(52),
             side: const BorderSide(color: AppColors.border),
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(16),
-            ),
+            shape: RoundedRectangleBorder(borderRadius: AppRadius.large),
           ),
           child: Text(AppLocalizations.of(context).authResendEmail),
         ),
@@ -234,9 +232,7 @@ class PasswordResetNewPasswordStep extends StatelessWidget {
           style: OutlinedButton.styleFrom(
             minimumSize: const Size.fromHeight(52),
             side: const BorderSide(color: AppColors.border),
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(16),
-            ),
+            shape: RoundedRectangleBorder(borderRadius: AppRadius.large),
           ),
           child: Text(AppLocalizations.of(context).authResendVerification),
         ),

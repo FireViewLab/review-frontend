@@ -128,7 +128,7 @@ class _ProductImage extends StatelessWidget {
       child: AppNetworkImage(
         url: item.imageUrl,
         thumbnailWidth: 240,
-        borderRadius: BorderRadius.circular(8),
+        borderRadius: AppRadius.small,
       ),
     );
   }

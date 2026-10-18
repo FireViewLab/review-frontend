@@ -57,9 +57,7 @@ class ReviewReportPageHeader extends StatelessWidget {
                   horizontal: AppSpacing.md,
                   vertical: AppSpacing.sm,
                 ),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(8),
-                ),
+                shape: RoundedRectangleBorder(borderRadius: AppRadius.small),
               ),
               child: const Text(
                 '내 피드백 내역 보기',

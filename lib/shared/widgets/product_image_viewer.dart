@@ -256,7 +256,7 @@ class _IndexIndicator extends StatelessWidget {
     return DecoratedBox(
       decoration: BoxDecoration(
         color: Colors.black54,
-        borderRadius: BorderRadius.circular(12),
+        borderRadius: AppRadius.medium,
       ),
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),

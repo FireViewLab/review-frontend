@@ -207,7 +207,7 @@ class _SignupCardState extends State<SignupCard> {
                     backgroundColor: AppColors.primaryDark,
                     foregroundColor: AppColors.onPrimary,
                     shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(16),
+                      borderRadius: AppRadius.large,
                     ),
                   ),
                   child: widget.isLoading
@@ -330,15 +330,15 @@ class _SignupInputField extends StatelessWidget {
                 vertical: AppSpacing.md,
               ),
               border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(16),
+                borderRadius: AppRadius.large,
                 borderSide: const BorderSide(color: AppColors.border),
               ),
               enabledBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(16),
+                borderRadius: AppRadius.large,
                 borderSide: const BorderSide(color: AppColors.border),
               ),
               focusedBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(16),
+                borderRadius: AppRadius.large,
                 borderSide: const BorderSide(
                   color: AppColors.primary,
                   width: 1.4,
@@ -384,7 +384,7 @@ class _AgreementBox extends StatelessWidget {
     return DecoratedBox(
       decoration: BoxDecoration(
         color: AppColors.surface,
-        borderRadius: BorderRadius.circular(16),
+        borderRadius: AppRadius.large,
         border: Border.all(color: AppColors.border),
       ),
       child: Padding(
@@ -492,7 +492,7 @@ class _NextStepNotice extends StatelessWidget {
     return DecoratedBox(
       decoration: BoxDecoration(
         color: AppColors.primaryLight,
-        borderRadius: BorderRadius.circular(16),
+        borderRadius: AppRadius.large,
         border: Border.all(color: const Color(0xFFCFE0FF)),
       ),
       child: Padding(
@@ -586,7 +586,7 @@ class _SocialSignupButton extends StatelessWidget {
             alignment: Alignment.center,
             decoration: BoxDecoration(
               color: AppColors.primaryLight,
-              borderRadius: BorderRadius.circular(8),
+              borderRadius: AppRadius.small,
             ),
             child: Text(
               mark,

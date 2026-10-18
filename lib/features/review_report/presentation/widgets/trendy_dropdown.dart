@@ -240,7 +240,7 @@ class _DropdownMenu extends StatelessWidget {
         padding: const EdgeInsets.all(6),
         decoration: BoxDecoration(
           color: AppColors.surface,
-          borderRadius: BorderRadius.circular(12),
+          borderRadius: AppRadius.medium,
           border: Border.all(color: AppColors.border),
           boxShadow: [
             BoxShadow(
@@ -306,10 +306,7 @@ class _MenuItemState extends State<_MenuItem> {
             horizontal: AppSpacing.sm,
             vertical: 10,
           ),
-          decoration: BoxDecoration(
-            color: bg,
-            borderRadius: BorderRadius.circular(8),
-          ),
+          decoration: BoxDecoration(color: bg, borderRadius: AppRadius.small),
           child: Row(
             children: [
               Expanded(

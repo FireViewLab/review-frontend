@@ -284,7 +284,7 @@ class _RtiCheckBanner extends StatelessWidget {
             DecoratedBox(
               decoration: BoxDecoration(
                 color: AppColors.primary.withValues(alpha: 0.12),
-                borderRadius: BorderRadius.circular(8),
+                borderRadius: AppRadius.small,
               ),
               child: const Padding(
                 padding: EdgeInsets.all(AppSpacing.xs),

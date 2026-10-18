@@ -99,7 +99,7 @@ class BenefitCTA extends StatelessWidget {
               ),
               decoration: BoxDecoration(
                 color: AppColors.surface,
-                borderRadius: BorderRadius.circular(12),
+                borderRadius: AppRadius.medium,
                 border: Border.all(color: AppColors.border),
               ),
               child: Column(

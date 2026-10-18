@@ -19,7 +19,7 @@ class ChatRecommendationCard extends ConsumerWidget {
     final l = AppLocalizations.of(context);
     return Card(
       child: InkWell(
-        borderRadius: BorderRadius.circular(12),
+        borderRadius: AppRadius.medium,
         onTap: () {
           final summary = product.summary;
           ref.read(productSummaryCacheProvider).remember(summary);
@@ -45,7 +45,7 @@ class ChatRecommendationCard extends ConsumerWidget {
                 child: AppNetworkImage(
                   url: product.thumbnailUrl ?? '',
                   thumbnailWidth: 160,
-                  borderRadius: BorderRadius.circular(8),
+                  borderRadius: AppRadius.small,
                 ),
               ),
               const SizedBox(width: AppSpacing.sm),

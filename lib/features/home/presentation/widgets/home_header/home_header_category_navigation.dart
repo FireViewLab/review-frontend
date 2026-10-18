@@ -65,7 +65,7 @@ class HomeHeaderCategorySideNavItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: onTap,
-      borderRadius: BorderRadius.circular(8),
+      borderRadius: AppRadius.small,
       child: AnimatedContainer(
         duration: const Duration(milliseconds: 140),
         height: 28,
@@ -73,7 +73,7 @@ class HomeHeaderCategorySideNavItem extends StatelessWidget {
         padding: const EdgeInsets.symmetric(horizontal: AppSpacing.sm),
         decoration: BoxDecoration(
           color: isSelected ? AppColors.primaryLight : Colors.transparent,
-          borderRadius: BorderRadius.circular(8),
+          borderRadius: AppRadius.small,
           border: isSelected ? Border.all(color: AppColors.primary) : null,
         ),
         child: Text(
@@ -225,7 +225,7 @@ class HomeHeaderMiddleCategoryColumn extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      borderRadius: BorderRadius.circular(12),
+      borderRadius: AppRadius.medium,
       onTap: () => onCategorySelected(category.label),
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: AppSpacing.lg),
@@ -311,7 +311,7 @@ class HomeHeaderCategoryOverviewTile extends StatelessWidget {
                   clipBehavior: Clip.antiAlias,
                   decoration: BoxDecoration(
                     color: const Color(0xFFF4F7FB),
-                    borderRadius: BorderRadius.circular(8),
+                    borderRadius: AppRadius.small,
                   ),
                   child: HomeHeaderCategoryAssetImage(
                     assetPath: homeHeaderCategoryAssetPath(category.id),

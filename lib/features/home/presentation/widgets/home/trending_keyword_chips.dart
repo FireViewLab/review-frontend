@@ -116,7 +116,7 @@ class _ChipContent extends StatelessWidget {
             alignment: Alignment.center,
             decoration: BoxDecoration(
               color: AppColors.primaryLight,
-              borderRadius: BorderRadius.circular(8),
+              borderRadius: AppRadius.small,
             ),
             child: Text(
               '$rank',

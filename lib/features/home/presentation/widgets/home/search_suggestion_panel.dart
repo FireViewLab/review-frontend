@@ -386,7 +386,7 @@ class _SuggestedProductTile extends StatelessWidget {
     return SizedBox(
       height: 58,
       child: InkWell(
-        borderRadius: BorderRadius.circular(12),
+        borderRadius: AppRadius.medium,
         onTap: onPressed,
         child: Padding(
           padding: const EdgeInsets.symmetric(vertical: AppSpacing.xs),
@@ -399,7 +399,7 @@ class _SuggestedProductTile extends StatelessWidget {
                 clipBehavior: Clip.antiAlias,
                 decoration: BoxDecoration(
                   color: const Color(0xFFF1F5F9),
-                  borderRadius: BorderRadius.circular(12),
+                  borderRadius: AppRadius.medium,
                 ),
                 child: AppNetworkImage(
                   url: product.imageUrl,

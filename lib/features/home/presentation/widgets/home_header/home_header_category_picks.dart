@@ -199,7 +199,7 @@ class HomeHeaderCategoryPickCard extends StatelessWidget {
               const SizedBox(height: AppSpacing.xxs),
               Expanded(
                 child: ClipRRect(
-                  borderRadius: BorderRadius.circular(8),
+                  borderRadius: AppRadius.small,
                   child: Center(
                     child: item.usesNetworkImage
                         ? AppNetworkImage(

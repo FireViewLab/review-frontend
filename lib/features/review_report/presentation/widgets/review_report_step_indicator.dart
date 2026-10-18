@@ -122,7 +122,7 @@ class _StepItemState extends State<_StepItem> {
           ),
           decoration: BoxDecoration(
             color: AppColors.surface,
-            borderRadius: BorderRadius.circular(12),
+            borderRadius: AppRadius.medium,
             border: Border.all(color: borderColor, width: isActive ? 1.5 : 1),
             boxShadow: isActive
                 ? [

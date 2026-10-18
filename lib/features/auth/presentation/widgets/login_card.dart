@@ -183,7 +183,7 @@ class LoginCard extends StatelessWidget {
                     backgroundColor: AppColors.primaryDark,
                     foregroundColor: AppColors.onPrimary,
                     shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(16),
+                      borderRadius: AppRadius.large,
                     ),
                   ),
                   child: isLoading
@@ -317,15 +317,15 @@ class _LoginInputField extends StatelessWidget {
                 vertical: AppSpacing.md,
               ),
               border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(16),
+                borderRadius: AppRadius.large,
                 borderSide: const BorderSide(color: AppColors.border),
               ),
               enabledBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(16),
+                borderRadius: AppRadius.large,
                 borderSide: const BorderSide(color: AppColors.border),
               ),
               focusedBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(16),
+                borderRadius: AppRadius.large,
                 borderSide: const BorderSide(
                   color: AppColors.primary,
                   width: 1.4,
@@ -431,7 +431,7 @@ class _SocialLoginButton extends StatelessWidget {
             alignment: Alignment.center,
             decoration: BoxDecoration(
               color: AppColors.primaryLight,
-              borderRadius: BorderRadius.circular(8),
+              borderRadius: AppRadius.small,
             ),
             child: Text(
               mark,
@@ -457,7 +457,7 @@ class _PrivacyNotice extends StatelessWidget {
     return DecoratedBox(
       decoration: BoxDecoration(
         color: AppColors.primaryLight,
-        borderRadius: BorderRadius.circular(16),
+        borderRadius: AppRadius.large,
         border: Border.all(color: const Color(0xFFCFE0FF)),
       ),
       child: Padding(
