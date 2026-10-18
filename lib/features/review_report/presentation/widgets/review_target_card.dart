@@ -133,7 +133,7 @@ class _Thumbnail extends StatelessWidget {
             style: TextStyle(
               fontWeight: FontWeight.w700,
               color: color,
-              fontSize: 10,
+              fontSize: 11,
               height: 1,
             ),
           ),

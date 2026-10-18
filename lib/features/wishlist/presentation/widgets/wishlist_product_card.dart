@@ -238,7 +238,7 @@ class _PriceDropBadge extends StatelessWidget {
               style: Theme.of(context).textTheme.labelSmall?.copyWith(
                 color: AppColors.error,
                 fontWeight: FontWeight.w900,
-                fontSize: 10,
+                fontSize: 11,
               ),
             ),
           ],

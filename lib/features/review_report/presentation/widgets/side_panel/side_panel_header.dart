@@ -44,7 +44,7 @@ class SidePanelHeader extends StatelessWidget {
               child: Text(
                 badgeLabel,
                 style: const TextStyle(
-                  fontSize: 10,
+                  fontSize: 11,
                   fontWeight: FontWeight.w800,
                   color: AppColors.textSecondary,
                 ),

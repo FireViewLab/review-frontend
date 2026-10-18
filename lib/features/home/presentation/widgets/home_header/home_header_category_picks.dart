@@ -193,7 +193,7 @@ class HomeHeaderCategoryPickCard extends StatelessWidget {
                 style: Theme.of(context).textTheme.labelSmall?.copyWith(
                   color: AppColors.primary,
                   fontWeight: FontWeight.w900,
-                  fontSize: 10,
+                  fontSize: 11,
                 ),
               ),
               const SizedBox(height: AppSpacing.xxs),
@@ -240,7 +240,7 @@ class HomeHeaderCategoryPickCard extends StatelessWidget {
                       style: Theme.of(context).textTheme.labelSmall?.copyWith(
                         color: AppColors.textSecondary,
                         fontWeight: FontWeight.w700,
-                        fontSize: 10,
+                        fontSize: 11,
                       ),
                     ),
                   ),
@@ -249,7 +249,7 @@ class HomeHeaderCategoryPickCard extends StatelessWidget {
                     style: Theme.of(context).textTheme.labelSmall?.copyWith(
                       color: AppColors.primary,
                       fontWeight: FontWeight.w900,
-                      fontSize: 10,
+                      fontSize: 11,
                     ),
                   ),
                 ],

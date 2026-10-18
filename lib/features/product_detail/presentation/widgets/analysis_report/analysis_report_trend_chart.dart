@@ -45,7 +45,7 @@ class AnalysisReportTrendChartPainter extends CustomPainter {
       ..strokeWidth = 1;
     final labelStyle = const TextStyle(
       color: AppColors.textTertiary,
-      fontSize: 10,
+      fontSize: 11,
     );
 
     for (var i = 0; i <= 4; i++) {
