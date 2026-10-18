@@ -1,12 +1,12 @@
 import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:re_view_front/app/theme/app_colors.dart';
 import 'package:re_view_front/app/theme/app_spacing.dart';
-import 'package:re_view_front/features/chat/domain/entities/chat_quota.dart';
-import 'package:re_view_front/features/chat/presentation/widgets/chat_message_bubble.dart';
-import 'package:re_view_front/features/chat/presentation/widgets/chat_style.dart';
 import 'package:re_view_front/l10n/generated/app_localizations.dart';
+import 'package:re_view_front/features/chat/presentation/widgets/chat_style.dart';
+import 'package:re_view_front/features/chat/domain/entities/chat_quota.dart';
+import 'chat_composer_quota.dart';
+import 'chat_composer_controls.dart';
 
 /// 서버 `TopicGuard.MAX_QUESTION_LENGTH`와 같은 값.
 const _maxQuestionLength = 500;
@@ -169,12 +169,12 @@ class ChatComposerState extends State<ChatComposer> {
         mainAxisSize: MainAxisSize.min,
         children: [
           if (exhausted)
-            _LimitBanner(
+            ChatComposerLimitBanner(
               resetAt: quota?.resetAt,
               onPlanPressed: widget.onPlanPressed,
             )
           else if (quota != null)
-            _QuotaLine(quota: quota),
+            ChatComposerQuotaLine(quota: quota),
           GestureDetector(
             // 입력 상자의 빈 곳을 눌러도 글자를 칠 수 있게 한다.
             behavior: HitTestBehavior.translucent,
@@ -243,7 +243,7 @@ class ChatComposerState extends State<ChatComposer> {
                           widget.controller.text.trim().isNotEmpty;
                       final modeSwitch = quota == null
                           ? null
-                          : _ModeSwitch(
+                          : ChatComposerModeSwitch(
                               mode: widget.mode,
                               proAvailable: widget.canUsePro,
                               onSelected: widget.isSending ? null : _selectMode,
@@ -264,48 +264,15 @@ class ChatComposerState extends State<ChatComposer> {
                                 ),
                               ),
                             ),
-                          _SendButton(
+                          ChatComposerSendButton(
                             tooltip: l10n.chatSend,
                             onPressed: canSend ? _submit : null,
                           ),
                         ],
                       );
-                      return LayoutBuilder(
-                        builder: (context, constraints) {
-                          // 좁은 화면이나 큰 글자에서는 모드 선택을 윗줄로 올린다.
-                          final tight =
-                              constraints.maxWidth < 300 ||
-                              MediaQuery.textScalerOf(context).scale(1) > 1.3;
-                          // 그래도 넘치면 잘리는 대신 줄어들게 한다.
-                          Widget fit(Widget child) => FittedBox(
-                            fit: BoxFit.scaleDown,
-                            alignment: Alignment.centerLeft,
-                            child: child,
-                          );
-                          if (tight && modeSwitch != null) {
-                            return Column(
-                              crossAxisAlignment: CrossAxisAlignment.stretch,
-                              children: [
-                                fit(modeSwitch),
-                                Align(
-                                  alignment: Alignment.centerRight,
-                                  child: fit(actions),
-                                ),
-                              ],
-                            );
-                          }
-                          return Row(
-                            // Spacer를 쓰면 남는 폭을 나눠 가져 보내기 버튼이 오른쪽 끝에 붙지 않는다.
-                            mainAxisAlignment: modeSwitch == null
-                                ? MainAxisAlignment.end
-                                : MainAxisAlignment.spaceBetween,
-                            children: [
-                              if (modeSwitch != null)
-                                Flexible(child: fit(modeSwitch)),
-                              actions,
-                            ],
-                          );
-                        },
+                      return ChatComposerActionLayout(
+                        modeSwitch: modeSwitch,
+                        actions: actions,
                       );
                     },
                   ),
@@ -355,260 +322,6 @@ class ChatComposerState extends State<ChatComposer> {
             ),
           ),
         ],
-      ),
-    );
-  }
-}
-
-/// 요금제의 오늘 남은 질문 수. 서버에서 받은 숫자만 보여 준다.
-class _QuotaLine extends StatelessWidget {
-  const _QuotaLine({required this.quota});
-
-  final ChatQuota quota;
-
-  @override
-  Widget build(BuildContext context) {
-    final l10n = AppLocalizations.of(context);
-    final low = !quota.isUnlimited && quota.remaining <= 1;
-    final color = low ? ChatStyle.noticeText : AppColors.textSecondary;
-    return Padding(
-      padding: const EdgeInsets.fromLTRB(4, 0, 4, AppSpacing.xs),
-      child: Row(
-        children: [
-          Icon(Icons.bolt_rounded, size: 14, color: color),
-          const SizedBox(width: 2),
-          Expanded(
-            child: Text(
-              quota.isUnlimited
-                  ? l10n.chatQuotaUnlimited
-                  : l10n.chatQuotaRemaining(quota.remaining, quota.dailyLimit),
-              style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                color: color,
-                fontWeight: FontWeight.w600,
-              ),
-            ),
-          ),
-          if (!quota.isUnlimited && quota.dailyLimit > 0)
-            ExcludeSemantics(
-              child: ClipRRect(
-                borderRadius: const BorderRadius.all(Radius.circular(2)),
-                child: SizedBox(
-                  width: 64,
-                  height: 4,
-                  child: LinearProgressIndicator(
-                    value: (quota.remaining / quota.dailyLimit).clamp(0, 1),
-                    backgroundColor: ChatStyle.line,
-                    color: low ? AppColors.warning : AppColors.primary,
-                  ),
-                ),
-              ),
-            ),
-        ],
-      ),
-    );
-  }
-}
-
-class _LimitBanner extends StatelessWidget {
-  const _LimitBanner({required this.resetAt, required this.onPlanPressed});
-
-  final DateTime? resetAt;
-  final VoidCallback onPlanPressed;
-
-  @override
-  Widget build(BuildContext context) {
-    final l10n = AppLocalizations.of(context);
-    final textTheme = Theme.of(context).textTheme;
-    return Container(
-      width: double.infinity,
-      margin: const EdgeInsets.only(bottom: AppSpacing.xs),
-      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
-      decoration: BoxDecoration(
-        color: ChatStyle.noticeBackground,
-        border: Border.all(color: ChatStyle.noticeBorder),
-        borderRadius: AppRadius.medium,
-      ),
-      child: Row(
-        children: [
-          const Icon(
-            Icons.hourglass_bottom_rounded,
-            size: 16,
-            color: ChatStyle.noticeText,
-          ),
-          const SizedBox(width: AppSpacing.xs),
-          Expanded(
-            child: Text.rich(
-              TextSpan(
-                children: [
-                  TextSpan(
-                    text: l10n.chatQuotaExceededTitle,
-                    style: const TextStyle(
-                      color: ChatStyle.noticeText,
-                      fontWeight: FontWeight.w700,
-                    ),
-                  ),
-                  TextSpan(text: '  ${chatQuotaResetText(l10n, resetAt)}'),
-                ],
-              ),
-              style: textTheme.bodySmall?.copyWith(color: ChatStyle.ink),
-            ),
-          ),
-          TextButton(
-            onPressed: onPlanPressed,
-            style: TextButton.styleFrom(visualDensity: VisualDensity.compact),
-            child: Text(l10n.chatViewPlans),
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-/// 기본/프로 답변 모드 선택. 프로를 쓸 수 없는 요금제에는 자물쇠로 표시한다.
-class _ModeSwitch extends StatelessWidget {
-  const _ModeSwitch({
-    required this.mode,
-    required this.proAvailable,
-    required this.onSelected,
-  });
-
-  final ChatMode mode;
-  final bool proAvailable;
-  final ValueChanged<ChatMode>? onSelected;
-
-  @override
-  Widget build(BuildContext context) {
-    final l10n = AppLocalizations.of(context);
-    return Container(
-      padding: const EdgeInsets.all(3),
-      decoration: const BoxDecoration(
-        color: AppColors.surfaceMuted,
-        borderRadius: BorderRadius.all(Radius.circular(10)),
-      ),
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          _ModeSegment(
-            label: l10n.chatModeStandard,
-            selected: mode == ChatMode.standard,
-            onTap: onSelected == null
-                ? null
-                : () => onSelected!(ChatMode.standard),
-          ),
-          _ModeSegment(
-            label: l10n.chatModePro,
-            icon: proAvailable
-                ? Icons.workspace_premium_rounded
-                : Icons.lock_outline_rounded,
-            selected: mode == ChatMode.pro,
-            muted: !proAvailable,
-            onTap: onSelected == null ? null : () => onSelected!(ChatMode.pro),
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-class _ModeSegment extends StatelessWidget {
-  const _ModeSegment({
-    required this.label,
-    required this.selected,
-    required this.onTap,
-    this.icon,
-    this.muted = false,
-  });
-
-  final String label;
-  final IconData? icon;
-  final bool selected;
-  final bool muted;
-  final VoidCallback? onTap;
-
-  @override
-  Widget build(BuildContext context) {
-    final color = selected
-        ? ChatStyle.ink
-        : muted
-        ? AppColors.textTertiary
-        : AppColors.textSecondary;
-    final icon = this.icon;
-    return Semantics(
-      button: true,
-      selected: selected,
-      child: Material(
-        color: selected ? AppColors.surface : Colors.transparent,
-        elevation: selected ? 1 : 0,
-        shadowColor: AppColors.shadow,
-        borderRadius: const BorderRadius.all(Radius.circular(8)),
-        child: InkWell(
-          onTap: onTap,
-          borderRadius: const BorderRadius.all(Radius.circular(8)),
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 9),
-            child: Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                if (icon != null) ...[
-                  Icon(
-                    icon,
-                    size: 12,
-                    color: selected ? AppColors.primary : color,
-                  ),
-                  const SizedBox(width: 3),
-                ],
-                Text(
-                  label,
-                  style: Theme.of(context).textTheme.labelMedium?.copyWith(
-                    color: color,
-                    fontWeight: FontWeight.w700,
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-class _SendButton extends StatelessWidget {
-  const _SendButton({required this.tooltip, required this.onPressed});
-
-  final String tooltip;
-  final VoidCallback? onPressed;
-
-  @override
-  Widget build(BuildContext context) {
-    final enabled = onPressed != null;
-    return Tooltip(
-      message: tooltip,
-      child: Semantics(
-        button: true,
-        enabled: enabled,
-        child: Material(
-          color: Colors.transparent,
-          shape: const CircleBorder(),
-          clipBehavior: Clip.antiAlias,
-          child: Ink(
-            decoration: BoxDecoration(
-              shape: BoxShape.circle,
-              color: enabled ? AppColors.primary : ChatStyle.line,
-            ),
-            child: InkWell(
-              onTap: onPressed,
-              child: SizedBox.square(
-                dimension: 40,
-                child: Icon(
-                  Icons.arrow_upward_rounded,
-                  size: 20,
-                  color: enabled ? AppColors.onPrimary : AppColors.textTertiary,
-                ),
-              ),
-            ),
-          ),
-        ),
       ),
     );
   }
