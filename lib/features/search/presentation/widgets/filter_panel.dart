@@ -1,3 +1,4 @@
+import 'package:re_view_front/l10n/generated/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:re_view_front/app/theme/app_colors.dart';
 import 'package:re_view_front/app/theme/app_spacing.dart';
@@ -71,7 +72,7 @@ class FilterPanel extends StatelessWidget {
             Row(
               children: [
                 Text(
-                  '필터',
+                  AppLocalizations.of(context).searchFilterTitle,
                   style: Theme.of(context).textTheme.titleSmall?.copyWith(
                     color: AppColors.textPrimary,
                     fontWeight: FontWeight.w900,
@@ -85,13 +86,13 @@ class FilterPanel extends StatelessWidget {
                     minimumSize: const Size(40, 28),
                     tapTargetSize: MaterialTapTargetSize.shrinkWrap,
                   ),
-                  child: const Text('초기화'),
+                  child: Text(AppLocalizations.of(context).searchFilterReset),
                 ),
               ],
             ),
             const Divider(height: AppSpacing.lg),
             FilterSection(
-              title: '카테고리',
+              title: AppLocalizations.of(context).searchFilterCategory,
               children: [
                 for (final item in state.categoryFilters)
                   CheckboxRow(
@@ -104,19 +105,23 @@ class FilterPanel extends StatelessWidget {
             ),
             const Divider(height: AppSpacing.lg),
             FilterSection(
-              title: '가격대',
+              title: AppLocalizations.of(context).searchFilterPriceRange,
               children: [
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     RangeEndpoint(
                       label: minPriceController.text.isNotEmpty
-                          ? '${minPriceController.text}원'
+                          ? AppLocalizations.of(
+                              context,
+                            ).searchFilterPriceAmount(minPriceController.text)
                           : '-',
                     ),
                     RangeEndpoint(
                       label: maxPriceController.text.isNotEmpty
-                          ? '${maxPriceController.text}원'
+                          ? AppLocalizations.of(
+                              context,
+                            ).searchFilterPriceAmount(maxPriceController.text)
                           : '-',
                     ),
                   ],
@@ -148,7 +153,7 @@ class FilterPanel extends StatelessWidget {
                       ),
                     ),
                     const SizedBox(width: AppSpacing.xs),
-                    const Text('원'),
+                    Text(AppLocalizations.of(context).searchFilterWon),
                   ],
                 ),
                 const SizedBox(height: AppSpacing.sm),
@@ -158,7 +163,7 @@ class FilterPanel extends StatelessWidget {
                   children: [
                     for (final item in state.priceRanges)
                       PriceRangeChip(
-                        label: item.label,
+                        label: _localizedFilterLabel(context, item.label),
                         selected: selectedPriceRanges.contains(item.label),
                         onPressed: () => onPriceRangeToggled(item.label),
                       ),
@@ -169,10 +174,12 @@ class FilterPanel extends StatelessWidget {
 
             const Divider(height: AppSpacing.lg),
             ExpandableFilterSection(
-              title: '판매처',
+              title: AppLocalizations.of(context).searchFilterSeller,
               children: [
                 SelectBox(
-                  label: selectedBrand ?? '판매처를 선택하세요',
+                  label:
+                      selectedBrand ??
+                      AppLocalizations.of(context).searchFilterSellerHint,
                   selectedBrand: selectedBrand,
                   brands: state.sourceProducts
                       .map(
@@ -191,16 +198,26 @@ class FilterPanel extends StatelessWidget {
             ),
             const Divider(height: AppSpacing.lg),
             FilterSection(
-              title: 'RTI 신뢰 점수',
+              title: AppLocalizations.of(context).searchFilterRtiScore,
               trailing: state.isRtiFilterActive
-                  ? '${selectedRtiMinimum.round()}점 이상'
-                  : '전체 (분석 전 포함)',
+                  ? AppLocalizations.of(
+                      context,
+                    ).searchFilterMinimumScore(selectedRtiMinimum.round())
+                  : AppLocalizations.of(context).searchFilterAllRti,
               children: [
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: const [
-                    RangeEndpoint(label: '0점'),
-                    RangeEndpoint(label: '100점'),
+                  children: [
+                    RangeEndpoint(
+                      label: AppLocalizations.of(
+                        context,
+                      ).searchFilterZeroPoints,
+                    ),
+                    RangeEndpoint(
+                      label: AppLocalizations.of(
+                        context,
+                      ).searchFilterHundredPoints,
+                    ),
                   ],
                 ),
                 const SizedBox(height: AppSpacing.xs),
@@ -240,21 +257,27 @@ class FilterPanel extends StatelessWidget {
                   runSpacing: AppSpacing.xs,
                   children: [
                     PriceRangeChip(
-                      label: '80점 이상',
+                      label: AppLocalizations.of(
+                        context,
+                      ).searchFilterEightyMinimum,
                       selected:
                           state.isRtiFilterActive &&
                           selectedRtiMinimum.round() == 80,
                       onPressed: () => onRtiMinimumChanged(80),
                     ),
                     PriceRangeChip(
-                      label: '90점 이상',
+                      label: AppLocalizations.of(
+                        context,
+                      ).searchFilterNinetyMinimum,
                       selected:
                           state.isRtiFilterActive &&
                           selectedRtiMinimum.round() == 90,
                       onPressed: () => onRtiMinimumChanged(90),
                     ),
                     PriceRangeChip(
-                      label: '95점 이상',
+                      label: AppLocalizations.of(
+                        context,
+                      ).searchFilterNinetyFiveMinimum,
                       selected:
                           state.isRtiFilterActive &&
                           selectedRtiMinimum.round() == 95,
@@ -266,11 +289,11 @@ class FilterPanel extends StatelessWidget {
             ),
             const Divider(height: AppSpacing.lg),
             FilterSection(
-              title: '정보 상태',
+              title: AppLocalizations.of(context).searchFilterInfoStatus,
               children: [
                 for (final label in const ['분석 전만', '가격 정보 없음만'])
                   CheckboxRow(
-                    label: label,
+                    label: _localizedFilterLabel(context, label),
                     selected: selectedAttributeFilters.contains(label),
                     onChanged: () => onAttributeToggled(label),
                   ),
@@ -278,11 +301,11 @@ class FilterPanel extends StatelessWidget {
             ),
             const Divider(height: AppSpacing.lg),
             FilterSection(
-              title: '리뷰 조건',
+              title: AppLocalizations.of(context).searchFilterReviewConditions,
               children: [
                 for (final label in const ['리뷰 50개 이상'])
                   CheckboxRow(
-                    label: label,
+                    label: _localizedFilterLabel(context, label),
                     selected: selectedReviewConditions.contains(label),
                     onChanged: () => onReviewConditionToggled(label),
                   ),
@@ -293,7 +316,11 @@ class FilterPanel extends StatelessWidget {
               width: double.infinity,
               child: FilledButton(
                 onPressed: onShowResults,
-                child: Text('$resultCount개 결과 보기'),
+                child: Text(
+                  AppLocalizations.of(
+                    context,
+                  ).searchFilterShowResults(resultCount),
+                ),
               ),
             ),
           ],
@@ -301,4 +328,17 @@ class FilterPanel extends StatelessWidget {
       ),
     );
   }
+}
+
+String _localizedFilterLabel(BuildContext context, String label) {
+  final l10n = AppLocalizations.of(context);
+  return switch (label) {
+    '분석 전만' => l10n.searchFilterUnanalyzedOnly,
+    '가격 정보 없음만' => l10n.searchFilterMissingPriceOnly,
+    '리뷰 50개 이상' => l10n.searchFilterMinimumReviews,
+    '1만원 이하' => l10n.searchFilterUnderTenThousand,
+    '10~30만원' => l10n.searchFilterTenToThirtyThousand,
+    '30만원 이상' => l10n.searchFilterAboveThreeHundredThousand,
+    _ => label,
+  };
 }

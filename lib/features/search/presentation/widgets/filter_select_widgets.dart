@@ -1,3 +1,4 @@
+import 'package:re_view_front/l10n/generated/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:re_view_front/app/theme/app_colors.dart';
 import 'package:re_view_front/app/theme/app_spacing.dart';
@@ -19,7 +20,7 @@ class SelectBox extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return PopupMenuButton<String>(
-      tooltip: '판매처 선택',
+      tooltip: AppLocalizations.of(context).searchFilterSelectSeller,
       initialValue: selectedBrand ?? '',
       onSelected: (value) => onSelected(value.isEmpty ? null : value),
       color: AppColors.surface,
@@ -35,7 +36,7 @@ class SelectBox extends StatelessWidget {
           value: '',
           height: 36,
           child: SelectMenuItemLabel(
-            label: '전체 판매처',
+            label: AppLocalizations.of(context).searchFilterAllSellers,
             selected: selectedBrand == null,
           ),
         ),
