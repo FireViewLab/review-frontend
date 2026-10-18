@@ -130,7 +130,7 @@ class AnalysisReportReviewRow extends StatelessWidget {
                       review.createdAt,
                       style: Theme.of(context).textTheme.labelSmall?.copyWith(
                         color: AppColors.textTertiary,
-                        fontSize: 10,
+                        fontSize: 11,
                       ),
                     ),
                   ],
@@ -181,7 +181,7 @@ class AnalysisReportReviewRow extends StatelessWidget {
                                       ?.copyWith(
                                         color: AppColors.error,
                                         fontWeight: FontWeight.w600,
-                                        fontSize: 10,
+                                        fontSize: 11,
                                       ),
                                 ),
                               ),
@@ -255,7 +255,7 @@ class AnalysisReportRtiBadge extends StatelessWidget {
               label!,
               style: Theme.of(context).textTheme.labelSmall?.copyWith(
                 color: color,
-                fontSize: 10,
+                fontSize: 11,
                 fontWeight: FontWeight.w600,
               ),
             ),

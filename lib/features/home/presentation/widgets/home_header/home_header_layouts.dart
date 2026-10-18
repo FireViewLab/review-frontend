@@ -80,11 +80,31 @@ class HomeHeaderDesktop extends StatelessWidget {
                 children: [
                   HomeLogo(onTap: onLogoPressed),
                   const SizedBox(width: AppSpacing.xxl),
-                  HomeHeaderTopLink(label: '고객센터', onTap: onLoginPressed),
-                  const SizedBox(width: AppSpacing.lg),
-                  HomeHeaderTopLink(label: '판매자 입점', onTap: onLoginPressed),
-                  const SizedBox(width: AppSpacing.lg),
-                  HomeHeaderTopLink(label: '앱 다운로드', onTap: onLoginPressed),
+                  // 글자가 커져도 고정 폭을 넘지 않게 링크 묶음만 줄인다.
+                  Flexible(
+                    child: FittedBox(
+                      fit: BoxFit.scaleDown,
+                      alignment: Alignment.centerLeft,
+                      child: Row(
+                        children: [
+                          HomeHeaderTopLink(
+                            label: '고객센터',
+                            onTap: onLoginPressed,
+                          ),
+                          const SizedBox(width: AppSpacing.lg),
+                          HomeHeaderTopLink(
+                            label: '판매자 입점',
+                            onTap: onLoginPressed,
+                          ),
+                          const SizedBox(width: AppSpacing.lg),
+                          HomeHeaderTopLink(
+                            label: '앱 다운로드',
+                            onTap: onLoginPressed,
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
                 ],
               ),
             ),

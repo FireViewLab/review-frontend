@@ -134,7 +134,10 @@ class ExternalProductReport extends StatelessWidget {
                       value: '${analysis.sourceReviewCount}',
                     ),
                   if (analysis.sampled != null)
-                    Text(analysis.sampled! ? l.reportSampled : l.reportFull),
+                    ReportFactRow(
+                      label: l.reportCoverage,
+                      value: analysis.sampled! ? l.reportSampled : l.reportFull,
+                    ),
                   if (analysis.modelVersion != null)
                     ReportFactRow(
                       label: l.reportModel,
@@ -169,13 +172,10 @@ class ExternalProductReport extends StatelessWidget {
                   ),
                   for (final review in reviews)
                     Padding(
-                      padding: const EdgeInsets.only(top: AppSpacing.md),
-                      child: Card(
-                        margin: EdgeInsets.zero,
-                        child: Padding(
-                          padding: const EdgeInsets.all(AppSpacing.md),
-                          child: ExternalReviewAnalysisDetails(review: review),
-                        ),
+                      padding: const EdgeInsets.only(top: AppSpacing.sm),
+                      child: ExternalReviewAnalysisDetails(
+                        review: review,
+                        embedded: true,
                       ),
                     ),
                 ],

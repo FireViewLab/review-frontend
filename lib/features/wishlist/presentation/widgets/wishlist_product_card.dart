@@ -2,8 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:re_view_front/app/theme/app_colors.dart';
 import 'package:re_view_front/app/theme/app_spacing.dart';
-import 'package:re_view_front/features/search/presentation/utils/search_formatters.dart';
-import 'package:re_view_front/features/search/presentation/widgets/search_product_card.dart';
+import 'package:re_view_front/shared/presentation/product_formatters.dart';
+import 'package:re_view_front/features/search/presentation/widgets/product_rti_badge.dart';
+import 'package:re_view_front/features/search/presentation/widgets/search_product_actions.dart';
 import 'package:re_view_front/features/wishlist/domain/entities/wishlist_item.dart';
 import 'package:re_view_front/l10n/generated/app_localizations.dart';
 import 'package:re_view_front/shared/widgets/app_network_image.dart';
@@ -45,27 +46,12 @@ class WishlistProductCard extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             Expanded(
-              child: Stack(
-                fit: StackFit.expand,
-                children: [
-                  AppNetworkImage(url: item.imageUrl),
-                  Positioned(
-                    top: AppSpacing.xs,
-                    left: AppSpacing.xs,
-                    child: item.avgRti == null
-                        ? Text(AppLocalizations.of(context).externalUnanalyzed)
-                        : RtiBadge(
-                            value: item.avgRti!.round(),
-                            color: rtiColor,
-                          ),
-                  ),
-                  if (item.isPriceDrop)
-                    Positioned(
-                      top: AppSpacing.xs,
-                      right: AppSpacing.xs,
-                      child: _PriceDropBadge(),
-                    ),
-                ],
+              child: AppNetworkImage(
+                url: item.imageUrl,
+                thumbnailWidth: 480,
+                borderRadius: const BorderRadius.vertical(
+                  top: Radius.circular(9),
+                ),
               ),
             ),
             Padding(
@@ -74,15 +60,37 @@ class WishlistProductCard extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  Text(
-                    item.platform ?? '',
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                    style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                      color: AppColors.textSecondary,
-                      fontWeight: FontWeight.w800,
-                      fontSize: 11,
-                    ),
+                  // 배지는 이미지 위에 겹치지 않고 정보 영역에 둔다.
+                  Row(
+                    children: [
+                      Expanded(
+                        child: Text(
+                          item.platform ?? '',
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                          style: Theme.of(context).textTheme.labelSmall
+                              ?.copyWith(
+                                color: AppColors.textSecondary,
+                                fontWeight: FontWeight.w800,
+                                fontSize: 11,
+                              ),
+                        ),
+                      ),
+                      if (item.isPriceDrop) ...[
+                        const SizedBox(width: AppSpacing.xxs),
+                        _PriceDropBadge(),
+                      ],
+                      const SizedBox(width: AppSpacing.xxs),
+                      item.avgRti == null
+                          ? Text(
+                              AppLocalizations.of(context).externalUnanalyzed,
+                              style: Theme.of(context).textTheme.labelSmall,
+                            )
+                          : RtiBadge(
+                              value: item.avgRti!.round(),
+                              color: rtiColor,
+                            ),
+                    ],
                   ),
                   const SizedBox(height: 2),
                   Text(
@@ -230,7 +238,7 @@ class _PriceDropBadge extends StatelessWidget {
               style: Theme.of(context).textTheme.labelSmall?.copyWith(
                 color: AppColors.error,
                 fontWeight: FontWeight.w900,
-                fontSize: 10,
+                fontSize: 11,
               ),
             ),
           ],

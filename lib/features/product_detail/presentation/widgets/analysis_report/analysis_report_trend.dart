@@ -145,7 +145,7 @@ class AnalysisReportTrendSectionState
             if (widget.isAnalyzing && widget.trend.isEmpty)
               Shimmer.fromColors(
                 enabled: !MediaQuery.disableAnimationsOf(context),
-                baseColor: const Color(0xFFE5E7EB),
+                baseColor: AppColors.border,
                 highlightColor: const Color(0xFFF9FAFB),
                 child: Container(
                   height: 180,

@@ -58,7 +58,7 @@ class _ReasonCardState extends State<ReasonCard> {
             color: selected
                 ? AppColors.primary.withValues(alpha: 0.06)
                 : AppColors.surface,
-            borderRadius: BorderRadius.circular(12),
+            borderRadius: AppRadius.medium,
             border: Border.all(color: borderColor, width: selected ? 1.5 : 1),
             boxShadow: selected
                 ? [
@@ -85,7 +85,7 @@ class _ReasonCardState extends State<ReasonCard> {
                       color: selected
                           ? AppColors.primary.withValues(alpha: 0.1)
                           : AppColors.background,
-                      borderRadius: BorderRadius.circular(8),
+                      borderRadius: AppRadius.small,
                     ),
                     child: Icon(
                       _icon,

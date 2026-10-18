@@ -6,7 +6,7 @@ import 'package:re_view_front/app/router/route_paths.dart';
 import 'package:re_view_front/core/providers/core_providers.dart';
 import 'package:re_view_front/features/payments/presentation/providers/test_payment_providers.dart';
 import 'package:re_view_front/features/payments/presentation/widgets/toss_test_payment_widget.dart';
-import 'package:re_view_front/features/search/presentation/utils/search_formatters.dart';
+import 'package:re_view_front/shared/presentation/product_formatters.dart';
 import 'package:re_view_front/shared/widgets/app_content_view.dart';
 
 class TestPaymentPage extends ConsumerStatefulWidget {

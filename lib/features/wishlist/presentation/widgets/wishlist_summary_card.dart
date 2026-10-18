@@ -19,7 +19,7 @@ class WishlistSummaryCard extends StatelessWidget {
     return DecoratedBox(
       decoration: BoxDecoration(
         color: AppColors.surface,
-        borderRadius: BorderRadius.circular(12),
+        borderRadius: AppRadius.medium,
         border: Border.all(color: AppColors.border),
         boxShadow: const [
           BoxShadow(
@@ -127,10 +127,7 @@ class _SummaryStatItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return DecoratedBox(
-      decoration: BoxDecoration(
-        color: bgColor,
-        borderRadius: BorderRadius.circular(8),
-      ),
+      decoration: BoxDecoration(color: bgColor, borderRadius: AppRadius.small),
       child: Padding(
         padding: const EdgeInsets.symmetric(
           horizontal: AppSpacing.xs,

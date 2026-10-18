@@ -41,7 +41,7 @@ class HomeHeaderCategoryBenefitStrip extends StatelessWidget {
     return DecoratedBox(
       decoration: BoxDecoration(
         color: AppColors.surfaceMuted,
-        borderRadius: BorderRadius.circular(12),
+        borderRadius: AppRadius.medium,
         border: Border.all(color: AppColors.border),
       ),
       child: Row(

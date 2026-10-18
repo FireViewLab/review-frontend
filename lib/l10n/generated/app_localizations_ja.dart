@@ -9,19 +9,10 @@ class AppLocalizationsJa extends AppLocalizations {
   AppLocalizationsJa([String locale = 'ja']) : super(locale);
 
   @override
-  String get appTitle => 'Re:view';
-
-  @override
   String get navHome => 'ホーム';
 
   @override
   String get navSearch => '検索';
-
-  @override
-  String get navCart => 'カート';
-
-  @override
-  String get navWishlist => '保存済み';
 
   @override
   String get navMyPage => 'マイページ';
@@ -33,70 +24,19 @@ class AppLocalizationsJa extends AppLocalizations {
   String get actionSave => '保存';
 
   @override
-  String get actionCancel => 'キャンセル';
-
-  @override
   String get actionConfirm => '確認';
 
   @override
   String get actionRetry => '再試行';
 
   @override
-  String get actionBack => '戻る';
-
-  @override
   String get actionLogin => 'ログイン';
-
-  @override
-  String get actionLogout => 'ログアウト';
-
-  @override
-  String get actionSignup => '新規登録';
 
   @override
   String get actionViewAll => 'すべて見る';
 
   @override
-  String get stateLoading => '読み込み中…';
-
-  @override
-  String get stateError => 'エラーが発生しました。';
-
-  @override
-  String get stateEmpty => '表示する項目がありません。';
-
-  @override
-  String get settingsSaved => '設定を保存しました。';
-
-  @override
-  String get settingsLanguage => '言語';
-
-  @override
   String get settingsNotifications => '通知設定';
-
-  @override
-  String get settingsFilters => '分析フィルター設定';
-
-  @override
-  String get langKorean => '한국어';
-
-  @override
-  String get langEnglish => 'English';
-
-  @override
-  String get langJapanese => '日本語';
-
-  @override
-  String get langChinese => '中文(简体)';
-
-  @override
-  String get sideNavOrders => '注文/配送';
-
-  @override
-  String get sideNavRecentlyViewed => '最近見た商品';
-
-  @override
-  String get sideNavReviewActivity => 'レビュー活動';
 
   @override
   String get sideNavAccountSettings => 'アカウント設定';
@@ -111,63 +51,6 @@ class AppLocalizationsJa extends AppLocalizations {
   String settingsSubtitleNamed(String nickname) {
     return '$nicknameさんの通知、フィルター、アカウント設定を管理します。';
   }
-
-  @override
-  String get settingsNotificationEmail => 'メール通知を受け取る';
-
-  @override
-  String get settingsNotificationEmailDesc => '商品価格の変動、レビュー更新をメールで受け取ります。';
-
-  @override
-  String get settingsNotificationPush => 'アプリプッシュ通知を受け取る';
-
-  @override
-  String get settingsNotificationPushDesc => '保存した商品のリアルタイム通知をブラウザで受け取ります。';
-
-  @override
-  String get settingsNotificationAdEmail => 'メール広告の受信';
-
-  @override
-  String get settingsNotificationAdEmailDesc => 'プロモーションやカスタム特典情報をメールで受け取ります。';
-
-  @override
-  String get settingsFilterHighlightLowRti => '注意商品を先に表示';
-
-  @override
-  String get settingsFilterHighlightLowRtiDesc => 'レビュー信頼度が低い商品をリストの上部に表示します。';
-
-  @override
-  String get settingsFilterWishlistAlert => '保存商品の通知を受け取る';
-
-  @override
-  String get settingsFilterWishlistAlertDesc => 'お気に入り商品のRTI変化があるときに通知します。';
-
-  @override
-  String get settingsFilterCategory => 'カテゴリフィルター';
-
-  @override
-  String get settingsFilterCategoryDesc => '選択したカテゴリの商品を基準に分析結果を優先表示します。';
-
-  @override
-  String get settingsFilterCategoryAll => '全カテゴリ';
-
-  @override
-  String get settingsFilterMinReview => 'レビュー最小件数';
-
-  @override
-  String get settingsFilterMinReviewDesc => 'この件数以上のレビューがある商品のみ分析結果に反映します。';
-
-  @override
-  String get settingsFilterMinReviewSuffix => '件';
-
-  @override
-  String get settingsFilterLowRti => '低RTI警告基準';
-
-  @override
-  String get settingsFilterLowRtiDesc => 'RTIスコアがこの値以下の場合、注意商品として分類します。';
-
-  @override
-  String get settingsFilterLowRtiSuffix => '点';
 
   @override
   String get settingsAccountTitle => 'アカウント';
@@ -278,9 +161,6 @@ class AppLocalizationsJa extends AppLocalizations {
   String get wishlistFilterLowestPrice => '最安値';
 
   @override
-  String get wishlistFilterBrand => 'ブランド';
-
-  @override
   String get wishlistFilterCategory => 'カテゴリ';
 
   @override
@@ -300,9 +180,6 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String get myPageDefaultName => 'ユーザー';
-
-  @override
-  String get myPageMemberBasic => '一般会員（無料）';
 
   @override
   String get myPageSideNavMyPage => 'マイページ';
@@ -329,9 +206,6 @@ class AppLocalizationsJa extends AppLocalizations {
   String get myPageRecentActivityEmpty => '最近の活動はありません。';
 
   @override
-  String get myPageRecentLabel => '最近';
-
-  @override
   String get myPageReviewTrustSummary => 'レビュー信頼サマリー';
 
   @override
@@ -347,12 +221,6 @@ class AppLocalizationsJa extends AppLocalizations {
   String myPageRiskyCount(int count) {
     return '注意商品$count件を確認してください。';
   }
-
-  @override
-  String get myPageHighlightLowRti => '注意商品を先に表示';
-
-  @override
-  String get myPageWishlistAlertLabel => '保存商品の通知を受け取る';
 
   @override
   String get myPageAccountInfo => 'アカウント情報';
@@ -560,12 +428,6 @@ class AppLocalizationsJa extends AppLocalizations {
   String get adminDashboardTitle => '運営ダッシュボード';
 
   @override
-  String get adminPlaceholderMessage => '現在準備中の画面です。';
-
-  @override
-  String get adminTopBarSearchHint => 'ユーザー、レビュー、通報IDで検索';
-
-  @override
   String get adminTopBarNotifications => '通知';
 
   @override
@@ -581,16 +443,10 @@ class AppLocalizationsJa extends AppLocalizations {
   String get chatNewConversation => '新しい会話';
 
   @override
-  String get chatClose => '閉じる';
-
-  @override
   String get chatInputHint => '質問を入力してください';
 
   @override
   String get chatSend => '送信';
-
-  @override
-  String get chatProductContext => 'この商品のレビューをもとに回答します';
 
   @override
   String get chatOtherProductNotice => 'この会話は現在の画面とは異なる文脈を保持しています。';
@@ -1220,9 +1076,6 @@ class AppLocalizationsJa extends AppLocalizations {
   String get chatLauncherLabel => 'AIに聞く';
 
   @override
-  String get chatLauncherProductLabel => 'この商品のレビューを聞く';
-
-  @override
   String get chatProductCta => 'この商品についてAIに聞く';
 
   @override
@@ -1349,9 +1202,6 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String get planLoadFailed => 'プラン情報を読み込めませんでした。';
-
-  @override
-  String get planRetry => '再試行';
 
   @override
   String get myPageSideNavPlan => 'プラン';
@@ -1920,4 +1770,280 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String get homeSearchSuggestionsRetry => '関連検索語を再読み込み';
+
+  @override
+  String get authAccountHelp => 'アカウントのヘルプ';
+
+  @override
+  String get authAccountHelpBody =>
+      'メールアカウントのパスワードは「パスワードをお忘れですか」から再設定できます。Google・Naverアカウントは登録時のソーシャルログインボタンをご利用ください。';
+
+  @override
+  String get authForgotPassword => 'パスワードをお忘れですか';
+
+  @override
+  String get authSignup => '新規登録';
+
+  @override
+  String get authClose => '閉じる';
+
+  @override
+  String get authLogin => 'ログイン';
+
+  @override
+  String get authLoginDescription =>
+      'Re:viewアカウントにログインして、保存した商品と信頼フィルターを読み込みましょう。';
+
+  @override
+  String get authEmail => 'メールアドレス';
+
+  @override
+  String get authEmailHint => 'メールアドレスを入力してください';
+
+  @override
+  String get authPassword => 'パスワード';
+
+  @override
+  String get authPasswordHint => 'パスワードを入力してください';
+
+  @override
+  String get authShow => '表示';
+
+  @override
+  String get authHide => '非表示';
+
+  @override
+  String get authRememberMe => 'ログイン状態を保持';
+
+  @override
+  String get authOr => 'または';
+
+  @override
+  String get authContinueNaver => 'Naverアカウントで続ける';
+
+  @override
+  String get authContinueGoogle => 'Googleアカウントで続ける';
+
+  @override
+  String get authNoAccount => 'まだアカウントをお持ちでないですか？';
+
+  @override
+  String get authSignupAction => '新規登録する';
+
+  @override
+  String get authPrivacyNotice =>
+      '個人設定はアカウントに安全に保存され、保存した商品と分析履歴はログインしたユーザーにのみ表示されます。';
+
+  @override
+  String get authSignupDescription =>
+      'Re:viewアカウントを作成して、商品の保存、信頼フィルター、通知の設定を始めましょう。';
+
+  @override
+  String get authName => '名前';
+
+  @override
+  String get authNameHint => '名前を入力してください';
+
+  @override
+  String get authPasswordGuidance => '英字、数字、記号を含む8文字以上で設定してください。';
+
+  @override
+  String get authConfirmPassword => 'パスワードの確認';
+
+  @override
+  String get authConfirmPasswordHint => 'パスワードをもう一度入力してください';
+
+  @override
+  String get authSignupOnboarding => '登録して初期設定を始める';
+
+  @override
+  String get authSignupNaver => 'Naverアカウントで登録';
+
+  @override
+  String get authSignupGoogle => 'Googleアカウントで登録';
+
+  @override
+  String get authHasAccount => 'すでにアカウントをお持ちですか？';
+
+  @override
+  String get authLoginAction => 'ログインする';
+
+  @override
+  String get authTermsConsent => '利用規約とプライバシーポリシーに同意します。（必須）';
+
+  @override
+  String get authMarketingConsent => '保存した商品と信頼度の変化に関する通知を受け取ります。（任意）';
+
+  @override
+  String get authOnboardingNotice =>
+      '次は初期設定です。登録後、興味のあるカテゴリーとデフォルトのRTIフィルターを設定します。';
+
+  @override
+  String get authResetTitle => 'パスワードの再設定';
+
+  @override
+  String get authResetDescription => '登録したメールアドレスを確認して新しいパスワードを設定してください。';
+
+  @override
+  String get authRememberAccount => 'アカウントを思い出しましたか？';
+
+  @override
+  String get authBackToLogin => 'ログインに戻る';
+
+  @override
+  String get authRegisteredEmail => '登録メールアドレス';
+
+  @override
+  String get authSendVerification => '認証メールを送信';
+
+  @override
+  String get authEmailSent => 'メールを送信しました';
+
+  @override
+  String get authEmailSentGuide =>
+      'メール内のリンクをクリックするか、受信したトークンを確認してから次のステップへ進んでください。';
+
+  @override
+  String get authNext => '次へ';
+
+  @override
+  String get authResendEmail => 'メールを再送信';
+
+  @override
+  String get authNewPassword => '新しいパスワード';
+
+  @override
+  String get authNewPasswordHint => '新しいパスワードを入力してください';
+
+  @override
+  String get authNewPasswordGuide => '以前のパスワードとは異なるものを設定し、英字・数字・記号を組み合わせてください。';
+
+  @override
+  String get authConfirmNewPassword => '新しいパスワードの確認';
+
+  @override
+  String get authConfirmNewPasswordHint => '新しいパスワードをもう一度入力してください';
+
+  @override
+  String get authCompleteReset => 'パスワードを変更';
+
+  @override
+  String get authResendVerification => '認証メールを再送信';
+
+  @override
+  String get authMinLength => '8文字以上';
+
+  @override
+  String get authLettersNumbers => '英字と数字を含む';
+
+  @override
+  String get authSymbolsRecommended => '記号の使用を推奨';
+
+  @override
+  String get authNoEmail => 'メールが届きませんか？';
+
+  @override
+  String get authNoEmailGuide => '迷惑メールフォルダーを確認するか、登録したメールアドレスが正しいか再度確認してください。';
+
+  @override
+  String get authVerifyEmail => 'メールの確認';
+
+  @override
+  String get authVerificationCode => '認証コード';
+
+  @override
+  String get authResetSuccess => 'パスワードが変更されました';
+
+  @override
+  String get authResetSuccessGuide => '新しいパスワードでログインしてください。';
+
+  @override
+  String get authGoToLogin => 'ログインへ';
+
+  @override
+  String get searchFilterTitle => 'フィルター';
+
+  @override
+  String get searchFilterReset => 'リセット';
+
+  @override
+  String get searchFilterCategory => 'カテゴリー';
+
+  @override
+  String get searchFilterPriceRange => '価格帯';
+
+  @override
+  String get searchFilterWon => 'ウォン';
+
+  @override
+  String get searchFilterSeller => '販売店';
+
+  @override
+  String get searchFilterSellerHint => '販売店を選択してください';
+
+  @override
+  String get searchFilterRtiScore => 'RTI信頼スコア';
+
+  @override
+  String get searchFilterAllRti => 'すべて（未分析を含む）';
+
+  @override
+  String get searchFilterZeroPoints => '0点';
+
+  @override
+  String get searchFilterHundredPoints => '100点';
+
+  @override
+  String get searchFilterEightyMinimum => '80点以上';
+
+  @override
+  String get searchFilterNinetyMinimum => '90点以上';
+
+  @override
+  String get searchFilterNinetyFiveMinimum => '95点以上';
+
+  @override
+  String get searchFilterInfoStatus => '情報の状態';
+
+  @override
+  String get searchFilterReviewConditions => 'レビュー条件';
+
+  @override
+  String get searchFilterSelectSeller => '販売店を選択';
+
+  @override
+  String get searchFilterAllSellers => 'すべての販売店';
+
+  @override
+  String get searchFilterUnanalyzedOnly => '未分析のみ';
+
+  @override
+  String get searchFilterMissingPriceOnly => '価格情報なしのみ';
+
+  @override
+  String get searchFilterMinimumReviews => 'レビュー50件以上';
+
+  @override
+  String get searchFilterUnderTenThousand => '1万ウォン以下';
+
+  @override
+  String get searchFilterTenToThirtyThousand => '10～30万ウォン';
+
+  @override
+  String get searchFilterAboveThreeHundredThousand => '30万ウォン以上';
+
+  @override
+  String searchFilterPriceAmount(String amount) {
+    return '$amountウォン';
+  }
+
+  @override
+  String searchFilterMinimumScore(int score) {
+    return '$score点以上';
+  }
+
+  @override
+  String searchFilterShowResults(int count) {
+    return '$count件の結果を表示';
+  }
 }

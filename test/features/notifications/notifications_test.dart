@@ -10,6 +10,8 @@ import 'package:re_view_front/features/notifications/presentation/notification_t
 import 'package:re_view_front/features/notifications/presentation/providers/notification_providers.dart';
 
 void main() {
+  TestWidgetsFlutterBinding.ensureInitialized();
+
   group('notificationRoute', () {
     test('maps server target paths to app routes', () {
       expect(notificationRoute('/products/12'), '/product/12');
@@ -68,7 +70,8 @@ void main() {
       container.invalidate(notificationListViewModelProvider);
       await sending;
 
-      expect(container.read(unreadNotificationCountProvider).value, 1);
+      // 읽음 요청 뒤 배지는 서버 값으로 다시 맞춘다.
+      expect(await container.read(unreadNotificationCountProvider.future), 1);
     });
 
     test('rolls back only the failed notification', () async {
@@ -128,7 +131,8 @@ class _FakeRepository implements NotificationRepository {
   }
 
   @override
-  Future<Result<int>> getUnreadCount() async => const Success(2);
+  // 서버처럼 읽음 처리한 만큼 줄어든 값을 돌려준다.
+  Future<Result<int>> getUnreadCount() async => Success(2 - readIds.length);
 
   @override
   Future<Result<void>> markRead(int id) async {

@@ -4,7 +4,7 @@ import 'package:re_view_front/app/theme/app_motion.dart';
 import 'package:re_view_front/app/theme/app_colors.dart';
 import 'package:re_view_front/app/theme/app_spacing.dart';
 import 'package:re_view_front/features/product_detail/domain/entities/similar_product.dart';
-import 'package:re_view_front/features/search/presentation/utils/search_formatters.dart';
+import 'package:re_view_front/shared/presentation/product_formatters.dart';
 import 'package:re_view_front/shared/widgets/app_network_image.dart';
 
 class SimilarProductsSection extends StatefulWidget {
@@ -180,33 +180,36 @@ class _SimilarProductCard extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Stack(
-                  children: [
-                    AspectRatio(
-                      aspectRatio: 1,
-                      child: AppNetworkImage(
-                        url: product.imageUrl,
-                        borderRadius: AppRadius.small,
-                      ),
-                    ),
-                    Positioned(
-                      top: AppSpacing.xxs,
-                      right: AppSpacing.xxs,
-                      child: _RtiBadgeMini(
-                        score: product.avgRti?.round(),
-                        color: rtiColor,
-                      ),
-                    ),
-                  ],
+                AspectRatio(
+                  aspectRatio: 1,
+                  child: AppNetworkImage(
+                    url: product.imageUrl,
+                    thumbnailWidth: 360,
+                    borderRadius: AppRadius.small,
+                  ),
                 ),
                 const SizedBox(height: AppSpacing.xs),
-                Text(
-                  product.brand,
-                  style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                    color: AppColors.textSecondary,
-                    fontWeight: FontWeight.w700,
-                    fontSize: 11,
-                  ),
+                // RTI 배지는 이미지 위에 겹치지 않고 정보 영역에 둔다.
+                Row(
+                  children: [
+                    Expanded(
+                      child: Text(
+                        product.brand,
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: Theme.of(context).textTheme.labelSmall?.copyWith(
+                          color: AppColors.textSecondary,
+                          fontWeight: FontWeight.w700,
+                          fontSize: 11,
+                        ),
+                      ),
+                    ),
+                    const SizedBox(width: AppSpacing.xxs),
+                    _RtiBadgeMini(
+                      score: product.avgRti?.round(),
+                      color: rtiColor,
+                    ),
+                  ],
                 ),
                 const SizedBox(height: 2),
                 Text(
@@ -291,7 +294,7 @@ class _RtiBadgeMini extends StatelessWidget {
               style: Theme.of(context).textTheme.labelSmall?.copyWith(
                 color: color,
                 fontWeight: FontWeight.w900,
-                fontSize: 10,
+                fontSize: 11,
               ),
             ),
           ],

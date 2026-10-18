@@ -193,17 +193,18 @@ class HomeHeaderCategoryPickCard extends StatelessWidget {
                 style: Theme.of(context).textTheme.labelSmall?.copyWith(
                   color: AppColors.primary,
                   fontWeight: FontWeight.w900,
-                  fontSize: 10,
+                  fontSize: 11,
                 ),
               ),
               const SizedBox(height: AppSpacing.xxs),
               Expanded(
                 child: ClipRRect(
-                  borderRadius: BorderRadius.circular(8),
+                  borderRadius: AppRadius.small,
                   child: Center(
                     child: item.usesNetworkImage
                         ? AppNetworkImage(
                             url: item.imageUrl,
+                            thumbnailWidth: 240,
                             fit: BoxFit.contain,
                             placeholderIcon: Icons.inventory_2_outlined,
                             iconSize: 26,
@@ -239,7 +240,7 @@ class HomeHeaderCategoryPickCard extends StatelessWidget {
                       style: Theme.of(context).textTheme.labelSmall?.copyWith(
                         color: AppColors.textSecondary,
                         fontWeight: FontWeight.w700,
-                        fontSize: 10,
+                        fontSize: 11,
                       ),
                     ),
                   ),
@@ -248,7 +249,7 @@ class HomeHeaderCategoryPickCard extends StatelessWidget {
                     style: Theme.of(context).textTheme.labelSmall?.copyWith(
                       color: AppColors.primary,
                       fontWeight: FontWeight.w900,
-                      fontSize: 10,
+                      fontSize: 11,
                     ),
                   ),
                 ],

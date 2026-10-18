@@ -174,7 +174,7 @@ class HomeHeaderCategoryMenuButtonState
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      borderRadius: BorderRadius.circular(8),
+      borderRadius: AppRadius.small,
       onTap: _toggleMenu,
       child: Padding(
         padding: const EdgeInsets.symmetric(

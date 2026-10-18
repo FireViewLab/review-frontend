@@ -102,12 +102,6 @@ abstract class AppLocalizations {
     Locale('zh'),
   ];
 
-  /// 앱 이름
-  ///
-  /// In ko, this message translates to:
-  /// **'Re:view'**
-  String get appTitle;
-
   /// 홈 네비게이션 항목
   ///
   /// In ko, this message translates to:
@@ -119,18 +113,6 @@ abstract class AppLocalizations {
   /// In ko, this message translates to:
   /// **'검색'**
   String get navSearch;
-
-  /// 장바구니 네비게이션 항목
-  ///
-  /// In ko, this message translates to:
-  /// **'장바구니'**
-  String get navCart;
-
-  /// 위시리스트 네비게이션 항목
-  ///
-  /// In ko, this message translates to:
-  /// **'저장한 상품'**
-  String get navWishlist;
 
   /// 마이페이지 네비게이션 항목
   ///
@@ -150,12 +132,6 @@ abstract class AppLocalizations {
   /// **'저장'**
   String get actionSave;
 
-  /// 취소 버튼
-  ///
-  /// In ko, this message translates to:
-  /// **'취소'**
-  String get actionCancel;
-
   /// 확인 버튼
   ///
   /// In ko, this message translates to:
@@ -168,29 +144,11 @@ abstract class AppLocalizations {
   /// **'다시 시도'**
   String get actionRetry;
 
-  /// 뒤로가기 버튼
-  ///
-  /// In ko, this message translates to:
-  /// **'뒤로'**
-  String get actionBack;
-
   /// 로그인 버튼
   ///
   /// In ko, this message translates to:
   /// **'로그인'**
   String get actionLogin;
-
-  /// 로그아웃 버튼
-  ///
-  /// In ko, this message translates to:
-  /// **'로그아웃'**
-  String get actionLogout;
-
-  /// 회원가입 버튼
-  ///
-  /// In ko, this message translates to:
-  /// **'회원가입'**
-  String get actionSignup;
 
   /// 전체 보기 버튼
   ///
@@ -198,89 +156,11 @@ abstract class AppLocalizations {
   /// **'전체 보기'**
   String get actionViewAll;
 
-  /// 로딩 메시지
-  ///
-  /// In ko, this message translates to:
-  /// **'불러오는 중입니다.'**
-  String get stateLoading;
-
-  /// 오류 메시지
-  ///
-  /// In ko, this message translates to:
-  /// **'오류가 발생했습니다.'**
-  String get stateError;
-
-  /// 빈 상태 메시지
-  ///
-  /// In ko, this message translates to:
-  /// **'표시할 항목이 없습니다.'**
-  String get stateEmpty;
-
-  /// 설정 저장 완료 메시지
-  ///
-  /// In ko, this message translates to:
-  /// **'설정이 저장되었습니다.'**
-  String get settingsSaved;
-
-  /// 언어 설정 레이블
-  ///
-  /// In ko, this message translates to:
-  /// **'언어'**
-  String get settingsLanguage;
-
   /// 알림 설정 섹션 제목
   ///
   /// In ko, this message translates to:
   /// **'알림 설정'**
   String get settingsNotifications;
-
-  /// 분석 필터 설정 섹션 제목
-  ///
-  /// In ko, this message translates to:
-  /// **'분석 필터 설정'**
-  String get settingsFilters;
-
-  /// 언어명 한국어
-  ///
-  /// In ko, this message translates to:
-  /// **'한국어'**
-  String get langKorean;
-
-  /// 언어명 영어
-  ///
-  /// In ko, this message translates to:
-  /// **'English'**
-  String get langEnglish;
-
-  /// 언어명 일본어
-  ///
-  /// In ko, this message translates to:
-  /// **'日本語'**
-  String get langJapanese;
-
-  /// 언어명 중국어 간체
-  ///
-  /// In ko, this message translates to:
-  /// **'中文(简体)'**
-  String get langChinese;
-
-  /// 사이드 네비게이션 주문/배송
-  ///
-  /// In ko, this message translates to:
-  /// **'주문/배송'**
-  String get sideNavOrders;
-
-  /// 사이드 네비게이션 최근 본 상품
-  ///
-  /// In ko, this message translates to:
-  /// **'최근 본 상품'**
-  String get sideNavRecentlyViewed;
-
-  /// 사이드 네비게이션 리뷰 활동
-  ///
-  /// In ko, this message translates to:
-  /// **'리뷰 활동'**
-  String get sideNavReviewActivity;
 
   /// 사이드 네비게이션 계정 설정
   ///
@@ -305,120 +185,6 @@ abstract class AppLocalizations {
   /// In ko, this message translates to:
   /// **'{nickname}님의 알림, 필터, 계정 설정을 관리해요.'**
   String settingsSubtitleNamed(String nickname);
-
-  /// 이메일 알림 토글 레이블
-  ///
-  /// In ko, this message translates to:
-  /// **'이메일 알림 받기'**
-  String get settingsNotificationEmail;
-
-  /// 이메일 알림 토글 설명
-  ///
-  /// In ko, this message translates to:
-  /// **'상품 가격 변동, 리뷰 업데이트를 이메일로 받아요.'**
-  String get settingsNotificationEmailDesc;
-
-  /// 푸시 알림 토글 레이블
-  ///
-  /// In ko, this message translates to:
-  /// **'앱 푸시 알림 받기'**
-  String get settingsNotificationPush;
-
-  /// 푸시 알림 토글 설명
-  ///
-  /// In ko, this message translates to:
-  /// **'저장한 상품의 실시간 알림을 브라우저에서 받아요.'**
-  String get settingsNotificationPushDesc;
-
-  /// 광고 이메일 토글 레이블
-  ///
-  /// In ko, this message translates to:
-  /// **'이메일 광고 수신'**
-  String get settingsNotificationAdEmail;
-
-  /// 광고 이메일 토글 설명
-  ///
-  /// In ko, this message translates to:
-  /// **'프로모션 및 맞춤 혜택 정보를 이메일로 받아요.'**
-  String get settingsNotificationAdEmailDesc;
-
-  /// 주의 상품 강조 토글 레이블
-  ///
-  /// In ko, this message translates to:
-  /// **'주의 상품 먼저 보기'**
-  String get settingsFilterHighlightLowRti;
-
-  /// 주의 상품 강조 토글 설명
-  ///
-  /// In ko, this message translates to:
-  /// **'리뷰 신뢰도가 낮은 상품을 목록 상단에 표시해요.'**
-  String get settingsFilterHighlightLowRtiDesc;
-
-  /// 저장 상품 알림 토글 레이블
-  ///
-  /// In ko, this message translates to:
-  /// **'저장 상품 알림 받기'**
-  String get settingsFilterWishlistAlert;
-
-  /// 저장 상품 알림 토글 설명
-  ///
-  /// In ko, this message translates to:
-  /// **'관심 상품의 RTI 변화가 있을 때 알림을 드려요.'**
-  String get settingsFilterWishlistAlertDesc;
-
-  /// 카테고리 필터 레이블
-  ///
-  /// In ko, this message translates to:
-  /// **'카테고리 필터'**
-  String get settingsFilterCategory;
-
-  /// 카테고리 필터 설명
-  ///
-  /// In ko, this message translates to:
-  /// **'선택한 카테고리 상품을 기준으로 분석 결과를 우선 표시해요.'**
-  String get settingsFilterCategoryDesc;
-
-  /// 카테고리 전체 선택 옵션
-  ///
-  /// In ko, this message translates to:
-  /// **'전체 카테고리'**
-  String get settingsFilterCategoryAll;
-
-  /// 최소 리뷰 개수 필터 레이블
-  ///
-  /// In ko, this message translates to:
-  /// **'리뷰 최소 개수'**
-  String get settingsFilterMinReview;
-
-  /// 최소 리뷰 개수 필터 설명
-  ///
-  /// In ko, this message translates to:
-  /// **'이 개수 이상 리뷰가 있는 상품만 분석 결과에 반영해요.'**
-  String get settingsFilterMinReviewDesc;
-
-  /// 리뷰 개수 단위
-  ///
-  /// In ko, this message translates to:
-  /// **'개'**
-  String get settingsFilterMinReviewSuffix;
-
-  /// 낮은 RTI 경고 기준 레이블
-  ///
-  /// In ko, this message translates to:
-  /// **'낮은 RTI 경고 기준'**
-  String get settingsFilterLowRti;
-
-  /// 낮은 RTI 경고 기준 설명
-  ///
-  /// In ko, this message translates to:
-  /// **'RTI 점수가 이 값 이하면 주의 상품으로 분류해요.'**
-  String get settingsFilterLowRtiDesc;
-
-  /// RTI 점수 단위
-  ///
-  /// In ko, this message translates to:
-  /// **'점'**
-  String get settingsFilterLowRtiSuffix;
 
   /// 계정 섹션 제목
   ///
@@ -624,12 +390,6 @@ abstract class AppLocalizations {
   /// **'최저 가격'**
   String get wishlistFilterLowestPrice;
 
-  /// 브랜드 필터 옵션
-  ///
-  /// In ko, this message translates to:
-  /// **'브랜드'**
-  String get wishlistFilterBrand;
-
   /// 카테고리 필터 옵션
   ///
   /// In ko, this message translates to:
@@ -671,12 +431,6 @@ abstract class AppLocalizations {
   /// In ko, this message translates to:
   /// **'사용자'**
   String get myPageDefaultName;
-
-  /// 일반 회원 표시 문구
-  ///
-  /// In ko, this message translates to:
-  /// **'일반 회원 (무료)'**
-  String get myPageMemberBasic;
 
   /// 사이드 네비게이션 마이페이지
   ///
@@ -726,12 +480,6 @@ abstract class AppLocalizations {
   /// **'최근 활동이 없습니다.'**
   String get myPageRecentActivityEmpty;
 
-  /// 최근 날짜 표시
-  ///
-  /// In ko, this message translates to:
-  /// **'최근'**
-  String get myPageRecentLabel;
-
   /// 리뷰 신뢰 요약 섹션 제목
   ///
   /// In ko, this message translates to:
@@ -761,18 +509,6 @@ abstract class AppLocalizations {
   /// In ko, this message translates to:
   /// **'주의 상품 {count}개를 확인해보세요.'**
   String myPageRiskyCount(int count);
-
-  /// 주의 상품 먼저 보기 레이블
-  ///
-  /// In ko, this message translates to:
-  /// **'주의 상품 먼저 보기'**
-  String get myPageHighlightLowRti;
-
-  /// 저장 상품 알림 레이블
-  ///
-  /// In ko, this message translates to:
-  /// **'저장 상품 알림 받기'**
-  String get myPageWishlistAlertLabel;
 
   /// 계정 정보 섹션 제목
   ///
@@ -1158,18 +894,6 @@ abstract class AppLocalizations {
   /// **'운영 대시보드'**
   String get adminDashboardTitle;
 
-  /// 구현 대기 중인 관리자 페이지 안내
-  ///
-  /// In ko, this message translates to:
-  /// **'준비 중인 화면입니다.'**
-  String get adminPlaceholderMessage;
-
-  /// 관리자 상단 검색바 안내 문구
-  ///
-  /// In ko, this message translates to:
-  /// **'사용자, 리뷰, 신고 ID로 검색'**
-  String get adminTopBarSearchHint;
-
   /// 관리자 상단 알림 벨 툴팁
   ///
   /// In ko, this message translates to:
@@ -1200,12 +924,6 @@ abstract class AppLocalizations {
   /// **'새 대화'**
   String get chatNewConversation;
 
-  /// 패널 닫기 버튼
-  ///
-  /// In ko, this message translates to:
-  /// **'닫기'**
-  String get chatClose;
-
   /// 질문 입력창 힌트
   ///
   /// In ko, this message translates to:
@@ -1217,12 +935,6 @@ abstract class AppLocalizations {
   /// In ko, this message translates to:
   /// **'보내기'**
   String get chatSend;
-
-  /// 상품 상세에서 연 대화 안내
-  ///
-  /// In ko, this message translates to:
-  /// **'이 상품의 리뷰를 바탕으로 답해요'**
-  String get chatProductContext;
 
   /// 현재 화면 상품과 대화 상품이 다를 때 안내
   ///
@@ -2424,12 +2136,6 @@ abstract class AppLocalizations {
   /// **'AI에게 물어보기'**
   String get chatLauncherLabel;
 
-  /// No description provided for @chatLauncherProductLabel.
-  ///
-  /// In ko, this message translates to:
-  /// **'이 상품 리뷰 물어보기'**
-  String get chatLauncherProductLabel;
-
   /// No description provided for @chatProductCta.
   ///
   /// In ko, this message translates to:
@@ -2657,12 +2363,6 @@ abstract class AppLocalizations {
   /// In ko, this message translates to:
   /// **'요금제 정보를 불러오지 못했어요.'**
   String get planLoadFailed;
-
-  /// No description provided for @planRetry.
-  ///
-  /// In ko, this message translates to:
-  /// **'다시 시도'**
-  String get planRetry;
 
   /// No description provided for @myPageSideNavPlan.
   ///
@@ -3755,6 +3455,534 @@ abstract class AppLocalizations {
   /// In ko, this message translates to:
   /// **'연관 검색어 다시 불러오기'**
   String get homeSearchSuggestionsRetry;
+
+  /// No description provided for @authAccountHelp.
+  ///
+  /// In ko, this message translates to:
+  /// **'계정 도움말'**
+  String get authAccountHelp;
+
+  /// No description provided for @authAccountHelpBody.
+  ///
+  /// In ko, this message translates to:
+  /// **'이메일 계정의 비밀번호는 비밀번호 찾기에서 재설정할 수 있습니다. 구글·네이버 계정은 가입할 때 사용한 소셜 로그인 버튼을 이용해 주세요.'**
+  String get authAccountHelpBody;
+
+  /// No description provided for @authForgotPassword.
+  ///
+  /// In ko, this message translates to:
+  /// **'비밀번호 찾기'**
+  String get authForgotPassword;
+
+  /// No description provided for @authSignup.
+  ///
+  /// In ko, this message translates to:
+  /// **'회원가입'**
+  String get authSignup;
+
+  /// No description provided for @authClose.
+  ///
+  /// In ko, this message translates to:
+  /// **'닫기'**
+  String get authClose;
+
+  /// No description provided for @authLogin.
+  ///
+  /// In ko, this message translates to:
+  /// **'로그인'**
+  String get authLogin;
+
+  /// No description provided for @authLoginDescription.
+  ///
+  /// In ko, this message translates to:
+  /// **'Re:view 계정으로 로그인하고 저장한 상품과 신뢰 필터를 불러오세요.'**
+  String get authLoginDescription;
+
+  /// No description provided for @authEmail.
+  ///
+  /// In ko, this message translates to:
+  /// **'이메일'**
+  String get authEmail;
+
+  /// No description provided for @authEmailHint.
+  ///
+  /// In ko, this message translates to:
+  /// **'이메일을 입력하세요'**
+  String get authEmailHint;
+
+  /// No description provided for @authPassword.
+  ///
+  /// In ko, this message translates to:
+  /// **'비밀번호'**
+  String get authPassword;
+
+  /// No description provided for @authPasswordHint.
+  ///
+  /// In ko, this message translates to:
+  /// **'비밀번호를 입력하세요'**
+  String get authPasswordHint;
+
+  /// No description provided for @authShow.
+  ///
+  /// In ko, this message translates to:
+  /// **'보기'**
+  String get authShow;
+
+  /// No description provided for @authHide.
+  ///
+  /// In ko, this message translates to:
+  /// **'숨김'**
+  String get authHide;
+
+  /// No description provided for @authRememberMe.
+  ///
+  /// In ko, this message translates to:
+  /// **'로그인 상태 유지'**
+  String get authRememberMe;
+
+  /// No description provided for @authOr.
+  ///
+  /// In ko, this message translates to:
+  /// **'또는'**
+  String get authOr;
+
+  /// No description provided for @authContinueNaver.
+  ///
+  /// In ko, this message translates to:
+  /// **'네이버 계정으로 계속하기'**
+  String get authContinueNaver;
+
+  /// No description provided for @authContinueGoogle.
+  ///
+  /// In ko, this message translates to:
+  /// **'Google 계정으로 계속하기'**
+  String get authContinueGoogle;
+
+  /// No description provided for @authNoAccount.
+  ///
+  /// In ko, this message translates to:
+  /// **'아직 계정이 없나요?'**
+  String get authNoAccount;
+
+  /// No description provided for @authSignupAction.
+  ///
+  /// In ko, this message translates to:
+  /// **'회원가입하기'**
+  String get authSignupAction;
+
+  /// No description provided for @authPrivacyNotice.
+  ///
+  /// In ko, this message translates to:
+  /// **'개인화 정보는 계정에 안전하게 저장되며, 저장 상품과 분석 기록은 로그인한 사용자에게만 표시됩니다.'**
+  String get authPrivacyNotice;
+
+  /// No description provided for @authSignupDescription.
+  ///
+  /// In ko, this message translates to:
+  /// **'Re:view 계정을 만들고 저장 상품, 신뢰 필터, 알림 설정을 시작하세요.'**
+  String get authSignupDescription;
+
+  /// No description provided for @authName.
+  ///
+  /// In ko, this message translates to:
+  /// **'이름'**
+  String get authName;
+
+  /// No description provided for @authNameHint.
+  ///
+  /// In ko, this message translates to:
+  /// **'이름을 입력하세요'**
+  String get authNameHint;
+
+  /// No description provided for @authPasswordGuidance.
+  ///
+  /// In ko, this message translates to:
+  /// **'영문, 숫자, 특수문자를 포함해 8자 이상으로 설정해주세요.'**
+  String get authPasswordGuidance;
+
+  /// No description provided for @authConfirmPassword.
+  ///
+  /// In ko, this message translates to:
+  /// **'비밀번호 확인'**
+  String get authConfirmPassword;
+
+  /// No description provided for @authConfirmPasswordHint.
+  ///
+  /// In ko, this message translates to:
+  /// **'비밀번호를 한 번 더 입력하세요'**
+  String get authConfirmPasswordHint;
+
+  /// No description provided for @authSignupOnboarding.
+  ///
+  /// In ko, this message translates to:
+  /// **'회원가입하고 온보딩 시작'**
+  String get authSignupOnboarding;
+
+  /// No description provided for @authSignupNaver.
+  ///
+  /// In ko, this message translates to:
+  /// **'네이버 계정으로 가입하기'**
+  String get authSignupNaver;
+
+  /// No description provided for @authSignupGoogle.
+  ///
+  /// In ko, this message translates to:
+  /// **'Google 계정으로 가입하기'**
+  String get authSignupGoogle;
+
+  /// No description provided for @authHasAccount.
+  ///
+  /// In ko, this message translates to:
+  /// **'이미 계정이 있나요?'**
+  String get authHasAccount;
+
+  /// No description provided for @authLoginAction.
+  ///
+  /// In ko, this message translates to:
+  /// **'로그인하기'**
+  String get authLoginAction;
+
+  /// No description provided for @authTermsConsent.
+  ///
+  /// In ko, this message translates to:
+  /// **'이용약관 및 개인정보처리방침에 동의합니다. (필수)'**
+  String get authTermsConsent;
+
+  /// No description provided for @authMarketingConsent.
+  ///
+  /// In ko, this message translates to:
+  /// **'저장 상품 알림과 신뢰도 변화 알림을 받겠습니다. (선택)'**
+  String get authMarketingConsent;
+
+  /// No description provided for @authOnboardingNotice.
+  ///
+  /// In ko, this message translates to:
+  /// **'다음 단계는 온보딩입니다. 가입 후 관심 카테고리와 기본 RTI 필터를 설정합니다.'**
+  String get authOnboardingNotice;
+
+  /// No description provided for @authResetTitle.
+  ///
+  /// In ko, this message translates to:
+  /// **'비밀번호 재설정'**
+  String get authResetTitle;
+
+  /// No description provided for @authResetDescription.
+  ///
+  /// In ko, this message translates to:
+  /// **'가입한 이메일을 확인하고 새 비밀번호를 등록하세요.'**
+  String get authResetDescription;
+
+  /// No description provided for @authRememberAccount.
+  ///
+  /// In ko, this message translates to:
+  /// **'계정이 기억났나요?'**
+  String get authRememberAccount;
+
+  /// No description provided for @authBackToLogin.
+  ///
+  /// In ko, this message translates to:
+  /// **'로그인으로 돌아가기'**
+  String get authBackToLogin;
+
+  /// No description provided for @authRegisteredEmail.
+  ///
+  /// In ko, this message translates to:
+  /// **'가입 이메일'**
+  String get authRegisteredEmail;
+
+  /// No description provided for @authSendVerification.
+  ///
+  /// In ko, this message translates to:
+  /// **'인증 이메일 발송'**
+  String get authSendVerification;
+
+  /// No description provided for @authEmailSent.
+  ///
+  /// In ko, this message translates to:
+  /// **'이메일을 발송했습니다'**
+  String get authEmailSent;
+
+  /// No description provided for @authEmailSentGuide.
+  ///
+  /// In ko, this message translates to:
+  /// **'이메일의 링크를 클릭하거나, 받은 토큰을 확인한 후 다음 단계로 진행하세요.'**
+  String get authEmailSentGuide;
+
+  /// No description provided for @authNext.
+  ///
+  /// In ko, this message translates to:
+  /// **'다음'**
+  String get authNext;
+
+  /// No description provided for @authResendEmail.
+  ///
+  /// In ko, this message translates to:
+  /// **'이메일 다시 받기'**
+  String get authResendEmail;
+
+  /// No description provided for @authNewPassword.
+  ///
+  /// In ko, this message translates to:
+  /// **'새 비밀번호'**
+  String get authNewPassword;
+
+  /// No description provided for @authNewPasswordHint.
+  ///
+  /// In ko, this message translates to:
+  /// **'새 비밀번호를 입력하세요'**
+  String get authNewPasswordHint;
+
+  /// No description provided for @authNewPasswordGuide.
+  ///
+  /// In ko, this message translates to:
+  /// **'이전에 사용한 비밀번호와 다르게 설정하고, 영문·숫자·특수문자를 조합해 주세요.'**
+  String get authNewPasswordGuide;
+
+  /// No description provided for @authConfirmNewPassword.
+  ///
+  /// In ko, this message translates to:
+  /// **'새 비밀번호 확인'**
+  String get authConfirmNewPassword;
+
+  /// No description provided for @authConfirmNewPasswordHint.
+  ///
+  /// In ko, this message translates to:
+  /// **'새 비밀번호를 한 번 더 입력하세요'**
+  String get authConfirmNewPasswordHint;
+
+  /// No description provided for @authCompleteReset.
+  ///
+  /// In ko, this message translates to:
+  /// **'비밀번호 변경 완료'**
+  String get authCompleteReset;
+
+  /// No description provided for @authResendVerification.
+  ///
+  /// In ko, this message translates to:
+  /// **'인증 이메일 다시 받기'**
+  String get authResendVerification;
+
+  /// No description provided for @authMinLength.
+  ///
+  /// In ko, this message translates to:
+  /// **'8자 이상'**
+  String get authMinLength;
+
+  /// No description provided for @authLettersNumbers.
+  ///
+  /// In ko, this message translates to:
+  /// **'영문과 숫자 포함'**
+  String get authLettersNumbers;
+
+  /// No description provided for @authSymbolsRecommended.
+  ///
+  /// In ko, this message translates to:
+  /// **'특수문자 포함 권장'**
+  String get authSymbolsRecommended;
+
+  /// No description provided for @authNoEmail.
+  ///
+  /// In ko, this message translates to:
+  /// **'이메일을 받지 못했나요?'**
+  String get authNoEmail;
+
+  /// No description provided for @authNoEmailGuide.
+  ///
+  /// In ko, this message translates to:
+  /// **'스팸함을 확인하거나, 가입한 이메일이 맞는지 다시 확인해 주세요.'**
+  String get authNoEmailGuide;
+
+  /// No description provided for @authVerifyEmail.
+  ///
+  /// In ko, this message translates to:
+  /// **'이메일 확인'**
+  String get authVerifyEmail;
+
+  /// No description provided for @authVerificationCode.
+  ///
+  /// In ko, this message translates to:
+  /// **'인증 코드'**
+  String get authVerificationCode;
+
+  /// No description provided for @authResetSuccess.
+  ///
+  /// In ko, this message translates to:
+  /// **'비밀번호가 변경되었습니다'**
+  String get authResetSuccess;
+
+  /// No description provided for @authResetSuccessGuide.
+  ///
+  /// In ko, this message translates to:
+  /// **'새 비밀번호로 로그인해 주세요.'**
+  String get authResetSuccessGuide;
+
+  /// No description provided for @authGoToLogin.
+  ///
+  /// In ko, this message translates to:
+  /// **'로그인하러 가기'**
+  String get authGoToLogin;
+
+  /// No description provided for @searchFilterTitle.
+  ///
+  /// In ko, this message translates to:
+  /// **'필터'**
+  String get searchFilterTitle;
+
+  /// No description provided for @searchFilterReset.
+  ///
+  /// In ko, this message translates to:
+  /// **'초기화'**
+  String get searchFilterReset;
+
+  /// No description provided for @searchFilterCategory.
+  ///
+  /// In ko, this message translates to:
+  /// **'카테고리'**
+  String get searchFilterCategory;
+
+  /// No description provided for @searchFilterPriceRange.
+  ///
+  /// In ko, this message translates to:
+  /// **'가격대'**
+  String get searchFilterPriceRange;
+
+  /// No description provided for @searchFilterWon.
+  ///
+  /// In ko, this message translates to:
+  /// **'원'**
+  String get searchFilterWon;
+
+  /// No description provided for @searchFilterSeller.
+  ///
+  /// In ko, this message translates to:
+  /// **'판매처'**
+  String get searchFilterSeller;
+
+  /// No description provided for @searchFilterSellerHint.
+  ///
+  /// In ko, this message translates to:
+  /// **'판매처를 선택하세요'**
+  String get searchFilterSellerHint;
+
+  /// No description provided for @searchFilterRtiScore.
+  ///
+  /// In ko, this message translates to:
+  /// **'RTI 신뢰 점수'**
+  String get searchFilterRtiScore;
+
+  /// No description provided for @searchFilterAllRti.
+  ///
+  /// In ko, this message translates to:
+  /// **'전체 (분석 전 포함)'**
+  String get searchFilterAllRti;
+
+  /// No description provided for @searchFilterZeroPoints.
+  ///
+  /// In ko, this message translates to:
+  /// **'0점'**
+  String get searchFilterZeroPoints;
+
+  /// No description provided for @searchFilterHundredPoints.
+  ///
+  /// In ko, this message translates to:
+  /// **'100점'**
+  String get searchFilterHundredPoints;
+
+  /// No description provided for @searchFilterEightyMinimum.
+  ///
+  /// In ko, this message translates to:
+  /// **'80점 이상'**
+  String get searchFilterEightyMinimum;
+
+  /// No description provided for @searchFilterNinetyMinimum.
+  ///
+  /// In ko, this message translates to:
+  /// **'90점 이상'**
+  String get searchFilterNinetyMinimum;
+
+  /// No description provided for @searchFilterNinetyFiveMinimum.
+  ///
+  /// In ko, this message translates to:
+  /// **'95점 이상'**
+  String get searchFilterNinetyFiveMinimum;
+
+  /// No description provided for @searchFilterInfoStatus.
+  ///
+  /// In ko, this message translates to:
+  /// **'정보 상태'**
+  String get searchFilterInfoStatus;
+
+  /// No description provided for @searchFilterReviewConditions.
+  ///
+  /// In ko, this message translates to:
+  /// **'리뷰 조건'**
+  String get searchFilterReviewConditions;
+
+  /// No description provided for @searchFilterSelectSeller.
+  ///
+  /// In ko, this message translates to:
+  /// **'판매처 선택'**
+  String get searchFilterSelectSeller;
+
+  /// No description provided for @searchFilterAllSellers.
+  ///
+  /// In ko, this message translates to:
+  /// **'전체 판매처'**
+  String get searchFilterAllSellers;
+
+  /// No description provided for @searchFilterUnanalyzedOnly.
+  ///
+  /// In ko, this message translates to:
+  /// **'분석 전만'**
+  String get searchFilterUnanalyzedOnly;
+
+  /// No description provided for @searchFilterMissingPriceOnly.
+  ///
+  /// In ko, this message translates to:
+  /// **'가격 정보 없음만'**
+  String get searchFilterMissingPriceOnly;
+
+  /// No description provided for @searchFilterMinimumReviews.
+  ///
+  /// In ko, this message translates to:
+  /// **'리뷰 50개 이상'**
+  String get searchFilterMinimumReviews;
+
+  /// No description provided for @searchFilterUnderTenThousand.
+  ///
+  /// In ko, this message translates to:
+  /// **'1만원 이하'**
+  String get searchFilterUnderTenThousand;
+
+  /// No description provided for @searchFilterTenToThirtyThousand.
+  ///
+  /// In ko, this message translates to:
+  /// **'10~30만원'**
+  String get searchFilterTenToThirtyThousand;
+
+  /// No description provided for @searchFilterAboveThreeHundredThousand.
+  ///
+  /// In ko, this message translates to:
+  /// **'30만원 이상'**
+  String get searchFilterAboveThreeHundredThousand;
+
+  /// No description provided for @searchFilterPriceAmount.
+  ///
+  /// In ko, this message translates to:
+  /// **'{amount}원'**
+  String searchFilterPriceAmount(String amount);
+
+  /// No description provided for @searchFilterMinimumScore.
+  ///
+  /// In ko, this message translates to:
+  /// **'{score}점 이상'**
+  String searchFilterMinimumScore(int score);
+
+  /// No description provided for @searchFilterShowResults.
+  ///
+  /// In ko, this message translates to:
+  /// **'{count}개 결과 보기'**
+  String searchFilterShowResults(int count);
 }
 
 class _AppLocalizationsDelegate

@@ -43,26 +43,16 @@ class ProductCard extends ConsumerWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+                // 이미지 위에는 아무것도 겹쳐 그리지 않는다. 외부 이미지는 DOM 요소라
+                // 겹친 라벨·버튼이 이미지 아래에 깔릴 수 있다.
                 AspectRatio(
                   aspectRatio: 16 / 9,
-                  child: Stack(
-                    children: [
-                      Positioned.fill(
-                        child: AppNetworkImage(url: product.imageUrl),
-                      ),
-                      Positioned(
-                        top: AppSpacing.sm,
-                        left: AppSpacing.sm,
-                        child: _Label(label: product.label),
-                      ),
-                      Positioned(
-                        top: AppSpacing.sm,
-                        right: AppSpacing.sm,
-                        child: _HeartButton(
-                          productId: int.tryParse(product.productId) ?? 0,
-                        ),
-                      ),
-                    ],
+                  child: AppNetworkImage(
+                    url: product.imageUrl,
+                    thumbnailWidth: 480,
+                    borderRadius: const BorderRadius.vertical(
+                      top: Radius.circular(19),
+                    ),
                   ),
                 ),
                 Padding(
@@ -74,6 +64,21 @@ class ProductCard extends ConsumerWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
+                      Row(
+                        children: [
+                          Expanded(
+                            child: Align(
+                              alignment: Alignment.centerLeft,
+                              child: _Label(label: product.label),
+                            ),
+                          ),
+                          const SizedBox(width: AppSpacing.xs),
+                          _HeartButton(
+                            productId: int.tryParse(product.productId) ?? 0,
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: AppSpacing.xs),
                       Text(
                         product.name,
                         maxLines: 2,
@@ -240,7 +245,7 @@ class _HeartButtonState extends ConsumerState<_HeartButton>
           height: 34,
           alignment: Alignment.center,
           decoration: const BoxDecoration(
-            color: Colors.white,
+            color: AppColors.surfaceMuted,
             shape: BoxShape.circle,
           ),
           child: AnimatedSwitcher(
@@ -283,6 +288,8 @@ class _Label extends StatelessWidget {
         ),
         child: Text(
           label,
+          maxLines: 1,
+          overflow: TextOverflow.ellipsis,
           style: Theme.of(context).textTheme.labelMedium?.copyWith(
             color: Colors.white,
             fontWeight: FontWeight.w900,

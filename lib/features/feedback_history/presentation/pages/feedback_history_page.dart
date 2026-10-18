@@ -230,7 +230,7 @@ class _FeedbackCard extends StatelessWidget {
     return DecoratedBox(
       decoration: BoxDecoration(
         color: AppColors.surface,
-        borderRadius: BorderRadius.circular(8),
+        borderRadius: AppRadius.small,
         border: Border.all(color: AppColors.border),
         boxShadow: const [
           BoxShadow(

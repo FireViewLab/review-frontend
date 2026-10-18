@@ -9,6 +9,7 @@ import 'package:re_view_front/app/theme/app_theme.dart';
 import 'package:re_view_front/core/providers/core_providers.dart';
 import 'package:re_view_front/features/search/domain/entities/search_result_product.dart';
 import 'package:re_view_front/features/search/presentation/widgets/search_product_card.dart';
+import 'package:re_view_front/features/search/presentation/widgets/search_product_list_tile.dart';
 import 'package:re_view_front/shared/widgets/app_network_image.dart';
 
 void main() {

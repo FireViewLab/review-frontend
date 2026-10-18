@@ -109,7 +109,7 @@ class ProductReportCard extends StatelessWidget {
                   padding: const EdgeInsets.all(10),
                   decoration: BoxDecoration(
                     color: AppColors.primaryLight,
-                    borderRadius: BorderRadius.circular(12),
+                    borderRadius: AppRadius.medium,
                   ),
                   child: const Icon(
                     Icons.shield_outlined,
@@ -158,7 +158,7 @@ class ProductReportCard extends StatelessWidget {
                       ),
                       decoration: BoxDecoration(
                         color: color.withValues(alpha: .08),
-                        borderRadius: BorderRadius.circular(8),
+                        borderRadius: AppRadius.small,
                       ),
                       child: Row(
                         mainAxisSize: MainAxisSize.min,
@@ -296,9 +296,7 @@ class ProductReportCard extends StatelessWidget {
                   ),
                   foregroundColor: AppColors.primary,
                   side: const BorderSide(color: AppColors.borderStrong),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(12),
-                  ),
+                  shape: RoundedRectangleBorder(borderRadius: AppRadius.medium),
                 ),
                 onPressed:
                     onDetailPressed ??
@@ -324,30 +322,55 @@ class ReportDetailSection extends StatelessWidget {
   final Widget child;
   @override
   Widget build(BuildContext context) => Padding(
-    padding: const EdgeInsets.only(bottom: AppSpacing.lg),
-    child: Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
+    padding: const EdgeInsets.only(bottom: AppSpacing.md),
+    child: Container(
+      width: double.infinity,
+      padding: const EdgeInsets.all(20),
+      decoration: BoxDecoration(
+        color: AppColors.surface,
+        borderRadius: AppRadius.large,
+        border: Border.all(color: AppColors.border),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          ReportSectionTitle(title: title),
+          const SizedBox(height: 14),
+          child,
+        ],
+      ),
+    ),
+  );
+}
+
+/// 분석 팝업 섹션 제목. 왼쪽 강조선으로 섹션 시작을 구분한다.
+class ReportSectionTitle extends StatelessWidget {
+  const ReportSectionTitle({super.key, required this.title, this.trailing});
+  final String title;
+  final Widget? trailing;
+  @override
+  Widget build(BuildContext context) => Row(
+    children: [
+      Container(
+        width: 4,
+        height: 16,
+        decoration: BoxDecoration(
+          color: AppColors.primary,
+          borderRadius: BorderRadius.circular(2),
+        ),
+      ),
+      const SizedBox(width: AppSpacing.xs),
+      Expanded(
+        child: Text(
           title,
           style: Theme.of(context).textTheme.titleSmall?.copyWith(
             fontWeight: FontWeight.w800,
             color: AppColors.textPrimary,
           ),
         ),
-        const SizedBox(height: AppSpacing.sm),
-        Container(
-          width: double.infinity,
-          padding: const EdgeInsets.all(AppSpacing.md),
-          decoration: BoxDecoration(
-            color: AppColors.surfaceMuted,
-            borderRadius: BorderRadius.circular(14),
-            border: Border.all(color: AppColors.border),
-          ),
-          child: child,
-        ),
-      ],
-    ),
+      ),
+      ?trailing,
+    ],
   );
 }
 
@@ -357,77 +380,141 @@ class ReportFactRow extends StatelessWidget {
   final String value;
   @override
   Widget build(BuildContext context) => Padding(
-    padding: const EdgeInsets.symmetric(vertical: 6),
-    child: Wrap(
-      spacing: AppSpacing.md,
-      runSpacing: 4,
+    padding: const EdgeInsets.symmetric(vertical: AppSpacing.xs),
+    child: Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
-          label,
-          style: Theme.of(
-            context,
-          ).textTheme.bodySmall?.copyWith(color: AppColors.textSecondary),
+        Expanded(
+          child: Text(
+            label,
+            style: Theme.of(
+              context,
+            ).textTheme.bodySmall?.copyWith(color: AppColors.textSecondary),
+          ),
         ),
-        Text(
-          value,
-          style: Theme.of(
-            context,
-          ).textTheme.bodyMedium?.copyWith(fontWeight: FontWeight.w600),
+        const SizedBox(width: AppSpacing.sm),
+        Flexible(
+          child: Text(
+            value,
+            textAlign: TextAlign.end,
+            style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+              fontWeight: FontWeight.w700,
+              color: AppColors.textPrimary,
+            ),
+          ),
         ),
       ],
     ),
   );
 }
 
+/// 분석 결과 팝업. 제목이 없으면 상품 리포트 제목과 소개 문구를 쓴다.
 Future<void> showProductReport(
   BuildContext context,
   Widget details, {
   String? title,
+  String? subtitle,
+  IconData icon = Icons.shield_outlined,
 }) => showDialog<void>(
   context: context,
-  builder: (context) => Dialog(
-    backgroundColor: AppColors.surface,
-    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-    insetPadding: const EdgeInsets.all(AppSpacing.md),
-    child: ConstrainedBox(
-      constraints: BoxConstraints(
-        maxWidth: 800,
-        maxHeight: MediaQuery.sizeOf(context).height * .85,
-      ),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Padding(
-            padding: const EdgeInsets.all(AppSpacing.md),
-            child: Row(
-              children: [
-                const Icon(Icons.fact_check_outlined, color: AppColors.primary),
-                const SizedBox(width: AppSpacing.sm),
-                Expanded(
-                  child: Text(
-                    title ?? AppLocalizations.of(context).reportDetails,
-                    style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                      fontWeight: FontWeight.w800,
+  barrierColor: AppColors.overlay,
+  builder: (context) {
+    final l = AppLocalizations.of(context);
+    final size = MediaQuery.sizeOf(context);
+    final compact = size.width < 600;
+    final heading = title ?? l.reportTitle;
+    final caption = title == null ? (subtitle ?? l.reportIntro) : subtitle;
+    return Dialog(
+      backgroundColor: AppColors.background,
+      surfaceTintColor: Colors.transparent,
+      clipBehavior: Clip.antiAlias,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24)),
+      insetPadding: EdgeInsets.all(compact ? AppSpacing.sm : AppSpacing.lg),
+      child: ConstrainedBox(
+        constraints: BoxConstraints(
+          maxWidth: 720,
+          maxHeight: size.height * (compact ? .92 : .86),
+        ),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            DecoratedBox(
+              decoration: const BoxDecoration(
+                color: AppColors.surface,
+                border: Border(bottom: BorderSide(color: AppColors.border)),
+              ),
+              child: Padding(
+                padding: EdgeInsets.fromLTRB(
+                  compact ? AppSpacing.md : AppSpacing.lg,
+                  AppSpacing.md,
+                  AppSpacing.sm,
+                  AppSpacing.md,
+                ),
+                child: Row(
+                  children: [
+                    Container(
+                      width: 40,
+                      height: 40,
+                      decoration: BoxDecoration(
+                        color: AppColors.primaryLight,
+                        borderRadius: AppRadius.medium,
+                      ),
+                      child: Icon(icon, color: AppColors.primary, size: 22),
                     ),
-                  ),
+                    const SizedBox(width: AppSpacing.sm),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Text(
+                            heading,
+                            maxLines: 2,
+                            overflow: TextOverflow.ellipsis,
+                            style: Theme.of(context).textTheme.titleMedium
+                                ?.copyWith(
+                                  fontWeight: FontWeight.w800,
+                                  color: AppColors.textPrimary,
+                                ),
+                          ),
+                          if (caption != null && caption.isNotEmpty) ...[
+                            const SizedBox(height: 2),
+                            Text(
+                              caption,
+                              maxLines: 2,
+                              overflow: TextOverflow.ellipsis,
+                              style: Theme.of(context).textTheme.bodySmall
+                                  ?.copyWith(color: AppColors.textSecondary),
+                            ),
+                          ],
+                        ],
+                      ),
+                    ),
+                    const SizedBox(width: AppSpacing.xs),
+                    IconButton(
+                      tooltip: l.reportClose,
+                      onPressed: () => Navigator.of(context).pop(),
+                      style: IconButton.styleFrom(
+                        backgroundColor: AppColors.surfaceMuted,
+                      ),
+                      icon: const Icon(Icons.close, size: 20),
+                    ),
+                  ],
                 ),
-                IconButton(
-                  tooltip: AppLocalizations.of(context).reportClose,
-                  onPressed: () => Navigator.of(context).pop(),
-                  icon: const Icon(Icons.close),
+              ),
+            ),
+            Flexible(
+              child: SingleChildScrollView(
+                padding: EdgeInsets.all(
+                  compact ? AppSpacing.md : AppSpacing.lg,
                 ),
-              ],
+                child: details,
+              ),
             ),
-          ),
-          const Divider(height: 1),
-          Flexible(
-            child: SingleChildScrollView(
-              padding: const EdgeInsets.all(AppSpacing.lg),
-              child: details,
-            ),
-          ),
-        ],
+          ],
+        ),
       ),
-    ),
-  ),
+    );
+  },
 );

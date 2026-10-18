@@ -118,7 +118,7 @@ class _TrustMain extends StatelessWidget {
               height: shieldSize,
               clipBehavior: Clip.antiAlias,
               decoration: const BoxDecoration(
-                color: Color(0xFFEFF4FF),
+                color: AppColors.primaryLight,
                 shape: BoxShape.circle,
               ),
               child: Image.asset(

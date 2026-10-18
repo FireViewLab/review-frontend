@@ -61,7 +61,11 @@ void main() {
       ctl = controller(tester);
       expect(ctl.page, closeTo(page + 1, .01));
       expect(indicator(2), findsOneWidget);
-      expect(tester.getSize(find.byType(HeroBannerCarousel)).height, 240);
+      // 모바일 높이는 배너 이미지 비율(1916:821)에 맞춘다. 390px 폭에서 약 140px.
+      expect(
+        tester.getSize(find.byType(HeroBannerCarousel)).height,
+        closeTo(140.2, 1),
+      );
       expect(tester.takeException(), isNull);
     },
   );

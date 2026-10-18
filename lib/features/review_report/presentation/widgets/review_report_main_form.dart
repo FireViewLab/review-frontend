@@ -228,9 +228,7 @@ class _StepNavigationBar extends StatelessWidget {
                 horizontal: AppSpacing.lg,
                 vertical: AppSpacing.md,
               ),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(8),
-              ),
+              shape: RoundedRectangleBorder(borderRadius: AppRadius.small),
             ),
             icon: const Icon(Icons.arrow_back_rounded, size: 16),
             label: const Text(
@@ -255,9 +253,7 @@ class _StepNavigationBar extends StatelessWidget {
               horizontal: AppSpacing.xl,
               vertical: AppSpacing.md,
             ),
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(8),
-            ),
+            shape: RoundedRectangleBorder(borderRadius: AppRadius.small),
           ),
           child: isSubmitting
               ? SizedBox.square(

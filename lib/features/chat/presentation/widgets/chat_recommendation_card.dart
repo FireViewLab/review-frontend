@@ -6,7 +6,7 @@ import 'package:re_view_front/features/chat/domain/entities/chat_recommendation.
 import 'package:re_view_front/features/external_product/domain/entities/external_product_ref.dart';
 import 'package:re_view_front/features/external_product/presentation/external_platform_labels.dart';
 import 'package:re_view_front/features/external_product/presentation/providers/external_product_providers.dart';
-import 'package:re_view_front/features/search/presentation/utils/search_formatters.dart';
+import 'package:re_view_front/shared/presentation/product_formatters.dart';
 import 'package:re_view_front/l10n/generated/app_localizations.dart';
 import 'package:re_view_front/shared/widgets/app_network_image.dart';
 
@@ -19,7 +19,7 @@ class ChatRecommendationCard extends ConsumerWidget {
     final l = AppLocalizations.of(context);
     return Card(
       child: InkWell(
-        borderRadius: BorderRadius.circular(12),
+        borderRadius: AppRadius.medium,
         onTap: () {
           final summary = product.summary;
           ref.read(productSummaryCacheProvider).remember(summary);
@@ -44,7 +44,8 @@ class ChatRecommendationCard extends ConsumerWidget {
                 height: 64,
                 child: AppNetworkImage(
                   url: product.thumbnailUrl ?? '',
-                  borderRadius: BorderRadius.circular(8),
+                  thumbnailWidth: 160,
+                  borderRadius: AppRadius.small,
                 ),
               ),
               const SizedBox(width: AppSpacing.sm),

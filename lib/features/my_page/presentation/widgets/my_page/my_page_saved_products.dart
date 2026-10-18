@@ -109,10 +109,10 @@ class MyPageCompactProductCard extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           ClipRRect(
-            borderRadius: BorderRadius.circular(8),
+            borderRadius: AppRadius.small,
             child: SizedBox.square(
               dimension: 96,
-              child: AppNetworkImage(url: imageUrl),
+              child: AppNetworkImage(url: imageUrl, thumbnailWidth: 240),
             ),
           ),
           const SizedBox(width: AppSpacing.md),

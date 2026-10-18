@@ -68,8 +68,8 @@ void main() {
     expect(find.text(l10n.extProductPrice('17,000')), findsOneWidget);
     expect(find.text(l10n.extProductVisitShop('컬리')), findsOneWidget);
     expect(find.text(l10n.extProductReviewCount(1318)), findsOneWidget);
-    // 분석이 없으면 점수를 지어내지 않고 분석 전이라고 알린다.
-    expect(find.text(l10n.extProductAnalysisPendingTitle), findsOneWidget);
+    // 분석 상태를 모르면 점수를 지어내지 않고 상태 확인이 필요하다고 알린다.
+    expect(find.text(l10n.reportStateUnavailable), findsOneWidget);
     expect(find.textContaining('RTI'), findsNothing);
     // 수집되지 않은 별점은 자리를 만들지 않는다.
     expect(find.byIcon(Icons.star_rounded), findsNothing);

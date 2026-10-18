@@ -93,7 +93,7 @@ class MyPageActivityTile extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: item.onTap,
-      borderRadius: BorderRadius.circular(8),
+      borderRadius: AppRadius.small,
       child: Padding(
         padding: const EdgeInsets.symmetric(vertical: AppSpacing.sm),
         child: Row(

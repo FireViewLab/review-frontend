@@ -213,11 +213,11 @@ class HomeHeaderProfileDropdown extends StatelessWidget {
         width: 220,
         decoration: BoxDecoration(
           color: AppColors.surface,
-          borderRadius: BorderRadius.circular(16),
+          borderRadius: AppRadius.large,
           border: Border.all(color: AppColors.border),
           boxShadow: const [
             BoxShadow(
-              color: Color(0x1A0F172A),
+              color: AppColors.shadow,
               blurRadius: 24,
               offset: Offset(0, 8),
             ),

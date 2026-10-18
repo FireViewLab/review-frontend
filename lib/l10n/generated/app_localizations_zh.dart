@@ -9,19 +9,10 @@ class AppLocalizationsZh extends AppLocalizations {
   AppLocalizationsZh([String locale = 'zh']) : super(locale);
 
   @override
-  String get appTitle => 'Re:view';
-
-  @override
   String get navHome => '首页';
 
   @override
   String get navSearch => '搜索';
-
-  @override
-  String get navCart => '购物车';
-
-  @override
-  String get navWishlist => '收藏';
 
   @override
   String get navMyPage => '我的页面';
@@ -33,70 +24,19 @@ class AppLocalizationsZh extends AppLocalizations {
   String get actionSave => '保存';
 
   @override
-  String get actionCancel => '取消';
-
-  @override
   String get actionConfirm => '确认';
 
   @override
   String get actionRetry => '重试';
 
   @override
-  String get actionBack => '返回';
-
-  @override
   String get actionLogin => '登录';
-
-  @override
-  String get actionLogout => '退出登录';
-
-  @override
-  String get actionSignup => '注册';
 
   @override
   String get actionViewAll => '查看全部';
 
   @override
-  String get stateLoading => '加载中…';
-
-  @override
-  String get stateError => '发生错误。';
-
-  @override
-  String get stateEmpty => '暂无内容。';
-
-  @override
-  String get settingsSaved => '设置已保存。';
-
-  @override
-  String get settingsLanguage => '语言';
-
-  @override
   String get settingsNotifications => '通知设置';
-
-  @override
-  String get settingsFilters => '分析筛选设置';
-
-  @override
-  String get langKorean => '한국어';
-
-  @override
-  String get langEnglish => 'English';
-
-  @override
-  String get langJapanese => '日本語';
-
-  @override
-  String get langChinese => '中文(简体)';
-
-  @override
-  String get sideNavOrders => '订单/配送';
-
-  @override
-  String get sideNavRecentlyViewed => '最近浏览的商品';
-
-  @override
-  String get sideNavReviewActivity => '评价活动';
 
   @override
   String get sideNavAccountSettings => '账户设置';
@@ -111,63 +51,6 @@ class AppLocalizationsZh extends AppLocalizations {
   String settingsSubtitleNamed(String nickname) {
     return '管理$nickname的通知、过滤器和账户设置。';
   }
-
-  @override
-  String get settingsNotificationEmail => '接收邮件通知';
-
-  @override
-  String get settingsNotificationEmailDesc => '通过邮件接收商品价格变动和评价更新。';
-
-  @override
-  String get settingsNotificationPush => '接收应用推送通知';
-
-  @override
-  String get settingsNotificationPushDesc => '在浏览器中接收已保存商品的实时通知。';
-
-  @override
-  String get settingsNotificationAdEmail => '接收邮件广告';
-
-  @override
-  String get settingsNotificationAdEmailDesc => '通过邮件接收促销和专属优惠信息。';
-
-  @override
-  String get settingsFilterHighlightLowRti => '优先显示注意商品';
-
-  @override
-  String get settingsFilterHighlightLowRtiDesc => '将评价可信度较低的商品显示在列表顶部。';
-
-  @override
-  String get settingsFilterWishlistAlert => '接收已保存商品通知';
-
-  @override
-  String get settingsFilterWishlistAlertDesc => '当收藏商品的RTI发生变化时发送通知。';
-
-  @override
-  String get settingsFilterCategory => '分类过滤器';
-
-  @override
-  String get settingsFilterCategoryDesc => '优先显示所选分类商品的分析结果。';
-
-  @override
-  String get settingsFilterCategoryAll => '全部分类';
-
-  @override
-  String get settingsFilterMinReview => '最低评价数量';
-
-  @override
-  String get settingsFilterMinReviewDesc => '仅将拥有该数量以上评价的商品纳入分析结果。';
-
-  @override
-  String get settingsFilterMinReviewSuffix => '条';
-
-  @override
-  String get settingsFilterLowRti => '低RTI警告标准';
-
-  @override
-  String get settingsFilterLowRtiDesc => 'RTI分数低于此值的商品将被分类为注意商品。';
-
-  @override
-  String get settingsFilterLowRtiSuffix => '分';
 
   @override
   String get settingsAccountTitle => '账户';
@@ -278,9 +161,6 @@ class AppLocalizationsZh extends AppLocalizations {
   String get wishlistFilterLowestPrice => '最低价格';
 
   @override
-  String get wishlistFilterBrand => '品牌';
-
-  @override
   String get wishlistFilterCategory => '分类';
 
   @override
@@ -300,9 +180,6 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get myPageDefaultName => '用户';
-
-  @override
-  String get myPageMemberBasic => '普通会员（免费）';
 
   @override
   String get myPageSideNavMyPage => '我的页面';
@@ -329,9 +206,6 @@ class AppLocalizationsZh extends AppLocalizations {
   String get myPageRecentActivityEmpty => '暂无最近活动。';
 
   @override
-  String get myPageRecentLabel => '最近';
-
-  @override
   String get myPageReviewTrustSummary => '评价信任概览';
 
   @override
@@ -347,12 +221,6 @@ class AppLocalizationsZh extends AppLocalizations {
   String myPageRiskyCount(int count) {
     return '请查看$count件注意商品。';
   }
-
-  @override
-  String get myPageHighlightLowRti => '优先显示注意商品';
-
-  @override
-  String get myPageWishlistAlertLabel => '接收已保存商品通知';
 
   @override
   String get myPageAccountInfo => '账户信息';
@@ -559,12 +427,6 @@ class AppLocalizationsZh extends AppLocalizations {
   String get adminDashboardTitle => '运营仪表盘';
 
   @override
-  String get adminPlaceholderMessage => '页面正在准备中。';
-
-  @override
-  String get adminTopBarSearchHint => '搜索用户、评论、举报 ID';
-
-  @override
   String get adminTopBarNotifications => '通知';
 
   @override
@@ -580,16 +442,10 @@ class AppLocalizationsZh extends AppLocalizations {
   String get chatNewConversation => '新对话';
 
   @override
-  String get chatClose => '关闭';
-
-  @override
   String get chatInputHint => '请输入问题';
 
   @override
   String get chatSend => '发送';
-
-  @override
-  String get chatProductContext => '基于该商品的评论回答';
 
   @override
   String get chatOtherProductNotice => '此对话保留了与当前页面不同的上下文。';
@@ -1218,9 +1074,6 @@ class AppLocalizationsZh extends AppLocalizations {
   String get chatLauncherLabel => '问问 AI';
 
   @override
-  String get chatLauncherProductLabel => '问问这件商品的评论';
-
-  @override
   String get chatProductCta => '向 AI 询问这件商品';
 
   @override
@@ -1347,9 +1200,6 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get planLoadFailed => '无法加载套餐信息。';
-
-  @override
-  String get planRetry => '重试';
 
   @override
   String get myPageSideNavPlan => '套餐';
@@ -1911,4 +1761,275 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get homeSearchSuggestionsRetry => '重新加载相关搜索词';
+
+  @override
+  String get authAccountHelp => '账户帮助';
+
+  @override
+  String get authAccountHelpBody =>
+      '邮箱账户的密码可通过“忘记密码”重置。Google或Naver账户请使用注册时的社交登录按钮。';
+
+  @override
+  String get authForgotPassword => '忘记密码';
+
+  @override
+  String get authSignup => '注册';
+
+  @override
+  String get authClose => '关闭';
+
+  @override
+  String get authLogin => '登录';
+
+  @override
+  String get authLoginDescription => '登录Re:view账户，加载已保存的商品和信任筛选条件。';
+
+  @override
+  String get authEmail => '邮箱';
+
+  @override
+  String get authEmailHint => '请输入邮箱';
+
+  @override
+  String get authPassword => '密码';
+
+  @override
+  String get authPasswordHint => '请输入密码';
+
+  @override
+  String get authShow => '显示';
+
+  @override
+  String get authHide => '隐藏';
+
+  @override
+  String get authRememberMe => '保持登录状态';
+
+  @override
+  String get authOr => '或';
+
+  @override
+  String get authContinueNaver => '使用Naver账户继续';
+
+  @override
+  String get authContinueGoogle => '使用Google账户继续';
+
+  @override
+  String get authNoAccount => '还没有账户？';
+
+  @override
+  String get authSignupAction => '注册账户';
+
+  @override
+  String get authPrivacyNotice => '个性化信息安全地保存在账户中，已保存的商品和分析记录仅对登录用户显示。';
+
+  @override
+  String get authSignupDescription => '创建Re:view账户，开始保存商品并设置信任筛选条件和通知。';
+
+  @override
+  String get authName => '姓名';
+
+  @override
+  String get authNameHint => '请输入姓名';
+
+  @override
+  String get authPasswordGuidance => '请设置至少8个字符，包含英文字母、数字和特殊字符。';
+
+  @override
+  String get authConfirmPassword => '确认密码';
+
+  @override
+  String get authConfirmPasswordHint => '请再次输入密码';
+
+  @override
+  String get authSignupOnboarding => '注册并开始初始设置';
+
+  @override
+  String get authSignupNaver => '使用Naver账户注册';
+
+  @override
+  String get authSignupGoogle => '使用Google账户注册';
+
+  @override
+  String get authHasAccount => '已有账户？';
+
+  @override
+  String get authLoginAction => '登录';
+
+  @override
+  String get authTermsConsent => '我同意服务条款和隐私政策。（必选）';
+
+  @override
+  String get authMarketingConsent => '接收已保存商品和信任度变化通知。（可选）';
+
+  @override
+  String get authOnboardingNotice => '下一步是初始设置。注册后可设置感兴趣的类别和默认RTI筛选条件。';
+
+  @override
+  String get authResetTitle => '重置密码';
+
+  @override
+  String get authResetDescription => '验证注册邮箱并设置新密码。';
+
+  @override
+  String get authRememberAccount => '想起账户了？';
+
+  @override
+  String get authBackToLogin => '返回登录';
+
+  @override
+  String get authRegisteredEmail => '注册邮箱';
+
+  @override
+  String get authSendVerification => '发送验证邮件';
+
+  @override
+  String get authEmailSent => '邮件已发送';
+
+  @override
+  String get authEmailSentGuide => '点击邮件中的链接或确认收到的令牌后，继续下一步。';
+
+  @override
+  String get authNext => '下一步';
+
+  @override
+  String get authResendEmail => '重新发送邮件';
+
+  @override
+  String get authNewPassword => '新密码';
+
+  @override
+  String get authNewPasswordHint => '请输入新密码';
+
+  @override
+  String get authNewPasswordGuide => '请设置与之前不同的密码，并组合使用英文字母、数字和特殊字符。';
+
+  @override
+  String get authConfirmNewPassword => '确认新密码';
+
+  @override
+  String get authConfirmNewPasswordHint => '请再次输入新密码';
+
+  @override
+  String get authCompleteReset => '完成密码修改';
+
+  @override
+  String get authResendVerification => '重新发送验证邮件';
+
+  @override
+  String get authMinLength => '至少8个字符';
+
+  @override
+  String get authLettersNumbers => '包含英文字母和数字';
+
+  @override
+  String get authSymbolsRecommended => '建议包含特殊字符';
+
+  @override
+  String get authNoEmail => '没有收到邮件？';
+
+  @override
+  String get authNoEmailGuide => '请检查垃圾邮件文件夹，或再次确认注册邮箱是否正确。';
+
+  @override
+  String get authVerifyEmail => '验证邮箱';
+
+  @override
+  String get authVerificationCode => '验证码';
+
+  @override
+  String get authResetSuccess => '密码已修改';
+
+  @override
+  String get authResetSuccessGuide => '请使用新密码登录。';
+
+  @override
+  String get authGoToLogin => '前往登录';
+
+  @override
+  String get searchFilterTitle => '筛选';
+
+  @override
+  String get searchFilterReset => '重置';
+
+  @override
+  String get searchFilterCategory => '类别';
+
+  @override
+  String get searchFilterPriceRange => '价格范围';
+
+  @override
+  String get searchFilterWon => '韩元';
+
+  @override
+  String get searchFilterSeller => '商家';
+
+  @override
+  String get searchFilterSellerHint => '请选择商家';
+
+  @override
+  String get searchFilterRtiScore => 'RTI信任评分';
+
+  @override
+  String get searchFilterAllRti => '全部（含未分析）';
+
+  @override
+  String get searchFilterZeroPoints => '0分';
+
+  @override
+  String get searchFilterHundredPoints => '100分';
+
+  @override
+  String get searchFilterEightyMinimum => '80分以上';
+
+  @override
+  String get searchFilterNinetyMinimum => '90分以上';
+
+  @override
+  String get searchFilterNinetyFiveMinimum => '95分以上';
+
+  @override
+  String get searchFilterInfoStatus => '信息状态';
+
+  @override
+  String get searchFilterReviewConditions => '评价条件';
+
+  @override
+  String get searchFilterSelectSeller => '选择商家';
+
+  @override
+  String get searchFilterAllSellers => '全部商家';
+
+  @override
+  String get searchFilterUnanalyzedOnly => '仅未分析';
+
+  @override
+  String get searchFilterMissingPriceOnly => '仅无价格信息';
+
+  @override
+  String get searchFilterMinimumReviews => '至少50条评价';
+
+  @override
+  String get searchFilterUnderTenThousand => '1万韩元以下';
+
+  @override
+  String get searchFilterTenToThirtyThousand => '10至30万韩元';
+
+  @override
+  String get searchFilterAboveThreeHundredThousand => '30万韩元以上';
+
+  @override
+  String searchFilterPriceAmount(String amount) {
+    return '$amount韩元';
+  }
+
+  @override
+  String searchFilterMinimumScore(int score) {
+    return '$score分以上';
+  }
+
+  @override
+  String searchFilterShowResults(int count) {
+    return '查看$count个结果';
+  }
 }

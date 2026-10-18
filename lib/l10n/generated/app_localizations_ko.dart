@@ -9,19 +9,10 @@ class AppLocalizationsKo extends AppLocalizations {
   AppLocalizationsKo([String locale = 'ko']) : super(locale);
 
   @override
-  String get appTitle => 'Re:view';
-
-  @override
   String get navHome => '홈';
 
   @override
   String get navSearch => '검색';
-
-  @override
-  String get navCart => '장바구니';
-
-  @override
-  String get navWishlist => '저장한 상품';
 
   @override
   String get navMyPage => '마이페이지';
@@ -33,70 +24,19 @@ class AppLocalizationsKo extends AppLocalizations {
   String get actionSave => '저장';
 
   @override
-  String get actionCancel => '취소';
-
-  @override
   String get actionConfirm => '확인';
 
   @override
   String get actionRetry => '다시 시도';
 
   @override
-  String get actionBack => '뒤로';
-
-  @override
   String get actionLogin => '로그인';
-
-  @override
-  String get actionLogout => '로그아웃';
-
-  @override
-  String get actionSignup => '회원가입';
 
   @override
   String get actionViewAll => '전체 보기';
 
   @override
-  String get stateLoading => '불러오는 중입니다.';
-
-  @override
-  String get stateError => '오류가 발생했습니다.';
-
-  @override
-  String get stateEmpty => '표시할 항목이 없습니다.';
-
-  @override
-  String get settingsSaved => '설정이 저장되었습니다.';
-
-  @override
-  String get settingsLanguage => '언어';
-
-  @override
   String get settingsNotifications => '알림 설정';
-
-  @override
-  String get settingsFilters => '분석 필터 설정';
-
-  @override
-  String get langKorean => '한국어';
-
-  @override
-  String get langEnglish => 'English';
-
-  @override
-  String get langJapanese => '日本語';
-
-  @override
-  String get langChinese => '中文(简体)';
-
-  @override
-  String get sideNavOrders => '주문/배송';
-
-  @override
-  String get sideNavRecentlyViewed => '최근 본 상품';
-
-  @override
-  String get sideNavReviewActivity => '리뷰 활동';
 
   @override
   String get sideNavAccountSettings => '계정 설정';
@@ -111,63 +51,6 @@ class AppLocalizationsKo extends AppLocalizations {
   String settingsSubtitleNamed(String nickname) {
     return '$nickname님의 알림, 필터, 계정 설정을 관리해요.';
   }
-
-  @override
-  String get settingsNotificationEmail => '이메일 알림 받기';
-
-  @override
-  String get settingsNotificationEmailDesc => '상품 가격 변동, 리뷰 업데이트를 이메일로 받아요.';
-
-  @override
-  String get settingsNotificationPush => '앱 푸시 알림 받기';
-
-  @override
-  String get settingsNotificationPushDesc => '저장한 상품의 실시간 알림을 브라우저에서 받아요.';
-
-  @override
-  String get settingsNotificationAdEmail => '이메일 광고 수신';
-
-  @override
-  String get settingsNotificationAdEmailDesc => '프로모션 및 맞춤 혜택 정보를 이메일로 받아요.';
-
-  @override
-  String get settingsFilterHighlightLowRti => '주의 상품 먼저 보기';
-
-  @override
-  String get settingsFilterHighlightLowRtiDesc => '리뷰 신뢰도가 낮은 상품을 목록 상단에 표시해요.';
-
-  @override
-  String get settingsFilterWishlistAlert => '저장 상품 알림 받기';
-
-  @override
-  String get settingsFilterWishlistAlertDesc => '관심 상품의 RTI 변화가 있을 때 알림을 드려요.';
-
-  @override
-  String get settingsFilterCategory => '카테고리 필터';
-
-  @override
-  String get settingsFilterCategoryDesc => '선택한 카테고리 상품을 기준으로 분석 결과를 우선 표시해요.';
-
-  @override
-  String get settingsFilterCategoryAll => '전체 카테고리';
-
-  @override
-  String get settingsFilterMinReview => '리뷰 최소 개수';
-
-  @override
-  String get settingsFilterMinReviewDesc => '이 개수 이상 리뷰가 있는 상품만 분석 결과에 반영해요.';
-
-  @override
-  String get settingsFilterMinReviewSuffix => '개';
-
-  @override
-  String get settingsFilterLowRti => '낮은 RTI 경고 기준';
-
-  @override
-  String get settingsFilterLowRtiDesc => 'RTI 점수가 이 값 이하면 주의 상품으로 분류해요.';
-
-  @override
-  String get settingsFilterLowRtiSuffix => '점';
 
   @override
   String get settingsAccountTitle => '계정';
@@ -278,9 +161,6 @@ class AppLocalizationsKo extends AppLocalizations {
   String get wishlistFilterLowestPrice => '최저 가격';
 
   @override
-  String get wishlistFilterBrand => '브랜드';
-
-  @override
   String get wishlistFilterCategory => '카테고리';
 
   @override
@@ -300,9 +180,6 @@ class AppLocalizationsKo extends AppLocalizations {
 
   @override
   String get myPageDefaultName => '사용자';
-
-  @override
-  String get myPageMemberBasic => '일반 회원 (무료)';
 
   @override
   String get myPageSideNavMyPage => '마이페이지';
@@ -329,9 +206,6 @@ class AppLocalizationsKo extends AppLocalizations {
   String get myPageRecentActivityEmpty => '최근 활동이 없습니다.';
 
   @override
-  String get myPageRecentLabel => '최근';
-
-  @override
   String get myPageReviewTrustSummary => '리뷰 신뢰 요약';
 
   @override
@@ -347,12 +221,6 @@ class AppLocalizationsKo extends AppLocalizations {
   String myPageRiskyCount(int count) {
     return '주의 상품 $count개를 확인해보세요.';
   }
-
-  @override
-  String get myPageHighlightLowRti => '주의 상품 먼저 보기';
-
-  @override
-  String get myPageWishlistAlertLabel => '저장 상품 알림 받기';
 
   @override
   String get myPageAccountInfo => '계정 정보';
@@ -559,12 +427,6 @@ class AppLocalizationsKo extends AppLocalizations {
   String get adminDashboardTitle => '운영 대시보드';
 
   @override
-  String get adminPlaceholderMessage => '준비 중인 화면입니다.';
-
-  @override
-  String get adminTopBarSearchHint => '사용자, 리뷰, 신고 ID로 검색';
-
-  @override
   String get adminTopBarNotifications => '알림';
 
   @override
@@ -580,16 +442,10 @@ class AppLocalizationsKo extends AppLocalizations {
   String get chatNewConversation => '새 대화';
 
   @override
-  String get chatClose => '닫기';
-
-  @override
   String get chatInputHint => '질문을 입력하세요';
 
   @override
   String get chatSend => '보내기';
-
-  @override
-  String get chatProductContext => '이 상품의 리뷰를 바탕으로 답해요';
 
   @override
   String get chatOtherProductNotice => '현재 화면과 다른 대화 문맥을 유지하고 있어요.';
@@ -1220,9 +1076,6 @@ class AppLocalizationsKo extends AppLocalizations {
   String get chatLauncherLabel => 'AI에게 물어보기';
 
   @override
-  String get chatLauncherProductLabel => '이 상품 리뷰 물어보기';
-
-  @override
   String get chatProductCta => 'AI에게 이 상품 물어보기';
 
   @override
@@ -1349,9 +1202,6 @@ class AppLocalizationsKo extends AppLocalizations {
 
   @override
   String get planLoadFailed => '요금제 정보를 불러오지 못했어요.';
-
-  @override
-  String get planRetry => '다시 시도';
 
   @override
   String get myPageSideNavPlan => '요금제';
@@ -1926,4 +1776,279 @@ class AppLocalizationsKo extends AppLocalizations {
 
   @override
   String get homeSearchSuggestionsRetry => '연관 검색어 다시 불러오기';
+
+  @override
+  String get authAccountHelp => '계정 도움말';
+
+  @override
+  String get authAccountHelpBody =>
+      '이메일 계정의 비밀번호는 비밀번호 찾기에서 재설정할 수 있습니다. 구글·네이버 계정은 가입할 때 사용한 소셜 로그인 버튼을 이용해 주세요.';
+
+  @override
+  String get authForgotPassword => '비밀번호 찾기';
+
+  @override
+  String get authSignup => '회원가입';
+
+  @override
+  String get authClose => '닫기';
+
+  @override
+  String get authLogin => '로그인';
+
+  @override
+  String get authLoginDescription => 'Re:view 계정으로 로그인하고 저장한 상품과 신뢰 필터를 불러오세요.';
+
+  @override
+  String get authEmail => '이메일';
+
+  @override
+  String get authEmailHint => '이메일을 입력하세요';
+
+  @override
+  String get authPassword => '비밀번호';
+
+  @override
+  String get authPasswordHint => '비밀번호를 입력하세요';
+
+  @override
+  String get authShow => '보기';
+
+  @override
+  String get authHide => '숨김';
+
+  @override
+  String get authRememberMe => '로그인 상태 유지';
+
+  @override
+  String get authOr => '또는';
+
+  @override
+  String get authContinueNaver => '네이버 계정으로 계속하기';
+
+  @override
+  String get authContinueGoogle => 'Google 계정으로 계속하기';
+
+  @override
+  String get authNoAccount => '아직 계정이 없나요?';
+
+  @override
+  String get authSignupAction => '회원가입하기';
+
+  @override
+  String get authPrivacyNotice =>
+      '개인화 정보는 계정에 안전하게 저장되며, 저장 상품과 분석 기록은 로그인한 사용자에게만 표시됩니다.';
+
+  @override
+  String get authSignupDescription =>
+      'Re:view 계정을 만들고 저장 상품, 신뢰 필터, 알림 설정을 시작하세요.';
+
+  @override
+  String get authName => '이름';
+
+  @override
+  String get authNameHint => '이름을 입력하세요';
+
+  @override
+  String get authPasswordGuidance => '영문, 숫자, 특수문자를 포함해 8자 이상으로 설정해주세요.';
+
+  @override
+  String get authConfirmPassword => '비밀번호 확인';
+
+  @override
+  String get authConfirmPasswordHint => '비밀번호를 한 번 더 입력하세요';
+
+  @override
+  String get authSignupOnboarding => '회원가입하고 온보딩 시작';
+
+  @override
+  String get authSignupNaver => '네이버 계정으로 가입하기';
+
+  @override
+  String get authSignupGoogle => 'Google 계정으로 가입하기';
+
+  @override
+  String get authHasAccount => '이미 계정이 있나요?';
+
+  @override
+  String get authLoginAction => '로그인하기';
+
+  @override
+  String get authTermsConsent => '이용약관 및 개인정보처리방침에 동의합니다. (필수)';
+
+  @override
+  String get authMarketingConsent => '저장 상품 알림과 신뢰도 변화 알림을 받겠습니다. (선택)';
+
+  @override
+  String get authOnboardingNotice =>
+      '다음 단계는 온보딩입니다. 가입 후 관심 카테고리와 기본 RTI 필터를 설정합니다.';
+
+  @override
+  String get authResetTitle => '비밀번호 재설정';
+
+  @override
+  String get authResetDescription => '가입한 이메일을 확인하고 새 비밀번호를 등록하세요.';
+
+  @override
+  String get authRememberAccount => '계정이 기억났나요?';
+
+  @override
+  String get authBackToLogin => '로그인으로 돌아가기';
+
+  @override
+  String get authRegisteredEmail => '가입 이메일';
+
+  @override
+  String get authSendVerification => '인증 이메일 발송';
+
+  @override
+  String get authEmailSent => '이메일을 발송했습니다';
+
+  @override
+  String get authEmailSentGuide => '이메일의 링크를 클릭하거나, 받은 토큰을 확인한 후 다음 단계로 진행하세요.';
+
+  @override
+  String get authNext => '다음';
+
+  @override
+  String get authResendEmail => '이메일 다시 받기';
+
+  @override
+  String get authNewPassword => '새 비밀번호';
+
+  @override
+  String get authNewPasswordHint => '새 비밀번호를 입력하세요';
+
+  @override
+  String get authNewPasswordGuide =>
+      '이전에 사용한 비밀번호와 다르게 설정하고, 영문·숫자·특수문자를 조합해 주세요.';
+
+  @override
+  String get authConfirmNewPassword => '새 비밀번호 확인';
+
+  @override
+  String get authConfirmNewPasswordHint => '새 비밀번호를 한 번 더 입력하세요';
+
+  @override
+  String get authCompleteReset => '비밀번호 변경 완료';
+
+  @override
+  String get authResendVerification => '인증 이메일 다시 받기';
+
+  @override
+  String get authMinLength => '8자 이상';
+
+  @override
+  String get authLettersNumbers => '영문과 숫자 포함';
+
+  @override
+  String get authSymbolsRecommended => '특수문자 포함 권장';
+
+  @override
+  String get authNoEmail => '이메일을 받지 못했나요?';
+
+  @override
+  String get authNoEmailGuide => '스팸함을 확인하거나, 가입한 이메일이 맞는지 다시 확인해 주세요.';
+
+  @override
+  String get authVerifyEmail => '이메일 확인';
+
+  @override
+  String get authVerificationCode => '인증 코드';
+
+  @override
+  String get authResetSuccess => '비밀번호가 변경되었습니다';
+
+  @override
+  String get authResetSuccessGuide => '새 비밀번호로 로그인해 주세요.';
+
+  @override
+  String get authGoToLogin => '로그인하러 가기';
+
+  @override
+  String get searchFilterTitle => '필터';
+
+  @override
+  String get searchFilterReset => '초기화';
+
+  @override
+  String get searchFilterCategory => '카테고리';
+
+  @override
+  String get searchFilterPriceRange => '가격대';
+
+  @override
+  String get searchFilterWon => '원';
+
+  @override
+  String get searchFilterSeller => '판매처';
+
+  @override
+  String get searchFilterSellerHint => '판매처를 선택하세요';
+
+  @override
+  String get searchFilterRtiScore => 'RTI 신뢰 점수';
+
+  @override
+  String get searchFilterAllRti => '전체 (분석 전 포함)';
+
+  @override
+  String get searchFilterZeroPoints => '0점';
+
+  @override
+  String get searchFilterHundredPoints => '100점';
+
+  @override
+  String get searchFilterEightyMinimum => '80점 이상';
+
+  @override
+  String get searchFilterNinetyMinimum => '90점 이상';
+
+  @override
+  String get searchFilterNinetyFiveMinimum => '95점 이상';
+
+  @override
+  String get searchFilterInfoStatus => '정보 상태';
+
+  @override
+  String get searchFilterReviewConditions => '리뷰 조건';
+
+  @override
+  String get searchFilterSelectSeller => '판매처 선택';
+
+  @override
+  String get searchFilterAllSellers => '전체 판매처';
+
+  @override
+  String get searchFilterUnanalyzedOnly => '분석 전만';
+
+  @override
+  String get searchFilterMissingPriceOnly => '가격 정보 없음만';
+
+  @override
+  String get searchFilterMinimumReviews => '리뷰 50개 이상';
+
+  @override
+  String get searchFilterUnderTenThousand => '1만원 이하';
+
+  @override
+  String get searchFilterTenToThirtyThousand => '10~30만원';
+
+  @override
+  String get searchFilterAboveThreeHundredThousand => '30만원 이상';
+
+  @override
+  String searchFilterPriceAmount(String amount) {
+    return '$amount원';
+  }
+
+  @override
+  String searchFilterMinimumScore(int score) {
+    return '$score점 이상';
+  }
+
+  @override
+  String searchFilterShowResults(int count) {
+    return '$count개 결과 보기';
+  }
 }

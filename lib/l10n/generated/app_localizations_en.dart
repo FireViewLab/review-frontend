@@ -9,19 +9,10 @@ class AppLocalizationsEn extends AppLocalizations {
   AppLocalizationsEn([String locale = 'en']) : super(locale);
 
   @override
-  String get appTitle => 'Re:view';
-
-  @override
   String get navHome => 'Home';
 
   @override
   String get navSearch => 'Search';
-
-  @override
-  String get navCart => 'Cart';
-
-  @override
-  String get navWishlist => 'Saved';
 
   @override
   String get navMyPage => 'My Page';
@@ -33,70 +24,19 @@ class AppLocalizationsEn extends AppLocalizations {
   String get actionSave => 'Save';
 
   @override
-  String get actionCancel => 'Cancel';
-
-  @override
   String get actionConfirm => 'OK';
 
   @override
   String get actionRetry => 'Retry';
 
   @override
-  String get actionBack => 'Back';
-
-  @override
   String get actionLogin => 'Log in';
-
-  @override
-  String get actionLogout => 'Log out';
-
-  @override
-  String get actionSignup => 'Sign up';
 
   @override
   String get actionViewAll => 'View all';
 
   @override
-  String get stateLoading => 'Loading…';
-
-  @override
-  String get stateError => 'Something went wrong.';
-
-  @override
-  String get stateEmpty => 'Nothing to show.';
-
-  @override
-  String get settingsSaved => 'Settings saved.';
-
-  @override
-  String get settingsLanguage => 'Language';
-
-  @override
   String get settingsNotifications => 'Notifications';
-
-  @override
-  String get settingsFilters => 'Analysis Filters';
-
-  @override
-  String get langKorean => '한국어';
-
-  @override
-  String get langEnglish => 'English';
-
-  @override
-  String get langJapanese => '日本語';
-
-  @override
-  String get langChinese => '中文(简体)';
-
-  @override
-  String get sideNavOrders => 'Orders';
-
-  @override
-  String get sideNavRecentlyViewed => 'Recently Viewed';
-
-  @override
-  String get sideNavReviewActivity => 'Review Activity';
 
   @override
   String get sideNavAccountSettings => 'Account Settings';
@@ -112,71 +52,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String settingsSubtitleNamed(String nickname) {
     return 'Manage $nickname\'s notifications, filters, and account.';
   }
-
-  @override
-  String get settingsNotificationEmail => 'Email Notifications';
-
-  @override
-  String get settingsNotificationEmailDesc =>
-      'Receive price drops and review updates via email.';
-
-  @override
-  String get settingsNotificationPush => 'Push Notifications';
-
-  @override
-  String get settingsNotificationPushDesc =>
-      'Get real-time alerts for saved products in your browser.';
-
-  @override
-  String get settingsNotificationAdEmail => 'Promotional Emails';
-
-  @override
-  String get settingsNotificationAdEmailDesc =>
-      'Receive promotions and personalized deals via email.';
-
-  @override
-  String get settingsFilterHighlightLowRti => 'Show Risky Products First';
-
-  @override
-  String get settingsFilterHighlightLowRtiDesc =>
-      'Show products with low review trust scores at the top of the list.';
-
-  @override
-  String get settingsFilterWishlistAlert => 'Wishlist RTI Alerts';
-
-  @override
-  String get settingsFilterWishlistAlertDesc =>
-      'Get notified when your saved products\' RTI changes.';
-
-  @override
-  String get settingsFilterCategory => 'Category Filter';
-
-  @override
-  String get settingsFilterCategoryDesc =>
-      'Prioritize analysis results based on the selected category.';
-
-  @override
-  String get settingsFilterCategoryAll => 'All Categories';
-
-  @override
-  String get settingsFilterMinReview => 'Minimum Review Count';
-
-  @override
-  String get settingsFilterMinReviewDesc =>
-      'Only include products with at least this many reviews in analysis.';
-
-  @override
-  String get settingsFilterMinReviewSuffix => '';
-
-  @override
-  String get settingsFilterLowRti => 'Low RTI Warning Threshold';
-
-  @override
-  String get settingsFilterLowRtiDesc =>
-      'Products with RTI scores at or below this value are flagged.';
-
-  @override
-  String get settingsFilterLowRtiSuffix => '';
 
   @override
   String get settingsAccountTitle => 'Account';
@@ -290,9 +165,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get wishlistFilterLowestPrice => 'Lowest Price';
 
   @override
-  String get wishlistFilterBrand => 'Brand';
-
-  @override
   String get wishlistFilterCategory => 'Category';
 
   @override
@@ -312,9 +184,6 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get myPageDefaultName => 'User';
-
-  @override
-  String get myPageMemberBasic => 'Basic (Free)';
 
   @override
   String get myPageSideNavMyPage => 'My Page';
@@ -341,9 +210,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get myPageRecentActivityEmpty => 'No recent activity.';
 
   @override
-  String get myPageRecentLabel => 'Recent';
-
-  @override
   String get myPageReviewTrustSummary => 'Review Trust Summary';
 
   @override
@@ -360,12 +226,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String myPageRiskyCount(int count) {
     return 'Check $count risky products.';
   }
-
-  @override
-  String get myPageHighlightLowRti => 'Show Risky Products First';
-
-  @override
-  String get myPageWishlistAlertLabel => 'Wishlist RTI Alerts';
 
   @override
   String get myPageAccountInfo => 'Account Info';
@@ -579,12 +439,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get adminDashboardTitle => 'Operations Dashboard';
 
   @override
-  String get adminPlaceholderMessage => 'This screen is coming soon.';
-
-  @override
-  String get adminTopBarSearchHint => 'Search users, reviews, report IDs';
-
-  @override
   String get adminTopBarNotifications => 'Notifications';
 
   @override
@@ -600,17 +454,10 @@ class AppLocalizationsEn extends AppLocalizations {
   String get chatNewConversation => 'New chat';
 
   @override
-  String get chatClose => 'Close';
-
-  @override
   String get chatInputHint => 'Type your question';
 
   @override
   String get chatSend => 'Send';
-
-  @override
-  String get chatProductContext =>
-      'Answers are based on this product\'s reviews';
 
   @override
   String get chatOtherProductNotice =>
@@ -1258,9 +1105,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get chatLauncherLabel => 'Ask AI';
 
   @override
-  String get chatLauncherProductLabel => 'Ask about this product';
-
-  @override
   String get chatProductCta => 'Ask AI about this product';
 
   @override
@@ -1390,9 +1234,6 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get planLoadFailed => 'Could not load your plan.';
-
-  @override
-  String get planRetry => 'Retry';
 
   @override
   String get myPageSideNavPlan => 'Plans';
@@ -1994,4 +1835,286 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get homeSearchSuggestionsRetry => 'Reload related searches';
+
+  @override
+  String get authAccountHelp => 'Account help';
+
+  @override
+  String get authAccountHelpBody =>
+      'Reset your email account password using Forgot password. For Google or Naver accounts, use the social login button you signed up with.';
+
+  @override
+  String get authForgotPassword => 'Forgot password';
+
+  @override
+  String get authSignup => 'Sign up';
+
+  @override
+  String get authClose => 'Close';
+
+  @override
+  String get authLogin => 'Log in';
+
+  @override
+  String get authLoginDescription =>
+      'Log in to your Re:view account to access saved products and trust filters.';
+
+  @override
+  String get authEmail => 'Email';
+
+  @override
+  String get authEmailHint => 'Enter your email';
+
+  @override
+  String get authPassword => 'Password';
+
+  @override
+  String get authPasswordHint => 'Enter your password';
+
+  @override
+  String get authShow => 'Show';
+
+  @override
+  String get authHide => 'Hide';
+
+  @override
+  String get authRememberMe => 'Keep me logged in';
+
+  @override
+  String get authOr => 'or';
+
+  @override
+  String get authContinueNaver => 'Continue with Naver';
+
+  @override
+  String get authContinueGoogle => 'Continue with Google';
+
+  @override
+  String get authNoAccount => 'Don’t have an account yet?';
+
+  @override
+  String get authSignupAction => 'Sign up';
+
+  @override
+  String get authPrivacyNotice =>
+      'Your preferences are securely stored in your account. Saved products and analysis history are only visible to you when logged in.';
+
+  @override
+  String get authSignupDescription =>
+      'Create a Re:view account to start saving products and setting up trust filters and notifications.';
+
+  @override
+  String get authName => 'Name';
+
+  @override
+  String get authNameHint => 'Enter your name';
+
+  @override
+  String get authPasswordGuidance =>
+      'Use at least 8 characters, including letters, numbers, and symbols.';
+
+  @override
+  String get authConfirmPassword => 'Confirm password';
+
+  @override
+  String get authConfirmPasswordHint => 'Enter your password again';
+
+  @override
+  String get authSignupOnboarding => 'Sign up and get started';
+
+  @override
+  String get authSignupNaver => 'Sign up with Naver';
+
+  @override
+  String get authSignupGoogle => 'Sign up with Google';
+
+  @override
+  String get authHasAccount => 'Already have an account?';
+
+  @override
+  String get authLoginAction => 'Log in';
+
+  @override
+  String get authTermsConsent =>
+      'I agree to the Terms of Service and Privacy Policy. (Required)';
+
+  @override
+  String get authMarketingConsent =>
+      'Send me alerts about saved products and trust score changes. (Optional)';
+
+  @override
+  String get authOnboardingNotice =>
+      'Next, you’ll set up your account. After signing up, choose your interests and default RTI filters.';
+
+  @override
+  String get authResetTitle => 'Reset password';
+
+  @override
+  String get authResetDescription =>
+      'Verify your registered email and set a new password.';
+
+  @override
+  String get authRememberAccount => 'Remember your account?';
+
+  @override
+  String get authBackToLogin => 'Back to login';
+
+  @override
+  String get authRegisteredEmail => 'Registered email';
+
+  @override
+  String get authSendVerification => 'Send verification email';
+
+  @override
+  String get authEmailSent => 'Email sent';
+
+  @override
+  String get authEmailSentGuide =>
+      'Click the link in the email or check the token you received, then continue to the next step.';
+
+  @override
+  String get authNext => 'Next';
+
+  @override
+  String get authResendEmail => 'Resend email';
+
+  @override
+  String get authNewPassword => 'New password';
+
+  @override
+  String get authNewPasswordHint => 'Enter a new password';
+
+  @override
+  String get authNewPasswordGuide =>
+      'Choose a different password from your previous one, combining letters, numbers, and symbols.';
+
+  @override
+  String get authConfirmNewPassword => 'Confirm new password';
+
+  @override
+  String get authConfirmNewPasswordHint => 'Enter your new password again';
+
+  @override
+  String get authCompleteReset => 'Change password';
+
+  @override
+  String get authResendVerification => 'Resend verification email';
+
+  @override
+  String get authMinLength => 'At least 8 characters';
+
+  @override
+  String get authLettersNumbers => 'Includes letters and numbers';
+
+  @override
+  String get authSymbolsRecommended => 'Symbols recommended';
+
+  @override
+  String get authNoEmail => 'Didn’t receive the email?';
+
+  @override
+  String get authNoEmailGuide =>
+      'Check your spam folder or make sure you entered your registered email.';
+
+  @override
+  String get authVerifyEmail => 'Verify email';
+
+  @override
+  String get authVerificationCode => 'Verification code';
+
+  @override
+  String get authResetSuccess => 'Your password has been changed';
+
+  @override
+  String get authResetSuccessGuide => 'Please log in with your new password.';
+
+  @override
+  String get authGoToLogin => 'Go to login';
+
+  @override
+  String get searchFilterTitle => 'Filters';
+
+  @override
+  String get searchFilterReset => 'Reset';
+
+  @override
+  String get searchFilterCategory => 'Category';
+
+  @override
+  String get searchFilterPriceRange => 'Price range';
+
+  @override
+  String get searchFilterWon => 'KRW';
+
+  @override
+  String get searchFilterSeller => 'Seller';
+
+  @override
+  String get searchFilterSellerHint => 'Select a seller';
+
+  @override
+  String get searchFilterRtiScore => 'RTI trust score';
+
+  @override
+  String get searchFilterAllRti => 'All (including unanalyzed)';
+
+  @override
+  String get searchFilterZeroPoints => '0 points';
+
+  @override
+  String get searchFilterHundredPoints => '100 points';
+
+  @override
+  String get searchFilterEightyMinimum => '80 points or more';
+
+  @override
+  String get searchFilterNinetyMinimum => '90 points or more';
+
+  @override
+  String get searchFilterNinetyFiveMinimum => '95 points or more';
+
+  @override
+  String get searchFilterInfoStatus => 'Information status';
+
+  @override
+  String get searchFilterReviewConditions => 'Review criteria';
+
+  @override
+  String get searchFilterSelectSeller => 'Select seller';
+
+  @override
+  String get searchFilterAllSellers => 'All sellers';
+
+  @override
+  String get searchFilterUnanalyzedOnly => 'Unanalyzed only';
+
+  @override
+  String get searchFilterMissingPriceOnly => 'Missing price only';
+
+  @override
+  String get searchFilterMinimumReviews => 'At least 50 reviews';
+
+  @override
+  String get searchFilterUnderTenThousand => '₩10,000 or less';
+
+  @override
+  String get searchFilterTenToThirtyThousand => '₩100,000–300,000';
+
+  @override
+  String get searchFilterAboveThreeHundredThousand => '₩300,000 or more';
+
+  @override
+  String searchFilterPriceAmount(String amount) {
+    return '$amount KRW';
+  }
+
+  @override
+  String searchFilterMinimumScore(int score) {
+    return '$score points or more';
+  }
+
+  @override
+  String searchFilterShowResults(int count) {
+    return 'Show $count results';
+  }
 }

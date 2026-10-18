@@ -163,7 +163,7 @@ class _FilterChip extends StatelessWidget {
                     style: Theme.of(context).textTheme.labelSmall?.copyWith(
                       color: selected ? AppColors.error : AppColors.onPrimary,
                       fontWeight: FontWeight.w900,
-                      fontSize: 10,
+                      fontSize: 11,
                     ),
                   ),
                 ),
@@ -188,7 +188,7 @@ class _SortDropdown extends StatelessWidget {
     return DecoratedBox(
       decoration: BoxDecoration(
         color: AppColors.surface,
-        borderRadius: BorderRadius.circular(8),
+        borderRadius: AppRadius.small,
         border: Border.all(color: AppColors.borderStrong),
       ),
       child: Padding(

@@ -34,7 +34,9 @@ class PopularCategorySection extends StatelessWidget {
         ),
         const SizedBox(height: AppSpacing.md),
         if (items.isEmpty)
-          _PopularCategoryEmptyState(message: AppLocalizations.of(context).homeCategoryEmpty)
+          _PopularCategoryEmptyState(
+            message: AppLocalizations.of(context).homeCategoryEmpty,
+          )
         else
           GridView.builder(
             shrinkWrap: true,
@@ -68,7 +70,7 @@ class PopularCategorySection extends StatelessWidget {
                             alignment: Alignment.center,
                             decoration: BoxDecoration(
                               color: const Color(0xFFF1F5F9),
-                              borderRadius: BorderRadius.circular(16),
+                              borderRadius: AppRadius.large,
                             ),
                             child: Icon(
                               item.icon,

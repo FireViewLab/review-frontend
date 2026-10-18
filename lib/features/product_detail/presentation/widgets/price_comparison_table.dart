@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:re_view_front/app/theme/app_colors.dart';
 import 'package:re_view_front/app/theme/app_spacing.dart';
 import 'package:re_view_front/features/product_detail/domain/entities/product_detail.dart';
-import 'package:re_view_front/features/search/presentation/utils/search_formatters.dart';
+import 'package:re_view_front/shared/presentation/product_formatters.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class PriceComparisonTable extends StatefulWidget {
@@ -261,7 +261,7 @@ class _LowestBadge extends StatelessWidget {
           style: Theme.of(context).textTheme.labelSmall?.copyWith(
             color: AppColors.primary,
             fontWeight: FontWeight.w900,
-            fontSize: 10,
+            fontSize: 11,
           ),
         ),
       ),
