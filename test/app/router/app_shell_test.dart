@@ -52,6 +52,8 @@ void main() {
     addTearDown(tester.view.resetPhysicalSize);
     addTearDown(tester.view.resetDevicePixelRatio);
     final container = ProviderContainer(
+      // 실패한 API를 Riverpod가 자동 재시도하면 테스트 종료 뒤 타이머가 남는다.
+      retry: (_, _) => null,
       overrides: [
         apiClientProvider.overrideWith((ref) {
           final client = ApiClient(

@@ -64,6 +64,11 @@ void main() {
   testWidgets('renders mock search results for a matching query', (
     tester,
   ) async {
+    // 결과 목록은 화면에 보이는 만큼만 그리므로 데스크톱 크기로 띄운다.
+    tester.view.physicalSize = const Size(1600, 2400);
+    tester.view.devicePixelRatio = 1;
+    addTearDown(tester.view.resetPhysicalSize);
+    addTearDown(tester.view.resetDevicePixelRatio);
     await tester.pumpWidget(buildSubject('이어폰'));
     await tester.pumpAndSettle();
 
@@ -169,6 +174,11 @@ void main() {
   testWidgets('changes visible page size from the result toolbar dropdown', (
     tester,
   ) async {
+    // 결과 목록은 화면에 보이는 만큼만 그리므로 데스크톱 크기로 띄운다.
+    tester.view.physicalSize = const Size(1600, 2400);
+    tester.view.devicePixelRatio = 1;
+    addTearDown(tester.view.resetPhysicalSize);
+    addTearDown(tester.view.resetDevicePixelRatio);
     await tester.pumpWidget(buildSubject('이어폰'));
     await tester.pumpAndSettle();
 

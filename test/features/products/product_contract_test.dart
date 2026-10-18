@@ -1,3 +1,4 @@
+import 'package:re_view_front/l10n/generated/app_localizations.dart';
 import 'package:re_view_front/features/category/domain/entities/product_category_resolver.dart';
 import 'package:re_view_front/features/home/presentation/providers/home_providers.dart';
 import 'package:dio/dio.dart';
@@ -181,6 +182,9 @@ void main() {
     (tester) async {
       await tester.pumpWidget(
         MaterialApp(
+          locale: const Locale('ko'),
+          localizationsDelegates: AppLocalizations.localizationsDelegates,
+          supportedLocales: AppLocalizations.supportedLocales,
           home: Scaffold(
             body: RtiSummaryCard(rtiSummary: null, onDetailPressed: () {}),
           ),

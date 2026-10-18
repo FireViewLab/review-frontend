@@ -28,7 +28,7 @@ void main() {
   );
 
   test(
-    'defaults match backend entity and exclude theme from partial PATCH',
+    'defaults match backend entity, require explicit analysis consent and exclude theme from partial PATCH',
     () {
       final data = const SettingsDto({}).toEntity();
       expect(SettingsDto.toUpdateJson(data), {
@@ -44,7 +44,8 @@ void main() {
         'cardDensity': 'COMFORTABLE',
         'reviewSortOrder': 'VERIFIED_RECENT',
         'rtiLabelStyle': 'BADGE_SMALL',
-        'allowDataAnalysis': true,
+        // 서버가 동의 값을 주지 않으면 동의한 것으로 보지 않는다.
+        'allowDataAnalysis': false,
       });
       expect(data.theme, 'SYSTEM');
     },
