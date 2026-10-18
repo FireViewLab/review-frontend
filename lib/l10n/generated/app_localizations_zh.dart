@@ -1761,4 +1761,188 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get homeSearchSuggestionsRetry => '重新加载相关搜索词';
+
+  @override
+  String get authAccountHelp => '账户帮助';
+
+  @override
+  String get authAccountHelpBody =>
+      '邮箱账户的密码可通过“忘记密码”重置。Google或Naver账户请使用注册时的社交登录按钮。';
+
+  @override
+  String get authForgotPassword => '忘记密码';
+
+  @override
+  String get authSignup => '注册';
+
+  @override
+  String get authClose => '关闭';
+
+  @override
+  String get authLogin => '登录';
+
+  @override
+  String get authLoginDescription => '登录Re:view账户，加载已保存的商品和信任筛选条件。';
+
+  @override
+  String get authEmail => '邮箱';
+
+  @override
+  String get authEmailHint => '请输入邮箱';
+
+  @override
+  String get authPassword => '密码';
+
+  @override
+  String get authPasswordHint => '请输入密码';
+
+  @override
+  String get authShow => '显示';
+
+  @override
+  String get authHide => '隐藏';
+
+  @override
+  String get authRememberMe => '保持登录状态';
+
+  @override
+  String get authOr => '或';
+
+  @override
+  String get authContinueNaver => '使用Naver账户继续';
+
+  @override
+  String get authContinueGoogle => '使用Google账户继续';
+
+  @override
+  String get authNoAccount => '还没有账户？';
+
+  @override
+  String get authSignupAction => '注册账户';
+
+  @override
+  String get authPrivacyNotice => '个性化信息安全地保存在账户中，已保存的商品和分析记录仅对登录用户显示。';
+
+  @override
+  String get authSignupDescription => '创建Re:view账户，开始保存商品并设置信任筛选条件和通知。';
+
+  @override
+  String get authName => '姓名';
+
+  @override
+  String get authNameHint => '请输入姓名';
+
+  @override
+  String get authPasswordGuidance => '请设置至少8个字符，包含英文字母、数字和特殊字符。';
+
+  @override
+  String get authConfirmPassword => '确认密码';
+
+  @override
+  String get authConfirmPasswordHint => '请再次输入密码';
+
+  @override
+  String get authSignupOnboarding => '注册并开始初始设置';
+
+  @override
+  String get authSignupNaver => '使用Naver账户注册';
+
+  @override
+  String get authSignupGoogle => '使用Google账户注册';
+
+  @override
+  String get authHasAccount => '已有账户？';
+
+  @override
+  String get authLoginAction => '登录';
+
+  @override
+  String get authTermsConsent => '我同意服务条款和隐私政策。（必选）';
+
+  @override
+  String get authMarketingConsent => '接收已保存商品和信任度变化通知。（可选）';
+
+  @override
+  String get authOnboardingNotice => '下一步是初始设置。注册后可设置感兴趣的类别和默认RTI筛选条件。';
+
+  @override
+  String get authResetTitle => '重置密码';
+
+  @override
+  String get authResetDescription => '验证注册邮箱并设置新密码。';
+
+  @override
+  String get authRememberAccount => '想起账户了？';
+
+  @override
+  String get authBackToLogin => '返回登录';
+
+  @override
+  String get authRegisteredEmail => '注册邮箱';
+
+  @override
+  String get authSendVerification => '发送验证邮件';
+
+  @override
+  String get authEmailSent => '邮件已发送';
+
+  @override
+  String get authEmailSentGuide => '点击邮件中的链接或确认收到的令牌后，继续下一步。';
+
+  @override
+  String get authNext => '下一步';
+
+  @override
+  String get authResendEmail => '重新发送邮件';
+
+  @override
+  String get authNewPassword => '新密码';
+
+  @override
+  String get authNewPasswordHint => '请输入新密码';
+
+  @override
+  String get authNewPasswordGuide => '请设置与之前不同的密码，并组合使用英文字母、数字和特殊字符。';
+
+  @override
+  String get authConfirmNewPassword => '确认新密码';
+
+  @override
+  String get authConfirmNewPasswordHint => '请再次输入新密码';
+
+  @override
+  String get authCompleteReset => '完成密码修改';
+
+  @override
+  String get authResendVerification => '重新发送验证邮件';
+
+  @override
+  String get authMinLength => '至少8个字符';
+
+  @override
+  String get authLettersNumbers => '包含英文字母和数字';
+
+  @override
+  String get authSymbolsRecommended => '建议包含特殊字符';
+
+  @override
+  String get authNoEmail => '没有收到邮件？';
+
+  @override
+  String get authNoEmailGuide => '请检查垃圾邮件文件夹，或再次确认注册邮箱是否正确。';
+
+  @override
+  String get authVerifyEmail => '验证邮箱';
+
+  @override
+  String get authVerificationCode => '验证码';
+
+  @override
+  String get authResetSuccess => '密码已修改';
+
+  @override
+  String get authResetSuccessGuide => '请使用新密码登录。';
+
+  @override
+  String get authGoToLogin => '前往登录';
 }

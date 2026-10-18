@@ -1770,4 +1770,193 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String get homeSearchSuggestionsRetry => '関連検索語を再読み込み';
+
+  @override
+  String get authAccountHelp => 'アカウントのヘルプ';
+
+  @override
+  String get authAccountHelpBody =>
+      'メールアカウントのパスワードは「パスワードをお忘れですか」から再設定できます。Google・Naverアカウントは登録時のソーシャルログインボタンをご利用ください。';
+
+  @override
+  String get authForgotPassword => 'パスワードをお忘れですか';
+
+  @override
+  String get authSignup => '新規登録';
+
+  @override
+  String get authClose => '閉じる';
+
+  @override
+  String get authLogin => 'ログイン';
+
+  @override
+  String get authLoginDescription =>
+      'Re:viewアカウントにログインして、保存した商品と信頼フィルターを読み込みましょう。';
+
+  @override
+  String get authEmail => 'メールアドレス';
+
+  @override
+  String get authEmailHint => 'メールアドレスを入力してください';
+
+  @override
+  String get authPassword => 'パスワード';
+
+  @override
+  String get authPasswordHint => 'パスワードを入力してください';
+
+  @override
+  String get authShow => '表示';
+
+  @override
+  String get authHide => '非表示';
+
+  @override
+  String get authRememberMe => 'ログイン状態を保持';
+
+  @override
+  String get authOr => 'または';
+
+  @override
+  String get authContinueNaver => 'Naverアカウントで続ける';
+
+  @override
+  String get authContinueGoogle => 'Googleアカウントで続ける';
+
+  @override
+  String get authNoAccount => 'まだアカウントをお持ちでないですか？';
+
+  @override
+  String get authSignupAction => '新規登録する';
+
+  @override
+  String get authPrivacyNotice =>
+      '個人設定はアカウントに安全に保存され、保存した商品と分析履歴はログインしたユーザーにのみ表示されます。';
+
+  @override
+  String get authSignupDescription =>
+      'Re:viewアカウントを作成して、商品の保存、信頼フィルター、通知の設定を始めましょう。';
+
+  @override
+  String get authName => '名前';
+
+  @override
+  String get authNameHint => '名前を入力してください';
+
+  @override
+  String get authPasswordGuidance => '英字、数字、記号を含む8文字以上で設定してください。';
+
+  @override
+  String get authConfirmPassword => 'パスワードの確認';
+
+  @override
+  String get authConfirmPasswordHint => 'パスワードをもう一度入力してください';
+
+  @override
+  String get authSignupOnboarding => '登録して初期設定を始める';
+
+  @override
+  String get authSignupNaver => 'Naverアカウントで登録';
+
+  @override
+  String get authSignupGoogle => 'Googleアカウントで登録';
+
+  @override
+  String get authHasAccount => 'すでにアカウントをお持ちですか？';
+
+  @override
+  String get authLoginAction => 'ログインする';
+
+  @override
+  String get authTermsConsent => '利用規約とプライバシーポリシーに同意します。（必須）';
+
+  @override
+  String get authMarketingConsent => '保存した商品と信頼度の変化に関する通知を受け取ります。（任意）';
+
+  @override
+  String get authOnboardingNotice =>
+      '次は初期設定です。登録後、興味のあるカテゴリーとデフォルトのRTIフィルターを設定します。';
+
+  @override
+  String get authResetTitle => 'パスワードの再設定';
+
+  @override
+  String get authResetDescription => '登録したメールアドレスを確認して新しいパスワードを設定してください。';
+
+  @override
+  String get authRememberAccount => 'アカウントを思い出しましたか？';
+
+  @override
+  String get authBackToLogin => 'ログインに戻る';
+
+  @override
+  String get authRegisteredEmail => '登録メールアドレス';
+
+  @override
+  String get authSendVerification => '認証メールを送信';
+
+  @override
+  String get authEmailSent => 'メールを送信しました';
+
+  @override
+  String get authEmailSentGuide =>
+      'メール内のリンクをクリックするか、受信したトークンを確認してから次のステップへ進んでください。';
+
+  @override
+  String get authNext => '次へ';
+
+  @override
+  String get authResendEmail => 'メールを再送信';
+
+  @override
+  String get authNewPassword => '新しいパスワード';
+
+  @override
+  String get authNewPasswordHint => '新しいパスワードを入力してください';
+
+  @override
+  String get authNewPasswordGuide => '以前のパスワードとは異なるものを設定し、英字・数字・記号を組み合わせてください。';
+
+  @override
+  String get authConfirmNewPassword => '新しいパスワードの確認';
+
+  @override
+  String get authConfirmNewPasswordHint => '新しいパスワードをもう一度入力してください';
+
+  @override
+  String get authCompleteReset => 'パスワードを変更';
+
+  @override
+  String get authResendVerification => '認証メールを再送信';
+
+  @override
+  String get authMinLength => '8文字以上';
+
+  @override
+  String get authLettersNumbers => '英字と数字を含む';
+
+  @override
+  String get authSymbolsRecommended => '記号の使用を推奨';
+
+  @override
+  String get authNoEmail => 'メールが届きませんか？';
+
+  @override
+  String get authNoEmailGuide => '迷惑メールフォルダーを確認するか、登録したメールアドレスが正しいか再度確認してください。';
+
+  @override
+  String get authVerifyEmail => 'メールの確認';
+
+  @override
+  String get authVerificationCode => '認証コード';
+
+  @override
+  String get authResetSuccess => 'パスワードが変更されました';
+
+  @override
+  String get authResetSuccessGuide => '新しいパスワードでログインしてください。';
+
+  @override
+  String get authGoToLogin => 'ログインへ';
 }

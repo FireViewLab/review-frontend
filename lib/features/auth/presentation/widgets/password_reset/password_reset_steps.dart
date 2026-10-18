@@ -1,3 +1,4 @@
+import 'package:re_view_front/l10n/generated/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:re_view_front/app/theme/app_colors.dart';
 import 'package:re_view_front/app/theme/app_spacing.dart';
@@ -21,7 +22,9 @@ class PasswordResetEmailStep extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        PasswordResetFieldLabel(label: '가입 이메일'),
+        PasswordResetFieldLabel(
+          label: AppLocalizations.of(context).authRegisteredEmail,
+        ),
         const SizedBox(height: AppSpacing.xs),
         PasswordResetInputField(
           controller: controller,
@@ -33,7 +36,7 @@ class PasswordResetEmailStep extends StatelessWidget {
         ),
         const SizedBox(height: AppSpacing.lg),
         PasswordResetPrimaryButton(
-          label: '인증 이메일 발송',
+          label: AppLocalizations.of(context).authSendVerification,
           isLoading: isLoading,
           onPressed: onSendCode,
         ),
@@ -82,7 +85,7 @@ class PasswordResetEmailSentStep extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        '이메일을 발송했습니다',
+                        AppLocalizations.of(context).authEmailSent,
                         style: Theme.of(context).textTheme.labelMedium
                             ?.copyWith(
                               color: AppColors.success,
@@ -105,7 +108,7 @@ class PasswordResetEmailSentStep extends StatelessWidget {
         ),
         const SizedBox(height: AppSpacing.md),
         Text(
-          '이메일의 링크를 클릭하거나, 받은 토큰을 확인한 후 다음 단계로 진행하세요.',
+          AppLocalizations.of(context).authEmailSentGuide,
           style: Theme.of(context).textTheme.bodySmall?.copyWith(
             color: AppColors.textSecondary,
             height: 1.55,
@@ -113,7 +116,7 @@ class PasswordResetEmailSentStep extends StatelessWidget {
         ),
         const SizedBox(height: AppSpacing.lg),
         PasswordResetPrimaryButton(
-          label: '다음',
+          label: AppLocalizations.of(context).authNext,
           isLoading: isLoading,
           onPressed: onProceed,
         ),
@@ -127,7 +130,7 @@ class PasswordResetEmailSentStep extends StatelessWidget {
               borderRadius: BorderRadius.circular(16),
             ),
           ),
-          child: const Text('이메일 다시 받기'),
+          child: Text(AppLocalizations.of(context).authResendEmail),
         ),
         const SizedBox(height: AppSpacing.lg),
         _ResendHelp(),
@@ -165,11 +168,13 @@ class PasswordResetNewPasswordStep extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        PasswordResetFieldLabel(label: '새 비밀번호'),
+        PasswordResetFieldLabel(
+          label: AppLocalizations.of(context).authNewPassword,
+        ),
         const SizedBox(height: AppSpacing.xs),
         PasswordResetInputField(
           controller: newPasswordController,
-          hintText: '새 비밀번호를 입력하세요',
+          hintText: AppLocalizations.of(context).authNewPasswordHint,
           prefixIcon: Icons.lock_outline,
           obscureText: obscureNewPassword,
           textInputAction: TextInputAction.next,
@@ -186,18 +191,20 @@ class PasswordResetNewPasswordStep extends StatelessWidget {
         ),
         const SizedBox(height: AppSpacing.xs),
         Text(
-          '이전에 사용한 비밀번호와 다르게 설정하고, 영문·숫자·특수문자를 조합해 주세요.',
+          AppLocalizations.of(context).authNewPasswordGuide,
           style: Theme.of(context).textTheme.bodySmall?.copyWith(
             color: AppColors.textSecondary,
             height: 1.5,
           ),
         ),
         const SizedBox(height: AppSpacing.lg),
-        PasswordResetFieldLabel(label: '새 비밀번호 확인'),
+        PasswordResetFieldLabel(
+          label: AppLocalizations.of(context).authConfirmNewPassword,
+        ),
         const SizedBox(height: AppSpacing.xs),
         PasswordResetInputField(
           controller: confirmPasswordController,
-          hintText: '새 비밀번호를 한 번 더 입력하세요',
+          hintText: AppLocalizations.of(context).authConfirmNewPasswordHint,
           prefixIcon: Icons.check_outlined,
           obscureText: obscureConfirmPassword,
           textInputAction: TextInputAction.done,
@@ -217,7 +224,7 @@ class PasswordResetNewPasswordStep extends StatelessWidget {
         _PasswordRequirements(state: state),
         const SizedBox(height: AppSpacing.lg),
         PasswordResetPrimaryButton(
-          label: '비밀번호 변경 완료',
+          label: AppLocalizations.of(context).authCompleteReset,
           isLoading: state.isLoading,
           onPressed: onResetPassword,
         ),
@@ -231,7 +238,7 @@ class PasswordResetNewPasswordStep extends StatelessWidget {
               borderRadius: BorderRadius.circular(16),
             ),
           ),
-          child: const Text('인증 이메일 다시 받기'),
+          child: Text(AppLocalizations.of(context).authResendVerification),
         ),
         const SizedBox(height: AppSpacing.lg),
         _ResendHelp(),
@@ -251,19 +258,19 @@ class _PasswordRequirements extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         _RequirementRow(
-          label: '8자 이상',
+          label: AppLocalizations.of(context).authMinLength,
           isMet: state.hasMinLength,
           hasInput: state.newPassword.isNotEmpty,
         ),
         const SizedBox(height: AppSpacing.xxs),
         _RequirementRow(
-          label: '영문과 숫자 포함',
+          label: AppLocalizations.of(context).authLettersNumbers,
           isMet: state.hasLetterAndNumber,
           hasInput: state.newPassword.isNotEmpty,
         ),
         const SizedBox(height: AppSpacing.xxs),
         _RequirementRow(
-          label: '특수문자 포함 권장',
+          label: AppLocalizations.of(context).authSymbolsRecommended,
           isMet: state.hasSpecialChar,
           hasInput: state.newPassword.isNotEmpty,
           isOptional: true,
@@ -344,7 +351,7 @@ class _ResendHelp extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    '이메일을 받지 못했나요?',
+                    AppLocalizations.of(context).authNoEmail,
                     style: Theme.of(context).textTheme.labelMedium?.copyWith(
                       color: AppColors.primary,
                       fontWeight: FontWeight.w900,
@@ -352,7 +359,7 @@ class _ResendHelp extends StatelessWidget {
                   ),
                   const SizedBox(height: AppSpacing.xxs),
                   Text(
-                    '스팸함을 확인하거나, 가입한 이메일이 맞는지 다시 확인해 주세요.',
+                    AppLocalizations.of(context).authNoEmailGuide,
                     style: Theme.of(context).textTheme.bodySmall?.copyWith(
                       color: AppColors.textSecondary,
                       height: 1.45,

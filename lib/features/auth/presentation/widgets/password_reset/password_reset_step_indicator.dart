@@ -1,3 +1,4 @@
+import 'package:re_view_front/l10n/generated/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:re_view_front/app/theme/app_colors.dart';
 import 'package:re_view_front/features/auth/presentation/view_models/password_reset_state.dart';
@@ -10,9 +11,15 @@ class PasswordResetStepIndicator extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final steps = [
-      (PasswordResetStep.email, '이메일 확인'),
-      (PasswordResetStep.emailSent, '인증 코드'),
-      (PasswordResetStep.newPassword, '새 비밀번호'),
+      (PasswordResetStep.email, AppLocalizations.of(context).authVerifyEmail),
+      (
+        PasswordResetStep.emailSent,
+        AppLocalizations.of(context).authVerificationCode,
+      ),
+      (
+        PasswordResetStep.newPassword,
+        AppLocalizations.of(context).authNewPassword,
+      ),
     ];
     final currentIndex = PasswordResetStep.values.indexOf(currentStep);
 
