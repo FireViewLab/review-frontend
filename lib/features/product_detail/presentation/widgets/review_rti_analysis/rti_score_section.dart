@@ -1,3 +1,5 @@
+import 'package:re_view_front/shared/presentation/review_evidence_formatter.dart';
+import 'package:re_view_front/shared/widgets/rti_score_ring.dart';
 import 'package:re_view_front/l10n/generated/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:re_view_front/app/theme/app_motion.dart';
@@ -134,35 +136,52 @@ class RtiScoreCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final color = colorFromHex(review.rtiColor);
+    final score = review.rtiScore;
+    final summary = review.reasons.isEmpty
+        ? null
+        : ReviewEvidenceFormatter.text(context, review.reasons.first);
 
     return RtiSectionCard(
       title: AppLocalizations.of(context).reviewResultTitle,
       showInfo: true,
       infoTooltip: 'RTI 신뢰도 점수는 구매 인증, 텍스트 신뢰도,\n반복 표현, 시점 패턴 등을 종합해 산출됩니다.',
-      child: Wrap(
-        spacing: AppSpacing.sm,
-        runSpacing: AppSpacing.sm,
-        crossAxisAlignment: WrapCrossAlignment.center,
-        children: [
-          Text(
-            review.rtiScore != null ? 'RTI ${review.rtiScore}' : '분석 전',
-            style: Theme.of(context).textTheme.displayLarge?.copyWith(
-              color: color,
-              fontWeight: FontWeight.w900,
-              fontSize: 36,
-              height: 1,
+      child: score == null
+          ? Text(
+              '분석 전',
+              style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                color: AppColors.textSecondary,
+                fontWeight: FontWeight.w800,
+              ),
+            )
+          : Row(
+              children: [
+                RtiScoreRing(score: score, color: color),
+                const SizedBox(width: 20),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      if (review.rtiLabel?.isNotEmpty == true)
+                        RtiGradeBadge(label: review.rtiLabel!, color: color),
+                      if (summary != null) ...[
+                        const SizedBox(height: AppSpacing.xs),
+                        Text(
+                          summary,
+                          maxLines: 3,
+                          overflow: TextOverflow.ellipsis,
+                          style: Theme.of(context).textTheme.bodyMedium
+                              ?.copyWith(
+                                color: AppColors.textPrimary,
+                                height: 1.55,
+                              ),
+                        ),
+                      ],
+                    ],
+                  ),
+                ),
+              ],
             ),
-          ),
-          if (review.rtiScore != null &&
-              review.rtiLabel?.isNotEmpty == true) ...[
-            const SizedBox(width: AppSpacing.sm),
-            Padding(
-              padding: const EdgeInsets.only(bottom: 8),
-              child: RtiGradeBadge(label: review.rtiLabel!, color: color),
-            ),
-          ],
-        ],
-      ),
     );
   }
 }
@@ -176,22 +195,22 @@ class RtiGradeBadge extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
       decoration: BoxDecoration(
         color: color.withValues(alpha: 0.1),
-        borderRadius: BorderRadius.circular(20),
+        borderRadius: BorderRadius.circular(999),
         border: Border.all(color: color.withValues(alpha: 0.3)),
       ),
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Icon(Icons.verified_user_outlined, size: 13, color: color),
+          Icon(Icons.verified_user_outlined, size: 15, color: color),
           const SizedBox(width: 4),
           Text(
             label,
             style: Theme.of(context).textTheme.labelSmall?.copyWith(
               color: color,
-              fontWeight: FontWeight.w700,
+              fontWeight: FontWeight.w800,
               fontSize: 13,
             ),
           ),
