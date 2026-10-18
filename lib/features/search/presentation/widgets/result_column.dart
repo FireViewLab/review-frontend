@@ -1,13 +1,17 @@
+import 'package:re_view_front/shared/widgets/sliver_width_builder.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:re_view_front/features/settings/presentation/providers/settings_providers.dart';
 import 'package:flutter/material.dart';
 import 'package:re_view_front/app/theme/app_colors.dart';
 import 'package:re_view_front/app/theme/app_spacing.dart';
 import 'package:re_view_front/features/search/domain/entities/search_result_product.dart';
 import 'package:re_view_front/features/search/presentation/models/search_view_mode.dart';
 import 'package:re_view_front/features/search/presentation/view_models/search_results_state.dart';
-import 'package:re_view_front/features/search/presentation/widgets/filter_panel.dart';
 import 'package:re_view_front/features/search/presentation/widgets/pagination.dart';
 import 'package:re_view_front/features/search/presentation/widgets/review_comparison_banner.dart';
 import 'package:re_view_front/features/search/presentation/widgets/search_product_card.dart';
+import 'package:re_view_front/features/search/presentation/widgets/search_product_list_tile.dart';
+import 'package:re_view_front/features/search/presentation/widgets/filter_select_widgets.dart';
 import 'package:re_view_front/shared/widgets/error_view.dart';
 import 'package:re_view_front/shared/widgets/shimmer_box.dart';
 
@@ -39,46 +43,47 @@ class ResultColumn extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return LayoutBuilder(
-      builder: (context, constraints) {
-        final columns = ProductGrid.columnsForWidth(constraints.maxWidth);
+    return SliverWidthBuilder(
+      builder: (context, width) {
+        final columns = ProductGrid.columnsForWidth(width);
         final totalPages = products.isEmpty
             ? 1
             : (products.length / pageSize).ceil();
-        final activePage = currentPage < 1
-            ? 1
-            : currentPage > totalPages
-            ? totalPages
-            : currentPage;
+        final activePage = currentPage.clamp(1, totalPages);
         final pageStart = (activePage - 1) * pageSize;
-        final pageEnd = pageStart + pageSize > products.length
-            ? products.length
-            : pageStart + pageSize;
+        final pageEnd = (pageStart + pageSize).clamp(0, products.length);
         final pageProducts = products.sublist(pageStart, pageEnd);
-
-        return Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            if (products.isNotEmpty && constraints.maxWidth >= 760) ...[
-              ReviewComparisonBanner(products: products),
-              const SizedBox(height: AppSpacing.md),
-            ],
-            ResultToolbar(
-              resultCount: products.length,
-              sortOption: sortOption,
-              viewMode: viewMode,
-              pageSize: pageSize,
-              onSortChanged: onSortChanged,
-              onPageSizeChanged: onPageSizeChanged,
-              onViewModeChanged: onViewModeChanged,
+        return SliverMainAxisGroup(
+          slivers: [
+            SliverToBoxAdapter(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  if (products.isNotEmpty && width >= 760) ...[
+                    ReviewComparisonBanner(products: products),
+                    const SizedBox(height: AppSpacing.md),
+                  ],
+                  ResultToolbar(
+                    resultCount: products.length,
+                    sortOption: sortOption,
+                    viewMode: viewMode,
+                    pageSize: pageSize,
+                    onSortChanged: onSortChanged,
+                    onPageSizeChanged: onPageSizeChanged,
+                    onViewModeChanged: onViewModeChanged,
+                  ),
+                  const SizedBox(height: AppSpacing.md),
+                ],
+              ),
             ),
-            const SizedBox(height: AppSpacing.md),
             if (products.isEmpty)
-              const SizedBox(
-                height: 360,
-                child: AppEmptyView(
-                  title: '필터에 맞는 상품이 없어요',
-                  message: '필터를 초기화하거나 조건을 조금 넓혀보세요.',
+              const SliverToBoxAdapter(
+                child: SizedBox(
+                  height: 360,
+                  child: AppEmptyView(
+                    title: '필터에 맞는 상품이 없어요',
+                    message: '필터를 초기화하거나 조건을 조금 넓혀보세요.',
+                  ),
                 ),
               )
             else ...[
@@ -86,14 +91,17 @@ class ResultColumn extends StatelessWidget {
                 ProductGrid(products: pageProducts, columns: columns)
               else
                 ProductList(products: pageProducts),
-              if (totalPages > 1) ...[
-                const SizedBox(height: AppSpacing.lg),
-                Pagination(
-                  currentPage: activePage,
-                  totalPages: totalPages,
-                  onPageSelected: onPageSelected,
+              if (totalPages > 1)
+                SliverToBoxAdapter(
+                  child: Padding(
+                    padding: const EdgeInsets.only(top: AppSpacing.lg),
+                    child: Pagination(
+                      currentPage: activePage,
+                      totalPages: totalPages,
+                      onPageSelected: onPageSelected,
+                    ),
+                  ),
                 ),
-              ],
             ],
           ],
         );
@@ -102,7 +110,7 @@ class ResultColumn extends StatelessWidget {
   }
 }
 
-class ProductGrid extends StatelessWidget {
+class ProductGrid extends ConsumerWidget {
   const ProductGrid({super.key, required this.products, required this.columns});
 
   final List<SearchResultProduct> products;
@@ -121,7 +129,10 @@ class ProductGrid extends StatelessWidget {
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final compact =
+        ref.watch(confirmedDisplayPreferencesProvider)?.cardDensity ==
+        'COMPACT';
     final cardHeight = switch (columns) {
       1 => 520.0,
       2 => 490.0,
@@ -130,15 +141,13 @@ class ProductGrid extends StatelessWidget {
       _ => 425.0,
     };
 
-    return GridView.builder(
-      shrinkWrap: true,
-      physics: const NeverScrollableScrollPhysics(),
+    return SliverGrid.builder(
       itemCount: products.length,
       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
         crossAxisCount: columns,
         mainAxisSpacing: AppSpacing.sm,
         crossAxisSpacing: AppSpacing.sm,
-        mainAxisExtent: cardHeight,
+        mainAxisExtent: compact ? cardHeight - 32 : cardHeight,
       ),
       itemBuilder: (context, index) {
         final product = products[index];
@@ -158,17 +167,18 @@ class ProductList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
+    return SliverList.separated(
       key: const ValueKey('search-product-list'),
-      children: [
-        for (final product in products) ...[
-          RepaintBoundary(
-            key: ValueKey('search-product-list-tile-${product.id}'),
-            child: SearchProductListTile(product: product),
-          ),
+      itemCount: products.length,
+      itemBuilder: (context, index) {
+        final product = products[index];
+        return RepaintBoundary(
+          key: ValueKey('search-product-list-tile-${product.id}'),
+          child: SearchProductListTile(product: product),
+        );
+      },
+      separatorBuilder: (context, index) =>
           const SizedBox(height: AppSpacing.sm),
-        ],
-      ],
     );
   }
 }
@@ -264,7 +274,10 @@ class _SearchCardSkeleton extends StatelessWidget {
                       ShimmerBox(width: 36, height: 36, radius: 6),
                       SizedBox(width: AppSpacing.xs),
                       Expanded(
-                        child: SizedBox(height: 36, child: ShimmerBox(radius: 6)),
+                        child: SizedBox(
+                          height: 36,
+                          child: ShimmerBox(radius: 6),
+                        ),
                       ),
                     ],
                   ),
@@ -305,7 +318,7 @@ class ResultToolbar extends StatelessWidget {
       SearchSortOption.priceLow,
       SearchSortOption.rti,
       SearchSortOption.reviewCount,
-      SearchSortOption.sales,
+      SearchSortOption.priceHigh,
     ];
 
     return DecoratedBox(
@@ -405,7 +418,7 @@ class SortSegmentedControl extends StatelessWidget {
           child: DecoratedBox(
             decoration: BoxDecoration(
               color: const Color(0xFFF4F7FC),
-              borderRadius: BorderRadius.circular(8),
+              borderRadius: AppRadius.small,
               border: Border.all(color: AppColors.border),
             ),
             child: Row(

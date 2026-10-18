@@ -22,5 +22,18 @@ final searchProductsUseCaseProvider = Provider<SearchProductsUseCase>((ref) {
   return SearchProductsUseCase(ref.watch(searchRepositoryProvider));
 });
 
-final searchViewModelProvider =
-    NotifierProvider<SearchViewModel, SearchState>(SearchViewModel.new);
+final searchViewModelProvider = NotifierProvider<SearchViewModel, SearchState>(
+  SearchViewModel.new,
+);
+
+/// 같은 검색어를 다시 제출해도 필터를 초기화하고 검색을 새로 실행한다.
+final searchResubmissionProvider = NotifierProvider<SearchResubmission, int>(
+  SearchResubmission.new,
+);
+
+class SearchResubmission extends Notifier<int> {
+  @override
+  int build() => 0;
+
+  void submit() => state++;
+}

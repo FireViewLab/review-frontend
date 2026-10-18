@@ -13,12 +13,14 @@ class ProductReview {
     required this.rtiScore,
     required this.rtiColor,
     required this.rtiLabel,
+    this.helpfulCount,
     this.imageUrls = const [],
     this.hashtags = const [],
     this.reasons = const [],
     this.rtiDetail,
   });
 
+  final int? helpfulCount;
   final int id;
   final String authorName;
   final String? authorAvatarUrl;
@@ -27,9 +29,9 @@ class ProductReview {
   final String createdAt;
   final String platform;
   final bool isVerifiedPurchase;
-  final int rtiScore;
-  final String rtiColor;
-  final String rtiLabel;
+  final int? rtiScore;
+  final String? rtiColor;
+  final String? rtiLabel;
   final List<String> imageUrls;
   final List<String> hashtags;
   final List<String> reasons;

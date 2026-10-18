@@ -23,7 +23,7 @@ final _getLandingDataUseCaseProvider = Provider<GetLandingDataUseCase>((ref) {
 });
 
 // stats + product를 단일 요청으로 fetch. 두 파생 provider가 이걸 공유해 중복 호출 없음.
-final _landingDataProvider = FutureProvider<
+final landingDataProvider = FutureProvider<
   ({LandingStats stats, DashboardProduct? featuredProduct})
 >((ref) async {
   final useCase = ref.read(_getLandingDataUseCaseProvider);
@@ -31,11 +31,11 @@ final _landingDataProvider = FutureProvider<
 });
 
 final landingStatsProvider = Provider<AsyncValue<LandingStats>>((ref) {
-  return ref.watch(_landingDataProvider).whenData((d) => d.stats);
+  return ref.watch(landingDataProvider).whenData((d) => d.stats);
 });
 
 final featuredProductProvider = Provider<AsyncValue<DashboardProduct?>>((ref) {
-  return ref.watch(_landingDataProvider).whenData<DashboardProduct?>(
+  return ref.watch(landingDataProvider).whenData<DashboardProduct?>(
     (d) => d.featuredProduct,
   );
 });

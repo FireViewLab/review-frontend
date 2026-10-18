@@ -32,6 +32,14 @@ class ProductCardSkeleton extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
+                  const SizedBox(
+                    height: 34,
+                    child: Align(
+                      alignment: Alignment.centerLeft,
+                      child: ShimmerBox(width: 64, height: 20, radius: 999),
+                    ),
+                  ),
+                  const SizedBox(height: AppSpacing.xs),
                   const SizedBox(height: 14, child: ShimmerBox(radius: 4)),
                   const SizedBox(height: 6),
                   const SizedBox(height: 13, child: ShimmerBox(radius: 4)),
@@ -72,7 +80,7 @@ class ProductCardGridSkeleton extends StatelessWidget {
               (constraints.maxWidth - (columns - 1) * AppSpacing.md) / columns;
           const imageAspectRatio = 16.0 / 9.0;
           final imageHeight = cardWidth / imageAspectRatio;
-          const textAreaHeight = 170.0;
+          const textAreaHeight = 212.0;
 
           return GridView.builder(
             shrinkWrap: true,

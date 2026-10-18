@@ -24,24 +24,20 @@ class ApiClient {
           handler.next(options);
         },
         onError: (error, handler) {
+          final current = tokenStore?.accessToken;
+          final type = tokenStore?.tokenType ?? 'Bearer';
+          final sent = error.requestOptions.headers['Authorization'];
           if (error.response?.statusCode == 401 &&
-              tokenStore?.accessToken != null) {
-            tokenStore?.clear();
+              current != null &&
+              sent == '$type $current') {
+            tokenStore?.expireSession();
           }
           handler.next(error);
         },
       ),
     );
-    dio.interceptors.add(
-      LogInterceptor(
-        request: true,
-        requestHeader: true,
-        requestBody: true,
-        responseHeader: false,
-        responseBody: true,
-        error: true,
-      ),
-    );
+    // Request headers/bodies and response bodies can contain credentials or
+    // payment callback data. Do not install payload logging in any build.
   }
 
   final Dio dio;
@@ -57,8 +53,14 @@ class ApiClient {
     String path, {
     Object? data,
     Map<String, dynamic>? queryParameters,
+    Options? options,
   }) {
-    return dio.post(path, data: data, queryParameters: queryParameters);
+    return dio.post(
+      path,
+      data: data,
+      queryParameters: queryParameters,
+      options: options,
+    );
   }
 
   Future<Response<dynamic>> put(
@@ -69,11 +71,18 @@ class ApiClient {
     return dio.put(path, data: data, queryParameters: queryParameters);
   }
 
+  Future<Response<dynamic>> patch(
+    String path, {
+    Object? data,
+    Map<String, dynamic>? queryParameters,
+  }) {
+    return dio.patch(path, data: data, queryParameters: queryParameters);
+  }
+
   Future<Response<dynamic>> delete(
     String path, {
     Map<String, dynamic>? queryParameters,
   }) {
     return dio.delete(path, queryParameters: queryParameters);
   }
-
 }

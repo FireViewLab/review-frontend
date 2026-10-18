@@ -3,7 +3,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:go_router/go_router.dart';
 import 'package:re_view_front/app/router/route_paths.dart';
-import 'package:re_view_front/app/theme/app_theme.dart';
 import 'package:re_view_front/core/result/result.dart';
 import 'package:re_view_front/features/home/domain/entities/dashboard_summary.dart';
 import 'package:re_view_front/features/home/domain/repositories/home_repository.dart';
@@ -15,64 +14,71 @@ import 'package:re_view_front/features/onboarding/presentation/providers/onboard
 import 'package:re_view_front/features/onboarding/presentation/view_models/onboarding_state.dart';
 import 'package:re_view_front/features/onboarding/presentation/view_models/onboarding_view_model.dart';
 
+import '../../../../helpers/pump_app.dart';
+
 void main() {
-  testWidgets('invalidates home dashboard before navigating home on success', (
-    tester,
-  ) async {
-    final repository = _CountingHomeRepository();
-    final onboardingViewModel = _TestOnboardingViewModel();
-    final container = ProviderContainer(
-      overrides: [
-        onboardingViewModelProvider.overrideWith(() => onboardingViewModel),
-        getHomeDashboardUseCaseProvider.overrideWithValue(
-          GetHomeDashboardUseCase(repository),
+  testWidgets(
+    'invalidates home dashboard before navigating home on success',
+    (tester) async {
+      final repository = _CountingHomeRepository();
+      final onboardingViewModel = _TestOnboardingViewModel();
+      final container = ProviderContainer(
+        overrides: [
+          onboardingViewModelProvider.overrideWith(() => onboardingViewModel),
+          getHomeDashboardUseCaseProvider.overrideWithValue(
+            GetHomeDashboardUseCase(repository),
+          ),
+        ],
+      );
+      addTearDown(container.dispose);
+
+      final subscription = container.listen<HomeDashboardState>(
+        homeDashboardViewModelProvider,
+        (_, _) {},
+        fireImmediately: true,
+      );
+      addTearDown(subscription.close);
+
+      await tester.pump();
+      await tester.pump();
+      expect(repository.callCount, 1);
+
+      final router = GoRouter(
+        initialLocation: RoutePaths.onboarding,
+        routes: [
+          GoRoute(
+            path: RoutePaths.onboarding,
+            builder: (context, state) => const OnboardingPage(),
+          ),
+          GoRoute(
+            path: RoutePaths.home,
+            builder: (context, state) =>
+                const Scaffold(body: Text('home page')),
+          ),
+        ],
+      );
+      addTearDown(router.dispose);
+
+      await tester.pumpWidget(
+        UncontrolledProviderScope(
+          container: container,
+          child: localizedApp(router: router),
         ),
-      ],
-    );
-    addTearDown(container.dispose);
+      );
+      await tester.pumpAndSettle();
+      expect(tester.takeException(), isNull);
 
-    final subscription = container.listen<HomeDashboardState>(
-      homeDashboardViewModelProvider,
-      (_, _) {},
-      fireImmediately: true,
-    );
-    addTearDown(subscription.close);
+      onboardingViewModel.markSuccess();
+      await tester.pump();
+      await tester.pump();
+      await tester.pump();
+      await tester.pumpAndSettle();
 
-    await Future<void>.delayed(Duration.zero);
-    await Future<void>.delayed(Duration.zero);
-    expect(repository.callCount, 1);
-
-    final router = GoRouter(
-      initialLocation: RoutePaths.onboarding,
-      routes: [
-        GoRoute(
-          path: RoutePaths.onboarding,
-          builder: (context, state) => const OnboardingPage(),
-        ),
-        GoRoute(
-          path: RoutePaths.home,
-          builder: (context, state) => const Scaffold(body: Text('home page')),
-        ),
-      ],
-    );
-
-    await tester.pumpWidget(
-      UncontrolledProviderScope(
-        container: container,
-        child: MaterialApp.router(theme: AppTheme.light, routerConfig: router),
-      ),
-    );
-    await tester.pumpAndSettle();
-
-    onboardingViewModel.markSuccess();
-    await tester.pump();
-    await Future<void>.delayed(Duration.zero);
-    await Future<void>.delayed(Duration.zero);
-    await tester.pumpAndSettle();
-
-    expect(router.routeInformationProvider.value.uri.path, RoutePaths.home);
-    expect(repository.callCount, greaterThanOrEqualTo(2));
-  });
+      expect(router.routeInformationProvider.value.uri.path, RoutePaths.home);
+      expect(repository.callCount, greaterThanOrEqualTo(2));
+    },
+    timeout: const Timeout(Duration(seconds: 30)),
+  );
 }
 
 class _TestOnboardingViewModel extends OnboardingViewModel {

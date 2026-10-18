@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:re_view_front/shared/widgets/app_fade_in.dart';
 import 'package:re_view_front/core/platform/external_redirect.dart';
 import 'package:re_view_front/app/router/route_paths.dart';
 import 'package:re_view_front/app/theme/app_colors.dart';
@@ -11,8 +12,6 @@ import 'package:re_view_front/features/auth/presentation/widgets/signup_card.dar
 import 'package:re_view_front/features/auth/presentation/widgets/signup_value_panel.dart';
 import 'package:re_view_front/features/auth/presentation/providers/auth_providers.dart';
 import 'package:re_view_front/features/auth/presentation/view_models/signup_state.dart';
-import 'package:re_view_front/features/home/presentation/data/home_content.dart';
-import 'package:re_view_front/features/home/presentation/widgets/home/home_header.dart';
 import 'package:re_view_front/shared/extensions/context_extensions.dart';
 import 'package:re_view_front/shared/widgets/app_content_view.dart';
 
@@ -69,15 +68,6 @@ class _SignupPageState extends ConsumerState<SignupPage> {
       backgroundColor: AppColors.background,
       body: Column(
         children: [
-          HomeHeader(
-            navItems: homeNavItems,
-            selectedNavItem: '홈',
-            onLoginPressed: () => context.go(RoutePaths.login),
-            onWishPressed: () => context.go(RoutePaths.home),
-            onCartPressed: () => context.go(RoutePaths.home),
-            onNavItemPressed: (_) => context.go(RoutePaths.home),
-            onLogoPressed: () => context.go(RoutePaths.home),
-          ),
           Expanded(
             child: SingleChildScrollView(
               child: AppContentView(
@@ -87,9 +77,9 @@ class _SignupPageState extends ConsumerState<SignupPage> {
                     ? Column(
                         crossAxisAlignment: CrossAxisAlignment.stretch,
                         children: [
-                          const _FadeUp(delay: 0, child: SignupValuePanel()),
+                          const AppFadeIn(delay: 0, child: SignupValuePanel()),
                           const SizedBox(height: AppSpacing.xl),
-                          _FadeUp(
+                          AppFadeIn(
                             delay: 90,
                             child: _buildSignupCard(signupState),
                           ),
@@ -100,14 +90,17 @@ class _SignupPageState extends ConsumerState<SignupPage> {
                         children: [
                           const Expanded(
                             flex: 12,
-                            child: _FadeUp(delay: 0, child: SignupValuePanel()),
+                            child: AppFadeIn(
+                              delay: 0,
+                              child: SignupValuePanel(),
+                            ),
                           ),
                           const SizedBox(width: 64),
                           Expanded(
                             flex: 8,
                             child: Align(
                               alignment: Alignment.centerRight,
-                              child: _FadeUp(
+                              child: AppFadeIn(
                                 delay: 120,
                                 child: _buildSignupCard(signupState),
                               ),
@@ -118,7 +111,7 @@ class _SignupPageState extends ConsumerState<SignupPage> {
               ),
             ),
           ),
-          const _FadeUp(delay: 220, child: LoginFooter()),
+          const AppFadeIn(delay: 220, child: LoginFooter()),
         ],
       ),
     );
@@ -208,55 +201,5 @@ class _SignupPageState extends ConsumerState<SignupPage> {
     }
 
     redirectToExternalUrl(uri);
-  }
-}
-
-class _FadeUp extends StatefulWidget {
-  const _FadeUp({required this.child, required this.delay});
-
-  final Widget child;
-  final int delay;
-
-  @override
-  State<_FadeUp> createState() => _FadeUpState();
-}
-
-class _FadeUpState extends State<_FadeUp> with SingleTickerProviderStateMixin {
-  late final AnimationController _controller;
-  late final Animation<double> _opacity;
-  late final Animation<Offset> _offset;
-
-  @override
-  void initState() {
-    super.initState();
-    _controller = AnimationController(
-      vsync: this,
-      duration: const Duration(milliseconds: 420),
-    );
-    _opacity = CurvedAnimation(parent: _controller, curve: Curves.easeOutCubic);
-    _offset = Tween<Offset>(
-      begin: const Offset(0, 0.04),
-      end: Offset.zero,
-    ).animate(CurvedAnimation(parent: _controller, curve: Curves.easeOutCubic));
-
-    Future<void>.delayed(Duration(milliseconds: widget.delay), () {
-      if (mounted) {
-        _controller.forward();
-      }
-    });
-  }
-
-  @override
-  void dispose() {
-    _controller.dispose();
-    super.dispose();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return FadeTransition(
-      opacity: _opacity,
-      child: SlideTransition(position: _offset, child: widget.child),
-    );
   }
 }

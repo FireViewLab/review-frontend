@@ -1,3 +1,4 @@
+import 'package:re_view_front/app/router/app_shell.dart';
 import 'dart:async';
 
 import 'package:flutter/material.dart';
@@ -5,7 +6,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:go_router/go_router.dart';
 import 'package:re_view_front/app/router/route_paths.dart';
-import 'package:re_view_front/app/theme/app_theme.dart';
 import 'package:re_view_front/core/error/failure.dart';
 import 'package:re_view_front/core/result/result.dart';
 import 'package:re_view_front/features/home/domain/entities/dashboard_product.dart';
@@ -13,9 +13,19 @@ import 'package:re_view_front/features/home/domain/entities/dashboard_summary.da
 import 'package:re_view_front/features/home/domain/repositories/home_repository.dart';
 import 'package:re_view_front/features/home/domain/usecases/get_home_dashboard_use_case.dart';
 import 'package:re_view_front/features/home/presentation/pages/home_page.dart';
+import 'package:re_view_front/features/home/presentation/widgets/home/home_category_sheet.dart';
+import 'package:re_view_front/features/search/presentation/view_models/search_results_state.dart';
 import 'package:re_view_front/features/home/presentation/providers/home_providers.dart';
 import 'package:re_view_front/features/home/presentation/widgets/home/banners/hero_banner_carousel.dart';
+import 'package:re_view_front/features/home/presentation/widgets/home/brand/home_logo.dart';
+import 'package:re_view_front/features/search/domain/entities/search_response.dart';
+import 'package:re_view_front/features/search/domain/repositories/search_repository.dart';
+import 'package:re_view_front/features/search/domain/usecases/search_products_use_case.dart';
 import 'package:re_view_front/features/search/presentation/pages/search_results_page.dart';
+import 'package:re_view_front/features/search/presentation/providers/search_providers.dart';
+import 'package:re_view_front/shared/widgets/product_card_skeleton.dart';
+
+import '../../../../helpers/pump_app.dart';
 
 void main() {
   late GoRouter router;
@@ -29,43 +39,137 @@ void main() {
     router = GoRouter(
       initialLocation: RoutePaths.home,
       routes: [
-        GoRoute(
-          path: RoutePaths.home,
-          builder: (context, state) => const HomePage(),
-        ),
-        GoRoute(
-          path: RoutePaths.login,
-          builder: (context, state) => const Scaffold(body: Text('login page')),
-        ),
-        GoRoute(
-          path: RoutePaths.signup,
-          builder: (context, state) =>
-              const Scaffold(body: Text('signup page')),
-        ),
-        GoRoute(
-          path: RoutePaths.search,
-          name: RouteNames.search,
-          builder: (context, state) =>
-              SearchResultsPage(query: state.uri.queryParameters['q'] ?? ''),
+        ShellRoute(
+          builder: (context, state, child) =>
+              AppShell(uri: state.uri, child: child),
+          routes: [
+            GoRoute(
+              path: RoutePaths.home,
+              builder: (context, state) => const HomePage(),
+            ),
+            GoRoute(
+              path: RoutePaths.login,
+              builder: (context, state) =>
+                  const Scaffold(body: Text('login page')),
+            ),
+            GoRoute(
+              path: RoutePaths.signup,
+              builder: (context, state) =>
+                  const Scaffold(body: Text('signup page')),
+            ),
+            GoRoute(
+              path: RoutePaths.search,
+              name: RouteNames.search,
+              builder: (context, state) => SearchResultsPage(
+                query: state.uri.queryParameters['q'] ?? '',
+                categoryId: state.uri.queryParameters['categoryId'],
+                categoryLabel: state.uri.queryParameters['category'],
+                initialSort: SearchSortOption.values
+                    .where(
+                      (sort) => sort.name == state.uri.queryParameters['sort'],
+                    )
+                    .firstOrNull,
+              ),
+            ),
+          ],
         ),
       ],
     );
+    addTearDown(router.dispose);
 
     return ProviderScope(
       overrides: [
+        searchRepositoryProvider.overrideWithValue(_SearchRepositoryFake()),
         getHomeDashboardUseCaseProvider.overrideWithValue(
           GetHomeDashboardUseCase(_HomeRepositoryFake(result, pending)),
         ),
       ],
-      child: MaterialApp.router(theme: AppTheme.light, routerConfig: router),
+      child: localizedApp(router: router),
     );
   }
+
+  testWidgets(
+    'mobile category tab opens selection from a scrolled page and navigates a leaf',
+    (tester) async {
+      tester.view.physicalSize = const Size(390, 850);
+      tester.view.devicePixelRatio = 1;
+      addTearDown(tester.view.resetPhysicalSize);
+      addTearDown(tester.view.resetDevicePixelRatio);
+      await tester.pumpWidget(buildSubject());
+      await tester.pumpAndSettle();
+      await tester.drag(find.byType(CustomScrollView), const Offset(0, -1500));
+      await tester.pumpAndSettle();
+      await tester.tap(find.text('카테고리').hitTestable());
+      await tester.pumpAndSettle();
+      expect(find.byType(HomeCategorySheet), findsOneWidget);
+      for (final label in ['뷰티', '스킨케어']) {
+        final target = find.descendant(
+          of: find.byType(HomeCategorySheet),
+          matching: find.text(label),
+        );
+        await tester.ensureVisible(target);
+        await tester.tap(target);
+        await tester.pumpAndSettle();
+      }
+      final leaf = find.descendant(
+        of: find.byType(HomeCategorySheet),
+        matching: find.text('선케어'),
+      );
+      await tester.ensureVisible(leaf);
+      await tester.tap(leaf);
+      await tester.pumpAndSettle();
+      expect(find.byType(HomeCategorySheet), findsNothing);
+      expect(
+        router.routeInformationProvider.value.uri.queryParameters['categoryId'],
+        'suncare',
+      );
+      expect(
+        router.routeInformationProvider.value.uri.queryParameters['category'],
+        '선케어',
+      );
+      expect(find.byType(SearchResultsPage), findsOneWidget);
+      expect(tester.takeException(), isNull);
+    },
+  );
+
+  testWidgets(
+    'narrow category sheet dismisses safely and all products initiates catalog search',
+    (tester) async {
+      tester.view.physicalSize = const Size(320, 640);
+      tester.view.devicePixelRatio = 1;
+      addTearDown(tester.view.resetPhysicalSize);
+      addTearDown(tester.view.resetDevicePixelRatio);
+      await tester.pumpWidget(buildSubject());
+      await tester.pumpAndSettle();
+      await tester.tap(find.text('카테고리').hitTestable());
+      await tester.pumpAndSettle();
+      expect(find.byType(HomeCategorySheet), findsOneWidget);
+      await tester.tap(find.byIcon(Icons.close));
+      await tester.pumpAndSettle();
+      expect(router.routeInformationProvider.value.uri.path, RoutePaths.home);
+      await tester.tap(find.text('카테고리').hitTestable());
+      await tester.pumpAndSettle();
+      await tester.tap(
+        find.descendant(
+          of: find.byType(HomeCategorySheet),
+          matching: find.text('전체보기'),
+        ),
+      );
+      await tester.pumpAndSettle();
+      expect(router.routeInformationProvider.value.uri.path, RoutePaths.search);
+      expect(router.routeInformationProvider.value.uri.queryParameters, {
+        'sort': 'accuracy',
+      });
+      expect(find.byType(SearchResultsPage), findsOneWidget);
+      expect(tester.takeException(), isNull);
+    },
+  );
 
   testWidgets('renders home hero and RTI sections', (tester) async {
     await tester.pumpWidget(buildSubject());
     await tester.pumpAndSettle();
 
-    expect(find.text('Re:view'), findsOneWidget);
+    expect(find.byType(HomeLogo), findsOneWidget);
     expect(find.byType(HeroBannerCarousel), findsOneWidget);
     expect(find.byType(Image), findsWidgets);
     expect(find.text('Re:view가 더 믿을 수 있는 이유'), findsOneWidget);
@@ -81,7 +185,7 @@ void main() {
   ) async {
     await tester.pumpWidget(buildSubject(pending: true));
 
-    expect(find.text('홈 데이터를 불러오는 중입니다.'), findsOneWidget);
+    expect(find.byType(ProductCardGridSkeleton), findsNWidgets(2));
   });
 
   testWidgets('renders retry UI when dashboard load fails', (tester) async {
@@ -106,6 +210,8 @@ void main() {
     await tester.pumpAndSettle();
 
     final benefitCta = find.text('혜택 받기').first;
+    await tester.ensureVisible(benefitCta);
+    await tester.pumpAndSettle();
     await tester.tap(benefitCta);
     await tester.pumpAndSettle();
 
@@ -117,7 +223,7 @@ void main() {
     await tester.pumpWidget(buildSubject());
     await tester.pumpAndSettle();
 
-    await tester.tap(find.text('로그인').first);
+    await tester.tap(find.byTooltip('로그인'));
     await tester.pumpAndSettle();
 
     expect(router.routeInformationProvider.value.uri.path, RoutePaths.login);
@@ -138,7 +244,8 @@ void main() {
       '크림',
     );
     expect(find.text('크림'), findsWidgets);
-    expect(find.text('검색 결과'), findsWidgets);
+    expect(find.byType(SearchResultsPage), findsOneWidget);
+    expect(find.text('검색 결과가 없어요'), findsOneWidget);
   });
 
   testWidgets('shows RTI search panel with two dashboard products on focus', (
@@ -198,7 +305,8 @@ void main() {
       const ValueKey('search-suggestion-product-1'),
     );
 
-    expect(find.text('인기 검색 추천상품'), findsOneWidget);
+    expect(find.text('인기 검색'), findsWidgets);
+    expect(find.text('추천 상품'), findsOneWidget);
     expect(firstSuggestion, findsOneWidget);
     expect(secondSuggestion, findsOneWidget);
     expect(
@@ -256,5 +364,12 @@ class _HomeRepositoryFake implements HomeRepository {
     }
 
     return result;
+  }
+}
+
+class _SearchRepositoryFake implements SearchRepository {
+  @override
+  Future<Result<SearchResponse>> searchProducts(SearchParams params) async {
+    return const Success(SearchResponse(products: [], totalCount: 0));
   }
 }

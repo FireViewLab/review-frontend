@@ -19,6 +19,7 @@ class ProductDetailSuccess extends ProductDetailState {
     required this.reviews,
     required this.reviewInsight,
     required this.similarProducts,
+    this.viewRecorded = false,
     this.isAnalyzing = false,
     this.safeCount = 0,
     this.warnCount = 0,
@@ -30,6 +31,7 @@ class ProductDetailSuccess extends ProductDetailState {
   final List<ProductReview> reviews;
   final ReviewInsight reviewInsight;
   final List<SimilarProduct> similarProducts;
+  final bool viewRecorded;
   final bool isAnalyzing;
   final int safeCount;
   final int warnCount;
@@ -48,6 +50,11 @@ class ProductDetailSuccess extends ProductDetailState {
   }) {
     final updatedDetail = (rtiSummary != null || trustSignals != null)
         ? ProductDetail(
+            summary: detail.summary,
+            externalId: detail.externalId,
+            dataPlatform: detail.dataPlatform,
+            dataProductId: detail.dataProductId,
+            subCategory: detail.subCategory,
             id: detail.id,
             name: detail.name,
             brand: detail.brand,
@@ -74,6 +81,7 @@ class ProductDetailSuccess extends ProductDetailState {
         : detail;
     return ProductDetailSuccess(
       detail: updatedDetail,
+      viewRecorded: viewRecorded,
       reviews: reviews ?? this.reviews,
       reviewInsight: reviewInsight,
       similarProducts: similarProducts,

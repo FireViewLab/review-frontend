@@ -3,7 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:go_router/go_router.dart';
 import 'package:re_view_front/app/router/route_paths.dart';
-import 'package:re_view_front/app/theme/app_theme.dart';
+import 'package:re_view_front/core/providers/core_providers.dart';
 import 'package:re_view_front/core/result/result.dart';
 import 'package:re_view_front/features/home/domain/entities/dashboard_summary.dart';
 import 'package:re_view_front/features/home/domain/repositories/home_repository.dart';
@@ -11,7 +11,10 @@ import 'package:re_view_front/features/home/domain/usecases/get_home_dashboard_u
 import 'package:re_view_front/features/home/presentation/pages/home_page.dart';
 import 'package:re_view_front/features/home/presentation/providers/home_providers.dart';
 import 'package:re_view_front/features/landing/presentation/pages/landing_page.dart';
-import 'package:re_view_front/shared/widgets/app_network_image.dart';
+import 'package:re_view_front/features/landing/presentation/providers/landing_providers.dart';
+
+import '../../../../helpers/landing_data.dart';
+import '../../../../helpers/pump_app.dart';
 
 void main() {
   Widget buildSubject() {
@@ -33,20 +36,26 @@ void main() {
         ),
       ],
     );
+    addTearDown(router.dispose);
 
     return ProviderScope(
       overrides: [
+        apiClientProvider.overrideWith((ref) {
+          throw StateError('Unexpected API access in landing test');
+        }),
+        landingDataProvider.overrideWith(
+          (ref) async => (stats: landingStats, featuredProduct: null),
+        ),
         getHomeDashboardUseCaseProvider.overrideWithValue(
           GetHomeDashboardUseCase(_HomeRepositoryFake()),
         ),
       ],
-      child: MaterialApp.router(theme: AppTheme.light, routerConfig: router),
+      child: localizedApp(router: router),
     );
   }
 
   testWidgets('uses a lighter backdrop overlay', (tester) async {
-    await tester.pumpWidget(buildSubject());
-    await tester.pumpAndSettle();
+    await pumpApp(tester, buildSubject());
 
     expect(
       find.byWidgetPredicate(
@@ -57,22 +66,20 @@ void main() {
     );
   });
 
-  testWidgets('clips the background home page behind the landing card', (
+  testWidgets('shows a static home preview instead of building HomePage', (
     tester,
   ) async {
-    await tester.pumpWidget(buildSubject());
-    await tester.pumpAndSettle();
+    await pumpApp(tester, buildSubject());
 
-    final homePage = find.byType(HomePage);
-    expect(homePage, findsOneWidget);
+    expect(find.byType(HomePage), findsNothing);
     expect(
-      find.ancestor(of: homePage, matching: find.byType(ClipRect)),
-      findsOneWidget,
-    );
-    expect(
-      find.ancestor(
-        of: homePage,
-        matching: find.byType(AppNetworkImagePlaceholderScope),
+      find.byWidgetPredicate(
+        (widget) =>
+            widget is Image &&
+            widget.image is AssetImage &&
+            (widget.image as AssetImage).assetName.startsWith(
+              'assets/images/landing/home_',
+            ),
       ),
       findsOneWidget,
     );

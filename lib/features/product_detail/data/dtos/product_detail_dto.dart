@@ -1,3 +1,6 @@
+import 'package:re_view_front/core/utils/product_image_urls.dart';
+import 'package:re_view_front/features/external_product/data/dtos/product_summary_dto.dart';
+import 'package:re_view_front/features/external_product/domain/entities/product_summary.dart';
 import 'package:re_view_front/features/category/domain/entities/product_category_resolver.dart';
 import 'package:re_view_front/features/product_detail/domain/entities/product_detail.dart';
 import 'package:re_view_front/features/product_detail/domain/entities/product_review.dart';
@@ -19,7 +22,20 @@ class ProductDetailDto {
     required this.lowestPrice,
     required this.lowestPlatform,
     required this.platforms,
+    this.imageUrls = const [],
+    this.summary,
+    this.externalId,
+    this.dataPlatform,
+    this.dataProductId,
+    this.subCategory,
   });
+
+  final List<String> imageUrls;
+  final ProductSummary? summary;
+  final String? externalId;
+  final String? dataPlatform;
+  final String? dataProductId;
+  final String? subCategory;
 
   final int id;
   final String name;
@@ -28,18 +44,24 @@ class ProductDetailDto {
   final String category;
   final String categoryDisplayName;
   final String? platform;
-  final double avgRti;
-  final String rtiGrade;
-  final String rtiColor;
-  final int reviewCount;
-  final double avgRating;
+  final double? avgRti;
+  final String? rtiGrade;
+  final String? rtiColor;
+  final int? reviewCount;
+  final double? avgRating;
   final int? lowestPrice;
   final String? lowestPlatform;
-  final List<_PlatformEntry> platforms;
+  final List<PlatformEntry> platforms;
 
   factory ProductDetailDto.fromJson(Map<String, dynamic> json) {
     final rawPlatforms = json['platforms'] as List? ?? [];
     return ProductDetailDto(
+      imageUrls: readProductImages(json),
+      summary: ProductSummaryDto.fromJson(json),
+      externalId: json['externalId'] as String?,
+      dataPlatform: json['dataPlatform'] as String?,
+      dataProductId: json['dataProductId']?.toString(),
+      subCategory: json['subCategory'] as String?,
       id: (json['id'] as num).toInt(),
       name: (json['name'] ?? json['title']) as String? ?? '',
       imageUrl: json['imageUrl'] as String?,
@@ -47,33 +69,42 @@ class ProductDetailDto {
       category: json['category'] as String? ?? '',
       categoryDisplayName: json['categoryDisplayName'] as String? ?? '',
       platform: json['platform'] as String?,
-      avgRti: (json['avgRti'] as num?)?.toDouble() ?? 0.0,
-      rtiGrade: json['rtiGrade'] as String? ?? 'SAFE',
-      rtiColor: json['rtiColor'] as String? ?? '#22C55E',
-      reviewCount: (json['reviewCount'] as num?)?.toInt() ?? 0,
-      avgRating: (json['avgRating'] as num?)?.toDouble() ?? 0.0,
+      avgRti: (json['avgRti'] as num?)?.toDouble(),
+      rtiGrade: json['rtiGrade'] as String?,
+      rtiColor: json['rtiColor'] as String?,
+      reviewCount: (json['reviewCount'] as num?)?.toInt(),
+      avgRating: (json['avgRating'] as num?)?.toDouble(),
       lowestPrice: (json['lowestPrice'] as num?)?.toInt(),
       lowestPlatform: json['lowestPlatform'] as String?,
       platforms: rawPlatforms
-          .map((e) => _PlatformEntry.fromJson(e as Map<String, dynamic>))
+          .map((e) => PlatformEntry.fromJson(e as Map<String, dynamic>))
           .toList(),
     );
   }
 
   ProductDetail toEntity() {
     final comparisons = _buildPriceComparisons();
-    final normalizedDisplayName = normalizedCategoryLabel(
-      category: category,
-      categoryDisplayName: categoryDisplayName,
-      productName: name,
-    );
+    final normalizedDisplayName =
+        subCategory ??
+        (category.isEmpty
+            ? categoryDisplayName
+            : normalizedCategoryLabel(
+                category: category,
+                categoryDisplayName: categoryDisplayName,
+                productName: name,
+              ));
     return ProductDetail(
+      summary: summary,
+      externalId: externalId,
+      dataPlatform: dataPlatform,
+      dataProductId: dataProductId,
+      subCategory: subCategory,
       id: id,
       name: name,
       brand: '',
       sellerName: platform,
       isOfficialSeller: false,
-      imageUrls: imageUrl != null ? [imageUrl!] : [],
+      imageUrls: productImageUrls(primary: imageUrl, additional: imageUrls),
       price: lowestPrice ?? price,
       deliveryInfo: null,
       category: category,
@@ -135,21 +166,27 @@ class ProductDetailDto {
       };
 
   List<String> _deriveBreadcrumbs() {
-    final normalizedDisplayName = normalizedCategoryLabel(
-      category: category,
-      categoryDisplayName: categoryDisplayName,
-      productName: name,
-    );
+    final normalizedDisplayName =
+        subCategory ??
+        (category.isEmpty
+            ? categoryDisplayName
+            : normalizedCategoryLabel(
+                category: category,
+                categoryDisplayName: categoryDisplayName,
+                productName: name,
+              ));
     return [
       if (normalizedDisplayName.isNotEmpty) normalizedDisplayName,
       if (name.isNotEmpty) name,
     ];
   }
 
-  RtiSummary _deriveRtiSummary() {
-    final label = _gradeLabel(rtiGrade);
+  RtiSummary? _deriveRtiSummary() {
+    if (avgRti == null) return null;
+    final label = rtiGrade == null ? '' : _gradeLabel(rtiGrade!);
     return RtiSummary(
-      rtiScore: avgRti.round(),
+      hasReviewMetrics: false,
+      rtiScore: avgRti!.round(),
       rtiLabel: label,
       rtiSubLabel: 'AI 분석 결과',
       realReviewRatio: 0.0,
@@ -159,7 +196,7 @@ class ProductDetailDto {
       repetitionRatio: 0.0,
       repetitionLabel: '집계 중',
       summaryMessage: '$reviewCount개 리뷰 기반 RTI 분석 결과입니다.',
-      analyzedReviewCount: reviewCount,
+      analyzedReviewCount: reviewCount ?? 0,
     );
   }
 
@@ -171,8 +208,8 @@ class ProductDetailDto {
   };
 }
 
-class _PlatformEntry {
-  const _PlatformEntry({
+class PlatformEntry {
+  const PlatformEntry({
     required this.platform,
     required this.price,
     required this.url,
@@ -182,8 +219,8 @@ class _PlatformEntry {
   final int price;
   final String url;
 
-  factory _PlatformEntry.fromJson(Map<String, dynamic> json) {
-    return _PlatformEntry(
+  factory PlatformEntry.fromJson(Map<String, dynamic> json) {
+    return PlatformEntry(
       platform: json['platform'] as String? ?? '',
       price: (json['price'] as num?)?.toInt() ?? 0,
       url: json['url'] as String? ?? '',
@@ -193,6 +230,8 @@ class _PlatformEntry {
 
 class ProductReviewDto {
   const ProductReviewDto({
+    this.helpfulCount,
+    this.imageUrls = const [],
     required this.id,
     required this.reviewerNickname,
     required this.content,
@@ -206,34 +245,41 @@ class ProductReviewDto {
     required this.isVerifiedPurchase,
   });
 
+  final int? helpfulCount;
+  final List<String> imageUrls;
   final int id;
   final String reviewerNickname;
   final String content;
   final double rating;
-  final int rtiScore;
-  final String trustGrade;
-  final String trustGradeLabel;
-  final String trustGradeColor;
+  final int? rtiScore;
+  final String? trustGrade;
+  final String? trustGradeLabel;
+  final String? trustGradeColor;
   final List<String> reasons;
   final String writtenAt;
   final bool isVerifiedPurchase;
 
   factory ProductReviewDto.fromJson(Map<String, dynamic> json) {
+    final images = json['imageUrls'] ?? json['images'];
     return ProductReviewDto(
+      helpfulCount: (json['helpfulCount'] as num?)?.toInt(),
+      imageUrls: [
+        if (images is List)
+          for (final image in images)
+            if (image is String && image.trim().isNotEmpty) image.trim(),
+      ],
       id: (json['id'] as num).toInt(),
       reviewerNickname:
           (json['reviewerNickname'] ?? json['authorName']) as String? ?? '',
       content: json['content'] as String? ?? '',
       rating: (json['rating'] as num?)?.toDouble() ?? 0.0,
       rtiScore:
-          (((json['reviewerAtiScore'] ?? json['rtiScore'] ?? json['rti'])
-                          as num?)
-                      ?.toDouble() ??
-                  0.0)
-              .round(),
-      trustGrade: json['trustGrade'] as String? ?? '',
-      trustGradeLabel: json['trustGradeLabel'] as String? ?? '',
-      trustGradeColor: json['trustGradeColor'] as String? ?? '',
+          ((json['reviewerAtiScore'] ?? json['rtiScore'] ?? json['rti'])
+                  as num?)
+              ?.round(),
+      trustGrade: json['trustGrade'] as String?,
+      trustGradeLabel: json['trustGradeLabel'] as String?,
+      trustGradeColor: json['trustGradeColor'] as String?,
       reasons: List<String>.from(json['reasons'] as List? ?? []),
       writtenAt: (json['writtenAt'] ?? json['createdAt']) as String? ?? '',
       isVerifiedPurchase: json['isVerifiedPurchase'] as bool? ?? false,
@@ -257,7 +303,8 @@ class ProductReviewDto {
       rtiScore: rtiScore,
       rtiColor: trustGradeColor,
       rtiLabel: trustGradeLabel,
-      imageUrls: const [],
+      helpfulCount: helpfulCount,
+      imageUrls: imageUrls,
       reasons: reasons,
     );
   }

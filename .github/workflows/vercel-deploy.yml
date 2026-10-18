@@ -1,94 +1,89 @@
-name: Deploy Flutter Web to Vercel
+name: Validate Flutter Web and Final Deployment
 
 on:
   push:
-    branches:
-      - develop
+    branches: [develop]
   pull_request:
-    branches:
-      - develop
+    branches: [develop]
+  workflow_dispatch:
+    inputs:
+      commit_sha:
+        description: Final reviewed origin/develop SHA (40 characters)
+        required: true
+        type: string
+
+concurrency:
+  group: web-${{ github.event_name }}-${{ github.ref }}
+  cancel-in-progress: false
+
+permissions:
+  contents: read
 
 jobs:
+  # Keep the historical check name; it now validates without a Vercel deployment.
   deploy-preview:
-    if: github.event_name == 'pull_request'
+    if: github.event_name != 'workflow_dispatch'
     runs-on: ubuntu-latest
-
-    env:
-      VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
-      VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
-
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-
       - name: Setup Flutter
         uses: subosito/flutter-action@v2
         with:
-          channel: stable
+          flutter-version: '3.44.2'
           cache: true
-
       - name: Install dependencies
         run: flutter pub get
-
+      - name: Analyze Flutter (existing infos remain non-fatal)
+        run: flutter analyze --no-fatal-infos
       - name: Build Flutter Web
         run: flutter build web --release
-
-      - name: Copy Vercel config to build output
-        run: |
-          cat > build/web/vercel.json << 'EOF'
-          {
-            "rewrites": [
-              { "source": "/api/:path*", "destination": "https://api.beens.kr/api/:path*" },
-              { "source": "/oauth2/:path*", "destination": "https://api.beens.kr/oauth2/:path*" },
-              { "source": "/(.*)", "destination": "/index.html" }
-            ]
-          }
-          EOF
-
-      - name: Install Vercel CLI
-        run: npm install --global vercel@latest
-
-      - name: Deploy Preview to Vercel
-        run: vercel deploy build/web --token=${{ secrets.VERCEL_TOKEN }} --yes
+      - name: Check whitespace
+        run: git diff --check
 
   deploy-production:
-    if: github.event_name == 'push'
+    if: github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/develop'
     runs-on: ubuntu-latest
-
     env:
       VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
       VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
-
+      FINAL_COMMIT_SHA: ${{ inputs.commit_sha }}
     steps:
-      - name: Checkout
+      - name: Checkout final develop
         uses: actions/checkout@v4
-
+        with:
+          ref: develop
+          fetch-depth: 0
+      - name: Verify final SHA before building
+        shell: bash
+        run: |
+          set -euo pipefail
+          [[ "$FINAL_COMMIT_SHA" =~ ^[0-9a-f]{40}$ ]]
+          git fetch origin develop
+          test "$(git rev-parse HEAD)" = "$FINAL_COMMIT_SHA"
+          test "$(git rev-parse origin/develop)" = "$FINAL_COMMIT_SHA"
       - name: Setup Flutter
         uses: subosito/flutter-action@v2
         with:
-          channel: stable
+          flutter-version: '3.44.2'
           cache: true
-
       - name: Install dependencies
         run: flutter pub get
-
-      - name: Build Flutter Web
-        run: flutter build web --release
-
-      - name: Copy Vercel config to build output
+      - name: Analyze Flutter (existing infos remain non-fatal)
+        run: flutter analyze --no-fatal-infos
+      - name: Build Flutter Web and SHA marker
         run: |
-          cat > build/web/vercel.json << 'EOF'
-          {
-            "rewrites": [
-              { "source": "/api/:path*", "destination": "https://api.beens.kr/api/:path*" },
-              { "source": "/oauth2/:path*", "destination": "https://api.beens.kr/oauth2/:path*" },
-              { "source": "/(.*)", "destination": "/index.html" }
-            ]
-          }
-          EOF
-
+          flutter build web --release
+          bash scripts/write-deployment-marker.sh
+      - name: Verify final SHA before deployment
+        shell: bash
+        run: |
+          set -euo pipefail
+          git fetch origin develop
+          test "$(git rev-parse origin/develop)" = "$FINAL_COMMIT_SHA"
       - name: Install Vercel CLI
-        run: npm install --global vercel@latest
-
-      - name: Deploy Production to Vercel
-        run: vercel deploy build/web --prod --token=${{ secrets.VERCEL_TOKEN }} --yes
+        run: npm install --global vercel@62.5.0
+      - name: Deploy final production once
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+        run: vercel deploy build/web --prod --token="$VERCEL_TOKEN" --yes

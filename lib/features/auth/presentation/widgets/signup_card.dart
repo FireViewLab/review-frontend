@@ -1,3 +1,4 @@
+import 'package:re_view_front/l10n/generated/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:re_view_front/app/theme/app_colors.dart';
 import 'package:re_view_front/app/theme/app_spacing.dart';
@@ -82,7 +83,7 @@ class _SignupCardState extends State<SignupCard> {
           border: Border.all(color: AppColors.border),
           boxShadow: const [
             BoxShadow(
-              color: Color(0x1A0F172A),
+              color: AppColors.shadow,
               blurRadius: 42,
               offset: Offset(0, 24),
             ),
@@ -103,7 +104,7 @@ class _SignupCardState extends State<SignupCard> {
               ),
               const SizedBox(height: AppSpacing.xs),
               Text(
-                '회원가입',
+                AppLocalizations.of(context).authSignup,
                 style: Theme.of(context).textTheme.headlineSmall?.copyWith(
                   color: AppColors.textPrimary,
                   fontWeight: FontWeight.w900,
@@ -111,7 +112,7 @@ class _SignupCardState extends State<SignupCard> {
               ),
               const SizedBox(height: AppSpacing.xs),
               Text(
-                'Re:view 계정을 만들고 저장 상품, 신뢰 필터, 알림 설정을 시작하세요.',
+                AppLocalizations.of(context).authSignupDescription,
                 style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                   color: AppColors.textSecondary,
                   height: 1.55,
@@ -120,8 +121,8 @@ class _SignupCardState extends State<SignupCard> {
               const SizedBox(height: AppSpacing.md),
               _SignupInputField(
                 controller: widget.nameController,
-                label: '이름',
-                hintText: '이름을 입력하세요',
+                label: AppLocalizations.of(context).authName,
+                hintText: AppLocalizations.of(context).authNameHint,
                 prefixIcon: Icons.person_outline,
                 textInputAction: TextInputAction.next,
                 errorText: widget.nameError,
@@ -130,8 +131,8 @@ class _SignupCardState extends State<SignupCard> {
               const SizedBox(height: AppSpacing.sm),
               _SignupInputField(
                 controller: widget.emailController,
-                label: '이메일',
-                hintText: '이메일을 입력하세요',
+                label: AppLocalizations.of(context).authEmail,
+                hintText: AppLocalizations.of(context).authEmailHint,
                 keyboardType: TextInputType.emailAddress,
                 textInputAction: TextInputAction.next,
                 prefixIcon: Icons.mail_outline,
@@ -142,28 +143,31 @@ class _SignupCardState extends State<SignupCard> {
               const SizedBox(height: AppSpacing.sm),
               _SignupInputField(
                 controller: widget.passwordController,
-                label: '비밀번호',
-                hintText: '비밀번호를 입력하세요',
+                label: AppLocalizations.of(context).authPassword,
+                hintText: AppLocalizations.of(context).authPasswordHint,
                 obscureText: widget.obscurePassword,
                 textInputAction: TextInputAction.next,
                 prefixIcon: Icons.lock_outline,
                 errorText: widget.passwordError,
-                helperText: '영문, 숫자, 특수문자를 포함해 8자 이상으로 설정해주세요.',
+                helperText: AppLocalizations.of(context).authPasswordGuidance,
                 focusNode: _passwordFocusNode,
                 onSubmitted: () => _passwordConfirmFocusNode.requestFocus(),
                 trailing: TextButton(
-                  onPressed:
-                      widget.isLoading
-                          ? null
-                          : widget.onPasswordVisibilityPressed,
-                  child: Text(widget.obscurePassword ? '보기' : '숨김'),
+                  onPressed: widget.isLoading
+                      ? null
+                      : widget.onPasswordVisibilityPressed,
+                  child: Text(
+                    widget.obscurePassword
+                        ? AppLocalizations.of(context).authShow
+                        : AppLocalizations.of(context).authHide,
+                  ),
                 ),
               ),
               const SizedBox(height: AppSpacing.sm),
               _SignupInputField(
                 controller: widget.passwordConfirmController,
-                label: '비밀번호 확인',
-                hintText: '비밀번호를 한 번 더 입력하세요',
+                label: AppLocalizations.of(context).authConfirmPassword,
+                hintText: AppLocalizations.of(context).authConfirmPasswordHint,
                 obscureText: widget.obscurePasswordConfirm,
                 textInputAction: TextInputAction.done,
                 prefixIcon: Icons.check,
@@ -171,11 +175,14 @@ class _SignupCardState extends State<SignupCard> {
                 focusNode: _passwordConfirmFocusNode,
                 onSubmitted: widget.isLoading ? null : widget.onSignupPressed,
                 trailing: TextButton(
-                  onPressed:
-                      widget.isLoading
-                          ? null
-                          : widget.onPasswordConfirmVisibilityPressed,
-                  child: Text(widget.obscurePasswordConfirm ? '보기' : '숨김'),
+                  onPressed: widget.isLoading
+                      ? null
+                      : widget.onPasswordConfirmVisibilityPressed,
+                  child: Text(
+                    widget.obscurePasswordConfirm
+                        ? AppLocalizations.of(context).authShow
+                        : AppLocalizations.of(context).authHide,
+                  ),
                 ),
               ),
               const SizedBox(height: AppSpacing.md),
@@ -195,13 +202,12 @@ class _SignupCardState extends State<SignupCard> {
               SizedBox(
                 height: 58,
                 child: FilledButton(
-                  onPressed:
-                      widget.isLoading ? null : widget.onSignupPressed,
+                  onPressed: widget.isLoading ? null : widget.onSignupPressed,
                   style: FilledButton.styleFrom(
                     backgroundColor: AppColors.primaryDark,
                     foregroundColor: AppColors.onPrimary,
                     shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(16),
+                      borderRadius: AppRadius.large,
                     ),
                   ),
                   child: widget.isLoading
@@ -212,30 +218,28 @@ class _SignupCardState extends State<SignupCard> {
                             color: AppColors.onPrimary,
                           ),
                         )
-                      : const Text('회원가입하고 온보딩 시작'),
+                      : Text(AppLocalizations.of(context).authSignupOnboarding),
                 ),
               ),
               const SizedBox(height: AppSpacing.sm),
               const _NextStepNotice(),
               const SizedBox(height: AppSpacing.md),
-              const _DividerLabel(label: '또는'),
+              _DividerLabel(label: AppLocalizations.of(context).authOr),
               const SizedBox(height: AppSpacing.md),
               _SocialSignupButton(
-                label: '네이버 계정으로 가입하기',
+                label: AppLocalizations.of(context).authSignupNaver,
                 mark: 'N',
-                onPressed:
-                    widget.isLoading || widget.onOAuthPressed == null
-                        ? null
-                        : () => widget.onOAuthPressed!(OAuthProvider.naver),
+                onPressed: widget.isLoading || widget.onOAuthPressed == null
+                    ? null
+                    : () => widget.onOAuthPressed!(OAuthProvider.naver),
               ),
               const SizedBox(height: AppSpacing.sm),
               _SocialSignupButton(
-                label: 'Google 계정으로 가입하기',
+                label: AppLocalizations.of(context).authSignupGoogle,
                 mark: 'G',
-                onPressed:
-                    widget.isLoading || widget.onOAuthPressed == null
-                        ? null
-                        : () => widget.onOAuthPressed!(OAuthProvider.google),
+                onPressed: widget.isLoading || widget.onOAuthPressed == null
+                    ? null
+                    : () => widget.onOAuthPressed!(OAuthProvider.google),
               ),
               const SizedBox(height: AppSpacing.md),
               const Divider(height: 1),
@@ -244,14 +248,14 @@ class _SignupCardState extends State<SignupCard> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
-                    '이미 계정이 있나요?',
+                    AppLocalizations.of(context).authHasAccount,
                     style: Theme.of(context).textTheme.labelMedium?.copyWith(
                       color: AppColors.textSecondary,
                     ),
                   ),
                   TextButton(
                     onPressed: widget.onLoginPressed,
-                    child: const Text('로그인하기'),
+                    child: Text(AppLocalizations.of(context).authLoginAction),
                   ),
                 ],
               ),
@@ -313,8 +317,7 @@ class _SignupInputField extends StatelessWidget {
             keyboardType: keyboardType,
             textInputAction: textInputAction,
             obscureText: obscureText,
-            onSubmitted:
-                onSubmitted != null ? (_) => onSubmitted!() : null,
+            onSubmitted: onSubmitted != null ? (_) => onSubmitted!() : null,
             decoration: InputDecoration(
               hintText: hintText,
               errorText: errorText,
@@ -327,15 +330,15 @@ class _SignupInputField extends StatelessWidget {
                 vertical: AppSpacing.md,
               ),
               border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(16),
+                borderRadius: AppRadius.large,
                 borderSide: const BorderSide(color: AppColors.border),
               ),
               enabledBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(16),
+                borderRadius: AppRadius.large,
                 borderSide: const BorderSide(color: AppColors.border),
               ),
               focusedBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(16),
+                borderRadius: AppRadius.large,
                 borderSide: const BorderSide(
                   color: AppColors.primary,
                   width: 1.4,
@@ -381,7 +384,7 @@ class _AgreementBox extends StatelessWidget {
     return DecoratedBox(
       decoration: BoxDecoration(
         color: AppColors.surface,
-        borderRadius: BorderRadius.circular(16),
+        borderRadius: AppRadius.large,
         border: Border.all(color: AppColors.border),
       ),
       child: Padding(
@@ -396,7 +399,7 @@ class _AgreementBox extends StatelessWidget {
               dense: true,
               controlAffinity: ListTileControlAffinity.leading,
               title: Text(
-                '이용약관 및 개인정보처리방침에 동의합니다. (필수)',
+                AppLocalizations.of(context).authTermsConsent,
                 style: Theme.of(context).textTheme.labelMedium?.copyWith(
                   color: AppColors.textPrimary,
                   fontWeight: FontWeight.w800,
@@ -411,7 +414,7 @@ class _AgreementBox extends StatelessWidget {
               dense: true,
               controlAffinity: ListTileControlAffinity.leading,
               title: Text(
-                '저장 상품 알림과 신뢰도 변화 알림을 받겠습니다. (선택)',
+                AppLocalizations.of(context).authMarketingConsent,
                 style: Theme.of(context).textTheme.labelMedium?.copyWith(
                   color: AppColors.textSecondary,
                   fontWeight: FontWeight.w700,
@@ -489,7 +492,7 @@ class _NextStepNotice extends StatelessWidget {
     return DecoratedBox(
       decoration: BoxDecoration(
         color: AppColors.primaryLight,
-        borderRadius: BorderRadius.circular(16),
+        borderRadius: AppRadius.large,
         border: Border.all(color: const Color(0xFFCFE0FF)),
       ),
       child: Padding(
@@ -514,7 +517,7 @@ class _NextStepNotice extends StatelessWidget {
             const SizedBox(width: AppSpacing.sm),
             Expanded(
               child: Text(
-                '다음 단계는 온보딩입니다. 가입 후 관심 카테고리와 기본 RTI 필터를 설정합니다.',
+                AppLocalizations.of(context).authOnboardingNotice,
                 style: Theme.of(context).textTheme.bodySmall?.copyWith(
                   color: AppColors.textSecondary,
                   height: 1.45,
@@ -583,7 +586,7 @@ class _SocialSignupButton extends StatelessWidget {
             alignment: Alignment.center,
             decoration: BoxDecoration(
               color: AppColors.primaryLight,
-              borderRadius: BorderRadius.circular(8),
+              borderRadius: AppRadius.small,
             ),
             child: Text(
               mark,

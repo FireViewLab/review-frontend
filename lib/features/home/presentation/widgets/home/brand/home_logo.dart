@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:re_view_front/app/theme/app_spacing.dart';
 
 class HomeLogo extends StatelessWidget {
   const HomeLogo({this.onTap, super.key});
@@ -15,7 +16,7 @@ class HomeLogo extends StatelessWidget {
           child: Transform.scale(
             scale: 2,
             child: Image.asset(
-              'assets/images/home/brand/review_web_header_logo.png',
+              'assets/images/home/brand/review_web_header_logo.webp',
               height: 32,
               fit: BoxFit.contain,
             ),
@@ -29,7 +30,7 @@ class HomeLogo extends StatelessWidget {
     }
 
     return InkWell(
-      borderRadius: BorderRadius.circular(8),
+      borderRadius: AppRadius.small,
       onTap: onTap,
       child: Padding(
         padding: const EdgeInsets.symmetric(vertical: 4),

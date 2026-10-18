@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:re_view_front/app/theme/app_colors.dart';
 import 'package:re_view_front/app/theme/app_spacing.dart';
 import 'package:re_view_front/features/product_detail/domain/entities/product_detail.dart';
-import 'package:re_view_front/features/search/presentation/utils/search_formatters.dart';
+import 'package:re_view_front/shared/presentation/product_formatters.dart';
 
 class ProductInfoSection extends StatelessWidget {
   const ProductInfoSection({super.key, required this.detail});
@@ -16,7 +16,10 @@ class ProductInfoSection extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Row(
+        Wrap(
+          spacing: AppSpacing.sm,
+          runSpacing: AppSpacing.xs,
+          crossAxisAlignment: WrapCrossAlignment.center,
           children: [
             if (detail.sellerName != null && detail.sellerName!.isNotEmpty)
               Text(
@@ -30,8 +33,12 @@ class ProductInfoSection extends StatelessWidget {
               const SizedBox(width: AppSpacing.xs),
               _OfficialBadge(),
             ],
-            const Spacer(),
-            _RtiBadgeLarge(score: detail.avgRti.round(), color: rtiColor),
+            detail.avgRti == null
+                ? const Text('분석 전')
+                : _RtiBadgeLarge(
+                    score: detail.avgRti!.round(),
+                    color: rtiColor,
+                  ),
           ],
         ),
         const SizedBox(height: AppSpacing.xs),
@@ -39,11 +46,11 @@ class ProductInfoSection extends StatelessWidget {
           detail.name,
           style: Theme.of(context).textTheme.headlineSmall?.copyWith(
             color: AppColors.textPrimary,
-            fontWeight: FontWeight.w900,
-            height: 1.3,
+            fontWeight: FontWeight.w700,
+            height: 1.35,
           ),
         ),
-        const SizedBox(height: AppSpacing.xs),
+        const SizedBox(height: AppSpacing.sm),
         _RatingRow(detail: detail),
         const SizedBox(height: AppSpacing.md),
         _PriceRow(detail: detail),
@@ -136,45 +143,37 @@ class _RatingRow extends StatelessWidget {
       spacing: AppSpacing.xs,
       crossAxisAlignment: WrapCrossAlignment.center,
       children: [
-        Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            for (var i = 0; i < 5; i++)
-              Icon(
-                i < detail.avgRating.floor()
-                    ? Icons.star
-                    : (i < detail.avgRating ? Icons.star_half : Icons.star_border),
-                color: const Color(0xFFF59E0B),
-                size: 16,
+        if (detail.avgRating != null)
+          Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              for (var i = 0; i < 5; i++)
+                Icon(
+                  i < detail.avgRating!.floor()
+                      ? Icons.star
+                      : (i < detail.avgRating!
+                            ? Icons.star_half
+                            : Icons.star_border),
+                  color: const Color(0xFFF59E0B),
+                  size: 16,
+                ),
+              const SizedBox(width: AppSpacing.xxs),
+              Text(
+                detail.avgRating!.toStringAsFixed(1),
+                style: Theme.of(
+                  context,
+                ).textTheme.labelMedium?.copyWith(fontWeight: FontWeight.w900),
               ),
-            const SizedBox(width: AppSpacing.xxs),
-            Text(
-              detail.avgRating.toStringAsFixed(1),
-              style: Theme.of(context).textTheme.labelMedium?.copyWith(
-                fontWeight: FontWeight.w900,
-              ),
+            ],
+          ),
+        if (detail.reviewCount != null)
+          Text(
+            '리뷰 ${formatSearchCount(detail.reviewCount)}개',
+            style: Theme.of(context).textTheme.labelSmall?.copyWith(
+              color: AppColors.textSecondary,
+              fontWeight: FontWeight.w600,
             ),
-          ],
-        ),
-        Text(
-          '리뷰 ${formatSearchCount(detail.reviewCount)}개',
-          style: Theme.of(context).textTheme.labelSmall?.copyWith(
-            color: AppColors.textSecondary,
-            fontWeight: FontWeight.w600,
           ),
-        ),
-        Container(
-          width: 1,
-          height: 12,
-          color: AppColors.borderStrong,
-        ),
-        Text(
-          'Q&A ${detail.qaCount}',
-          style: Theme.of(context).textTheme.labelSmall?.copyWith(
-            color: AppColors.textSecondary,
-            fontWeight: FontWeight.w600,
-          ),
-        ),
       ],
     );
   }
@@ -226,35 +225,6 @@ class ProductSpecChips extends StatelessWidget {
   }
 }
 
-class ProductSpecChipsStrip extends StatelessWidget {
-  const ProductSpecChipsStrip({super.key, required this.chips});
-
-  final List<ProductSpecChip> chips;
-
-  @override
-  Widget build(BuildContext context) {
-    if (chips.isEmpty) return const SizedBox.shrink();
-    return DecoratedBox(
-      decoration: BoxDecoration(
-        color: AppColors.surface,
-        borderRadius: AppRadius.medium,
-        border: Border.all(color: AppColors.border),
-      ),
-      child: IntrinsicHeight(
-        child: Row(
-          children: [
-            for (var i = 0; i < chips.length; i++) ...[
-              if (i > 0)
-                Container(width: 1, color: AppColors.border),
-              Expanded(child: _SpecChipStripItem(chip: chips[i])),
-            ],
-          ],
-        ),
-      ),
-    );
-  }
-}
-
 String _rtiLabel(int score) {
   if (score >= 80) return '리뷰 신뢰도 높음';
   if (score >= 60) return '리뷰 신뢰도 보통';
@@ -293,7 +263,11 @@ class _SpecChipItem extends StatelessWidget {
         child: Row(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Icon(_iconDataFor(chip.iconData), size: 16, color: AppColors.textSecondary),
+            Icon(
+              _iconDataFor(chip.iconData),
+              size: 16,
+              color: AppColors.textSecondary,
+            ),
             const SizedBox(width: AppSpacing.xs),
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -319,53 +293,6 @@ class _SpecChipItem extends StatelessWidget {
             ),
           ],
         ),
-      ),
-    );
-  }
-}
-
-class _SpecChipStripItem extends StatelessWidget {
-  const _SpecChipStripItem({required this.chip});
-
-  final ProductSpecChip chip;
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(
-        horizontal: AppSpacing.sm,
-        vertical: AppSpacing.sm,
-      ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Icon(_iconDataFor(chip.iconData), size: 18, color: AppColors.textSecondary),
-          const SizedBox(width: AppSpacing.xs),
-          Flexible(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Text(
-                  chip.label,
-                  style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                    color: AppColors.textPrimary,
-                    fontWeight: FontWeight.w800,
-                    fontSize: 12,
-                  ),
-                ),
-                if (chip.subtitle.isNotEmpty)
-                  Text(
-                    chip.subtitle,
-                    style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                      color: AppColors.textSecondary,
-                      fontSize: 11,
-                    ),
-                  ),
-              ],
-            ),
-          ),
-        ],
       ),
     );
   }

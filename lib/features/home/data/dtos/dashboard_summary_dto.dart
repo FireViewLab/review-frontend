@@ -60,6 +60,7 @@ class DashboardSummaryDto {
   final List<TrendingKeywordDto> trendingKeywords;
 
   DashboardSummary toEntity() {
+    final recentIds = <String>{};
     return DashboardSummary(
       recommendedProducts: recommendedProducts
           .map((item) => item.toEntity())
@@ -67,7 +68,11 @@ class DashboardSummaryDto {
           .toList(growable: false),
       recentProducts: recentProducts
           .map((item) => item.toEntity())
-          .where((item) => item.name.isNotEmpty)
+          .where(
+            (item) =>
+                item.name.isNotEmpty &&
+                recentIds.add(item.externalRef?.externalId ?? item.id),
+          )
           .toList(growable: false),
       riskyProducts: riskyProducts
           .map((item) => item.toEntity())

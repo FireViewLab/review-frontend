@@ -73,7 +73,7 @@ final resetPasswordUseCaseProvider = Provider<ResetPasswordUseCase>((ref) {
   return ResetPasswordUseCase(ref.watch(authRepositoryProvider));
 });
 
-final passwordResetViewModelProvider =
-    NotifierProvider.autoDispose<PasswordResetViewModel, PasswordResetState>(
-      PasswordResetViewModel.new,
+final passwordResetViewModelProvider = NotifierProvider.autoDispose
+    .family<PasswordResetViewModel, PasswordResetState, String?>(
+      (token) => PasswordResetViewModel(initialToken: token),
     );

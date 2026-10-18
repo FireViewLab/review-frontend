@@ -9,6 +9,9 @@ class AppConfig {
     required this.analysisPath,
     required this.analysisHealthPath,
     required this.reviewFeedbackBasePath,
+    required this.reportBasePath,
+    required this.analysisFeedbackBasePath,
+    required this.adminBasePath,
     required this.loginPath,
     required this.signupPath,
     required this.naverOAuthPath,
@@ -16,7 +19,12 @@ class AppConfig {
     required this.passwordResetRequestPath,
     required this.passwordResetPath,
     required this.userMePath,
+    required this.userSettingsPath,
+    required this.userFeedbackPath,
     required this.landingStatsPath,
+    required this.chatBasePath,
+    required this.notificationBasePath,
+    required this.chatReceiveTimeout,
     required this.connectTimeout,
     required this.receiveTimeout,
   });
@@ -56,6 +64,18 @@ class AppConfig {
         'REVIEW_FEEDBACK_BASE_PATH',
         defaultValue: '/api/reviews',
       ),
+      reportBasePath: const String.fromEnvironment(
+        'REPORT_BASE_PATH',
+        defaultValue: '/api/reports',
+      ),
+      analysisFeedbackBasePath: const String.fromEnvironment(
+        'ANALYSIS_FEEDBACK_BASE_PATH',
+        defaultValue: '/api/analysis-feedbacks',
+      ),
+      adminBasePath: const String.fromEnvironment(
+        'ADMIN_BASE_PATH',
+        defaultValue: '/api/admin',
+      ),
       loginPath: const String.fromEnvironment(
         'LOGIN_PATH',
         defaultValue: '/api/auth/login',
@@ -84,10 +104,28 @@ class AppConfig {
         'USER_ME_PATH',
         defaultValue: '/api/users/me',
       ),
+      userFeedbackPath: const String.fromEnvironment(
+        'USER_FEEDBACK_PATH',
+        defaultValue: '/api/users/me/feedback',
+      ),
+      userSettingsPath: const String.fromEnvironment(
+        'USER_SETTINGS_PATH',
+        defaultValue: '/api/users/me/settings',
+      ),
       landingStatsPath: const String.fromEnvironment(
         'LANDING_STATS_PATH',
         defaultValue: '/api/landing/stats',
       ),
+      notificationBasePath: const String.fromEnvironment(
+        'NOTIFICATION_BASE_PATH',
+        defaultValue: '/api/notifications',
+      ),
+      chatBasePath: const String.fromEnvironment(
+        'CHAT_BASE_PATH',
+        defaultValue: '/api/chat',
+      ),
+      // 서버가 LLM 응답을 최대 70초 기다리므로 그보다 길게 잡는다.
+      chatReceiveTimeout: const Duration(seconds: 75),
       connectTimeout: const Duration(seconds: 10),
       receiveTimeout: const Duration(seconds: 15),
     );
@@ -100,6 +138,9 @@ class AppConfig {
   final String analysisPath;
   final String analysisHealthPath;
   final String reviewFeedbackBasePath;
+  final String reportBasePath;
+  final String analysisFeedbackBasePath;
+  final String adminBasePath;
   final String loginPath;
   final String signupPath;
   final String naverOAuthPath;
@@ -107,13 +148,18 @@ class AppConfig {
   final String passwordResetRequestPath;
   final String passwordResetPath;
   final String userMePath;
+  final String userSettingsPath;
+  final String userFeedbackPath;
   final String landingStatsPath;
+  final String chatBasePath;
+  final String notificationBasePath;
+  final Duration chatReceiveTimeout;
   final Duration connectTimeout;
   final Duration receiveTimeout;
 }
 
 String _defaultApiBaseUrl() {
-  if (!kIsWeb) return 'https://api.beens.kr';
+  if (!kIsWeb) return 'https://api.re-view.kr';
 
   final host = Uri.base.host;
   final isLocalWeb =
@@ -122,5 +168,5 @@ String _defaultApiBaseUrl() {
       host == '::1' ||
       host.endsWith('.localhost');
 
-  return isLocalWeb ? 'https://api.beens.kr' : Uri.base.origin;
+  return isLocalWeb ? 'https://api.re-view.kr' : Uri.base.origin;
 }

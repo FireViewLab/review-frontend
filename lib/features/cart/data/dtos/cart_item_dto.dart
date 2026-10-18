@@ -1,3 +1,5 @@
+import 'package:re_view_front/features/external_product/data/dtos/product_summary_dto.dart';
+import 'package:re_view_front/features/external_product/domain/entities/product_summary.dart';
 import 'package:re_view_front/features/cart/domain/entities/cart_item.dart';
 
 class CartItemDto {
@@ -21,10 +23,20 @@ class CartItemDto {
     this.estimatedDelivery,
     this.stockCount,
     this.maxQuantity = 99,
+    this.summary,
+    this.externalId,
+    this.dataPlatform,
+    this.dataProductId,
+    this.subCategory,
   });
 
   factory CartItemDto.fromJson(Map<String, dynamic> json) {
     return CartItemDto(
+      summary: ProductSummaryDto.fromJson(json, cart: true),
+      externalId: json['externalId'] as String?,
+      dataPlatform: json['dataPlatform'] as String?,
+      dataProductId: json['dataProductId']?.toString(),
+      subCategory: json['subCategory'] as String?,
       cartItemId: _readInt(json, ['cartItemId', 'cartId', 'id']),
       productId: _readInt(json, ['productId', 'product_id']),
       name: _readString(json, ['name', 'productName', 'title']),
@@ -35,35 +47,65 @@ class CartItemDto {
         'thumbnail',
         'image',
       ]),
-      price: _readInt(json, ['price', 'salePrice', 'currentPrice']),
+      price: _readNullableInt(json, ['price', 'salePrice', 'currentPrice']),
       quantity: _readInt(json, ['quantity', 'qty', 'count']),
-      avgRti: _readDouble(json, ['avgRti', 'rtiScore', 'rti']) ?? 0.0,
-      rtiGrade: _readString(json, ['rtiGrade', 'grade']),
-      rtiColor: _readString(json, ['rtiColor', 'color']),
+      avgRti: _readDouble(json, ['avgRti', 'rtiScore', 'rti']),
+      rtiGrade: _readNullableString(json, ['rtiGrade', 'grade']),
+      rtiColor: _readNullableString(json, ['rtiColor', 'color']),
       trustLevel: _readString(json, ['trustLevel', 'trust', 'rtiLabel']),
-      shippingFee: _readInt(json, ['shippingFee', 'shipping_fee', 'deliveryFee']),
-      originalPrice: _readNullableInt(json, ['originalPrice', 'regularPrice', 'listPrice']),
-      priceDropAmount: _readNullableInt(json, ['priceDropAmount', 'discountAmount', 'priceDrop']),
+      shippingFee: _readInt(json, [
+        'shippingFee',
+        'shipping_fee',
+        'deliveryFee',
+      ]),
+      originalPrice: _readNullableInt(json, [
+        'originalPrice',
+        'regularPrice',
+        'listPrice',
+      ]),
+      priceDropAmount: _readNullableInt(json, [
+        'priceDropAmount',
+        'discountAmount',
+        'priceDrop',
+      ]),
       variant: _readNullableString(json, ['variant', 'option', 'optionName']),
-      platform: _readNullableString(json, ['platform', 'storeName', 'brandName']),
+      platform: _readNullableString(json, [
+        'platform',
+        'storeName',
+        'brandName',
+      ]),
       badge: _readNullableString(json, ['badge', 'label', 'tag']),
-      estimatedDelivery: _readNullableString(json, ['estimatedDelivery', 'deliveryDate', 'delivery']),
-      stockCount: _readNullableInt(json, ['stockCount', 'stock', 'remainStock']),
+      estimatedDelivery: _readNullableString(json, [
+        'estimatedDelivery',
+        'deliveryDate',
+        'delivery',
+      ]),
+      stockCount: _readNullableInt(json, [
+        'stockCount',
+        'stock',
+        'remainStock',
+      ]),
       maxQuantity: _readInt(json, ['maxQuantity', 'maxQty']) == 0
           ? 99
           : _readInt(json, ['maxQuantity', 'maxQty']),
     );
   }
 
+  final ProductSummary? summary;
+  final String? externalId;
+  final String? dataPlatform;
+  final String? dataProductId;
+  final String? subCategory;
+
   final int cartItemId;
   final int productId;
   final String name;
   final String imageUrl;
-  final int price;
+  final int? price;
   final int quantity;
-  final double avgRti;
-  final String rtiGrade;
-  final String rtiColor;
+  final double? avgRti;
+  final String? rtiGrade;
+  final String? rtiColor;
   final String trustLevel;
   final int shippingFee;
   final int? originalPrice;
@@ -77,6 +119,11 @@ class CartItemDto {
 
   CartItem toEntity() {
     return CartItem(
+      summary: summary,
+      externalId: externalId,
+      dataPlatform: dataPlatform,
+      dataProductId: dataProductId,
+      subCategory: subCategory,
       cartItemId: cartItemId,
       productId: productId,
       name: name,

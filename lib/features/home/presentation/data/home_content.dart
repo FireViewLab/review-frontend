@@ -1,19 +1,9 @@
+import 'package:re_view_front/features/external_product/domain/entities/external_product_ref.dart';
 import 'package:flutter/material.dart';
 import 'package:re_view_front/features/category/domain/entities/product_category_master.dart';
 
-const homeNavItems = [
-  '홈',
-  '브랜드데이',
-  '베스트',
-  '신상품',
-  '타임딜',
-  '리뷰 LIVE',
-  '리뷰랭킹',
-  '기획전',
-  '선물하기',
-  '반려동물',
-  '여행/레저',
-];
+// 서버 데이터로 채울 수 있는 메뉴만 둔다. 정렬 메뉴는 home_navigation.dart 참고.
+const homeNavItems = ['홈', '베스트', '신상품', '리뷰랭킹', '반려동물'];
 
 const banners = [
   HomeBannerData(
@@ -22,7 +12,7 @@ const banners = [
     description: '실사용 리뷰로 고른 믿을 수 있는 선택',
     ctaLabel: '지금 확인하기',
     badgeLabel: 'RTI 추천',
-    assetPath: 'assets/images/home/banners/banner_1.png',
+    assetPath: 'assets/images/home/banners/banner_1.webp',
     color: Color(0xFFEAF4FF),
     accentColor: Color(0xFF2563EB),
     icon: Icons.air,
@@ -33,7 +23,7 @@ const banners = [
     description: '리뷰 흐름이 안정적인 신선 식품을 먼저 확인하세요',
     ctaLabel: '자세히 보기',
     badgeLabel: 'RTI 안정',
-    assetPath: 'assets/images/home/banners/banner_2.png',
+    assetPath: 'assets/images/home/banners/banner_2.webp',
     color: Color(0xFFEAF6E6),
     accentColor: Color(0xFF2E7D32),
     icon: Icons.eco_outlined,
@@ -44,7 +34,7 @@ const banners = [
     description: '반복 패턴과 광고 신호를 낮춘 뷰티 상품 흐름',
     ctaLabel: '둘러보기',
     badgeLabel: 'RTI 추천',
-    assetPath: 'assets/images/home/banners/banner_3.png',
+    assetPath: 'assets/images/home/banners/banner_3.webp',
     color: Color(0xFFFFF1F7),
     accentColor: Color(0xFFE65100),
     icon: Icons.spa_outlined,
@@ -55,7 +45,7 @@ const banners = [
     description: '검증된 리뷰 흐름을 기준으로 탐색하세요',
     ctaLabel: '더 알아보기',
     badgeLabel: 'RTI 추천',
-    assetPath: 'assets/images/home/banners/banner_4.png',
+    assetPath: 'assets/images/home/banners/banner_4.webp',
     color: Color(0xFFF8FAFC),
     accentColor: Color(0xFF0F172A),
     icon: Icons.pets_outlined,
@@ -66,7 +56,7 @@ const banners = [
     description: '실사용 리뷰로 검증된 인기 전기밥솥 모음',
     ctaLabel: '지금 확인하기',
     badgeLabel: 'RTI 94%',
-    assetPath: 'assets/images/home/banners/banner_5.png',
+    assetPath: 'assets/images/home/banners/banner_5.webp',
     color: Color(0xFFF5F0E8),
     accentColor: Color(0xFF8B5E3C),
     icon: Icons.kitchen_outlined,
@@ -77,7 +67,7 @@ const banners = [
     description: '실사용 리뷰로 검증된 커피 용품 모음',
     ctaLabel: '지금 확인하기',
     badgeLabel: 'RTI 93%',
-    assetPath: 'assets/images/home/banners/banner_6.png',
+    assetPath: 'assets/images/home/banners/banner_6.webp',
     color: Color(0xFFFAF6F0),
     accentColor: Color(0xFF6B4226),
     icon: Icons.local_cafe_outlined,
@@ -88,7 +78,7 @@ const banners = [
     description: '실사용 리뷰로 검증된 인기 가습기 모음',
     ctaLabel: '지금 확인하기',
     badgeLabel: 'RTI 90%',
-    assetPath: 'assets/images/home/banners/banner_7.png',
+    assetPath: 'assets/images/home/banners/banner_7.webp',
     color: Color(0xFFF0F7F4),
     accentColor: Color(0xFF2D7A5A),
     icon: Icons.air_outlined,
@@ -99,7 +89,7 @@ const banners = [
     description: '실사용 리뷰로 검증된 인기 청소기 모음',
     ctaLabel: '지금 확인하기',
     badgeLabel: 'RTI 91%',
-    assetPath: 'assets/images/home/banners/banner_8.png',
+    assetPath: 'assets/images/home/banners/banner_8.webp',
     color: Color(0xFFF2F6F2),
     accentColor: Color(0xFF3D6B45),
     icon: Icons.cleaning_services_outlined,
@@ -108,48 +98,34 @@ const banners = [
 
 const quickCategories = [
   QuickCategoryData(
-    label: '오늘출발',
-    iconAssetPath: 'assets/images/home/icons/icon-quick-delivery.png',
-  ),
-  QuickCategoryData(
-    label: '브랜드데이',
-    iconAssetPath: 'assets/images/home/icons/icon-brand-day.png',
-  ),
-  QuickCategoryData(
-    label: '타임딜',
-    iconAssetPath: 'assets/images/home/icons/icon-time-deal.png',
-  ),
-  QuickCategoryData(
     label: '리뷰랭킹',
-    iconAssetPath: 'assets/images/home/icons/icon-review-ranking.png',
-  ),
-  QuickCategoryData(
-    label: '선물하기',
-    iconAssetPath: 'assets/images/home/icons/icon-gift.png',
+    iconAssetPath:
+        'assets/images/home/icons/icon-review-ranking-transparent.png',
   ),
   QuickCategoryData(
     label: '뷰티',
-    iconAssetPath: 'assets/images/home/icons/icon-beauty.png',
+    iconAssetPath: 'assets/images/home/icons/icon-beauty-transparent.png',
   ),
   QuickCategoryData(
     label: '가전',
-    iconAssetPath: 'assets/images/home/icons/icon-appliance.png',
+    iconAssetPath: 'assets/images/home/icons/icon-appliance-transparent.png',
   ),
   QuickCategoryData(
     label: '인테리어',
-    iconAssetPath: 'assets/images/home/icons/icon-interior.png',
+    iconAssetPath: 'assets/images/home/icons/icon-interior-transparent.png',
   ),
   QuickCategoryData(
     label: '푸드',
-    iconAssetPath: 'assets/images/home/icons/icon-food.png',
+    iconAssetPath: 'assets/images/home/icons/icon-food-transparent.png',
   ),
   QuickCategoryData(
     label: '스포츠',
-    iconAssetPath: 'assets/images/home/icons/icon-sports.png',
+    iconAssetPath: 'assets/images/home/icons/icon-sports-transparent.png',
   ),
   QuickCategoryData(
     label: '전체보기',
-    iconAssetPath: 'assets/images/home/icons/icon-all-categories.png',
+    iconAssetPath:
+        'assets/images/home/icons/icon-all-categories-transparent.png',
   ),
 ];
 
@@ -195,7 +171,10 @@ class HomeBannerData {
     required this.description,
     required this.ctaLabel,
     required this.badgeLabel,
-    required this.assetPath,
+    this.assetPath,
+    this.imageUrl,
+    this.mobileImageUrl,
+    this.targetUrl,
     required this.color,
     required this.accentColor,
     required this.icon,
@@ -206,7 +185,10 @@ class HomeBannerData {
   final String description;
   final String ctaLabel;
   final String badgeLabel;
-  final String assetPath;
+  final String? assetPath;
+  final String? imageUrl;
+  final String? mobileImageUrl;
+  final String? targetUrl;
   final Color color;
   final Color accentColor;
   final IconData icon;
@@ -221,6 +203,9 @@ class QuickCategoryData {
 
 class HomeProductData {
   const HomeProductData({
+    this.detailPath,
+    this.chatProductId,
+    this.routeContext,
     required this.productId,
     required this.name,
     required this.storeName,
@@ -232,6 +217,9 @@ class HomeProductData {
     required this.label,
   });
 
+  final String? detailPath;
+  final String? chatProductId;
+  final ProductRouteContext? routeContext;
   final String productId;
   final String name;
   final String storeName;

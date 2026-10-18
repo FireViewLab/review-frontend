@@ -1,3 +1,5 @@
+import 'package:re_view_front/features/external_product/data/dtos/product_summary_dto.dart';
+import 'package:re_view_front/features/external_product/domain/entities/product_summary.dart';
 import 'package:re_view_front/features/home/domain/entities/dashboard_product.dart';
 
 class DashboardProductDto {
@@ -11,10 +13,20 @@ class DashboardProductDto {
     this.rating,
     this.reviewCount,
     this.rtiScore,
+    this.summary,
+    this.externalId,
+    this.dataPlatform,
+    this.dataProductId,
+    this.subCategory,
   });
 
   factory DashboardProductDto.fromJson(Map<String, dynamic> json) {
     return DashboardProductDto(
+      summary: ProductSummaryDto.fromJson(json),
+      externalId: json['externalId'] as String?,
+      dataPlatform: json['dataPlatform'] as String?,
+      dataProductId: json['dataProductId']?.toString(),
+      subCategory: json['subCategory'] as String?,
       id: _readString(json, ['id', 'productId', 'product_id']),
       name: _readString(json, ['name', 'productName', 'title']),
       storeName: _readString(json, [
@@ -55,6 +67,12 @@ class DashboardProductDto {
     );
   }
 
+  final ProductSummary? summary;
+  final String? externalId;
+  final String? dataPlatform;
+  final String? dataProductId;
+  final String? subCategory;
+
   final String id;
   final String name;
   final String storeName;
@@ -67,6 +85,11 @@ class DashboardProductDto {
 
   DashboardProduct toEntity() {
     return DashboardProduct(
+      summary: summary,
+      externalId: externalId,
+      dataPlatform: dataPlatform,
+      dataProductId: dataProductId,
+      subCategory: subCategory,
       id: id,
       name: name,
       storeName: storeName,

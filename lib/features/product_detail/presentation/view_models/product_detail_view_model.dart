@@ -1,3 +1,7 @@
+import 'package:re_view_front/features/recent_products/presentation/providers/recent_products_providers.dart';
+import 'package:re_view_front/core/providers/core_providers.dart';
+import 'package:re_view_front/features/home/presentation/providers/home_providers.dart';
+import 'package:re_view_front/features/settings/presentation/providers/settings_providers.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:re_view_front/core/error/failure.dart';
 import 'package:re_view_front/features/product_detail/domain/entities/product_review.dart';
@@ -32,7 +36,15 @@ class ProductDetailViewModel extends Notifier<ProductDetailState> {
     if (!ref.mounted) return;
     state = const ProductDetailLoading();
 
-    final detailResult = await _getDetail(productId);
+    // 서로 기다릴 필요가 없는 요청은 함께 보낸다. 분석 서버 확인도 미리 시작한다.
+    final viewingSession = ref
+        .read(authTokenStoreProvider.notifier)
+        .accessToken;
+    final detailFuture = _getDetail(productId);
+    final reviewsFuture = _getReviews(productId);
+    final healthFuture = _checkHealth();
+
+    final detailResult = await detailFuture;
     if (!ref.mounted) return;
 
     final detail = detailResult.when(success: (d) => d, failure: (_) => null);
@@ -47,7 +59,28 @@ class ProductDetailViewModel extends Notifier<ProductDetailState> {
       return;
     }
 
-    final reviewsResult = await _getReviews(productId);
+    final viewRecorded =
+        viewingSession != null &&
+        viewingSession == ref.read(authTokenStoreProvider.notifier).accessToken;
+    ref.invalidate(homeDashboardViewModelProvider);
+    if (viewRecorded) ref.invalidate(recentProductsProvider);
+
+    if (detail.externalRef != null) {
+      state = ProductDetailSuccess(
+        detail: detail,
+        viewRecorded: viewRecorded,
+        reviews: const [],
+        reviewInsight: const ReviewInsight(
+          keywords: [],
+          satisfactionPoints: [],
+          dissatisfactionPoints: [],
+        ),
+        similarProducts: const [],
+      );
+      return;
+    }
+
+    final reviewsResult = await reviewsFuture;
     if (!ref.mounted) return;
 
     final reviews = reviewsResult.when(
@@ -57,6 +90,7 @@ class ProductDetailViewModel extends Notifier<ProductDetailState> {
 
     state = ProductDetailSuccess(
       detail: detail,
+      viewRecorded: viewRecorded,
       reviews: reviews,
       reviewInsight: const ReviewInsight(
         keywords: [],
@@ -64,14 +98,24 @@ class ProductDetailViewModel extends Notifier<ProductDetailState> {
         dissatisfactionPoints: [],
       ),
       similarProducts: const [],
-      isAnalyzing: true,
+      isAnalyzing: false,
     );
 
-    _triggerAnalysisInBackground(productId.toString());
+    if (detail.externalRef == null) {
+      _triggerAnalysisInBackground(productId.toString(), healthFuture);
+    }
   }
 
-  Future<void> _triggerAnalysisInBackground(String productId) async {
-    final isHealthy = await _checkHealth();
+  Future<void> _triggerAnalysisInBackground(
+    String productId,
+    Future<bool> healthFuture,
+  ) async {
+    final preferences = await ref
+        .read(savedDisplayPreferencesProvider.future)
+        .catchError((_) => null);
+    if (!ref.mounted) return;
+    final isHealthy =
+        preferences?.allowDataAnalysis == true && await healthFuture;
     if (!ref.mounted) return;
 
     if (!isHealthy) {
@@ -82,6 +126,10 @@ class ProductDetailViewModel extends Notifier<ProductDetailState> {
       return;
     }
 
+    final beforeRequest = state;
+    if (beforeRequest is ProductDetailSuccess) {
+      state = beforeRequest.copyWith(isAnalyzing: true);
+    }
     final analysisResult = await _triggerAnalysis(productId);
     if (!ref.mounted) return;
 
@@ -94,6 +142,7 @@ class ProductDetailViewModel extends Notifier<ProductDetailState> {
           final detail = analysis.reviewDetails[review.id];
           if (detail == null) return review;
           return ProductReview(
+            helpfulCount: review.helpfulCount,
             id: review.id,
             authorName: review.authorName,
             authorAvatarUrl: review.authorAvatarUrl,
@@ -118,18 +167,40 @@ class ProductDetailViewModel extends Notifier<ProductDetailState> {
         var repR = analysis.repetitiveRatio;
 
         if (realRR == 0.0 && adSR == 0.0 && repR == 0.0) {
-          final scored = enrichedReviews.where((r) => r.rtiScore > 0).toList();
+          final scored = enrichedReviews
+              .where((r) => r.rtiScore != null)
+              .toList();
           final total = scored.length;
           if (total > 0) {
-            realRR = scored.where((r) => r.rtiScore >= 70).length / total * 100;
-            adSR = scored
-                .where((r) => r.reasons.any(
-                  (s) => s.contains('광고') || s.contains('체험') || s.contains('협찬')))
-                .length / total * 100;
-            repR = scored
-                .where((r) => r.reasons.any(
-                  (s) => s.contains('반복') || s.contains('유사')))
-                .length / total * 100;
+            realRR =
+                scored
+                    .where((r) => r.rtiScore != null && r.rtiScore! >= 70)
+                    .length /
+                total *
+                100;
+            adSR =
+                scored
+                    .where(
+                      (r) => r.reasons.any(
+                        (s) =>
+                            s.contains('광고') ||
+                            s.contains('체험') ||
+                            s.contains('협찬'),
+                      ),
+                    )
+                    .length /
+                total *
+                100;
+            repR =
+                scored
+                    .where(
+                      (r) => r.reasons.any(
+                        (s) => s.contains('반복') || s.contains('유사'),
+                      ),
+                    )
+                    .length /
+                total *
+                100;
           }
         }
 
@@ -141,7 +212,13 @@ class ProductDetailViewModel extends Notifier<ProductDetailState> {
             warnCount: analysis.warnCount,
             dangerCount: analysis.dangerCount,
             trend: analysis.trend,
-            rtiSummary: current.detail.rtiSummary.copyWith(
+            rtiSummary: current.detail.rtiSummary?.copyWith(
+              hasReviewMetrics:
+                  analysis.safeCount +
+                          analysis.warnCount +
+                          analysis.dangerCount >
+                      0 ||
+                  enrichedReviews.any((r) => r.rtiScore != null),
               realReviewRatio: realRR / 100,
               realReviewLabel: '${realRR.toStringAsFixed(1)}%',
               adSuspicionRatio: adSR / 100,

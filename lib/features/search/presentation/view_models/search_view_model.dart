@@ -4,7 +4,14 @@ import 'package:re_view_front/features/search/presentation/providers/search_prov
 import 'package:re_view_front/features/search/presentation/view_models/search_state.dart';
 
 class SearchViewModel extends Notifier<SearchState> {
+  static const _cacheTtl = Duration(minutes: 3);
+  static const _cacheLimit = 20;
+
+  int _request = 0;
   late final SearchProductsUseCase _searchProductsUseCase;
+
+  /// 같은 검색어로 돌아왔을 때 바로 보여 줄 최근 결과. 오류는 담지 않는다.
+  final _cache = <String, ({DateTime fetchedAt, SearchState state})>{};
 
   @override
   SearchState build() {
@@ -12,21 +19,33 @@ class SearchViewModel extends Notifier<SearchState> {
     return const SearchInitial();
   }
 
-  Future<void> search(String query, {bool allowEmpty = false}) async {
-    if (query.trim().isEmpty && !allowEmpty) {
+  /// [refresh]가 true면 저장된 결과를 쓰지 않고 새로 받는다.
+  Future<void> search(
+    String query, {
+    bool allowEmpty = false,
+    bool refresh = false,
+  }) async {
+    final request = ++_request;
+    final key = query.trim();
+    if (key.isEmpty && !allowEmpty) {
       state = const SearchInitial();
       return;
     }
 
     if (!ref.mounted) return;
+    final cached = _cache[key];
+    if (!refresh &&
+        cached != null &&
+        DateTime.now().difference(cached.fetchedAt) < _cacheTtl) {
+      state = cached.state;
+      return;
+    }
     state = const SearchLoading();
 
-    final result = await _searchProductsUseCase(
-      SearchParams(query: query.trim()),
-    );
+    final result = await _searchProductsUseCase(SearchParams(query: key));
 
     if (!ref.mounted) return;
-    state = result.when(
+    final next = result.when<SearchState>(
       success: (response) => response.isEmpty
           ? const SearchEmpty()
           : SearchSuccess(
@@ -35,5 +54,16 @@ class SearchViewModel extends Notifier<SearchState> {
             ),
       failure: SearchFailure.new,
     );
+    if (next is! SearchFailure) _remember(key, next);
+    if (request != _request) return;
+    state = next;
+  }
+
+  void _remember(String key, SearchState value) {
+    _cache.remove(key);
+    _cache[key] = (fetchedAt: DateTime.now(), state: value);
+    while (_cache.length > _cacheLimit) {
+      _cache.remove(_cache.keys.first);
+    }
   }
 }
