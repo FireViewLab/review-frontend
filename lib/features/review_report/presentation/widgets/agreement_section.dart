@@ -25,19 +25,20 @@ class AgreementSection extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-        _AgreementRow(
-          checked: agreePrivacy,
-          onChanged: onPrivacyChanged,
-          title: '개인정보 수집 및 신고 처리 안내에 동의합니다.',
-          subtitle: '신고 내용은 리뷰 접수, 처리 결과 안내, 모델 품질 개선을 위해 사용되며 필요한 기간 동안 보관됩니다.',
-        ),
-        const SizedBox(height: AppSpacing.sm),
-        _AgreementRow(
-          checked: agreeNotFalse,
-          onChanged: onNotFalseChanged,
-          title: '허위 신고가 아님을 확인합니다.',
-          subtitle: '신고 내용이 사실과 다를 경우 처리 우선순위가 낮아질 수 있습니다.',
-        ),
+          _AgreementRow(
+            checked: agreePrivacy,
+            onChanged: onPrivacyChanged,
+            title: '개인정보 수집 및 신고 처리 안내에 동의합니다.',
+            subtitle:
+                '신고 내용은 리뷰 접수, 처리 결과 안내, 모델 품질 개선을 위해 사용되며 필요한 기간 동안 보관됩니다.',
+          ),
+          const SizedBox(height: AppSpacing.sm),
+          _AgreementRow(
+            checked: agreeNotFalse,
+            onChanged: onNotFalseChanged,
+            title: '허위 신고가 아님을 확인합니다.',
+            subtitle: '신고 내용이 사실과 다를 경우 처리 우선순위가 낮아질 수 있습니다.',
+          ),
         ],
       ),
     );
@@ -61,7 +62,7 @@ class _AgreementRow extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () => onChanged(!checked),
-      borderRadius: BorderRadius.circular(8),
+      borderRadius: AppRadius.small,
       child: Padding(
         padding: const EdgeInsets.symmetric(vertical: AppSpacing.xs),
         child: Row(
@@ -87,9 +88,7 @@ class _AgreementRow extends StatelessWidget {
                 children: [
                   Text(
                     title,
-                    style: Theme.of(
-                      context,
-                    ).textTheme.labelMedium?.copyWith(
+                    style: Theme.of(context).textTheme.labelMedium?.copyWith(
                       fontWeight: FontWeight.w700,
                       color: AppColors.textPrimary,
                     ),

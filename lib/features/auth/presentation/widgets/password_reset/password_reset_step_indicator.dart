@@ -2,6 +2,7 @@ import 'package:re_view_front/l10n/generated/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:re_view_front/app/theme/app_colors.dart';
 import 'package:re_view_front/features/auth/presentation/view_models/password_reset_state.dart';
+import 'package:re_view_front/app/theme/app_spacing.dart';
 
 class PasswordResetStepIndicator extends StatelessWidget {
   const PasswordResetStepIndicator({super.key, required this.currentStep});
@@ -58,7 +59,7 @@ class PasswordResetStepIndicator extends StatelessWidget {
               alignment: Alignment.center,
               decoration: BoxDecoration(
                 color: bgColor,
-                borderRadius: BorderRadius.circular(8),
+                borderRadius: AppRadius.small,
               ),
               child: isDone
                   ? Icon(Icons.check, size: 16, color: fgColor)

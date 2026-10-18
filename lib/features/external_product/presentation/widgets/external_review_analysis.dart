@@ -131,7 +131,7 @@ class ExternalReviewAnalysisDetails extends StatelessWidget {
           padding: const EdgeInsets.all(20),
           decoration: BoxDecoration(
             color: AppColors.surface,
-            borderRadius: BorderRadius.circular(16),
+            borderRadius: AppRadius.large,
             border: Border.all(color: AppColors.border),
           ),
           child: _Verdict(review: review, ringSize: 96, showSummary: true),

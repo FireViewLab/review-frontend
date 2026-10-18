@@ -225,7 +225,7 @@ class _PanelEmptyRow extends StatelessWidget {
       alignment: Alignment.centerLeft,
       padding: const EdgeInsets.symmetric(horizontal: AppSpacing.sm),
       decoration: BoxDecoration(
-        color: const Color(0xFFF8FAFC),
+        color: AppColors.background,
         borderRadius: BorderRadius.circular(10),
       ),
       child: Text(
@@ -299,7 +299,7 @@ class _RecentSearchChip extends StatelessWidget {
   Widget build(BuildContext context) {
     return _PlainPanelChip(
       onPressed: onPressed,
-      backgroundColor: const Color(0xFFF8FAFC),
+      backgroundColor: AppColors.background,
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
@@ -386,7 +386,7 @@ class _SuggestedProductTile extends StatelessWidget {
     return SizedBox(
       height: 58,
       child: InkWell(
-        borderRadius: BorderRadius.circular(12),
+        borderRadius: AppRadius.medium,
         onTap: onPressed,
         child: Padding(
           padding: const EdgeInsets.symmetric(vertical: AppSpacing.xs),
@@ -399,7 +399,7 @@ class _SuggestedProductTile extends StatelessWidget {
                 clipBehavior: Clip.antiAlias,
                 decoration: BoxDecoration(
                   color: const Color(0xFFF1F5F9),
-                  borderRadius: BorderRadius.circular(12),
+                  borderRadius: AppRadius.medium,
                 ),
                 child: AppNetworkImage(
                   url: product.imageUrl,

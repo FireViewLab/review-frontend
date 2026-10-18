@@ -62,15 +62,15 @@ class PasswordResetInputField extends StatelessWidget {
             vertical: AppSpacing.md,
           ),
           border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(16),
+            borderRadius: AppRadius.large,
             borderSide: const BorderSide(color: AppColors.border),
           ),
           enabledBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(16),
+            borderRadius: AppRadius.large,
             borderSide: const BorderSide(color: AppColors.border),
           ),
           focusedBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(16),
+            borderRadius: AppRadius.large,
             borderSide: const BorderSide(color: AppColors.primary, width: 1.4),
           ),
         ),
@@ -100,9 +100,7 @@ class PasswordResetPrimaryButton extends StatelessWidget {
         style: FilledButton.styleFrom(
           backgroundColor: AppColors.primaryDark,
           foregroundColor: AppColors.onPrimary,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(16),
-          ),
+          shape: RoundedRectangleBorder(borderRadius: AppRadius.large),
         ),
         child: isLoading
             ? const SizedBox.square(

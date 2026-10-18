@@ -418,7 +418,7 @@ class SortSegmentedControl extends StatelessWidget {
           child: DecoratedBox(
             decoration: BoxDecoration(
               color: const Color(0xFFF4F7FC),
-              borderRadius: BorderRadius.circular(8),
+              borderRadius: AppRadius.small,
               border: Border.all(color: AppColors.border),
             ),
             child: Row(

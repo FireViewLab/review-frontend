@@ -127,7 +127,7 @@ class _DialogHeader extends StatelessWidget {
               height: 40,
               decoration: BoxDecoration(
                 color: AppColors.primaryLight,
-                borderRadius: BorderRadius.circular(12),
+                borderRadius: AppRadius.medium,
               ),
               child: const Icon(
                 Icons.rate_review_outlined,
@@ -222,7 +222,7 @@ class _DialogBody extends StatelessWidget {
           Container(
             decoration: BoxDecoration(
               color: AppColors.surface,
-              borderRadius: BorderRadius.circular(16),
+              borderRadius: AppRadius.large,
               border: Border.all(color: AppColors.border),
             ),
             clipBehavior: Clip.antiAlias,

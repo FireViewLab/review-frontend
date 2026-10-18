@@ -19,7 +19,7 @@ class BenefitCTA extends StatelessWidget {
   Widget build(BuildContext context) {
     return DecoratedBox(
       decoration: BoxDecoration(
-        color: const Color(0xFFEFF4FF),
+        color: AppColors.primaryLight,
         borderRadius: BorderRadius.circular(24),
         border: Border.all(color: const Color(0xFFBFDBFE)),
       ),
@@ -74,7 +74,10 @@ class BenefitCTA extends StatelessWidget {
     final itemWidth = maxWidth < 520 ? 96.0 : 124.0;
 
     return [
-      Text(AppLocalizations.of(context).homeBenefitTitle, style: Theme.of(context).textTheme.titleMedium),
+      Text(
+        AppLocalizations.of(context).homeBenefitTitle,
+        style: Theme.of(context).textTheme.titleMedium,
+      ),
       const SizedBox(height: AppSpacing.xs),
       Text(
         AppLocalizations.of(context).homeBenefitSubtitle,
@@ -96,7 +99,7 @@ class BenefitCTA extends StatelessWidget {
               ),
               decoration: BoxDecoration(
                 color: AppColors.surface,
-                borderRadius: BorderRadius.circular(12),
+                borderRadius: AppRadius.medium,
                 border: Border.all(color: AppColors.border),
               ),
               child: Column(
@@ -119,7 +122,10 @@ class BenefitCTA extends StatelessWidget {
         ],
       ),
       const SizedBox(height: AppSpacing.md),
-      FilledButton(onPressed: onBenefitPressed, child: Text(AppLocalizations.of(context).homeBenefitButton)),
+      FilledButton(
+        onPressed: onBenefitPressed,
+        child: Text(AppLocalizations.of(context).homeBenefitButton),
+      ),
     ];
   }
 }

@@ -109,7 +109,7 @@ class ProductReportCard extends StatelessWidget {
                   padding: const EdgeInsets.all(10),
                   decoration: BoxDecoration(
                     color: AppColors.primaryLight,
-                    borderRadius: BorderRadius.circular(12),
+                    borderRadius: AppRadius.medium,
                   ),
                   child: const Icon(
                     Icons.shield_outlined,
@@ -158,7 +158,7 @@ class ProductReportCard extends StatelessWidget {
                       ),
                       decoration: BoxDecoration(
                         color: color.withValues(alpha: .08),
-                        borderRadius: BorderRadius.circular(8),
+                        borderRadius: AppRadius.small,
                       ),
                       child: Row(
                         mainAxisSize: MainAxisSize.min,
@@ -296,9 +296,7 @@ class ProductReportCard extends StatelessWidget {
                   ),
                   foregroundColor: AppColors.primary,
                   side: const BorderSide(color: AppColors.borderStrong),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(12),
-                  ),
+                  shape: RoundedRectangleBorder(borderRadius: AppRadius.medium),
                 ),
                 onPressed:
                     onDetailPressed ??
@@ -330,7 +328,7 @@ class ReportDetailSection extends StatelessWidget {
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
         color: AppColors.surface,
-        borderRadius: BorderRadius.circular(16),
+        borderRadius: AppRadius.large,
         border: Border.all(color: AppColors.border),
       ),
       child: Column(
@@ -460,7 +458,7 @@ Future<void> showProductReport(
                       height: 40,
                       decoration: BoxDecoration(
                         color: AppColors.primaryLight,
-                        borderRadius: BorderRadius.circular(12),
+                        borderRadius: AppRadius.medium,
                       ),
                       child: Icon(icon, color: AppColors.primary, size: 22),
                     ),

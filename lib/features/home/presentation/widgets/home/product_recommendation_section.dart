@@ -96,7 +96,7 @@ class _ProductEmptyState extends StatelessWidget {
                 height: 56,
                 alignment: Alignment.center,
                 decoration: BoxDecoration(
-                  color: const Color(0xFFEFF4FF),
+                  color: AppColors.primaryLight,
                   borderRadius: BorderRadius.circular(18),
                 ),
                 child: const Icon(

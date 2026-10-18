@@ -53,10 +53,7 @@ class SettingsIconBadge extends StatelessWidget {
     return Container(
       width: 32,
       height: 32,
-      decoration: BoxDecoration(
-        color: bg,
-        borderRadius: BorderRadius.circular(8),
-      ),
+      decoration: BoxDecoration(color: bg, borderRadius: AppRadius.small),
       child: Icon(icon, color: iconColor, size: 18),
     );
   }
@@ -135,7 +132,7 @@ class SettingsCard extends StatelessWidget {
     return Container(
       decoration: BoxDecoration(
         color: AppColors.surface,
-        borderRadius: BorderRadius.circular(12),
+        borderRadius: AppRadius.medium,
         border: Border.all(color: AppColors.border),
         boxShadow: const [
           BoxShadow(

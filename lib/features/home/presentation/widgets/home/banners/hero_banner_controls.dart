@@ -139,7 +139,7 @@ class HeroBannerCircleControl extends StatelessWidget {
       color: Colors.white,
       shape: const CircleBorder(),
       elevation: 4,
-      shadowColor: const Color(0x1A0F172A),
+      shadowColor: AppColors.shadow,
       child: IconButton(
         tooltip: icon == Icons.chevron_left ? '이전 배너' : '다음 배너',
         onPressed: onTap,

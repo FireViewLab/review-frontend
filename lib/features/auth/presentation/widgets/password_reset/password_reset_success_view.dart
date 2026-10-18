@@ -54,9 +54,7 @@ class PasswordResetSuccessView extends StatelessWidget {
             style: FilledButton.styleFrom(
               backgroundColor: AppColors.primaryDark,
               foregroundColor: AppColors.onPrimary,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(16),
-              ),
+              shape: RoundedRectangleBorder(borderRadius: AppRadius.large),
             ),
             child: Text(AppLocalizations.of(context).authGoToLogin),
           ),

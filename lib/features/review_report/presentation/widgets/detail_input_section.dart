@@ -91,7 +91,9 @@ class _DetailInputSectionState extends State<DetailInputSection> {
 
   void _showSnack(String message) {
     if (!mounted) return;
-    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(message)));
+    ScaffoldMessenger.of(
+      context,
+    ).showSnackBar(SnackBar(content: Text(message)));
   }
 
   @override
@@ -146,21 +148,21 @@ class _DetailInputSectionState extends State<DetailInputSection> {
             },
             decoration: InputDecoration(
               hintText: '구체적인 문제 내용과 맥락을 입력해주세요.',
-              hintStyle: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                color: AppColors.textTertiary,
-              ),
+              hintStyle: Theme.of(
+                context,
+              ).textTheme.bodyMedium?.copyWith(color: AppColors.textTertiary),
               filled: true,
               fillColor: AppColors.background,
               border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(8),
+                borderRadius: AppRadius.small,
                 borderSide: const BorderSide(color: AppColors.border),
               ),
               enabledBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(8),
+                borderRadius: AppRadius.small,
                 borderSide: const BorderSide(color: AppColors.border),
               ),
               focusedBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(8),
+                borderRadius: AppRadius.small,
                 borderSide: const BorderSide(
                   color: AppColors.primary,
                   width: 1.5,
@@ -177,18 +179,14 @@ class _DetailInputSectionState extends State<DetailInputSection> {
                       ? '최소 20자 이상 입력하면 운영팀 검토에 더 도움이 돼요.'
                       : '최소 20자 이상 입력해주세요.',
                   style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                    color: isEnough
-                        ? AppColors.textTertiary
-                        : AppColors.error,
+                    color: isEnough ? AppColors.textTertiary : AppColors.error,
                   ),
                 ),
               ),
               Text(
                 '$_charCount자',
                 style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                  color: isEnough
-                      ? AppColors.primary
-                      : AppColors.textTertiary,
+                  color: isEnough ? AppColors.primary : AppColors.textTertiary,
                   fontWeight: FontWeight.w700,
                 ),
               ),
@@ -276,7 +274,7 @@ class _AttachmentBox extends StatelessWidget {
               alignment: Alignment.center,
               decoration: BoxDecoration(
                 color: AppColors.surface,
-                borderRadius: BorderRadius.circular(8),
+                borderRadius: AppRadius.small,
                 border: Border.all(color: AppColors.border),
               ),
               child: Icon(
@@ -293,12 +291,8 @@ class _AttachmentBox extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    disabled
-                        ? '첨부 가능한 개수를 모두 채웠어요'
-                        : '스크린샷이나 추가 근거를 첨부해주세요',
-                    style: Theme.of(
-                      context,
-                    ).textTheme.labelMedium?.copyWith(
+                    disabled ? '첨부 가능한 개수를 모두 채웠어요' : '스크린샷이나 추가 근거를 첨부해주세요',
+                    style: Theme.of(context).textTheme.labelMedium?.copyWith(
                       fontWeight: FontWeight.w700,
                       color: disabled
                           ? AppColors.textTertiary
@@ -371,7 +365,7 @@ class _AttachmentRow extends StatelessWidget {
       ),
       decoration: BoxDecoration(
         color: AppColors.surface,
-        borderRadius: BorderRadius.circular(8),
+        borderRadius: AppRadius.small,
         border: Border.all(color: AppColors.border),
       ),
       child: Row(

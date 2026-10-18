@@ -146,7 +146,7 @@ class MyPagePanel extends StatelessWidget {
     final box = DecoratedBox(
       decoration: BoxDecoration(
         color: AppColors.surface,
-        borderRadius: BorderRadius.circular(8),
+        borderRadius: AppRadius.small,
         border: Border.all(color: AppColors.border),
         boxShadow: const [
           BoxShadow(
@@ -166,11 +166,7 @@ class MyPagePanel extends StatelessWidget {
 
     return Material(
       color: Colors.transparent,
-      child: InkWell(
-        onTap: onTap,
-        borderRadius: BorderRadius.circular(8),
-        child: box,
-      ),
+      child: InkWell(onTap: onTap, borderRadius: AppRadius.small, child: box),
     );
   }
 }
