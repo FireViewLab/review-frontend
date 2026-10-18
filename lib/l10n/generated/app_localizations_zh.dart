@@ -1945,4 +1945,91 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get authGoToLogin => '前往登录';
+
+  @override
+  String get searchFilterTitle => '筛选';
+
+  @override
+  String get searchFilterReset => '重置';
+
+  @override
+  String get searchFilterCategory => '类别';
+
+  @override
+  String get searchFilterPriceRange => '价格范围';
+
+  @override
+  String get searchFilterWon => '韩元';
+
+  @override
+  String get searchFilterSeller => '商家';
+
+  @override
+  String get searchFilterSellerHint => '请选择商家';
+
+  @override
+  String get searchFilterRtiScore => 'RTI信任评分';
+
+  @override
+  String get searchFilterAllRti => '全部（含未分析）';
+
+  @override
+  String get searchFilterZeroPoints => '0分';
+
+  @override
+  String get searchFilterHundredPoints => '100分';
+
+  @override
+  String get searchFilterEightyMinimum => '80分以上';
+
+  @override
+  String get searchFilterNinetyMinimum => '90分以上';
+
+  @override
+  String get searchFilterNinetyFiveMinimum => '95分以上';
+
+  @override
+  String get searchFilterInfoStatus => '信息状态';
+
+  @override
+  String get searchFilterReviewConditions => '评价条件';
+
+  @override
+  String get searchFilterSelectSeller => '选择商家';
+
+  @override
+  String get searchFilterAllSellers => '全部商家';
+
+  @override
+  String get searchFilterUnanalyzedOnly => '仅未分析';
+
+  @override
+  String get searchFilterMissingPriceOnly => '仅无价格信息';
+
+  @override
+  String get searchFilterMinimumReviews => '至少50条评价';
+
+  @override
+  String get searchFilterUnderTenThousand => '1万韩元以下';
+
+  @override
+  String get searchFilterTenToThirtyThousand => '10至30万韩元';
+
+  @override
+  String get searchFilterAboveThreeHundredThousand => '30万韩元以上';
+
+  @override
+  String searchFilterPriceAmount(String amount) {
+    return '$amount韩元';
+  }
+
+  @override
+  String searchFilterMinimumScore(int score) {
+    return '$score分以上';
+  }
+
+  @override
+  String searchFilterShowResults(int count) {
+    return '查看$count个结果';
+  }
 }

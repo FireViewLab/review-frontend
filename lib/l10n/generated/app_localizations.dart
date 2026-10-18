@@ -3821,6 +3821,168 @@ abstract class AppLocalizations {
   /// In ko, this message translates to:
   /// **'로그인하러 가기'**
   String get authGoToLogin;
+
+  /// No description provided for @searchFilterTitle.
+  ///
+  /// In ko, this message translates to:
+  /// **'필터'**
+  String get searchFilterTitle;
+
+  /// No description provided for @searchFilterReset.
+  ///
+  /// In ko, this message translates to:
+  /// **'초기화'**
+  String get searchFilterReset;
+
+  /// No description provided for @searchFilterCategory.
+  ///
+  /// In ko, this message translates to:
+  /// **'카테고리'**
+  String get searchFilterCategory;
+
+  /// No description provided for @searchFilterPriceRange.
+  ///
+  /// In ko, this message translates to:
+  /// **'가격대'**
+  String get searchFilterPriceRange;
+
+  /// No description provided for @searchFilterWon.
+  ///
+  /// In ko, this message translates to:
+  /// **'원'**
+  String get searchFilterWon;
+
+  /// No description provided for @searchFilterSeller.
+  ///
+  /// In ko, this message translates to:
+  /// **'판매처'**
+  String get searchFilterSeller;
+
+  /// No description provided for @searchFilterSellerHint.
+  ///
+  /// In ko, this message translates to:
+  /// **'판매처를 선택하세요'**
+  String get searchFilterSellerHint;
+
+  /// No description provided for @searchFilterRtiScore.
+  ///
+  /// In ko, this message translates to:
+  /// **'RTI 신뢰 점수'**
+  String get searchFilterRtiScore;
+
+  /// No description provided for @searchFilterAllRti.
+  ///
+  /// In ko, this message translates to:
+  /// **'전체 (분석 전 포함)'**
+  String get searchFilterAllRti;
+
+  /// No description provided for @searchFilterZeroPoints.
+  ///
+  /// In ko, this message translates to:
+  /// **'0점'**
+  String get searchFilterZeroPoints;
+
+  /// No description provided for @searchFilterHundredPoints.
+  ///
+  /// In ko, this message translates to:
+  /// **'100점'**
+  String get searchFilterHundredPoints;
+
+  /// No description provided for @searchFilterEightyMinimum.
+  ///
+  /// In ko, this message translates to:
+  /// **'80점 이상'**
+  String get searchFilterEightyMinimum;
+
+  /// No description provided for @searchFilterNinetyMinimum.
+  ///
+  /// In ko, this message translates to:
+  /// **'90점 이상'**
+  String get searchFilterNinetyMinimum;
+
+  /// No description provided for @searchFilterNinetyFiveMinimum.
+  ///
+  /// In ko, this message translates to:
+  /// **'95점 이상'**
+  String get searchFilterNinetyFiveMinimum;
+
+  /// No description provided for @searchFilterInfoStatus.
+  ///
+  /// In ko, this message translates to:
+  /// **'정보 상태'**
+  String get searchFilterInfoStatus;
+
+  /// No description provided for @searchFilterReviewConditions.
+  ///
+  /// In ko, this message translates to:
+  /// **'리뷰 조건'**
+  String get searchFilterReviewConditions;
+
+  /// No description provided for @searchFilterSelectSeller.
+  ///
+  /// In ko, this message translates to:
+  /// **'판매처 선택'**
+  String get searchFilterSelectSeller;
+
+  /// No description provided for @searchFilterAllSellers.
+  ///
+  /// In ko, this message translates to:
+  /// **'전체 판매처'**
+  String get searchFilterAllSellers;
+
+  /// No description provided for @searchFilterUnanalyzedOnly.
+  ///
+  /// In ko, this message translates to:
+  /// **'분석 전만'**
+  String get searchFilterUnanalyzedOnly;
+
+  /// No description provided for @searchFilterMissingPriceOnly.
+  ///
+  /// In ko, this message translates to:
+  /// **'가격 정보 없음만'**
+  String get searchFilterMissingPriceOnly;
+
+  /// No description provided for @searchFilterMinimumReviews.
+  ///
+  /// In ko, this message translates to:
+  /// **'리뷰 50개 이상'**
+  String get searchFilterMinimumReviews;
+
+  /// No description provided for @searchFilterUnderTenThousand.
+  ///
+  /// In ko, this message translates to:
+  /// **'1만원 이하'**
+  String get searchFilterUnderTenThousand;
+
+  /// No description provided for @searchFilterTenToThirtyThousand.
+  ///
+  /// In ko, this message translates to:
+  /// **'10~30만원'**
+  String get searchFilterTenToThirtyThousand;
+
+  /// No description provided for @searchFilterAboveThreeHundredThousand.
+  ///
+  /// In ko, this message translates to:
+  /// **'30만원 이상'**
+  String get searchFilterAboveThreeHundredThousand;
+
+  /// No description provided for @searchFilterPriceAmount.
+  ///
+  /// In ko, this message translates to:
+  /// **'{amount}원'**
+  String searchFilterPriceAmount(String amount);
+
+  /// No description provided for @searchFilterMinimumScore.
+  ///
+  /// In ko, this message translates to:
+  /// **'{score}점 이상'**
+  String searchFilterMinimumScore(int score);
+
+  /// No description provided for @searchFilterShowResults.
+  ///
+  /// In ko, this message translates to:
+  /// **'{count}개 결과 보기'**
+  String searchFilterShowResults(int count);
 }
 
 class _AppLocalizationsDelegate

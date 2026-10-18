@@ -1964,4 +1964,91 @@ class AppLocalizationsKo extends AppLocalizations {
 
   @override
   String get authGoToLogin => '로그인하러 가기';
+
+  @override
+  String get searchFilterTitle => '필터';
+
+  @override
+  String get searchFilterReset => '초기화';
+
+  @override
+  String get searchFilterCategory => '카테고리';
+
+  @override
+  String get searchFilterPriceRange => '가격대';
+
+  @override
+  String get searchFilterWon => '원';
+
+  @override
+  String get searchFilterSeller => '판매처';
+
+  @override
+  String get searchFilterSellerHint => '판매처를 선택하세요';
+
+  @override
+  String get searchFilterRtiScore => 'RTI 신뢰 점수';
+
+  @override
+  String get searchFilterAllRti => '전체 (분석 전 포함)';
+
+  @override
+  String get searchFilterZeroPoints => '0점';
+
+  @override
+  String get searchFilterHundredPoints => '100점';
+
+  @override
+  String get searchFilterEightyMinimum => '80점 이상';
+
+  @override
+  String get searchFilterNinetyMinimum => '90점 이상';
+
+  @override
+  String get searchFilterNinetyFiveMinimum => '95점 이상';
+
+  @override
+  String get searchFilterInfoStatus => '정보 상태';
+
+  @override
+  String get searchFilterReviewConditions => '리뷰 조건';
+
+  @override
+  String get searchFilterSelectSeller => '판매처 선택';
+
+  @override
+  String get searchFilterAllSellers => '전체 판매처';
+
+  @override
+  String get searchFilterUnanalyzedOnly => '분석 전만';
+
+  @override
+  String get searchFilterMissingPriceOnly => '가격 정보 없음만';
+
+  @override
+  String get searchFilterMinimumReviews => '리뷰 50개 이상';
+
+  @override
+  String get searchFilterUnderTenThousand => '1만원 이하';
+
+  @override
+  String get searchFilterTenToThirtyThousand => '10~30만원';
+
+  @override
+  String get searchFilterAboveThreeHundredThousand => '30만원 이상';
+
+  @override
+  String searchFilterPriceAmount(String amount) {
+    return '$amount원';
+  }
+
+  @override
+  String searchFilterMinimumScore(int score) {
+    return '$score점 이상';
+  }
+
+  @override
+  String searchFilterShowResults(int count) {
+    return '$count개 결과 보기';
+  }
 }

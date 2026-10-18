@@ -2030,4 +2030,91 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get authGoToLogin => 'Go to login';
+
+  @override
+  String get searchFilterTitle => 'Filters';
+
+  @override
+  String get searchFilterReset => 'Reset';
+
+  @override
+  String get searchFilterCategory => 'Category';
+
+  @override
+  String get searchFilterPriceRange => 'Price range';
+
+  @override
+  String get searchFilterWon => 'KRW';
+
+  @override
+  String get searchFilterSeller => 'Seller';
+
+  @override
+  String get searchFilterSellerHint => 'Select a seller';
+
+  @override
+  String get searchFilterRtiScore => 'RTI trust score';
+
+  @override
+  String get searchFilterAllRti => 'All (including unanalyzed)';
+
+  @override
+  String get searchFilterZeroPoints => '0 points';
+
+  @override
+  String get searchFilterHundredPoints => '100 points';
+
+  @override
+  String get searchFilterEightyMinimum => '80 points or more';
+
+  @override
+  String get searchFilterNinetyMinimum => '90 points or more';
+
+  @override
+  String get searchFilterNinetyFiveMinimum => '95 points or more';
+
+  @override
+  String get searchFilterInfoStatus => 'Information status';
+
+  @override
+  String get searchFilterReviewConditions => 'Review criteria';
+
+  @override
+  String get searchFilterSelectSeller => 'Select seller';
+
+  @override
+  String get searchFilterAllSellers => 'All sellers';
+
+  @override
+  String get searchFilterUnanalyzedOnly => 'Unanalyzed only';
+
+  @override
+  String get searchFilterMissingPriceOnly => 'Missing price only';
+
+  @override
+  String get searchFilterMinimumReviews => 'At least 50 reviews';
+
+  @override
+  String get searchFilterUnderTenThousand => '₩10,000 or less';
+
+  @override
+  String get searchFilterTenToThirtyThousand => '₩100,000–300,000';
+
+  @override
+  String get searchFilterAboveThreeHundredThousand => '₩300,000 or more';
+
+  @override
+  String searchFilterPriceAmount(String amount) {
+    return '$amount KRW';
+  }
+
+  @override
+  String searchFilterMinimumScore(int score) {
+    return '$score points or more';
+  }
+
+  @override
+  String searchFilterShowResults(int count) {
+    return 'Show $count results';
+  }
 }

@@ -1959,4 +1959,91 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String get authGoToLogin => 'ログインへ';
+
+  @override
+  String get searchFilterTitle => 'フィルター';
+
+  @override
+  String get searchFilterReset => 'リセット';
+
+  @override
+  String get searchFilterCategory => 'カテゴリー';
+
+  @override
+  String get searchFilterPriceRange => '価格帯';
+
+  @override
+  String get searchFilterWon => 'ウォン';
+
+  @override
+  String get searchFilterSeller => '販売店';
+
+  @override
+  String get searchFilterSellerHint => '販売店を選択してください';
+
+  @override
+  String get searchFilterRtiScore => 'RTI信頼スコア';
+
+  @override
+  String get searchFilterAllRti => 'すべて（未分析を含む）';
+
+  @override
+  String get searchFilterZeroPoints => '0点';
+
+  @override
+  String get searchFilterHundredPoints => '100点';
+
+  @override
+  String get searchFilterEightyMinimum => '80点以上';
+
+  @override
+  String get searchFilterNinetyMinimum => '90点以上';
+
+  @override
+  String get searchFilterNinetyFiveMinimum => '95点以上';
+
+  @override
+  String get searchFilterInfoStatus => '情報の状態';
+
+  @override
+  String get searchFilterReviewConditions => 'レビュー条件';
+
+  @override
+  String get searchFilterSelectSeller => '販売店を選択';
+
+  @override
+  String get searchFilterAllSellers => 'すべての販売店';
+
+  @override
+  String get searchFilterUnanalyzedOnly => '未分析のみ';
+
+  @override
+  String get searchFilterMissingPriceOnly => '価格情報なしのみ';
+
+  @override
+  String get searchFilterMinimumReviews => 'レビュー50件以上';
+
+  @override
+  String get searchFilterUnderTenThousand => '1万ウォン以下';
+
+  @override
+  String get searchFilterTenToThirtyThousand => '10～30万ウォン';
+
+  @override
+  String get searchFilterAboveThreeHundredThousand => '30万ウォン以上';
+
+  @override
+  String searchFilterPriceAmount(String amount) {
+    return '$amountウォン';
+  }
+
+  @override
+  String searchFilterMinimumScore(int score) {
+    return '$score点以上';
+  }
+
+  @override
+  String searchFilterShowResults(int count) {
+    return '$count件の結果を表示';
+  }
 }

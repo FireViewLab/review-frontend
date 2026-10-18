@@ -1037,5 +1037,53 @@
   "authVerificationCode": "인증 코드",
   "authResetSuccess": "비밀번호가 변경되었습니다",
   "authResetSuccessGuide": "새 비밀번호로 로그인해 주세요.",
-  "authGoToLogin": "로그인하러 가기"
+  "authGoToLogin": "로그인하러 가기",
+  "searchFilterTitle": "필터",
+  "searchFilterReset": "초기화",
+  "searchFilterCategory": "카테고리",
+  "searchFilterPriceRange": "가격대",
+  "searchFilterWon": "원",
+  "searchFilterSeller": "판매처",
+  "searchFilterSellerHint": "판매처를 선택하세요",
+  "searchFilterRtiScore": "RTI 신뢰 점수",
+  "searchFilterAllRti": "전체 (분석 전 포함)",
+  "searchFilterZeroPoints": "0점",
+  "searchFilterHundredPoints": "100점",
+  "searchFilterEightyMinimum": "80점 이상",
+  "searchFilterNinetyMinimum": "90점 이상",
+  "searchFilterNinetyFiveMinimum": "95점 이상",
+  "searchFilterInfoStatus": "정보 상태",
+  "searchFilterReviewConditions": "리뷰 조건",
+  "searchFilterSelectSeller": "판매처 선택",
+  "searchFilterAllSellers": "전체 판매처",
+  "searchFilterUnanalyzedOnly": "분석 전만",
+  "searchFilterMissingPriceOnly": "가격 정보 없음만",
+  "searchFilterMinimumReviews": "리뷰 50개 이상",
+  "searchFilterUnderTenThousand": "1만원 이하",
+  "searchFilterTenToThirtyThousand": "10~30만원",
+  "searchFilterAboveThreeHundredThousand": "30만원 이상",
+  "searchFilterPriceAmount": "{amount}원",
+  "@searchFilterPriceAmount": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "searchFilterMinimumScore": "{score}점 이상",
+  "@searchFilterMinimumScore": {
+    "placeholders": {
+      "score": {
+        "type": "int"
+      }
+    }
+  },
+  "searchFilterShowResults": "{count}개 결과 보기",
+  "@searchFilterShowResults": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  }
 }
