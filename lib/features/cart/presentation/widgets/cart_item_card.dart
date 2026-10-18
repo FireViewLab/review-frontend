@@ -124,21 +124,11 @@ class _ProductImage extends StatelessWidget {
     return SizedBox(
       width: 100,
       height: 100,
-      child: Stack(
-        children: [
-          Positioned.fill(
-            child: ClipRRect(
-              borderRadius: BorderRadius.circular(8),
-              child: AppNetworkImage(url: item.imageUrl, thumbnailWidth: 240),
-            ),
-          ),
-          if (item.badge != null)
-            Positioned(
-              top: AppSpacing.xxs,
-              left: AppSpacing.xxs,
-              child: _BadgeChip(label: item.badge!),
-            ),
-        ],
+      // 배지는 이미지 위에 겹치지 않고 정보 영역에 둔다.
+      child: AppNetworkImage(
+        url: item.imageUrl,
+        thumbnailWidth: 240,
+        borderRadius: BorderRadius.circular(8),
       ),
     );
   }
@@ -183,14 +173,23 @@ class _ProductInfo extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        if (item.platform != null)
-          Text(
-            item.platform!,
-            style: Theme.of(context).textTheme.labelSmall?.copyWith(
-              color: AppColors.textSecondary,
-              fontWeight: FontWeight.w800,
-              fontSize: 11,
-            ),
+        if (item.platform != null || item.badge != null)
+          Wrap(
+            spacing: AppSpacing.xs,
+            runSpacing: AppSpacing.xxs,
+            crossAxisAlignment: WrapCrossAlignment.center,
+            children: [
+              if (item.platform != null)
+                Text(
+                  item.platform!,
+                  style: Theme.of(context).textTheme.labelSmall?.copyWith(
+                    color: AppColors.textSecondary,
+                    fontWeight: FontWeight.w800,
+                    fontSize: 11,
+                  ),
+                ),
+              if (item.badge != null) _BadgeChip(label: item.badge!),
+            ],
           ),
         const SizedBox(height: 2),
         InkWell(
