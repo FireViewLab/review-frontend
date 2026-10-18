@@ -42,7 +42,7 @@ class AnalysisReportTrendChartPainter extends CustomPainter {
     final gridPaint = Paint()
       ..color = const Color(0xFFE5E7EB)
       ..strokeWidth = 1;
-    final labelStyle = const TextStyle(color: Color(0xFF9CA3AF), fontSize: 10);
+    final labelStyle = const TextStyle(color: Color(0xFF9CA3AF), fontSize: 11);
 
     for (var i = 0; i <= 4; i++) {
       final y = chartTop + chartH * (1 - i / 4);

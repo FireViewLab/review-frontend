@@ -163,7 +163,7 @@ class _FilterChip extends StatelessWidget {
                     style: Theme.of(context).textTheme.labelSmall?.copyWith(
                       color: selected ? AppColors.error : AppColors.onPrimary,
                       fontWeight: FontWeight.w900,
-                      fontSize: 10,
+                      fontSize: 11,
                     ),
                   ),
                 ),

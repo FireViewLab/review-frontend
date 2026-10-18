@@ -154,7 +154,7 @@ class _BadgeChip extends StatelessWidget {
           style: Theme.of(context).textTheme.labelSmall?.copyWith(
             color: AppColors.onPrimary,
             fontWeight: FontWeight.w900,
-            fontSize: 9,
+            fontSize: 11,
           ),
         ),
       ),
@@ -426,7 +426,7 @@ class _ShippingInfo extends StatelessWidget {
                   style: Theme.of(context).textTheme.labelSmall?.copyWith(
                     color: AppColors.primary,
                     fontWeight: FontWeight.w900,
-                    fontSize: 10,
+                    fontSize: 11,
                   ),
                 ),
               ),
