@@ -19,7 +19,9 @@ class TrendingKeywordChips extends StatelessWidget {
       title: AppLocalizations.of(context).homeTrendingTitle,
       icon: Icons.auto_awesome,
       child: keywords.isEmpty
-          ? _KeywordEmptyState(message: AppLocalizations.of(context).homeKeywordsEmpty)
+          ? _KeywordEmptyState(
+              message: AppLocalizations.of(context).homeKeywordsEmpty,
+            )
           : Wrap(
               spacing: AppSpacing.sm,
               runSpacing: AppSpacing.sm,
@@ -113,7 +115,7 @@ class _ChipContent extends StatelessWidget {
             height: 24,
             alignment: Alignment.center,
             decoration: BoxDecoration(
-              color: const Color(0xFFEFF4FF),
+              color: AppColors.primaryLight,
               borderRadius: BorderRadius.circular(8),
             ),
             child: Text(

@@ -52,7 +52,7 @@ class PasswordResetCard extends StatelessWidget {
           border: Border.all(color: AppColors.border),
           boxShadow: const [
             BoxShadow(
-              color: Color(0x1A0F172A),
+              color: AppColors.shadow,
               blurRadius: 42,
               offset: Offset(0, 24),
             ),

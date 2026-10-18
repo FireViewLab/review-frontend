@@ -4,6 +4,7 @@ import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
 import 'package:re_view_front/features/product_detail/domain/entities/product_analysis_result.dart';
+import 'package:re_view_front/app/theme/app_colors.dart';
 
 // Chart Widget
 class AnalysisReportTrendChart extends StatelessWidget {
@@ -40,9 +41,12 @@ class AnalysisReportTrendChartPainter extends CustomPainter {
 
     // Grid lines (0, 25, 50, 75, 100)
     final gridPaint = Paint()
-      ..color = const Color(0xFFE5E7EB)
+      ..color = AppColors.border
       ..strokeWidth = 1;
-    final labelStyle = const TextStyle(color: Color(0xFF9CA3AF), fontSize: 10);
+    final labelStyle = const TextStyle(
+      color: AppColors.textTertiary,
+      fontSize: 10,
+    );
 
     for (var i = 0; i <= 4; i++) {
       final y = chartTop + chartH * (1 - i / 4);
@@ -87,7 +91,7 @@ class AnalysisReportTrendChartPainter extends CustomPainter {
     canvas.drawPath(
       fillPath,
       Paint()
-        ..color = const Color(0xFF2563EB).withValues(alpha: 0.08)
+        ..color = AppColors.primary.withValues(alpha: 0.08)
         ..style = PaintingStyle.fill,
     );
 
@@ -96,7 +100,7 @@ class AnalysisReportTrendChartPainter extends CustomPainter {
       canvas,
       rtiPts,
       Paint()
-        ..color = const Color(0xFF2563EB)
+        ..color = AppColors.primary
         ..strokeWidth = 2.5
         ..style = PaintingStyle.stroke
         ..strokeCap = StrokeCap.round

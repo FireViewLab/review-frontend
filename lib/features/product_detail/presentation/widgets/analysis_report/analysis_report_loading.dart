@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:re_view_front/app/theme/app_spacing.dart';
+import 'package:re_view_front/app/theme/app_colors.dart';
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Skeleton Loading
@@ -16,7 +17,7 @@ class AnalysisReportSkeletonView extends StatelessWidget {
     final isNarrow = MediaQuery.sizeOf(context).width < 760;
     return Shimmer.fromColors(
       enabled: !MediaQuery.disableAnimationsOf(context),
-      baseColor: const Color(0xFFE5E7EB),
+      baseColor: AppColors.border,
       highlightColor: const Color(0xFFF9FAFB),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,

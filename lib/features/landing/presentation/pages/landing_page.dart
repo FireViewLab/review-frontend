@@ -62,7 +62,7 @@ class _Backdrop extends StatelessWidget {
     return GestureDetector(
       onTap: onDismiss,
       behavior: HitTestBehavior.opaque,
-      child: Container(color: const Color(0x660F172A)),
+      child: Container(color: AppColors.overlay),
     );
   }
 }

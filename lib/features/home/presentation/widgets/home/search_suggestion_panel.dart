@@ -225,7 +225,7 @@ class _PanelEmptyRow extends StatelessWidget {
       alignment: Alignment.centerLeft,
       padding: const EdgeInsets.symmetric(horizontal: AppSpacing.sm),
       decoration: BoxDecoration(
-        color: const Color(0xFFF8FAFC),
+        color: AppColors.background,
         borderRadius: BorderRadius.circular(10),
       ),
       child: Text(
@@ -299,7 +299,7 @@ class _RecentSearchChip extends StatelessWidget {
   Widget build(BuildContext context) {
     return _PlainPanelChip(
       onPressed: onPressed,
-      backgroundColor: const Color(0xFFF8FAFC),
+      backgroundColor: AppColors.background,
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
