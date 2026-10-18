@@ -59,7 +59,7 @@ class ReviewRtiAnalysisDialog extends StatelessWidget {
         vertical: 16,
       ),
       child: ConstrainedBox(
-        constraints: const BoxConstraints(maxWidth: 800, maxHeight: 860),
+        constraints: const BoxConstraints(maxWidth: 720, maxHeight: 860),
         child: ClipRRect(
           borderRadius: AppRadius.large,
           child: Material(
@@ -70,7 +70,11 @@ class ReviewRtiAnalysisDialog extends StatelessWidget {
                 _DialogHeader(onClose: () => Navigator.of(context).pop()),
                 Flexible(
                   child: SingleChildScrollView(
-                    padding: const EdgeInsets.all(AppSpacing.md),
+                    padding: EdgeInsets.all(
+                      MediaQuery.sizeOf(context).width < 600
+                          ? AppSpacing.md
+                          : AppSpacing.lg,
+                    ),
                     child: _DialogBody(
                       review: review,
                       safeCount: safeCount,
@@ -103,59 +107,70 @@ class _DialogHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      color: AppColors.surface,
-      padding: const EdgeInsets.fromLTRB(
-        AppSpacing.md,
-        AppSpacing.sm,
-        AppSpacing.sm,
-        AppSpacing.sm,
+    final l = AppLocalizations.of(context);
+    return DecoratedBox(
+      decoration: const BoxDecoration(
+        color: AppColors.surface,
+        border: Border(bottom: BorderSide(color: AppColors.border)),
       ),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  'Review Analysis',
-                  style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                    color: AppColors.primary,
-                    fontWeight: FontWeight.w700,
-                    letterSpacing: 0.3,
-                  ),
-                ),
-                const SizedBox(height: AppSpacing.xxs),
-                Text(
-                  '리뷰 상세 분석',
-                  style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                    color: AppColors.textPrimary,
-                    fontWeight: FontWeight.w800,
-                  ),
-                ),
-                const SizedBox(height: AppSpacing.xxs),
-                Text(
-                  AppLocalizations.of(context).reviewIndividualScope,
-                  style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                    color: AppColors.textSecondary,
-                  ),
-                ),
-              ],
+      child: Padding(
+        padding: const EdgeInsets.fromLTRB(
+          AppSpacing.lg,
+          AppSpacing.md,
+          AppSpacing.sm,
+          AppSpacing.md,
+        ),
+        child: Row(
+          children: [
+            Container(
+              width: 40,
+              height: 40,
+              decoration: BoxDecoration(
+                color: AppColors.primaryLight,
+                borderRadius: BorderRadius.circular(12),
+              ),
+              child: const Icon(
+                Icons.rate_review_outlined,
+                color: AppColors.primary,
+                size: 22,
+              ),
             ),
-          ),
-          IconButton(
-            onPressed: onClose,
-            tooltip: AppLocalizations.of(context).reportClose,
-            icon: const Icon(Icons.close, size: 20),
-            color: AppColors.textSecondary,
-            style: IconButton.styleFrom(
-              backgroundColor: AppColors.surfaceMuted,
-              shape: const CircleBorder(),
-              padding: const EdgeInsets.all(6),
+            const SizedBox(width: AppSpacing.sm),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Text(
+                    l.reviewResultTitle,
+                    style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                      color: AppColors.textPrimary,
+                      fontWeight: FontWeight.w800,
+                    ),
+                  ),
+                  const SizedBox(height: 2),
+                  Text(
+                    l.reviewIndividualScope,
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                    style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                      color: AppColors.textSecondary,
+                    ),
+                  ),
+                ],
+              ),
             ),
-          ),
-        ],
+            const SizedBox(width: AppSpacing.xs),
+            IconButton(
+              onPressed: onClose,
+              tooltip: l.reportClose,
+              icon: const Icon(Icons.close, size: 20),
+              style: IconButton.styleFrom(
+                backgroundColor: AppColors.surfaceMuted,
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -184,8 +199,7 @@ class _DialogBody extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        RtiSelectedReviewSection(review: review),
-        const SizedBox(height: AppSpacing.md),
+        // 결과를 먼저 보여 주고 근거와 원문을 이어서 보여 준다.
         RtiScoreCard(review: review),
         if (detail != null && detail.signals.isNotEmpty) ...[
           const SizedBox(height: AppSpacing.md),
@@ -201,21 +215,42 @@ class _DialogBody extends StatelessWidget {
             color: colorFromHex(review.rtiColor),
           ),
         ],
+        const SizedBox(height: AppSpacing.md),
+        RtiSelectedReviewSection(review: review),
         if (total > 0) ...[
           const SizedBox(height: AppSpacing.md),
-          ExpansionTile(
-            tilePadding: const EdgeInsets.symmetric(horizontal: AppSpacing.sm),
-            title: Text(
-              AppLocalizations.of(context).reviewLoadedAggregate,
-              style: Theme.of(context).textTheme.titleSmall,
+          Container(
+            decoration: BoxDecoration(
+              color: AppColors.surface,
+              borderRadius: BorderRadius.circular(16),
+              border: Border.all(color: AppColors.border),
             ),
-            children: [
-              RtiRiskSummarySection(
-                safeCount: safeCount,
-                warnCount: warnCount,
-                dangerCount: dangerCount,
+            clipBehavior: Clip.antiAlias,
+            child: ExpansionTile(
+              shape: const Border(),
+              collapsedShape: const Border(),
+              tilePadding: const EdgeInsets.symmetric(horizontal: 20),
+              childrenPadding: const EdgeInsets.fromLTRB(
+                AppSpacing.md,
+                0,
+                AppSpacing.md,
+                AppSpacing.md,
               ),
-            ],
+              title: Text(
+                AppLocalizations.of(context).reviewLoadedAggregate,
+                style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                  fontWeight: FontWeight.w800,
+                  color: AppColors.textPrimary,
+                ),
+              ),
+              children: [
+                RtiRiskSummarySection(
+                  safeCount: safeCount,
+                  warnCount: warnCount,
+                  dangerCount: dangerCount,
+                ),
+              ],
+            ),
           ),
         ],
       ],
