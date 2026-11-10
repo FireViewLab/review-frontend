@@ -297,7 +297,8 @@ void main() {
           location: RoutePaths.settings,
           responseStatus: (options) =>
               options.path.startsWith('/api/users/me') ||
-                  options.path.startsWith('/api/chat')
+                  options.path.startsWith('/api/chat') ||
+                  options.path.startsWith('/api/auth/refresh')
               ? expired.future
               : Future.value(200),
         );
