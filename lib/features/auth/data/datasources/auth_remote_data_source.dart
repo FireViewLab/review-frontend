@@ -11,6 +11,8 @@ abstract interface class AuthRemoteDataSource {
 
   Future<void> signup(SignupRequestDto request);
 
+  Future<void> logout();
+
   Future<String> sendPasswordResetRequest(String email);
 
   Future<void> resetPassword(PasswordResetRequestDto request);
@@ -50,6 +52,11 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
     );
     final payload = _readPayload<Object?>(response.data);
     payload.requireSuccess();
+  }
+
+  @override
+  Future<void> logout() async {
+    await _apiClient.post(_config.logoutPath);
   }
 
   @override
