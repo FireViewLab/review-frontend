@@ -57,6 +57,16 @@ class AuthTokenStore extends Notifier<bool> {
     ref.read(authSessionRevisionProvider.notifier).advance();
   }
 
+  void updateAccessToken({
+    required String accessToken,
+    required String tokenType,
+  }) {
+    _accessToken = accessToken;
+    _tokenType = tokenType;
+    WebStorage.write(_keyAccessToken, accessToken);
+    WebStorage.write(_keyTokenType, tokenType);
+  }
+
   void saveNickname(String nickname) {
     _nickname = nickname;
     WebStorage.write(_keyNickname, nickname);
