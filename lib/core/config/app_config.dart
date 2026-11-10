@@ -14,6 +14,7 @@ class AppConfig {
     required this.adminBasePath,
     required this.loginPath,
     required this.signupPath,
+    required this.logoutPath,
     required this.naverOAuthPath,
     required this.googleOAuthPath,
     required this.passwordResetRequestPath,
@@ -84,6 +85,10 @@ class AppConfig {
         'SIGNUP_PATH',
         defaultValue: '/api/auth/signup',
       ),
+      logoutPath: const String.fromEnvironment(
+        'LOGOUT_PATH',
+        defaultValue: '/api/auth/logout',
+      ),
       naverOAuthPath: const String.fromEnvironment(
         'NAVER_OAUTH_PATH',
         defaultValue: '/oauth2/authorization/naver',
@@ -143,6 +148,7 @@ class AppConfig {
   final String adminBasePath;
   final String loginPath;
   final String signupPath;
+  final String logoutPath;
   final String naverOAuthPath;
   final String googleOAuthPath;
   final String passwordResetRequestPath;

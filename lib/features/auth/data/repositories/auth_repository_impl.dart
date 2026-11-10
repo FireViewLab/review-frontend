@@ -79,8 +79,11 @@ class AuthRepositoryImpl implements AuthRepository {
 
   @override
   Future<Result<void>> logout() async {
+    // 서버 세션 폐기가 실패해도 이 기기에서는 로그아웃한다.
+    final revoke = _remoteDataSource.logout().catchError((_) {});
     try {
       _tokenStore.clear();
+      await revoke;
       return const Success<void>(null);
     } on Object catch (error) {
       return FailureResult(Failure(message: '로그아웃을 완료하지 못했습니다.', cause: error));

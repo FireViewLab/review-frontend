@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:re_view_front/app/router/route_paths.dart';
 import 'package:re_view_front/app/theme/app_colors.dart';
 import 'package:re_view_front/core/providers/core_providers.dart';
+import 'package:re_view_front/features/auth/presentation/providers/auth_providers.dart';
 import 'package:re_view_front/features/home/presentation/data/home_content.dart';
 import 'package:re_view_front/features/home/presentation/home_navigation.dart';
 import 'package:re_view_front/features/home/presentation/providers/home_providers.dart';
@@ -137,7 +138,7 @@ class _AppShellState extends ConsumerState<AppShell> {
             onProfileWishPressed: () => context.go(RoutePaths.wishlist),
             onProfileOrderPressed: () => context.go(RoutePaths.cart),
             onLogoutPressed: () {
-              ref.read(authTokenStoreProvider.notifier).clear();
+              ref.read(logoutUseCaseProvider).call();
               context.go(RoutePaths.landing);
             },
           ),
