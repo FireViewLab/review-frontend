@@ -1,8 +1,11 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:re_view_front/core/network/auth_token_store.dart';
 import 'package:re_view_front/core/providers/core_providers.dart';
 import 'package:re_view_front/features/auth/data/datasources/auth_remote_data_source.dart';
 import 'package:re_view_front/features/auth/data/repositories/auth_repository_impl.dart';
+import 'package:re_view_front/features/auth/data/repositories/session_repository_impl.dart';
 import 'package:re_view_front/features/auth/domain/repositories/auth_repository.dart';
+import 'package:re_view_front/features/auth/domain/repositories/session_repository.dart';
 import 'package:re_view_front/features/auth/domain/usecases/handle_oauth_callback_use_case.dart';
 import 'package:re_view_front/features/auth/domain/usecases/login_use_case.dart';
 import 'package:re_view_front/features/auth/domain/usecases/logout_use_case.dart';
@@ -77,3 +80,16 @@ final passwordResetViewModelProvider = NotifierProvider.autoDispose
     .family<PasswordResetViewModel, PasswordResetState, String?>(
       (token) => PasswordResetViewModel(initialToken: token),
     );
+
+final sessionRepositoryProvider = Provider<SessionRepository>((ref) {
+  return SessionRepositoryImpl(
+    apiClient: ref.watch(apiClientProvider),
+    tokenStore: ref.read(authTokenStoreProvider.notifier),
+    sessionRevision: () =>
+        ref.mounted ? ref.read(authSessionRevisionProvider) : -1,
+  );
+});
+
+final sessionRestorationProvider = FutureProvider<void>((ref) async {
+  await ref.read(sessionRepositoryProvider).restoreSession();
+});
