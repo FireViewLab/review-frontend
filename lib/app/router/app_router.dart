@@ -1,3 +1,4 @@
+import 'package:re_view_front/features/auth/presentation/providers/auth_providers.dart';
 import 'package:re_view_front/features/recent_products/presentation/widgets/recent_products_section.dart';
 import 'package:re_view_front/features/my_page/presentation/widgets/my_page/warning_products_section.dart';
 import 'package:re_view_front/features/payments/presentation/pages/cart_checkout_page.dart';
@@ -44,6 +45,7 @@ import 'package:re_view_front/features/search/presentation/view_models/search_re
 class _AuthNotifier extends ChangeNotifier {
   _AuthNotifier(Ref ref) {
     ref.listen(authSessionProvider, (_, _) => notifyListeners());
+    ref.listen(sessionRestorationProvider, (_, _) => notifyListeners());
   }
 }
 
@@ -55,6 +57,7 @@ final appRouterProvider = Provider<GoRouter>((ref) {
     refreshListenable: authNotifier,
     observers: [popupRouteTracker],
     redirect: (context, state) {
+      if (ref.read(sessionRestorationProvider).isLoading) return null;
       if (state.matchedLocation == RoutePaths.passwordReset ||
           state.matchedLocation == RoutePaths.resetPassword) {
         return null;
