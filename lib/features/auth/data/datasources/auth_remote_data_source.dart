@@ -1,6 +1,9 @@
+import 'package:dio/dio.dart';
+import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:re_view_front/core/config/app_config.dart';
-import 'package:re_view_front/core/network/api_response.dart';
 import 'package:re_view_front/core/network/api_client.dart';
+import 'package:re_view_front/core/network/api_response.dart';
+import 'package:re_view_front/core/network/auth_token_store.dart';
 import 'package:re_view_front/features/auth/data/dtos/auth_user_dto.dart';
 import 'package:re_view_front/features/auth/data/dtos/login_request_dto.dart';
 import 'package:re_view_front/features/auth/data/dtos/password_reset_request_dto.dart';
@@ -22,22 +25,32 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
   const AuthRemoteDataSourceImpl({
     required ApiClient apiClient,
     required AppConfig config,
+    AuthTokenStore? tokenStore,
   }) : _apiClient = apiClient,
-       _config = config;
+       _config = config,
+       _tokenStore = tokenStore;
 
   final ApiClient _apiClient;
   final AppConfig _config;
+  final AuthTokenStore? _tokenStore;
+
+  Options? get _appOptions =>
+      kIsWeb ? null : Options(headers: {'X-Client-Platform': 'app'});
 
   @override
   Future<AuthUserDto> login(LoginRequestDto request) async {
     final response = await _apiClient.post(
       _config.loginPath,
       data: request.toJson(),
+      options: _appOptions,
     );
     final payload = _readPayload<Map<String, dynamic>>(response.data);
     final data = payload.requireSuccess();
 
     if (data is Map<String, dynamic>) {
+      if (!kIsWeb) {
+        _tokenStore?.updateRefreshToken(data['refreshToken'] as String?);
+      }
       return AuthUserDto.fromJson(data);
     }
 
@@ -49,14 +62,24 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
     final response = await _apiClient.post(
       _config.signupPath,
       data: request.toJson(),
+      options: _appOptions,
     );
     final payload = _readPayload<Object?>(response.data);
-    payload.requireSuccess();
+    final data = payload.requireSuccess();
+    if (!kIsWeb) {
+      _tokenStore?.updateRefreshToken(
+        data is Map<String, dynamic> ? data['refreshToken'] as String? : null,
+      );
+    }
   }
 
   @override
   Future<void> logout() async {
-    await _apiClient.post(_config.logoutPath);
+    await _apiClient.post(
+      _config.logoutPath,
+      data: kIsWeb ? null : {'refreshToken': _tokenStore?.refreshToken},
+      options: _appOptions,
+    );
   }
 
   @override

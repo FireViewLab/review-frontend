@@ -1,14 +1,17 @@
+import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:re_view_front/core/storage/app_storage.dart';
 import 'package:re_view_front/core/storage/secure_storage.dart';
 
 class AuthTokenStore extends Notifier<bool> {
+  static const _keyRefreshToken = 'review_refresh_token';
   static const _keyAccessToken = 'review_access_token';
   static const _keyTokenType = 'review_token_type';
   static const _keyOnboardingCompleted = 'review_onboarding_completed';
   static const _keyNickname = 'review_nickname';
   static const _keyRole = 'review_role';
 
+  String? _refreshToken = kIsWeb ? null : SecureStorage.read(_keyRefreshToken);
   String? _accessToken = SecureStorage.read(_keyAccessToken);
   String? _tokenType = SecureStorage.read(_keyTokenType);
   bool _onboardingCompleted =
@@ -16,6 +19,7 @@ class AuthTokenStore extends Notifier<bool> {
   String? _nickname = AppStorage.read(_keyNickname);
   String? _role = AppStorage.read(_keyRole);
 
+  String? get refreshToken => _refreshToken;
   String? get accessToken => _accessToken;
   String? get tokenType => _tokenType;
   bool get onboardingCompleted => _onboardingCompleted;
@@ -68,6 +72,18 @@ class AuthTokenStore extends Notifier<bool> {
     SecureStorage.write(_keyTokenType, tokenType);
   }
 
+  void updateRefreshToken(String? refreshToken) {
+    if (kIsWeb) return;
+    _refreshToken = refreshToken != null && refreshToken.isNotEmpty
+        ? refreshToken
+        : null;
+    if (_refreshToken case final token?) {
+      SecureStorage.write(_keyRefreshToken, token);
+    } else {
+      SecureStorage.remove(_keyRefreshToken);
+    }
+  }
+
   void saveNickname(String nickname) {
     _nickname = nickname;
     AppStorage.write(_keyNickname, nickname);
@@ -85,12 +101,16 @@ class AuthTokenStore extends Notifier<bool> {
 
   /// 저장된 토큰으로 보낸 요청이 401을 받았을 때 부른다. 로그아웃하고 만료를 알린다.
   void expireSession() {
-    if (_accessToken == null) return;
+    if (_accessToken == null) {
+      updateRefreshToken(null);
+      return;
+    }
     clear();
     ref.read(sessionExpiredProvider.notifier).notify();
   }
 
   void clear() {
+    updateRefreshToken(null);
     _accessToken = null;
     _tokenType = null;
     _onboardingCompleted = false;
