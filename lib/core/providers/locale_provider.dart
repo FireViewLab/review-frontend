@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:re_view_front/core/storage/web_storage.dart';
+import 'package:re_view_front/core/storage/app_storage.dart';
 
 const _storageKey = 'review_locale';
 
@@ -14,7 +14,7 @@ const supportedLocales = [
 class LocaleNotifier extends Notifier<Locale> {
   @override
   Locale build() {
-    final saved = WebStorage.read(_storageKey);
+    final saved = AppStorage.read(_storageKey);
     if (saved != null) {
       final match = supportedLocales.where((l) => l.languageCode == saved);
       if (match.isNotEmpty) return match.first;
@@ -24,7 +24,7 @@ class LocaleNotifier extends Notifier<Locale> {
 
   void setLocale(Locale locale) {
     if (!supportedLocales.contains(locale)) return;
-    WebStorage.write(_storageKey, locale.languageCode);
+    AppStorage.write(_storageKey, locale.languageCode);
     state = locale;
   }
 }

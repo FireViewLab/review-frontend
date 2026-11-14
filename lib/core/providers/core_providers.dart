@@ -36,7 +36,7 @@ final apiClientProvider = Provider<ApiClient>((ref) {
   );
 });
 
-/// WebStorage에 닉네임이 있으면 즉시 반환, 없으면 GET /api/users/me 로 fetch 후 저장.
+/// AppStorage에 닉네임이 있으면 즉시 반환, 없으면 GET /api/users/me 로 fetch 후 저장.
 final userNicknameProvider = FutureProvider.autoDispose<String?>((ref) async {
   final session = ref.watch(authSessionProvider);
   final isLoggedIn = session.isLoggedIn;

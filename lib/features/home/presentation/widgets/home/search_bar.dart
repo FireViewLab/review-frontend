@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:re_view_front/app/theme/app_colors.dart';
 import 'package:re_view_front/app/theme/app_spacing.dart';
-import 'package:re_view_front/core/storage/web_storage.dart';
+import 'package:re_view_front/core/storage/app_storage.dart';
 import 'package:re_view_front/features/home/presentation/data/home_content.dart';
 import 'package:re_view_front/l10n/generated/app_localizations.dart';
 import 'package:re_view_front/features/home/presentation/widgets/home/search_suggestion_panel.dart';
@@ -248,12 +248,12 @@ class _SearchBarState extends State<SearchBar> {
   }
 
   void _clearRecentQueries() {
-    WebStorage.remove(_recentSearchStorageKey);
+    AppStorage.remove(_recentSearchStorageKey);
     setState(() => _recentQueries = const []);
   }
 
   List<String> _readRecentQueries() {
-    final value = WebStorage.read(_recentSearchStorageKey);
+    final value = AppStorage.read(_recentSearchStorageKey);
     if (value == null || value.isEmpty) {
       return const [];
     }
@@ -277,11 +277,11 @@ class _SearchBarState extends State<SearchBar> {
 
   void _writeRecentQueries(List<String> queries) {
     if (queries.isEmpty) {
-      WebStorage.remove(_recentSearchStorageKey);
+      AppStorage.remove(_recentSearchStorageKey);
       return;
     }
 
-    WebStorage.write(_recentSearchStorageKey, jsonEncode(queries));
+    AppStorage.write(_recentSearchStorageKey, jsonEncode(queries));
   }
 
   void _setHovered(bool value) {

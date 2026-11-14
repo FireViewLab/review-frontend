@@ -2,7 +2,9 @@
 
 import 'dart:html' as html;
 
-class WebStorage {
+class SecureStorage {
+  static Future<void> init() async {}
+
   static String? read(String key) => html.window.localStorage[key];
   static void write(String key, String value) =>
       html.window.localStorage[key] = value;
