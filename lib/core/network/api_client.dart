@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:re_view_front/core/config/app_config.dart';
 import 'package:re_view_front/core/network/auth_token_store.dart';
 
@@ -93,10 +94,21 @@ class ApiClient {
         tokenStore.accessToken == accessToken &&
         tokenStore.tokenType == tokenType;
 
+    final refreshToken = tokenStore.refreshToken;
+    // 앱에 refreshToken이 없으면 세션을 이어갈 수 없으니 바로 로그아웃한다.
+    if (!kIsWeb && refreshToken == null) {
+      tokenStore.expireSession();
+      return false;
+    }
+
     try {
       final response = await dio.post<dynamic>(
         '/api/auth/refresh',
-        options: Options(extra: {_skipAuthRefresh: true}),
+        data: kIsWeb ? null : {'refreshToken': refreshToken},
+        options: Options(
+          extra: {_skipAuthRefresh: true},
+          headers: kIsWeb ? null : {'X-Client-Platform': 'app'},
+        ),
       );
       final body = response.data;
       final data = body is Map ? body['data'] : null;
@@ -107,6 +119,9 @@ class ApiClient {
           (data['tokenType'] as String).isEmpty ||
           !isCurrentSession()) {
         return false;
+      }
+      if (!kIsWeb) {
+        tokenStore.updateRefreshToken(data['refreshToken'] as String?);
       }
       tokenStore.updateAccessToken(
         accessToken: data['accessToken'] as String,

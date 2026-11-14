@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:dio/dio.dart';
+import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:re_view_front/core/network/api_client.dart';
 import 'package:re_view_front/core/network/auth_token_store.dart';
 import 'package:re_view_front/features/auth/data/dtos/auth_user_dto.dart';
@@ -23,18 +24,27 @@ class SessionRepositoryImpl implements SessionRepository {
   Future<void> restoreSession() async {
     final token = _tokenStore.accessToken;
     if (token != null && !_isExpired(token)) return;
+    final refreshToken = _tokenStore.refreshToken;
+    if (!kIsWeb && refreshToken == null) return;
     final revision = _sessionRevision();
     bool isCurrentSession() =>
         _sessionRevision() == revision && _tokenStore.accessToken == token;
 
     try {
-      final response = await _apiClient.post('/api/auth/refresh');
+      final response = await _apiClient.post(
+        '/api/auth/refresh',
+        data: kIsWeb ? null : {'refreshToken': refreshToken},
+        options: kIsWeb ? null : Options(headers: {'X-Client-Platform': 'app'}),
+      );
       final body = response.data;
       final data = body is Map<String, dynamic> ? body['data'] : null;
       if (data is! Map<String, dynamic> || !isCurrentSession()) return;
       final user = AuthUserDto.fromJson(data);
       final accessToken = user.accessToken;
       if (accessToken == null || accessToken.isEmpty) return;
+      if (!kIsWeb) {
+        _tokenStore.updateRefreshToken(data['refreshToken'] as String?);
+      }
       _tokenStore.save(
         accessToken: accessToken,
         tokenType: user.tokenType ?? 'Bearer',
