@@ -25,6 +25,7 @@ final authRemoteDataSourceProvider = Provider<AuthRemoteDataSource>((ref) {
   return AuthRemoteDataSourceImpl(
     apiClient: ref.watch(apiClientProvider),
     config: ref.watch(appConfigProvider),
+    tokenStore: ref.read(authTokenStoreProvider.notifier),
   );
 });
 
