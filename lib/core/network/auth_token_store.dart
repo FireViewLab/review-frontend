@@ -1,5 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:re_view_front/core/storage/web_storage.dart';
+import 'package:re_view_front/core/storage/app_storage.dart';
+import 'package:re_view_front/core/storage/secure_storage.dart';
 
 class AuthTokenStore extends Notifier<bool> {
   static const _keyAccessToken = 'review_access_token';
@@ -8,12 +9,12 @@ class AuthTokenStore extends Notifier<bool> {
   static const _keyNickname = 'review_nickname';
   static const _keyRole = 'review_role';
 
-  String? _accessToken = WebStorage.read(_keyAccessToken);
-  String? _tokenType = WebStorage.read(_keyTokenType);
+  String? _accessToken = SecureStorage.read(_keyAccessToken);
+  String? _tokenType = SecureStorage.read(_keyTokenType);
   bool _onboardingCompleted =
-      WebStorage.read(_keyOnboardingCompleted) == 'true';
-  String? _nickname = WebStorage.read(_keyNickname);
-  String? _role = WebStorage.read(_keyRole);
+      AppStorage.read(_keyOnboardingCompleted) == 'true';
+  String? _nickname = AppStorage.read(_keyNickname);
+  String? _role = AppStorage.read(_keyRole);
 
   String? get accessToken => _accessToken;
   String? get tokenType => _tokenType;
@@ -40,18 +41,18 @@ class AuthTokenStore extends Notifier<bool> {
     _onboardingCompleted = onboardingCompleted;
     _nickname = nickname;
     _role = role;
-    WebStorage.write(_keyAccessToken, accessToken);
-    WebStorage.write(_keyTokenType, tokenType);
-    WebStorage.write(_keyOnboardingCompleted, onboardingCompleted.toString());
+    SecureStorage.write(_keyAccessToken, accessToken);
+    SecureStorage.write(_keyTokenType, tokenType);
+    AppStorage.write(_keyOnboardingCompleted, onboardingCompleted.toString());
     if (nickname != null && nickname.isNotEmpty) {
-      WebStorage.write(_keyNickname, nickname);
+      AppStorage.write(_keyNickname, nickname);
     } else {
-      WebStorage.remove(_keyNickname);
+      AppStorage.remove(_keyNickname);
     }
     if (role != null && role.isNotEmpty) {
-      WebStorage.write(_keyRole, role);
+      AppStorage.write(_keyRole, role);
     } else {
-      WebStorage.remove(_keyRole);
+      AppStorage.remove(_keyRole);
     }
     state = true;
     ref.read(authSessionRevisionProvider.notifier).advance();
@@ -63,23 +64,23 @@ class AuthTokenStore extends Notifier<bool> {
   }) {
     _accessToken = accessToken;
     _tokenType = tokenType;
-    WebStorage.write(_keyAccessToken, accessToken);
-    WebStorage.write(_keyTokenType, tokenType);
+    SecureStorage.write(_keyAccessToken, accessToken);
+    SecureStorage.write(_keyTokenType, tokenType);
   }
 
   void saveNickname(String nickname) {
     _nickname = nickname;
-    WebStorage.write(_keyNickname, nickname);
+    AppStorage.write(_keyNickname, nickname);
   }
 
   void saveRole(String role) {
     _role = role;
-    WebStorage.write(_keyRole, role);
+    AppStorage.write(_keyRole, role);
   }
 
   void completeOnboarding() {
     _onboardingCompleted = true;
-    WebStorage.write(_keyOnboardingCompleted, 'true');
+    AppStorage.write(_keyOnboardingCompleted, 'true');
   }
 
   /// 저장된 토큰으로 보낸 요청이 401을 받았을 때 부른다. 로그아웃하고 만료를 알린다.
@@ -95,11 +96,11 @@ class AuthTokenStore extends Notifier<bool> {
     _onboardingCompleted = false;
     _nickname = null;
     _role = null;
-    WebStorage.remove(_keyAccessToken);
-    WebStorage.remove(_keyTokenType);
-    WebStorage.remove(_keyOnboardingCompleted);
-    WebStorage.remove(_keyNickname);
-    WebStorage.remove(_keyRole);
+    SecureStorage.remove(_keyAccessToken);
+    SecureStorage.remove(_keyTokenType);
+    AppStorage.remove(_keyOnboardingCompleted);
+    AppStorage.remove(_keyNickname);
+    AppStorage.remove(_keyRole);
     state = false;
     ref.read(authSessionRevisionProvider.notifier).advance();
   }
