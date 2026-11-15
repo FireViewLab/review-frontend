@@ -1,6 +1,7 @@
 import 'package:re_view_front/features/external_product/domain/entities/external_product_ref.dart';
 import 'dart:math' as math;
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -158,51 +159,120 @@ class _ChatLauncherLayout extends ConsumerWidget {
     }
 
     // 패널에 닫기 버튼이 있으므로 열려 있는 동안 런처는 그리지 않는다.
-    return Stack(
-      children: [
-        if (isMobile)
-          Positioned.fill(
-            // 화면 키보드가 올라오면 입력창이 가려지지 않게 그만큼 올린다.
-            bottom: media.viewInsets.bottom,
-            child: SafeArea(
-              child: ChatPanel(
-                productId: productId,
-                onLoginPressed: onLoginPressed,
-                onPlanPressed: onPlanPressed,
-                fullScreen: true,
+    return _CloseOnBack(
+      dispatcher: router.backButtonDispatcher,
+      onBack: ref.read(chatViewModelProvider.notifier).close,
+      child: Stack(
+        children: [
+          if (isMobile)
+            Positioned.fill(
+              // 화면 키보드가 올라오면 입력창이 가려지지 않게 그만큼 올린다.
+              bottom: media.viewInsets.bottom,
+              child: SafeArea(
+                child: ChatPanel(
+                  productId: productId,
+                  onLoginPressed: onLoginPressed,
+                  onPlanPressed: onPlanPressed,
+                  fullScreen: true,
+                ),
+              ),
+            )
+          else
+            Positioned(
+              right: edge,
+              bottom: edge + media.padding.bottom,
+              width: math.min(
+                _panelWidth,
+                math.max(
+                  0,
+                  media.size.width - media.padding.horizontal - 2 * edge,
+                ),
+              ),
+              // 창이 낮으면 화면 밖으로 나가지 않게 창 높이에 맞춘다.
+              height: math.min(
+                math.max(
+                  media.size.height - media.padding.vertical - 2 * edge,
+                  0,
+                ),
+                _panelMaxHeight,
+              ),
+              child: _Appear(
+                child: ChatPanel(
+                  productId: productId,
+                  onLoginPressed: onLoginPressed,
+                  onPlanPressed: onPlanPressed,
+                ),
               ),
             ),
-          )
-        else
-          Positioned(
-            right: edge,
-            bottom: edge + media.padding.bottom,
-            width: math.min(
-              _panelWidth,
-              math.max(
-                0,
-                media.size.width - media.padding.horizontal - 2 * edge,
-              ),
-            ),
-            // 창이 낮으면 화면 밖으로 나가지 않게 창 높이에 맞춘다.
-            height: math.min(
-              math.max(
-                media.size.height - media.padding.vertical - 2 * edge,
-                0,
-              ),
-              _panelMaxHeight,
-            ),
-            child: _Appear(
-              child: ChatPanel(
-                productId: productId,
-                onLoginPressed: onLoginPressed,
-                onPlanPressed: onPlanPressed,
-              ),
-            ),
-          ),
-      ],
+        ],
+      ),
     );
   }
+}
+
+/// 앱에서 패널이 열려 있으면 Android 뒤로 가기가 화면 이동보다 먼저 패널을 닫는다.
+///
+/// 패널은 Navigator 바깥이라 PopScope 대신 라우터의 뒤로 가기 처리 순서에 끼어든다.
+/// 팝업이 떠 있으면 레이어가 숨겨져 해제되므로 팝업이 먼저 닫힌다.
+class _CloseOnBack extends StatefulWidget {
+  const _CloseOnBack({
+    required this.dispatcher,
+    required this.onBack,
+    required this.child,
+  });
+
+  final BackButtonDispatcher dispatcher;
+  final VoidCallback onBack;
+  final Widget child;
+
+  @override
+  State<_CloseOnBack> createState() => _CloseOnBackState();
+}
+
+class _CloseOnBackState extends State<_CloseOnBack> {
+  ChildBackButtonDispatcher? _dispatcher;
+
+  @override
+  void initState() {
+    super.initState();
+    _attach();
+  }
+
+  @override
+  void didUpdateWidget(_CloseOnBack oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.dispatcher != widget.dispatcher) {
+      _detach();
+      _attach();
+    }
+  }
+
+  @override
+  void dispose() {
+    _detach();
+    super.dispose();
+  }
+
+  void _attach() {
+    if (kIsWeb) return;
+    _dispatcher = widget.dispatcher.createChildBackButtonDispatcher()
+      ..addCallback(_handleBack)
+      ..takePriority();
+  }
+
+  void _detach() {
+    // 마지막 콜백을 지우면 부모 디스패처에서도 빠진다.
+    _dispatcher?.removeCallback(_handleBack);
+    _dispatcher = null;
+  }
+
+  Future<bool> _handleBack() {
+    widget.onBack();
+    return SynchronousFuture(true);
+  }
+
+  @override
+  Widget build(BuildContext context) => widget.child;
 }
 
 /// 패널이 아래에서 살짝 올라오며 나타난다.
