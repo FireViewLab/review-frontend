@@ -44,6 +44,19 @@ class AppNetworkImage extends StatelessWidget {
         '${radius.bottomRight.x}px ${radius.bottomLeft.x}px';
   }
 
+  Widget _nativeImage(String src, Widget onError) {
+    return Image.network(
+      src,
+      fit: fit,
+      alignment: alignment,
+      loadingBuilder: (context, widget, loadingProgress) {
+        if (loadingProgress == null) return widget;
+        return const _Shimmer();
+      },
+      errorBuilder: (context, error, stackTrace) => onError,
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     Widget child;
@@ -64,17 +77,18 @@ class AppNetworkImage extends StatelessWidget {
         placeholder: _Placeholder(icon: placeholderIcon, iconSize: iconSize),
       );
     } else {
-      child = Image.network(
+      final width = thumbnailWidth;
+      final thumbnailUrl = width == null
+          ? null
+          : productThumbnailUrl(url, width: width);
+      final original = _nativeImage(
         url,
-        fit: fit,
-        alignment: alignment,
-        loadingBuilder: (context, widget, loadingProgress) {
-          if (loadingProgress == null) return widget;
-          return const _Shimmer();
-        },
-        errorBuilder: (context, error, stackTrace) =>
-            _Placeholder(icon: placeholderIcon, iconSize: iconSize),
+        _Placeholder(icon: placeholderIcon, iconSize: iconSize),
       );
+      // 축소 주소가 실패하면 원본으로 한 번 더 받는다.
+      child = thumbnailUrl == null || thumbnailUrl == url
+          ? original
+          : _nativeImage(thumbnailUrl, original);
     }
 
     if (borderRadius != null) {
