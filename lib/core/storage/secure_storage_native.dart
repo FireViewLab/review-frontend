@@ -11,14 +11,15 @@ class SecureStorage {
   static Future<void> init() => _initialization ??= _initialize();
 
   static Future<void> _initialize() async {
+    const backend = FlutterSecureStorage(
+      iOptions: IOSOptions(accessibility: KeychainAccessibility.first_unlock),
+    );
+    _backend = backend;
     try {
-      const backend = FlutterSecureStorage(
-        iOptions: IOSOptions(accessibility: KeychainAccessibility.first_unlock),
-      );
       _memory.addAll(await backend.readAll());
-      _backend = backend;
     } on Object {
-      // 저장소를 사용할 수 없으면 메모리로 계속 동작한다.
+      // 읽지 못하면 로그아웃 상태로 시작하고, 남은 값이 다음 실행에 다시 나타나지 않게 지운다.
+      _persist(backend.deleteAll);
     }
   }
 
@@ -27,13 +28,28 @@ class SecureStorage {
   static void write(String key, String value) {
     _memory[key] = value;
     final backend = _backend;
-    if (backend != null) _persist(() => backend.write(key: key, value: value));
+    if (backend == null) return;
+    _persist(() async {
+      try {
+        await backend.write(key: key, value: value);
+      } on Object {
+        // 새 값을 못 쓰면 이전 값이라도 남지 않게 지운다.
+        await backend.delete(key: key);
+      }
+    });
   }
 
   static void remove(String key) {
     _memory.remove(key);
     final backend = _backend;
-    if (backend != null) _persist(() => backend.delete(key: key));
+    if (backend == null) return;
+    _persist(() async {
+      try {
+        await backend.delete(key: key);
+      } on Object {
+        await backend.delete(key: key);
+      }
+    });
   }
 
   static void _persist(Future<void> Function() operation) {
