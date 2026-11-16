@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:re_view_front/features/external_product/domain/entities/external_product_ref.dart';
 import 'package:re_view_front/app/router/app_shell.dart';
 
@@ -123,245 +124,256 @@ class _HomePageState extends ConsumerState<HomePage> {
         const SizedBox(height: AppSpacing.xl),
       ],
     ];
-    final page = Scaffold(
-      backgroundColor: AppColors.background,
-      body: CustomScrollView(
-        controller: _scrollController,
-        slivers: [
-          SliverToBoxAdapter(
-            child: Padding(
-              padding: EdgeInsets.only(top: context.isMobile ? 20 : 28),
-              child: AppFadeIn(
-                key: _heroKey,
-                delay: 0,
-                child: HeroBannerCarousel(
-                  items: registeredBanners.isEmpty
-                      ? banners
-                      : registeredBanners,
-                  onBannerPressed: _handleBannerPressed,
-                ),
+    final scrollView = CustomScrollView(
+      physics: kIsWeb ? null : const AlwaysScrollableScrollPhysics(),
+      controller: _scrollController,
+      slivers: [
+        SliverToBoxAdapter(
+          child: Padding(
+            padding: EdgeInsets.only(top: context.isMobile ? 20 : 28),
+            child: AppFadeIn(
+              key: _heroKey,
+              delay: 0,
+              child: HeroBannerCarousel(
+                items: registeredBanners.isEmpty ? banners : registeredBanners,
+                onBannerPressed: _handleBannerPressed,
               ),
             ),
           ),
-          if (bannerContract != null && bannerFeed.hasError)
-            SliverToBoxAdapter(
-              child: Padding(
-                padding: context.pagePadding,
-                child: Wrap(
-                  crossAxisAlignment: WrapCrossAlignment.center,
-                  children: [
-                    const Text('배너를 불러오지 못해 기본 배너를 표시합니다.'),
-                    TextButton(
-                      onPressed: () => ref.invalidate(publicBannersProvider),
-                      child: const Text('다시 시도'),
-                    ),
-                  ],
-                ),
-              ),
-            ),
+        ),
+        if (bannerContract != null && bannerFeed.hasError)
           SliverToBoxAdapter(
-            child: AppContentView(
-              maxWidth: 1440,
-              padding: _homeContentPadding(context),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
+            child: Padding(
+              padding: context.pagePadding,
+              child: Wrap(
+                crossAxisAlignment: WrapCrossAlignment.center,
                 children: [
-                  AppFadeIn(
-                    key: _categoryKey,
-                    delay: 60,
-                    child: QuickCategoryRow(
-                      items: quickCategories,
-                      onCategoryPressed: _handleCategoryPressed,
-                    ),
+                  const Text('배너를 불러오지 못해 기본 배너를 표시합니다.'),
+                  TextButton(
+                    onPressed: () => ref.invalidate(publicBannersProvider),
+                    child: const Text('다시 시도'),
                   ),
-                  SizedBox(
-                    height: context.isMobile ? AppSpacing.md : AppSpacing.xl,
-                  ),
-                  if (!context.isMobile) ...dashboardExtras,
-                  Text(
-                    '상품 둘러보기',
-                    style: Theme.of(context).textTheme.titleMedium,
-                  ),
-                  const SizedBox(height: AppSpacing.md),
-                  catalog.when(
-                    loading: () => const ProductCardGridSkeleton(itemCount: 5),
-                    error: (_, _) => SizedBox(
-                      height: 280,
-                      child: AppErrorView(
-                        message: '상품을 불러오지 못했습니다.',
-                        onRetry: () => ref.invalidate(homeCatalogProvider),
-                      ),
-                    ),
-                    data: (products) => products.isEmpty
-                        ? const Text('표시할 상품이 없습니다.')
-                        : ProductRecommendationSection(
-                            showHeader: false,
-                            products: products
-                                .take(10)
-                                .map(
-                                  (p) => HomeProductData(
-                                    productId: p.id.toString(),
-                                    detailPath: p.detailPath,
-                                    chatProductId: p.chatProductId,
-                                    routeContext: p.routeContext,
-                                    name: p.name,
-                                    storeName:
-                                        p.platform ?? p.dataPlatform ?? '',
-                                    priceLabel: _formatPrice(p.price),
-                                    ratingLabel:
-                                        p.avgRating?.toStringAsFixed(1) ?? '',
-                                    reviewCountLabel:
-                                        p.reviewCount?.toString() ?? '',
-                                    rtiLabel: p.avgRti == null
-                                        ? '분석 전'
-                                        : 'RTI ${p.avgRti!.round()}',
-                                    imageUrl: p.imageUrl,
-                                    label: p.subCategory ?? '',
-                                  ),
-                                )
-                                .toList(),
-                            onProductTap: _handleProductPressed,
-                          ),
-                  ),
-                  Align(
-                    alignment: Alignment.centerRight,
-                    child: TextButton(
-                      onPressed: () => context.goNamed(
-                        RouteNames.search,
-                        queryParameters: {'sort': 'accuracy'},
-                      ),
-                      child: const Text('전체 상품 보기'),
-                    ),
-                  ),
-                  if (context.isMobile) ...dashboardExtras,
-                  const SizedBox(height: AppSpacing.xl),
-                  if (useWideCommerceGrid) ...[
-                    AppFadeIn(
-                      key: _recommendationKey,
-                      delay: 180,
-                      child: Row(
-                        children: [
-                          const Icon(
-                            Icons.verified_outlined,
-                            color: AppColors.primary,
-                            size: 22,
-                          ),
-                          const SizedBox(width: AppSpacing.xs),
-                          Expanded(
-                            child: Text(
-                              AppLocalizations.of(context).homeRecommendedTitle,
-                              style: Theme.of(context).textTheme.titleMedium,
-                            ),
-                          ),
-                          TextButton(
-                            onPressed: () => context.push(RoutePaths.search),
-                            style: TextButton.styleFrom(
-                              padding: const EdgeInsets.symmetric(
-                                horizontal: AppSpacing.xs,
-                                vertical: AppSpacing.xxs,
-                              ),
-                              minimumSize: Size.zero,
-                              tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                              foregroundColor: AppColors.textSecondary,
-                            ),
-                            child: Row(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                Text(
-                                  AppLocalizations.of(context).homeViewAll,
-                                  style: Theme.of(context).textTheme.labelMedium
-                                      ?.copyWith(
-                                        color: AppColors.textSecondary,
-                                        fontWeight: FontWeight.w700,
-                                      ),
-                                ),
-                                const SizedBox(width: 2),
-                                const Icon(Icons.chevron_right, size: 16),
-                              ],
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    const SizedBox(height: AppSpacing.md),
-                    ProductRecommendationSection(
-                      showHeader: false,
-                      products: dashboardProducts,
-                      onProductTap: _handleProductPressed,
-                    ),
-                    const SizedBox(height: 20),
-                    Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        const Expanded(
-                          child: AppFadeIn(
-                            delay: 240,
-                            child: ReviewTrustInfoCard(),
-                          ),
-                        ),
-                        const SizedBox(width: 20),
-                        Expanded(
-                          child: AppFadeIn(
-                            key: _benefitKey,
-                            delay: 300,
-                            child: BenefitCTA(
-                              items: benefitItems,
-                              onBenefitPressed: () =>
-                                  context.go(RoutePaths.login),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 20),
-                    AppFadeIn(
-                      key: _popularCategoryKey,
-                      delay: 360,
-                      child: PopularCategorySection(
-                        items: popularCategories,
-                        onCategoryPressed: _handleCategoryPressed,
-                      ),
-                    ),
-                  ] else ...[
-                    AppFadeIn(
-                      key: _recommendationKey,
-                      delay: 180,
-                      child: ProductRecommendationSection(
-                        products: dashboardProducts,
-                        onProductTap: _handleProductPressed,
-                      ),
-                    ),
-                    const SizedBox(height: AppSpacing.xl),
-                    const AppFadeIn(delay: 240, child: ReviewTrustInfoCard()),
-                    const SizedBox(height: AppSpacing.xl),
-                    AppFadeIn(
-                      key: _benefitKey,
-                      delay: 300,
-                      child: BenefitCTA(
-                        items: benefitItems,
-                        onBenefitPressed: () => context.go(RoutePaths.login),
-                      ),
-                    ),
-                  ],
-                  if (!useWideCommerceGrid) ...[
-                    const SizedBox(height: AppSpacing.xl),
-                    AppFadeIn(
-                      key: _popularCategoryKey,
-                      delay: 360,
-                      child: PopularCategorySection(
-                        items: popularCategories,
-                        onCategoryPressed: _handleCategoryPressed,
-                      ),
-                    ),
-                  ],
-                  SizedBox(height: context.isMobile ? 96 : AppSpacing.xxxl),
                 ],
               ),
             ),
           ),
-          const SliverToBoxAdapter(child: HomeFooter()),
-        ],
-      ),
+        SliverToBoxAdapter(
+          child: AppContentView(
+            maxWidth: 1440,
+            padding: _homeContentPadding(context),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                AppFadeIn(
+                  key: _categoryKey,
+                  delay: 60,
+                  child: QuickCategoryRow(
+                    items: quickCategories,
+                    onCategoryPressed: _handleCategoryPressed,
+                  ),
+                ),
+                SizedBox(
+                  height: context.isMobile ? AppSpacing.md : AppSpacing.xl,
+                ),
+                if (!context.isMobile) ...dashboardExtras,
+                Text('상품 둘러보기', style: Theme.of(context).textTheme.titleMedium),
+                const SizedBox(height: AppSpacing.md),
+                catalog.when(
+                  loading: () => const ProductCardGridSkeleton(itemCount: 5),
+                  error: (_, _) => SizedBox(
+                    height: 280,
+                    child: AppErrorView(
+                      message: '상품을 불러오지 못했습니다.',
+                      onRetry: () => ref.invalidate(homeCatalogProvider),
+                    ),
+                  ),
+                  data: (products) => products.isEmpty
+                      ? const Text('표시할 상품이 없습니다.')
+                      : ProductRecommendationSection(
+                          showHeader: false,
+                          products: products
+                              .take(10)
+                              .map(
+                                (p) => HomeProductData(
+                                  productId: p.id.toString(),
+                                  detailPath: p.detailPath,
+                                  chatProductId: p.chatProductId,
+                                  routeContext: p.routeContext,
+                                  name: p.name,
+                                  storeName: p.platform ?? p.dataPlatform ?? '',
+                                  priceLabel: _formatPrice(p.price),
+                                  ratingLabel:
+                                      p.avgRating?.toStringAsFixed(1) ?? '',
+                                  reviewCountLabel:
+                                      p.reviewCount?.toString() ?? '',
+                                  rtiLabel: p.avgRti == null
+                                      ? '분석 전'
+                                      : 'RTI ${p.avgRti!.round()}',
+                                  imageUrl: p.imageUrl,
+                                  label: p.subCategory ?? '',
+                                ),
+                              )
+                              .toList(),
+                          onProductTap: _handleProductPressed,
+                        ),
+                ),
+                Align(
+                  alignment: Alignment.centerRight,
+                  child: TextButton(
+                    onPressed: () => context.goNamed(
+                      RouteNames.search,
+                      queryParameters: {'sort': 'accuracy'},
+                    ),
+                    child: const Text('전체 상품 보기'),
+                  ),
+                ),
+                if (context.isMobile) ...dashboardExtras,
+                const SizedBox(height: AppSpacing.xl),
+                if (useWideCommerceGrid) ...[
+                  AppFadeIn(
+                    key: _recommendationKey,
+                    delay: 180,
+                    child: Row(
+                      children: [
+                        const Icon(
+                          Icons.verified_outlined,
+                          color: AppColors.primary,
+                          size: 22,
+                        ),
+                        const SizedBox(width: AppSpacing.xs),
+                        Expanded(
+                          child: Text(
+                            AppLocalizations.of(context).homeRecommendedTitle,
+                            style: Theme.of(context).textTheme.titleMedium,
+                          ),
+                        ),
+                        TextButton(
+                          onPressed: () => context.push(RoutePaths.search),
+                          style: TextButton.styleFrom(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: AppSpacing.xs,
+                              vertical: AppSpacing.xxs,
+                            ),
+                            minimumSize: Size.zero,
+                            tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                            foregroundColor: AppColors.textSecondary,
+                          ),
+                          child: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Text(
+                                AppLocalizations.of(context).homeViewAll,
+                                style: Theme.of(context).textTheme.labelMedium
+                                    ?.copyWith(
+                                      color: AppColors.textSecondary,
+                                      fontWeight: FontWeight.w700,
+                                    ),
+                              ),
+                              const SizedBox(width: 2),
+                              const Icon(Icons.chevron_right, size: 16),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  const SizedBox(height: AppSpacing.md),
+                  ProductRecommendationSection(
+                    showHeader: false,
+                    products: dashboardProducts,
+                    onProductTap: _handleProductPressed,
+                  ),
+                  const SizedBox(height: 20),
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const Expanded(
+                        child: AppFadeIn(
+                          delay: 240,
+                          child: ReviewTrustInfoCard(),
+                        ),
+                      ),
+                      const SizedBox(width: 20),
+                      Expanded(
+                        child: AppFadeIn(
+                          key: _benefitKey,
+                          delay: 300,
+                          child: BenefitCTA(
+                            items: benefitItems,
+                            onBenefitPressed: () =>
+                                context.go(RoutePaths.login),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 20),
+                  AppFadeIn(
+                    key: _popularCategoryKey,
+                    delay: 360,
+                    child: PopularCategorySection(
+                      items: popularCategories,
+                      onCategoryPressed: _handleCategoryPressed,
+                    ),
+                  ),
+                ] else ...[
+                  AppFadeIn(
+                    key: _recommendationKey,
+                    delay: 180,
+                    child: ProductRecommendationSection(
+                      products: dashboardProducts,
+                      onProductTap: _handleProductPressed,
+                    ),
+                  ),
+                  const SizedBox(height: AppSpacing.xl),
+                  const AppFadeIn(delay: 240, child: ReviewTrustInfoCard()),
+                  const SizedBox(height: AppSpacing.xl),
+                  AppFadeIn(
+                    key: _benefitKey,
+                    delay: 300,
+                    child: BenefitCTA(
+                      items: benefitItems,
+                      onBenefitPressed: () => context.go(RoutePaths.login),
+                    ),
+                  ),
+                ],
+                if (!useWideCommerceGrid) ...[
+                  const SizedBox(height: AppSpacing.xl),
+                  AppFadeIn(
+                    key: _popularCategoryKey,
+                    delay: 360,
+                    child: PopularCategorySection(
+                      items: popularCategories,
+                      onCategoryPressed: _handleCategoryPressed,
+                    ),
+                  ),
+                ],
+                SizedBox(height: context.isMobile ? 96 : AppSpacing.xxxl),
+              ],
+            ),
+          ),
+        ),
+        const SliverToBoxAdapter(child: HomeFooter()),
+      ],
+    );
+    final page = Scaffold(
+      backgroundColor: AppColors.background,
+      body: kIsWeb
+          ? scrollView
+          : RefreshIndicator(
+              onRefresh: () async {
+                try {
+                  await Future.wait([
+                    ref.read(homeDashboardViewModelProvider.notifier).refresh(),
+                    ref.refresh(homeCatalogProvider.future),
+                    ref.refresh(publicBannersProvider.future),
+                  ]);
+                } on Object {
+                  // 조회 실패는 각 provider의 기존 오류 화면에서 표시한다.
+                }
+              },
+              child: scrollView,
+            ),
       bottomNavigationBar: context.isMobile
           ? _HomeBottomTabs(
               onHomePressed: () => _handleNavItemPressed('홈'),
