@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -33,70 +34,79 @@ class _WishlistPageState extends ConsumerState<WishlistPage> {
   Widget build(BuildContext context) {
     final wishlistState = ref.watch(wishlistViewModelProvider);
 
+    final scrollView = CustomScrollView(
+      physics: kIsWeb ? null : const AlwaysScrollableScrollPhysics(),
+      slivers: [
+        SliverToBoxAdapter(
+          child: AppContentView(
+            maxWidth: 1760,
+            padding: EdgeInsets.fromLTRB(
+              context.isMobile ? AppSpacing.md : AppSpacing.xxl,
+              context.isMobile ? AppSpacing.lg : AppSpacing.lg,
+              context.isMobile ? AppSpacing.md : AppSpacing.xxl,
+              AppSpacing.xxxl,
+            ),
+            child: switch (wishlistState) {
+              WishlistLoading() ||
+              WishlistInitial() => const _WishlistGridSkeleton(),
+              WishlistFailure(:final failure) => SizedBox(
+                height: 320,
+                child: AppErrorView(
+                  message: failure.message,
+                  onRetry: () =>
+                      ref.read(wishlistViewModelProvider.notifier).load(),
+                ),
+              ),
+              WishlistEmpty() => _WishlistEmptyBody(
+                onGoHome: () => context.go(RoutePaths.home),
+              ),
+              WishlistSuccess(
+                :final items,
+                :final summary,
+                :final togglingProductIds,
+                :final errorMessage,
+              ) =>
+                _WishlistBody(
+                  items: items,
+                  summary: summary,
+                  togglingProductIds: togglingProductIds,
+                  selectedFilter: _selectedFilter,
+                  sortOption: _sortOption,
+                  facet: _facet,
+                  errorMessage: errorMessage,
+                  onRetry: () =>
+                      ref.read(wishlistViewModelProvider.notifier).load(),
+                  onFacetSelected: (value) => setState(() => _facet = value),
+                  onFilterSelected: (f) => setState(() {
+                    _selectedFilter = f;
+                    _facet = null;
+                    if (f == WishlistFilterOption.rti) {
+                      _sortOption = WishlistSortOption.rti;
+                    }
+                    if (f == WishlistFilterOption.lowestPrice) {
+                      _sortOption = WishlistSortOption.priceLow;
+                    }
+                  }),
+                  onSortChanged: (s) => setState(() => _sortOption = s),
+                  onRemove: (productId) => ref
+                      .read(wishlistViewModelProvider.notifier)
+                      .removeItem(productId),
+                ),
+            },
+          ),
+        ),
+      ],
+    );
     return Scaffold(
       backgroundColor: AppColors.background,
-      body: CustomScrollView(
-        slivers: [
-          SliverToBoxAdapter(
-            child: AppContentView(
-              maxWidth: 1760,
-              padding: EdgeInsets.fromLTRB(
-                context.isMobile ? AppSpacing.md : AppSpacing.xxl,
-                context.isMobile ? AppSpacing.lg : AppSpacing.lg,
-                context.isMobile ? AppSpacing.md : AppSpacing.xxl,
-                AppSpacing.xxxl,
-              ),
-              child: switch (wishlistState) {
-                WishlistLoading() ||
-                WishlistInitial() => const _WishlistGridSkeleton(),
-                WishlistFailure(:final failure) => SizedBox(
-                  height: 320,
-                  child: AppErrorView(
-                    message: failure.message,
-                    onRetry: () =>
-                        ref.read(wishlistViewModelProvider.notifier).load(),
-                  ),
-                ),
-                WishlistEmpty() => _WishlistEmptyBody(
-                  onGoHome: () => context.go(RoutePaths.home),
-                ),
-                WishlistSuccess(
-                  :final items,
-                  :final summary,
-                  :final togglingProductIds,
-                  :final errorMessage,
-                ) =>
-                  _WishlistBody(
-                    items: items,
-                    summary: summary,
-                    togglingProductIds: togglingProductIds,
-                    selectedFilter: _selectedFilter,
-                    sortOption: _sortOption,
-                    facet: _facet,
-                    errorMessage: errorMessage,
-                    onRetry: () =>
-                        ref.read(wishlistViewModelProvider.notifier).load(),
-                    onFacetSelected: (value) => setState(() => _facet = value),
-                    onFilterSelected: (f) => setState(() {
-                      _selectedFilter = f;
-                      _facet = null;
-                      if (f == WishlistFilterOption.rti) {
-                        _sortOption = WishlistSortOption.rti;
-                      }
-                      if (f == WishlistFilterOption.lowestPrice) {
-                        _sortOption = WishlistSortOption.priceLow;
-                      }
-                    }),
-                    onSortChanged: (s) => setState(() => _sortOption = s),
-                    onRemove: (productId) => ref
-                        .read(wishlistViewModelProvider.notifier)
-                        .removeItem(productId),
-                  ),
+      body: kIsWeb
+          ? scrollView
+          : RefreshIndicator(
+              onRefresh: () async {
+                await ref.read(wishlistViewModelProvider.notifier).load();
               },
+              child: scrollView,
             ),
-          ),
-        ],
-      ),
     );
   }
 }
