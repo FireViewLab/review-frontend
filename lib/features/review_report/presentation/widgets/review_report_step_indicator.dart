@@ -2,6 +2,7 @@ import 'package:re_view_front/app/theme/app_motion.dart';
 import 'package:flutter/material.dart';
 import 'package:re_view_front/app/theme/app_colors.dart';
 import 'package:re_view_front/app/theme/app_spacing.dart';
+import 'package:re_view_front/shared/widgets/touch_hover_feedback.dart';
 
 enum ReportStep { target, reason, detail, submit }
 
@@ -75,8 +76,11 @@ class _StepItem extends StatefulWidget {
   State<_StepItem> createState() => _StepItemState();
 }
 
-class _StepItemState extends State<_StepItem> {
+class _StepItemState extends State<_StepItem> with TouchHoverFeedback {
   bool _hovering = false;
+
+  @override
+  void setHover(bool value) => setState(() => _hovering = value);
 
   @override
   Widget build(BuildContext context) {
@@ -113,6 +117,9 @@ class _StepItemState extends State<_StepItem> {
       child: GestureDetector(
         behavior: HitTestBehavior.opaque,
         onTap: widget.onTap,
+        onTapDown: isTappable ? handleTouchDown : null,
+        onTapUp: isTappable ? (_) => handleTouchEnd() : null,
+        onTapCancel: isTappable ? handleTouchEnd : null,
         child: AnimatedContainer(
           duration: AppMotion.of(context, AppMotion.slow),
           curve: AppMotion.enter,

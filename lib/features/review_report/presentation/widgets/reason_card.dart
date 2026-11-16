@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:re_view_front/app/theme/app_colors.dart';
 import 'package:re_view_front/app/theme/app_spacing.dart';
 import 'package:re_view_front/features/review_report/domain/entities/review_report.dart';
+import 'package:re_view_front/shared/widgets/touch_hover_feedback.dart';
 
 class ReasonCard extends StatefulWidget {
   const ReasonCard({
@@ -20,8 +21,11 @@ class ReasonCard extends StatefulWidget {
   State<ReasonCard> createState() => _ReasonCardState();
 }
 
-class _ReasonCardState extends State<ReasonCard> {
+class _ReasonCardState extends State<ReasonCard> with TouchHoverFeedback {
   bool _hovering = false;
+
+  @override
+  void setHover(bool value) => setState(() => _hovering = value);
 
   IconData get _icon => switch (widget.reason) {
     ReportReason.fakeReview => Icons.warning_amber_outlined,
@@ -50,6 +54,9 @@ class _ReasonCardState extends State<ReasonCard> {
       child: GestureDetector(
         behavior: HitTestBehavior.opaque,
         onTap: widget.onTap,
+        onTapDown: handleTouchDown,
+        onTapUp: (_) => handleTouchEnd(),
+        onTapCancel: handleTouchEnd,
         child: AnimatedContainer(
           duration: AppMotion.of(context, AppMotion.base),
           curve: AppMotion.enter,

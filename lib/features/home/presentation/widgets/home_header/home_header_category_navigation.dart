@@ -9,6 +9,7 @@ import 'package:re_view_front/features/home/presentation/data/home_content.dart'
 import 'package:re_view_front/features/home/presentation/widgets/home_header/home_header_category_picks.dart';
 import 'package:re_view_front/features/home/presentation/widgets/home_header/home_header_category_benefits.dart';
 import 'package:re_view_front/features/home/presentation/widgets/home_header/home_header_category_assets.dart';
+import 'package:re_view_front/shared/widgets/touch_hover_feedback.dart';
 
 class HomeHeaderCategorySideNav extends StatelessWidget {
   const HomeHeaderCategorySideNav({
@@ -357,8 +358,12 @@ class HomeHeaderSubCategoryItem extends StatefulWidget {
       HomeHeaderSubCategoryItemState();
 }
 
-class HomeHeaderSubCategoryItemState extends State<HomeHeaderSubCategoryItem> {
+class HomeHeaderSubCategoryItemState extends State<HomeHeaderSubCategoryItem>
+    with TouchHoverFeedback {
   bool _hovered = false;
+
+  @override
+  void setHover(bool value) => setState(() => _hovered = value);
 
   @override
   Widget build(BuildContext context) {
@@ -368,6 +373,9 @@ class HomeHeaderSubCategoryItemState extends State<HomeHeaderSubCategoryItem> {
       onExit: (_) => setState(() => _hovered = false),
       child: GestureDetector(
         onTap: widget.onTap,
+        onTapDown: handleTouchDown,
+        onTapUp: (_) => handleTouchEnd(),
+        onTapCancel: handleTouchEnd,
         child: Text(
           widget.label,
           maxLines: 1,
