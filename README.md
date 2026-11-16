@@ -118,6 +118,14 @@ flutter run -d <PHONE_DEVICE_ID>
 flutter run -d chrome --dart-define=API_BASE_URL=https://api.re-view.kr
 ```
 
+여러 값을 한 번에 넘길 때는 `config/` 의 JSON 파일을 `--dart-define-from-file`로 지정합니다. `config/prod.json`은 운영 주소이고, 로컬 백엔드용 값은 `config/local.example.json`을 `config/local.json`으로 복사해 수정합니다. `config/local.json`은 git에 올라가지 않습니다.
+
+```bash
+flutter run --dart-define-from-file=config/prod.json
+cp config/local.example.json config/local.json
+flutter run --dart-define-from-file=config/local.json
+```
+
 ### 로컬 백엔드 주소
 
 아래는 개발 PC에 별도로 실행한 백엔드에 연결할 때의 **주소 예시**입니다. `PORT`는 실제 백엔드 포트로 바꿉니다. 이 저장소에는 로컬 백엔드 실행 설정과 고정 포트가 없습니다.
