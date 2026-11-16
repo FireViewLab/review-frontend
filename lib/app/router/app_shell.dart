@@ -143,7 +143,13 @@ class _AppShellState extends ConsumerState<AppShell> {
             },
           ),
           // 내부 라우트의 모달 배리어가 헤더의 접근성 노드를 가리지 않게 한다.
-          Expanded(child: Semantics(container: true, child: widget.child)),
+          // 헤더가 위쪽을 맡으므로 본문은 홈 인디케이터·가로 노치만 피한다.
+          Expanded(
+            child: SafeArea(
+              top: false,
+              child: Semantics(container: true, child: widget.child),
+            ),
+          ),
         ],
       ),
     );

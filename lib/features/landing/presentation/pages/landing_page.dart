@@ -85,48 +85,50 @@ class _LandingCard extends StatelessWidget {
         final isMobile = screenSize == AppScreenSize.mobile;
         final viewportHeight = MediaQuery.sizeOf(context).height;
 
-        return Center(
-          child: Padding(
-            padding: isMobile
-                ? const EdgeInsets.symmetric(
-                    horizontal: AppSpacing.md,
-                    vertical: AppSpacing.md,
-                  )
-                : const EdgeInsets.symmetric(
-                    horizontal: AppSpacing.xxl,
-                    vertical: AppSpacing.lg,
+        return SafeArea(
+          child: Center(
+            child: Padding(
+              padding: isMobile
+                  ? const EdgeInsets.symmetric(
+                      horizontal: AppSpacing.md,
+                      vertical: AppSpacing.md,
+                    )
+                  : const EdgeInsets.symmetric(
+                      horizontal: AppSpacing.xxl,
+                      vertical: AppSpacing.lg,
+                    ),
+              child: ConstrainedBox(
+                constraints: BoxConstraints(
+                  maxWidth: AppBreakpoints.wideContentMaxWidth,
+                  maxHeight: viewportHeight - AppSpacing.lg * 2,
+                ),
+                child: Material(
+                  color: AppColors.surface,
+                  borderRadius: BorderRadius.circular(AppRadius.xl),
+                  clipBehavior: Clip.antiAlias,
+                  child: Stack(
+                    children: [
+                      SingleChildScrollView(
+                        padding: isMobile
+                            ? const EdgeInsets.all(AppSpacing.lg)
+                            : const EdgeInsets.all(AppSpacing.xxl),
+                        child: isMobile
+                            ? _MobileContent(
+                                onStartPressed: onStartPressed,
+                                onRtiInfoPressed: onRtiInfoPressed,
+                              )
+                            : _DesktopContent(
+                                onStartPressed: onStartPressed,
+                                onRtiInfoPressed: onRtiInfoPressed,
+                              ),
+                      ),
+                      Positioned(
+                        top: AppSpacing.md,
+                        right: AppSpacing.md,
+                        child: _CloseButton(onPressed: onClose),
+                      ),
+                    ],
                   ),
-            child: ConstrainedBox(
-              constraints: BoxConstraints(
-                maxWidth: AppBreakpoints.wideContentMaxWidth,
-                maxHeight: viewportHeight - AppSpacing.lg * 2,
-              ),
-              child: Material(
-                color: AppColors.surface,
-                borderRadius: BorderRadius.circular(AppRadius.xl),
-                clipBehavior: Clip.antiAlias,
-                child: Stack(
-                  children: [
-                    SingleChildScrollView(
-                      padding: isMobile
-                          ? const EdgeInsets.all(AppSpacing.lg)
-                          : const EdgeInsets.all(AppSpacing.xxl),
-                      child: isMobile
-                          ? _MobileContent(
-                              onStartPressed: onStartPressed,
-                              onRtiInfoPressed: onRtiInfoPressed,
-                            )
-                          : _DesktopContent(
-                              onStartPressed: onStartPressed,
-                              onRtiInfoPressed: onRtiInfoPressed,
-                            ),
-                    ),
-                    Positioned(
-                      top: AppSpacing.md,
-                      right: AppSpacing.md,
-                      child: _CloseButton(onPressed: onClose),
-                    ),
-                  ],
                 ),
               ),
             ),
