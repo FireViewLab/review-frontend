@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 import 'package:re_view_front/core/providers/core_providers.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -60,7 +61,15 @@ class ReViewApp extends ConsumerWidget {
         theme: AppTheme.light,
         routerConfig: router,
         scaffoldMessengerKey: _messengerKey,
-        builder: (context, child) => ChatOverlay(child: child!),
+        builder: (context, child) {
+          final app = ChatOverlay(child: child!);
+          if (kIsWeb) return app;
+          // 시스템 큰 글씨는 따르되 화면이 무너지지 않게 1.6배까지만 키운다.
+          return MediaQuery.withClampedTextScaling(
+            maxScaleFactor: 1.6,
+            child: app,
+          );
+        },
         locale: locale,
         supportedLocales: supportedLocales,
         localizationsDelegates: const [
