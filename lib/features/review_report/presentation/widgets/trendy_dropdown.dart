@@ -2,6 +2,7 @@ import 'package:re_view_front/app/theme/app_motion.dart';
 import 'package:flutter/material.dart';
 import 'package:re_view_front/app/theme/app_colors.dart';
 import 'package:re_view_front/app/theme/app_spacing.dart';
+import 'package:re_view_front/shared/widgets/touch_hover_feedback.dart';
 
 class TrendyDropdown extends StatefulWidget {
   const TrendyDropdown({
@@ -24,13 +25,16 @@ class TrendyDropdown extends StatefulWidget {
 }
 
 class _TrendyDropdownState extends State<TrendyDropdown>
-    with SingleTickerProviderStateMixin {
+    with SingleTickerProviderStateMixin, TouchHoverFeedback {
   final LayerLink _layerLink = LayerLink();
   final GlobalKey _fieldKey = GlobalKey();
   OverlayEntry? _overlay;
   late final AnimationController _controller;
   late final Animation<double> _anim;
   bool _hovering = false;
+
+  @override
+  void setHover(bool value) => setState(() => _hovering = value);
 
   bool get _isOpen => _overlay != null;
 
@@ -158,6 +162,9 @@ class _TrendyDropdownState extends State<TrendyDropdown>
             child: GestureDetector(
               behavior: HitTestBehavior.opaque,
               onTap: _toggle,
+              onTapDown: handleTouchDown,
+              onTapUp: (_) => handleTouchEnd(),
+              onTapCancel: handleTouchEnd,
               child: AnimatedContainer(
                 key: _fieldKey,
                 duration: AppMotion.of(context, AppMotion.base),
@@ -281,8 +288,11 @@ class _MenuItem extends StatefulWidget {
   State<_MenuItem> createState() => _MenuItemState();
 }
 
-class _MenuItemState extends State<_MenuItem> {
+class _MenuItemState extends State<_MenuItem> with TouchHoverFeedback {
   bool _hovering = false;
+
+  @override
+  void setHover(bool value) => setState(() => _hovering = value);
 
   @override
   Widget build(BuildContext context) {
@@ -300,6 +310,9 @@ class _MenuItemState extends State<_MenuItem> {
       child: GestureDetector(
         behavior: HitTestBehavior.opaque,
         onTap: widget.onTap,
+        onTapDown: handleTouchDown,
+        onTapUp: (_) => handleTouchEnd(),
+        onTapCancel: handleTouchEnd,
         child: AnimatedContainer(
           duration: AppMotion.of(context, AppMotion.fast),
           padding: const EdgeInsets.symmetric(
