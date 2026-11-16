@@ -72,6 +72,7 @@ ios/Runner.xcodeproj/project.xcworkspace/xcuserdata/
 .env
 .env.*
 !.env.example
+config/local.json
 
 # Test / tooling output
 test-results/
