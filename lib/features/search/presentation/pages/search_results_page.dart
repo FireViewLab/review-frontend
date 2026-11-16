@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:re_view_front/shared/widgets/sliver_width_builder.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -123,108 +124,125 @@ class _SearchResultsPageState extends ConsumerState<SearchResultsPage> {
           : null,
     );
 
+    final scrollView = CustomScrollView(
+      physics: kIsWeb ? null : const AlwaysScrollableScrollPhysics(),
+      slivers: [
+        SliverToBoxAdapter(
+          child: Padding(
+            padding: const EdgeInsets.all(AppSpacing.md),
+            child: Text(
+              '현재 불러온 ${products.length}개 상품에서 필터·정렬합니다. 키워드 검색은 최대 40개 결과이며 전체 쇼핑몰 상품 검색 필터가 아닙니다. 배송·판매량·출시일·사진 리뷰 정보는 제공되지 않아 해당 조건은 지원하지 않습니다.',
+            ),
+          ),
+        ),
+        if (widget.categoryId != null &&
+            products.any((p) => !_hasResolvedCategory(p)))
+          const SliverToBoxAdapter(
+            child: Padding(
+              padding: EdgeInsets.all(AppSpacing.md),
+              child: Text(
+                '쇼핑몰 상품은 카테고리 이름으로 검색하며, 분류가 확정되지 않은 결과도 함께 표시합니다. 상세 분류는 쇼핑몰 원문을 확인해 주세요.',
+              ),
+            ),
+          ),
+        SliverWidthBuilder(
+          builder: (context, width) {
+            final inset = math.max(0.0, (width - 1760) / 2);
+            final edge = context.isMobile ? AppSpacing.md : AppSpacing.xxl;
+            return SliverPadding(
+              padding: EdgeInsets.fromLTRB(
+                inset + edge,
+                AppSpacing.lg,
+                inset + edge,
+                AppSpacing.xxxl,
+              ),
+              sliver: SearchResultsBody(
+                resultsKey: _resultsKey,
+                state: uiState,
+                products: uiState.products,
+                selectedQuickFilter: _selectedQuickFilter,
+                selectedCategories: _selectedCategories,
+                selectedPriceRanges: _selectedPriceRanges,
+                selectedReviewConditions: _selectedReviewConditions,
+                selectedAttributeFilters: _selectedAttributeFilters,
+                selectedBrand: _selectedBrand,
+                minPriceController: _minPriceController,
+                maxPriceController: _maxPriceController,
+                selectedRtiMinimum: _selectedRtiMinimum,
+                sortOption: _sortOption,
+                viewMode: _viewMode,
+                onQuickFilterSelected: _handleQuickFilterSelected,
+                onCategoryToggled: _toggleCategory,
+                onPriceRangeToggled: _togglePriceRange,
+                onReviewConditionToggled: _toggleReviewCondition,
+                onAttributeToggled: _toggleAttributeFilter,
+                onBrandSelected: (value) {
+                  setState(() {
+                    _selectedBrand = value;
+                    _currentPage = 1;
+                  });
+                },
+                currentPage: _currentPage,
+                pageSize: _pageSize,
+                onPriceChanged: _handleManualPriceChanged,
+                onRtiMinimumChanged: (value) {
+                  setState(() {
+                    _selectedRtiMinimum = value;
+                    _selectedAttributeFilters.remove('분석 전만');
+                    if (_selectedQuickFilter == '분석 전') {
+                      _selectedQuickFilter = '전체';
+                    }
+                    _isRtiFilterActive = true;
+                    _currentPage = 1;
+                  });
+                },
+                onSortChanged: (value) {
+                  if (value == _sortOption) return;
+                  setState(() {
+                    _sortOption = value;
+                    _currentPage = 1;
+                  });
+                },
+                onPageSelected: (page) {
+                  if (page == _currentPage) return;
+                  setState(() => _currentPage = page);
+                },
+                onPageSizeChanged: (pageSize) {
+                  if (pageSize == _pageSize) return;
+                  setState(() {
+                    _pageSize = pageSize;
+                    _currentPage = 1;
+                  });
+                },
+                onViewModeChanged: (viewMode) {
+                  if (viewMode == _viewMode) return;
+                  setState(() => _viewMode = viewMode);
+                },
+                onResetFilters: _resetFilters,
+              ),
+            );
+          },
+        ),
+      ],
+    );
     return Scaffold(
       backgroundColor: AppColors.background,
-      body: CustomScrollView(
-        slivers: [
-          SliverToBoxAdapter(
-            child: Padding(
-              padding: const EdgeInsets.all(AppSpacing.md),
-              child: Text(
-                '현재 불러온 ${products.length}개 상품에서 필터·정렬합니다. 키워드 검색은 최대 40개 결과이며 전체 쇼핑몰 상품 검색 필터가 아닙니다. 배송·판매량·출시일·사진 리뷰 정보는 제공되지 않아 해당 조건은 지원하지 않습니다.',
-              ),
+      body: kIsWeb
+          ? scrollView
+          : RefreshIndicator(
+              onRefresh: () async {
+                await ref
+                    .read(searchViewModelProvider.notifier)
+                    .search(
+                      _effectiveSearchQuery,
+                      allowEmpty:
+                          widget.categoryId != null ||
+                          widget.initialSort != null,
+                      refresh: true,
+                    );
+              },
+              child: scrollView,
             ),
-          ),
-          if (widget.categoryId != null &&
-              products.any((p) => !_hasResolvedCategory(p)))
-            const SliverToBoxAdapter(
-              child: Padding(
-                padding: EdgeInsets.all(AppSpacing.md),
-                child: Text(
-                  '쇼핑몰 상품은 카테고리 이름으로 검색하며, 분류가 확정되지 않은 결과도 함께 표시합니다. 상세 분류는 쇼핑몰 원문을 확인해 주세요.',
-                ),
-              ),
-            ),
-          SliverWidthBuilder(
-            builder: (context, width) {
-              final inset = math.max(0.0, (width - 1760) / 2);
-              final edge = context.isMobile ? AppSpacing.md : AppSpacing.xxl;
-              return SliverPadding(
-                padding: EdgeInsets.fromLTRB(
-                  inset + edge,
-                  AppSpacing.lg,
-                  inset + edge,
-                  AppSpacing.xxxl,
-                ),
-                sliver: SearchResultsBody(
-                  resultsKey: _resultsKey,
-                  state: uiState,
-                  products: uiState.products,
-                  selectedQuickFilter: _selectedQuickFilter,
-                  selectedCategories: _selectedCategories,
-                  selectedPriceRanges: _selectedPriceRanges,
-                  selectedReviewConditions: _selectedReviewConditions,
-                  selectedAttributeFilters: _selectedAttributeFilters,
-                  selectedBrand: _selectedBrand,
-                  minPriceController: _minPriceController,
-                  maxPriceController: _maxPriceController,
-                  selectedRtiMinimum: _selectedRtiMinimum,
-                  sortOption: _sortOption,
-                  viewMode: _viewMode,
-                  onQuickFilterSelected: _handleQuickFilterSelected,
-                  onCategoryToggled: _toggleCategory,
-                  onPriceRangeToggled: _togglePriceRange,
-                  onReviewConditionToggled: _toggleReviewCondition,
-                  onAttributeToggled: _toggleAttributeFilter,
-                  onBrandSelected: (value) {
-                    setState(() {
-                      _selectedBrand = value;
-                      _currentPage = 1;
-                    });
-                  },
-                  currentPage: _currentPage,
-                  pageSize: _pageSize,
-                  onPriceChanged: _handleManualPriceChanged,
-                  onRtiMinimumChanged: (value) {
-                    setState(() {
-                      _selectedRtiMinimum = value;
-                      _selectedAttributeFilters.remove('분석 전만');
-                      if (_selectedQuickFilter == '분석 전') {
-                        _selectedQuickFilter = '전체';
-                      }
-                      _isRtiFilterActive = true;
-                      _currentPage = 1;
-                    });
-                  },
-                  onSortChanged: (value) {
-                    if (value == _sortOption) return;
-                    setState(() {
-                      _sortOption = value;
-                      _currentPage = 1;
-                    });
-                  },
-                  onPageSelected: (page) {
-                    if (page == _currentPage) return;
-                    setState(() => _currentPage = page);
-                  },
-                  onPageSizeChanged: (pageSize) {
-                    if (pageSize == _pageSize) return;
-                    setState(() {
-                      _pageSize = pageSize;
-                      _currentPage = 1;
-                    });
-                  },
-                  onViewModeChanged: (viewMode) {
-                    if (viewMode == _viewMode) return;
-                    setState(() => _viewMode = viewMode);
-                  },
-                  onResetFilters: _resetFilters,
-                ),
-              );
-            },
-          ),
-        ],
-      ),
     );
   }
 
