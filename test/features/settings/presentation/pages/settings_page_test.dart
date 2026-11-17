@@ -225,4 +225,7 @@ class _FakeSettingsRepository implements SettingsRepository {
 
   @override
   Future<Result<String>> getLoginMethod() async => Success(loginMethod);
+
+  @override
+  Future<Result<void>> deleteAccount() async => const Success<void>(null);
 }

@@ -5,4 +5,5 @@ abstract interface class SettingsRepository {
   Future<Result<SettingsData>> getSettings();
   Future<Result<SettingsData>> updateSettings(SettingsData settings);
   Future<Result<String>> getLoginMethod();
+  Future<Result<void>> deleteAccount();
 }

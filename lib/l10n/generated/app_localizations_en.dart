@@ -60,6 +60,26 @@ class AppLocalizationsEn extends AppLocalizations {
   String get settingsAccountChangePassword => 'Change Password';
 
   @override
+  String get settingsDeleteAccount => 'Delete Account';
+
+  @override
+  String get settingsDeleteAccountConfirmTitle => 'Delete account';
+
+  @override
+  String get settingsDeleteAccountConfirmBody =>
+      'Deleting your account removes your saved information and cannot be undone. Delete your account?';
+
+  @override
+  String get settingsDeleteAccountCancel => 'Cancel';
+
+  @override
+  String get settingsDeleteAccountConfirm => 'Delete';
+
+  @override
+  String get settingsDeleteAccountFailed =>
+      'Couldn\'t delete your account. Please try again later.';
+
+  @override
   String get settingsAccountLabelName => 'Name';
 
   @override
