@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
+import 'package:re_view_front/app/router/route_paths.dart';
 import 'package:re_view_front/app/theme/app_colors.dart';
 import 'package:re_view_front/app/theme/app_spacing.dart';
+import 'package:re_view_front/core/providers/core_providers.dart';
 import 'package:re_view_front/features/my_page/domain/entities/user_profile.dart';
 import 'package:re_view_front/features/settings/presentation/providers/settings_providers.dart';
 import 'package:re_view_front/l10n/generated/app_localizations.dart';
@@ -100,7 +103,78 @@ class SettingsAccountPanel extends ConsumerWidget {
                 _ => AppLocalizations.of(context).settingsLoginMethodEmail,
               },
             ),
+          const SizedBox(height: AppSpacing.sm),
+          const Align(
+            alignment: Alignment.centerRight,
+            child: _DeleteAccountButton(),
+          ),
         ],
+      ),
+    );
+  }
+}
+
+class _DeleteAccountButton extends ConsumerStatefulWidget {
+  const _DeleteAccountButton();
+
+  @override
+  ConsumerState<_DeleteAccountButton> createState() =>
+      _DeleteAccountButtonState();
+}
+
+class _DeleteAccountButtonState extends ConsumerState<_DeleteAccountButton> {
+  bool _deleting = false;
+
+  Future<void> _confirmAndDelete() async {
+    final l10n = AppLocalizations.of(context);
+    final confirmed = await showDialog<bool>(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Text(l10n.settingsDeleteAccountConfirmTitle),
+        content: Text(l10n.settingsDeleteAccountConfirmBody),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(false),
+            child: Text(l10n.settingsDeleteAccountCancel),
+          ),
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(true),
+            style: TextButton.styleFrom(foregroundColor: AppColors.error),
+            child: Text(l10n.settingsDeleteAccountConfirm),
+          ),
+        ],
+      ),
+    );
+    if (confirmed != true || !mounted) return;
+
+    setState(() => _deleting = true);
+    final result = await ref.read(settingsRepositoryProvider).deleteAccount();
+    if (!mounted) return;
+    result.when(
+      // 서버에서 계정이 사라졌으므로 logout 호출 없이 이 기기 세션만 지운다.
+      success: (_) {
+        ref.read(authTokenStoreProvider.notifier).clear();
+        context.go(RoutePaths.landing);
+      },
+      failure: (_) {
+        setState(() => _deleting = false);
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text(l10n.settingsDeleteAccountFailed)),
+        );
+      },
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return TextButton(
+      onPressed: _deleting ? null : _confirmAndDelete,
+      style: TextButton.styleFrom(foregroundColor: AppColors.error),
+      child: Text(
+        AppLocalizations.of(context).settingsDeleteAccount,
+        style: Theme.of(
+          context,
+        ).textTheme.labelSmall?.copyWith(fontWeight: FontWeight.w700),
       ),
     );
   }
