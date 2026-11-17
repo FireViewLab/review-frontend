@@ -10,6 +10,9 @@ abstract interface class SettingsRemoteDataSource {
 
   /// 로그인 방식(LOCAL / GOOGLE / NAVER).
   Future<String> getLoginMethod();
+
+  /// 회원 탈퇴. 성공하면 204로 본문이 없다.
+  Future<void> deleteAccount();
 }
 
 class SettingsRemoteDataSourceImpl implements SettingsRemoteDataSource {
@@ -48,6 +51,11 @@ class SettingsRemoteDataSourceImpl implements SettingsRemoteDataSource {
       }
     }
     throw const FormatException('Invalid security response');
+  }
+
+  @override
+  Future<void> deleteAccount() async {
+    await _apiClient.delete(_config.userMePath);
   }
 
   SettingsDto _parse(Object? data) {

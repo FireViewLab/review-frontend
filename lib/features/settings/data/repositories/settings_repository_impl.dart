@@ -36,6 +36,22 @@ class SettingsRepositoryImpl implements SettingsRepository {
     }
   }
 
+  @override
+  Future<Result<void>> deleteAccount() async {
+    try {
+      await _dataSource.deleteAccount();
+      return const Success<void>(null);
+    } on ApiResponseException catch (error) {
+      return FailureResult(failureFromApiResponseException(error));
+    } on DioException catch (error) {
+      return FailureResult(failureFromDioException(error));
+    } on Object catch (error) {
+      return FailureResult(
+        Failure(message: 'Account deletion failed', cause: error),
+      );
+    }
+  }
+
   Future<Result<SettingsData>> _request(
     Future<SettingsDto> Function() request,
   ) async {
