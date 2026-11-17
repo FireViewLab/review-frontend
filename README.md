@@ -158,6 +158,22 @@ flutter run --dart-define-from-file=config/local.json
 
 네이티브 프로젝트 포함 여부와 실제 배포 검증은 구분합니다. 아래 기존 QA 기록은 웹 기준입니다.
 
+### 앱 전용 처리
+
+`kIsWeb` 분기로 앱에서만 동작하며 웹 동작은 바꾸지 않았습니다. Android·iOS 빌드는 CI의 debug 빌드로만 확인했고 실기기 화면 검증은 별도입니다.
+
+- 로그인 세션: refreshToken을 보안 저장소(`flutter_secure_storage`)에 보관하고 refresh 때마다 교체합니다. 저장소 읽기에 실패하면 로그아웃 상태로 시작하고, 쓰기에 실패하면 이전 값이 남지 않게 지웁니다.
+- 화면: 본문 SafeArea, 시스템 글자 크기 최대 1.6배, hover 전용 강조의 터치 피드백, Android 뒤로 가기로 채팅 패널 먼저 닫기
+- 당겨서 새로고침: 홈, 검색 결과, 알림함, 찜 목록
+- 이미지: 축소 썸네일 주소를 먼저 쓰고 실패하면 원본으로 대체
+- 외부 쇼핑몰·가격 비교 링크는 외부 브라우저로 엽니다.
+- 처리되지 않은 예외는 release 빌드에서 기본 오류 화면으로 대체하며 원격 수집은 하지 않습니다.
+- 웹 전용 TEST 결제 진입은 앱에서 숨깁니다.
+- 시작 화면에 로고를 표시합니다. 앱 아이콘은 Re:view 로고입니다.
+- Android release 빌드는 `android/key.properties`가 있으면 그 키로, 없으면 debug 키로 서명합니다. 키 파일은 저장소에 올리지 않습니다.
+
+앱 식별자, 최소 OS 버전, 소셜 로그인 앱 흐름, 푸시 알림, 딥링크, 앱 결제, 개인정보 처리방침 본문은 아직 정해지지 않았습니다.
+
 ## Core Features
 
 - 상품 검색, 카테고리 탐색, 기존 상품·외부 상품 v2 상세와 리뷰 페이징
@@ -165,7 +181,7 @@ flutter run --dart-define-from-file=config/local.json
 - 찜·장바구니, 최근 본 상품, 계정·플랜·사용량 조회
 - 일반·프로 상품 문맥 채팅과 대화 기록
 - 이메일 로그인·회원가입·비밀번호 재설정, 웹 Google/네이버 OAuth, 온보딩
-- 리뷰 신고·피드백·알림함, 설정과 움직임 줄이기
+- 리뷰 신고·피드백·알림함, 설정과 움직임 줄이기, 회원 탈퇴
 - 관리자 리뷰·신고·사용자·배너 관리 화면
 - 웹 전용 TEST 결제 화면과 서버 계약 경계: 키·API 미설정 시 비활성화
 
@@ -227,11 +243,13 @@ Android / iOS 앱 ── HTTPS 직접 호출 ──> https://api.re-view.kr
 인증 요청: Authorization: <tokenType> <accessToken>
   └─ 인증 토큰을 보낸 일반 API 요청이 401
        └─ POST /api/auth/refresh
+            ├─ 웹: 본문 없음(쿠키)
+            ├─ 앱: X-Client-Platform: app, 본문 {"refreshToken"} → 응답 refreshToken으로 교체
             ├─ 새 accessToken·tokenType 저장 → 원래 요청 1회 재시도
-            └─ refresh 또는 재시도 401 → 현재 세션 만료 처리
+            └─ refresh 401 → 현재 세션 만료 처리 (그 밖의 실패는 세션 유지)
 ```
 
-동시 401은 진행 중인 refresh 요청을 공유합니다. `/api/auth/*`, 토큰 없는 요청, 이미 재시도한 요청에는 같은 갱신 루프를 반복하지 않습니다. refresh 요청은 현재 코드에서 본문 없이 전송합니다. OAuth는 웹 리다이렉트 구현이며 네이티브 이동 구현은 아직 지원되지 않습니다.
+동시 401은 진행 중인 refresh 요청을 공유합니다. `/api/auth/*`, 토큰 없는 요청, 이미 재시도한 요청에는 같은 갱신 루프를 반복하지 않습니다. 웹 refresh는 본문 없이 전송합니다. 앱은 로그인·회원가입 응답의 `refreshToken`을 저장해 refresh·로그아웃 본문에 넣고, 저장된 값이 없으면 바로 로그아웃 상태로 전환합니다. 앱 시작 시에도 같은 방식으로 세션을 복구합니다. OAuth는 웹 리다이렉트 구현이며 네이티브 이동 구현은 아직 지원되지 않습니다.
 
 
 ### 서비스 전체 구성
@@ -279,6 +297,7 @@ ai.re-view.kr  AI 분석 API ── GCP VM (KoELECTRA 기반 RTI, MySQL 8.0)
 | 경로 | 빌드·설정 |
 | --- | --- |
 | GitHub Actions `.github/workflows/vercel-deploy.yml` | PR/develop push는 배포 없는 `deploy-preview` validation(분석·release 빌드). `workflow_dispatch`로 최종 develop SHA를 지정한 경우에만 SHA 재확인·표식 작성 뒤 `build/web`을 한 번 production 배포. `web/vercel.json` 사용 |
+| GitHub Actions `.github/workflows/mobile-build.yml` | `android/`, `ios/`, `pubspec` 변경 PR과 수동 실행에서 `flutter build apk --debug`, `flutter build ios --debug --no-codesign` 확인. 배포·서명 없음 |
 | Vercel Git integration | `git.deploymentEnabled:false`로 자동 배포 차단. 기존 `build.sh`/rewrite/도메인 설정은 보존하고 최종 배포에는 Actions CLI 경로만 사용 |
 
 양쪽 설정은 `/api`, OAuth 시작·콜백을 API 서버로 연결하고 SPA fallback을 제공합니다. 서버 CORS 제약으로 preview 도메인의 실제 로그인은 운영과 다를 수 있습니다.
