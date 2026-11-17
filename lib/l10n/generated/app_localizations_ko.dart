@@ -59,6 +59,26 @@ class AppLocalizationsKo extends AppLocalizations {
   String get settingsAccountChangePassword => '비밀번호 변경';
 
   @override
+  String get settingsDeleteAccount => '회원 탈퇴';
+
+  @override
+  String get settingsDeleteAccountConfirmTitle => '회원 탈퇴';
+
+  @override
+  String get settingsDeleteAccountConfirmBody =>
+      '탈퇴하면 계정과 저장된 정보가 삭제되며 되돌릴 수 없습니다. 탈퇴할까요?';
+
+  @override
+  String get settingsDeleteAccountCancel => '취소';
+
+  @override
+  String get settingsDeleteAccountConfirm => '탈퇴';
+
+  @override
+  String get settingsDeleteAccountFailed =>
+      '회원 탈퇴를 완료하지 못했습니다. 잠시 후 다시 시도해 주세요.';
+
+  @override
   String get settingsAccountLabelName => '이름';
 
   @override

@@ -59,6 +59,24 @@ class AppLocalizationsZh extends AppLocalizations {
   String get settingsAccountChangePassword => '更改密码';
 
   @override
+  String get settingsDeleteAccount => '注销账号';
+
+  @override
+  String get settingsDeleteAccountConfirmTitle => '注销账号';
+
+  @override
+  String get settingsDeleteAccountConfirmBody => '注销后账号及保存的信息将被删除且无法恢复。确定要注销吗？';
+
+  @override
+  String get settingsDeleteAccountCancel => '取消';
+
+  @override
+  String get settingsDeleteAccountConfirm => '注销';
+
+  @override
+  String get settingsDeleteAccountFailed => '未能注销账号，请稍后再试。';
+
+  @override
   String get settingsAccountLabelName => '姓名';
 
   @override

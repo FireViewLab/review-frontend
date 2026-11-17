@@ -54,6 +54,24 @@
   "settingsAccountChangePassword": "비밀번호 변경",
   "@settingsAccountChangePassword": { "description": "비밀번호 변경 링크" },
 
+  "settingsDeleteAccount": "회원 탈퇴",
+  "@settingsDeleteAccount": { "description": "회원 탈퇴 버튼" },
+
+  "settingsDeleteAccountConfirmTitle": "회원 탈퇴",
+  "@settingsDeleteAccountConfirmTitle": { "description": "회원 탈퇴 확인 다이얼로그 제목" },
+
+  "settingsDeleteAccountConfirmBody": "탈퇴하면 계정과 저장된 정보가 삭제되며 되돌릴 수 없습니다. 탈퇴할까요?",
+  "@settingsDeleteAccountConfirmBody": { "description": "회원 탈퇴 확인 안내" },
+
+  "settingsDeleteAccountCancel": "취소",
+  "@settingsDeleteAccountCancel": { "description": "회원 탈퇴 취소 버튼" },
+
+  "settingsDeleteAccountConfirm": "탈퇴",
+  "@settingsDeleteAccountConfirm": { "description": "회원 탈퇴 확인 버튼" },
+
+  "settingsDeleteAccountFailed": "회원 탈퇴를 완료하지 못했습니다. 잠시 후 다시 시도해 주세요.",
+  "@settingsDeleteAccountFailed": { "description": "회원 탈퇴 실패 안내" },
+
   "settingsAccountLabelName": "이름",
   "@settingsAccountLabelName": { "description": "계정 이름 레이블" },
 

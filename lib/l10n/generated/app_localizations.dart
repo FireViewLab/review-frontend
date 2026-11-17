@@ -198,6 +198,42 @@ abstract class AppLocalizations {
   /// **'비밀번호 변경'**
   String get settingsAccountChangePassword;
 
+  /// 회원 탈퇴 버튼
+  ///
+  /// In ko, this message translates to:
+  /// **'회원 탈퇴'**
+  String get settingsDeleteAccount;
+
+  /// 회원 탈퇴 확인 다이얼로그 제목
+  ///
+  /// In ko, this message translates to:
+  /// **'회원 탈퇴'**
+  String get settingsDeleteAccountConfirmTitle;
+
+  /// 회원 탈퇴 확인 안내
+  ///
+  /// In ko, this message translates to:
+  /// **'탈퇴하면 계정과 저장된 정보가 삭제되며 되돌릴 수 없습니다. 탈퇴할까요?'**
+  String get settingsDeleteAccountConfirmBody;
+
+  /// 회원 탈퇴 취소 버튼
+  ///
+  /// In ko, this message translates to:
+  /// **'취소'**
+  String get settingsDeleteAccountCancel;
+
+  /// 회원 탈퇴 확인 버튼
+  ///
+  /// In ko, this message translates to:
+  /// **'탈퇴'**
+  String get settingsDeleteAccountConfirm;
+
+  /// 회원 탈퇴 실패 안내
+  ///
+  /// In ko, this message translates to:
+  /// **'회원 탈퇴를 완료하지 못했습니다. 잠시 후 다시 시도해 주세요.'**
+  String get settingsDeleteAccountFailed;
+
   /// 계정 이름 레이블
   ///
   /// In ko, this message translates to:

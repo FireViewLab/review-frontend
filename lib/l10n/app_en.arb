@@ -20,6 +20,12 @@
 
   "settingsAccountTitle": "Account",
   "settingsAccountChangePassword": "Change Password",
+  "settingsDeleteAccount": "Delete Account",
+  "settingsDeleteAccountConfirmTitle": "Delete account",
+  "settingsDeleteAccountConfirmBody": "Deleting your account removes your saved information and cannot be undone. Delete your account?",
+  "settingsDeleteAccountCancel": "Cancel",
+  "settingsDeleteAccountConfirm": "Delete",
+  "settingsDeleteAccountFailed": "Couldn't delete your account. Please try again later.",
   "settingsAccountLabelName": "Name",
   "settingsAccountLabelEmail": "Email",
   "settingsAccountLabelJoinDate": "Joined",

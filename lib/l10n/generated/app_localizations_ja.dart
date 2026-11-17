@@ -59,6 +59,25 @@ class AppLocalizationsJa extends AppLocalizations {
   String get settingsAccountChangePassword => 'パスワード変更';
 
   @override
+  String get settingsDeleteAccount => '退会';
+
+  @override
+  String get settingsDeleteAccountConfirmTitle => '退会';
+
+  @override
+  String get settingsDeleteAccountConfirmBody =>
+      '退会するとアカウントと保存した情報が削除され、元に戻せません。退会しますか？';
+
+  @override
+  String get settingsDeleteAccountCancel => 'キャンセル';
+
+  @override
+  String get settingsDeleteAccountConfirm => '退会';
+
+  @override
+  String get settingsDeleteAccountFailed => '退会できませんでした。しばらくしてから再度お試しください。';
+
+  @override
   String get settingsAccountLabelName => '名前';
 
   @override
