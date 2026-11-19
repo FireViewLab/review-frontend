@@ -48,7 +48,18 @@ String normalizedCategoryLabel({
   return categoryDisplayName.isNotEmpty ? categoryDisplayName : category;
 }
 
+// 카테고리 트리는 고정이라 같은 입력의 해석 결과도 같다. 한 번 찾은 결과(없음 포함)를 재사용한다.
+final _findCategoryCache = <String, ResolvedProductCategory?>{};
+
 ResolvedProductCategory? _findCategory(String rawValue) {
+  if (_findCategoryCache.containsKey(rawValue)) {
+    return _findCategoryCache[rawValue];
+  }
+  if (_findCategoryCache.length > 2000) _findCategoryCache.clear();
+  return _findCategoryCache[rawValue] = _searchCategory(rawValue);
+}
+
+ResolvedProductCategory? _searchCategory(String rawValue) {
   final value = rawValue.trim();
   final normalized = _normalize(value);
   final aliasedId = _categoryAliases[normalized];
