@@ -27,6 +27,14 @@ class SearchFilterChipData {
   final bool selected;
 }
 
+/// 카테고리로 들어왔을 때 결과 위에 보여줄 경로 한 칸.
+class SearchCategoryCrumb {
+  const SearchCategoryCrumb({required this.id, required this.label});
+
+  final String id;
+  final String label;
+}
+
 class SearchResultsState {
   const SearchResultsState({
     required this.query,
@@ -41,6 +49,7 @@ class SearchResultsState {
     this.isLoading = false,
     this.isRtiFilterActive = false,
     this.errorMessage,
+    this.categoryPath = const [],
   });
 
   final String query;
@@ -55,6 +64,9 @@ class SearchResultsState {
   final bool isLoading;
   final bool isRtiFilterActive;
   final String? errorMessage;
+
+  /// 카테고리 탐색일 때 최상위부터 선택 카테고리까지의 경로. 키워드 검색이면 비어 있다.
+  final List<SearchCategoryCrumb> categoryPath;
 
   int get displayTotalCount => totalCount ?? products.length;
   bool get hasError => errorMessage != null && errorMessage!.isNotEmpty;

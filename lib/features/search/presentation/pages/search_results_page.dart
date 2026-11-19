@@ -122,6 +122,7 @@ class _SearchResultsPageState extends ConsumerState<SearchResultsPage> {
       errorMessage: searchState is SearchFailure
           ? searchState.failure.message
           : null,
+      categoryPath: _categoryPath,
     );
 
     final scrollView = CustomScrollView(
@@ -624,6 +625,22 @@ class _SearchResultsPageState extends ConsumerState<SearchResultsPage> {
             productName: '',
           ) !=
           null;
+
+  List<SearchCategoryCrumb> get _categoryPath {
+    final categoryId = widget.categoryId;
+    if (categoryId == null || widget.query.trim().isNotEmpty) return const [];
+    final resolved = resolveProductCategory(categoryId);
+    if (resolved != null) {
+      return [
+        for (final category in resolved.path)
+          SearchCategoryCrumb(id: category.id, label: category.label),
+      ];
+    }
+    final label = widget.categoryLabel?.trim() ?? '';
+    return label.isEmpty
+        ? const []
+        : [SearchCategoryCrumb(id: categoryId, label: label)];
+  }
 
   String get _displayQuery {
     final searchInputQuery = _searchInputQuery;

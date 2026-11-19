@@ -51,10 +51,8 @@ class _AppShellState extends ConsumerState<AppShell> {
 
   void _syncSearchQuery() {
     if (widget.uri.path == RoutePaths.search) {
-      _searchQuery =
-          widget.uri.queryParameters['q']?.trim() ??
-          widget.uri.queryParameters['category']?.trim() ??
-          '';
+      // 카테고리 탐색은 검색이 아니므로 카테고리 이름을 검색창에 넣지 않는다.
+      _searchQuery = widget.uri.queryParameters['q']?.trim() ?? '';
     }
   }
 

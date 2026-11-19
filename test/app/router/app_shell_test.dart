@@ -213,7 +213,7 @@ void main() {
       await navigate(tester, router, '/search?q=가전');
       expect(tester.widget<TextField>(field).controller!.text, '가전');
       await navigate(tester, router, '/search?categoryId=beauty&category=뷰티');
-      expect(tester.widget<TextField>(field).controller!.text, '뷰티');
+      expect(tester.widget<TextField>(field).controller!.text, isEmpty);
       await tester.enterText(field, '입력 중인 검색어');
       await navigate(tester, router, RoutePaths.cart);
       expect(tester.widget<TextField>(field).controller!.text, '입력 중인 검색어');
