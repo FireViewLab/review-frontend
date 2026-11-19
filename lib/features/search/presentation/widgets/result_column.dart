@@ -28,6 +28,7 @@ class ResultColumn extends StatelessWidget {
     required this.onPageSelected,
     required this.onPageSizeChanged,
     required this.onViewModeChanged,
+    this.onResetFilters,
   });
 
   final SearchResultsState state;
@@ -40,6 +41,7 @@ class ResultColumn extends StatelessWidget {
   final ValueChanged<int> onPageSelected;
   final ValueChanged<int> onPageSizeChanged;
   final ValueChanged<SearchViewMode> onViewModeChanged;
+  final VoidCallback? onResetFilters;
 
   @override
   Widget build(BuildContext context) {
@@ -77,12 +79,19 @@ class ResultColumn extends StatelessWidget {
               ),
             ),
             if (products.isEmpty)
-              const SliverToBoxAdapter(
+              SliverToBoxAdapter(
                 child: SizedBox(
                   height: 360,
                   child: AppEmptyView(
                     title: '필터에 맞는 상품이 없어요',
                     message: '필터를 초기화하거나 조건을 조금 넓혀보세요.',
+                    action: onResetFilters == null
+                        ? null
+                        : OutlinedButton.icon(
+                            onPressed: onResetFilters,
+                            icon: const Icon(Icons.refresh, size: 18),
+                            label: const Text('필터 초기화'),
+                          ),
                   ),
                 ),
               )

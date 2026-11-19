@@ -42,6 +42,7 @@ class SearchResultsBody extends StatelessWidget {
     required this.onPageSizeChanged,
     required this.onViewModeChanged,
     required this.onResetFilters,
+    this.onRetry,
   });
 
   final GlobalKey? resultsKey;
@@ -73,6 +74,7 @@ class SearchResultsBody extends StatelessWidget {
   final ValueChanged<int> onPageSizeChanged;
   final ValueChanged<SearchViewMode> onViewModeChanged;
   final VoidCallback onResetFilters;
+  final VoidCallback? onRetry;
 
   @override
   Widget build(BuildContext context) {
@@ -86,6 +88,7 @@ class SearchResultsBody extends StatelessWidget {
           child: AppErrorView(
             message: state.errorMessage!,
             retryLabel: '다시 검색',
+            onRetry: onRetry,
           ),
         ),
       );
@@ -141,14 +144,14 @@ class SearchResultsBody extends StatelessWidget {
                 onSelected: onQuickFilterSelected,
               ),
               const SizedBox(height: AppSpacing.lg),
-              if (useSingleColumn && !state.isEmpty) ...[
+              if (useSingleColumn && !state.isSourceEmpty) ...[
                 filters(compact: true),
                 const SizedBox(height: AppSpacing.md),
               ],
             ],
           ),
         ),
-        if (state.isEmpty)
+        if (state.isSourceEmpty)
           SliverToBoxAdapter(child: SearchEmptyState(state: state))
         else
           ResultColumn(
@@ -163,6 +166,7 @@ class SearchResultsBody extends StatelessWidget {
             onPageSelected: onPageSelected,
             onPageSizeChanged: onPageSizeChanged,
             onViewModeChanged: onViewModeChanged,
+            onResetFilters: onResetFilters,
           ),
       ],
     );
