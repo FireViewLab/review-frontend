@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
+import 'package:re_view_front/app/router/route_paths.dart';
 import 'package:re_view_front/app/theme/app_colors.dart';
 import 'package:re_view_front/app/theme/app_spacing.dart';
 import 'package:re_view_front/shared/presentation/product_formatters.dart';
@@ -32,11 +34,21 @@ class SearchSummary extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final title = state.query.isEmpty ? '전체 상품' : state.query;
+    final categoryPath = state.categoryPath;
+    final isCategoryBrowse = categoryPath.isNotEmpty;
+    final title = isCategoryBrowse
+        ? categoryPath.last.label
+        : state.query.isEmpty
+        ? '전체 상품'
+        : state.query;
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
+        if (isCategoryBrowse) ...[
+          _CategoryBreadcrumb(path: categoryPath),
+          const SizedBox(height: AppSpacing.xs),
+        ],
         Wrap(
           spacing: AppSpacing.sm,
           runSpacing: AppSpacing.xs,
@@ -54,7 +66,7 @@ class SearchSummary extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.only(bottom: 3),
               child: Text(
-                '검색 결과',
+                isCategoryBrowse ? '카테고리 상품' : '검색 결과',
                 style: Theme.of(context).textTheme.titleMedium?.copyWith(
                   color: AppColors.textPrimary,
                   fontWeight: FontWeight.w900,
@@ -195,6 +207,68 @@ class QuickFilterPill extends StatelessWidget {
           ),
         ),
       ),
+    );
+  }
+}
+
+class _CategoryBreadcrumb extends StatelessWidget {
+  const _CategoryBreadcrumb({required this.path});
+
+  final List<SearchCategoryCrumb> path;
+
+  @override
+  Widget build(BuildContext context) {
+    final style = Theme.of(context).textTheme.bodySmall?.copyWith(
+      color: AppColors.textSecondary,
+      fontWeight: FontWeight.w700,
+    );
+    final separator = Icon(
+      Icons.chevron_right,
+      size: 16,
+      color: AppColors.textSecondary,
+    );
+
+    Widget link(String label, VoidCallback onTap) => MouseRegion(
+      cursor: SystemMouseCursors.click,
+      child: GestureDetector(
+        onTap: onTap,
+        child: Text(label, style: style),
+      ),
+    );
+
+    return Wrap(
+      crossAxisAlignment: WrapCrossAlignment.center,
+      spacing: AppSpacing.xxs,
+      runSpacing: AppSpacing.xxs,
+      children: [
+        // 홈 카테고리 시트의 전체보기와 같은 목록으로 간다.
+        link(
+          '전체',
+          () => context.goNamed(
+            RouteNames.search,
+            queryParameters: {'sort': SearchSortOption.accuracy.name},
+          ),
+        ),
+        for (var i = 0; i < path.length; i++) ...[
+          separator,
+          if (i == path.length - 1)
+            Text(
+              path[i].label,
+              style: style?.copyWith(color: AppColors.textPrimary),
+            )
+          else
+            link(
+              path[i].label,
+              () => context.goNamed(
+                RouteNames.search,
+                queryParameters: {
+                  'categoryId': path[i].id,
+                  'category': path[i].label,
+                },
+              ),
+            ),
+        ],
+      ],
     );
   }
 }
