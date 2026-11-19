@@ -119,7 +119,7 @@ class RangeEndpoint extends StatelessWidget {
   }
 }
 
-class PriceRangeSlider extends StatelessWidget {
+class PriceRangeSlider extends StatefulWidget {
   const PriceRangeSlider({
     super.key,
     required this.products,
@@ -131,28 +131,101 @@ class PriceRangeSlider extends StatelessWidget {
   final List<SearchResultProduct> products;
   final TextEditingController minPriceController;
   final TextEditingController maxPriceController;
+
+  /// 손을 뗐을 때와 입력칸을 바꿨을 때만 불린다. 끄는 동안은 슬라이더와
+  /// 입력칸만 움직이고 결과 계산은 하지 않는다.
   final VoidCallback onChanged;
 
   @override
-  Widget build(BuildContext context) {
-    final dataBounds = _priceBounds(products);
-    final chartBounds = (0, dataBounds.$2);
-    final minBound = chartBounds.$1.toDouble();
-    final maxBound = chartBounds.$2.toDouble();
-    final bins = _priceBins(products, chartBounds);
-    final maxBin = bins.reduce((value, element) {
+  State<PriceRangeSlider> createState() => _PriceRangeSliderState();
+}
+
+class _PriceRangeSliderState extends State<PriceRangeSlider> {
+  // 가격 분포는 상품 목록이 바뀔 때만 다시 계산한다.
+  late (int, int) _dataBounds;
+  late List<int> _bins;
+  late int _maxBin;
+
+  /// 끄는 중인 값. 끄지 않을 때는 입력칸 값을 따른다.
+  RangeValues? _dragValues;
+
+  (int, int) get _chartBounds => (0, _dataBounds.$2);
+
+  @override
+  void initState() {
+    super.initState();
+    _computeDistribution();
+    widget.minPriceController.addListener(_handleControllerChanged);
+    widget.maxPriceController.addListener(_handleControllerChanged);
+  }
+
+  @override
+  void didUpdateWidget(PriceRangeSlider oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (!identical(oldWidget.products, widget.products)) {
+      _computeDistribution();
+    }
+    if (oldWidget.minPriceController != widget.minPriceController) {
+      oldWidget.minPriceController.removeListener(_handleControllerChanged);
+      widget.minPriceController.addListener(_handleControllerChanged);
+    }
+    if (oldWidget.maxPriceController != widget.maxPriceController) {
+      oldWidget.maxPriceController.removeListener(_handleControllerChanged);
+      widget.maxPriceController.addListener(_handleControllerChanged);
+    }
+  }
+
+  @override
+  void dispose() {
+    widget.minPriceController.removeListener(_handleControllerChanged);
+    widget.maxPriceController.removeListener(_handleControllerChanged);
+    super.dispose();
+  }
+
+  void _handleControllerChanged() {
+    // 입력칸을 직접 고치거나 초기화하면 슬라이더 위치도 따라간다.
+    if (_dragValues == null && mounted) setState(() {});
+  }
+
+  void _computeDistribution() {
+    _dataBounds = _priceBounds(widget.products);
+    _bins = _priceBins(widget.products, _chartBounds);
+    _maxBin = _bins.reduce((value, element) {
       return value > element ? value : element;
     });
+  }
+
+  RangeValues _controllerValues() {
+    final chartBounds = _chartBounds;
     final currentMin =
-        _parseControllerPrice(minPriceController.text) ?? dataBounds.$1;
+        _parseControllerPrice(widget.minPriceController.text) ?? _dataBounds.$1;
     final currentMax =
-        _parseControllerPrice(maxPriceController.text) ?? dataBounds.$2;
+        _parseControllerPrice(widget.maxPriceController.text) ?? _dataBounds.$2;
     final start = currentMin.clamp(chartBounds.$1, chartBounds.$2).toDouble();
     final end = currentMax.clamp(chartBounds.$1, chartBounds.$2).toDouble();
-    final values = RangeValues(
-      start <= end ? start : end,
-      end >= start ? end : start,
-    );
+    return RangeValues(start <= end ? start : end, end >= start ? end : start);
+  }
+
+  void _writeControllers(RangeValues next) {
+    final chartBounds = _chartBounds;
+    widget.minPriceController.text = next.start
+        .round()
+        .clamp(chartBounds.$1, chartBounds.$2)
+        .toString();
+    widget.maxPriceController.text = next.end
+        .round()
+        .clamp(chartBounds.$1, chartBounds.$2)
+        .toString();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final chartBounds = _chartBounds;
+    final minBound = chartBounds.$1.toDouble();
+    final maxBound = chartBounds.$2.toDouble();
+    final bins = _bins;
+    final maxBin = _maxBin;
+    final values = _dragValues ?? _controllerValues();
 
     return SizedBox(
       height: 48,
@@ -237,15 +310,13 @@ class PriceRangeSlider extends StatelessWidget {
                 min: minBound,
                 max: maxBound <= minBound ? minBound + 1 : maxBound,
                 onChanged: (next) {
-                  minPriceController.text = next.start
-                      .round()
-                      .clamp(chartBounds.$1, chartBounds.$2)
-                      .toString();
-                  maxPriceController.text = next.end
-                      .round()
-                      .clamp(chartBounds.$1, chartBounds.$2)
-                      .toString();
-                  onChanged();
+                  setState(() => _dragValues = next);
+                  _writeControllers(next);
+                },
+                onChangeEnd: (next) {
+                  _writeControllers(next);
+                  setState(() => _dragValues = null);
+                  widget.onChanged();
                 },
               ),
             ),
