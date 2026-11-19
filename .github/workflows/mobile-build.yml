@@ -6,6 +6,9 @@ on:
     paths:
       - 'android/**'
       - 'ios/**'
+      - 'lib/**'
+      - 'assets/**'
+      - 'l10n.yaml'
       - 'pubspec.yaml'
       - 'pubspec.lock'
       - '.github/workflows/mobile-build.yml'
