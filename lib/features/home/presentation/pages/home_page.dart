@@ -124,6 +124,10 @@ class _HomePageState extends ConsumerState<HomePage> {
         const SizedBox(height: AppSpacing.xl),
       ],
     ];
+    final browseTitle = <Widget>[
+      Text('상품 둘러보기', style: Theme.of(context).textTheme.titleMedium),
+      const SizedBox(height: AppSpacing.md),
+    ];
     final scrollView = CustomScrollView(
       physics: kIsWeb ? null : const AlwaysScrollableScrollPhysics(),
       controller: _scrollController,
@@ -176,56 +180,68 @@ class _HomePageState extends ConsumerState<HomePage> {
                   height: context.isMobile ? AppSpacing.md : AppSpacing.xl,
                 ),
                 if (!context.isMobile) ...dashboardExtras,
-                Text('상품 둘러보기', style: Theme.of(context).textTheme.titleMedium),
-                const SizedBox(height: AppSpacing.md),
-                catalog.when(
-                  loading: () => const ProductCardGridSkeleton(itemCount: 5),
-                  error: (_, _) => SizedBox(
-                    height: 280,
-                    child: AppErrorView(
-                      message: '상품을 불러오지 못했습니다.',
-                      onRetry: () => ref.invalidate(homeCatalogProvider),
+                ...catalog.when(
+                  loading: () => [
+                    ...browseTitle,
+                    const ProductCardGridSkeleton(itemCount: 5),
+                  ],
+                  error: (_, _) => [
+                    ...browseTitle,
+                    SizedBox(
+                      height: 280,
+                      child: AppErrorView(
+                        message: '상품을 불러오지 못했습니다.',
+                        onRetry: () => ref.invalidate(homeCatalogProvider),
+                      ),
                     ),
-                  ),
-                  data: (products) => products.isEmpty
-                      ? const Text('표시할 상품이 없습니다.')
-                      : ProductRecommendationSection(
-                          showHeader: false,
-                          products: products
-                              .take(10)
-                              .map(
-                                (p) => HomeProductData(
-                                  productId: p.id.toString(),
-                                  detailPath: p.detailPath,
-                                  chatProductId: p.chatProductId,
-                                  routeContext: p.routeContext,
-                                  name: p.name,
-                                  storeName: p.platform ?? p.dataPlatform ?? '',
-                                  priceLabel: _formatPrice(p.price),
-                                  ratingLabel:
-                                      p.avgRating?.toStringAsFixed(1) ?? '',
-                                  reviewCountLabel:
-                                      p.reviewCount?.toString() ?? '',
-                                  rtiLabel: p.avgRti == null
-                                      ? '분석 전'
-                                      : 'RTI ${p.avgRti!.round()}',
-                                  imageUrl: p.imageUrl,
-                                  label: p.subCategory ?? '',
-                                ),
-                              )
-                              .toList(),
-                          onProductTap: _handleProductPressed,
+                  ],
+                  // 리뷰가 없는 상품은 둘러볼 근거가 없으므로 빼고, 남는 게 없으면 섹션을 숨긴다.
+                  data: (products) {
+                    final reviewed = products
+                        .where((p) => p.hasReviews)
+                        .take(10)
+                        .toList(growable: false);
+                    if (reviewed.isEmpty) return const <Widget>[];
+                    return [
+                      ...browseTitle,
+                      ProductRecommendationSection(
+                        showHeader: false,
+                        products: reviewed
+                            .map(
+                              (p) => HomeProductData(
+                                productId: p.id.toString(),
+                                detailPath: p.detailPath,
+                                chatProductId: p.chatProductId,
+                                routeContext: p.routeContext,
+                                name: p.name,
+                                storeName: p.platform ?? p.dataPlatform ?? '',
+                                priceLabel: _formatPrice(p.price),
+                                ratingLabel:
+                                    p.avgRating?.toStringAsFixed(1) ?? '',
+                                reviewCountLabel:
+                                    p.reviewCount?.toString() ?? '',
+                                rtiLabel: p.avgRti == null
+                                    ? '분석 전'
+                                    : 'RTI ${p.avgRti!.round()}',
+                                imageUrl: p.imageUrl,
+                                label: p.subCategory ?? '',
+                              ),
+                            )
+                            .toList(),
+                        onProductTap: _handleProductPressed,
+                      ),
+                      Align(
+                        alignment: Alignment.centerRight,
+                        child: TextButton(
+                          onPressed: () => context.goNamed(
+                            RouteNames.search,
+                            queryParameters: {'sort': 'accuracy'},
+                          ),
+                          child: const Text('전체 상품 보기'),
                         ),
-                ),
-                Align(
-                  alignment: Alignment.centerRight,
-                  child: TextButton(
-                    onPressed: () => context.goNamed(
-                      RouteNames.search,
-                      queryParameters: {'sort': 'accuracy'},
-                    ),
-                    child: const Text('전체 상품 보기'),
-                  ),
+                      ),
+                    ];
+                  },
                 ),
                 if (context.isMobile) ...dashboardExtras,
                 const SizedBox(height: AppSpacing.xl),
@@ -491,6 +507,7 @@ class _HomePageState extends ConsumerState<HomePage> {
     return switch (state) {
       HomeDashboardSuccess(dashboard: final dashboard) =>
         dashboard.recommendedProducts
+            .where((product) => product.hasReviews)
             .map(_toHomeProductData)
             .toList(growable: false),
       _ => const [],
