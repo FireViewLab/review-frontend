@@ -52,11 +52,16 @@ class ExternalProductState {
   CollectionStatus get collection => CollectionStatus.parse(collectionStatus);
   ExternalAnalysisStatus get analysisState =>
       ExternalAnalysisStatus.parse(analysisStatus);
-  bool get isCollecting => collection.isActive || (job?.isActive ?? false);
+  bool get _collectionStopped =>
+      job?.isTerminal == true &&
+      (job!.status == CollectionJobStatus.failed ||
+          job!.status == CollectionJobStatus.disabled);
+  bool get isCollecting =>
+      !_collectionStopped && (collection.isActive || (job?.isActive ?? false));
   bool get isAnalyzing => analysisState.isActive;
   bool get isStaleRefreshing => isStale && (job?.isActive ?? false);
   bool get isTerminal =>
-      collection.isTerminal &&
+      (collection.isTerminal || _collectionStopped) &&
       (job == null || job!.isTerminal) &&
       analysisState.isTerminal;
   String? get failureMessage => collectionError ?? job?.lastError;

@@ -1,5 +1,7 @@
 import 'dart:async';
 
+import 'package:flutter/foundation.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:re_view_front/features/external_product/domain/entities/external_product.dart';
 import 'package:re_view_front/features/external_product/domain/entities/external_product_ref.dart';
@@ -7,7 +9,8 @@ import 'package:re_view_front/features/external_product/domain/repositories/exte
 import 'package:re_view_front/features/external_product/presentation/providers/external_product_providers.dart';
 import 'package:re_view_front/features/external_product/presentation/view_models/external_product_state.dart';
 
-class ExternalProductViewModel extends Notifier<ExternalProductState> {
+class ExternalProductViewModel extends Notifier<ExternalProductState>
+    with WidgetsBindingObserver {
   ExternalProductViewModel(this.productRef);
 
   final ExternalProductRef productRef;
@@ -23,6 +26,8 @@ class ExternalProductViewModel extends Notifier<ExternalProductState> {
 
   /// 다시 불러올 때마다 올린다. 이전 요청과 대기를 모두 버린다.
   int _generation = 0;
+  int _snapshotRevision = 0;
+  bool _backgrounded = false;
   Timer? _pollTimer;
   Timer? _deadlineTimer;
   DateTime? _startedAt;
@@ -30,6 +35,12 @@ class ExternalProductViewModel extends Notifier<ExternalProductState> {
 
   @override
   ExternalProductState build() {
+    if (!kIsWeb) {
+      final binding = WidgetsFlutterBinding.ensureInitialized();
+      _backgrounded = _isBackgroundState(binding.lifecycleState);
+      binding.addObserver(this);
+      ref.onDispose(() => binding.removeObserver(this));
+    }
     ref.onDispose(() {
       _generation++;
       _stopPolling();
@@ -44,7 +55,6 @@ class ExternalProductViewModel extends Notifier<ExternalProductState> {
     if (!ref.mounted) return;
     final generation = ++_generation;
     _stopPolling();
-    _startDeadline(generation);
     _loadedCursors.clear();
     state = state.copyWith(
       phase: ExternalProductPhase.loading,
@@ -54,7 +64,36 @@ class ExternalProductViewModel extends Notifier<ExternalProductState> {
       isRefreshDelayed: false,
       clearCollectionError: true,
     );
+    if (_backgrounded) return;
+    _startDeadline(generation);
     await _fetch(generation);
+  }
+
+  bool _isBackgroundState(AppLifecycleState? lifecycle) => switch (lifecycle) {
+    AppLifecycleState.hidden ||
+    AppLifecycleState.paused ||
+    AppLifecycleState.detached => true,
+    _ => false,
+  };
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) =>
+      _handleLifecycle(state);
+
+  void _handleLifecycle(AppLifecycleState lifecycle) {
+    if (kIsWeb || !ref.mounted || lifecycle == AppLifecycleState.inactive) {
+      return;
+    }
+    final backgrounded = _isBackgroundState(lifecycle);
+    if (_backgrounded == backgrounded) return;
+    _backgrounded = backgrounded;
+    final generation = ++_generation;
+    _stopPolling();
+    state = state.copyWith(isLoadingMore: false);
+    if (_backgrounded) return;
+    state = state.copyWith(isRefreshDelayed: false, isSlow: false);
+    _startDeadline(generation);
+    unawaited(_fetch(generation));
   }
 
   Future<void> _fetch(int generation, {String? reviewError}) async {
@@ -63,8 +102,14 @@ class ExternalProductViewModel extends Notifier<ExternalProductState> {
       _wait(generation);
       return;
     }
+    final revision = _snapshotRevision;
     final result = await _repository.getProduct(productRef);
     if (!_isCurrent(generation)) return;
+    // 더 늦게 시작한 페이지 요청이 반영됐으면 이전 상세 응답을 버린다.
+    if (revision != _snapshotRevision) {
+      if (!state.isTerminal) _wait(generation);
+      return;
+    }
 
     result.when(
       success: (snapshot) {
@@ -100,6 +145,7 @@ class ExternalProductViewModel extends Notifier<ExternalProductState> {
                 ? snapshot.nextCursor
                 : state.nextCursor,
             loadMoreFailed: state.loadMoreFailed,
+            isLoadingMore: state.isLoadingMore,
             collectionError:
                 reviewError ??
                 (snapshot.job?.status == CollectionJobStatus.partial
@@ -203,9 +249,6 @@ class ExternalProductViewModel extends Notifier<ExternalProductState> {
         } else if (job.isTerminal) {
           state = state.copyWith(
             phase: ExternalProductPhase.unavailable,
-            collectionStatus: job.status == CollectionJobStatus.failed
-                ? 'FAILED'
-                : 'DISABLED',
             collectionError: job.lastError,
           );
           _stopPolling();
@@ -254,7 +297,8 @@ class ExternalProductViewModel extends Notifier<ExternalProductState> {
 
   Future<void> loadMoreReviews() async {
     final cursor = state.nextCursor;
-    if (cursor == null ||
+    if (_backgrounded ||
+        cursor == null ||
         state.isLoadingMore ||
         state.phase != ExternalProductPhase.ready) {
       return;
@@ -268,6 +312,7 @@ class ExternalProductViewModel extends Notifier<ExternalProductState> {
     result.when(
       success: (snapshot) {
         // 같은 리뷰가 두 페이지에 걸쳐 와도 한 번만 보여 준다.
+        _snapshotRevision++;
         _loadedCursors.add(cursor);
         final next = snapshot.nextCursor;
         final exhausted =
@@ -312,5 +357,6 @@ class ExternalProductViewModel extends Notifier<ExternalProductState> {
     );
   }
 
-  bool _isCurrent(int generation) => ref.mounted && generation == _generation;
+  bool _isCurrent(int generation) =>
+      ref.mounted && !_backgrounded && generation == _generation;
 }
