@@ -113,7 +113,7 @@ class _HomePageState extends ConsumerState<HomePage> {
           ),
         ),
         const SizedBox(height: AppSpacing.xl),
-      ] else ...[
+      ] else if (dashboardKeywords.isNotEmpty) ...[
         AppFadeIn(
           delay: 120,
           child: TrendingKeywordChips(

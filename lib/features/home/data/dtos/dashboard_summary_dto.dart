@@ -1,6 +1,7 @@
 import 'package:re_view_front/features/home/data/dtos/dashboard_product_dto.dart';
 import 'package:re_view_front/features/home/data/dtos/trending_keyword_dto.dart';
 import 'package:re_view_front/features/home/domain/entities/dashboard_summary.dart';
+import 'package:re_view_front/features/home/domain/entities/trending_keyword.dart';
 
 class DashboardSummaryDto {
   const DashboardSummaryDto({
@@ -78,9 +79,7 @@ class DashboardSummaryDto {
           .map((item) => item.toEntity())
           .where((item) => item.name.isNotEmpty)
           .toList(growable: false),
-      trendingKeywords: trendingKeywords
-          .map((item) => item.toEntity())
-          .toList(growable: false),
+      trendingKeywords: _uniqueKeywords(trendingKeywords),
     );
   }
 }
@@ -111,4 +110,17 @@ List<Object?> _readList(Map<String, dynamic> json, List<String> keys) {
     }
   }
   return const [];
+}
+
+/// 서버 키워드의 앞뒤 공백을 지우고, 대소문자만 다른 중복은 앞 순위 하나만 남긴다.
+/// 순위는 남은 순서대로 다시 매긴다.
+List<TrendingKeyword> _uniqueKeywords(List<TrendingKeywordDto> items) {
+  final seen = <String>{};
+  final result = <TrendingKeyword>[];
+  for (final item in items) {
+    final keyword = item.keyword.trim();
+    if (keyword.isEmpty || !seen.add(keyword.toLowerCase())) continue;
+    result.add(TrendingKeyword(keyword: keyword, rank: result.length + 1));
+  }
+  return List.unmodifiable(result);
 }
