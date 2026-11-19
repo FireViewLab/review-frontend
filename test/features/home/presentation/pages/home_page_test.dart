@@ -174,8 +174,7 @@ void main() {
     expect(find.byType(Image), findsWidgets);
     expect(find.text('Re:view가 더 믿을 수 있는 이유'), findsOneWidget);
     expect(find.text('추천 상품 API 연결 대기 중'), findsOneWidget);
-    expect(find.text('지금 많이 찾는 키워드'), findsOneWidget);
-    expect(find.text('표시할 키워드가 없습니다.'), findsOneWidget);
+    expect(find.text('지금 많이 찾는 키워드'), findsNothing);
     expect(find.text('92% 신뢰도'), findsNothing);
     expect(find.text('2'), findsNothing);
   });
