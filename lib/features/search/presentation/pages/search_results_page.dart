@@ -1,7 +1,8 @@
-import 'package:flutter/foundation.dart' show kIsWeb;
+import 'package:flutter/foundation.dart' show kIsWeb, mapEquals;
 import 'package:re_view_front/shared/widgets/sliver_width_builder.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:re_view_front/app/theme/app_colors.dart';
 import 'package:re_view_front/app/theme/app_spacing.dart';
 import 'package:re_view_front/features/category/domain/entities/product_category_resolver.dart';
@@ -14,12 +15,30 @@ import 'package:re_view_front/features/search/presentation/widgets/search_result
 import 'package:re_view_front/shared/extensions/context_extensions.dart';
 import 'dart:math' as math;
 
+/// 검색 화면이 주소에 남기는 필터·정렬·페이지 쿼리 이름.
+const searchFilterQueryKeys = {
+  'order',
+  'page',
+  'size',
+  'view',
+  'min',
+  'max',
+  'price',
+  'rti',
+  'mall',
+  'qf',
+  'cat',
+  'review',
+  'attr',
+};
+
 class SearchResultsPage extends ConsumerStatefulWidget {
   const SearchResultsPage({
     required this.query,
     this.categoryId,
     this.categoryLabel,
     this.initialSort,
+    this.filterParams = const {},
     super.key,
   });
 
@@ -29,6 +48,9 @@ class SearchResultsPage extends ConsumerStatefulWidget {
 
   /// 헤더 정렬 메뉴(베스트·신상품·리뷰랭킹)로 들어오면 그 정렬로 시작한다.
   final SearchSortOption? initialSort;
+
+  /// 주소에 남긴 필터·정렬·페이지 상태. 뒤로가기·새로고침 때 이 값으로 복원한다.
+  final Map<String, String> filterParams;
 
   @override
   ConsumerState<SearchResultsPage> createState() => _SearchResultsPageState();
@@ -52,24 +74,41 @@ class _SearchResultsPageState extends ConsumerState<SearchResultsPage> {
   int _pageSize = 30;
   final _resultsKey = GlobalKey();
   String? _lastPriceRangeQuery;
+  Map<String, String>? _lastSyncedFilterParams;
 
   @override
   void initState() {
     super.initState();
     _minPriceController = TextEditingController();
     _maxPriceController = TextEditingController();
+    _applyFilterParams(widget.filterParams);
     _triggerSearch();
   }
 
   @override
   void didUpdateWidget(SearchResultsPage oldWidget) {
     super.didUpdateWidget(oldWidget);
+    if (!mapEquals(oldWidget.filterParams, widget.filterParams)) {
+      _lastSyncedFilterParams = null;
+    }
     if (oldWidget.query != widget.query ||
         oldWidget.categoryId != widget.categoryId ||
         oldWidget.categoryLabel != widget.categoryLabel ||
         oldWidget.initialSort != widget.initialSort) {
+      _lastSyncedFilterParams = null;
       _resetFilters();
+      _applyFilterParams(widget.filterParams);
       _triggerSearch();
+      return;
+    }
+    // 브라우저 뒤로·앞으로 이동처럼 주소의 조건만 바뀐 경우 화면 상태를 맞춘다.
+    final incoming = _pickFilterParams(widget.filterParams);
+    if (!mapEquals(incoming, _pickFilterParams(oldWidget.filterParams)) &&
+        !mapEquals(incoming, _filterParams())) {
+      setState(() {
+        _clearFilterState();
+        _applyFilterParams(incoming);
+      });
     }
   }
 
@@ -106,6 +145,7 @@ class _SearchResultsPageState extends ConsumerState<SearchResultsPage> {
     final effectiveTotalCount = filteredProducts.length;
 
     _syncInitialPriceRange(products, _effectiveSearchQuery);
+    _syncFilterParamsToUrl();
 
     final uiState = SearchResultsState(
       query: _displayQuery,
@@ -401,21 +441,147 @@ class _SearchResultsPageState extends ConsumerState<SearchResultsPage> {
   }
 
   void _resetFilters() {
-    setState(() {
-      _selectedCategories.clear();
-      _selectedPriceRanges.clear();
-      _isPriceFilterActive = false;
-      _lastPriceRangeQuery = null;
-      _selectedBrand = null;
-      _selectedAttributeFilters.clear();
-      _selectedReviewConditions.clear();
-      _selectedQuickFilter = '전체';
-      _sortOption = _supportedSort(widget.initialSort);
-      _viewMode = SearchViewMode.grid;
-      _selectedRtiMinimum = 50;
-      _isRtiFilterActive = false;
-      _currentPage = 1;
-      _pageSize = 30;
+    setState(_clearFilterState);
+  }
+
+  void _clearFilterState() {
+    _selectedCategories.clear();
+    _selectedPriceRanges.clear();
+    _isPriceFilterActive = false;
+    _lastPriceRangeQuery = null;
+    _selectedBrand = null;
+    _selectedAttributeFilters.clear();
+    _selectedReviewConditions.clear();
+    _selectedQuickFilter = '전체';
+    _sortOption = _supportedSort(widget.initialSort);
+    _viewMode = SearchViewMode.grid;
+    _selectedRtiMinimum = 50;
+    _isRtiFilterActive = false;
+    _currentPage = 1;
+    _pageSize = 30;
+  }
+
+  // ─── 주소 쿼리와 필터 상태 ────────────────────────────────────────────────
+  // 'sort'는 헤더 메뉴의 진입 정렬이므로 그대로 두고, 화면에서 고른 정렬은
+  // 'order'로 따로 남긴다. 기본값과 같은 항목은 주소에 넣지 않는다.
+
+  static const _listSeparator = '|';
+
+  Map<String, String> _pickFilterParams(Map<String, String> params) => {
+    for (final entry in params.entries)
+      if (searchFilterQueryKeys.contains(entry.key) && entry.value.isNotEmpty)
+        entry.key: entry.value,
+  };
+
+  Map<String, String> _filterParams() {
+    String join(Set<String> values) =>
+        (values.toList()..sort()).join(_listSeparator);
+    final min = _minPriceController.text.trim();
+    final max = _maxPriceController.text.trim();
+    return {
+      if (_sortOption != _supportedSort(widget.initialSort))
+        'order': _sortOption.name,
+      if (_currentPage != 1) 'page': '$_currentPage',
+      if (_pageSize != 30) 'size': '$_pageSize',
+      if (_viewMode != SearchViewMode.grid) 'view': _viewMode.name,
+      if (_selectedPriceRanges.isNotEmpty)
+        'price': join(_selectedPriceRanges)
+      else if (_isPriceFilterActive) ...{
+        if (min.isNotEmpty) 'min': min,
+        if (max.isNotEmpty) 'max': max,
+      },
+      if (_isRtiFilterActive) 'rti': '${_selectedRtiMinimum.round()}',
+      'mall': ?_selectedBrand,
+      if (_selectedQuickFilter != '전체') 'qf': _selectedQuickFilter,
+      if (_selectedCategories.isNotEmpty) 'cat': join(_selectedCategories),
+      if (_selectedReviewConditions.isNotEmpty)
+        'review': join(_selectedReviewConditions),
+      if (_selectedAttributeFilters.isNotEmpty)
+        'attr': join(_selectedAttributeFilters),
+    };
+  }
+
+  /// 주소의 값을 화면 상태에 넣는다. setState 안이나 initState에서 부른다.
+  void _applyFilterParams(Map<String, String> params) {
+    Set<String> split(String? value) => value == null || value.isEmpty
+        ? <String>{}
+        : value.split(_listSeparator).where((v) => v.isNotEmpty).toSet();
+    int? positive(String? value) {
+      final parsed = int.tryParse(value ?? '');
+      return parsed != null && parsed > 0 ? parsed : null;
+    }
+
+    final order = SearchSortOption.values
+        .where((o) => o.name == params['order'])
+        .firstOrNull;
+    if (order != null) _sortOption = _supportedSort(order);
+    _currentPage = positive(params['page']) ?? 1;
+    _pageSize = positive(params['size']) ?? 30;
+    _viewMode = params['view'] == SearchViewMode.list.name
+        ? SearchViewMode.list
+        : SearchViewMode.grid;
+
+    final priceRanges = split(params['price']);
+    if (priceRanges.isNotEmpty) {
+      final label = priceRanges.first;
+      final range = _priceRangeFor(label);
+      _selectedPriceRanges
+        ..clear()
+        ..add(label);
+      _minPriceController.text = range.$1;
+      _maxPriceController.text = range.$2;
+      _isPriceFilterActive = true;
+    } else {
+      final min = int.tryParse(params['min'] ?? '');
+      final max = int.tryParse(params['max'] ?? '');
+      if (min != null || max != null) {
+        _minPriceController.text = min == null ? '' : '$min';
+        _maxPriceController.text = max == null ? '' : '$max';
+        _isPriceFilterActive = true;
+      }
+    }
+
+    final rti = int.tryParse(params['rti'] ?? '');
+    if (rti != null) {
+      _selectedRtiMinimum = rti.clamp(0, 100).toDouble();
+      _isRtiFilterActive = true;
+    }
+    final mall = params['mall'];
+    _selectedBrand = mall == null || mall.isEmpty ? null : mall;
+    _selectedQuickFilter = params['qf'] ?? '전체';
+    _selectedCategories.addAll(split(params['cat']));
+    _selectedReviewConditions.addAll(split(params['review']));
+    _selectedAttributeFilters.addAll(split(params['attr']));
+  }
+
+  /// 화면 상태가 주소와 다르면 방문 기록을 늘리지 않고 주소만 바꾼다.
+  void _syncFilterParamsToUrl() {
+    final desired = _filterParams();
+    if (mapEquals(desired, _pickFilterParams(widget.filterParams)) ||
+        mapEquals(desired, _lastSyncedFilterParams)) {
+      return;
+    }
+    _lastSyncedFilterParams = desired;
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (!mounted) return;
+      final router = GoRouter.maybeOf(context);
+      if (router == null) return;
+      final current = _filterParams();
+      if (mapEquals(current, _pickFilterParams(widget.filterParams))) return;
+      // 검색어·카테고리 같은 나머지 값은 현재 주소에서 그대로 가져온다.
+      final location = GoRouterState.of(context).uri;
+      final params = {
+        for (final entry in location.queryParameters.entries)
+          if (!searchFilterQueryKeys.contains(entry.key))
+            entry.key: entry.value,
+        ...current,
+      };
+      Router.neglect(
+        context,
+        () => router.go(
+          Uri(path: location.path, queryParameters: params).toString(),
+        ),
+      );
     });
   }
 

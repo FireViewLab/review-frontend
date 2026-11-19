@@ -173,6 +173,7 @@ final appRouterProvider = Provider<GoRouter>((ref) {
                 initialSort: SearchSortOption.values
                     .where((o) => o.name == state.uri.queryParameters['sort'])
                     .firstOrNull,
+                filterParams: state.uri.queryParameters,
               ),
             ),
           ),
