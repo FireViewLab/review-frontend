@@ -1,5 +1,6 @@
 import 'package:re_view_front/shared/presentation/analysis_formatters.dart';
 import 'package:flutter/material.dart';
+import 'package:re_view_front/features/external_product/domain/entities/external_product.dart';
 import 'package:re_view_front/app/theme/app_spacing.dart';
 import 'package:re_view_front/features/external_product/presentation/widgets/external_review_analysis.dart';
 import 'package:re_view_front/features/external_product/presentation/view_models/external_product_state.dart';
@@ -52,7 +53,7 @@ class ExternalProductReport extends StatelessWidget {
     };
     final reviews = hasResults
         ? state.reviews.where((r) => r.analysisDisplay.hasResult).toList()
-        : [];
+        : const <ExternalReview>[];
     return ProductReportCard(
       status:
           reportStatus == ProductReportStatus.ready &&
@@ -190,20 +191,58 @@ class ExternalProductReport extends StatelessWidget {
                     label: l.reportCurrentCount,
                     value: '${reviews.length}',
                   ),
-                  for (final review in reviews)
-                    Padding(
-                      padding: const EdgeInsets.only(top: AppSpacing.sm),
-                      child: ExternalReviewAnalysisDetails(
-                        review: review,
-                        embedded: true,
-                      ),
-                    ),
+                  _ReviewAnalysisList(reviews: reviews),
                 ],
               ],
             ),
           ),
         ],
       ),
+    );
+  }
+}
+
+/// 리뷰를 많이 불러온 뒤 팝업을 열어도 한 번에 모두 그리지 않도록 20개씩 펼친다.
+class _ReviewAnalysisList extends StatefulWidget {
+  const _ReviewAnalysisList({required this.reviews});
+
+  final List<ExternalReview> reviews;
+
+  @override
+  State<_ReviewAnalysisList> createState() => _ReviewAnalysisListState();
+}
+
+class _ReviewAnalysisListState extends State<_ReviewAnalysisList> {
+  static const _step = 20;
+  int _visible = _step;
+
+  @override
+  Widget build(BuildContext context) {
+    final reviews = widget.reviews;
+    final count = reviews.length < _visible ? reviews.length : _visible;
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        for (final review in reviews.take(count))
+          Padding(
+            padding: const EdgeInsets.only(top: AppSpacing.sm),
+            child: ExternalReviewAnalysisDetails(
+              review: review,
+              embedded: true,
+            ),
+          ),
+        if (count < reviews.length)
+          Padding(
+            padding: const EdgeInsets.only(top: AppSpacing.sm),
+            child: TextButton(
+              onPressed: () => setState(() => _visible += _step),
+              child: Text(
+                '${AppLocalizations.of(context).extProductReviewsMore} '
+                '($count/${reviews.length})',
+              ),
+            ),
+          ),
+      ],
     );
   }
 }
