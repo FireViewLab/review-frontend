@@ -1,3 +1,5 @@
+import 'package:re_view_front/shared/presentation/analysis_formatters.dart';
+import 'package:re_view_front/core/analysis/analysis_display.dart';
 // ignore_for_file: use_key_in_widget_constructors
 
 import 'package:flutter/material.dart';
@@ -106,7 +108,9 @@ class AnalysisReportReviewRow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final rtiColor = _parseColor(review.rtiColor);
+    final rtiColor = (review.analysisDisplay.isV2
+        ? review.analysisDisplay.color
+        : _parseColor(review.rtiColor));
 
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -156,13 +160,16 @@ class AnalysisReportReviewRow extends StatelessWidget {
                 maxLines: 2,
                 overflow: TextOverflow.ellipsis,
               ),
-              if (review.reasons.isNotEmpty) ...[
+              if (review.analysisDisplay.displayReasons.isNotEmpty) ...[
                 const SizedBox(height: AppSpacing.xxs),
                 Wrap(
                   spacing: AppSpacing.xxs,
                   runSpacing: AppSpacing.xxs,
                   children:
-                      ReviewEvidenceFormatter.list(context, review.reasons)
+                      ReviewEvidenceFormatter.list(
+                            context,
+                            review.analysisDisplay.displayReasons,
+                          )
                           .take(2)
                           .map(
                             (r) => DecoratedBox(
@@ -195,8 +202,11 @@ class AnalysisReportReviewRow extends StatelessWidget {
         ),
         const SizedBox(width: AppSpacing.sm),
         AnalysisReportRtiBadge(
-          score: review.rtiScore,
-          label: review.rtiLabel,
+          analysis: review.analysisDisplay,
+          score: review.analysisDisplay.score?.round(),
+          label: review.analysisDisplay.isV2
+              ? review.analysisDisplay.gradeLabel(context)
+              : review.rtiLabel,
           color: rtiColor,
         ),
       ],
@@ -216,11 +226,13 @@ class AnalysisReportReviewRow extends StatelessWidget {
 
 class AnalysisReportRtiBadge extends StatelessWidget {
   const AnalysisReportRtiBadge({
+    this.analysis,
     required this.score,
     required this.label,
     required this.color,
   });
 
+  final AnalysisDisplay? analysis;
   final int? score;
   final String? label;
   final Color color;
@@ -240,7 +252,9 @@ class AnalysisReportRtiBadge extends StatelessWidget {
           Icon(Icons.verified_user_outlined, size: 11, color: color),
           const SizedBox(width: 3),
           Text(
-            score == null ? '분석 전' : 'RTI $score',
+            analysis?.isV2 == true
+                ? analysis!.badgeText(context)
+                : (score == null ? '분석 전' : 'RTI $score'),
             style: Theme.of(context).textTheme.labelSmall?.copyWith(
               color: color,
               fontWeight: FontWeight.w900,

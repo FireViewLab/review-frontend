@@ -1,3 +1,4 @@
+import 'package:re_view_front/shared/widgets/analysis_result_view.dart';
 import 'package:re_view_front/shared/presentation/review_evidence_formatter.dart';
 import 'package:re_view_front/shared/widgets/rti_score_ring.dart';
 import 'package:re_view_front/l10n/generated/app_localizations.dart';
@@ -135,6 +136,9 @@ class RtiScoreCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    if (review.analysisDisplay.isV2) {
+      return AnalysisResultView(analysis: review.analysisDisplay);
+    }
     final color = colorFromHex(review.rtiColor);
     final score = review.rtiScore;
     final summary = review.reasons.isEmpty

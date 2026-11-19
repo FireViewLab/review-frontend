@@ -1,3 +1,4 @@
+import 'package:re_view_front/shared/presentation/analysis_formatters.dart';
 import 'package:re_view_front/shared/presentation/review_evidence_formatter.dart';
 import 'package:flutter/material.dart';
 import 'package:re_view_front/app/theme/app_spacing.dart';
@@ -37,12 +38,7 @@ class AnalysisReportContent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final l = AppLocalizations.of(context);
-    final analyzed = reviews
-        .where(
-          (r) =>
-              r.rtiScore != null || r.rtiLabel != null || r.reasons.isNotEmpty,
-        )
-        .toList();
+    final analyzed = reviews.where((r) => r.analysisDisplay.hasResult).toList();
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -54,16 +50,24 @@ class AnalysisReportContent extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               if (isAnalyzing) Text(l.reportRunning),
-              if (detail.avgRti != null)
+              if (detail.analysisDisplay.isV2 &&
+                  detail.analysisDisplay.score == null)
+                Text(detail.analysisDisplay.badgeText(context)),
+              if (detail.analysisDisplay.score != null)
                 ReportFactRow(
-                  label: l.reportScoreLabel,
-                  value: '${detail.avgRti} / 100',
+                  label: detail.analysisDisplay.isV2
+                      ? detail.analysisDisplay.scoreName(context)
+                      : l.reportScoreLabel,
+                  value: '${detail.analysisDisplay.score} / 100',
                 )
               else if (analyzed.isEmpty &&
                   detail.trustSignals.isEmpty &&
                   !isAnalyzing)
                 Text(l.reportPendingBody),
-              if (detail.rtiGrade != null) Text(detail.rtiGrade!),
+              if (detail.analysisDisplay.isV2)
+                Text(detail.analysisDisplay.gradeLabel(context) ?? '-')
+              else if (detail.rtiGrade != null)
+                Text(detail.rtiGrade!),
               for (final signal in detail.trustSignals)
                 ReportFactRow(
                   label: ReviewEvidenceFormatter.text(context, signal.label),
@@ -91,7 +95,9 @@ class AnalysisReportContent extends StatelessWidget {
             reviews: analyzed,
             isAnalyzing: isAnalyzing,
           ),
-          for (final review in analyzed.where((r) => r.reasons.isNotEmpty))
+          for (final review in analyzed.where(
+            (r) => r.analysisDisplay.displayReasons.isNotEmpty,
+          ))
             ExpansionTile(
               title: Text(
                 review.content,
@@ -102,7 +108,7 @@ class AnalysisReportContent extends StatelessWidget {
               children: [
                 for (final reason in ReviewEvidenceFormatter.list(
                   context,
-                  review.reasons,
+                  review.analysisDisplay.displayReasons,
                   detailed: true,
                 ))
                   ListTile(title: Text(reason)),

@@ -1,3 +1,5 @@
+import 'package:re_view_front/shared/presentation/analysis_formatters.dart';
+import 'package:re_view_front/core/analysis/analysis_display.dart';
 import 'package:flutter/material.dart';
 import 'package:re_view_front/features/product_detail/domain/entities/product_detail.dart';
 import 'package:re_view_front/l10n/generated/app_localizations.dart';
@@ -11,7 +13,9 @@ class RtiSummaryCard extends StatelessWidget {
     required this.onDetailPressed,
     this.loadedAnalysisCount = 0,
     this.isAnalyzing = false,
+    this.analysis,
   });
+  final AnalysisDisplay? analysis;
   final int loadedAnalysisCount;
   final bool isAnalyzing;
   final RtiSummary? rtiSummary;
@@ -24,11 +28,18 @@ class RtiSummaryCard extends StatelessWidget {
     return ProductReportCard(
       status: isAnalyzing
           ? ProductReportStatus.running
-          : summary != null || loadedAnalysisCount > 0
+          : summary != null || analysis?.isV2 == true || loadedAnalysisCount > 0
           ? ProductReportStatus.ready
           : ProductReportStatus.pending,
-      score: summary?.rtiScore.toDouble(),
-      summary: isAnalyzing
+      score: analysis?.isV2 == true
+          ? analysis?.score
+          : summary?.rtiScore.toDouble(),
+      scoreLabel: analysis?.isV2 == true ? analysis!.scoreName(context) : null,
+      summary: analysis?.isV2 == true && !isAnalyzing
+          ? (analysis?.score == null
+                ? analysis!.badgeText(context)
+                : l.reportDone)
+          : isAnalyzing
           ? l.reportRunning
           : summary != null
           ? l.reportDone

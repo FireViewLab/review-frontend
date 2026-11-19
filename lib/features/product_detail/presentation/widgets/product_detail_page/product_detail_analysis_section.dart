@@ -30,6 +30,7 @@ class ProductDetailDesktopAnalysisSection extends StatelessWidget {
           children: [
             Expanded(
               child: RtiSummaryCard(
+                analysis: detail.analysisDisplay,
                 rtiSummary: detail.rtiSummary,
                 loadedAnalysisCount: loadedAnalysisCount,
                 isAnalyzing: isAnalyzing,
@@ -76,6 +77,7 @@ class ProductDetailMobileAnalysisSection extends StatelessWidget {
           const SizedBox(height: AppSpacing.sm),
         ],
         RtiSummaryCard(
+          analysis: detail.analysisDisplay,
           rtiSummary: detail.rtiSummary,
           loadedAnalysisCount: loadedAnalysisCount,
           isAnalyzing: isAnalyzing,
