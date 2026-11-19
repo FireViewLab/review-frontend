@@ -1,7 +1,9 @@
+import 'package:re_view_front/core/analysis/analysis_display.dart';
 import 'package:re_view_front/features/product_detail/domain/entities/review_rti_detail.dart';
 
 class ProductReview {
   const ProductReview({
+    this.analysis,
     required this.id,
     required this.authorName,
     required this.authorAvatarUrl,
@@ -19,6 +21,16 @@ class ProductReview {
     this.reasons = const [],
     this.rtiDetail,
   });
+
+  final AnalysisDisplay? analysis;
+  AnalysisDisplay get analysisDisplay =>
+      analysis ??
+      rtiDetail?.analysis ??
+      AnalysisDisplay(
+        score: rtiScore?.toDouble(),
+        level: rtiLabel,
+        reasons: reasons,
+      );
 
   final int? helpfulCount;
   final int id;

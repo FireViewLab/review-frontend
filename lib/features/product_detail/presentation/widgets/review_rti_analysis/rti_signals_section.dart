@@ -50,7 +50,7 @@ class RtiSignalBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final color = colorFromHex(signal.color);
-    final ratio = (signal.score / 100).clamp(0.0, 1.0);
+    final ratio = ((signal.score ?? 0) / 100).clamp(0.0, 1.0);
 
     return Row(
       crossAxisAlignment: CrossAxisAlignment.center,
@@ -82,7 +82,8 @@ class RtiSignalBar extends StatelessWidget {
                     ),
                   ),
                   Text(
-                    '${signal.score}',
+                    signal.score?.toString() ??
+                        AppLocalizations.of(context).analysisNotCalculable,
                     style: Theme.of(context).textTheme.labelSmall?.copyWith(
                       color: AppColors.textPrimary,
                       fontWeight: FontWeight.w800,
@@ -215,7 +216,7 @@ class RtiJudgmentBasisItem extends StatelessWidget {
           ),
           const SizedBox(width: AppSpacing.xs),
           Text(
-            '${basis.percentage}%',
+            basis.percentage == null ? '-' : '${basis.percentage}%',
             style: Theme.of(context).textTheme.labelSmall?.copyWith(
               color: color,
               fontWeight: FontWeight.w800,

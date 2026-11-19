@@ -1,3 +1,4 @@
+import 'package:re_view_front/core/analysis/analysis_contract.dart';
 import 'package:re_view_front/core/utils/product_image_urls.dart';
 import '../../domain/entities/external_product.dart';
 import '../../domain/entities/external_product_ref.dart';
@@ -28,16 +29,13 @@ class ProductSummaryDto {
         }
       }
     }
-    final average = number(json['avgRti']);
+    final display = AnalysisContract.parse(json, catalog: true);
+    final average = display.score;
     final done = text(json['analysisStatus'])?.toUpperCase() == 'DONE';
     return ProductSummary(
-      catalogAnalysis:
-          done &&
-              average != null &&
-              average.isFinite &&
-              average >= 0 &&
-              average <= 100
+      catalogAnalysis: done && (display.isV2 || average != null)
           ? ProductCatalogAnalysis(
+              analysis: display,
               averageRti: average,
               observedAt: DateTime.now(),
               sampled: json['analysisSampled'] is bool

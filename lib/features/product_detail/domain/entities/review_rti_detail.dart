@@ -1,5 +1,8 @@
+import 'package:re_view_front/core/analysis/analysis_display.dart';
+
 class ReviewRtiDetail {
   const ReviewRtiDetail({
+    this.analysis,
     required this.summaryDescription,
     required this.summaryTags,
     required this.signals,
@@ -7,6 +10,7 @@ class ReviewRtiDetail {
     required this.sentenceHighlights,
   });
 
+  final AnalysisDisplay? analysis;
   final String summaryDescription;
   final List<RtiSummaryTag> summaryTags;
   final List<RtiSignal> signals;
@@ -32,7 +36,7 @@ class RtiSignal {
   });
 
   final String label;
-  final int score;
+  final int? score;
   final String iconType; // 'text', 'behavior', 'pattern', 'purchase'
   final String color; // hex
 }
@@ -48,7 +52,7 @@ class RtiJudgmentBasis {
 
   final String label;
   final String description;
-  final int percentage;
+  final int? percentage;
   final String iconType; // 'repeat', 'context', 'history', 'similarity'
   final String color; // hex
 }

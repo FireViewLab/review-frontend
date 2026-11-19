@@ -40,9 +40,7 @@ class ProductDetailRepositoryImpl implements ProductDetailRepository {
     } on DioException catch (error) {
       return FailureResult(failureFromDioException(error));
     } on Object catch (error) {
-      return FailureResult(
-        Failure(message: '리뷰를 불러오지 못했습니다.', cause: error),
-      );
+      return FailureResult(Failure(message: '리뷰를 불러오지 못했습니다.', cause: error));
     }
   }
 
@@ -59,15 +57,12 @@ class ProductDetailRepositoryImpl implements ProductDetailRepository {
     } on DioException catch (error) {
       return FailureResult(failureFromDioException(error));
     } on Object catch (error) {
-      return FailureResult(
-        Failure(message: '피드백 제출에 실패했습니다.', cause: error),
-      );
+      return FailureResult(Failure(message: '피드백 제출에 실패했습니다.', cause: error));
     }
   }
 
   @override
-  Future<bool> checkAnalysisHealth() =>
-      _remoteDataSource.checkAnalysisHealth();
+  Future<bool> checkAnalysisHealth() => _remoteDataSource.checkAnalysisHealth();
 
   @override
   Future<Result<ProductAnalysisResult>> triggerProductAnalysis(
@@ -77,6 +72,7 @@ class ProductDetailRepositoryImpl implements ProductDetailRepository {
       final dto = await _remoteDataSource.triggerProductAnalysis(productId);
       return Success(
         ProductAnalysisResult(
+          analysis: dto.analysis,
           averageRti: dto.averageRti,
           safeCount: dto.safeCount,
           warnCount: dto.warnCount,
@@ -105,9 +101,7 @@ class ProductDetailRepositoryImpl implements ProductDetailRepository {
     } on DioException catch (error) {
       return FailureResult(failureFromDioException(error));
     } on Object catch (error) {
-      return FailureResult(
-        Failure(message: 'AI 분석에 실패했습니다.', cause: error),
-      );
+      return FailureResult(Failure(message: 'AI 분석에 실패했습니다.', cause: error));
     }
   }
 }

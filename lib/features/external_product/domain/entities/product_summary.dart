@@ -1,3 +1,4 @@
+import 'package:re_view_front/core/analysis/analysis_display.dart';
 import 'external_product.dart';
 import 'external_product_ref.dart';
 
@@ -56,13 +57,17 @@ class ProductSummaryCache {
 /// Aggregate supplied by the catalog API, independent of a v2 review page.
 class ProductCatalogAnalysis {
   const ProductCatalogAnalysis({
+    this.analysis,
     required this.averageRti,
     required this.observedAt,
     this.sampled,
     this.reviewCount,
     this.sourceReviewCount,
   });
-  final double averageRti;
+  final AnalysisDisplay? analysis;
+  AnalysisDisplay get analysisDisplay =>
+      analysis ?? AnalysisDisplay(score: averageRti);
+  final double? averageRti;
   final DateTime observedAt;
   final bool? sampled;
   final int? reviewCount;

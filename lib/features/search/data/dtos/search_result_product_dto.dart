@@ -1,9 +1,12 @@
+import 'package:re_view_front/core/analysis/analysis_display.dart';
+import 'package:re_view_front/core/analysis/analysis_contract.dart';
 import 'package:re_view_front/features/external_product/data/dtos/product_summary_dto.dart';
 import 'package:re_view_front/features/external_product/domain/entities/product_summary.dart';
 import 'package:re_view_front/features/search/domain/entities/search_result_product.dart';
 
 class SearchResultProductDto {
   const SearchResultProductDto({
+    this.analysis,
     required this.id,
     required this.name,
     required this.imageUrl,
@@ -26,6 +29,7 @@ class SearchResultProductDto {
 
   factory SearchResultProductDto.fromJson(Map<String, dynamic> json) {
     return SearchResultProductDto(
+      analysis: AnalysisContract.parse(json, catalog: true),
       summary: ProductSummaryDto.fromJson(json),
       externalId: json['externalId'] as String?,
       dataPlatform: json['dataPlatform'] as String?,
@@ -61,6 +65,8 @@ class SearchResultProductDto {
     );
   }
 
+  final AnalysisDisplay? analysis;
+
   final ProductSummary? summary;
   final String? externalId;
   final String? dataPlatform;
@@ -87,6 +93,7 @@ class SearchResultProductDto {
         : subCategory ?? category;
 
     return SearchResultProduct(
+      analysis: analysis,
       summary: summary,
       externalId: externalId,
       dataPlatform: dataPlatform,

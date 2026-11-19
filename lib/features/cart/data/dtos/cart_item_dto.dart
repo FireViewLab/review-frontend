@@ -1,9 +1,12 @@
+import 'package:re_view_front/core/analysis/analysis_display.dart';
+import 'package:re_view_front/core/analysis/analysis_contract.dart';
 import 'package:re_view_front/features/external_product/data/dtos/product_summary_dto.dart';
 import 'package:re_view_front/features/external_product/domain/entities/product_summary.dart';
 import 'package:re_view_front/features/cart/domain/entities/cart_item.dart';
 
 class CartItemDto {
   const CartItemDto({
+    this.analysis,
     required this.cartItemId,
     required this.productId,
     required this.name,
@@ -32,6 +35,7 @@ class CartItemDto {
 
   factory CartItemDto.fromJson(Map<String, dynamic> json) {
     return CartItemDto(
+      analysis: AnalysisContract.parse(json, catalog: true),
       summary: ProductSummaryDto.fromJson(json, cart: true),
       externalId: json['externalId'] as String?,
       dataPlatform: json['dataPlatform'] as String?,
@@ -91,6 +95,8 @@ class CartItemDto {
     );
   }
 
+  final AnalysisDisplay? analysis;
+
   final ProductSummary? summary;
   final String? externalId;
   final String? dataPlatform;
@@ -119,6 +125,7 @@ class CartItemDto {
 
   CartItem toEntity() {
     return CartItem(
+      analysis: analysis,
       summary: summary,
       externalId: externalId,
       dataPlatform: dataPlatform,

@@ -1,8 +1,11 @@
+import 'package:re_view_front/core/analysis/analysis_display.dart';
+import 'package:re_view_front/core/analysis/analysis_contract.dart';
 import 'package:re_view_front/features/product_detail/domain/entities/product_detail.dart';
 import 'package:re_view_front/features/product_detail/domain/entities/review_rti_detail.dart';
 
 class ProductAnalysisDto {
   const ProductAnalysisDto({
+    this.analysis,
     required this.productId,
     required this.averageRti,
     required this.level,
@@ -18,8 +21,9 @@ class ProductAnalysisDto {
     required this.trustSignals,
   });
 
+  final AnalysisDisplay? analysis;
   final String productId;
-  final double averageRti;
+  final double? averageRti;
   final String level;
   final int reviewCount;
   final int safeCount;
@@ -33,24 +37,28 @@ class ProductAnalysisDto {
   final List<TrustSignalDto> trustSignals;
 
   factory ProductAnalysisDto.fromJson(Map<String, dynamic> json) {
-    final rawReviews = json['reviews'] as List? ?? [];
+    final rawReviews = (json['reviews'] ?? json['results']) as List? ?? [];
     final rawTrend = json['trend'] as List? ?? [];
     final rawSignals = json['trustSignals'] as List? ?? [];
     return ProductAnalysisDto(
+      analysis: AnalysisContract.parse(json, catalog: true),
       productId: json['productId']?.toString() ?? '',
-      averageRti: (json['averageRti'] as num?)?.toDouble() ?? 0.0,
+      averageRti: AnalysisContract.parse(json, catalog: true).score,
       level: json['level'] as String? ?? 'safe',
       reviewCount: (json['reviewCount'] as num?)?.toInt() ?? 0,
       safeCount: (json['safeCount'] as num?)?.toInt() ?? 0,
       warnCount: (json['warnCount'] as num?)?.toInt() ?? 0,
       dangerCount: (json['dangerCount'] as num?)?.toInt() ?? 0,
       reviews: rawReviews
-          .map((e) => ReviewAnalysisItemDto.fromJson(e as Map<String, dynamic>))
+          .map(
+            (e) => ReviewAnalysisItemDto.fromJson(
+              e as Map<String, dynamic>,
+              inheritedVersion: AnalysisContract.version(json),
+            ),
+          )
           .toList(),
       trend: rawTrend
-          .map(
-            (e) => AnalysisTrendItemDto.fromJson(e as Map<String, dynamic>),
-          )
+          .map((e) => AnalysisTrendItemDto.fromJson(e as Map<String, dynamic>))
           .toList(),
       realReviewRatio: (json['realReviewRatio'] as num?)?.toDouble() ?? 0.0,
       adSuspicionRatio: (json['adSuspicionRatio'] as num?)?.toDouble() ?? 0.0,
@@ -92,15 +100,13 @@ class TrustSignalDto {
     );
   }
 
-  TrustSignal toEntity() => TrustSignal(
-        label: label,
-        value: value,
-        isPositive: isPositive,
-      );
+  TrustSignal toEntity() =>
+      TrustSignal(label: label, value: value, isPositive: isPositive);
 }
 
 class ReviewAnalysisItemDto {
   const ReviewAnalysisItemDto({
+    this.analysis,
     required this.reviewId,
     required this.rti,
     required this.level,
@@ -113,36 +119,59 @@ class ReviewAnalysisItemDto {
     this.date,
   });
 
+  final AnalysisDisplay? analysis;
   final String reviewId;
   final String? content;
   final String? author;
   final String? date;
-  final int rti;
+  final int? rti;
   final String level;
-  final int textScore;
-  final int behaviorScore;
-  final int networkScore;
+  final int? textScore;
+  final int? behaviorScore;
+  final int? networkScore;
   final List<ReviewReasonDto> reasons;
 
-  factory ReviewAnalysisItemDto.fromJson(Map<String, dynamic> json) {
+  factory ReviewAnalysisItemDto.fromJson(
+    Map<String, dynamic> json, {
+    String? inheritedVersion,
+  }) {
     final rawReasons = json['reasons'] as List? ?? [];
+    final display = AnalysisContract.parse(
+      json,
+      inheritedVersion: inheritedVersion,
+    );
     return ReviewAnalysisItemDto(
+      analysis: display,
       reviewId: json['reviewId']?.toString() ?? '',
       content: json['content'] as String?,
       author: json['author'] as String?,
       date: json['date'] as String?,
-      rti: (json['rti'] as num?)?.toInt() ?? 0,
+      rti: display.score?.round(),
       level: json['level'] as String? ?? 'safe',
-      textScore: (json['textScore'] as num?)?.toInt() ?? 0,
-      behaviorScore: (json['behaviorScore'] as num?)?.toInt() ?? 0,
-      networkScore: (json['networkScore'] as num?)?.toInt() ?? 0,
+      textScore: display.textScore?.round(),
+      behaviorScore: display.behaviorScore?.round(),
+      networkScore: display.networkScore?.round(),
       reasons: rawReasons
-          .map((e) => ReviewReasonDto.fromJson(e as Map<String, dynamic>))
+          .map(
+            (e) => e is Map<String, dynamic>
+                ? ReviewReasonDto.fromJson(e)
+                : ReviewReasonDto.fromJson({'message': e.toString()}),
+          )
           .toList(),
     );
   }
 
   ReviewRtiDetail toRtiDetail() {
+    if (analysis?.isV2 == true) {
+      return ReviewRtiDetail(
+        analysis: analysis,
+        summaryDescription: analysis!.summary ?? '',
+        summaryTags: const [],
+        signals: const [],
+        judgmentBases: const [],
+        sentenceHighlights: const [],
+      );
+    }
     final color = _levelHexColor(level);
     final signals = [
       RtiSignal(
@@ -178,7 +207,9 @@ class ReviewAnalysisItemDto {
         .toList();
 
     return ReviewRtiDetail(
-      summaryDescription: _buildSummaryDescription(level, rti),
+      summaryDescription: rti == null
+          ? ''
+          : _buildSummaryDescription(level, rti!),
       summaryTags: _buildSummaryTags(level),
       signals: signals,
       judgmentBases: bases,
@@ -187,47 +218,40 @@ class ReviewAnalysisItemDto {
   }
 
   static String _levelHexColor(String level) => switch (level.toLowerCase()) {
-        'safe' => '#22C55E',
-        'warn' || 'suspicious' => '#F59E0B',
-        'danger' => '#EF4444',
-        _ => '#6B7280',
-      };
+    'safe' => '#22C55E',
+    'warn' || 'suspicious' => '#F59E0B',
+    'danger' => '#EF4444',
+    _ => '#6B7280',
+  };
 
   static String _buildSummaryDescription(String level, int rti) =>
       switch (level.toLowerCase()) {
         'safe' => 'AI 분석 결과 신뢰도 높은 리뷰입니다. (RTI $rti)',
-        'warn' || 'suspicious' =>
-          'AI 분석 결과 일부 의심 신호가 감지된 리뷰입니다. (RTI $rti)',
+        'warn' || 'suspicious' => 'AI 분석 결과 일부 의심 신호가 감지된 리뷰입니다. (RTI $rti)',
         'danger' => 'AI 분석 결과 신뢰도가 낮은 리뷰입니다. (RTI $rti)',
         _ => 'AI 분석 결과입니다. (RTI $rti)',
       };
 
-  static List<RtiSummaryTag> _buildSummaryTags(String level) =>
-      switch (level.toLowerCase()) {
-        'safe' => const [
-            RtiSummaryTag(label: '신뢰 리뷰', type: RtiTagType.positive),
-          ],
-        'warn' || 'suspicious' => const [
-            RtiSummaryTag(label: '의심 신호 감지', type: RtiTagType.info),
-          ],
-        'danger' => const [
-            RtiSummaryTag(label: '위험 리뷰', type: RtiTagType.warning),
-          ],
-        _ => const [],
-      };
+  static List<RtiSummaryTag> _buildSummaryTags(String level) => switch (level
+      .toLowerCase()) {
+    'safe' => const [RtiSummaryTag(label: '신뢰 리뷰', type: RtiTagType.positive)],
+    'warn' || 'suspicious' => const [
+      RtiSummaryTag(label: '의심 신호 감지', type: RtiTagType.info),
+    ],
+    'danger' => const [RtiSummaryTag(label: '위험 리뷰', type: RtiTagType.warning)],
+    _ => const [],
+  };
 
   static String _codeToIconType(String code) => switch (code) {
-        'REPETITIVE_KEYWORD' ||
-        'SIMILAR_REVIEW_CLUSTER' ||
-        'SIMILAR_REVIEW_PATTERN' =>
-          'repeat',
-        'PURCHASE_NOT_VERIFIED' ||
-        'PURCHASE_UNKNOWN' ||
-        'FREE_TRIAL_REVIEW' =>
-          'history',
-        'MULTIPLE_REVIEWS_SAME_DAY' || 'REPURCHASE_SIGNAL' => 'similarity',
-        _ => 'context',
-      };
+    'REPETITIVE_KEYWORD' ||
+    'SIMILAR_REVIEW_CLUSTER' ||
+    'SIMILAR_REVIEW_PATTERN' => 'repeat',
+    'PURCHASE_NOT_VERIFIED' ||
+    'PURCHASE_UNKNOWN' ||
+    'FREE_TRIAL_REVIEW' => 'history',
+    'MULTIPLE_REVIEWS_SAME_DAY' || 'REPURCHASE_SIGNAL' => 'similarity',
+    _ => 'context',
+  };
 }
 
 class AnalysisTrendItemDto {

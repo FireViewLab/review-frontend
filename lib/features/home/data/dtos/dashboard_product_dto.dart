@@ -1,9 +1,12 @@
+import 'package:re_view_front/core/analysis/analysis_display.dart';
+import 'package:re_view_front/core/analysis/analysis_contract.dart';
 import 'package:re_view_front/features/external_product/data/dtos/product_summary_dto.dart';
 import 'package:re_view_front/features/external_product/domain/entities/product_summary.dart';
 import 'package:re_view_front/features/home/domain/entities/dashboard_product.dart';
 
 class DashboardProductDto {
   const DashboardProductDto({
+    this.analysis,
     required this.id,
     required this.name,
     required this.storeName,
@@ -22,6 +25,7 @@ class DashboardProductDto {
 
   factory DashboardProductDto.fromJson(Map<String, dynamic> json) {
     return DashboardProductDto(
+      analysis: AnalysisContract.parse(json, catalog: true),
       summary: ProductSummaryDto.fromJson(json),
       externalId: json['externalId'] as String?,
       dataPlatform: json['dataPlatform'] as String?,
@@ -67,6 +71,8 @@ class DashboardProductDto {
     );
   }
 
+  final AnalysisDisplay? analysis;
+
   final ProductSummary? summary;
   final String? externalId;
   final String? dataPlatform;
@@ -85,6 +91,7 @@ class DashboardProductDto {
 
   DashboardProduct toEntity() {
     return DashboardProduct(
+      analysis: analysis,
       summary: summary,
       externalId: externalId,
       dataPlatform: dataPlatform,

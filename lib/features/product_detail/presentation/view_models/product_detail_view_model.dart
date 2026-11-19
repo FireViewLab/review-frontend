@@ -142,6 +142,7 @@ class ProductDetailViewModel extends Notifier<ProductDetailState> {
           final detail = analysis.reviewDetails[review.id];
           if (detail == null) return review;
           return ProductReview(
+            analysis: detail.analysis ?? review.analysis,
             helpfulCount: review.helpfulCount,
             id: review.id,
             authorName: review.authorName,
@@ -206,6 +207,7 @@ class ProductDetailViewModel extends Notifier<ProductDetailState> {
 
         if (ref.mounted) {
           state = current.copyWith(
+            analysis: analysis.analysis,
             reviews: enrichedReviews,
             isAnalyzing: false,
             safeCount: analysis.safeCount,
