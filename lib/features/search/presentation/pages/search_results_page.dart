@@ -467,8 +467,12 @@ class _SearchResultsPageState extends ConsumerState<SearchResultsPage> {
           }
 
           if (_isPriceFilterActive) {
-            final minPrice = _parsePrice(_minPriceController.text);
-            final maxPrice = _parsePrice(_maxPriceController.text);
+            var minPrice = _parsePrice(_minPriceController.text);
+            var maxPrice = _parsePrice(_maxPriceController.text);
+            // 슬라이더는 최소>최대를 뒤집어 보여주므로 필터도 같은 범위로 맞춘다.
+            if (minPrice != null && maxPrice != null && minPrice > maxPrice) {
+              (minPrice, maxPrice) = (maxPrice, minPrice);
+            }
             if ((minPrice != null || maxPrice != null) &&
                 product.price == null) {
               return false;
@@ -556,18 +560,22 @@ class _SearchResultsPageState extends ConsumerState<SearchResultsPage> {
   ) {
     if (_isPriceFilterActive || _lastPriceRangeQuery == query) return;
 
-    _lastPriceRangeQuery = query;
-    if (products.isEmpty) {
+    // 로딩 중 빈 목록에서 query를 기록하면 실제 결과가 와도 가격 범위를
+    // 다시 잡지 않으므로, 가격이 있는 결과를 받았을 때만 기록한다.
+    final prices = products.map((p) => p.price).whereType<int>().toList();
+    if (prices.isEmpty) {
+      if (_minPriceController.text.isEmpty &&
+          _maxPriceController.text.isEmpty) {
+        return;
+      }
       WidgetsBinding.instance.addPostFrameCallback((_) {
-        if (!mounted) return;
+        if (!mounted || _isPriceFilterActive) return;
         _minPriceController.clear();
         _maxPriceController.clear();
       });
       return;
     }
-
-    final prices = products.map((p) => p.price).whereType<int>().toList();
-    if (prices.isEmpty) return;
+    _lastPriceRangeQuery = query;
     final minPrice = prices.reduce((a, b) => a < b ? a : b);
     final maxPrice = prices.reduce((a, b) => a > b ? a : b);
     WidgetsBinding.instance.addPostFrameCallback((_) {

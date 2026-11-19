@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:re_view_front/app/theme/app_colors.dart';
 import 'package:re_view_front/app/theme/app_spacing.dart';
 import 'package:re_view_front/features/search/domain/entities/search_result_product.dart';
@@ -20,6 +21,8 @@ class PriceBox extends StatelessWidget {
       child: TextField(
         controller: controller,
         keyboardType: TextInputType.number,
+        // 음수·소수·문자가 들어가면 필터와 슬라이더 값이 어긋나므로 숫자만 받는다.
+        inputFormatters: [FilteringTextInputFormatter.digitsOnly],
         textAlign: TextAlign.center,
         onChanged: (_) => onChanged(),
         style: Theme.of(context).textTheme.labelSmall?.copyWith(
