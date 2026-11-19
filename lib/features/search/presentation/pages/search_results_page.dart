@@ -219,6 +219,7 @@ class _SearchResultsPageState extends ConsumerState<SearchResultsPage> {
                   setState(() => _viewMode = viewMode);
                 },
                 onResetFilters: _resetFilters,
+                onRetry: () => _triggerSearch(refresh: true),
               ),
             );
           },
