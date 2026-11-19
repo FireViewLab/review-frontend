@@ -76,6 +76,17 @@ class _SearchResultsPageState extends ConsumerState<SearchResultsPage> {
   String? _lastPriceRangeQuery;
   Map<String, String>? _lastSyncedFilterParams;
 
+  // 상품 단위 카테고리 해석은 결과가 바뀌지 않는 한 같으므로 상품 객체에 붙여 둔다.
+  final _categoryLabelCache = Expando<String>('categoryLabel');
+  final _resolvedCategoryCache = Expando<bool>('resolvedCategory');
+  Expando<bool> _inCategoryCache = Expando<bool>('inCategory');
+
+  // 원본 결과로만 정해지는 필터 집계는 원본 목록이 바뀔 때만 다시 만든다.
+  List<SearchResultProduct>? _facetSource;
+  List<SearchFilterChipData> _quickFilterFacets = const [];
+  List<SearchFilterChipData> _categoryFacets = const [];
+  List<SearchFilterChipData> _priceRangeFacets = const [];
+
   @override
   void initState() {
     super.initState();
@@ -90,6 +101,9 @@ class _SearchResultsPageState extends ConsumerState<SearchResultsPage> {
     super.didUpdateWidget(oldWidget);
     if (!mapEquals(oldWidget.filterParams, widget.filterParams)) {
       _lastSyncedFilterParams = null;
+    }
+    if (oldWidget.categoryId != widget.categoryId) {
+      _inCategoryCache = Expando<bool>('inCategory');
     }
     if (oldWidget.query != widget.query ||
         oldWidget.categoryId != widget.categoryId ||
@@ -141,6 +155,12 @@ class _SearchResultsPageState extends ConsumerState<SearchResultsPage> {
     final searchState = ref.watch(searchViewModelProvider);
     final products = _resolveProducts(searchState);
 
+    if (!identical(_facetSource, products)) {
+      _facetSource = products;
+      _quickFilterFacets = _buildQuickFilters(products, products.length);
+      _categoryFacets = _buildCategoryFilters(products);
+      _priceRangeFacets = _buildPriceRanges(products);
+    }
     final filteredProducts = _sortProducts(_filterProducts(products));
     final effectiveTotalCount = filteredProducts.length;
 
@@ -151,9 +171,9 @@ class _SearchResultsPageState extends ConsumerState<SearchResultsPage> {
       query: _displayQuery,
       products: filteredProducts,
       sourceProducts: products,
-      quickFilters: _buildQuickFilters(products, products.length),
-      categoryFilters: _buildCategoryFilters(products),
-      priceRanges: _buildPriceRanges(products),
+      quickFilters: _quickFilterFacets,
+      categoryFilters: _categoryFacets,
+      priceRanges: _priceRangeFacets,
       sortOption: _sortOption,
       isRtiFilterActive: _isRtiFilterActive,
       selectedRtiMinimum: _selectedRtiMinimum.round(),
@@ -592,12 +612,12 @@ class _SearchResultsPageState extends ConsumerState<SearchResultsPage> {
         .where((product) {
           if (widget.categoryId != null &&
               _hasResolvedCategory(product) &&
-              !isProductInCategory(
+              !(_inCategoryCache[product] ??= isProductInCategory(
                 widget.categoryId!,
                 productCategory: product.category,
                 productCategoryDisplayName: product.categoryDisplayName,
                 productName: '',
-              )) {
+              ))) {
             return false;
           }
 
@@ -768,7 +788,10 @@ class _SearchResultsPageState extends ConsumerState<SearchResultsPage> {
     }
   }
 
-  String _categoryLabelForProduct(SearchResultProduct product) {
+  String _categoryLabelForProduct(SearchResultProduct product) =>
+      _categoryLabelCache[product] ??= _computeCategoryLabel(product);
+
+  String _computeCategoryLabel(SearchResultProduct product) {
     if (product.category.isEmpty) {
       return product.subCategory?.trim().isNotEmpty == true
           ? product.subCategory!
@@ -784,6 +807,9 @@ class _SearchResultsPageState extends ConsumerState<SearchResultsPage> {
   }
 
   bool _hasResolvedCategory(SearchResultProduct product) =>
+      _resolvedCategoryCache[product] ??= _computeHasResolvedCategory(product);
+
+  bool _computeHasResolvedCategory(SearchResultProduct product) =>
       product.category.isNotEmpty &&
       resolveProductCategory(
             product.category,
