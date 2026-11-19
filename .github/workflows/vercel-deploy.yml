@@ -36,6 +36,8 @@ jobs:
         run: flutter pub get
       - name: Analyze Flutter (existing infos remain non-fatal)
         run: flutter analyze --no-fatal-infos
+      - name: Run tests
+        run: flutter test
       - name: Build Flutter Web
         run: flutter build web --release
       - name: Check whitespace
