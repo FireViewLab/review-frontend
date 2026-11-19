@@ -26,22 +26,28 @@ class ProductImageViewer extends StatefulWidget {
 class _ProductImageViewerState extends State<ProductImageViewer> {
   int _selectedIndex = 0;
   Timer? _autoSlideTimer;
-  Offset? _hoverPosition;
   bool _reduceMotion = false;
+  bool _ticksEnabled = true;
 
-  List<String> get _images => productImageUrls(additional: widget.imageUrls);
+  /// 마우스 위치. 이 값이 바뀔 때는 확대 렌즈와 미리보기만 다시 그린다.
+  final _hoverPosition = ValueNotifier<Offset?>(null);
+
+  // 이미지 주소 정리는 목록이 바뀔 때만 한다.
+  late List<String> _images = productImageUrls(additional: widget.imageUrls);
 
   @override
   void didUpdateWidget(ProductImageViewer oldWidget) {
     super.didUpdateWidget(oldWidget);
-    final oldImages = productImageUrls(additional: oldWidget.imageUrls);
-    if (listEquals(oldImages, _images)) return;
+    final oldImages = _images;
+    final images = productImageUrls(additional: widget.imageUrls);
+    if (listEquals(oldImages, images)) return;
+    _images = images;
     final selected = _selectedIndex < oldImages.length
         ? oldImages[_selectedIndex]
         : null;
     final next = selected == null ? -1 : _images.indexOf(selected);
     _selectedIndex = next < 0 ? 0 : next;
-    _hoverPosition = null;
+    _hoverPosition.value = null;
     _startAutoSlide();
   }
 
@@ -49,15 +55,27 @@ class _ProductImageViewerState extends State<ProductImageViewer> {
   void didChangeDependencies() {
     super.didChangeDependencies();
     _reduceMotion = MediaQuery.disableAnimationsOf(context);
-    if (_reduceMotion) _hoverPosition = null;
+    _ticksEnabled = TickerMode.valuesOf(context).enabled;
+    if (_reduceMotion) _hoverPosition.value = null;
     _startAutoSlide();
+  }
+
+  /// 화면에 실제로 보이는지. 스크롤로 벗어났으면 자동 넘김을 건너뛴다.
+  bool get _isVisible {
+    final box = context.findRenderObject();
+    if (box is! RenderBox || !box.attached || !box.hasSize) return false;
+    final rect = box.localToGlobal(Offset.zero) & box.size;
+    return rect.overlaps(Offset.zero & MediaQuery.sizeOf(context));
   }
 
   void _startAutoSlide() {
     _autoSlideTimer?.cancel();
-    if (_reduceMotion || _hoverPosition != null || _images.length <= 1) return;
+    if (_reduceMotion || _hoverPosition.value != null || _images.length <= 1) {
+      return;
+    }
     _autoSlideTimer = Timer.periodic(const Duration(seconds: 3), (_) {
-      if (!mounted) return;
+      // 다른 화면에 가려졌거나 화면 밖이면 다시 그리지 않는다.
+      if (!mounted || !_ticksEnabled || !_isVisible) return;
       setState(() {
         _selectedIndex = (_selectedIndex + 1) % _images.length;
       });
@@ -88,6 +106,7 @@ class _ProductImageViewerState extends State<ProductImageViewer> {
   @override
   void dispose() {
     _autoSlideTimer?.cancel();
+    _hoverPosition.dispose();
     super.dispose();
   }
 
@@ -131,14 +150,14 @@ class _ProductImageViewerState extends State<ProductImageViewer> {
                         : MouseCursor.defer,
                     onHover: images.isNotEmpty && !_reduceMotion
                         ? (event) {
-                            _autoSlideTimer?.cancel();
-                            setState(
-                              () => _hoverPosition = event.localPosition,
-                            );
+                            if (_hoverPosition.value == null) {
+                              _autoSlideTimer?.cancel();
+                            }
+                            _hoverPosition.value = event.localPosition;
                           }
                         : null,
                     onExit: (_) {
-                      setState(() => _hoverPosition = null);
+                      _hoverPosition.value = null;
                       _startAutoSlide();
                     },
                     child: AspectRatio(
@@ -277,7 +296,7 @@ class _ZoomableProductImage extends StatefulWidget {
   const _ZoomableProductImage({required this.url, required this.hoverPosition});
 
   final String url;
-  final Offset? hoverPosition;
+  final ValueListenable<Offset?> hoverPosition;
 
   @override
   State<_ZoomableProductImage> createState() => _ZoomableProductImageState();
@@ -290,114 +309,121 @@ class _ZoomableProductImageState extends State<_ZoomableProductImage> {
 
   @override
   Widget build(BuildContext context) {
+    // 사진은 한 번만 만들고, 마우스가 움직이면 렌즈·미리보기만 다시 그린다.
+    final photo = RepaintBoundary(
+      child: ClipRRect(
+        borderRadius: AppRadius.large,
+        child: AppNetworkImage(url: widget.url),
+      ),
+    );
     return LayoutBuilder(
-      builder: (context, constraints) {
-        final position = widget.hoverPosition;
-        final showZoom =
-            position != null &&
-            MediaQuery.sizeOf(context).width >= 768 &&
-            constraints.biggest.shortestSide > 220;
-        final lensSize = (constraints.biggest.shortestSide * 0.26)
-            .clamp(112.0, 148.0)
-            .toDouble();
-        final preferredPreviewSize = (constraints.biggest.shortestSide * 0.55)
-            .clamp(112.0, 300.0)
-            .toDouble();
-        final alignment = position == null
-            ? Alignment.center
-            : Alignment(
-                (position.dx / constraints.maxWidth).clamp(0, 1) * 2 - 1,
-                (position.dy / constraints.maxHeight).clamp(0, 1) * 2 - 1,
-              );
+      builder: (context, constraints) => ValueListenableBuilder<Offset?>(
+        valueListenable: widget.hoverPosition,
+        child: photo,
+        builder: (context, position, photo) {
+          final showZoom =
+              position != null &&
+              MediaQuery.sizeOf(context).width >= 768 &&
+              constraints.biggest.shortestSide > 220;
+          final lensSize = (constraints.biggest.shortestSide * 0.26)
+              .clamp(112.0, 148.0)
+              .toDouble();
+          final preferredPreviewSize = (constraints.biggest.shortestSide * 0.55)
+              .clamp(112.0, 300.0)
+              .toDouble();
+          final alignment = position == null
+              ? Alignment.center
+              : Alignment(
+                  (position.dx / constraints.maxWidth).clamp(0, 1) * 2 - 1,
+                  (position.dy / constraints.maxHeight).clamp(0, 1) * 2 - 1,
+                );
 
-        return OverlayPortal.overlayChildLayoutBuilder(
-          controller: _previewController,
-          overlayChildBuilder: (context, info) {
-            if (!showZoom) return const SizedBox.shrink();
-            final imageRect = MatrixUtils.transformRect(
-              info.childPaintTransform,
-              Offset.zero & info.childSize,
-            );
-            final padding = MediaQuery.paddingOf(context);
-            final inset = AppSpacing.sm;
-            final safeRect = Rect.fromLTRB(
-              padding.left + inset,
-              padding.top + inset,
-              info.overlaySize.width - padding.right - inset,
-              info.overlaySize.height - padding.bottom - inset,
-            );
-            // Never put the preview back over the photo or outside the screen.
-            // Small layouts retain the explicit click/touch image dialog.
-            if (!safeRect.overlaps(imageRect)) {
-              return const SizedBox.shrink();
-            }
-            final rightSpace = safeRect.right - imageRect.right - inset;
-            final leftSpace = imageRect.left - inset - safeRect.left;
-            final availableSize = math.min(
-              leftSpace >= 112 ? leftSpace : rightSpace,
-              safeRect.height,
-            );
-            if (availableSize < 112) return const SizedBox.shrink();
-            final previewSize = math.min(preferredPreviewSize, availableSize);
-            final double left;
-            if (leftSpace >= previewSize) {
-              left = imageRect.left - inset - previewSize;
-            } else if (rightSpace >= previewSize) {
-              left = imageRect.right + inset;
-            } else {
-              return const SizedBox.shrink();
-            }
-            final top = (imageRect.bottom - previewSize)
-                .clamp(safeRect.top, safeRect.bottom - previewSize)
-                .toDouble();
-            return Positioned(
-              left: left,
-              top: top,
-              child: ExcludeSemantics(
-                child: _ZoomPreview(
-                  url: widget.url,
-                  alignment: alignment,
-                  size: previewSize,
+          return OverlayPortal.overlayChildLayoutBuilder(
+            controller: _previewController,
+            overlayChildBuilder: (context, info) {
+              if (!showZoom) return const SizedBox.shrink();
+              final imageRect = MatrixUtils.transformRect(
+                info.childPaintTransform,
+                Offset.zero & info.childSize,
+              );
+              final padding = MediaQuery.paddingOf(context);
+              final inset = AppSpacing.sm;
+              final safeRect = Rect.fromLTRB(
+                padding.left + inset,
+                padding.top + inset,
+                info.overlaySize.width - padding.right - inset,
+                info.overlaySize.height - padding.bottom - inset,
+              );
+              // Never put the preview back over the photo or outside the screen.
+              // Small layouts retain the explicit click/touch image dialog.
+              if (!safeRect.overlaps(imageRect)) {
+                return const SizedBox.shrink();
+              }
+              final rightSpace = safeRect.right - imageRect.right - inset;
+              final leftSpace = imageRect.left - inset - safeRect.left;
+              final availableSize = math.min(
+                leftSpace >= 112 ? leftSpace : rightSpace,
+                safeRect.height,
+              );
+              if (availableSize < 112) return const SizedBox.shrink();
+              final previewSize = math.min(preferredPreviewSize, availableSize);
+              final double left;
+              if (leftSpace >= previewSize) {
+                left = imageRect.left - inset - previewSize;
+              } else if (rightSpace >= previewSize) {
+                left = imageRect.right + inset;
+              } else {
+                return const SizedBox.shrink();
+              }
+              final top = (imageRect.bottom - previewSize)
+                  .clamp(safeRect.top, safeRect.bottom - previewSize)
+                  .toDouble();
+              return Positioned(
+                left: left,
+                top: top,
+                child: ExcludeSemantics(
+                  child: _ZoomPreview(
+                    url: widget.url,
+                    alignment: alignment,
+                    size: previewSize,
+                  ),
                 ),
-              ),
-            );
-          },
-          child: Stack(
-            clipBehavior: Clip.hardEdge,
-            fit: StackFit.expand,
-            children: [
-              ClipRRect(
-                borderRadius: AppRadius.large,
-                child: AppNetworkImage(url: widget.url),
-              ),
-              if (showZoom) ...[
-                Positioned(
-                  left: (position.dx - lensSize / 2).clamp(
-                    8,
-                    constraints.maxWidth - lensSize - 8,
-                  ),
-                  top: (position.dy - lensSize / 2).clamp(
-                    8,
-                    constraints.maxHeight - lensSize - 8,
-                  ),
-                  child: IgnorePointer(
-                    child: DecoratedBox(
-                      decoration: BoxDecoration(
-                        color: Colors.white.withValues(alpha: 0.36),
-                        border: Border.all(color: Colors.white, width: 1.5),
-                        boxShadow: const [
-                          BoxShadow(color: Color(0x22000000), blurRadius: 10),
-                        ],
+              );
+            },
+            child: Stack(
+              clipBehavior: Clip.hardEdge,
+              fit: StackFit.expand,
+              children: [
+                photo!,
+                if (showZoom) ...[
+                  Positioned(
+                    left: (position.dx - lensSize / 2).clamp(
+                      8,
+                      constraints.maxWidth - lensSize - 8,
+                    ),
+                    top: (position.dy - lensSize / 2).clamp(
+                      8,
+                      constraints.maxHeight - lensSize - 8,
+                    ),
+                    child: IgnorePointer(
+                      child: DecoratedBox(
+                        decoration: BoxDecoration(
+                          color: Colors.white.withValues(alpha: 0.36),
+                          border: Border.all(color: Colors.white, width: 1.5),
+                          boxShadow: const [
+                            BoxShadow(color: Color(0x22000000), blurRadius: 10),
+                          ],
+                        ),
+                        child: SizedBox.square(dimension: lensSize),
                       ),
-                      child: SizedBox.square(dimension: lensSize),
                     ),
                   ),
-                ),
+                ],
               ],
-            ],
-          ),
-        );
-      },
+            ),
+          );
+        },
+      ),
     );
   }
 }
