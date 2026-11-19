@@ -83,6 +83,7 @@ class _AppShellState extends ConsumerState<AppShell> {
     final products = switch (dashboard) {
       HomeDashboardSuccess(:final dashboard) =>
         dashboard.recommendedProducts
+            .where((p) => p.hasReviews)
             .map(
               (p) => HomeProductData(
                 productId: p.id,
