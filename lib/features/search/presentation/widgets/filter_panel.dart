@@ -107,24 +107,31 @@ class FilterPanel extends StatelessWidget {
             FilterSection(
               title: AppLocalizations.of(context).searchFilterPriceRange,
               children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    RangeEndpoint(
-                      label: minPriceController.text.isNotEmpty
-                          ? AppLocalizations.of(
-                              context,
-                            ).searchFilterPriceAmount(minPriceController.text)
-                          : '-',
-                    ),
-                    RangeEndpoint(
-                      label: maxPriceController.text.isNotEmpty
-                          ? AppLocalizations.of(
-                              context,
-                            ).searchFilterPriceAmount(maxPriceController.text)
-                          : '-',
-                    ),
-                  ],
+                // 슬라이더를 끄는 동안에도 이 줄만 다시 그려 범위를 보여준다.
+                ListenableBuilder(
+                  listenable: Listenable.merge([
+                    minPriceController,
+                    maxPriceController,
+                  ]),
+                  builder: (context, _) => Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      RangeEndpoint(
+                        label: minPriceController.text.isNotEmpty
+                            ? AppLocalizations.of(
+                                context,
+                              ).searchFilterPriceAmount(minPriceController.text)
+                            : '-',
+                      ),
+                      RangeEndpoint(
+                        label: maxPriceController.text.isNotEmpty
+                            ? AppLocalizations.of(
+                                context,
+                              ).searchFilterPriceAmount(maxPriceController.text)
+                            : '-',
+                      ),
+                    ],
+                  ),
                 ),
                 const SizedBox(height: AppSpacing.xs),
                 PriceRangeSlider(
