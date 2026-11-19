@@ -21,6 +21,9 @@ class ExternalProductState {
     this.product,
     this.summary,
     this.isStale = false,
+    this.collectionStatus = 'UNKNOWN',
+    this.job,
+    this.isRefreshDelayed = false,
     this.hasAnalysis = false,
     this.analysisStatus = 'UNAVAILABLE',
     this.analysis,
@@ -41,6 +44,22 @@ class ExternalProductState {
 
   /// 오래된 데이터라 서버가 다시 수집하는 중이다. 화면은 그대로 보여 준다.
   final bool isStale;
+  final String collectionStatus;
+  final CollectionJob? job;
+
+  /// 제한 시간 동안 완료되지 않았다. 상품 데이터는 계속 사용할 수 있다.
+  final bool isRefreshDelayed;
+  CollectionStatus get collection => CollectionStatus.parse(collectionStatus);
+  ExternalAnalysisStatus get analysisState =>
+      ExternalAnalysisStatus.parse(analysisStatus);
+  bool get isCollecting => collection.isActive || (job?.isActive ?? false);
+  bool get isAnalyzing => analysisState.isActive;
+  bool get isStaleRefreshing => isStale && (job?.isActive ?? false);
+  bool get isTerminal =>
+      collection.isTerminal &&
+      (job == null || job!.isTerminal) &&
+      analysisState.isTerminal;
+  String? get failureMessage => collectionError ?? job?.lastError;
   final bool hasAnalysis;
   final String analysisStatus;
   final ExternalAnalysis? analysis;
@@ -61,6 +80,10 @@ class ExternalProductState {
   ExternalProductState copyWith({
     ExternalProductPhase? phase,
     ProductSummary? summary,
+    String? collectionStatus,
+    CollectionJob? job,
+    bool clearJob = false,
+    bool? isRefreshDelayed,
     bool? hasAnalysis,
     String? analysisStatus,
     ExternalAnalysis? analysis,
@@ -78,7 +101,12 @@ class ExternalProductState {
       phase: phase ?? this.phase,
       product: product,
       summary: summary ?? this.summary,
-      isStale: isStale,
+      isStale: collectionStatus == null
+          ? isStale
+          : CollectionStatus.parse(collectionStatus) == CollectionStatus.stale,
+      collectionStatus: collectionStatus ?? this.collectionStatus,
+      job: clearJob ? null : (job ?? this.job),
+      isRefreshDelayed: isRefreshDelayed ?? this.isRefreshDelayed,
       hasAnalysis: hasAnalysis ?? this.hasAnalysis,
       analysisStatus: analysisStatus ?? this.analysisStatus,
       analysis: clearAnalysis ? null : (analysis ?? this.analysis),
