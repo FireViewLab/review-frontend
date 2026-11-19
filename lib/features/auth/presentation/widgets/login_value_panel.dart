@@ -1,3 +1,5 @@
+import 'package:re_view_front/shared/presentation/analysis_formatters.dart';
+import 'package:re_view_front/shared/widgets/analysis_result_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:re_view_front/app/theme/app_colors.dart';
@@ -193,7 +195,15 @@ class _FeaturedProductSection extends StatelessWidget {
             Positioned(
               right: -10,
               top: 16,
-              child: _RtiScoreBadge(score: product?.rtiScore),
+              child: product?.analysisDisplay.isV2 == true
+                  ? Text(
+                      product!.analysisDisplay.badgeText(context),
+                      style: TextStyle(
+                        color: product!.analysisDisplay.color,
+                        fontWeight: FontWeight.w700,
+                      ),
+                    )
+                  : _RtiScoreBadge(score: product?.rtiScore),
             ),
           ],
         );
@@ -314,24 +324,33 @@ class _ProductDetails extends StatelessWidget {
       );
     }
 
+    if (product!.analysisDisplay.isV2) {
+      return Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(product!.name),
+          AnalysisResultView(analysis: product!.analysisDisplay, compact: true),
+        ],
+      );
+    }
     final rti = (product!.rtiScore ?? 0).clamp(0, 100);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
           product!.name,
-          style: Theme.of(context).textTheme.titleSmall?.copyWith(
-            fontWeight: FontWeight.w800,
-          ),
+          style: Theme.of(
+            context,
+          ).textTheme.titleSmall?.copyWith(fontWeight: FontWeight.w800),
           maxLines: 2,
           overflow: TextOverflow.ellipsis,
         ),
         const SizedBox(height: AppSpacing.sm),
         Text(
           product!.storeName.isNotEmpty ? product!.storeName : '카테고리 미분류',
-          style: Theme.of(context).textTheme.bodySmall?.copyWith(
-            color: AppColors.textSecondary,
-          ),
+          style: Theme.of(
+            context,
+          ).textTheme.bodySmall?.copyWith(color: AppColors.textSecondary),
         ),
         const SizedBox(height: AppSpacing.lg),
         _SkeletonMetricRow(

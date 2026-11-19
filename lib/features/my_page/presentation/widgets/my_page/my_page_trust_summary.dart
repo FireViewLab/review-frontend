@@ -11,15 +11,23 @@ import 'package:re_view_front/features/my_page/presentation/widgets/my_page/my_p
 class MyPageTrustSummaryPanel extends ConsumerWidget {
   const MyPageTrustSummaryPanel({
     required this.savedAverageRti,
+    this.savedAveragePolicyIndex,
+    this.hasPolicyProducts = false,
     required this.riskyCount,
   });
 
   final double? savedAverageRti;
+  final double? savedAveragePolicyIndex;
+  final bool hasPolicyProducts;
   final int? riskyCount;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final score = savedAverageRti?.clamp(0, 100).toDouble();
+    final l = AppLocalizations.of(context);
+    final policyOnly = hasPolicyProducts && savedAverageRti == null;
+    final score = (policyOnly ? savedAveragePolicyIndex : savedAverageRti)
+        ?.clamp(0, 100)
+        .toDouble();
     final scoreText = score == null ? '-' : '${score.round()}점';
 
     return MyPagePanel(
@@ -34,7 +42,7 @@ class MyPageTrustSummaryPanel extends ConsumerWidget {
             children: [
               Expanded(
                 child: Text(
-                  AppLocalizations.of(context).myPageAvgRti,
+                  policyOnly ? l.analysisPolicyAverage : l.myPageAvgRti,
                   style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                     color: AppColors.textPrimary,
                     fontWeight: FontWeight.w800,
@@ -50,6 +58,19 @@ class MyPageTrustSummaryPanel extends ConsumerWidget {
               ),
             ],
           ),
+          if (hasPolicyProducts && !policyOnly) ...[
+            const SizedBox(height: AppSpacing.sm),
+            Row(
+              children: [
+                Expanded(child: Text(l.analysisPolicyAverage)),
+                Text(
+                  savedAveragePolicyIndex == null
+                      ? l.analysisNotCalculable
+                      : savedAveragePolicyIndex!.toStringAsFixed(1),
+                ),
+              ],
+            ),
+          ],
           const SizedBox(height: AppSpacing.sm),
           LinearProgressIndicator(
             value: score == null ? 0 : score / 100,
@@ -61,7 +82,7 @@ class MyPageTrustSummaryPanel extends ConsumerWidget {
           const SizedBox(height: AppSpacing.xs),
           Text(
             score == null
-                ? AppLocalizations.of(context).myPageRtiSaveHint
+                ? (policyOnly ? l.analysisNotCalculable : l.myPageRtiSaveHint)
                 : riskyCount == null
                 ? '찜 상품의 분석 정보를 확인할 수 없어요.'
                 : riskyCount == 0
@@ -72,7 +93,11 @@ class MyPageTrustSummaryPanel extends ConsumerWidget {
               fontWeight: FontWeight.w700,
             ),
           ),
-          const Text('찜한 상품 중 분석된 RTI의 평균과 서버 주의 등급 기준입니다.'),
+          Text(
+            hasPolicyProducts
+                ? l.analysisSeparateContracts
+                : '찜한 상품 중 분석된 RTI의 평균과 서버 주의 등급 기준입니다.',
+          ),
           const Divider(color: AppColors.border),
           const NotificationSettingsSummary(entryOnly: true),
         ],

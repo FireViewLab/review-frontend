@@ -1,3 +1,4 @@
+import 'package:re_view_front/shared/presentation/analysis_formatters.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:re_view_front/features/external_product/domain/entities/external_product_ref.dart';
 import 'package:re_view_front/app/router/app_shell.dart';
@@ -220,9 +221,7 @@ class _HomePageState extends ConsumerState<HomePage> {
                                     p.avgRating?.toStringAsFixed(1) ?? '',
                                 reviewCountLabel:
                                     p.reviewCount?.toString() ?? '',
-                                rtiLabel: p.avgRti == null
-                                    ? '분석 전'
-                                    : 'RTI ${p.avgRti!.round()}',
+                                rtiLabel: p.analysisDisplay.badgeText(context),
                                 imageUrl: p.imageUrl,
                                 label: p.subCategory ?? '',
                               ),
@@ -536,7 +535,10 @@ class _HomePageState extends ConsumerState<HomePage> {
       priceLabel: _formatPrice(product.price),
       ratingLabel: product.rating?.toStringAsFixed(1) ?? '-',
       reviewCountLabel: product.reviewCount?.toString() ?? '-',
-      rtiLabel: product.rtiScore == null ? '' : 'RTI ${product.rtiScore}',
+      rtiLabel: product.analysisDisplay.badgeText(
+        context,
+        legacyMissingLabel: '',
+      ),
       imageUrl: product.imageUrl,
       label: product.label ?? '',
     );

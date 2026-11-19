@@ -1,3 +1,4 @@
+import 'package:re_view_front/shared/presentation/analysis_formatters.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -132,8 +133,9 @@ class WarningProductsPageState extends ConsumerState<WarningProductsPage> {
                     price: item.price,
                     rating: item.avgRating,
                     reviewCount: item.reviewCount,
-                    rtiLabel:
-                        '${item.rtiGrade?.trim().toUpperCase() == 'DANGER' ? '위험' : '의심'} · RTI ${item.avgRti!.round()}',
+                    rtiLabel: item.analysisDisplay.isV2
+                        ? '${item.analysisDisplay.gradeLabel(context) ?? ''} · ${item.analysisDisplay.badgeText(context)}'
+                        : '${item.rtiGrade?.trim().toUpperCase() == 'DANGER' ? '위험' : '의심'} · RTI ${item.analysisDisplay.score!.round()}',
                     onTap: () {
                       context.go(item.detailPath, extra: item.routeContext);
                     },

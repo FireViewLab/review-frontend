@@ -1,3 +1,4 @@
+import 'package:re_view_front/l10n/generated/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:re_view_front/app/theme/app_colors.dart';
 import 'package:re_view_front/app/theme/app_spacing.dart';
@@ -19,10 +20,65 @@ class ReviewComparisonBanner extends StatelessWidget {
     final totalReviews = reviewCounts.isEmpty
         ? null
         : reviewCounts.reduce((a, b) => a + b);
-    final analyzed = products.map((p) => p.avgRti).whereType<double>().toList();
+    final analyzed = products
+        .where((p) => !p.analysisDisplay.isV2)
+        .map((p) => p.analysisDisplay.score)
+        .whereType<double>()
+        .toList();
     final avgRti = analyzed.isEmpty
         ? null
         : analyzed.reduce((a, b) => a + b) / analyzed.length;
+
+    if (products.any((p) => p.analysisDisplay.isV2)) {
+      final l = AppLocalizations.of(context);
+      final policyScores = products
+          .where((p) => p.analysisDisplay.isV2)
+          .map((p) => p.analysisDisplay.score)
+          .whereType<double>()
+          .toList();
+      final policyAverage = policyScores.isEmpty
+          ? null
+          : policyScores.reduce((a, b) => a + b) / policyScores.length;
+      return Container(
+        padding: const EdgeInsets.all(AppSpacing.lg),
+        decoration: BoxDecoration(
+          color: AppColors.surface,
+          borderRadius: BorderRadius.circular(14),
+          border: Border.all(color: AppColors.border),
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              l.analysisScore,
+              style: Theme.of(context).textTheme.titleMedium,
+            ),
+            const SizedBox(height: AppSpacing.md),
+            Wrap(
+              spacing: AppSpacing.md,
+              runSpacing: AppSpacing.md,
+              children: [
+                BannerMetric(
+                  icon: Icons.fact_check_outlined,
+                  label: l.analysisPolicyIndex,
+                  value: policyAverage == null
+                      ? l.analysisNotCalculable
+                      : '${policyAverage.round()}',
+                ),
+                if (avgRti != null)
+                  BannerMetric(
+                    icon: Icons.favorite_border,
+                    label: 'RTI',
+                    value: '${avgRti.round()}',
+                  ),
+              ],
+            ),
+            const SizedBox(height: AppSpacing.md),
+            Text(l.analysisSeparateContracts),
+          ],
+        ),
+      );
+    }
 
     return ClipRRect(
       borderRadius: BorderRadius.circular(14),
@@ -198,7 +254,7 @@ class ReviewComparisonBanner extends StatelessWidget {
   }
 
   double _representativeScore(SearchResultProduct product) {
-    return (product.avgRti ?? 0) * 2 +
+    return (product.analysisDisplay.score ?? 0) * 2 +
         (product.avgRating ?? 0) * 20 +
         (product.reviewCount ?? 0) / 40;
   }

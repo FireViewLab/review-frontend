@@ -135,6 +135,10 @@ class MyPageBody extends StatelessWidget {
             key: settingsKey,
             child: MyPageTrustSummaryPanel(
               savedAverageRti: savedAverageRti,
+              savedAveragePolicyIndex: _savedAveragePolicyIndex,
+              hasPolicyProducts: _wishlistItems.any(
+                (item) => item.analysisDisplay.isV2,
+              ),
               riskyCount: wishlistCount == null ? null : riskyProducts.length,
             ),
           ),
@@ -175,13 +179,27 @@ class MyPageBody extends StatelessWidget {
       .where((item) => item.needsAttention)
       .toList(growable: false);
 
+  double? get _savedAveragePolicyIndex {
+    final scores = _wishlistItems
+        .where((item) => item.analysisDisplay.isV2)
+        .map((item) => item.analysisDisplay.score)
+        .whereType<double>()
+        .toList();
+    return scores.isEmpty
+        ? null
+        : scores.reduce((a, b) => a + b) / scores.length;
+  }
+
   double? get _savedAverageRti {
-    final scoredItems = _wishlistItems.where((item) => item.avgRti != null);
+    final scoredItems = _wishlistItems.where(
+      (item) =>
+          !item.analysisDisplay.isV2 && item.analysisDisplay.score != null,
+    );
     if (scoredItems.isEmpty) return null;
 
     final total = scoredItems.fold<double>(
       0,
-      (sum, item) => sum + item.avgRti!,
+      (sum, item) => sum + item.analysisDisplay.score!,
     );
     return total / scoredItems.length;
   }

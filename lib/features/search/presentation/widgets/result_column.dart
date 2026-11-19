@@ -1,3 +1,4 @@
+import 'package:re_view_front/l10n/generated/app_localizations.dart';
 import 'package:re_view_front/shared/widgets/sliver_width_builder.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:re_view_front/features/settings/presentation/providers/settings_providers.dart';
@@ -66,6 +67,9 @@ class ResultColumn extends StatelessWidget {
                     const SizedBox(height: AppSpacing.md),
                   ],
                   ResultToolbar(
+                    hasPolicyIndex: state.sourceProducts.any(
+                      (p) => p.analysisDisplay.isV2,
+                    ),
                     resultCount: products.length,
                     sortOption: sortOption,
                     viewMode: viewMode,
@@ -302,6 +306,7 @@ class _SearchCardSkeleton extends StatelessWidget {
 
 class ResultToolbar extends StatelessWidget {
   const ResultToolbar({
+    this.hasPolicyIndex = false,
     super.key,
     required this.resultCount,
     required this.sortOption,
@@ -312,6 +317,7 @@ class ResultToolbar extends StatelessWidget {
     required this.onViewModeChanged,
   });
 
+  final bool hasPolicyIndex;
   final int resultCount;
   final SearchSortOption sortOption;
   final SearchViewMode viewMode;
@@ -347,6 +353,7 @@ class ResultToolbar extends StatelessWidget {
             SingleChildScrollView(
               scrollDirection: Axis.horizontal,
               child: SortSegmentedControl(
+                hasPolicyIndex: hasPolicyIndex,
                 options: options,
                 selectedOption: sortOption,
                 onChanged: onSortChanged,
@@ -391,12 +398,14 @@ class ResultToolbar extends StatelessWidget {
 
 class SortSegmentedControl extends StatelessWidget {
   const SortSegmentedControl({
+    this.hasPolicyIndex = false,
     super.key,
     required this.options,
     required this.selectedOption,
     required this.onChanged,
   });
 
+  final bool hasPolicyIndex;
   final List<SearchSortOption> options;
   final SearchSortOption selectedOption;
   final ValueChanged<SearchSortOption> onChanged;
@@ -435,7 +444,9 @@ class SortSegmentedControl extends StatelessWidget {
               children: [
                 for (final option in options)
                   SortSegment(
-                    label: option.label,
+                    label: option == SearchSortOption.rti && hasPolicyIndex
+                        ? AppLocalizations.of(context).analysisScore
+                        : option.label,
                     selected: option == selectedOption,
                     onPressed: () => onChanged(option),
                   ),

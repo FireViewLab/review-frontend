@@ -324,12 +324,21 @@ class _SearchResultsPageState extends ConsumerState<SearchResultsPage> {
       SearchFilterChipData(
         label: 'RTI 80+',
         count: products
-            .where((p) => p.avgRti != null && p.avgRti! >= 80)
+            .where(
+              (p) =>
+                  !p.analysisDisplay.isV2 &&
+                  p.analysisDisplay.score != null &&
+                  p.analysisDisplay.score! >= 80,
+            )
             .length,
       ),
       SearchFilterChipData(
         label: '분석 전',
-        count: products.where((p) => p.avgRti == null).length,
+        count: products
+            .where(
+              (p) => !p.analysisDisplay.isV2 && p.analysisDisplay.score == null,
+            )
+            .length,
       ),
       for (final cat in categorySet)
         SearchFilterChipData(
@@ -631,7 +640,8 @@ class _SearchResultsPageState extends ConsumerState<SearchResultsPage> {
             return false;
           }
           if (_selectedAttributeFilters.contains('분석 전만') &&
-              product.avgRti != null) {
+              (product.analysisDisplay.isV2 ||
+                  product.analysisDisplay.score != null)) {
             return false;
           }
           if (_selectedAttributeFilters.contains('가격 정보 없음만') &&
@@ -669,8 +679,8 @@ class _SearchResultsPageState extends ConsumerState<SearchResultsPage> {
           }
 
           if (_isRtiFilterActive &&
-              (product.avgRti == null ||
-                  product.avgRti! < _selectedRtiMinimum)) {
+              (product.analysisDisplay.score == null ||
+                  product.analysisDisplay.score! < _selectedRtiMinimum)) {
             return false;
           }
 
@@ -695,7 +705,11 @@ class _SearchResultsPageState extends ConsumerState<SearchResultsPage> {
       case SearchSortOption.accuracy:
         return sorted;
       case SearchSortOption.rti:
-        sorted.sort((a, b) => (b.avgRti ?? -1).compareTo(a.avgRti ?? -1));
+        sorted.sort(
+          (a, b) => (b.analysisDisplay.score ?? -1).compareTo(
+            a.analysisDisplay.score ?? -1,
+          ),
+        );
       case SearchSortOption.reviewCount:
         sorted.sort(
           (a, b) => (b.reviewCount ?? -1).compareTo(a.reviewCount ?? -1),
@@ -774,8 +788,12 @@ class _SearchResultsPageState extends ConsumerState<SearchResultsPage> {
 
   bool _matchesQuickFilter(SearchResultProduct product, String label) {
     return switch (label) {
-      '분석 전' => product.avgRti == null,
-      'RTI 80+' => product.avgRti != null && product.avgRti! >= 80,
+      '분석 전' =>
+        !product.analysisDisplay.isV2 && product.analysisDisplay.score == null,
+      'RTI 80+' =>
+        !product.analysisDisplay.isV2 &&
+            product.analysisDisplay.score != null &&
+            product.analysisDisplay.score! >= 80,
       _ => _categoryLabelForProduct(product) == label,
     };
   }

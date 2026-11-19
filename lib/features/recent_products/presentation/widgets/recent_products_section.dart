@@ -1,3 +1,4 @@
+import 'package:re_view_front/shared/presentation/analysis_formatters.dart';
 import 'package:flutter/material.dart';
 import 'package:re_view_front/app/router/route_paths.dart';
 import 'package:re_view_front/features/my_page/presentation/widgets/my_page/personal_products_page.dart';
@@ -102,7 +103,7 @@ class _RecentBody extends ConsumerWidget {
         price: item.price,
         rating: item.avgRating,
         reviewCount: item.reviewCount,
-        rtiLabel: item.avgRti == null ? '분석 전' : 'RTI ${item.avgRti!.round()}',
+        rtiLabel: item.analysisDisplay.badgeText(context),
         onTap: () {
           context.go(item.detailPath, extra: item.routeContext);
         },
