@@ -44,9 +44,10 @@ class AppNetworkImage extends StatelessWidget {
         '${radius.bottomRight.x}px ${radius.bottomLeft.x}px';
   }
 
-  Widget _nativeImage(String src, Widget onError) {
+  Widget _nativeImage(String src, Widget onError, {int? decodeWidth}) {
     return Image.network(
       src,
+      cacheWidth: decodeWidth,
       fit: fit,
       alignment: alignment,
       loadingBuilder: (context, widget, loadingProgress) {
@@ -55,6 +56,17 @@ class AppNetworkImage extends StatelessWidget {
       },
       errorBuilder: (context, error, stackTrace) => onError,
     );
+  }
+
+  /// 표시 영역의 긴 변 × 화면 배율(100px 단위 올림). 크기를 모르면 원본대로 디코딩한다.
+  /// cover로 채울 때 잘리지 않도록 너비가 아니라 긴 변을 기준으로 한다.
+  static int? _decodeWidth(BuildContext context, BoxConstraints constraints) {
+    final side = [constraints.maxWidth, constraints.maxHeight]
+        .where((v) => v.isFinite && v > 0)
+        .fold<double>(0, (a, b) => a > b ? a : b);
+    if (side <= 0) return null;
+    final pixels = side * MediaQuery.devicePixelRatioOf(context);
+    return ((pixels / 100).ceil() * 100).clamp(100, 2400);
   }
 
   @override
@@ -81,14 +93,25 @@ class AppNetworkImage extends StatelessWidget {
       final thumbnailUrl = width == null
           ? null
           : productThumbnailUrl(url, width: width);
-      final original = _nativeImage(
-        url,
-        _Placeholder(icon: placeholderIcon, iconSize: iconSize),
+      final placeholder = _Placeholder(
+        icon: placeholderIcon,
+        iconSize: iconSize,
       );
-      // 축소 주소가 실패하면 원본으로 한 번 더 받는다.
-      child = thumbnailUrl == null || thumbnailUrl == url
-          ? original
-          : _nativeImage(thumbnailUrl, original);
+      // 원본이 큰 이미지도 표시 크기만큼만 디코딩해 메모리와 디코딩 시간을 줄인다.
+      child = LayoutBuilder(
+        builder: (context, constraints) {
+          final decodeWidth = _decodeWidth(context, constraints);
+          final original = _nativeImage(
+            url,
+            placeholder,
+            decodeWidth: decodeWidth,
+          );
+          // 축소 주소가 실패하면 원본으로 한 번 더 받는다.
+          return thumbnailUrl == null || thumbnailUrl == url
+              ? original
+              : _nativeImage(thumbnailUrl, original, decodeWidth: decodeWidth);
+        },
+      );
     }
 
     if (borderRadius != null) {
