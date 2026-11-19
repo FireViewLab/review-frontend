@@ -24,11 +24,16 @@ class ExternalProductViewModel extends Notifier<ExternalProductState> {
   /// 다시 불러올 때마다 올린다. 이전 요청과 대기를 모두 버린다.
   int _generation = 0;
   Timer? _pollTimer;
+  Timer? _deadlineTimer;
+  DateTime? _startedAt;
   final Set<String> _loadedCursors = {};
 
   @override
   ExternalProductState build() {
-    ref.onDispose(() => _pollTimer?.cancel());
+    ref.onDispose(() {
+      _generation++;
+      _stopPolling();
+    });
     Future.microtask(load);
     return ExternalProductState(
       summary: ref.read(productSummaryCacheProvider).get(productRef),
@@ -38,23 +43,26 @@ class ExternalProductViewModel extends Notifier<ExternalProductState> {
   Future<void> load() async {
     if (!ref.mounted) return;
     final generation = ++_generation;
-    _pollTimer?.cancel();
+    _stopPolling();
+    _startDeadline(generation);
     _loadedCursors.clear();
     state = state.copyWith(
       phase: ExternalProductPhase.loading,
       isLoadingMore: false,
       loadMoreFailed: false,
       isSlow: false,
+      isRefreshDelayed: false,
       clearCollectionError: true,
     );
-    await _fetch(generation, startedAt: DateTime.now());
+    await _fetch(generation);
   }
 
-  Future<void> _fetch(
-    int generation, {
-    required DateTime startedAt,
-    String? reviewError,
-  }) async {
+  Future<void> _fetch(int generation, {String? reviewError}) async {
+    if (!_isCurrent(generation)) return;
+    if (state.isLoadingMore) {
+      _wait(generation);
+      return;
+    }
     final result = await _repository.getProduct(productRef);
     if (!_isCurrent(generation)) return;
 
@@ -79,81 +87,169 @@ class ExternalProductViewModel extends Notifier<ExternalProductState> {
             product: product,
             summary: summary,
             isStale: snapshot.status == CollectionStatus.stale,
+            collectionStatus: snapshot.collectionStatus,
+            job: snapshot.job,
             hasAnalysis: snapshot.hasAnalysis,
             analysisStatus: snapshot.analysisStatus,
             analysis: snapshot.analysis,
             springProductId: snapshot.springProductId,
-            reviews: snapshot.reviews,
-            nextCursor: snapshot.nextCursor,
+            reviews: _loadedCursors.isEmpty
+                ? snapshot.reviews
+                : _mergeReviews(snapshot),
+            nextCursor: _loadedCursors.isEmpty
+                ? snapshot.nextCursor
+                : state.nextCursor,
+            loadMoreFailed: state.loadMoreFailed,
             collectionError:
                 reviewError ??
                 (snapshot.job?.status == CollectionJobStatus.partial
                     ? snapshot.job?.lastError
                     : null),
           );
-        } else if (snapshot.status == CollectionStatus.queued) {
-          _wait(generation, startedAt: startedAt, jobId: snapshot.job?.id);
         } else {
-          state = state.copyWith(phase: ExternalProductPhase.unavailable);
+          state = state.copyWith(
+            collectionStatus: snapshot.collectionStatus,
+            job: snapshot.job,
+            clearJob: snapshot.job == null,
+            analysisStatus: snapshot.analysisStatus,
+            phase: state.product != null
+                ? ExternalProductPhase.ready
+                : ExternalProductPhase.unavailable,
+            collectionError: snapshot.job?.lastError,
+            clearCollectionError: snapshot.job?.lastError == null,
+          );
+        }
+        if (!state.isTerminal) {
+          _wait(generation);
+        } else {
+          _stopPolling();
         }
       },
-      failure: (_) =>
-          state = state.copyWith(phase: ExternalProductPhase.failure),
+      failure: (_) {
+        if (state.product != null ||
+            state.phase == ExternalProductPhase.collecting) {
+          _wait(generation);
+        } else {
+          state = state.copyWith(phase: ExternalProductPhase.failure);
+          _stopPolling();
+        }
+      },
     );
   }
 
-  /// 수집이 끝날 때까지 주기적으로 확인한다.
-  void _wait(int generation, {required DateTime startedAt, int? jobId}) {
-    final elapsed = DateTime.now().difference(startedAt);
+  void _stopPolling() {
+    _pollTimer?.cancel();
+    _deadlineTimer?.cancel();
+  }
+
+  void _startDeadline(int generation) {
+    _startedAt = DateTime.now();
+    _deadlineTimer = Timer(_giveUpAfter, () => _markDelayed(generation));
+  }
+
+  void _markDelayed(int generation) {
+    if (!_isCurrent(generation)) return;
+    _stopPolling();
+    _generation++;
+    state = state.copyWith(
+      phase: state.product == null
+          ? ExternalProductPhase.unavailable
+          : ExternalProductPhase.ready,
+      isRefreshDelayed: true,
+      isSlow: true,
+      isLoadingMore: false,
+    );
+  }
+
+  /// 수집·분석이 끝날 때까지 기존 상품을 유지하며 확인한다.
+  void _wait(int generation) {
+    if (!_isCurrent(generation)) return;
+    final elapsed = DateTime.now().difference(_startedAt!);
     if (elapsed >= _giveUpAfter) {
-      state = state.copyWith(phase: ExternalProductPhase.unavailable);
+      _markDelayed(generation);
       return;
     }
     state = state.copyWith(
-      phase: ExternalProductPhase.collecting,
+      phase: state.product == null
+          ? ExternalProductPhase.collecting
+          : ExternalProductPhase.ready,
       isSlow: elapsed >= _slowAfter,
     );
     _pollTimer?.cancel();
     _pollTimer = Timer(ref.read(externalProductPollIntervalProvider), () {
-      _poll(generation, startedAt: startedAt, jobId: jobId);
+      _poll(generation);
     });
   }
 
-  Future<void> _poll(
-    int generation, {
-    required DateTime startedAt,
-    int? jobId,
-  }) async {
+  Future<void> _poll(int generation) async {
     if (!_isCurrent(generation)) return;
-    // 작업 번호를 못 받았으면 상품을 다시 조회해 상태를 확인한다.
-    if (jobId == null) return _fetch(generation, startedAt: startedAt);
+    final jobId = state.job?.id;
+    // 상품이 있으면 분석과 수집을 함께 확인한다.
+    if (state.product != null || jobId == null) return _fetch(generation);
 
     final result = await _repository.getJob(jobId);
     if (!_isCurrent(generation)) return;
 
     await result.when(
       success: (job) async {
+        state = state.copyWith(job: job);
         if (job.isFinished) {
           await _fetch(
             generation,
-            startedAt: startedAt,
             reviewError: job.status == CollectionJobStatus.partial
                 ? job.lastError
                 : null,
           );
-        } else if (job.status == CollectionJobStatus.failed) {
+        } else if (job.isTerminal) {
           state = state.copyWith(
             phase: ExternalProductPhase.unavailable,
+            collectionStatus: job.status == CollectionJobStatus.failed
+                ? 'FAILED'
+                : 'DISABLED',
             collectionError: job.lastError,
           );
+          _stopPolling();
         } else {
-          _wait(generation, startedAt: startedAt, jobId: jobId);
+          _wait(generation);
         }
       },
       // 한 번 확인에 실패해도 수집은 계속되고 있을 수 있어 계속 기다린다.
-      failure: (_) async =>
-          _wait(generation, startedAt: startedAt, jobId: jobId),
+      failure: (_) async => _wait(generation),
     );
+  }
+
+  bool _analysisChanged(ExternalProductSnapshot snapshot) {
+    final before = state.analysis;
+    final after = snapshot.analysis;
+    return state.analysisStatus != snapshot.analysisStatus ||
+        before?.modelVersion != after?.modelVersion ||
+        before?.policyVersion != after?.policyVersion ||
+        before?.reviewCount != after?.reviewCount ||
+        before?.sampled != after?.sampled ||
+        before?.sourceReviewCount != after?.sourceReviewCount;
+  }
+
+  List<ExternalReview> _mergeReviews(ExternalProductSnapshot snapshot) {
+    final changed = _analysisChanged(snapshot);
+    final merged = <String, ExternalReview>{
+      for (final review in state.reviews)
+        review.reviewId: changed
+            ? ExternalReview(
+                reviewId: review.reviewId,
+                content: review.content,
+                rating: review.rating,
+                author: review.author,
+                writtenAt: review.writtenAt,
+                option: review.option,
+                images: review.images,
+                helpfulCount: review.helpfulCount,
+              )
+            : review,
+    };
+    for (final review in snapshot.reviews) {
+      merged[review.reviewId] = review;
+    }
+    return merged.values.toList();
   }
 
   Future<void> loadMoreReviews() async {
@@ -176,15 +272,8 @@ class ExternalProductViewModel extends Notifier<ExternalProductState> {
         final next = snapshot.nextCursor;
         final exhausted =
             next == null || next.isEmpty || _loadedCursors.contains(next);
-        final before = state.analysis;
         final after = snapshot.analysis;
-        final changed =
-            state.analysisStatus != snapshot.analysisStatus ||
-            before?.modelVersion != after?.modelVersion ||
-            before?.policyVersion != after?.policyVersion ||
-            before?.reviewCount != after?.reviewCount ||
-            before?.sampled != after?.sampled ||
-            before?.sourceReviewCount != after?.sourceReviewCount;
+        final changed = _analysisChanged(snapshot);
         final summary = state.summary;
         final safeSummary = changed && summary != null
             ? ProductSummary(
@@ -197,35 +286,26 @@ class ExternalProductViewModel extends Notifier<ExternalProductState> {
         if (changed && safeSummary != null) {
           ref.read(productSummaryCacheProvider).remember(safeSummary);
         }
-        final merged = <String, ExternalReview>{
-          for (final review in state.reviews)
-            review.reviewId: changed
-                ? ExternalReview(
-                    reviewId: review.reviewId,
-                    content: review.content,
-                    rating: review.rating,
-                    author: review.author,
-                    writtenAt: review.writtenAt,
-                    option: review.option,
-                    images: review.images,
-                    helpfulCount: review.helpfulCount,
-                  )
-                : review,
-        };
-        for (final review in snapshot.reviews) {
-          merged[review.reviewId] = review;
-        }
         state = state.copyWith(
           isLoadingMore: false,
           summary: safeSummary,
+          collectionStatus: snapshot.collectionStatus,
+          job: snapshot.job,
+          clearJob: snapshot.job == null,
           hasAnalysis: snapshot.hasAnalysis,
           analysisStatus: snapshot.analysisStatus,
           analysis: after,
           clearAnalysis: after == null,
-          reviews: merged.values.toList(),
+          reviews: _mergeReviews(snapshot),
           nextCursor: exhausted ? null : next,
           clearNextCursor: exhausted,
         );
+        if (state.isTerminal) {
+          _stopPolling();
+        } else if (!state.isRefreshDelayed) {
+          if (!(_deadlineTimer?.isActive ?? false)) _startDeadline(generation);
+          _wait(generation);
+        }
       },
       failure: (_) =>
           state = state.copyWith(isLoadingMore: false, loadMoreFailed: true),
