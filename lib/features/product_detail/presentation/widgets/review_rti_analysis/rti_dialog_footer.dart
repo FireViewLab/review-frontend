@@ -114,8 +114,12 @@ class RtiDialogFooter extends ConsumerWidget {
                         'productId': productId,
                         'productName': productName,
                         'reviewContent': review.content,
-                        'rtiScore': review.rtiScore?.toDouble(),
-                        'rtiGrade': review.rtiLabel,
+                        'rtiScore': review.analysisDisplay.isV2
+                            ? null
+                            : review.rtiScore?.toDouble(),
+                        'rtiGrade': review.analysisDisplay.isV2
+                            ? null
+                            : review.rtiLabel,
                       },
                     );
                   },

@@ -1,7 +1,9 @@
+import 'package:re_view_front/core/analysis/analysis_display.dart';
 import 'package:re_view_front/features/external_product/domain/entities/external_product_ref.dart';
 
 class CartItem {
   const CartItem({
+    this.analysis,
     required this.cartItemId,
     required this.productId,
     required this.name,
@@ -27,6 +29,10 @@ class CartItem {
     this.dataProductId,
     this.subCategory,
   });
+
+  final AnalysisDisplay? analysis;
+  AnalysisDisplay get analysisDisplay =>
+      analysis ?? AnalysisDisplay(score: avgRti, level: rtiGrade);
 
   final ProductSummary? summary;
   final String? externalId;
@@ -70,6 +76,7 @@ class CartItem {
 
   CartItem copyWith({int? quantity}) {
     return CartItem(
+      analysis: analysis,
       summary: summary,
       externalId: externalId,
       dataPlatform: dataPlatform,

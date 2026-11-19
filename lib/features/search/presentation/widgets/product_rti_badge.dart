@@ -1,3 +1,5 @@
+import 'package:re_view_front/shared/presentation/analysis_formatters.dart';
+import 'package:re_view_front/core/analysis/analysis_display.dart';
 import 'package:re_view_front/features/settings/presentation/providers/settings_providers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -5,8 +7,14 @@ import 'package:re_view_front/app/theme/app_colors.dart';
 import 'package:re_view_front/app/theme/app_spacing.dart';
 
 class RtiBadge extends ConsumerWidget {
-  const RtiBadge({super.key, required this.value, required this.color});
+  const RtiBadge({
+    super.key,
+    required this.value,
+    required this.color,
+    this.analysis,
+  });
 
+  final AnalysisDisplay? analysis;
   final int? value;
   final Color color;
 
@@ -38,7 +46,9 @@ class RtiBadge extends ConsumerWidget {
             ),
             const SizedBox(width: AppSpacing.xxs),
             Text(
-              value == null ? '분석 전' : 'RTI $value',
+              analysis?.isV2 == true
+                  ? analysis!.badgeText(context)
+                  : (value == null ? '분석 전' : 'RTI $value'),
               style: Theme.of(context).textTheme.labelSmall?.copyWith(
                 color: value == null ? AppColors.textTertiary : color,
                 fontWeight: FontWeight.w900,

@@ -205,7 +205,9 @@ class FilterPanel extends StatelessWidget {
             ),
             const Divider(height: AppSpacing.lg),
             FilterSection(
-              title: AppLocalizations.of(context).searchFilterRtiScore,
+              title: state.sourceProducts.any((p) => p.analysisDisplay.isV2)
+                  ? AppLocalizations.of(context).analysisScore
+                  : AppLocalizations.of(context).searchFilterRtiScore,
               trailing: state.isRtiFilterActive
                   ? AppLocalizations.of(
                       context,

@@ -10,8 +10,10 @@ class RtiScoreRing extends StatelessWidget {
     required this.score,
     required this.color,
     this.size = 96,
+    this.scoreLabel = 'RTI',
   });
 
+  final String scoreLabel;
   final num score;
   final Color color;
   final double size;
@@ -23,7 +25,7 @@ class RtiScoreRing extends StatelessWidget {
         ? '${value.toInt()}'
         : value.toStringAsFixed(1);
     return Semantics(
-      label: 'RTI $label',
+      label: '$scoreLabel $label',
       child: SizedBox.square(
         dimension: size,
         child: CustomPaint(
@@ -48,7 +50,7 @@ class RtiScoreRing extends StatelessWidget {
                 if (size >= 72) ...[
                   const SizedBox(height: 2),
                   Text(
-                    'RTI',
+                    scoreLabel,
                     style: Theme.of(context).textTheme.labelSmall?.copyWith(
                       color: AppColors.textSecondary,
                       fontWeight: FontWeight.w700,

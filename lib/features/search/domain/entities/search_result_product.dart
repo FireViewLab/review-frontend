@@ -1,7 +1,9 @@
+import 'package:re_view_front/core/analysis/analysis_display.dart';
 import 'package:re_view_front/features/external_product/domain/entities/external_product_ref.dart';
 
 class SearchResultProduct {
   const SearchResultProduct({
+    this.analysis,
     required this.id,
     required this.name,
     required this.imageUrl,
@@ -21,6 +23,10 @@ class SearchResultProduct {
     this.subCategory,
     this.majorCategory,
   });
+
+  final AnalysisDisplay? analysis;
+  AnalysisDisplay get analysisDisplay =>
+      analysis ?? AnalysisDisplay(score: avgRti, level: rtiGrade);
 
   final ProductSummary? summary;
   final String? externalId;

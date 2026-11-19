@@ -2137,4 +2137,33 @@ class AppLocalizationsEn extends AppLocalizations {
   String searchFilterShowResults(int count) {
     return 'Show $count results';
   }
+
+  @override
+  String get analysisPolicyIndex => 'Policy index';
+
+  @override
+  String get analysisNotCalculable => 'Not calculable';
+
+  @override
+  String get analysisPolicyExplanation =>
+      'A relative index based on policy criteria.';
+
+  @override
+  String get analysisTextScore => 'Text score';
+
+  @override
+  String get analysisBehaviorScore => 'Behavior score';
+
+  @override
+  String get analysisNetworkScore => 'Network score';
+
+  @override
+  String get analysisScore => 'Analysis score';
+
+  @override
+  String get analysisSeparateContracts =>
+      'Scores from different contracts are shown separately.';
+
+  @override
+  String get analysisPolicyAverage => 'Product average policy index';
 }

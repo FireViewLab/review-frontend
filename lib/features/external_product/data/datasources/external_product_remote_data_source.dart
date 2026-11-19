@@ -1,3 +1,4 @@
+import 'package:re_view_front/core/analysis/analysis_contract.dart';
 import 'package:re_view_front/core/utils/product_image_urls.dart';
 import 'package:re_view_front/core/network/api_client.dart';
 import 'package:re_view_front/core/network/api_response.dart';
@@ -43,7 +44,17 @@ class ExternalProductRemoteDataSourceImpl
         if (items is List)
           for (final item in items)
             if (item is Map<String, dynamic> && item['reviewId'] != null)
-              _review(item),
+              _review(
+                item,
+                inheritedVersion:
+                    AnalysisContract.version(item) ??
+                    (body['analysis'] is Map<String, dynamic>
+                        ? AnalysisContract.version(
+                            body['analysis'] as Map<String, dynamic>,
+                          )
+                        : null) ??
+                    AnalysisContract.version(body),
+              ),
       ],
       nextCursor: reviews is Map<String, dynamic>
           ? _text(reviews['nextCursor'])
@@ -55,7 +66,10 @@ class ExternalProductRemoteDataSourceImpl
           _text(body['analysisStatus']) ??
           (body['analysis'] is Map ? 'DONE' : 'UNAVAILABLE'),
       analysis: body['analysis'] is Map<String, dynamic>
-          ? _analysis(body['analysis'] as Map<String, dynamic>)
+          ? _analysis(
+              body['analysis'] as Map<String, dynamic>,
+              inheritedVersion: AnalysisContract.version(body),
+            )
           : null,
     );
   }
@@ -104,9 +118,16 @@ class ExternalProductRemoteDataSourceImpl
     );
   }
 
-  ExternalReview _review(Map<String, dynamic> json) {
+  ExternalReview _review(
+    Map<String, dynamic> json, {
+    String? inheritedVersion,
+  }) {
     final images = json['images'];
     return ExternalReview(
+      analysis: AnalysisContract.parse(
+        json,
+        inheritedVersion: inheritedVersion,
+      ),
       reviewId: json['reviewId'].toString(),
       content: _text(json['content']) ?? '',
       rating: (json['rating'] as num?)?.toDouble(),
@@ -129,7 +150,15 @@ class ExternalProductRemoteDataSourceImpl
     );
   }
 
-  ExternalAnalysis _analysis(Map<String, dynamic> json) => ExternalAnalysis(
+  ExternalAnalysis _analysis(
+    Map<String, dynamic> json, {
+    String? inheritedVersion,
+  }) => ExternalAnalysis(
+    display: AnalysisContract.parse(
+      json,
+      catalog: true,
+      inheritedVersion: inheritedVersion,
+    ),
     modelVersion: _text(json['modelVersion']),
     policyVersion: _text(json['policyVersion']),
     reviewCount: (json['reviewCount'] as num?)?.toInt(),

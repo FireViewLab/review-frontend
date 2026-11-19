@@ -1,3 +1,4 @@
+import 'package:re_view_front/shared/presentation/analysis_formatters.dart';
 import 'package:flutter/material.dart';
 import 'package:re_view_front/app/theme/app_colors.dart';
 import 'package:re_view_front/app/theme/app_spacing.dart';
@@ -26,12 +27,17 @@ class ProductDetailInfoTable extends StatelessWidget {
           '${detail.avgRating!.toStringAsFixed(1)} '
               '(리뷰 ${_formatWon(detail.reviewCount ?? 0)}개)',
         ),
-      if (detail.avgRti != null)
+      if (detail.analysisDisplay.isV2)
+        (
+          detail.analysisDisplay.scoreName(context),
+          detail.analysisDisplay.badgeText(context),
+        )
+      else if (detail.analysisDisplay.score != null)
         (
           'RTI',
           (detail.rtiGrade?.isEmpty ?? true)
-              ? detail.avgRti!.toStringAsFixed(1)
-              : '${detail.avgRti!.toStringAsFixed(1)} · '
+              ? detail.analysisDisplay.score!.toStringAsFixed(1)
+              : '${detail.analysisDisplay.score!.toStringAsFixed(1)} · '
                     '${_gradeLabel(detail.rtiGrade!)}',
         ),
       if (detail.deliveryInfo?.isNotEmpty ?? false)

@@ -1,3 +1,4 @@
+import 'package:re_view_front/shared/presentation/analysis_formatters.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:re_view_front/app/theme/app_colors.dart';
@@ -23,7 +24,9 @@ class WishlistProductCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final rtiColor = item.rtiColor == null
+    final rtiColor = item.analysisDisplay.isV2
+        ? item.analysisDisplay.color
+        : item.rtiColor == null
         ? AppColors.textTertiary
         : colorFromHex(item.rtiColor!);
 
@@ -81,13 +84,18 @@ class WishlistProductCard extends StatelessWidget {
                         _PriceDropBadge(),
                       ],
                       const SizedBox(width: AppSpacing.xxs),
-                      item.avgRti == null
+                      item.analysisDisplay.score == null
                           ? Text(
-                              AppLocalizations.of(context).externalUnanalyzed,
+                              item.analysisDisplay.isV2
+                                  ? item.analysisDisplay.badgeText(context)
+                                  : AppLocalizations.of(
+                                      context,
+                                    ).externalUnanalyzed,
                               style: Theme.of(context).textTheme.labelSmall,
                             )
                           : RtiBadge(
-                              value: item.avgRti!.round(),
+                              analysis: item.analysisDisplay,
+                              value: item.analysisDisplay.score!.round(),
                               color: rtiColor,
                             ),
                     ],

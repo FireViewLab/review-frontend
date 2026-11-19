@@ -28,12 +28,14 @@ class ProductReportCard extends StatelessWidget {
     required this.details,
     this.status = ProductReportStatus.pending,
     this.score,
+    this.scoreLabel,
     this.metrics = const [],
     this.onDetailPressed,
   });
   final String summary;
   final Widget details;
   final ProductReportStatus status;
+  final String? scoreLabel;
   final double? score;
   final List<ProductReportMetric> metrics;
   final VoidCallback? onDetailPressed;
@@ -199,7 +201,7 @@ class ProductReportCard extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        l.reportScoreLabel,
+                        scoreLabel ?? l.reportScoreLabel,
                         style: theme.labelMedium?.copyWith(
                           color: AppColors.primary,
                         ),

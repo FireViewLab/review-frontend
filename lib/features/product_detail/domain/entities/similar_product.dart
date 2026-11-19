@@ -1,8 +1,10 @@
+import 'package:re_view_front/core/analysis/analysis_display.dart';
 import 'package:re_view_front/features/external_product/domain/entities/external_product.dart';
 import 'package:re_view_front/features/external_product/domain/entities/external_product_ref.dart';
 
 class SimilarProduct {
   const SimilarProduct({
+    this.analysis,
     required this.id,
     required this.name,
     required this.brand,
@@ -17,6 +19,10 @@ class SimilarProduct {
     this.dataProductId,
     this.subCategory,
   });
+
+  final AnalysisDisplay? analysis;
+  AnalysisDisplay get analysisDisplay =>
+      analysis ?? AnalysisDisplay(score: avgRti);
 
   final String? externalId;
   final String? dataPlatform;

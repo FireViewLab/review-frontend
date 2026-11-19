@@ -1103,5 +1103,14 @@
         "type": "int"
       }
     }
-  }
+  },
+  "analysisPolicyIndex": "정책 지수",
+  "analysisNotCalculable": "계산 불가",
+  "analysisPolicyExplanation": "정책 기준에 따른 상대 지수입니다.",
+  "analysisTextScore": "텍스트 점수",
+  "analysisBehaviorScore": "행동 점수",
+  "analysisNetworkScore": "네트워크 점수",
+  "analysisScore": "분석 점수",
+  "analysisSeparateContracts": "서로 다른 계약의 점수는 별도로 표시합니다.",
+  "analysisPolicyAverage": "상품 평균 정책 지수"
 }

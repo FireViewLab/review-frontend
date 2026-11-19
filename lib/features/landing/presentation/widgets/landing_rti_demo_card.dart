@@ -1,3 +1,4 @@
+import 'package:re_view_front/shared/widgets/analysis_result_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:re_view_front/app/theme/app_colors.dart';
@@ -65,6 +66,12 @@ class _TrustBadgeRow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    if (product?.analysisDisplay.isV2 == true) {
+      return AnalysisResultView(
+        analysis: product!.analysisDisplay,
+        compact: true,
+      );
+    }
     final score = product?.rtiScore;
     return Row(
       children: [

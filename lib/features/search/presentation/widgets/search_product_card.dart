@@ -1,3 +1,4 @@
+import 'package:re_view_front/shared/presentation/analysis_formatters.dart';
 import 'package:re_view_front/app/theme/app_motion.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -24,7 +25,9 @@ class _SearchProductCardState extends State<SearchProductCard> {
   @override
   Widget build(BuildContext context) {
     final product = widget.product;
-    final rtiColor = colorFromHex(product.rtiColor);
+    final rtiColor = (product.analysisDisplay.isV2
+        ? product.analysisDisplay.color
+        : colorFromHex(product.rtiColor));
 
     return MouseRegion(
       cursor: SystemMouseCursors.click,
@@ -116,7 +119,8 @@ class _SearchProductCardState extends State<SearchProductCard> {
                           ),
                           const SizedBox(width: AppSpacing.xs),
                           RtiBadge(
-                            value: product.avgRti?.round(),
+                            analysis: product.analysisDisplay,
+                            value: product.analysisDisplay.score?.round(),
                             color: rtiColor,
                           ),
                         ],

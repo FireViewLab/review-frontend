@@ -654,5 +654,14 @@
   "searchFilterAboveThreeHundredThousand": "30万韩元以上",
   "searchFilterPriceAmount": "{amount}韩元",
   "searchFilterMinimumScore": "{score}分以上",
-  "searchFilterShowResults": "查看{count}个结果"
+  "searchFilterShowResults": "查看{count}个结果",
+  "analysisPolicyIndex": "政策指数",
+  "analysisNotCalculable": "无法计算",
+  "analysisPolicyExplanation": "基于政策标准的相对指数。",
+  "analysisTextScore": "文本分数",
+  "analysisBehaviorScore": "行为分数",
+  "analysisNetworkScore": "网络分数",
+  "analysisScore": "分析分数",
+  "analysisSeparateContracts": "不同契约的分数分开显示。",
+  "analysisPolicyAverage": "商品平均政策指数"
 }

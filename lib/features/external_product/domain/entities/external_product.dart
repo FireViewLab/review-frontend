@@ -1,3 +1,4 @@
+import 'package:re_view_front/core/analysis/analysis_display.dart';
 import 'package:re_view_front/core/utils/product_image_urls.dart';
 import 'package:re_view_front/features/external_product/domain/entities/external_product_ref.dart';
 
@@ -76,6 +77,7 @@ class ExternalProduct {
 
 class ExternalReview {
   const ExternalReview({
+    this.analysis,
     required this.reviewId,
     required this.content,
     this.rating,
@@ -88,6 +90,10 @@ class ExternalReview {
     this.level,
     this.reasons = const [],
   });
+
+  final AnalysisDisplay? analysis;
+  AnalysisDisplay get analysisDisplay =>
+      analysis ?? AnalysisDisplay(score: rti, level: level, reasons: reasons);
 
   /// 쇼핑몰이 발급한 리뷰 번호. 숫자처럼 보여도 문자열이다.
   final String reviewId;
@@ -140,12 +146,14 @@ class ExternalProductSnapshot {
 /// v2 응답의 분석 메타정보. 페이지 리뷰 평균을 상품 평균으로 만들지 않는다.
 class ExternalAnalysis {
   const ExternalAnalysis({
+    this.display,
     this.modelVersion,
     this.policyVersion,
     this.reviewCount,
     this.sampled,
     this.sourceReviewCount,
   });
+  final AnalysisDisplay? display;
   final String? modelVersion;
   final String? policyVersion;
   final int? reviewCount;

@@ -1,8 +1,10 @@
+import 'package:re_view_front/core/analysis/analysis_display.dart';
 import 'package:re_view_front/features/product_detail/domain/entities/product_detail.dart';
 import 'package:re_view_front/features/product_detail/domain/entities/review_rti_detail.dart';
 
 class ProductAnalysisResult {
   const ProductAnalysisResult({
+    this.analysis,
     required this.averageRti,
     required this.safeCount,
     required this.warnCount,
@@ -15,7 +17,8 @@ class ProductAnalysisResult {
     this.trustSignals = const [],
   });
 
-  final double averageRti;
+  final AnalysisDisplay? analysis;
+  final double? averageRti;
   final int safeCount;
   final int warnCount;
   final int dangerCount;

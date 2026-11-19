@@ -1,7 +1,9 @@
+import 'package:re_view_front/core/analysis/analysis_display.dart';
 import 'package:re_view_front/features/external_product/domain/entities/external_product_ref.dart';
 
 class ProductDetail {
   const ProductDetail({
+    this.analysis,
     required this.id,
     required this.name,
     required this.brand,
@@ -30,6 +32,10 @@ class ProductDetail {
     this.dataProductId,
     this.subCategory,
   });
+
+  final AnalysisDisplay? analysis;
+  AnalysisDisplay get analysisDisplay =>
+      analysis ?? AnalysisDisplay(score: avgRti, level: rtiGrade);
 
   final ProductSummary? summary;
   final String? externalId;

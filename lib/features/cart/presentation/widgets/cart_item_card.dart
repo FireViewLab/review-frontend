@@ -1,3 +1,4 @@
+import 'package:re_view_front/shared/presentation/analysis_formatters.dart';
 import 'package:go_router/go_router.dart';
 import 'package:flutter/material.dart';
 import 'package:re_view_front/app/theme/app_colors.dart';
@@ -32,7 +33,9 @@ class CartItemCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final rtiColor = item.rtiColor == null
+    final rtiColor = item.analysisDisplay.isV2
+        ? item.analysisDisplay.color
+        : item.rtiColor == null
         ? AppColors.textTertiary
         : colorFromHex(item.rtiColor!);
     final isMobile = MediaQuery.sizeOf(context).width < 600;
@@ -213,12 +216,21 @@ class _ProductInfo extends StatelessWidget {
         const SizedBox(height: AppSpacing.xs),
         Row(
           children: [
-            if (item.avgRti == null)
-              Text(AppLocalizations.of(context).externalUnanalyzed)
+            if (item.analysisDisplay.score == null)
+              Text(
+                item.analysisDisplay.isV2
+                    ? item.analysisDisplay.badgeText(context)
+                    : AppLocalizations.of(context).externalUnanalyzed,
+              )
             else
-              RtiBadge(value: item.avgRti!.round(), color: rtiColor),
+              RtiBadge(
+                analysis: item.analysisDisplay,
+                value: item.analysisDisplay.score!.round(),
+                color: rtiColor,
+              ),
             const SizedBox(width: AppSpacing.xs),
-            if (item.avgRti != null &&
+            if (!item.analysisDisplay.isV2 &&
+                item.analysisDisplay.score != null &&
                 item.rtiGrade != null &&
                 item.rtiColor != null)
               Text(

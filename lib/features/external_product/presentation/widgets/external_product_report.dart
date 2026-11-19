@@ -1,3 +1,4 @@
+import 'package:re_view_front/shared/presentation/analysis_formatters.dart';
 import 'package:flutter/material.dart';
 import 'package:re_view_front/app/theme/app_spacing.dart';
 import 'package:re_view_front/features/external_product/presentation/widgets/external_review_analysis.dart';
@@ -30,7 +31,11 @@ class ExternalProductReport extends StatelessWidget {
         display != null && state.summary?.matches(display.ref) == true
         ? state.summary?.catalogAnalysis
         : null;
-    final catalog = status == 'DONE' && candidate?.isCurrent == true
+    final catalog =
+        status == 'DONE' &&
+            candidate?.isCurrent == true &&
+            (analysis?.display?.isV2 != true ||
+                candidate?.analysisDisplay.isV2 == true)
         ? candidate
         : null;
     final hasResults = status == 'DONE' && analysis != null;
@@ -46,11 +51,7 @@ class ExternalProductReport extends StatelessWidget {
       _ => l.reportUnavailable,
     };
     final reviews = hasResults
-        ? state.reviews
-              .where(
-                (r) => r.rti != null || r.level != null || r.reasons.isNotEmpty,
-              )
-              .toList()
+        ? state.reviews.where((r) => r.analysisDisplay.hasResult).toList()
         : [];
     return ProductReportCard(
       status:
@@ -59,8 +60,21 @@ class ExternalProductReport extends StatelessWidget {
               catalog == null
           ? ProductReportStatus.unavailable
           : reportStatus,
-      score: catalog?.averageRti,
-      summary: summary,
+      score:
+          catalog?.analysisDisplay.score ??
+          (analysis?.display?.isV2 == true ? analysis?.display?.score : null),
+      scoreLabel: catalog?.analysisDisplay.isV2 == true
+          ? catalog!.analysisDisplay.scoreName(context)
+          : analysis?.display?.isV2 == true
+          ? analysis!.display!.scoreName(context)
+          : null,
+      summary:
+          hasResults &&
+              analysis.display?.isV2 == true &&
+              analysis.display?.score == null &&
+              catalog?.analysisDisplay.score == null
+          ? l.analysisNotCalculable
+          : summary,
       metrics: [
         if (hasResults && analysis.reviewCount != null)
           ProductReportMetric(l.reportInputCount, '${analysis.reviewCount}'),
@@ -84,13 +98,19 @@ class ExternalProductReport extends StatelessWidget {
           ),
           if (catalog != null)
             ReportDetailSection(
-              title: l.reportScoreLabel,
+              title: catalog.analysisDisplay.isV2
+                  ? catalog.analysisDisplay.scoreName(context)
+                  : l.reportScoreLabel,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   ReportFactRow(
-                    label: l.reportCatalogAverage,
-                    value: '${catalog.averageRti} / 100',
+                    label: catalog.analysisDisplay.isV2
+                        ? l.analysisPolicyAverage
+                        : l.reportCatalogAverage,
+                    value: catalog.analysisDisplay.score == null
+                        ? l.analysisNotCalculable
+                        : '${catalog.analysisDisplay.score} / 100',
                   ),
                   if (catalog.reviewCount != null)
                     ReportFactRow(

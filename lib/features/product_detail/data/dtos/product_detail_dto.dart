@@ -1,3 +1,5 @@
+import 'package:re_view_front/core/analysis/analysis_display.dart';
+import 'package:re_view_front/core/analysis/analysis_contract.dart';
 import 'package:re_view_front/core/utils/product_image_urls.dart';
 import 'package:re_view_front/features/external_product/data/dtos/product_summary_dto.dart';
 import 'package:re_view_front/features/external_product/domain/entities/product_summary.dart';
@@ -7,6 +9,7 @@ import 'package:re_view_front/features/product_detail/domain/entities/product_re
 
 class ProductDetailDto {
   const ProductDetailDto({
+    this.analysis,
     required this.id,
     required this.name,
     required this.imageUrl,
@@ -29,6 +32,8 @@ class ProductDetailDto {
     this.dataProductId,
     this.subCategory,
   });
+
+  final AnalysisDisplay? analysis;
 
   final List<String> imageUrls;
   final ProductSummary? summary;
@@ -56,6 +61,7 @@ class ProductDetailDto {
   factory ProductDetailDto.fromJson(Map<String, dynamic> json) {
     final rawPlatforms = json['platforms'] as List? ?? [];
     return ProductDetailDto(
+      analysis: AnalysisContract.parse(json, catalog: true),
       imageUrls: readProductImages(json),
       summary: ProductSummaryDto.fromJson(json),
       externalId: json['externalId'] as String?,
@@ -94,6 +100,7 @@ class ProductDetailDto {
                 productName: name,
               ));
     return ProductDetail(
+      analysis: analysis,
       summary: summary,
       externalId: externalId,
       dataPlatform: dataPlatform,
@@ -182,7 +189,7 @@ class ProductDetailDto {
   }
 
   RtiSummary? _deriveRtiSummary() {
-    if (avgRti == null) return null;
+    if (analysis?.isV2 == true || avgRti == null) return null;
     final label = rtiGrade == null ? '' : _gradeLabel(rtiGrade!);
     return RtiSummary(
       hasReviewMetrics: false,
@@ -230,6 +237,7 @@ class PlatformEntry {
 
 class ProductReviewDto {
   const ProductReviewDto({
+    this.analysis,
     this.helpfulCount,
     this.imageUrls = const [],
     required this.id,
@@ -244,6 +252,8 @@ class ProductReviewDto {
     required this.writtenAt,
     required this.isVerifiedPurchase,
   });
+
+  final AnalysisDisplay? analysis;
 
   final int? helpfulCount;
   final List<String> imageUrls;
@@ -262,6 +272,7 @@ class ProductReviewDto {
   factory ProductReviewDto.fromJson(Map<String, dynamic> json) {
     final images = json['imageUrls'] ?? json['images'];
     return ProductReviewDto(
+      analysis: AnalysisContract.parse(json),
       helpfulCount: (json['helpfulCount'] as num?)?.toInt(),
       imageUrls: [
         if (images is List)
@@ -292,6 +303,7 @@ class ProductReviewDto {
 
   ProductReview toEntity() {
     return ProductReview(
+      analysis: analysis,
       id: id,
       authorName: reviewerNickname,
       authorAvatarUrl: null,

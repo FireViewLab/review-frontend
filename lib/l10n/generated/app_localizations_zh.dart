@@ -2050,4 +2050,31 @@ class AppLocalizationsZh extends AppLocalizations {
   String searchFilterShowResults(int count) {
     return '查看$count个结果';
   }
+
+  @override
+  String get analysisPolicyIndex => '政策指数';
+
+  @override
+  String get analysisNotCalculable => '无法计算';
+
+  @override
+  String get analysisPolicyExplanation => '基于政策标准的相对指数。';
+
+  @override
+  String get analysisTextScore => '文本分数';
+
+  @override
+  String get analysisBehaviorScore => '行为分数';
+
+  @override
+  String get analysisNetworkScore => '网络分数';
+
+  @override
+  String get analysisScore => '分析分数';
+
+  @override
+  String get analysisSeparateContracts => '不同契约的分数分开显示。';
+
+  @override
+  String get analysisPolicyAverage => '商品平均政策指数';
 }

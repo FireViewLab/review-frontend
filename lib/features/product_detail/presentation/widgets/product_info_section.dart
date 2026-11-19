@@ -1,3 +1,4 @@
+import 'package:re_view_front/shared/presentation/analysis_formatters.dart';
 import 'package:flutter/material.dart';
 import 'package:re_view_front/app/theme/app_colors.dart';
 import 'package:re_view_front/app/theme/app_spacing.dart';
@@ -33,10 +34,15 @@ class ProductInfoSection extends StatelessWidget {
               const SizedBox(width: AppSpacing.xs),
               _OfficialBadge(),
             ],
-            detail.avgRti == null
+            detail.analysisDisplay.isV2
+                ? Text(
+                    detail.analysisDisplay.badgeText(context),
+                    style: TextStyle(color: detail.analysisDisplay.color),
+                  )
+                : detail.analysisDisplay.score == null
                 ? const Text('분석 전')
                 : _RtiBadgeLarge(
-                    score: detail.avgRti!.round(),
+                    score: detail.analysisDisplay.score!.round(),
                     color: rtiColor,
                   ),
           ],

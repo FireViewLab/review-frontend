@@ -1,3 +1,4 @@
+import 'package:re_view_front/shared/presentation/analysis_formatters.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -93,7 +94,10 @@ class _AppShellState extends ConsumerState<AppShell> {
                 priceLabel: '${p.price}원',
                 ratingLabel: p.rating?.toStringAsFixed(1) ?? '-',
                 reviewCountLabel: p.reviewCount?.toString() ?? '-',
-                rtiLabel: p.rtiScore == null ? '' : 'RTI ${p.rtiScore}',
+                rtiLabel: p.analysisDisplay.badgeText(
+                  context,
+                  legacyMissingLabel: '',
+                ),
                 imageUrl: p.imageUrl,
                 label: p.label ?? '',
               ),

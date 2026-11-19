@@ -160,9 +160,12 @@ class _WishlistBody extends StatelessWidget {
       WishlistFilterOption.all => [...items],
       WishlistFilterOption.priceDrop =>
         items.where((i) => i.isPriceDrop).toList(),
-      WishlistFilterOption.rti => [
-        ...items,
-      ]..sort((a, b) => (b.avgRti ?? -1).compareTo(a.avgRti ?? -1)),
+      WishlistFilterOption.rti =>
+        [...items]..sort(
+          (a, b) => (b.analysisDisplay.score ?? -1).compareTo(
+            a.analysisDisplay.score ?? -1,
+          ),
+        ),
       WishlistFilterOption.lowestPrice => [
         ...items,
       ]..sort((a, b) => _comparePrice(a, b)),
@@ -183,7 +186,11 @@ class _WishlistBody extends StatelessWidget {
       case WishlistSortOption.priceHigh:
         result.sort((a, b) => _comparePrice(a, b, descending: true));
       case WishlistSortOption.rti:
-        result.sort((a, b) => (b.avgRti ?? -1).compareTo(a.avgRti ?? -1));
+        result.sort(
+          (a, b) => (b.analysisDisplay.score ?? -1).compareTo(
+            a.analysisDisplay.score ?? -1,
+          ),
+        );
       case WishlistSortOption.reviewCount:
         result.sort(
           (a, b) => (b.reviewCount ?? -1).compareTo(a.reviewCount ?? -1),

@@ -1,3 +1,5 @@
+import 'package:re_view_front/core/analysis/analysis_display.dart';
+
 /// 리뷰 신뢰 등급.
 enum TrustGrade {
   danger('DANGER'),
@@ -19,6 +21,7 @@ enum TrustGrade {
 /// 관리자 검토용 의심 리뷰 항목.
 class AdminSuspiciousReview {
   const AdminSuspiciousReview({
+    this.analysis,
     required this.reviewId,
     required this.productId,
     required this.productName,
@@ -32,13 +35,21 @@ class AdminSuspiciousReview {
     required this.writtenAt,
   });
 
+  final AnalysisDisplay? analysis;
+  AnalysisDisplay get analysisDisplay =>
+      analysis ??
+      AnalysisDisplay(
+        score: rtiScore,
+        level: trustGrade?.code,
+        reasons: reasons,
+      );
   final int reviewId;
   final int productId;
   final String productName;
   final String reviewerNickname;
   final String content;
   final int rating;
-  final double rtiScore;
+  final double? rtiScore;
   final TrustGrade? trustGrade;
   final List<String> reasons;
   final bool isVerifiedPurchase;

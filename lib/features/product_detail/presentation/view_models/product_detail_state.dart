@@ -1,3 +1,4 @@
+import 'package:re_view_front/core/analysis/analysis_display.dart';
 import 'package:re_view_front/core/error/failure.dart';
 import 'package:re_view_front/features/product_detail/domain/entities/product_analysis_result.dart';
 import 'package:re_view_front/features/product_detail/domain/entities/product_detail.dart';
@@ -39,6 +40,7 @@ class ProductDetailSuccess extends ProductDetailState {
   final List<AnalysisTrendPoint> trend;
 
   ProductDetailSuccess copyWith({
+    AnalysisDisplay? analysis,
     List<ProductReview>? reviews,
     bool? isAnalyzing,
     int? safeCount,
@@ -48,8 +50,10 @@ class ProductDetailSuccess extends ProductDetailState {
     RtiSummary? rtiSummary,
     List<TrustSignal>? trustSignals,
   }) {
-    final updatedDetail = (rtiSummary != null || trustSignals != null)
+    final updatedDetail =
+        (analysis != null || rtiSummary != null || trustSignals != null)
         ? ProductDetail(
+            analysis: analysis ?? detail.analysis,
             summary: detail.summary,
             externalId: detail.externalId,
             dataPlatform: detail.dataPlatform,

@@ -1,3 +1,4 @@
+import 'package:re_view_front/l10n/generated/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:re_view_front/app/router/route_paths.dart';
@@ -93,7 +94,9 @@ class SearchSummary extends StatelessWidget {
           crossAxisAlignment: WrapCrossAlignment.center,
           children: [
             Text(
-              'Re:view Trust Index(RTI)란?',
+              state.sourceProducts.any((p) => p.analysisDisplay.isV2)
+                  ? AppLocalizations.of(context).analysisScore
+                  : 'Re:view Trust Index(RTI)란?',
               style: Theme.of(context).textTheme.bodySmall?.copyWith(
                 color: AppColors.primary,
                 fontWeight: FontWeight.w800,
@@ -101,7 +104,9 @@ class SearchSummary extends StatelessWidget {
               ),
             ),
             Text(
-              '실제 구매자 리뷰의 신뢰도를 종합해 산출한 지표입니다.',
+              state.sourceProducts.any((p) => p.analysisDisplay.isV2)
+                  ? AppLocalizations.of(context).analysisSeparateContracts
+                  : '실제 구매자 리뷰의 신뢰도를 종합해 산출한 지표입니다.',
               style: Theme.of(context).textTheme.bodySmall?.copyWith(
                 color: AppColors.textSecondary,
                 fontWeight: FontWeight.w700,

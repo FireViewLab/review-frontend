@@ -1,3 +1,5 @@
+import 'package:re_view_front/shared/presentation/analysis_formatters.dart';
+import 'package:re_view_front/core/analysis/analysis_display.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:re_view_front/app/theme/app_motion.dart';
@@ -156,7 +158,9 @@ class _SimilarProductCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final rtiColor = colorFromHex(product.rtiColor);
+    final rtiColor = (product.analysisDisplay.isV2
+        ? product.analysisDisplay.color
+        : colorFromHex(product.rtiColor));
 
     return GestureDetector(
       onTap: onTap,
@@ -206,7 +210,8 @@ class _SimilarProductCard extends StatelessWidget {
                     ),
                     const SizedBox(width: AppSpacing.xxs),
                     _RtiBadgeMini(
-                      score: product.avgRti?.round(),
+                      score: product.analysisDisplay.score?.round(),
+                      analysis: product.analysisDisplay,
                       color: rtiColor,
                     ),
                   ],
@@ -269,8 +274,13 @@ class _SimilarProductCard extends StatelessWidget {
 }
 
 class _RtiBadgeMini extends StatelessWidget {
-  const _RtiBadgeMini({required this.score, required this.color});
+  const _RtiBadgeMini({
+    this.analysis,
+    required this.score,
+    required this.color,
+  });
 
+  final AnalysisDisplay? analysis;
   final int? score;
   final Color color;
 
@@ -290,7 +300,9 @@ class _RtiBadgeMini extends StatelessWidget {
             Icon(Icons.verified_user_outlined, color: color, size: 11),
             const SizedBox(width: 2),
             Text(
-              score == null ? '분석 전' : 'RTI $score',
+              analysis?.isV2 == true
+                  ? analysis!.badgeText(context)
+                  : (score == null ? '분석 전' : 'RTI $score'),
               style: Theme.of(context).textTheme.labelSmall?.copyWith(
                 color: color,
                 fontWeight: FontWeight.w900,

@@ -1,3 +1,4 @@
+import 'package:re_view_front/shared/widgets/analysis_result_view.dart';
 import 'package:re_view_front/shared/presentation/review_evidence_formatter.dart';
 import 'package:re_view_front/shared/widgets/review_analysis_section.dart';
 import 'package:re_view_front/shared/widgets/review_photo_view.dart';
@@ -23,6 +24,22 @@ class ExternalReviewAnalysis extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final l = AppLocalizations.of(context);
+    if (review.analysisDisplay.isV2 && analysisStatus.toUpperCase() == 'DONE') {
+      return Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          AnalysisResultView(analysis: review.analysisDisplay, compact: true),
+          TextButton(
+            onPressed: () => showProductReport(
+              context,
+              ExternalReviewAnalysisDetails(review: review),
+              title: l.reviewResultTitle,
+            ),
+            child: Text(l.reportDetails),
+          ),
+        ],
+      );
+    }
     final level = review.level?.trim();
     final hasResult =
         analysisStatus.toUpperCase() == 'DONE' &&
@@ -83,6 +100,19 @@ class ExternalReviewAnalysisDetails extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final l = AppLocalizations.of(context);
+    if (review.analysisDisplay.isV2) {
+      return Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          AnalysisResultView(analysis: review.analysisDisplay),
+          const SizedBox(height: AppSpacing.md),
+          _ReviewQuote(
+            review: review,
+            images: validReviewImages(review.images),
+          ),
+        ],
+      );
+    }
     final images = validReviewImages(review.images);
     final reasons = ReviewEvidenceFormatter.list(
       context,

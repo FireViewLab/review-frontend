@@ -1,3 +1,5 @@
+import 'package:re_view_front/shared/presentation/analysis_formatters.dart';
+import 'package:re_view_front/core/analysis/analysis_display.dart';
 import 'package:re_view_front/shared/presentation/review_evidence_formatter.dart';
 import 'package:re_view_front/shared/widgets/review_photo_view.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -129,9 +131,11 @@ class _ReviewListSectionState extends ConsumerState<ReviewListSection> {
         })),
       ReviewSortOption.rtiHigh =>
         (list..sort((a, b) {
-          if (a.rtiScore == null) return b.rtiScore == null ? 0 : 1;
-          if (b.rtiScore == null) return -1;
-          return b.rtiScore!.compareTo(a.rtiScore!);
+          if (a.analysisDisplay.score == null) {
+            return b.analysisDisplay.score == null ? 0 : 1;
+          }
+          if (b.analysisDisplay.score == null) return -1;
+          return b.analysisDisplay.score!.compareTo(a.analysisDisplay.score!);
         })),
     };
   }
@@ -350,9 +354,12 @@ class ReviewCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final images = validReviewImages(review.imageUrls);
-    final rtiColor = colorFromHex(review.rtiColor);
+    final rtiColor = (review.analysisDisplay.isV2
+        ? review.analysisDisplay.color
+        : colorFromHex(review.rtiColor));
 
     final risky =
+        !review.analysisDisplay.isV2 &&
         review.rtiScore != null &&
         review.rtiScore! < (preferences?.rtiThreshold ?? 0);
     return GestureDetector(
@@ -446,8 +453,11 @@ class ReviewCard extends StatelessWidget {
                         productName: productName,
                       ),
                       child: _RtiBadgeSmall(
-                        score: review.rtiScore,
-                        label: review.rtiLabel,
+                        analysis: review.analysisDisplay,
+                        score: review.analysisDisplay.score?.round(),
+                        label: review.analysisDisplay.isV2
+                            ? review.analysisDisplay.gradeLabel(context)
+                            : review.rtiLabel,
                         color: rtiColor,
                         hasDetail: review.rtiDetail != null,
                         large: preferences?.rtiLabelStyle == 'BADGE_LARGE',
@@ -508,7 +518,7 @@ class ReviewCard extends StatelessWidget {
                   height: 1.6,
                 ),
               ),
-              if (review.reasons.isNotEmpty &&
+              if (review.analysisDisplay.displayReasons.isNotEmpty &&
                   preferences?.showSuspiciousLabel != false) ...[
                 const SizedBox(height: AppSpacing.xs),
                 Wrap(
@@ -516,7 +526,7 @@ class ReviewCard extends StatelessWidget {
                   runSpacing: AppSpacing.xs,
                   children: ReviewEvidenceFormatter.list(
                     context,
-                    review.reasons,
+                    review.analysisDisplay.displayReasons,
                   ).map((r) => _ReasonChip(label: r, color: rtiColor)).toList(),
                 ),
               ],
@@ -591,6 +601,7 @@ class _VerifiedBadge extends StatelessWidget {
 
 class _RtiBadgeSmall extends StatelessWidget {
   const _RtiBadgeSmall({
+    this.analysis,
     required this.score,
     required this.label,
     required this.color,
@@ -598,6 +609,7 @@ class _RtiBadgeSmall extends StatelessWidget {
     this.large = false,
   });
 
+  final AnalysisDisplay? analysis;
   final int? score;
   final String? label;
   final Color color;
@@ -619,7 +631,9 @@ class _RtiBadgeSmall extends StatelessWidget {
           Icon(Icons.verified_user_outlined, size: 11, color: color),
           const SizedBox(width: 3),
           Text(
-            score != null ? 'RTI $score' : '분석 전',
+            analysis?.isV2 == true
+                ? analysis!.badgeText(context)
+                : (score != null ? 'RTI $score' : '분석 전'),
             style: Theme.of(context).textTheme.labelSmall?.copyWith(
               color: color,
               fontWeight: FontWeight.w900,

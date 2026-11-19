@@ -4019,6 +4019,60 @@ abstract class AppLocalizations {
   /// In ko, this message translates to:
   /// **'{count}개 결과 보기'**
   String searchFilterShowResults(int count);
+
+  /// No description provided for @analysisPolicyIndex.
+  ///
+  /// In ko, this message translates to:
+  /// **'정책 지수'**
+  String get analysisPolicyIndex;
+
+  /// No description provided for @analysisNotCalculable.
+  ///
+  /// In ko, this message translates to:
+  /// **'계산 불가'**
+  String get analysisNotCalculable;
+
+  /// No description provided for @analysisPolicyExplanation.
+  ///
+  /// In ko, this message translates to:
+  /// **'정책 기준에 따른 상대 지수입니다.'**
+  String get analysisPolicyExplanation;
+
+  /// No description provided for @analysisTextScore.
+  ///
+  /// In ko, this message translates to:
+  /// **'텍스트 점수'**
+  String get analysisTextScore;
+
+  /// No description provided for @analysisBehaviorScore.
+  ///
+  /// In ko, this message translates to:
+  /// **'행동 점수'**
+  String get analysisBehaviorScore;
+
+  /// No description provided for @analysisNetworkScore.
+  ///
+  /// In ko, this message translates to:
+  /// **'네트워크 점수'**
+  String get analysisNetworkScore;
+
+  /// No description provided for @analysisScore.
+  ///
+  /// In ko, this message translates to:
+  /// **'분석 점수'**
+  String get analysisScore;
+
+  /// No description provided for @analysisSeparateContracts.
+  ///
+  /// In ko, this message translates to:
+  /// **'서로 다른 계약의 점수는 별도로 표시합니다.'**
+  String get analysisSeparateContracts;
+
+  /// No description provided for @analysisPolicyAverage.
+  ///
+  /// In ko, this message translates to:
+  /// **'상품 평균 정책 지수'**
+  String get analysisPolicyAverage;
 }
 
 class _AppLocalizationsDelegate

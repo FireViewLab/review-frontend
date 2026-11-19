@@ -1,7 +1,9 @@
+import 'package:re_view_front/core/analysis/analysis_display.dart';
 import 'package:re_view_front/features/external_product/domain/entities/external_product_ref.dart';
 
 class WishlistItem {
   const WishlistItem({
+    this.analysis,
     required this.productId,
     required this.name,
     required this.imageUrl,
@@ -24,6 +26,10 @@ class WishlistItem {
     this.dataProductId,
     this.subCategory,
   });
+
+  final AnalysisDisplay? analysis;
+  AnalysisDisplay get analysisDisplay =>
+      analysis ?? AnalysisDisplay(score: avgRti, level: rtiGrade);
 
   final ProductSummary? summary;
   final String? externalId;
@@ -55,12 +61,18 @@ class WishlistItem {
   final double? avgRating;
 
   /// The server owns grade thresholds. An unanalysed product is never a warning.
-  bool get needsAttention =>
-      avgRti != null &&
-      avgRti!.isFinite &&
-      avgRti! >= 0 &&
-      avgRti! <= 100 &&
-      const {'SUSPICIOUS', 'DANGER'}.contains(rtiGrade?.trim().toUpperCase());
+  bool get needsAttention {
+    final display = analysisDisplay;
+    final value = display.score;
+    return value != null &&
+        value.isFinite &&
+        value >= 0 &&
+        value <= 100 &&
+        (display.isV2
+                ? const {'WARN', 'DANGER'}
+                : const {'SUSPICIOUS', 'DANGER'})
+            .contains(display.level?.trim().toUpperCase());
+  }
 
   /// Null means the server did not provide a comparison, not a confirmed false.
   final bool? priceDropStatus;

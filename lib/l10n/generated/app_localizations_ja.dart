@@ -2065,4 +2065,31 @@ class AppLocalizationsJa extends AppLocalizations {
   String searchFilterShowResults(int count) {
     return '$count件の結果を表示';
   }
+
+  @override
+  String get analysisPolicyIndex => 'ポリシー指数';
+
+  @override
+  String get analysisNotCalculable => '算出不可';
+
+  @override
+  String get analysisPolicyExplanation => 'ポリシー基準に基づく相対的な指数です。';
+
+  @override
+  String get analysisTextScore => 'テキストスコア';
+
+  @override
+  String get analysisBehaviorScore => '行動スコア';
+
+  @override
+  String get analysisNetworkScore => 'ネットワークスコア';
+
+  @override
+  String get analysisScore => '分析スコア';
+
+  @override
+  String get analysisSeparateContracts => '異なる契約のスコアは分けて表示します。';
+
+  @override
+  String get analysisPolicyAverage => '商品の平均ポリシー指数';
 }

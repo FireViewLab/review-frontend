@@ -1,3 +1,4 @@
+import 'package:re_view_front/shared/presentation/analysis_formatters.dart';
 import 'package:re_view_front/app/theme/app_motion.dart';
 import 'package:flutter/material.dart';
 import 'package:re_view_front/app/theme/app_colors.dart';
@@ -148,8 +149,11 @@ class ListTileDetails extends StatelessWidget {
             ),
             const SizedBox(width: AppSpacing.xs),
             RtiBadge(
-              value: product.avgRti?.round(),
-              color: colorFromHex(product.rtiColor),
+              analysis: product.analysisDisplay,
+              value: product.analysisDisplay.score?.round(),
+              color: (product.analysisDisplay.isV2
+                  ? product.analysisDisplay.color
+                  : colorFromHex(product.rtiColor)),
             ),
           ],
         ),

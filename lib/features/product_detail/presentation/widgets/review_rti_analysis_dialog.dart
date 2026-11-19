@@ -1,3 +1,4 @@
+import 'package:re_view_front/shared/widgets/analysis_result_view.dart';
 import 'package:re_view_front/l10n/generated/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:re_view_front/app/theme/app_colors.dart';
@@ -193,6 +194,16 @@ class _DialogBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    if (review.analysisDisplay.isV2) {
+      return Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          AnalysisResultView(analysis: review.analysisDisplay),
+          const SizedBox(height: AppSpacing.md),
+          RtiSelectedReviewSection(review: review),
+        ],
+      );
+    }
     final detail = review.rtiDetail;
     final total = safeCount + warnCount + dangerCount;
 

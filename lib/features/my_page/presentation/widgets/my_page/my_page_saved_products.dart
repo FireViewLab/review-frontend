@@ -1,3 +1,4 @@
+import 'package:re_view_front/shared/presentation/analysis_formatters.dart';
 // ignore_for_file: use_key_in_widget_constructors
 
 import 'package:flutter/material.dart';
@@ -71,9 +72,7 @@ class MyPageSavedProductsSection extends StatelessWidget {
       price: item.price,
       rating: item.avgRating,
       reviewCount: item.reviewCount,
-      rtiLabel: item.avgRti == null
-          ? AppLocalizations.of(context).externalUnanalyzed
-          : 'RTI ${item.avgRti!.round()}',
+      rtiLabel: item.analysisDisplay.badgeText(context),
       onTap: () => onProductTap(item),
     );
   }

@@ -1,3 +1,5 @@
+import 'package:re_view_front/shared/presentation/analysis_formatters.dart';
+import 'package:re_view_front/shared/widgets/analysis_result_view.dart';
 import 'package:re_view_front/shared/presentation/review_evidence_formatter.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -65,45 +67,50 @@ class SuspiciousReviewDetailPanel extends StatelessWidget {
           ),
           const SizedBox(height: AppSpacing.lg),
           _Section(
-            label: l10n.adminRtiAnalysis,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Row(
-                  crossAxisAlignment: CrossAxisAlignment.end,
-                  children: [
-                    Text(
-                      r.rtiScore.toStringAsFixed(0),
-                      style: const TextStyle(
-                        fontSize: 28,
-                        fontWeight: FontWeight.w800,
-                        color: AppColors.textPrimary,
-                        height: 1,
+            label: r.analysisDisplay.isV2
+                ? r.analysisDisplay.scoreName(context)
+                : l10n.adminRtiAnalysis,
+            child: r.analysisDisplay.isV2
+                ? AnalysisResultView(analysis: r.analysisDisplay)
+                : Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.end,
+                        children: [
+                          Text(
+                            r.rtiScore?.toStringAsFixed(0) ?? '-',
+                            style: const TextStyle(
+                              fontSize: 28,
+                              fontWeight: FontWeight.w800,
+                              color: AppColors.textPrimary,
+                              height: 1,
+                            ),
+                          ),
+                          const SizedBox(width: 2),
+                          Padding(
+                            padding: const EdgeInsets.only(bottom: 4),
+                            child: Text(
+                              l10n.adminScoreUnit,
+                              style: TextStyle(
+                                fontSize: 13,
+                                color: AppColors.textSecondary,
+                              ),
+                            ),
+                          ),
+                          const Spacer(),
+                          if (r.trustGrade != null)
+                            AdminStatusBadge(
+                              label: r.trustGrade!.localizedLabel(l10n),
+                              tone: r.trustGrade!.tone,
+                            ),
+                        ],
                       ),
-                    ),
-                    const SizedBox(width: 2),
-                    Padding(
-                      padding: const EdgeInsets.only(bottom: 4),
-                      child: Text(
-                        l10n.adminScoreUnit,
-                        style: TextStyle(
-                          fontSize: 13,
-                          color: AppColors.textSecondary,
-                        ),
-                      ),
-                    ),
-                    const Spacer(),
-                    if (r.trustGrade != null)
-                      AdminStatusBadge(
-                        label: r.trustGrade!.localizedLabel(l10n),
-                        tone: r.trustGrade!.tone,
-                      ),
-                  ],
-                ),
-                const SizedBox(height: AppSpacing.sm),
-                AdminScoreGauge(score: r.rtiScore),
-              ],
-            ),
+                      const SizedBox(height: AppSpacing.sm),
+                      if (r.rtiScore != null)
+                        AdminScoreGauge(score: r.rtiScore!),
+                    ],
+                  ),
           ),
           _Section(
             label: l10n.adminReviewContent,
@@ -116,7 +123,7 @@ class SuspiciousReviewDetailPanel extends StatelessWidget {
               ),
             ),
           ),
-          if (r.reasons.isNotEmpty)
+          if (!r.analysisDisplay.isV2 && r.reasons.isNotEmpty)
             _Section(
               label: l10n.adminDetectedSignals(r.reasons.length),
               child: Wrap(

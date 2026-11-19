@@ -190,12 +190,7 @@ class _DetailContent extends StatelessWidget {
             ? ProductDetailMobileAnalysisSection(
                 detail: detail,
                 loadedAnalysisCount: reviews
-                    .where(
-                      (r) =>
-                          r.rtiScore != null ||
-                          r.rtiLabel != null ||
-                          r.reasons.isNotEmpty,
-                    )
+                    .where((r) => r.analysisDisplay.hasResult)
                     .length,
                 isAnalyzing: isAnalyzing,
                 onDetailPressed: () => showProductReport(
@@ -217,12 +212,7 @@ class _DetailContent extends StatelessWidget {
             : ProductDetailDesktopAnalysisSection(
                 detail: detail,
                 loadedAnalysisCount: reviews
-                    .where(
-                      (r) =>
-                          r.rtiScore != null ||
-                          r.rtiLabel != null ||
-                          r.reasons.isNotEmpty,
-                    )
+                    .where((r) => r.analysisDisplay.hasResult)
                     .length,
                 isAnalyzing: isAnalyzing,
                 onDetailPressed: () => showProductReport(
