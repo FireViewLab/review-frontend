@@ -1,3 +1,4 @@
+import 'package:re_view_front/shared/presentation/analysis_formatters.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:re_view_front/app/theme/app_colors.dart';
@@ -49,7 +50,9 @@ class AdminSuspiciousReviewsPage extends ConsumerWidget {
                 const SizedBox(height: AppSpacing.lg),
                 _KpiRow(total: state.totalElements, isLoading: state.isLoading),
                 const SizedBox(height: AppSpacing.lg),
-                Expanded(child: _TableArea(state: state, vm: vm)),
+                Expanded(
+                  child: _TableArea(state: state, vm: vm),
+                ),
               ],
             ),
           ),
@@ -150,7 +153,12 @@ class _TableArea extends StatelessWidget {
     }
 
     final columns = [
-      AdminTableColumn(label: l10n.adminRtiScore, flex: 2),
+      AdminTableColumn(
+        label: state.items.any((r) => r.analysisDisplay.isV2)
+            ? l10n.analysisScore
+            : l10n.adminRtiScore,
+        flex: 2,
+      ),
       AdminTableColumn(label: l10n.adminTrustGrade, flex: 2),
       AdminTableColumn(label: l10n.adminReviewContent, flex: 5),
       AdminTableColumn(label: l10n.adminProductName, flex: 3),
@@ -164,8 +172,15 @@ class _TableArea extends StatelessWidget {
         AdminTableRowData(
           id: r.reviewId,
           cells: [
-            _cell(r.rtiScore.toStringAsFixed(0), strong: true),
-            r.trustGrade == null
+            _cell(
+              r.analysisDisplay.isV2
+                  ? r.analysisDisplay.badgeText(context)
+                  : (r.rtiScore?.toStringAsFixed(0) ?? '-'),
+              strong: true,
+            ),
+            r.analysisDisplay.isV2
+                ? _cell(r.analysisDisplay.gradeLabel(context) ?? '-')
+                : r.trustGrade == null
                 ? _cell('-')
                 : Align(
                     alignment: Alignment.centerLeft,
