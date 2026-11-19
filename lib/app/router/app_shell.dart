@@ -11,6 +11,8 @@ import 'package:re_view_front/features/home/presentation/providers/home_provider
 import 'package:re_view_front/features/home/presentation/view_models/home_dashboard_state.dart';
 import 'package:re_view_front/features/home/presentation/widgets/home/home_header.dart';
 import 'package:re_view_front/features/search/presentation/providers/search_providers.dart';
+import 'package:re_view_front/features/search/presentation/pages/search_results_page.dart'
+    show searchFilterQueryKeys;
 
 /// 헤더는 유지하고, 높이가 제한된 Navigator 안에서 본문만 전환한다.
 class AppShell extends ConsumerStatefulWidget {
@@ -120,9 +122,14 @@ class _AppShellState extends ConsumerState<AppShell> {
               final query = value.trim();
               if (query.isEmpty) return;
               _searchFocus.unfocus();
+              // 같은 검색어를 다시 제출하면 필터 상태만 주소에 붙어 있어도
+              // 새로 검색하고 필터를 초기화한다.
+              final params = widget.uri.queryParameters;
               if (widget.uri.path == RoutePaths.search &&
-                  widget.uri.queryParameters.length == 1 &&
-                  widget.uri.queryParameters['q'] == query) {
+                  params['q'] == query &&
+                  params.keys.every(
+                    (key) => key == 'q' || searchFilterQueryKeys.contains(key),
+                  )) {
                 ref.read(searchResubmissionProvider.notifier).submit();
                 return;
               }
