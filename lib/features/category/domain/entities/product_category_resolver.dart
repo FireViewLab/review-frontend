@@ -112,8 +112,10 @@ bool isProductInCategory(
   );
   if (product == null) return false;
 
-  return product.path.any((category) => category.id == target.id) ||
-      target.path.any((category) => category.id == product.id);
+  // 상품 분류가 선택 카테고리와 같거나 그 하위일 때만 포함한다.
+  // 상품이 선택 카테고리의 상위로만 분류됐다면 어느 하위인지 알 수 없으므로
+  // 모든 하위 카테고리에 끼워 넣지 않는다.
+  return product.path.any((category) => category.id == target.id);
 }
 
 String _normalize(String value) {
