@@ -35,6 +35,11 @@ class DashboardProduct {
   ProductRouteContext get routeContext =>
       ProductRouteContext(chatProductId: chatProductId, summary: summary);
 
+  /// 쇼핑몰 리뷰 수나 분석에 쓴 리뷰 수 중 하나라도 있으면 리뷰가 있는 상품이다.
+  bool get hasReviews =>
+      (reviewCount ?? 0) > 0 ||
+      (summary?.catalogAnalysis?.reviewCount ?? 0) > 0;
+
   final String id;
   final String name;
   final String storeName;
