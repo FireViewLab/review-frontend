@@ -172,8 +172,11 @@ void main() {
     expect(find.byType(HomeLogo), findsOneWidget);
     expect(find.byType(HeroBannerCarousel), findsOneWidget);
     expect(find.byType(Image), findsWidgets);
-    expect(find.text('Re:view가 더 믿을 수 있는 이유'), findsOneWidget);
-    expect(find.text('추천 상품 API 연결 대기 중'), findsOneWidget);
+    expect(
+      find.text('Re:view가 더 믿을 수 있는 이유', skipOffstage: false),
+      findsOneWidget,
+    );
+    expect(find.text('추천 상품 API 연결 대기 중', skipOffstage: false), findsOneWidget);
     expect(find.text('지금 많이 찾는 키워드'), findsNothing);
     expect(find.text('92% 신뢰도'), findsNothing);
     expect(find.text('2'), findsNothing);
@@ -182,9 +185,15 @@ void main() {
   testWidgets('renders loading state before dashboard resolves', (
     tester,
   ) async {
+    // 본문 섹션은 지연 생성되므로 두 로딩 영역이 함께 만들어질 만큼 화면을 키운다.
+    await tester.binding.setSurfaceSize(const Size(800, 1600));
+    addTearDown(() => tester.binding.setSurfaceSize(null));
     await tester.pumpWidget(buildSubject(pending: true));
 
-    expect(find.byType(ProductCardGridSkeleton), findsNWidgets(2));
+    expect(
+      find.byType(ProductCardGridSkeleton, skipOffstage: false),
+      findsNWidgets(2),
+    );
   });
 
   testWidgets('renders retry UI when dashboard load fails', (tester) async {
@@ -197,8 +206,8 @@ void main() {
     );
     await tester.pumpAndSettle();
 
-    expect(find.text('network failed'), findsOneWidget);
-    expect(find.text('다시 시도'), findsOneWidget);
+    expect(find.text('network failed', skipOffstage: false), findsOneWidget);
+    expect(find.text('다시 시도', skipOffstage: false), findsOneWidget);
   });
 
   testWidgets('moves to login from benefit CTA', (tester) async {
