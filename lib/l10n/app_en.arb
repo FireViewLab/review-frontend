@@ -668,5 +668,14 @@
   "searchFilterAboveThreeHundredThousand": "₩300,000 or more",
   "searchFilterPriceAmount": "{amount} KRW",
   "searchFilterMinimumScore": "{score} points or more",
-  "searchFilterShowResults": "Show {count} results"
+  "searchFilterShowResults": "Show {count} results",
+  "analysisPolicyIndex": "Policy index",
+  "analysisNotCalculable": "Not calculable",
+  "analysisPolicyExplanation": "A relative index based on policy criteria.",
+  "analysisTextScore": "Text score",
+  "analysisBehaviorScore": "Behavior score",
+  "analysisNetworkScore": "Network score",
+  "analysisScore": "Analysis score",
+  "analysisSeparateContracts": "Scores from different contracts are shown separately.",
+  "analysisPolicyAverage": "Product average policy index"
 }

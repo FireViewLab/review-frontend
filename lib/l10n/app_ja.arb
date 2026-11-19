@@ -654,5 +654,14 @@
   "searchFilterAboveThreeHundredThousand": "30万ウォン以上",
   "searchFilterPriceAmount": "{amount}ウォン",
   "searchFilterMinimumScore": "{score}点以上",
-  "searchFilterShowResults": "{count}件の結果を表示"
+  "searchFilterShowResults": "{count}件の結果を表示",
+  "analysisPolicyIndex": "ポリシー指数",
+  "analysisNotCalculable": "算出不可",
+  "analysisPolicyExplanation": "ポリシー基準に基づく相対的な指数です。",
+  "analysisTextScore": "テキストスコア",
+  "analysisBehaviorScore": "行動スコア",
+  "analysisNetworkScore": "ネットワークスコア",
+  "analysisScore": "分析スコア",
+  "analysisSeparateContracts": "異なる契約のスコアは分けて表示します。",
+  "analysisPolicyAverage": "商品の平均ポリシー指数"
 }

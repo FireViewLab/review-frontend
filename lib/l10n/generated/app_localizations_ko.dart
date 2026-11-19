@@ -2071,4 +2071,31 @@ class AppLocalizationsKo extends AppLocalizations {
   String searchFilterShowResults(int count) {
     return '$count개 결과 보기';
   }
+
+  @override
+  String get analysisPolicyIndex => '정책 지수';
+
+  @override
+  String get analysisNotCalculable => '계산 불가';
+
+  @override
+  String get analysisPolicyExplanation => '정책 기준에 따른 상대 지수입니다.';
+
+  @override
+  String get analysisTextScore => '텍스트 점수';
+
+  @override
+  String get analysisBehaviorScore => '행동 점수';
+
+  @override
+  String get analysisNetworkScore => '네트워크 점수';
+
+  @override
+  String get analysisScore => '분석 점수';
+
+  @override
+  String get analysisSeparateContracts => '서로 다른 계약의 점수는 별도로 표시합니다.';
+
+  @override
+  String get analysisPolicyAverage => '상품 평균 정책 지수';
 }
