@@ -59,4 +59,7 @@ class SearchResultsState {
   int get displayTotalCount => totalCount ?? products.length;
   bool get hasError => errorMessage != null && errorMessage!.isNotEmpty;
   bool get isEmpty => !isLoading && !hasError && products.isEmpty;
+
+  /// 서버가 준 상품부터 없을 때만 참이다. 필터 결과만 0건이면 거짓이다.
+  bool get isSourceEmpty => isEmpty && sourceProducts.isEmpty;
 }
