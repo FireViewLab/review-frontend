@@ -40,6 +40,28 @@ class CartItemCard extends StatelessWidget {
         : colorFromHex(item.rtiColor!);
     final isMobile = MediaQuery.sizeOf(context).width < 600;
 
+    final header = Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        _Checkbox(isSelected: isSelected, onTap: onToggleSelect),
+        const SizedBox(width: AppSpacing.sm),
+        _ProductImage(item: item),
+        const SizedBox(width: AppSpacing.md),
+        Expanded(
+          child: isMobile
+              ? _ProductInfo(item: item, rtiColor: rtiColor)
+              : _DesktopContent(
+                  item: item,
+                  rtiColor: rtiColor,
+                  isUpdating: isUpdating,
+                  onQuantityChanged: onQuantityChanged,
+                  onRemove: onRemove,
+                  onMoveToWishlist: onMoveToWishlist,
+                  onSaveForLater: onSaveForLater,
+                ),
+        ),
+      ],
+    );
     return DecoratedBox(
       decoration: BoxDecoration(
         color: isSelected
@@ -52,36 +74,24 @@ class CartItemCard extends StatelessWidget {
           horizontal: AppSpacing.md,
           vertical: AppSpacing.md,
         ),
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            _Checkbox(isSelected: isSelected, onTap: onToggleSelect),
-            const SizedBox(width: AppSpacing.sm),
-            _ProductImage(item: item),
-            const SizedBox(width: AppSpacing.md),
-            Expanded(
-              child: isMobile
-                  ? _MobileContent(
-                      item: item,
-                      rtiColor: rtiColor,
-                      isUpdating: isUpdating,
-                      onQuantityChanged: onQuantityChanged,
-                      onRemove: onRemove,
-                      onMoveToWishlist: onMoveToWishlist,
-                      onSaveForLater: onSaveForLater,
-                    )
-                  : _DesktopContent(
-                      item: item,
-                      rtiColor: rtiColor,
-                      isUpdating: isUpdating,
-                      onQuantityChanged: onQuantityChanged,
-                      onRemove: onRemove,
-                      onMoveToWishlist: onMoveToWishlist,
-                      onSaveForLater: onSaveForLater,
-                    ),
-            ),
-          ],
-        ),
+        child: isMobile
+            ? Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  header,
+                  const SizedBox(height: AppSpacing.sm),
+                  _MobileContent(
+                    item: item,
+                    rtiColor: rtiColor,
+                    isUpdating: isUpdating,
+                    onQuantityChanged: onQuantityChanged,
+                    onRemove: onRemove,
+                    onMoveToWishlist: onMoveToWishlist,
+                    onSaveForLater: onSaveForLater,
+                  ),
+                ],
+              )
+            : header,
       ),
     );
   }
@@ -214,7 +224,9 @@ class _ProductInfo extends StatelessWidget {
           _VariantChip(label: item.variant!),
         ],
         const SizedBox(height: AppSpacing.xs),
-        Row(
+        Wrap(
+          crossAxisAlignment: WrapCrossAlignment.center,
+          runSpacing: AppSpacing.xs,
           children: [
             if (item.analysisDisplay.score == null)
               Text(
@@ -426,19 +438,24 @@ class _ShippingInfo extends StatelessWidget {
         Row(
           mainAxisSize: MainAxisSize.min,
           children: [
-            DecoratedBox(
-              decoration: BoxDecoration(
-                color: AppColors.primaryLight,
-                borderRadius: BorderRadius.circular(4),
-              ),
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 2),
-                child: Text(
-                  '배송 조건은 구매처에서 확인',
-                  style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                    color: AppColors.primary,
-                    fontWeight: FontWeight.w900,
-                    fontSize: 11,
+            Flexible(
+              child: DecoratedBox(
+                decoration: BoxDecoration(
+                  color: AppColors.primaryLight,
+                  borderRadius: BorderRadius.circular(4),
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 5,
+                    vertical: 2,
+                  ),
+                  child: Text(
+                    '배송 조건은 구매처에서 확인',
+                    style: Theme.of(context).textTheme.labelSmall?.copyWith(
+                      color: AppColors.primary,
+                      fontWeight: FontWeight.w900,
+                      fontSize: 11,
+                    ),
                   ),
                 ),
               ),
@@ -496,8 +513,9 @@ class _ItemActions extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      mainAxisSize: MainAxisSize.min,
+    return Wrap(
+      crossAxisAlignment: WrapCrossAlignment.center,
+      runSpacing: AppSpacing.xs,
       children: [
         _ActionButton(
           icon: Icons.bookmark_border,
@@ -635,12 +653,12 @@ class _MobileContent extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        _ProductInfo(item: item, rtiColor: rtiColor),
-        const SizedBox(height: AppSpacing.sm),
-        Row(
+        Wrap(
+          spacing: AppSpacing.md,
+          runSpacing: AppSpacing.xs,
+          crossAxisAlignment: WrapCrossAlignment.center,
           children: [
             _PriceSection(item: item),
-            const Spacer(),
             _QuantitySelector(
               quantity: item.quantity,
               maxQuantity: item.maxQuantity,

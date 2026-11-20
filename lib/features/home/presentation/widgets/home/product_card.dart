@@ -19,6 +19,16 @@ class ProductCard extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final preferences = ref.watch(confirmedDisplayPreferencesProvider);
+    final policyLabel = Text(
+      product.rtiLabel,
+      maxLines: 1,
+      overflow: TextOverflow.ellipsis,
+      style: Theme.of(context).textTheme.labelMedium?.copyWith(
+        color: AppColors.primary,
+        fontSize: preferences?.rtiLabelStyle == 'BADGE_LARGE' ? 15 : null,
+        fontWeight: FontWeight.w900,
+      ),
+    );
     return MouseRegion(
       cursor: SystemMouseCursors.click,
       child: GestureDetector(
@@ -126,19 +136,9 @@ class ProductCard extends ConsumerWidget {
                           ),
                           if (product.rtiLabel.isNotEmpty &&
                               preferences?.rtiLabelStyle != 'NONE')
-                            Text(
-                              product.rtiLabel,
-                              style: Theme.of(context).textTheme.labelMedium
-                                  ?.copyWith(
-                                    color: AppColors.primary,
-                                    fontSize:
-                                        preferences?.rtiLabelStyle ==
-                                            'BADGE_LARGE'
-                                        ? 15
-                                        : null,
-                                    fontWeight: FontWeight.w900,
-                                  ),
-                            ),
+                            MediaQuery.sizeOf(context).width < 1024
+                                ? Flexible(child: policyLabel)
+                                : policyLabel,
                         ],
                       ),
                     ],

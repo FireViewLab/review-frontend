@@ -39,6 +39,30 @@ class ProductRecommendationSection extends ConsumerWidget {
               final imageHeight = cardWidth / imageAspectRatio;
               final textAreaHeight = compact ? 196.0 : 212.0;
 
+              if (MediaQuery.sizeOf(context).width < 1024) {
+                return Wrap(
+                  spacing: AppSpacing.md,
+                  runSpacing: AppSpacing.md,
+                  children: [
+                    for (final product in products)
+                      SizedBox(
+                        width: cardWidth,
+                        child: ConstrainedBox(
+                          constraints: BoxConstraints(
+                            minHeight: imageHeight + textAreaHeight,
+                          ),
+                          child: ProductCard(
+                            product: product,
+                            onTap: onProductTap == null
+                                ? null
+                                : () => onProductTap?.call(product),
+                          ),
+                        ),
+                      ),
+                  ],
+                );
+              }
+
               return GridView.builder(
                 shrinkWrap: true,
                 physics: const NeverScrollableScrollPhysics(),

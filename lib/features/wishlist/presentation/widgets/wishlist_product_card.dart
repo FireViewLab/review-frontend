@@ -64,41 +64,49 @@ class WishlistProductCard extends StatelessWidget {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   // 배지는 이미지 위에 겹치지 않고 정보 영역에 둔다.
-                  Row(
-                    children: [
-                      Expanded(
-                        child: Text(
-                          item.platform ?? '',
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                          style: Theme.of(context).textTheme.labelSmall
-                              ?.copyWith(
-                                color: AppColors.textSecondary,
-                                fontWeight: FontWeight.w800,
-                                fontSize: 11,
-                              ),
+                  Builder(
+                    builder: (context) {
+                      final compact = MediaQuery.sizeOf(context).width < 1024;
+                      final platform = Text(
+                        item.platform ?? '',
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: Theme.of(context).textTheme.labelSmall?.copyWith(
+                          color: AppColors.textSecondary,
+                          fontWeight: FontWeight.w800,
+                          fontSize: 11,
                         ),
-                      ),
-                      if (item.isPriceDrop) ...[
+                      );
+                      final children = <Widget>[
+                        if (compact) platform else Expanded(child: platform),
+                        if (item.isPriceDrop) ...[
+                          const SizedBox(width: AppSpacing.xxs),
+                          _PriceDropBadge(),
+                        ],
                         const SizedBox(width: AppSpacing.xxs),
-                        _PriceDropBadge(),
-                      ],
-                      const SizedBox(width: AppSpacing.xxs),
-                      item.analysisDisplay.score == null
-                          ? Text(
-                              item.analysisDisplay.isV2
-                                  ? item.analysisDisplay.badgeText(context)
-                                  : AppLocalizations.of(
-                                      context,
-                                    ).externalUnanalyzed,
-                              style: Theme.of(context).textTheme.labelSmall,
+                        item.analysisDisplay.score == null
+                            ? Text(
+                                item.analysisDisplay.isV2
+                                    ? item.analysisDisplay.badgeText(context)
+                                    : AppLocalizations.of(
+                                        context,
+                                      ).externalUnanalyzed,
+                                style: Theme.of(context).textTheme.labelSmall,
+                              )
+                            : RtiBadge(
+                                analysis: item.analysisDisplay,
+                                value: item.analysisDisplay.score!.round(),
+                                color: rtiColor,
+                              ),
+                      ];
+                      return compact
+                          ? Wrap(
+                              crossAxisAlignment: WrapCrossAlignment.center,
+                              runSpacing: AppSpacing.xxs,
+                              children: children,
                             )
-                          : RtiBadge(
-                              analysis: item.analysisDisplay,
-                              value: item.analysisDisplay.score!.round(),
-                              color: rtiColor,
-                            ),
-                    ],
+                          : Row(children: children);
+                    },
                   ),
                   const SizedBox(height: 2),
                   Text(
