@@ -714,5 +714,21 @@
   "extSummaryEvidenceScope": "現在読み込まれているレビューの信頼性に関する根拠であり、商品の品質評価ではありません。",
   "extSummaryReasonCount": "{count}件のレビューで確認",
   "extSummaryNoLoadedReviews": "現在レビューが読み込まれていないため、等級分布を表示できません。",
-  "extSummaryFact": "{label}：{value}"
+  "extSummaryFact": "{label}：{value}",
+  "extTrustDetailSource": "詳細分析の結果",
+  "extTrustCatalogSource": "商品一覧で確認した平均",
+  "extTrustNoAverage": "この画面では商品の平均点を取得できません。",
+  "extTrustBefore": "まだ分析前のため、商品スコアはありません。",
+  "extTrustRunning": "分析中のため、商品スコアは表示されません。",
+  "extTrustGradeMissing": "等級情報なし",
+  "extTrustGuideSafe": "分析したレビューの信頼性のシグナルは、おおむね安定しています。",
+  "extTrustGuideCaution": "判断の根拠もあわせてご確認ください。",
+  "extTrustGuideUnknown": "スコアの出典と、提供されている根拠をご確認ください。",
+  "extTrustNoEvidence": "商品の分析根拠は提供されていません。",
+  "extTrustComponents": "スコアの内訳",
+  "extTrustTextExplanation": "レビュー文の表現や繰り返しのパターンを調べたスコアです。",
+  "extTrustBehaviorExplanation": "レビュー投稿者の活動パターンを調べたスコアです。",
+  "extTrustNetworkExplanation": "レビューと投稿者のつながりのパターンを調べたスコアです。",
+  "extTrustCoverageInSummary": "分析範囲とバージョンは、上の要約カードで確認できます。",
+  "extTrustScoreValue": "{label} {score} / 100"
 }

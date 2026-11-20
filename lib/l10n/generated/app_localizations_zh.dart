@@ -2252,4 +2252,54 @@ class AppLocalizationsZh extends AppLocalizations {
   String extSummaryFact(String label, String value) {
     return '$label：$value';
   }
+
+  @override
+  String get extTrustDetailSource => '详细分析结果';
+
+  @override
+  String get extTrustCatalogSource => '商品列表中的平均分';
+
+  @override
+  String get extTrustNoAverage => '此页面无法获取商品平均分。';
+
+  @override
+  String get extTrustBefore => '尚未进行分析，暂无商品分数。';
+
+  @override
+  String get extTrustRunning => '分析进行中，暂不显示商品分数。';
+
+  @override
+  String get extTrustGradeMissing => '未提供等级信息';
+
+  @override
+  String get extTrustGuideSafe => '已分析评论的可信度信号整体较为稳定。';
+
+  @override
+  String get extTrustGuideCaution => '请同时查看判断依据。';
+
+  @override
+  String get extTrustGuideUnknown => '请查看分数来源及已提供的依据。';
+
+  @override
+  String get extTrustNoEvidence => '未提供商品分析依据。';
+
+  @override
+  String get extTrustComponents => '分项分数';
+
+  @override
+  String get extTrustTextExplanation => '根据评论用语和重复模式得出的分数。';
+
+  @override
+  String get extTrustBehaviorExplanation => '根据评论作者的活动模式得出的分数。';
+
+  @override
+  String get extTrustNetworkExplanation => '根据评论与作者之间的连接模式得出的分数。';
+
+  @override
+  String get extTrustCoverageInSummary => '请在上方摘要卡片中查看分析范围和版本。';
+
+  @override
+  String extTrustScoreValue(String label, String score) {
+    return '$label $score / 100';
+  }
 }

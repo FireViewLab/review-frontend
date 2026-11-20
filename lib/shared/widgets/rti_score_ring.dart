@@ -11,9 +11,11 @@ class RtiScoreRing extends StatelessWidget {
     required this.color,
     this.size = 96,
     this.scoreLabel = 'RTI',
+    this.fitContent = false,
   });
 
   final String scoreLabel;
+  final bool fitContent;
   final num score;
   final Color color;
   final double size;
@@ -24,8 +26,34 @@ class RtiScoreRing extends StatelessWidget {
     final label = value == value.roundToDouble()
         ? '${value.toInt()}'
         : value.toStringAsFixed(1);
+    final content = Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Text(
+          label,
+          style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+            fontSize: size * .3,
+            fontWeight: FontWeight.w900,
+            color: color,
+            height: 1,
+          ),
+        ),
+        if (size >= 72) ...[
+          const SizedBox(height: 2),
+          Text(
+            scoreLabel,
+            style: Theme.of(context).textTheme.labelSmall?.copyWith(
+              color: AppColors.textSecondary,
+              fontWeight: FontWeight.w700,
+              letterSpacing: .5,
+            ),
+          ),
+        ],
+      ],
+    );
     return Semantics(
       label: '$scoreLabel $label',
+      excludeSemantics: fitContent,
       child: SizedBox.square(
         dimension: size,
         child: CustomPaint(
@@ -35,31 +63,12 @@ class RtiScoreRing extends StatelessWidget {
             strokeWidth: size * .09,
           ),
           child: Center(
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Text(
-                  label,
-                  style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                    fontSize: size * .3,
-                    fontWeight: FontWeight.w900,
-                    color: color,
-                    height: 1,
-                  ),
-                ),
-                if (size >= 72) ...[
-                  const SizedBox(height: 2),
-                  Text(
-                    scoreLabel,
-                    style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                      color: AppColors.textSecondary,
-                      fontWeight: FontWeight.w700,
-                      letterSpacing: .5,
-                    ),
-                  ),
-                ],
-              ],
-            ),
+            child: fitContent
+                ? Padding(
+                    padding: EdgeInsets.all(size * .12),
+                    child: FittedBox(fit: BoxFit.scaleDown, child: content),
+                  )
+                : content,
           ),
         ),
       ),

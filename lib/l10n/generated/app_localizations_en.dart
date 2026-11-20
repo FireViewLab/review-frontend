@@ -2358,4 +2358,62 @@ class AppLocalizationsEn extends AppLocalizations {
   String extSummaryFact(String label, String value) {
     return '$label: $value';
   }
+
+  @override
+  String get extTrustDetailSource => 'Detailed analysis result';
+
+  @override
+  String get extTrustCatalogSource => 'Average from the product list';
+
+  @override
+  String get extTrustNoAverage =>
+      'A product average is not available on this screen.';
+
+  @override
+  String get extTrustBefore => 'There is no product score before analysis.';
+
+  @override
+  String get extTrustRunning =>
+      'The product score is not displayed while analysis is in progress.';
+
+  @override
+  String get extTrustGradeMissing => 'Grade not provided';
+
+  @override
+  String get extTrustGuideSafe =>
+      'The analyzed reviews show generally stable credibility signals.';
+
+  @override
+  String get extTrustGuideCaution => 'Check the supporting evidence as well.';
+
+  @override
+  String get extTrustGuideUnknown =>
+      'Check the score source and any evidence provided.';
+
+  @override
+  String get extTrustNoEvidence => 'No product analysis evidence was provided.';
+
+  @override
+  String get extTrustComponents => 'Score breakdown';
+
+  @override
+  String get extTrustTextExplanation =>
+      'A score based on wording and repetition patterns in review text.';
+
+  @override
+  String get extTrustBehaviorExplanation =>
+      'A score based on review authors’ activity patterns.';
+
+  @override
+  String get extTrustNetworkExplanation =>
+      'A score based on connection patterns among reviews and authors.';
+
+  @override
+  String get extTrustCoverageInSummary =>
+      'See the summary card above for analysis coverage and versions.';
+
+  @override
+  String extTrustScoreValue(String label, String score) {
+    return '$label $score / 100';
+  }
 }

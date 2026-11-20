@@ -1,10 +1,14 @@
-import 'package:re_view_front/shared/presentation/analysis_formatters.dart';
 import 'package:flutter/material.dart';
-import 'package:re_view_front/features/external_product/domain/entities/external_product.dart';
+import 'package:intl/intl.dart';
+import 'package:re_view_front/app/theme/app_colors.dart';
 import 'package:re_view_front/app/theme/app_spacing.dart';
-import 'package:re_view_front/features/external_product/presentation/widgets/external_review_analysis.dart';
+import 'package:re_view_front/features/external_product/domain/entities/external_product.dart';
 import 'package:re_view_front/features/external_product/presentation/view_models/external_product_state.dart';
+import 'package:re_view_front/features/external_product/presentation/view_models/product_trust_report_data.dart';
+import 'package:re_view_front/features/external_product/presentation/widgets/external_review_analysis.dart';
+import 'package:re_view_front/features/external_product/presentation/widgets/product_trust_report_header.dart';
 import 'package:re_view_front/l10n/generated/app_localizations.dart';
+import 'package:re_view_front/shared/presentation/review_evidence_formatter.dart';
 import 'package:re_view_front/shared/widgets/product_report_card.dart';
 
 class ExternalProductReport extends StatelessWidget {
@@ -15,104 +19,72 @@ class ExternalProductReport extends StatelessWidget {
   Widget build(BuildContext context) {
     final l = AppLocalizations.of(context);
     final analysis = state.analysis;
-    final status = state.analysisStatus.toUpperCase();
+    final data = ProductTrustReportData.fromState(state);
     final reportStatus = state.phase == ExternalProductPhase.collecting
         ? ProductReportStatus.collecting
-        : switch (status) {
-            'DONE' => ProductReportStatus.ready,
-            'QUEUED' || 'RUNNING' => ProductReportStatus.running,
-            'FAILED' => ProductReportStatus.failed,
-            'DISABLED' => ProductReportStatus.disabled,
-            'STALE' => ProductReportStatus.stale,
-            'NOT_ANALYZED' => ProductReportStatus.pending,
-            _ => ProductReportStatus.unavailable,
+        : switch (state.analysisState) {
+            ExternalAnalysisStatus.done => ProductReportStatus.ready,
+            ExternalAnalysisStatus.pending ||
+            ExternalAnalysisStatus.running => ProductReportStatus.running,
+            ExternalAnalysisStatus.failed => ProductReportStatus.failed,
+            ExternalAnalysisStatus.disabled => ProductReportStatus.disabled,
+            ExternalAnalysisStatus.notAnalyzed => ProductReportStatus.pending,
+            _ =>
+              state.analysisStatus.toUpperCase() == 'STALE'
+                  ? ProductReportStatus.stale
+                  : ProductReportStatus.unavailable,
           };
-    final display = state.displayProduct;
-    final candidate =
-        display != null && state.summary?.matches(display.ref) == true
-        ? state.summary?.catalogAnalysis
-        : null;
-    final catalog =
-        status == 'DONE' &&
-            candidate?.isCurrent == true &&
-            (analysis?.display?.isV2 != true ||
-                candidate?.analysisDisplay.isV2 == true)
-        ? candidate
-        : null;
-    final hasResults = status == 'DONE' && analysis != null;
-    final summary = switch (reportStatus) {
+    final message = switch (reportStatus) {
       ProductReportStatus.collecting => l.reportCollecting,
-      ProductReportStatus.running => l.reportRunning,
+      ProductReportStatus.running => l.extTrustRunning,
       ProductReportStatus.failed => l.reportFailed,
       ProductReportStatus.disabled => l.reportDisabled,
       ProductReportStatus.stale => l.reportStale,
-      ProductReportStatus.pending => l.reportPendingBody,
-      ProductReportStatus.ready when hasResults || catalog != null =>
-        l.reportDone,
-      _ => l.reportUnavailable,
+      ProductReportStatus.pending => l.extTrustBefore,
+      ProductReportStatus.ready when data.isNotCalculable =>
+        l.analysisNotCalculable,
+      ProductReportStatus.ready when data.score == null => l.extTrustNoAverage,
+      ProductReportStatus.ready => l.reportDone,
+      ProductReportStatus.unavailable => l.reportUnavailable,
     };
-    final reviews = hasResults
+    final done = state.analysisState == ExternalAnalysisStatus.done;
+    final reviews = done
         ? state.reviews.where((r) => r.analysisDisplay.hasResult).toList()
         : const <ExternalReview>[];
+    final hasDetails = data.hasComponents || data.reasons.isNotEmpty;
+    final coverageInSummary =
+        done &&
+        analysis != null &&
+        (analysis.summary == null || analysis.summary!.trim().isEmpty);
+    final catalog = data.source == ProductScoreSource.catalog
+        ? state.summary?.catalogAnalysis
+        : null;
     return ProductReportCard(
-      status:
-          reportStatus == ProductReportStatus.ready &&
-              !hasResults &&
-              catalog == null
-          ? ProductReportStatus.unavailable
-          : reportStatus,
-      score:
-          catalog?.analysisDisplay.score ??
-          (analysis?.display?.isV2 == true ? analysis?.display?.score : null),
-      scoreLabel: catalog?.analysisDisplay.isV2 == true
-          ? catalog!.analysisDisplay.scoreName(context)
-          : analysis?.display?.isV2 == true
-          ? analysis!.display!.scoreName(context)
-          : null,
-      summary:
-          hasResults &&
-              analysis.display?.isV2 == true &&
-              analysis.display?.score == null &&
-              catalog?.analysisDisplay.score == null
-          ? l.analysisNotCalculable
-          : summary,
-      metrics: [
-        if (hasResults && analysis.reviewCount != null)
-          ProductReportMetric(l.reportInputCount, '${analysis.reviewCount}'),
-        if (hasResults && analysis.sampled != null)
-          ProductReportMetric(
-            l.reportCoverage,
-            analysis.sampled! ? l.reportSampled : l.reportFull,
-          ),
-      ],
+      status: reportStatus,
+      summary: message,
+      resultHeader: ProductTrustReportHeader(
+        data: data,
+        status: reportStatus,
+        missingReason: message,
+      ),
+      content: hasDetails ? _ScoreDetails(data: data) : null,
       details: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           ReportDetailSection(
             title: l.reportOverview,
-            child: Text(
-              summary,
-              style: Theme.of(
-                context,
-              ).textTheme.bodyMedium?.copyWith(height: 1.6),
-            ),
-          ),
-          if (catalog != null)
-            ReportDetailSection(
-              title: catalog.analysisDisplay.isV2
-                  ? catalog.analysisDisplay.scoreName(context)
-                  : l.reportScoreLabel,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  ReportFactRow(
-                    label: catalog.analysisDisplay.isV2
-                        ? l.analysisPolicyAverage
-                        : l.reportCatalogAverage,
-                    value: catalog.analysisDisplay.score == null
-                        ? l.analysisNotCalculable
-                        : '${catalog.analysisDisplay.score} / 100',
-                  ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  message,
+                  style: Theme.of(
+                    context,
+                  ).textTheme.bodyMedium?.copyWith(height: 1.6),
+                ),
+                if (catalog != null) ...[
+                  const SizedBox(height: AppSpacing.sm),
+                  Text(l.reportCatalogSource),
                   if (catalog.reviewCount != null)
                     ReportFactRow(
                       label: l.reportInputCount,
@@ -123,54 +95,48 @@ class ExternalProductReport extends StatelessWidget {
                       label: l.reportSourceCount,
                       value: '${catalog.sourceReviewCount}',
                     ),
-                  if (catalog.sampled != null)
-                    ReportFactRow(
-                      label: l.reportCoverage,
-                      value: catalog.sampled! ? l.reportSampled : l.reportFull,
-                    ),
-                  const SizedBox(height: AppSpacing.sm),
-                  Text(
-                    l.reportCatalogSource,
-                    style: Theme.of(
-                      context,
-                    ).textTheme.bodySmall?.copyWith(height: 1.5),
-                  ),
                 ],
-              ),
+              ],
             ),
-          if (hasResults)
+          ),
+          if (hasDetails) _ScoreDetails(data: data),
+          if (done && analysis != null)
             ReportDetailSection(
               title: l.reportCoverage,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  if (analysis.reviewCount != null)
-                    ReportFactRow(
-                      label: l.reportInputCount,
-                      value: '${analysis.reviewCount}',
+              child: coverageInSummary
+                  ? Text(l.extTrustCoverageInSummary)
+                  : Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        if (analysis.reviewCount != null)
+                          ReportFactRow(
+                            label: l.reportInputCount,
+                            value: '${analysis.reviewCount}',
+                          ),
+                        if (analysis.sourceReviewCount != null)
+                          ReportFactRow(
+                            label: l.reportSourceCount,
+                            value: '${analysis.sourceReviewCount}',
+                          ),
+                        if (analysis.sampled != null)
+                          ReportFactRow(
+                            label: l.reportCoverage,
+                            value: analysis.sampled!
+                                ? l.reportSampled
+                                : l.extSummaryNotSampled,
+                          ),
+                        if (analysis.modelVersion != null)
+                          ReportFactRow(
+                            label: l.reportModel,
+                            value: analysis.modelVersion!,
+                          ),
+                        if (analysis.policyVersion != null)
+                          ReportFactRow(
+                            label: l.reportPolicy,
+                            value: analysis.policyVersion!,
+                          ),
+                      ],
                     ),
-                  if (analysis.sourceReviewCount != null)
-                    ReportFactRow(
-                      label: l.reportSourceCount,
-                      value: '${analysis.sourceReviewCount}',
-                    ),
-                  if (analysis.sampled != null)
-                    ReportFactRow(
-                      label: l.reportCoverage,
-                      value: analysis.sampled! ? l.reportSampled : l.reportFull,
-                    ),
-                  if (analysis.modelVersion != null)
-                    ReportFactRow(
-                      label: l.reportModel,
-                      value: analysis.modelVersion!,
-                    ),
-                  if (analysis.policyVersion != null)
-                    ReportFactRow(
-                      label: l.reportPolicy,
-                      value: analysis.policyVersion!,
-                    ),
-                ],
-              ),
             ),
           ReportDetailSection(
             title: l.reportReviewResults,
@@ -194,6 +160,98 @@ class ExternalProductReport extends StatelessWidget {
                   _ReviewAnalysisList(reviews: reviews),
                 ],
               ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _ScoreDetails extends StatelessWidget {
+  const _ScoreDetails({required this.data});
+
+  final ProductTrustReportData data;
+
+  @override
+  Widget build(BuildContext context) {
+    final l = AppLocalizations.of(context);
+    final breakdown = data.breakdown;
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        if (data.hasComponents) ...[
+          ReportSectionTitle(title: l.extTrustComponents),
+          const SizedBox(height: AppSpacing.sm),
+          _ComponentScore(
+            label: l.analysisTextScore,
+            score: breakdown?.textScore,
+            explanation: l.extTrustTextExplanation,
+          ),
+          _ComponentScore(
+            label: l.analysisBehaviorScore,
+            score: breakdown?.behaviorScore,
+            explanation: l.extTrustBehaviorExplanation,
+          ),
+          _ComponentScore(
+            label: l.analysisNetworkScore,
+            score: breakdown?.networkScore,
+            explanation: l.extTrustNetworkExplanation,
+          ),
+          const SizedBox(height: AppSpacing.md),
+        ],
+        ReportSectionTitle(title: l.reportReasons),
+        const SizedBox(height: AppSpacing.sm),
+        if (data.reasons.isEmpty)
+          Text(l.extTrustNoEvidence)
+        else
+          for (final reason in data.reasons)
+            Padding(
+              padding: const EdgeInsets.only(bottom: AppSpacing.xs),
+              child: Text(
+                ReviewEvidenceFormatter.text(context, reason, detailed: true),
+                style: Theme.of(
+                  context,
+                ).textTheme.bodyMedium?.copyWith(height: 1.5),
+              ),
+            ),
+        const SizedBox(height: AppSpacing.md),
+      ],
+    );
+  }
+}
+
+class _ComponentScore extends StatelessWidget {
+  const _ComponentScore({
+    required this.label,
+    required this.score,
+    required this.explanation,
+  });
+
+  final String label;
+  final double? score;
+  final String explanation;
+
+  @override
+  Widget build(BuildContext context) {
+    final l = AppLocalizations.of(context);
+    final value = ProductTrustReportData.validScore(score);
+    return Padding(
+      padding: const EdgeInsets.only(bottom: AppSpacing.sm),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          ReportFactRow(
+            label: label,
+            value: value == null
+                ? l.analysisNotCalculable
+                : '${NumberFormat('0.#', l.localeName).format(value)} / 100',
+          ),
+          Text(
+            explanation,
+            style: Theme.of(context).textTheme.bodySmall?.copyWith(
+              color: AppColors.textSecondary,
+              height: 1.5,
             ),
           ),
         ],
