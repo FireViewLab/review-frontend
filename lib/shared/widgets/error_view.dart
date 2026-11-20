@@ -136,6 +136,16 @@ class _StatusView extends StatelessWidget {
       return content;
     }
 
-    return Center(child: content);
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        if (!constraints.hasBoundedHeight) return Center(child: content);
+        return SingleChildScrollView(
+          child: ConstrainedBox(
+            constraints: BoxConstraints(minHeight: constraints.maxHeight),
+            child: Center(child: content),
+          ),
+        );
+      },
+    );
   }
 }

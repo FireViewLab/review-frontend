@@ -45,14 +45,16 @@ class RtiBadge extends ConsumerWidget {
               size: 14,
             ),
             const SizedBox(width: AppSpacing.xxs),
-            Text(
-              analysis?.isV2 == true
-                  ? analysis!.badgeText(context)
-                  : (value == null ? '분석 전' : 'RTI $value'),
-              style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                color: value == null ? AppColors.textTertiary : color,
-                fontWeight: FontWeight.w900,
-                fontSize: large ? 15 : 12,
+            Flexible(
+              child: Text(
+                analysis?.isV2 == true
+                    ? analysis!.badgeText(context)
+                    : (value == null ? '분석 전' : 'RTI $value'),
+                style: Theme.of(context).textTheme.labelSmall?.copyWith(
+                  color: value == null ? AppColors.textTertiary : color,
+                  fontWeight: FontWeight.w900,
+                  fontSize: large ? 15 : 12,
+                ),
               ),
             ),
           ],
