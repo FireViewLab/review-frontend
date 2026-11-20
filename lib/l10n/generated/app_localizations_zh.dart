@@ -2222,13 +2222,13 @@ class AppLocalizationsZh extends AppLocalizations {
   }
 
   @override
-  String get extSummaryGradeSafe => 'SAFE';
+  String get extSummaryGradeSafe => '可信度高';
 
   @override
-  String get extSummaryGradeWarn => 'WARN';
+  String get extSummaryGradeWarn => '注意';
 
   @override
-  String get extSummaryGradeDanger => 'DANGER';
+  String get extSummaryGradeDanger => '可信度低';
 
   @override
   String get extSummaryEvidenceTitle => '最常见的可信度依据';

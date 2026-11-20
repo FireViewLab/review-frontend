@@ -4335,19 +4335,19 @@ abstract class AppLocalizations {
   /// Product detail summary and loaded-review evidence: GradeSafe
   ///
   /// In ko, this message translates to:
-  /// **'SAFE'**
+  /// **'신뢰도 높음'**
   String get extSummaryGradeSafe;
 
   /// Product detail summary and loaded-review evidence: GradeWarn
   ///
   /// In ko, this message translates to:
-  /// **'WARN'**
+  /// **'주의'**
   String get extSummaryGradeWarn;
 
   /// Product detail summary and loaded-review evidence: GradeDanger
   ///
   /// In ko, this message translates to:
-  /// **'DANGER'**
+  /// **'신뢰도 낮음'**
   String get extSummaryGradeDanger;
 
   /// Product detail summary and loaded-review evidence: EvidenceTitle

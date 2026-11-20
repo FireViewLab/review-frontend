@@ -2238,13 +2238,13 @@ class AppLocalizationsJa extends AppLocalizations {
   }
 
   @override
-  String get extSummaryGradeSafe => 'SAFE';
+  String get extSummaryGradeSafe => '信頼度が高い';
 
   @override
-  String get extSummaryGradeWarn => 'WARN';
+  String get extSummaryGradeWarn => '注意';
 
   @override
-  String get extSummaryGradeDanger => 'DANGER';
+  String get extSummaryGradeDanger => '信頼度が低い';
 
   @override
   String get extSummaryEvidenceTitle => 'よく見られる信頼性の根拠';

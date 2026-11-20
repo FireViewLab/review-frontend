@@ -2245,13 +2245,13 @@ class AppLocalizationsKo extends AppLocalizations {
   }
 
   @override
-  String get extSummaryGradeSafe => 'SAFE';
+  String get extSummaryGradeSafe => '신뢰도 높음';
 
   @override
-  String get extSummaryGradeWarn => 'WARN';
+  String get extSummaryGradeWarn => '주의';
 
   @override
-  String get extSummaryGradeDanger => 'DANGER';
+  String get extSummaryGradeDanger => '신뢰도 낮음';
 
   @override
   String get extSummaryEvidenceTitle => '자주 확인된 신뢰도 근거';

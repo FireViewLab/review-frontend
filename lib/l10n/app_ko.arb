@@ -1308,15 +1308,15 @@
       }
     }
   },
-  "extSummaryGradeSafe": "SAFE",
+  "extSummaryGradeSafe": "신뢰도 높음",
   "@extSummaryGradeSafe": {
     "description": "Product detail summary and loaded-review evidence: GradeSafe"
   },
-  "extSummaryGradeWarn": "WARN",
+  "extSummaryGradeWarn": "주의",
   "@extSummaryGradeWarn": {
     "description": "Product detail summary and loaded-review evidence: GradeWarn"
   },
-  "extSummaryGradeDanger": "DANGER",
+  "extSummaryGradeDanger": "신뢰도 낮음",
   "@extSummaryGradeDanger": {
     "description": "Product detail summary and loaded-review evidence: GradeDanger"
   },

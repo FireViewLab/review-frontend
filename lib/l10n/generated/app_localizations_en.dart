@@ -2326,13 +2326,13 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
-  String get extSummaryGradeSafe => 'SAFE';
+  String get extSummaryGradeSafe => 'High trust';
 
   @override
-  String get extSummaryGradeWarn => 'WARN';
+  String get extSummaryGradeWarn => 'Caution';
 
   @override
-  String get extSummaryGradeDanger => 'DANGER';
+  String get extSummaryGradeDanger => 'Low trust';
 
   @override
   String get extSummaryEvidenceTitle => 'Most frequent credibility evidence';
