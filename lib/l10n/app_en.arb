@@ -728,5 +728,21 @@
   "extSummaryEvidenceScope": "This is credibility evidence from the reviews currently loaded, not an assessment of product quality.",
   "extSummaryReasonCount": "Found in {count} reviews",
   "extSummaryNoLoadedReviews": "No reviews are currently loaded, so no grade distribution is available.",
-  "extSummaryFact": "{label}: {value}"
+  "extSummaryFact": "{label}: {value}",
+  "extTrustDetailSource": "Detailed analysis result",
+  "extTrustCatalogSource": "Average from the product list",
+  "extTrustNoAverage": "A product average is not available on this screen.",
+  "extTrustBefore": "There is no product score before analysis.",
+  "extTrustRunning": "The product score is not displayed while analysis is in progress.",
+  "extTrustGradeMissing": "Grade not provided",
+  "extTrustGuideSafe": "The analyzed reviews show generally stable credibility signals.",
+  "extTrustGuideCaution": "Check the supporting evidence as well.",
+  "extTrustGuideUnknown": "Check the score source and any evidence provided.",
+  "extTrustNoEvidence": "No product analysis evidence was provided.",
+  "extTrustComponents": "Score breakdown",
+  "extTrustTextExplanation": "A score based on wording and repetition patterns in review text.",
+  "extTrustBehaviorExplanation": "A score based on review authors’ activity patterns.",
+  "extTrustNetworkExplanation": "A score based on connection patterns among reviews and authors.",
+  "extTrustCoverageInSummary": "See the summary card above for analysis coverage and versions.",
+  "extTrustScoreValue": "{label} {score} / 100"
 }

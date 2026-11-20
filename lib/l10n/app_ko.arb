@@ -1353,5 +1353,77 @@
         "type": "String"
       }
     }
+  },
+  "extTrustDetailSource": "상세 분석 결과",
+  "@extTrustDetailSource": {
+    "description": "Product trust report: DetailSource"
+  },
+  "extTrustCatalogSource": "목록에서 확인한 평균",
+  "@extTrustCatalogSource": {
+    "description": "Product trust report: CatalogSource"
+  },
+  "extTrustNoAverage": "이 화면에서는 상품 평균을 받을 수 없어요.",
+  "@extTrustNoAverage": {
+    "description": "Product trust report: NoAverage"
+  },
+  "extTrustBefore": "아직 분석 전이라 상품 점수가 없어요.",
+  "@extTrustBefore": {
+    "description": "Product trust report: Before"
+  },
+  "extTrustRunning": "분석이 진행 중이라 상품 점수를 표시하지 않아요.",
+  "@extTrustRunning": {
+    "description": "Product trust report: Running"
+  },
+  "extTrustGradeMissing": "등급 정보 없음",
+  "@extTrustGradeMissing": {
+    "description": "Product trust report: GradeMissing"
+  },
+  "extTrustGuideSafe": "분석한 리뷰의 신뢰 신호가 대체로 안정적이에요.",
+  "@extTrustGuideSafe": {
+    "description": "Product trust report: GuideSafe"
+  },
+  "extTrustGuideCaution": "판단 근거를 함께 확인해 보세요.",
+  "@extTrustGuideCaution": {
+    "description": "Product trust report: GuideCaution"
+  },
+  "extTrustGuideUnknown": "점수의 출처와 제공된 근거를 함께 확인해 보세요.",
+  "@extTrustGuideUnknown": {
+    "description": "Product trust report: GuideUnknown"
+  },
+  "extTrustNoEvidence": "제공된 상품 분석 근거가 없어요.",
+  "@extTrustNoEvidence": {
+    "description": "Product trust report: NoEvidence"
+  },
+  "extTrustComponents": "세부 점수",
+  "@extTrustComponents": {
+    "description": "Product trust report: Components"
+  },
+  "extTrustTextExplanation": "리뷰 문장의 표현과 반복 패턴을 살펴본 점수예요.",
+  "@extTrustTextExplanation": {
+    "description": "Product trust report: TextExplanation"
+  },
+  "extTrustBehaviorExplanation": "리뷰 작성자의 활동 패턴을 살펴본 점수예요.",
+  "@extTrustBehaviorExplanation": {
+    "description": "Product trust report: BehaviorExplanation"
+  },
+  "extTrustNetworkExplanation": "리뷰·작성자 사이의 연결 패턴을 살펴본 점수예요.",
+  "@extTrustNetworkExplanation": {
+    "description": "Product trust report: NetworkExplanation"
+  },
+  "extTrustCoverageInSummary": "분석 범위와 버전은 위 요약 카드에서 확인할 수 있어요.",
+  "@extTrustCoverageInSummary": {
+    "description": "Product trust report: CoverageInSummary"
+  },
+  "extTrustScoreValue": "{label} {score} / 100",
+  "@extTrustScoreValue": {
+    "description": "Product trust report: ScoreValue",
+    "placeholders": {
+      "label": {
+        "type": "String"
+      },
+      "score": {
+        "type": "String"
+      }
+    }
   }
 }

@@ -4379,6 +4379,102 @@ abstract class AppLocalizations {
   /// In ko, this message translates to:
   /// **'{label}: {value}'**
   String extSummaryFact(String label, String value);
+
+  /// Product trust report: DetailSource
+  ///
+  /// In ko, this message translates to:
+  /// **'상세 분석 결과'**
+  String get extTrustDetailSource;
+
+  /// Product trust report: CatalogSource
+  ///
+  /// In ko, this message translates to:
+  /// **'목록에서 확인한 평균'**
+  String get extTrustCatalogSource;
+
+  /// Product trust report: NoAverage
+  ///
+  /// In ko, this message translates to:
+  /// **'이 화면에서는 상품 평균을 받을 수 없어요.'**
+  String get extTrustNoAverage;
+
+  /// Product trust report: Before
+  ///
+  /// In ko, this message translates to:
+  /// **'아직 분석 전이라 상품 점수가 없어요.'**
+  String get extTrustBefore;
+
+  /// Product trust report: Running
+  ///
+  /// In ko, this message translates to:
+  /// **'분석이 진행 중이라 상품 점수를 표시하지 않아요.'**
+  String get extTrustRunning;
+
+  /// Product trust report: GradeMissing
+  ///
+  /// In ko, this message translates to:
+  /// **'등급 정보 없음'**
+  String get extTrustGradeMissing;
+
+  /// Product trust report: GuideSafe
+  ///
+  /// In ko, this message translates to:
+  /// **'분석한 리뷰의 신뢰 신호가 대체로 안정적이에요.'**
+  String get extTrustGuideSafe;
+
+  /// Product trust report: GuideCaution
+  ///
+  /// In ko, this message translates to:
+  /// **'판단 근거를 함께 확인해 보세요.'**
+  String get extTrustGuideCaution;
+
+  /// Product trust report: GuideUnknown
+  ///
+  /// In ko, this message translates to:
+  /// **'점수의 출처와 제공된 근거를 함께 확인해 보세요.'**
+  String get extTrustGuideUnknown;
+
+  /// Product trust report: NoEvidence
+  ///
+  /// In ko, this message translates to:
+  /// **'제공된 상품 분석 근거가 없어요.'**
+  String get extTrustNoEvidence;
+
+  /// Product trust report: Components
+  ///
+  /// In ko, this message translates to:
+  /// **'세부 점수'**
+  String get extTrustComponents;
+
+  /// Product trust report: TextExplanation
+  ///
+  /// In ko, this message translates to:
+  /// **'리뷰 문장의 표현과 반복 패턴을 살펴본 점수예요.'**
+  String get extTrustTextExplanation;
+
+  /// Product trust report: BehaviorExplanation
+  ///
+  /// In ko, this message translates to:
+  /// **'리뷰 작성자의 활동 패턴을 살펴본 점수예요.'**
+  String get extTrustBehaviorExplanation;
+
+  /// Product trust report: NetworkExplanation
+  ///
+  /// In ko, this message translates to:
+  /// **'리뷰·작성자 사이의 연결 패턴을 살펴본 점수예요.'**
+  String get extTrustNetworkExplanation;
+
+  /// Product trust report: CoverageInSummary
+  ///
+  /// In ko, this message translates to:
+  /// **'분석 범위와 버전은 위 요약 카드에서 확인할 수 있어요.'**
+  String get extTrustCoverageInSummary;
+
+  /// Product trust report: ScoreValue
+  ///
+  /// In ko, this message translates to:
+  /// **'{label} {score} / 100'**
+  String extTrustScoreValue(String label, String score);
 }
 
 class _AppLocalizationsDelegate

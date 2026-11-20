@@ -2276,4 +2276,54 @@ class AppLocalizationsKo extends AppLocalizations {
   String extSummaryFact(String label, String value) {
     return '$label: $value';
   }
+
+  @override
+  String get extTrustDetailSource => '상세 분석 결과';
+
+  @override
+  String get extTrustCatalogSource => '목록에서 확인한 평균';
+
+  @override
+  String get extTrustNoAverage => '이 화면에서는 상품 평균을 받을 수 없어요.';
+
+  @override
+  String get extTrustBefore => '아직 분석 전이라 상품 점수가 없어요.';
+
+  @override
+  String get extTrustRunning => '분석이 진행 중이라 상품 점수를 표시하지 않아요.';
+
+  @override
+  String get extTrustGradeMissing => '등급 정보 없음';
+
+  @override
+  String get extTrustGuideSafe => '분석한 리뷰의 신뢰 신호가 대체로 안정적이에요.';
+
+  @override
+  String get extTrustGuideCaution => '판단 근거를 함께 확인해 보세요.';
+
+  @override
+  String get extTrustGuideUnknown => '점수의 출처와 제공된 근거를 함께 확인해 보세요.';
+
+  @override
+  String get extTrustNoEvidence => '제공된 상품 분석 근거가 없어요.';
+
+  @override
+  String get extTrustComponents => '세부 점수';
+
+  @override
+  String get extTrustTextExplanation => '리뷰 문장의 표현과 반복 패턴을 살펴본 점수예요.';
+
+  @override
+  String get extTrustBehaviorExplanation => '리뷰 작성자의 활동 패턴을 살펴본 점수예요.';
+
+  @override
+  String get extTrustNetworkExplanation => '리뷰·작성자 사이의 연결 패턴을 살펴본 점수예요.';
+
+  @override
+  String get extTrustCoverageInSummary => '분석 범위와 버전은 위 요약 카드에서 확인할 수 있어요.';
+
+  @override
+  String extTrustScoreValue(String label, String score) {
+    return '$label $score / 100';
+  }
 }

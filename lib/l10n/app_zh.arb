@@ -714,5 +714,21 @@
   "extSummaryEvidenceScope": "这些是当前已加载评论的可信度分析依据，并非对商品质量的评价。",
   "extSummaryReasonCount": "在{count}条评论中出现",
   "extSummaryNoLoadedReviews": "当前未加载评论，无法显示等级分布。",
-  "extSummaryFact": "{label}：{value}"
+  "extSummaryFact": "{label}：{value}",
+  "extTrustDetailSource": "详细分析结果",
+  "extTrustCatalogSource": "商品列表中的平均分",
+  "extTrustNoAverage": "此页面无法获取商品平均分。",
+  "extTrustBefore": "尚未进行分析，暂无商品分数。",
+  "extTrustRunning": "分析进行中，暂不显示商品分数。",
+  "extTrustGradeMissing": "未提供等级信息",
+  "extTrustGuideSafe": "已分析评论的可信度信号整体较为稳定。",
+  "extTrustGuideCaution": "请同时查看判断依据。",
+  "extTrustGuideUnknown": "请查看分数来源及已提供的依据。",
+  "extTrustNoEvidence": "未提供商品分析依据。",
+  "extTrustComponents": "分项分数",
+  "extTrustTextExplanation": "根据评论用语和重复模式得出的分数。",
+  "extTrustBehaviorExplanation": "根据评论作者的活动模式得出的分数。",
+  "extTrustNetworkExplanation": "根据评论与作者之间的连接模式得出的分数。",
+  "extTrustCoverageInSummary": "请在上方摘要卡片中查看分析范围和版本。",
+  "extTrustScoreValue": "{label} {score} / 100"
 }

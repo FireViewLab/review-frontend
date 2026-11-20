@@ -2269,4 +2269,54 @@ class AppLocalizationsJa extends AppLocalizations {
   String extSummaryFact(String label, String value) {
     return '$label：$value';
   }
+
+  @override
+  String get extTrustDetailSource => '詳細分析の結果';
+
+  @override
+  String get extTrustCatalogSource => '商品一覧で確認した平均';
+
+  @override
+  String get extTrustNoAverage => 'この画面では商品の平均点を取得できません。';
+
+  @override
+  String get extTrustBefore => 'まだ分析前のため、商品スコアはありません。';
+
+  @override
+  String get extTrustRunning => '分析中のため、商品スコアは表示されません。';
+
+  @override
+  String get extTrustGradeMissing => '等級情報なし';
+
+  @override
+  String get extTrustGuideSafe => '分析したレビューの信頼性のシグナルは、おおむね安定しています。';
+
+  @override
+  String get extTrustGuideCaution => '判断の根拠もあわせてご確認ください。';
+
+  @override
+  String get extTrustGuideUnknown => 'スコアの出典と、提供されている根拠をご確認ください。';
+
+  @override
+  String get extTrustNoEvidence => '商品の分析根拠は提供されていません。';
+
+  @override
+  String get extTrustComponents => 'スコアの内訳';
+
+  @override
+  String get extTrustTextExplanation => 'レビュー文の表現や繰り返しのパターンを調べたスコアです。';
+
+  @override
+  String get extTrustBehaviorExplanation => 'レビュー投稿者の活動パターンを調べたスコアです。';
+
+  @override
+  String get extTrustNetworkExplanation => 'レビューと投稿者のつながりのパターンを調べたスコアです。';
+
+  @override
+  String get extTrustCoverageInSummary => '分析範囲とバージョンは、上の要約カードで確認できます。';
+
+  @override
+  String extTrustScoreValue(String label, String score) {
+    return '$label $score / 100';
+  }
 }
