@@ -1,4 +1,5 @@
 import 'package:re_view_front/core/analysis/analysis_contract.dart';
+import 'package:re_view_front/core/analysis/analysis_keys.dart';
 import 'package:re_view_front/core/utils/product_image_urls.dart';
 import 'package:re_view_front/core/network/api_client.dart';
 import 'package:re_view_front/core/network/api_response.dart';
@@ -36,6 +37,10 @@ class ExternalProductRemoteDataSourceImpl
     final reviews = body['reviews'];
     final job = body['job'];
     final items = reviews is Map<String, dynamic> ? reviews['items'] : null;
+    final analysis = body['analysis'];
+    final summary =
+        (analysis is Map<String, dynamic> ? _productSummary(analysis) : null) ??
+        _productSummary(body);
 
     return ExternalProductSnapshot(
       status: CollectionStatus.parse(_text(body['collectionStatus'])),
@@ -62,18 +67,21 @@ class ExternalProductRemoteDataSourceImpl
           : null,
       job: job is Map<String, dynamic> ? _job(job) : null,
       springProductId: (body['springProductId'] as num?)?.toInt(),
-      hasAnalysis: body['analysis'] is Map<String, dynamic>,
+      hasAnalysis: analysis is Map<String, dynamic> || summary != null,
       analysisStatus:
           _text(body['analysisStatus']) ??
           (body['analysis'] is Map
               ? _text((body['analysis'] as Map)['status']) ?? 'DONE'
               : 'UNAVAILABLE'),
-      analysis: body['analysis'] is Map<String, dynamic>
+      analysis: analysis is Map<String, dynamic>
           ? _analysis(
-              body['analysis'] as Map<String, dynamic>,
+              analysis,
+              summary: summary,
               inheritedVersion: AnalysisContract.version(body),
             )
-          : null,
+          : summary == null
+          ? null
+          : ExternalAnalysis(summary: summary),
     );
   }
 
@@ -142,11 +150,21 @@ class ExternalProductRemoteDataSourceImpl
     );
   }
 
+  String? _productSummary(Map<String, dynamic> json) {
+    for (final key in AnalysisKeys.productSummary) {
+      final value = AnalysisContract.text(json[key]);
+      if (value != null) return value;
+    }
+    return null;
+  }
+
   ExternalAnalysis _analysis(
     Map<String, dynamic> json, {
     String? inheritedVersion,
+    String? summary,
   }) => ExternalAnalysis(
     status: _text(json['status']),
+    summary: summary,
     display: AnalysisContract.parse(
       json,
       catalog: true,

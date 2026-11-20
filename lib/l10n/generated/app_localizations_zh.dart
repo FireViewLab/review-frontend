@@ -2157,4 +2157,99 @@ class AppLocalizationsZh extends AppLocalizations {
   String extProgressStepSemantics(String step, String status) {
     return '$step，$status';
   }
+
+  @override
+  String get extSummaryTitle => '评论分析摘要';
+
+  @override
+  String get extSummaryFallbackTitle => '分析状态与依据说明';
+
+  @override
+  String get extSummaryFallbackIntro => '这里汇总了当前已加载评论的分析状态与可信度依据。';
+
+  @override
+  String get extSummaryNoEvidence => '分析已完成，但暂无可供总结的依据。';
+
+  @override
+  String get extSummaryNotAnalyzed => '尚未进行分析，暂无可显示的摘要。';
+
+  @override
+  String get extSummaryInProgress => '请在上方步骤中查看分析进度。';
+
+  @override
+  String get extSummaryFailed => '分析失败，无法显示摘要。';
+
+  @override
+  String get extSummaryDisabled => '分析已禁用，不显示摘要。';
+
+  @override
+  String get extSummaryUnavailable => '显示摘要所需的分析状态尚未确认。';
+
+  @override
+  String get extSummaryMissingValue => '未提供';
+
+  @override
+  String get extSummarySampling => '是否为样本分析';
+
+  @override
+  String get extSummaryNotSampled => '非样本分析';
+
+  @override
+  String extSummaryLoadedScope(int count) {
+    final intl.NumberFormat countNumberFormat =
+        intl.NumberFormat.decimalPattern(localeName);
+    final String countString = countNumberFormat.format(count);
+
+    return '基于当前已加载的$countString条评论';
+  }
+
+  @override
+  String get extSummaryV2Grades => '政策指数等级 (v2)';
+
+  @override
+  String get extSummaryLegacyGrades => '可信度等级 (v0.5)';
+
+  @override
+  String get extSummaryUnknownVersion => '分析版本未知';
+
+  @override
+  String extSummaryGradeCount(String grade, int count) {
+    final intl.NumberFormat countNumberFormat =
+        intl.NumberFormat.decimalPattern(localeName);
+    final String countString = countNumberFormat.format(count);
+
+    return '$grade：$countString条';
+  }
+
+  @override
+  String get extSummaryGradeSafe => '可信度高';
+
+  @override
+  String get extSummaryGradeWarn => '注意';
+
+  @override
+  String get extSummaryGradeDanger => '可信度低';
+
+  @override
+  String get extSummaryEvidenceTitle => '最常见的可信度依据';
+
+  @override
+  String get extSummaryEvidenceScope => '这些是当前已加载评论的可信度分析依据，并非对商品质量的评价。';
+
+  @override
+  String extSummaryReasonCount(int count) {
+    final intl.NumberFormat countNumberFormat =
+        intl.NumberFormat.decimalPattern(localeName);
+    final String countString = countNumberFormat.format(count);
+
+    return '在$countString条评论中出现';
+  }
+
+  @override
+  String get extSummaryNoLoadedReviews => '当前未加载评论，无法显示等级分布。';
+
+  @override
+  String extSummaryFact(String label, String value) {
+    return '$label：$value';
+  }
 }

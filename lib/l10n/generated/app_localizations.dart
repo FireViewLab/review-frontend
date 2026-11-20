@@ -4229,6 +4229,156 @@ abstract class AppLocalizations {
   /// In ko, this message translates to:
   /// **'{step}, {status}'**
   String extProgressStepSemantics(String step, String status);
+
+  /// Product detail summary and loaded-review evidence: Title
+  ///
+  /// In ko, this message translates to:
+  /// **'리뷰 분석 요약'**
+  String get extSummaryTitle;
+
+  /// Product detail summary and loaded-review evidence: FallbackTitle
+  ///
+  /// In ko, this message translates to:
+  /// **'분석 상태·근거 안내'**
+  String get extSummaryFallbackTitle;
+
+  /// Product detail summary and loaded-review evidence: FallbackIntro
+  ///
+  /// In ko, this message translates to:
+  /// **'현재 불러온 리뷰의 분석 상태와 신뢰도 근거를 정리했어요.'**
+  String get extSummaryFallbackIntro;
+
+  /// Product detail summary and loaded-review evidence: NoEvidence
+  ///
+  /// In ko, this message translates to:
+  /// **'분석은 끝났지만 요약할 근거가 아직 없어요.'**
+  String get extSummaryNoEvidence;
+
+  /// Product detail summary and loaded-review evidence: NotAnalyzed
+  ///
+  /// In ko, this message translates to:
+  /// **'아직 분석 전이라 표시할 요약이 없어요.'**
+  String get extSummaryNotAnalyzed;
+
+  /// Product detail summary and loaded-review evidence: InProgress
+  ///
+  /// In ko, this message translates to:
+  /// **'분석 진행 상태는 위 단계에서 확인해 주세요.'**
+  String get extSummaryInProgress;
+
+  /// Product detail summary and loaded-review evidence: Failed
+  ///
+  /// In ko, this message translates to:
+  /// **'분석에 실패해 요약을 표시할 수 없어요.'**
+  String get extSummaryFailed;
+
+  /// Product detail summary and loaded-review evidence: Disabled
+  ///
+  /// In ko, this message translates to:
+  /// **'분석이 비활성화되어 요약을 표시하지 않아요.'**
+  String get extSummaryDisabled;
+
+  /// Product detail summary and loaded-review evidence: Unavailable
+  ///
+  /// In ko, this message translates to:
+  /// **'요약을 표시할 분석 상태가 아직 확인되지 않았어요.'**
+  String get extSummaryUnavailable;
+
+  /// Product detail summary and loaded-review evidence: MissingValue
+  ///
+  /// In ko, this message translates to:
+  /// **'미제공'**
+  String get extSummaryMissingValue;
+
+  /// Product detail summary and loaded-review evidence: Sampling
+  ///
+  /// In ko, this message translates to:
+  /// **'표본 여부'**
+  String get extSummarySampling;
+
+  /// Product detail summary and loaded-review evidence: NotSampled
+  ///
+  /// In ko, this message translates to:
+  /// **'표본 분석 아님'**
+  String get extSummaryNotSampled;
+
+  /// Product detail summary and loaded-review evidence: LoadedScope
+  ///
+  /// In ko, this message translates to:
+  /// **'현재 불러온 리뷰 {count}개 기준'**
+  String extSummaryLoadedScope(int count);
+
+  /// Product detail summary and loaded-review evidence: V2Grades
+  ///
+  /// In ko, this message translates to:
+  /// **'정책 지수 기준 등급 (v2)'**
+  String get extSummaryV2Grades;
+
+  /// Product detail summary and loaded-review evidence: LegacyGrades
+  ///
+  /// In ko, this message translates to:
+  /// **'신뢰도 등급 (v0.5)'**
+  String get extSummaryLegacyGrades;
+
+  /// Product detail summary and loaded-review evidence: UnknownVersion
+  ///
+  /// In ko, this message translates to:
+  /// **'분석 버전 미상'**
+  String get extSummaryUnknownVersion;
+
+  /// Product detail summary and loaded-review evidence: GradeCount
+  ///
+  /// In ko, this message translates to:
+  /// **'{grade}: {count}개'**
+  String extSummaryGradeCount(String grade, int count);
+
+  /// Product detail summary and loaded-review evidence: GradeSafe
+  ///
+  /// In ko, this message translates to:
+  /// **'신뢰도 높음'**
+  String get extSummaryGradeSafe;
+
+  /// Product detail summary and loaded-review evidence: GradeWarn
+  ///
+  /// In ko, this message translates to:
+  /// **'주의'**
+  String get extSummaryGradeWarn;
+
+  /// Product detail summary and loaded-review evidence: GradeDanger
+  ///
+  /// In ko, this message translates to:
+  /// **'신뢰도 낮음'**
+  String get extSummaryGradeDanger;
+
+  /// Product detail summary and loaded-review evidence: EvidenceTitle
+  ///
+  /// In ko, this message translates to:
+  /// **'자주 확인된 신뢰도 근거'**
+  String get extSummaryEvidenceTitle;
+
+  /// Product detail summary and loaded-review evidence: EvidenceScope
+  ///
+  /// In ko, this message translates to:
+  /// **'현재 불러온 리뷰의 신뢰도 분석 근거이며, 상품 품질 평가는 아니에요.'**
+  String get extSummaryEvidenceScope;
+
+  /// Product detail summary and loaded-review evidence: ReasonCount
+  ///
+  /// In ko, this message translates to:
+  /// **'{count}개 리뷰에서 확인'**
+  String extSummaryReasonCount(int count);
+
+  /// Product detail summary and loaded-review evidence: NoLoadedReviews
+  ///
+  /// In ko, this message translates to:
+  /// **'현재 불러온 리뷰가 없어 등급 분포를 표시할 수 없어요.'**
+  String get extSummaryNoLoadedReviews;
+
+  /// Product detail summary and loaded-review evidence: Fact
+  ///
+  /// In ko, this message translates to:
+  /// **'{label}: {value}'**
+  String extSummaryFact(String label, String value);
 }
 
 class _AppLocalizationsDelegate

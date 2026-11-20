@@ -235,6 +235,7 @@ class ExternalProductSnapshot {
 class ExternalAnalysis {
   const ExternalAnalysis({
     this.status,
+    this.summary,
     this.display,
     this.modelVersion,
     this.policyVersion,
@@ -243,6 +244,7 @@ class ExternalAnalysis {
     this.sourceReviewCount,
   });
   final String? status;
+  final String? summary;
   final AnalysisDisplay? display;
   final String? modelVersion;
   final String? policyVersion;

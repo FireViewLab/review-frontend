@@ -1,3 +1,4 @@
+import 'package:re_view_front/features/external_product/presentation/widgets/analysis_summary_card.dart';
 import 'package:re_view_front/features/external_product/presentation/widgets/analysis_progress_steps.dart';
 import 'package:re_view_front/shared/widgets/product_detail_hero.dart';
 import 'package:re_view_front/features/external_product/presentation/widgets/external_product_report.dart';
@@ -457,6 +458,8 @@ class _ReadyState extends ConsumerState<_Ready> {
               ProductDetailHero(gallery: image, information: summary),
               const SizedBox(height: AppSpacing.xl),
               AnalysisProgressSteps(state: state, onRetry: widget.onRetry),
+              const SizedBox(height: AppSpacing.lg),
+              AnalysisSummaryCard(state: state),
               const SizedBox(height: AppSpacing.lg),
               ExternalProductReport(state: state),
               const SizedBox(height: AppSpacing.xl),
