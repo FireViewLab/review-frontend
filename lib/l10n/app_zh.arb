@@ -730,5 +730,10 @@
   "extTrustBehaviorExplanation": "根据评论作者的活动模式得出的分数。",
   "extTrustNetworkExplanation": "根据评论与作者之间的连接模式得出的分数。",
   "extTrustCoverageInSummary": "请在上方摘要卡片中查看分析范围和版本。",
-  "extTrustScoreValue": "{label} {score} / 100"
+  "extTrustScoreValue": "{label} {score} / 100",
+  "extNavProgress": "分析进度",
+  "extNavSummary": "AI摘要",
+  "extNavReport": "可信度报告",
+  "extNavReviews": "评论",
+  "extNavLabel": "跳转到版块"
 }

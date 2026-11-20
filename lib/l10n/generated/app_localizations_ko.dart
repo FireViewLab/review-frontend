@@ -2326,4 +2326,19 @@ class AppLocalizationsKo extends AppLocalizations {
   String extTrustScoreValue(String label, String score) {
     return '$label $score / 100';
   }
+
+  @override
+  String get extNavProgress => '분석 진행';
+
+  @override
+  String get extNavSummary => 'AI 요약';
+
+  @override
+  String get extNavReport => '신뢰도 리포트';
+
+  @override
+  String get extNavReviews => '리뷰';
+
+  @override
+  String get extNavLabel => '섹션 바로가기';
 }

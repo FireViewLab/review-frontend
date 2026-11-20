@@ -2416,4 +2416,19 @@ class AppLocalizationsEn extends AppLocalizations {
   String extTrustScoreValue(String label, String score) {
     return '$label $score / 100';
   }
+
+  @override
+  String get extNavProgress => 'Progress';
+
+  @override
+  String get extNavSummary => 'AI summary';
+
+  @override
+  String get extNavReport => 'Trust report';
+
+  @override
+  String get extNavReviews => 'Reviews';
+
+  @override
+  String get extNavLabel => 'Jump to section';
 }

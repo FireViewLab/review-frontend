@@ -1425,5 +1425,10 @@
         "type": "String"
       }
     }
-  }
+  },
+  "extNavProgress": "분석 진행",
+  "extNavSummary": "AI 요약",
+  "extNavReport": "신뢰도 리포트",
+  "extNavReviews": "리뷰",
+  "extNavLabel": "섹션 바로가기"
 }

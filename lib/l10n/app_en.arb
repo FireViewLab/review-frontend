@@ -744,5 +744,10 @@
   "extTrustBehaviorExplanation": "A score based on review authors’ activity patterns.",
   "extTrustNetworkExplanation": "A score based on connection patterns among reviews and authors.",
   "extTrustCoverageInSummary": "See the summary card above for analysis coverage and versions.",
-  "extTrustScoreValue": "{label} {score} / 100"
+  "extTrustScoreValue": "{label} {score} / 100",
+  "extNavProgress": "Progress",
+  "extNavSummary": "AI summary",
+  "extNavReport": "Trust report",
+  "extNavReviews": "Reviews",
+  "extNavLabel": "Jump to section"
 }

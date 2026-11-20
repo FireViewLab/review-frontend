@@ -4475,6 +4475,36 @@ abstract class AppLocalizations {
   /// In ko, this message translates to:
   /// **'{label} {score} / 100'**
   String extTrustScoreValue(String label, String score);
+
+  /// No description provided for @extNavProgress.
+  ///
+  /// In ko, this message translates to:
+  /// **'분석 진행'**
+  String get extNavProgress;
+
+  /// No description provided for @extNavSummary.
+  ///
+  /// In ko, this message translates to:
+  /// **'AI 요약'**
+  String get extNavSummary;
+
+  /// No description provided for @extNavReport.
+  ///
+  /// In ko, this message translates to:
+  /// **'신뢰도 리포트'**
+  String get extNavReport;
+
+  /// No description provided for @extNavReviews.
+  ///
+  /// In ko, this message translates to:
+  /// **'리뷰'**
+  String get extNavReviews;
+
+  /// No description provided for @extNavLabel.
+  ///
+  /// In ko, this message translates to:
+  /// **'섹션 바로가기'**
+  String get extNavLabel;
 }
 
 class _AppLocalizationsDelegate

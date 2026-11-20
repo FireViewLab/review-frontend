@@ -1,4 +1,5 @@
 import 'package:re_view_front/features/external_product/presentation/widgets/analysis_summary_card.dart';
+import 'package:re_view_front/shared/widgets/section_jump_bar.dart';
 import 'package:re_view_front/features/external_product/presentation/widgets/analysis_progress_steps.dart';
 import 'package:re_view_front/shared/widgets/product_detail_hero.dart';
 import 'package:re_view_front/features/external_product/presentation/widgets/external_product_report.dart';
@@ -354,6 +355,11 @@ class _ReadyState extends ConsumerState<_Ready> {
   Object? _cachedOptions;
   List<ExternalReview> _cachedReviews = const [];
   int _photoReviewCount = 0;
+  // 섹션 바로가기 대상.
+  final _progressKey = GlobalKey();
+  final _summaryKey = GlobalKey();
+  final _reportKey = GlobalKey();
+  final _reviewsKey = GlobalKey();
   List<ExternalReview> _prepareReviews(String? sortOrder, bool hasPreferences) {
     final options = (sortOrder, hasPreferences, _photoOnly || _photoView);
     if (identical(_cachedSource, state.reviews) && _cachedOptions == options) {
@@ -456,15 +462,75 @@ class _ReadyState extends ConsumerState<_Ready> {
                 const SizedBox(height: AppSpacing.md),
               ],
               ProductDetailHero(gallery: image, information: summary),
-              const SizedBox(height: AppSpacing.xl),
-              AnalysisProgressSteps(state: state, onRetry: widget.onRetry),
               const SizedBox(height: AppSpacing.lg),
-              AnalysisSummaryCard(state: state),
+              Semantics(
+                label: l10n.extNavLabel,
+                container: true,
+                child: SectionJumpBar(
+                  items: [
+                    SectionJumpItem(
+                      label: l10n.extNavProgress,
+                      target: _progressKey,
+                    ),
+                    SectionJumpItem(
+                      label: l10n.extNavSummary,
+                      target: _summaryKey,
+                    ),
+                    SectionJumpItem(
+                      label: l10n.extNavReport,
+                      target: _reportKey,
+                    ),
+                    SectionJumpItem(
+                      label: l10n.extNavReviews,
+                      target: _reviewsKey,
+                    ),
+                  ],
+                ),
+              ),
               const SizedBox(height: AppSpacing.lg),
-              ExternalProductReport(state: state),
+              LayoutBuilder(
+                builder: (context, constraints) {
+                  final progress = KeyedSubtree(
+                    key: _progressKey,
+                    child: AnalysisProgressSteps(
+                      state: state,
+                      onRetry: widget.onRetry,
+                    ),
+                  );
+                  final analysisSummary = KeyedSubtree(
+                    key: _summaryKey,
+                    child: AnalysisSummaryCard(state: state),
+                  );
+                  // 넓은 화면에서는 진행 단계와 요약을 나란히 둬 세로 길이를 줄인다.
+                  if (constraints.maxWidth >= 1080) {
+                    return Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Expanded(child: progress),
+                        const SizedBox(width: AppSpacing.lg),
+                        Expanded(child: analysisSummary),
+                      ],
+                    );
+                  }
+                  return Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      progress,
+                      const SizedBox(height: AppSpacing.lg),
+                      analysisSummary,
+                    ],
+                  );
+                },
+              ),
+              const SizedBox(height: AppSpacing.lg),
+              KeyedSubtree(
+                key: _reportKey,
+                child: ExternalProductReport(state: state),
+              ),
               const SizedBox(height: AppSpacing.xl),
               const Divider(height: AppSpacing.xxl, color: AppColors.border),
               Text(
+                key: _reviewsKey,
                 l10n.extProductReviewsTitle,
                 style: textTheme.titleLarge?.copyWith(
                   color: AppColors.textPrimary,

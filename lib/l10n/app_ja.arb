@@ -730,5 +730,10 @@
   "extTrustBehaviorExplanation": "レビュー投稿者の活動パターンを調べたスコアです。",
   "extTrustNetworkExplanation": "レビューと投稿者のつながりのパターンを調べたスコアです。",
   "extTrustCoverageInSummary": "分析範囲とバージョンは、上の要約カードで確認できます。",
-  "extTrustScoreValue": "{label} {score} / 100"
+  "extTrustScoreValue": "{label} {score} / 100",
+  "extNavProgress": "分析の進行",
+  "extNavSummary": "AI要約",
+  "extNavReport": "信頼度レポート",
+  "extNavReviews": "レビュー",
+  "extNavLabel": "セクションへ移動"
 }

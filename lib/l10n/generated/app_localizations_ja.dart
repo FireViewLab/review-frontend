@@ -2319,4 +2319,19 @@ class AppLocalizationsJa extends AppLocalizations {
   String extTrustScoreValue(String label, String score) {
     return '$label $score / 100';
   }
+
+  @override
+  String get extNavProgress => '分析の進行';
+
+  @override
+  String get extNavSummary => 'AI要約';
+
+  @override
+  String get extNavReport => '信頼度レポート';
+
+  @override
+  String get extNavReviews => 'レビュー';
+
+  @override
+  String get extNavLabel => 'セクションへ移動';
 }
