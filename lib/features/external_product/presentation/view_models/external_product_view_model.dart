@@ -222,7 +222,9 @@ class ExternalProductViewModel extends Notifier<ExternalProductState>
       isSlow: elapsed >= _slowAfter,
     );
     _pollTimer?.cancel();
-    _pollTimer = Timer(ref.read(externalProductPollIntervalProvider), () {
+    final interval = ref.read(externalProductPollIntervalProvider);
+    // 상품을 이미 보여 주는 중이면 뒤에서 조용히 갱신하므로 덜 자주 확인한다.
+    _pollTimer = Timer(state.product == null ? interval : interval * 3, () {
       _poll(generation);
     });
   }

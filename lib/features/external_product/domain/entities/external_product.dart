@@ -38,10 +38,14 @@ enum ExternalAnalysisStatus {
   failed,
   disabled,
   unavailable,
+
+  /// 아직 분석하지 않은 상품. 서버가 따로 분석을 돌리고 있지 않으므로 끝난 상태로 본다.
+  notAnalyzed,
   unknown;
 
   static ExternalAnalysisStatus parse(String? value) =>
       switch (value?.toUpperCase()) {
+        'NOT_ANALYZED' => notAnalyzed,
         'PENDING' || 'QUEUED' => pending,
         'RUNNING' => running,
         'DONE' => done,
