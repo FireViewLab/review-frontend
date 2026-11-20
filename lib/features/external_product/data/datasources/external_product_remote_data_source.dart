@@ -1,3 +1,4 @@
+import 'package:re_view_front/features/external_product/data/dtos/product_description_fields.dart';
 import 'package:re_view_front/core/analysis/analysis_contract.dart';
 import 'package:re_view_front/core/analysis/analysis_keys.dart';
 import 'package:re_view_front/core/utils/product_image_urls.dart';
@@ -111,6 +112,8 @@ class ExternalProductRemoteDataSourceImpl
       price: (json['price'] as num?)?.toInt(),
       thumbnailUrl: _text(json['thumbnailUrl']),
       imageUrls: readProductImages(json),
+      description: ProductDescriptionFields.readDescription(json),
+      detailImages: ProductDescriptionFields.readImages(json),
       category: _text(json['category']),
       reviewCount: (json['reviewCount'] as num?)?.toInt(),
       rating: (json['rating'] as num?)?.toDouble(),
