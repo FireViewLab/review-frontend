@@ -4079,6 +4079,156 @@ abstract class AppLocalizations {
   /// In ko, this message translates to:
   /// **'리뷰엉이'**
   String get owlGuideName;
+
+  /// Product detail collection and analysis progress: ProductStep
+  ///
+  /// In ko, this message translates to:
+  /// **'상품 정보 수집'**
+  String get extProgressProductStep;
+
+  /// Product detail collection and analysis progress: ReviewsStep
+  ///
+  /// In ko, this message translates to:
+  /// **'리뷰 수집'**
+  String get extProgressReviewsStep;
+
+  /// Product detail collection and analysis progress: AnalysisStep
+  ///
+  /// In ko, this message translates to:
+  /// **'리뷰 분석'**
+  String get extProgressAnalysisStep;
+
+  /// Product detail collection and analysis progress: StatusComplete
+  ///
+  /// In ko, this message translates to:
+  /// **'완료'**
+  String get extProgressStatusComplete;
+
+  /// Product detail collection and analysis progress: StatusInProgress
+  ///
+  /// In ko, this message translates to:
+  /// **'진행 중'**
+  String get extProgressStatusInProgress;
+
+  /// Product detail collection and analysis progress: StatusWaiting
+  ///
+  /// In ko, this message translates to:
+  /// **'대기'**
+  String get extProgressStatusWaiting;
+
+  /// Product detail collection and analysis progress: StatusFailed
+  ///
+  /// In ko, this message translates to:
+  /// **'실패'**
+  String get extProgressStatusFailed;
+
+  /// Product detail collection and analysis progress: StatusNotAnalyzed
+  ///
+  /// In ko, this message translates to:
+  /// **'아직 분석 전'**
+  String get extProgressStatusNotAnalyzed;
+
+  /// Product detail collection and analysis progress: StatusUnknown
+  ///
+  /// In ko, this message translates to:
+  /// **'확인 중'**
+  String get extProgressStatusUnknown;
+
+  /// Product detail collection and analysis progress: StatusRefreshing
+  ///
+  /// In ko, this message translates to:
+  /// **'새로 수집 중'**
+  String get extProgressStatusRefreshing;
+
+  /// Product detail collection and analysis progress: StatusDisabled
+  ///
+  /// In ko, this message translates to:
+  /// **'비활성화됨'**
+  String get extProgressStatusDisabled;
+
+  /// Product detail collection and analysis progress: StatusUnavailable
+  ///
+  /// In ko, this message translates to:
+  /// **'정보 없음'**
+  String get extProgressStatusUnavailable;
+
+  /// Product detail collection and analysis progress: StatusPartial
+  ///
+  /// In ko, this message translates to:
+  /// **'일부 완료'**
+  String get extProgressStatusPartial;
+
+  /// Product detail collection and analysis progress: NoticeCollecting
+  ///
+  /// In ko, this message translates to:
+  /// **'상품 정보와 리뷰의 수집 작업을 기다리고 있어요.'**
+  String get extProgressNoticeCollecting;
+
+  /// Product detail collection and analysis progress: NoticeRefreshing
+  ///
+  /// In ko, this message translates to:
+  /// **'이전에 수집한 정보를 보여드리고 있어요. 새 수집 작업이 대기 중이거나 진행 중이에요.'**
+  String get extProgressNoticeRefreshing;
+
+  /// Product detail collection and analysis progress: NoticeAnalyzing
+  ///
+  /// In ko, this message translates to:
+  /// **'리뷰 분석이 대기 중이거나 진행 중이에요.'**
+  String get extProgressNoticeAnalyzing;
+
+  /// Product detail collection and analysis progress: NoticeNotAnalyzed
+  ///
+  /// In ko, this message translates to:
+  /// **'아직 리뷰 분석 전이에요.'**
+  String get extProgressNoticeNotAnalyzed;
+
+  /// Product detail collection and analysis progress: NoticeComplete
+  ///
+  /// In ko, this message translates to:
+  /// **'리뷰 분석이 완료됐어요.'**
+  String get extProgressNoticeComplete;
+
+  /// Product detail collection and analysis progress: NoticeFailed
+  ///
+  /// In ko, this message translates to:
+  /// **'수집·분석 과정에서 문제가 확인됐어요. 단계별 상태를 확인해 주세요.'**
+  String get extProgressNoticeFailed;
+
+  /// Product detail collection and analysis progress: NoticeDelayed
+  ///
+  /// In ko, this message translates to:
+  /// **'시간이 걸리고 있어요. 다시 확인해 주세요.'**
+  String get extProgressNoticeDelayed;
+
+  /// Product detail collection and analysis progress: NoticeChecking
+  ///
+  /// In ko, this message translates to:
+  /// **'현재 수집·분석 상태를 확인 중이에요.'**
+  String get extProgressNoticeChecking;
+
+  /// Product detail collection and analysis progress: NoticeDisabled
+  ///
+  /// In ko, this message translates to:
+  /// **'리뷰 분석이 비활성화되어 있어요.'**
+  String get extProgressNoticeDisabled;
+
+  /// Product detail collection and analysis progress: NoticeUnavailable
+  ///
+  /// In ko, this message translates to:
+  /// **'현재 리뷰 분석 정보를 확인할 수 없어요.'**
+  String get extProgressNoticeUnavailable;
+
+  /// Product detail collection and analysis progress: Retry
+  ///
+  /// In ko, this message translates to:
+  /// **'다시 확인'**
+  String get extProgressRetry;
+
+  /// Product detail collection and analysis progress: StepSemantics
+  ///
+  /// In ko, this message translates to:
+  /// **'{step}, {status}'**
+  String extProgressStepSemantics(String step, String status);
 }
 
 class _AppLocalizationsDelegate

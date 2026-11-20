@@ -1,3 +1,4 @@
+import 'package:re_view_front/features/external_product/presentation/widgets/analysis_progress_steps.dart';
 import 'package:re_view_front/shared/widgets/product_detail_hero.dart';
 import 'package:re_view_front/features/external_product/presentation/widgets/external_product_report.dart';
 import 'package:re_view_front/shared/widgets/review_photo_view.dart';
@@ -182,6 +183,8 @@ class _ExternalProductContentState
             const _SummarySkeleton(),
             ChatAskButton(productId: productRef.externalId),
             const SizedBox(height: AppSpacing.lg),
+            AnalysisProgressSteps(state: state, onRetry: vm.load),
+            const SizedBox(height: AppSpacing.lg),
             const ExternalAnalysisPending(),
             const SizedBox(height: AppSpacing.lg),
             Text(l10n.extProductReviewsTitle),
@@ -217,6 +220,7 @@ class _ExternalProductContentState
           state: state,
           product: product,
           onLoadMore: vm.loadMoreReviews,
+          onRetry: vm.load,
           collectionStatus: status,
         ),
         SliverToBoxAdapter(
@@ -287,7 +291,10 @@ class _Collecting extends StatelessWidget {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            const CircularProgressIndicator(),
+            if (MediaQuery.disableAnimationsOf(context))
+              const Icon(Icons.sync_rounded, color: AppColors.primary)
+            else
+              const CircularProgressIndicator(),
             const SizedBox(height: AppSpacing.lg),
             Text(
               l10n.extProductCollectingTitle,
@@ -321,12 +328,14 @@ class _Ready extends ConsumerStatefulWidget {
     required this.state,
     required this.product,
     required this.onLoadMore,
+    required this.onRetry,
     this.collectionStatus,
   });
 
   final ExternalProductState state;
   final ExternalProduct product;
   final VoidCallback onLoadMore;
+  final VoidCallback onRetry;
   final Widget? collectionStatus;
 
   @override
@@ -447,6 +456,8 @@ class _ReadyState extends ConsumerState<_Ready> {
               ],
               ProductDetailHero(gallery: image, information: summary),
               const SizedBox(height: AppSpacing.xl),
+              AnalysisProgressSteps(state: state, onRetry: widget.onRetry),
+              const SizedBox(height: AppSpacing.lg),
               ExternalProductReport(state: state),
               const SizedBox(height: AppSpacing.xl),
               const Divider(height: AppSpacing.xxl, color: AppColors.border),

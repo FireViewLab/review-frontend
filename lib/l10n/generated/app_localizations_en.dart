@@ -2169,4 +2169,89 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get owlGuideName => 'Review Owl';
+
+  @override
+  String get extProgressProductStep => 'Product collection';
+
+  @override
+  String get extProgressReviewsStep => 'Review collection';
+
+  @override
+  String get extProgressAnalysisStep => 'Review analysis';
+
+  @override
+  String get extProgressStatusComplete => 'Complete';
+
+  @override
+  String get extProgressStatusInProgress => 'In progress';
+
+  @override
+  String get extProgressStatusWaiting => 'Waiting';
+
+  @override
+  String get extProgressStatusFailed => 'Failed';
+
+  @override
+  String get extProgressStatusNotAnalyzed => 'Not yet analyzed';
+
+  @override
+  String get extProgressStatusUnknown => 'Checking status';
+
+  @override
+  String get extProgressStatusRefreshing => 'Collecting again';
+
+  @override
+  String get extProgressStatusDisabled => 'Disabled';
+
+  @override
+  String get extProgressStatusUnavailable => 'Unavailable';
+
+  @override
+  String get extProgressStatusPartial => 'Partially complete';
+
+  @override
+  String get extProgressNoticeCollecting =>
+      'Waiting for product and review collection.';
+
+  @override
+  String get extProgressNoticeRefreshing =>
+      'Previously collected information is shown. A new collection job is waiting or in progress.';
+
+  @override
+  String get extProgressNoticeAnalyzing =>
+      'Review analysis is waiting or in progress.';
+
+  @override
+  String get extProgressNoticeNotAnalyzed =>
+      'Reviews have not been analyzed yet.';
+
+  @override
+  String get extProgressNoticeComplete => 'Review analysis is complete.';
+
+  @override
+  String get extProgressNoticeFailed =>
+      'A problem was reported during collection or analysis. Check the status of each step.';
+
+  @override
+  String get extProgressNoticeDelayed =>
+      'This is taking some time. Please check again.';
+
+  @override
+  String get extProgressNoticeChecking =>
+      'Checking the collection and analysis status.';
+
+  @override
+  String get extProgressNoticeDisabled => 'Review analysis is disabled.';
+
+  @override
+  String get extProgressNoticeUnavailable =>
+      'Review analysis information is currently unavailable.';
+
+  @override
+  String get extProgressRetry => 'Check again';
+
+  @override
+  String extProgressStepSemantics(String step, String status) {
+    return '$step, $status';
+  }
 }

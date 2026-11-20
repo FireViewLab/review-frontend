@@ -2095,4 +2095,82 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String get owlGuideName => 'レビューフクロウ';
+
+  @override
+  String get extProgressProductStep => '商品情報の収集';
+
+  @override
+  String get extProgressReviewsStep => 'レビューの収集';
+
+  @override
+  String get extProgressAnalysisStep => 'レビューの分析';
+
+  @override
+  String get extProgressStatusComplete => '完了';
+
+  @override
+  String get extProgressStatusInProgress => '進行中';
+
+  @override
+  String get extProgressStatusWaiting => '待機中';
+
+  @override
+  String get extProgressStatusFailed => '失敗';
+
+  @override
+  String get extProgressStatusNotAnalyzed => 'まだ分析されていません';
+
+  @override
+  String get extProgressStatusUnknown => '確認中';
+
+  @override
+  String get extProgressStatusRefreshing => '再収集中';
+
+  @override
+  String get extProgressStatusDisabled => '無効';
+
+  @override
+  String get extProgressStatusUnavailable => '情報なし';
+
+  @override
+  String get extProgressStatusPartial => '一部完了';
+
+  @override
+  String get extProgressNoticeCollecting => '商品情報とレビューの収集を待っています。';
+
+  @override
+  String get extProgressNoticeRefreshing =>
+      '以前に収集した情報を表示しています。新しい収集処理は待機中または進行中です。';
+
+  @override
+  String get extProgressNoticeAnalyzing => 'レビューの分析は待機中または進行中です。';
+
+  @override
+  String get extProgressNoticeNotAnalyzed => 'レビューはまだ分析されていません。';
+
+  @override
+  String get extProgressNoticeComplete => 'レビューの分析が完了しました。';
+
+  @override
+  String get extProgressNoticeFailed => '収集・分析の過程で問題が報告されました。各段階の状態をご確認ください。';
+
+  @override
+  String get extProgressNoticeDelayed => '時間がかかっています。もう一度ご確認ください。';
+
+  @override
+  String get extProgressNoticeChecking => '現在の収集・分析の状態を確認しています。';
+
+  @override
+  String get extProgressNoticeDisabled => 'レビューの分析は無効になっています。';
+
+  @override
+  String get extProgressNoticeUnavailable => '現在、レビューの分析情報を確認できません。';
+
+  @override
+  String get extProgressRetry => 'もう一度確認';
+
+  @override
+  String extProgressStepSemantics(String step, String status) {
+    return '$step、$status';
+  }
 }
