@@ -1430,5 +1430,34 @@
   "extNavSummary": "AI 요약",
   "extNavReport": "신뢰도 리포트",
   "extNavReviews": "리뷰",
-  "extNavLabel": "섹션 바로가기"
+  "extNavLabel": "섹션 바로가기",
+  "extDescriptionTitle": "상품 상세 설명",
+  "@extDescriptionTitle": {
+    "description": "Product description section: extDescriptionTitle"
+  },
+  "extDescriptionSource": "쇼핑몰 상세 페이지 내용",
+  "@extDescriptionSource": {
+    "description": "Product description section: extDescriptionSource"
+  },
+  "extDescriptionExpand": "상세 설명 펼치기",
+  "@extDescriptionExpand": {
+    "description": "Product description section: extDescriptionExpand"
+  },
+  "extDescriptionCollapse": "상세 설명 접기",
+  "@extDescriptionCollapse": {
+    "description": "Product description section: extDescriptionCollapse"
+  },
+  "extDescriptionImage": "상세 이미지 {index}",
+  "@extDescriptionImage": {
+    "description": "Product description section: extDescriptionImage",
+    "placeholders": {
+      "index": {
+        "type": "int"
+      }
+    }
+  },
+  "extNavDescription": "상세 설명",
+  "@extNavDescription": {
+    "description": "Product description section: extNavDescription"
+  }
 }

@@ -735,5 +735,11 @@
   "extNavSummary": "AI要約",
   "extNavReport": "信頼度レポート",
   "extNavReviews": "レビュー",
-  "extNavLabel": "セクションへ移動"
+  "extNavLabel": "セクションへ移動",
+  "extDescriptionTitle": "商品詳細説明",
+  "extDescriptionSource": "ショップの商品詳細ページの内容",
+  "extDescriptionExpand": "詳細説明を開く",
+  "extDescriptionCollapse": "詳細説明を閉じる",
+  "extDescriptionImage": "詳細画像 {index}",
+  "extNavDescription": "詳細説明"
 }

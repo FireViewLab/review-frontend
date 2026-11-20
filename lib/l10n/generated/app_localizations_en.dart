@@ -2431,4 +2431,24 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get extNavLabel => 'Jump to section';
+
+  @override
+  String get extDescriptionTitle => 'Product description';
+
+  @override
+  String get extDescriptionSource => 'Content from the store product page';
+
+  @override
+  String get extDescriptionExpand => 'Expand product description';
+
+  @override
+  String get extDescriptionCollapse => 'Collapse product description';
+
+  @override
+  String extDescriptionImage(int index) {
+    return 'Detail image $index';
+  }
+
+  @override
+  String get extNavDescription => 'Description';
 }

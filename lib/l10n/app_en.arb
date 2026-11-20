@@ -749,5 +749,11 @@
   "extNavSummary": "AI summary",
   "extNavReport": "Trust report",
   "extNavReviews": "Reviews",
-  "extNavLabel": "Jump to section"
+  "extNavLabel": "Jump to section",
+  "extDescriptionTitle": "Product description",
+  "extDescriptionSource": "Content from the store product page",
+  "extDescriptionExpand": "Expand product description",
+  "extDescriptionCollapse": "Collapse product description",
+  "extDescriptionImage": "Detail image {index}",
+  "extNavDescription": "Description"
 }

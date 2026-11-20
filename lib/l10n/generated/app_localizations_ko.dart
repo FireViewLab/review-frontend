@@ -2341,4 +2341,24 @@ class AppLocalizationsKo extends AppLocalizations {
 
   @override
   String get extNavLabel => '섹션 바로가기';
+
+  @override
+  String get extDescriptionTitle => '상품 상세 설명';
+
+  @override
+  String get extDescriptionSource => '쇼핑몰 상세 페이지 내용';
+
+  @override
+  String get extDescriptionExpand => '상세 설명 펼치기';
+
+  @override
+  String get extDescriptionCollapse => '상세 설명 접기';
+
+  @override
+  String extDescriptionImage(int index) {
+    return '상세 이미지 $index';
+  }
+
+  @override
+  String get extNavDescription => '상세 설명';
 }
