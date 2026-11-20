@@ -1,3 +1,4 @@
+import 'package:re_view_front/features/external_product/presentation/widgets/product_description_section.dart';
 import 'package:re_view_front/features/external_product/presentation/widgets/analysis_summary_card.dart';
 import 'package:re_view_front/shared/widgets/section_jump_bar.dart';
 import 'package:re_view_front/features/external_product/presentation/widgets/analysis_progress_steps.dart';
@@ -360,6 +361,7 @@ class _ReadyState extends ConsumerState<_Ready> {
   final _summaryKey = GlobalKey();
   final _reportKey = GlobalKey();
   final _reviewsKey = GlobalKey();
+  final _descriptionKey = GlobalKey();
   List<ExternalReview> _prepareReviews(String? sortOrder, bool hasPreferences) {
     final options = (sortOrder, hasPreferences, _photoOnly || _photoView);
     if (identical(_cachedSource, state.reviews) && _cachedOptions == options) {
@@ -480,6 +482,11 @@ class _ReadyState extends ConsumerState<_Ready> {
                       label: l10n.extNavReport,
                       target: _reportKey,
                     ),
+                    if (product.hasDescription)
+                      SectionJumpItem(
+                        label: l10n.extNavDescription,
+                        target: _descriptionKey,
+                      ),
                     SectionJumpItem(
                       label: l10n.extNavReviews,
                       target: _reviewsKey,
@@ -527,6 +534,13 @@ class _ReadyState extends ConsumerState<_Ready> {
                 key: _reportKey,
                 child: ExternalProductReport(state: state),
               ),
+              if (product.hasDescription) ...[
+                const SizedBox(height: AppSpacing.xl),
+                KeyedSubtree(
+                  key: _descriptionKey,
+                  child: ProductDescriptionSection(product: product),
+                ),
+              ],
               const SizedBox(height: AppSpacing.xl),
               const Divider(height: AppSpacing.xxl, color: AppColors.border),
               Text(

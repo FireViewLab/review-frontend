@@ -4505,6 +4505,42 @@ abstract class AppLocalizations {
   /// In ko, this message translates to:
   /// **'섹션 바로가기'**
   String get extNavLabel;
+
+  /// Product description section: extDescriptionTitle
+  ///
+  /// In ko, this message translates to:
+  /// **'상품 상세 설명'**
+  String get extDescriptionTitle;
+
+  /// Product description section: extDescriptionSource
+  ///
+  /// In ko, this message translates to:
+  /// **'쇼핑몰 상세 페이지 내용'**
+  String get extDescriptionSource;
+
+  /// Product description section: extDescriptionExpand
+  ///
+  /// In ko, this message translates to:
+  /// **'상세 설명 펼치기'**
+  String get extDescriptionExpand;
+
+  /// Product description section: extDescriptionCollapse
+  ///
+  /// In ko, this message translates to:
+  /// **'상세 설명 접기'**
+  String get extDescriptionCollapse;
+
+  /// Product description section: extDescriptionImage
+  ///
+  /// In ko, this message translates to:
+  /// **'상세 이미지 {index}'**
+  String extDescriptionImage(int index);
+
+  /// Product description section: extNavDescription
+  ///
+  /// In ko, this message translates to:
+  /// **'상세 설명'**
+  String get extNavDescription;
 }
 
 class _AppLocalizationsDelegate

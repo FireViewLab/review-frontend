@@ -7,4 +7,6 @@ void configureWebImageElement(
   required String objectFit,
   required VoidCallback onError,
   String? borderRadius,
+  String objectPosition = 'center',
+  void Function(int width, int height)? onLoad,
 }) {}

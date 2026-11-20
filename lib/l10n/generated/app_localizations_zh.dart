@@ -2317,4 +2317,24 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get extNavLabel => '跳转到版块';
+
+  @override
+  String get extDescriptionTitle => '商品详情';
+
+  @override
+  String get extDescriptionSource => '来自商城商品详情页的内容';
+
+  @override
+  String get extDescriptionExpand => '展开商品详情';
+
+  @override
+  String get extDescriptionCollapse => '收起商品详情';
+
+  @override
+  String extDescriptionImage(int index) {
+    return '详情图片 $index';
+  }
+
+  @override
+  String get extNavDescription => '商品详情';
 }

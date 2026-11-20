@@ -13,6 +13,8 @@ void configureWebImageElement(
   required String objectFit,
   required VoidCallback onError,
   String? borderRadius,
+  String objectPosition = 'center',
+  void Function(int width, int height)? onLoad,
 }) {
   final viewport = element as web.HTMLDivElement;
   // Own only this view's DOM. Never mutate Flutter's host/slot or global z-index.
@@ -43,7 +45,7 @@ void configureWebImageElement(
     ..maxHeight = '100%'
     ..boxSizing = 'border-box'
     ..objectFit = objectFit
-    ..objectPosition = 'center'
+    ..objectPosition = objectPosition
     ..display = 'block'
     ..pointerEvents = 'none';
   viewport.append(img);
@@ -52,6 +54,13 @@ void configureWebImageElement(
     ((web.Event _) => onError()).toJS,
     web.AddEventListenerOptions(once: true),
   );
+  if (onLoad != null) {
+    img.addEventListener(
+      'load',
+      ((web.Event _) => onLoad(img.naturalWidth, img.naturalHeight)).toJS,
+      web.AddEventListenerOptions(once: true),
+    );
+  }
   // 리스너를 단 뒤에 src를 넣어야 바로 실패하는 경우도 잡힌다.
   img.src = url;
 }

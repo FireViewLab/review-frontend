@@ -14,10 +14,12 @@ class AppNetworkImage extends StatelessWidget {
     this.iconSize = 28.0,
     this.borderRadius,
     this.thumbnailWidth,
+    this.intrinsicHeight = false,
     super.key,
   });
 
   final String url;
+  final bool intrinsicHeight;
 
   /// 목록 카드처럼 작게 보이는 곳에서 받을 이미지 가로 픽셀. 지정하면 쇼핑몰 CDN의
   /// 축소 주소를 먼저 받고, 실패하면 원본 [url]로 다시 시도한다.
@@ -52,9 +54,13 @@ class AppNetworkImage extends StatelessWidget {
       alignment: alignment,
       loadingBuilder: (context, widget, loadingProgress) {
         if (loadingProgress == null) return widget;
-        return const _Shimmer();
+        return intrinsicHeight
+            ? const AspectRatio(aspectRatio: 1, child: _Shimmer())
+            : const _Shimmer();
       },
-      errorBuilder: (context, error, stackTrace) => onError,
+      errorBuilder: (context, error, stackTrace) => intrinsicHeight
+          ? AspectRatio(aspectRatio: 1, child: onError)
+          : onError,
     );
   }
 
@@ -75,7 +81,13 @@ class AppNetworkImage extends StatelessWidget {
     final usePlaceholder = AppNetworkImagePlaceholderScope.maybeOf(context);
 
     if (url.isEmpty || usePlaceholder) {
-      child = _Placeholder(icon: placeholderIcon, iconSize: iconSize);
+      final placeholder = _Placeholder(
+        icon: placeholderIcon,
+        iconSize: iconSize,
+      );
+      child = intrinsicHeight
+          ? AspectRatio(aspectRatio: 1, child: placeholder)
+          : placeholder;
     } else if (kIsWeb) {
       // HtmlElementView로 <img> 태그 직접 렌더링 → 외부 CDN 이미지 CORS 우회
       final width = thumbnailWidth;
@@ -85,6 +97,7 @@ class AppNetworkImage extends StatelessWidget {
             ? null
             : productThumbnailUrl(url, width: width),
         objectFit: _objectFit,
+        intrinsicHeight: intrinsicHeight,
         cssBorderRadius: _cssBorderRadius,
         placeholder: _Placeholder(icon: placeholderIcon, iconSize: iconSize),
       );
@@ -129,12 +142,14 @@ class _WebImage extends StatefulWidget {
     required this.placeholder,
     this.thumbnailUrl,
     this.cssBorderRadius,
+    this.intrinsicHeight = false,
   });
 
   final String url;
   final String? thumbnailUrl;
   final String objectFit;
   final String? cssBorderRadius;
+  final bool intrinsicHeight;
   final Widget placeholder;
 
   @override
@@ -142,6 +157,7 @@ class _WebImage extends StatefulWidget {
 }
 
 class _WebImageState extends State<_WebImage> {
+  double? _aspectRatio;
   bool _failed = false;
   bool _thumbnailFailed = false;
 
@@ -152,46 +168,63 @@ class _WebImageState extends State<_WebImage> {
         oldWidget.thumbnailUrl != widget.thumbnailUrl) {
       _failed = false;
       _thumbnailFailed = false;
+      _aspectRatio = null;
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    if (_failed) return widget.placeholder;
+    if (_failed) return _withAspectRatio(widget.placeholder);
     final thumbnailUrl = widget.thumbnailUrl;
     final useThumbnail =
         thumbnailUrl != null && thumbnailUrl != widget.url && !_thumbnailFailed;
     final loadedUrl = useThumbnail ? thumbnailUrl : widget.url;
-    return ClipRect(
-      child: ColoredBox(
-        color: AppColors.surfaceMuted,
-        child: HtmlElementView.fromTagName(
-          // Images are display content; Flutter owns card/chat/zoom input.
-          hitTestBehavior: PlatformViewHitTestBehavior.transparent,
-          // Keep a DOM viewport separate from the image's intrinsic dimensions.
-          key: ValueKey(loadedUrl),
-          tagName: 'div',
-          onElementCreated: (element) => configureWebImageElement(
-            element,
-            url: loadedUrl,
-            objectFit: widget.objectFit,
-            borderRadius: widget.cssBorderRadius,
-            onError: () {
-              if (!mounted) return;
-              setState(() {
-                // 축소 주소가 실패하면 원본으로 한 번 더 받는다.
-                if (useThumbnail) {
-                  _thumbnailFailed = true;
-                } else {
-                  _failed = true;
-                }
-              });
-            },
+    return _withAspectRatio(
+      ClipRect(
+        child: ColoredBox(
+          color: AppColors.surfaceMuted,
+          child: HtmlElementView.fromTagName(
+            // Images are display content; Flutter owns card/chat/zoom input.
+            hitTestBehavior: PlatformViewHitTestBehavior.transparent,
+            // Keep a DOM viewport separate from the image's intrinsic dimensions.
+            key: ValueKey(loadedUrl),
+            tagName: 'div',
+            onElementCreated: (element) => configureWebImageElement(
+              element,
+              url: loadedUrl,
+              objectFit: widget.objectFit,
+              objectPosition: widget.intrinsicHeight ? 'center top' : 'center',
+              onLoad: widget.intrinsicHeight
+                  ? (width, height) {
+                      if (!mounted || width <= 0 || height <= 0) return;
+                      final ratio = width / height;
+                      if (_aspectRatio != ratio) {
+                        setState(() => _aspectRatio = ratio);
+                      }
+                    }
+                  : null,
+              borderRadius: widget.cssBorderRadius,
+              onError: () {
+                if (!mounted) return;
+                setState(() {
+                  // 축소 주소가 실패하면 원본으로 한 번 더 받는다.
+                  if (useThumbnail) {
+                    _thumbnailFailed = true;
+                  } else {
+                    _failed = true;
+                  }
+                });
+              },
+            ),
           ),
         ),
       ),
     );
   }
+
+  Widget _withAspectRatio(Widget child) => widget.intrinsicHeight
+      ? AspectRatio(aspectRatio: _aspectRatio ?? 1, child: child)
+      : child;
 }
 
 class AppNetworkImagePlaceholderScope extends InheritedWidget {

@@ -2334,4 +2334,24 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String get extNavLabel => 'セクションへ移動';
+
+  @override
+  String get extDescriptionTitle => '商品詳細説明';
+
+  @override
+  String get extDescriptionSource => 'ショップの商品詳細ページの内容';
+
+  @override
+  String get extDescriptionExpand => '詳細説明を開く';
+
+  @override
+  String get extDescriptionCollapse => '詳細説明を閉じる';
+
+  @override
+  String extDescriptionImage(int index) {
+    return '詳細画像 $index';
+  }
+
+  @override
+  String get extNavDescription => '詳細説明';
 }

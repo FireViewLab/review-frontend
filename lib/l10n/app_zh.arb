@@ -735,5 +735,11 @@
   "extNavSummary": "AI摘要",
   "extNavReport": "可信度报告",
   "extNavReviews": "评论",
-  "extNavLabel": "跳转到版块"
+  "extNavLabel": "跳转到版块",
+  "extDescriptionTitle": "商品详情",
+  "extDescriptionSource": "来自商城商品详情页的内容",
+  "extDescriptionExpand": "展开商品详情",
+  "extDescriptionCollapse": "收起商品详情",
+  "extDescriptionImage": "详情图片 {index}",
+  "extNavDescription": "商品详情"
 }

@@ -133,6 +133,8 @@ class ExternalProduct {
     this.price,
     this.thumbnailUrl,
     this.imageUrls = const [],
+    this.description,
+    this.detailImages = const [],
     this.category,
     this.reviewCount,
     this.rating,
@@ -147,6 +149,10 @@ class ExternalProduct {
   final int? price;
   final String? thumbnailUrl;
   final List<String> imageUrls;
+  final String? description;
+  final List<String> detailImages;
+  bool get hasDescription =>
+      (description?.trim().isNotEmpty ?? false) || detailImages.isNotEmpty;
   List<String> get galleryImages =>
       productImageUrls(primary: thumbnailUrl, additional: imageUrls);
   final String? category;
