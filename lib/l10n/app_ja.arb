@@ -663,5 +663,6 @@
   "analysisNetworkScore": "ネットワークスコア",
   "analysisScore": "分析スコア",
   "analysisSeparateContracts": "異なる契約のスコアは分けて表示します。",
-  "analysisPolicyAverage": "商品の平均ポリシー指数"
+  "analysisPolicyAverage": "商品の平均ポリシー指数",
+  "owlGuideName": "レビューフクロウ"
 }

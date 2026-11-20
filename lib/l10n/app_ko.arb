@@ -1112,5 +1112,9 @@
   "analysisNetworkScore": "네트워크 점수",
   "analysisScore": "분석 점수",
   "analysisSeparateContracts": "서로 다른 계약의 점수는 별도로 표시합니다.",
-  "analysisPolicyAverage": "상품 평균 정책 지수"
+  "analysisPolicyAverage": "상품 평균 정책 지수",
+  "owlGuideName": "리뷰엉이",
+  "@owlGuideName": {
+    "description": "상품 안내 캐릭터 이름"
+  }
 }

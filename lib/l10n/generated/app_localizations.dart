@@ -4073,6 +4073,12 @@ abstract class AppLocalizations {
   /// In ko, this message translates to:
   /// **'상품 평균 정책 지수'**
   String get analysisPolicyAverage;
+
+  /// 상품 안내 캐릭터 이름
+  ///
+  /// In ko, this message translates to:
+  /// **'리뷰엉이'**
+  String get owlGuideName;
 }
 
 class _AppLocalizationsDelegate

@@ -677,5 +677,6 @@
   "analysisNetworkScore": "Network score",
   "analysisScore": "Analysis score",
   "analysisSeparateContracts": "Scores from different contracts are shown separately.",
-  "analysisPolicyAverage": "Product average policy index"
+  "analysisPolicyAverage": "Product average policy index",
+  "owlGuideName": "Review Owl"
 }
