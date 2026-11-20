@@ -330,6 +330,28 @@ curl -i https://re-view.kr/deployment.json
 - RTI·등급·색상이 null이면 **분석 전**입니다. 0점은 실제 0점으로 표시하고, 미분석을 안전 등급·초록색·가짜 수치로 바꾸지 않습니다.
 - RTI 평균은 미분석을 빼고 계산하며, 전부 미분석이면 분석 전입니다. 미분석 상품은 양수 RTI 필터를 통과하지 않고 정렬에서 뒤로 갑니다.
 - 리뷰 수·평점의 null은 숨기고 명시적인 0은 표시합니다.
+- 수집 상태(`collectionStatus`)·분석 상태(`analysisStatus`)·수집 job을 함께 보관합니다. 상품을 보여 주는 중에도 수집 job이나 분석이 진행 중이면(예: `STALE` + 대기 job) 화면을 유지한 채 9초 간격으로 갱신하고, 완료·실패·`NOT_ANALYZED`면 멈춥니다. 120초가 지나면 "갱신 지연"으로 표시합니다. 앱이 백그라운드로 가면 멈췄다가 돌아오면 다시 확인합니다.
+- 진행 단계(상품 정보 수집 → 리뷰 수집 → 리뷰 분석)는 서버 상태값으로만 정하고, 받지 못한 단계를 완료로 표시하지 않습니다.
+
+</details>
+
+<details>
+<summary>분석 결과 계약 v0.5 / v2 (AI 모델 v3.1)</summary>
+
+- 재분석 기간에는 상품·리뷰마다 v0.5(RTI·level·reasons)와 v2 결과가 섞여 옵니다. `contract_version`으로 구분해 둘 다 표시합니다([review-backend#250](https://github.com/FireViewLab/review-backend/issues/250)).
+- v2: 정책 지수(`policy_index_v3`, 0~100, null은 계산 불가)와 등급(`evidence_level_v3`: SAFE/WARN/DANGER), 한 문단 설명(`analysis_summary_ko`, 없으면 `rules_reasons_ko` 목록)을 씁니다. 정책 지수는 RTI나 확률이 아니므로 "RTI"·확률·허위 단정 표현을 쓰지 않습니다.
+- 텍스트·행동·네트워크 점수의 null은 0점이 아니라 계산 불가입니다.
+- 서버 키 이름은 `lib/core/analysis/analysis_keys.dart` 한 곳에 모아 camelCase·snake_case를 모두 읽습니다. #250 확정 시 이 파일만 고칩니다.
+- 검색의 점수순 정렬·점수 필터는 두 계약의 0~100 점수를 같은 기준으로 비교합니다.
+
+</details>
+
+<details>
+<summary>AI 요약·신뢰도 리포트·상세 설명</summary>
+
+- AI 분석 요약: 서버 상품 요약 문장이 오면 리뷰엉이 말풍선으로 보여 줍니다([review-backend#249](https://github.com/FireViewLab/review-backend/issues/249)). 없으면 분석 범위와 **현재 불러온 리뷰 기준** 등급 분포·자주 확인된 신뢰도 근거를 보여 줍니다. 상품 전체 비율이나 품질 평가처럼 표시하지 않습니다.
+- 신뢰도 리포트: 상세 분석 결과를 먼저 쓰고, 없으면 목록에서 받은 평균을 출처와 함께 표시합니다. 상세의 계산 불가를 목록 점수로 덮지 않습니다. 직접 URL로 들어와 평균이 없으면 그 이유를 안내합니다.
+- 상세 설명: `product.description`(텍스트, HTML은 글자만)·`product.detailImages`(최대 30장)를 받으면 접기/펼치기 섹션으로 보여 줍니다. 서버가 아직 보내지 않아 현재는 숨겨져 있습니다(#249).
 
 </details>
 
