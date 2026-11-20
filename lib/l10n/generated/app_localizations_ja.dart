@@ -2092,4 +2092,7 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String get analysisPolicyAverage => '商品の平均ポリシー指数';
+
+  @override
+  String get owlGuideName => 'レビューフクロウ';
 }

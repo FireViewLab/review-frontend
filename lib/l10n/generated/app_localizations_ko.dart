@@ -2098,4 +2098,7 @@ class AppLocalizationsKo extends AppLocalizations {
 
   @override
   String get analysisPolicyAverage => '상품 평균 정책 지수';
+
+  @override
+  String get owlGuideName => '리뷰엉이';
 }

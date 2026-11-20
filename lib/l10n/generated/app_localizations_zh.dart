@@ -2077,4 +2077,7 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get analysisPolicyAverage => '商品平均政策指数';
+
+  @override
+  String get owlGuideName => '评论猫头鹰';
 }

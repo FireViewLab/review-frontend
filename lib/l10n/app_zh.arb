@@ -663,5 +663,6 @@
   "analysisNetworkScore": "网络分数",
   "analysisScore": "分析分数",
   "analysisSeparateContracts": "不同契约的分数分开显示。",
-  "analysisPolicyAverage": "商品平均政策指数"
+  "analysisPolicyAverage": "商品平均政策指数",
+  "owlGuideName": "评论猫头鹰"
 }

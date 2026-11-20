@@ -2166,4 +2166,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get analysisPolicyAverage => 'Product average policy index';
+
+  @override
+  String get owlGuideName => 'Review Owl';
 }
