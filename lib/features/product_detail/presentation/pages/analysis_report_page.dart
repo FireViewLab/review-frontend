@@ -37,6 +37,7 @@ class AnalysisReportPage extends ConsumerWidget {
                 ProductDetailLoading() => const AnalysisReportSkeletonView(),
                 ProductDetailFailure(:final failure) => AnalysisReportErrorView(
                   message: failure.message,
+                  failure: failure,
                   onRetry: () => ref
                       .read(productDetailViewModelProvider(productId).notifier)
                       .refresh(),

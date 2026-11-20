@@ -2451,4 +2451,80 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get extNavDescription => 'Description';
+
+  @override
+  String get failureTitleOffline => 'Check your connection';
+
+  @override
+  String get failureMessageOffline =>
+      'Cannot connect to the server. Check your internet connection and try again.';
+
+  @override
+  String get failureTitleTimeout => 'The response is taking too long';
+
+  @override
+  String get failureMessageTimeout =>
+      'The connection or response timed out. Please try again shortly.';
+
+  @override
+  String get failureTitleUnauthorized => 'Sign in required';
+
+  @override
+  String get failureMessageUnauthorized =>
+      'Your sign-in information is missing or has expired. Please sign in again.';
+
+  @override
+  String get failureTitleForbidden => 'Access denied';
+
+  @override
+  String get failureMessageForbidden =>
+      'You do not have permission to use this feature.';
+
+  @override
+  String get failureTitleNotFound => 'Content not found';
+
+  @override
+  String get failureMessageNotFound =>
+      'The requested information does not exist or is no longer available.';
+
+  @override
+  String get failureTitleRateLimited => 'Too many requests';
+
+  @override
+  String get failureMessageRateLimited =>
+      'There are too many requests. Please try again shortly.';
+
+  @override
+  String get failureTitleServer => 'A server error occurred';
+
+  @override
+  String get failureMessageServer =>
+      'The server encountered an error. Please try again shortly.';
+
+  @override
+  String get failureTitleCancelled => 'Request cancelled';
+
+  @override
+  String get failureMessageCancelled =>
+      'The request was cancelled, so no result was loaded.';
+
+  @override
+  String get failureTitleBadResponse => 'Cannot read the response';
+
+  @override
+  String get failureMessageBadResponse =>
+      'The response could not be processed. Please check again.';
+
+  @override
+  String get failureTitleUnknown => 'Something went wrong';
+
+  @override
+  String get failureMessageUnknown =>
+      'The request could not be completed. Please try again shortly.';
+
+  @override
+  String get failureRetry => 'Try again';
+
+  @override
+  String get failureSearchRetry => 'Search again';
 }

@@ -52,7 +52,7 @@ class _WishlistPageState extends ConsumerState<WishlistPage> {
               WishlistFailure(:final failure) => SizedBox(
                 height: 320,
                 child: AppErrorView(
-                  message: failure.message,
+                  failure: failure,
                   onRetry: () =>
                       ref.read(wishlistViewModelProvider.notifier).load(),
                 ),

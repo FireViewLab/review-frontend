@@ -1,3 +1,6 @@
+import 'package:re_view_front/core/error/failure.dart';
+import 'package:re_view_front/l10n/generated/app_localizations.dart';
+import 'package:re_view_front/shared/presentation/failure_messages.dart';
 import 'package:flutter/material.dart';
 import 'package:re_view_front/app/theme/app_colors.dart';
 import 'package:re_view_front/app/theme/app_spacing.dart';
@@ -5,30 +8,53 @@ import 'package:re_view_front/shared/widgets/app_button.dart';
 
 class AppErrorView extends StatelessWidget {
   const AppErrorView({
-    required this.message,
-    this.title = '문제가 발생했어요',
+    this.message,
+    this.failure,
+    this.title,
     this.onRetry,
-    this.retryLabel = '다시 시도',
+    this.retryLabel,
     this.centered = true,
     super.key,
-  });
+  }) : assert(message != null || failure != null);
 
-  final String title;
-  final String message;
+  final Failure? failure;
+  final String? title;
+  final String? message;
   final VoidCallback? onRetry;
-  final String retryLabel;
+  final String? retryLabel;
   final bool centered;
 
   @override
   Widget build(BuildContext context) {
+    final problem = failure;
+    final icon = switch (problem?.kind) {
+      FailureKind.offline => Icons.wifi_off_rounded,
+      FailureKind.timeout => Icons.timer_outlined,
+      FailureKind.unauthorized => Icons.lock_outline_rounded,
+      FailureKind.forbidden => Icons.block_rounded,
+      FailureKind.notFound => Icons.search_off_rounded,
+      FailureKind.rateLimited => Icons.hourglass_top_rounded,
+      FailureKind.server => Icons.dns_outlined,
+      FailureKind.cancelled => Icons.cancel_outlined,
+      _ => Icons.error_outline,
+    };
     return _StatusView(
-      title: title,
-      message: message,
-      icon: Icons.error_outline,
+      title:
+          title ??
+          (problem == null ? '문제가 발생했어요' : failureTitle(context, problem)),
+      message: problem == null ? message! : failureMessage(context, problem),
+      icon: icon,
       iconColor: AppColors.error,
       action: onRetry == null
           ? null
-          : AppButton(label: retryLabel, onPressed: onRetry),
+          : AppButton(
+              label:
+                  retryLabel ??
+                  (problem == null
+                      ? '다시 시도'
+                      : AppLocalizations.of(context).failureRetry),
+              onPressed: onRetry,
+            ),
       centered: centered,
     );
   }

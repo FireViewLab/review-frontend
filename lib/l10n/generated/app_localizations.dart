@@ -4541,6 +4541,138 @@ abstract class AppLocalizations {
   /// In ko, this message translates to:
   /// **'상세 설명'**
   String get extNavDescription;
+
+  /// Shared failure presentation: failureTitleOffline
+  ///
+  /// In ko, this message translates to:
+  /// **'연결을 확인해 주세요'**
+  String get failureTitleOffline;
+
+  /// Shared failure presentation: failureMessageOffline
+  ///
+  /// In ko, this message translates to:
+  /// **'서버에 연결할 수 없어요. 인터넷 연결을 확인하고 다시 시도해 주세요.'**
+  String get failureMessageOffline;
+
+  /// Shared failure presentation: failureTitleTimeout
+  ///
+  /// In ko, this message translates to:
+  /// **'응답이 지연되고 있어요'**
+  String get failureTitleTimeout;
+
+  /// Shared failure presentation: failureMessageTimeout
+  ///
+  /// In ko, this message translates to:
+  /// **'연결 또는 응답 대기 시간이 초과됐어요. 잠시 후 다시 시도해 주세요.'**
+  String get failureMessageTimeout;
+
+  /// Shared failure presentation: failureTitleUnauthorized
+  ///
+  /// In ko, this message translates to:
+  /// **'로그인이 필요해요'**
+  String get failureTitleUnauthorized;
+
+  /// Shared failure presentation: failureMessageUnauthorized
+  ///
+  /// In ko, this message translates to:
+  /// **'로그인 정보가 없거나 만료됐어요. 다시 로그인해 주세요.'**
+  String get failureMessageUnauthorized;
+
+  /// Shared failure presentation: failureTitleForbidden
+  ///
+  /// In ko, this message translates to:
+  /// **'접근 권한이 없어요'**
+  String get failureTitleForbidden;
+
+  /// Shared failure presentation: failureMessageForbidden
+  ///
+  /// In ko, this message translates to:
+  /// **'이 기능을 이용할 권한이 없어요.'**
+  String get failureMessageForbidden;
+
+  /// Shared failure presentation: failureTitleNotFound
+  ///
+  /// In ko, this message translates to:
+  /// **'요청한 내용을 찾을 수 없어요'**
+  String get failureTitleNotFound;
+
+  /// Shared failure presentation: failureMessageNotFound
+  ///
+  /// In ko, this message translates to:
+  /// **'요청한 정보가 없거나 더 이상 제공되지 않아요.'**
+  String get failureMessageNotFound;
+
+  /// Shared failure presentation: failureTitleRateLimited
+  ///
+  /// In ko, this message translates to:
+  /// **'요청이 많아요'**
+  String get failureTitleRateLimited;
+
+  /// Shared failure presentation: failureMessageRateLimited
+  ///
+  /// In ko, this message translates to:
+  /// **'요청이 많아 잠시 후 다시 시도해 주세요.'**
+  String get failureMessageRateLimited;
+
+  /// Shared failure presentation: failureTitleServer
+  ///
+  /// In ko, this message translates to:
+  /// **'서버에서 문제가 발생했어요'**
+  String get failureTitleServer;
+
+  /// Shared failure presentation: failureMessageServer
+  ///
+  /// In ko, this message translates to:
+  /// **'서버 오류가 발생했어요. 잠시 후 다시 시도해 주세요.'**
+  String get failureMessageServer;
+
+  /// Shared failure presentation: failureTitleCancelled
+  ///
+  /// In ko, this message translates to:
+  /// **'요청이 취소됐어요'**
+  String get failureTitleCancelled;
+
+  /// Shared failure presentation: failureMessageCancelled
+  ///
+  /// In ko, this message translates to:
+  /// **'요청이 취소되어 결과를 불러오지 않았어요.'**
+  String get failureMessageCancelled;
+
+  /// Shared failure presentation: failureTitleBadResponse
+  ///
+  /// In ko, this message translates to:
+  /// **'응답을 확인할 수 없어요'**
+  String get failureTitleBadResponse;
+
+  /// Shared failure presentation: failureMessageBadResponse
+  ///
+  /// In ko, this message translates to:
+  /// **'응답을 처리하지 못했어요. 다시 확인해 주세요.'**
+  String get failureMessageBadResponse;
+
+  /// Shared failure presentation: failureTitleUnknown
+  ///
+  /// In ko, this message translates to:
+  /// **'문제가 발생했어요'**
+  String get failureTitleUnknown;
+
+  /// Shared failure presentation: failureMessageUnknown
+  ///
+  /// In ko, this message translates to:
+  /// **'요청을 완료하지 못했어요. 잠시 후 다시 시도해 주세요.'**
+  String get failureMessageUnknown;
+
+  /// Shared failure presentation: failureRetry
+  ///
+  /// In ko, this message translates to:
+  /// **'다시 시도'**
+  String get failureRetry;
+
+  /// Shared failure presentation: failureSearchRetry
+  ///
+  /// In ko, this message translates to:
+  /// **'다시 검색'**
+  String get failureSearchRetry;
 }
 
 class _AppLocalizationsDelegate

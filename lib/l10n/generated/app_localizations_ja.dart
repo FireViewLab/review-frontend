@@ -2354,4 +2354,72 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String get extNavDescription => '詳細説明';
+
+  @override
+  String get failureTitleOffline => '接続をご確認ください';
+
+  @override
+  String get failureMessageOffline =>
+      'サーバーに接続できません。インターネット接続を確認して、もう一度お試しください。';
+
+  @override
+  String get failureTitleTimeout => '応答に時間がかかっています';
+
+  @override
+  String get failureMessageTimeout => '接続または応答の待機時間を超えました。しばらくしてからお試しください。';
+
+  @override
+  String get failureTitleUnauthorized => 'ログインが必要です';
+
+  @override
+  String get failureMessageUnauthorized =>
+      'ログイン情報がないか、有効期限が切れています。もう一度ログインしてください。';
+
+  @override
+  String get failureTitleForbidden => 'アクセス権限がありません';
+
+  @override
+  String get failureMessageForbidden => 'この機能を利用する権限がありません。';
+
+  @override
+  String get failureTitleNotFound => '見つかりませんでした';
+
+  @override
+  String get failureMessageNotFound => '指定された情報が存在しないか、提供が終了しています。';
+
+  @override
+  String get failureTitleRateLimited => 'リクエストが多すぎます';
+
+  @override
+  String get failureMessageRateLimited => 'リクエストが多いため、しばらくしてからお試しください。';
+
+  @override
+  String get failureTitleServer => 'サーバーで問題が発生しました';
+
+  @override
+  String get failureMessageServer => 'サーバーエラーが発生しました。しばらくしてからお試しください。';
+
+  @override
+  String get failureTitleCancelled => 'リクエストがキャンセルされました';
+
+  @override
+  String get failureMessageCancelled => 'リクエストがキャンセルされたため、結果は読み込まれていません。';
+
+  @override
+  String get failureTitleBadResponse => '応答を確認できません';
+
+  @override
+  String get failureMessageBadResponse => '応答を処理できませんでした。もう一度ご確認ください。';
+
+  @override
+  String get failureTitleUnknown => '問題が発生しました';
+
+  @override
+  String get failureMessageUnknown => 'リクエストを完了できませんでした。しばらくしてからお試しください。';
+
+  @override
+  String get failureRetry => 'もう一度試す';
+
+  @override
+  String get failureSearchRetry => '再検索';
 }

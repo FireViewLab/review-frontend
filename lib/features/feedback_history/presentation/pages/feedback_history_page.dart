@@ -48,7 +48,7 @@ class _FeedbackHistoryPageState extends ConsumerState<FeedbackHistoryPage> {
           FeedbackHistoryFailure(:final failure) => SizedBox(
             height: 320,
             child: AppErrorView(
-              message: failure.message,
+              failure: failure,
               onRetry: () =>
                   ref.read(feedbackHistoryViewModelProvider.notifier).load(),
             ),
