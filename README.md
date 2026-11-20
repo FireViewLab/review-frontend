@@ -204,16 +204,18 @@ Android·iOS는 CI의 debug 빌드로만 확인했습니다. 실기기 화면 �
 `kIsWeb` 분기로 앱에서만 동작하며, 웹 동작은 바꾸지 않았습니다.
 
 - **로그인 세션:** refreshToken을 보안 저장소(`flutter_secure_storage`)에 두고 refresh 때마다 교체합니다. 읽기에 실패하면 로그아웃 상태로 시작하고, 쓰기에 실패하면 이전 값이 남지 않게 지웁니다.
-- **화면:** 본문 SafeArea, 시스템 글자 크기 최대 1.6배, hover 전용 강조 대신 터치 피드백, Android 뒤로 가기로 채팅 패널 먼저 닫기
+- **화면:** 본문 SafeArea, 시스템 글자 크기 최대 1.6배, hover 전용 강조 대신 터치 피드백, Android 뒤로 가기로 채팅 패널 먼저 닫기(이 동작을 유지하려고 Android predictive back은 켜지 않음)
 - **당겨서 새로고침:** 홈, 검색 결과, 알림함, 찜 목록
 - **이미지:** 축소 썸네일 주소를 먼저 쓰고 실패하면 원본으로 대체
 - **외부 링크:** 외부 쇼핑몰·가격 비교 링크는 외부 브라우저로 엽니다.
 - **오류:** 처리되지 않은 예외는 release 빌드에서 기본 오류 화면으로 대체하며, 원격 수집은 하지 않습니다.
 - **결제:** 웹 전용 TEST 결제 진입은 앱에서 숨깁니다.
-- **시작 화면·아이콘:** Re:view 로고를 씁니다.
+- **시작 화면·아이콘:** Re:view 로고를 씁니다. Android 8 이상은 적응형 아이콘, 13 이상은 테마(단색) 아이콘을 지원합니다.
+- **이미지 디코딩:** 상품 이미지를 표시 크기에 맞춰 디코딩합니다.
+- **폴링:** 상품 상세 갱신은 앱이 백그라운드에 있는 동안 멈춥니다.
 - **서명:** Android release 빌드는 `android/key.properties`가 있으면 그 키로, 없으면 debug 키로 서명합니다. 키 파일은 저장소에 올리지 않습니다.
 
-아직 정하지 않은 것: 앱 식별자, 최소 OS 버전, 소셜 로그인 앱 흐름, 푸시 알림, 딥링크, 앱 결제, 개인정보 처리방침 본문.
+아직 정하지 않은 것: 앱 식별자, 최소 OS 버전, 앱 전체 하단 탭, 소셜 로그인 앱 흐름, 푸시 알림, 딥링크, 앱 결제, 개인정보 처리방침 본문.
 
 </details>
 
@@ -433,7 +435,8 @@ bash scripts/write-deployment-marker.sh
   - 인기 검색어 실제 집계([review-backend#247](https://github.com/FireViewLab/review-backend/issues/247))
   - 카테고리·페이지 조회([#248](https://github.com/FireViewLab/review-backend/issues/248))
   - v2 상세 설명·상품 단위 분석 요약([#249](https://github.com/FireViewLab/review-backend/issues/249))
-  - 분석 모델 v3.1 결과 필드 전달([#250](https://github.com/FireViewLab/review-backend/issues/250))
+  - 분석 모델 v3.1 결과 필드 전달([#250](https://github.com/FireViewLab/review-backend/issues/250)) — 프론트는 v0.5/v2 동시 처리 완료, 필드 이름 확정 시 키 상수만 조정
+- 상세 설명·AI 상품 요약 화면은 준비돼 있으며, #249 데이터가 오면 표시됩니다.
 - `GET /api/dashboard`의 실제 상품 전환은 서버 후속 작업입니다. 더미 33건 삭제는 대시보드 전환 이후 서버가 진행합니다.
 - 오늘의집·네이버·에이블리 검색은 수집기 문제로 현재 검색 계약에서 빠져 있습니다.
 - 실결제/live 키, 다크 모드, 추가 수집기 구현은 이번 범위 밖입니다.
