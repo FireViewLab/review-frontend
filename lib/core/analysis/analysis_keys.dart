@@ -4,6 +4,14 @@ abstract final class AnalysisKeys {
   static const policyIndex = ['policyIndexV3', 'policy_index_v3'];
   static const averagePolicyIndex = ['avgPolicyIndexV3', 'avg_policy_index_v3'];
   static const evidenceLevel = ['evidenceLevelV3', 'evidence_level_v3'];
+  static const productSummary = [
+    'productSummaryKo',
+    'product_summary_ko',
+    'summaryKo',
+    'summary_ko',
+    'analysisSummaryKo',
+    'analysis_summary_ko',
+  ];
   static const summary = ['analysisSummaryKo', 'analysis_summary_ko'];
   static const rulesReasons = ['rulesReasonsKo', 'rules_reasons_ko'];
   static const evidenceReasons = ['evidenceReasonsV3', 'evidence_reasons_v3'];
