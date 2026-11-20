@@ -41,26 +41,28 @@ class SettingsLanguageSection extends StatelessWidget {
             ).textTheme.labelSmall?.copyWith(color: AppColors.textSecondary),
           ),
           const SizedBox(height: AppSpacing.md),
-          GridView.builder(
-            shrinkWrap: true,
-            physics: const NeverScrollableScrollPhysics(),
-            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 2,
-              crossAxisSpacing: AppSpacing.xs,
-              mainAxisSpacing: AppSpacing.xs,
-              mainAxisExtent: 56,
+          LayoutBuilder(
+            builder: (context, constraints) => Wrap(
+              spacing: AppSpacing.xs,
+              runSpacing: AppSpacing.xs,
+              children: [
+                for (final lang in _langs)
+                  SizedBox(
+                    width: (constraints.maxWidth - AppSpacing.xs) / 2,
+                    child: ConstrainedBox(
+                      constraints: const BoxConstraints(minHeight: 56),
+                      child: SettingsLangChip(
+                        label: lang.label,
+                        sub: lang.sub,
+                        selected:
+                            currentLocale.languageCode ==
+                            lang.locale.languageCode,
+                        onTap: () => onLocaleChanged(lang.locale),
+                      ),
+                    ),
+                  ),
+              ],
             ),
-            itemCount: _langs.length,
-            itemBuilder: (context, index) {
-              final lang = _langs[index];
-              return SettingsLangChip(
-                label: lang.label,
-                sub: lang.sub,
-                selected:
-                    currentLocale.languageCode == lang.locale.languageCode,
-                onTap: () => onLocaleChanged(lang.locale),
-              );
-            },
           ),
         ],
       ),
@@ -129,6 +131,7 @@ class SettingsLangChip extends StatelessWidget {
                   children: [
                     Text(
                       label,
+                      maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                       style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                         color: selected
@@ -140,6 +143,7 @@ class SettingsLangChip extends StatelessWidget {
                     ),
                     Text(
                       sub,
+                      maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                       style: Theme.of(context).textTheme.labelSmall?.copyWith(
                         color: selected

@@ -244,8 +244,9 @@ class _SignupCardState extends State<SignupCard> {
               const SizedBox(height: AppSpacing.md),
               const Divider(height: 1),
               const SizedBox(height: AppSpacing.sm),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
+              Wrap(
+                alignment: WrapAlignment.center,
+                crossAxisAlignment: WrapCrossAlignment.center,
                 children: [
                   Text(
                     AppLocalizations.of(context).authHasAccount,
@@ -597,7 +598,7 @@ class _SocialSignupButton extends StatelessWidget {
             ),
           ),
           const SizedBox(width: AppSpacing.sm),
-          Text(label),
+          Flexible(child: Text(label, textAlign: TextAlign.center)),
         ],
       ),
     );
