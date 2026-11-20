@@ -1,3 +1,5 @@
+import 'package:re_view_front/features/external_product/domain/entities/external_product.dart';
+import 'package:re_view_front/features/external_product/presentation/view_models/analysis_summary_data.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:re_view_front/core/providers/core_providers.dart';
 import 'package:re_view_front/features/external_product/data/datasources/external_product_remote_data_source.dart';
@@ -28,3 +30,8 @@ final externalProductViewModelProvider = NotifierProvider.autoDispose
 final productSummaryCacheProvider = Provider<ProductSummaryCache>(
   (ref) => ProductSummaryCache(),
 );
+
+final loadedReviewAnalysisSummaryProvider = Provider.autoDispose
+    .family<AnalysisSummaryData, List<ExternalReview>>(
+      (ref, reviews) => AnalysisSummaryData.fromReviews(reviews),
+    );

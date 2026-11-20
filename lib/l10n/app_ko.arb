@@ -1224,5 +1224,134 @@
         "type": "String"
       }
     }
+  },
+  "extSummaryTitle": "리뷰 분석 요약",
+  "@extSummaryTitle": {
+    "description": "Product detail summary and loaded-review evidence: Title"
+  },
+  "extSummaryFallbackTitle": "분석 상태·근거 안내",
+  "@extSummaryFallbackTitle": {
+    "description": "Product detail summary and loaded-review evidence: FallbackTitle"
+  },
+  "extSummaryFallbackIntro": "현재 불러온 리뷰의 분석 상태와 신뢰도 근거를 정리했어요.",
+  "@extSummaryFallbackIntro": {
+    "description": "Product detail summary and loaded-review evidence: FallbackIntro"
+  },
+  "extSummaryNoEvidence": "분석은 끝났지만 요약할 근거가 아직 없어요.",
+  "@extSummaryNoEvidence": {
+    "description": "Product detail summary and loaded-review evidence: NoEvidence"
+  },
+  "extSummaryNotAnalyzed": "아직 분석 전이라 표시할 요약이 없어요.",
+  "@extSummaryNotAnalyzed": {
+    "description": "Product detail summary and loaded-review evidence: NotAnalyzed"
+  },
+  "extSummaryInProgress": "분석 진행 상태는 위 단계에서 확인해 주세요.",
+  "@extSummaryInProgress": {
+    "description": "Product detail summary and loaded-review evidence: InProgress"
+  },
+  "extSummaryFailed": "분석에 실패해 요약을 표시할 수 없어요.",
+  "@extSummaryFailed": {
+    "description": "Product detail summary and loaded-review evidence: Failed"
+  },
+  "extSummaryDisabled": "분석이 비활성화되어 요약을 표시하지 않아요.",
+  "@extSummaryDisabled": {
+    "description": "Product detail summary and loaded-review evidence: Disabled"
+  },
+  "extSummaryUnavailable": "요약을 표시할 분석 상태가 아직 확인되지 않았어요.",
+  "@extSummaryUnavailable": {
+    "description": "Product detail summary and loaded-review evidence: Unavailable"
+  },
+  "extSummaryMissingValue": "미제공",
+  "@extSummaryMissingValue": {
+    "description": "Product detail summary and loaded-review evidence: MissingValue"
+  },
+  "extSummarySampling": "표본 여부",
+  "@extSummarySampling": {
+    "description": "Product detail summary and loaded-review evidence: Sampling"
+  },
+  "extSummaryNotSampled": "표본 분석 아님",
+  "@extSummaryNotSampled": {
+    "description": "Product detail summary and loaded-review evidence: NotSampled"
+  },
+  "extSummaryLoadedScope": "현재 불러온 리뷰 {count}개 기준",
+  "@extSummaryLoadedScope": {
+    "description": "Product detail summary and loaded-review evidence: LoadedScope",
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "format": "decimalPattern"
+      }
+    }
+  },
+  "extSummaryV2Grades": "정책 지수 기준 등급 (v2)",
+  "@extSummaryV2Grades": {
+    "description": "Product detail summary and loaded-review evidence: V2Grades"
+  },
+  "extSummaryLegacyGrades": "신뢰도 등급 (v0.5)",
+  "@extSummaryLegacyGrades": {
+    "description": "Product detail summary and loaded-review evidence: LegacyGrades"
+  },
+  "extSummaryUnknownVersion": "분석 버전 미상",
+  "@extSummaryUnknownVersion": {
+    "description": "Product detail summary and loaded-review evidence: UnknownVersion"
+  },
+  "extSummaryGradeCount": "{grade}: {count}개",
+  "@extSummaryGradeCount": {
+    "description": "Product detail summary and loaded-review evidence: GradeCount",
+    "placeholders": {
+      "grade": {
+        "type": "String"
+      },
+      "count": {
+        "type": "int",
+        "format": "decimalPattern"
+      }
+    }
+  },
+  "extSummaryGradeSafe": "SAFE",
+  "@extSummaryGradeSafe": {
+    "description": "Product detail summary and loaded-review evidence: GradeSafe"
+  },
+  "extSummaryGradeWarn": "WARN",
+  "@extSummaryGradeWarn": {
+    "description": "Product detail summary and loaded-review evidence: GradeWarn"
+  },
+  "extSummaryGradeDanger": "DANGER",
+  "@extSummaryGradeDanger": {
+    "description": "Product detail summary and loaded-review evidence: GradeDanger"
+  },
+  "extSummaryEvidenceTitle": "자주 확인된 신뢰도 근거",
+  "@extSummaryEvidenceTitle": {
+    "description": "Product detail summary and loaded-review evidence: EvidenceTitle"
+  },
+  "extSummaryEvidenceScope": "현재 불러온 리뷰의 신뢰도 분석 근거이며, 상품 품질 평가는 아니에요.",
+  "@extSummaryEvidenceScope": {
+    "description": "Product detail summary and loaded-review evidence: EvidenceScope"
+  },
+  "extSummaryReasonCount": "{count}개 리뷰에서 확인",
+  "@extSummaryReasonCount": {
+    "description": "Product detail summary and loaded-review evidence: ReasonCount",
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "format": "decimalPattern"
+      }
+    }
+  },
+  "extSummaryNoLoadedReviews": "현재 불러온 리뷰가 없어 등급 분포를 표시할 수 없어요.",
+  "@extSummaryNoLoadedReviews": {
+    "description": "Product detail summary and loaded-review evidence: NoLoadedReviews"
+  },
+  "extSummaryFact": "{label}: {value}",
+  "@extSummaryFact": {
+    "description": "Product detail summary and loaded-review evidence: Fact",
+    "placeholders": {
+      "label": {
+        "type": "String"
+      },
+      "value": {
+        "type": "String"
+      }
+    }
   }
 }

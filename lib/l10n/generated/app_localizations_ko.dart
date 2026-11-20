@@ -2180,4 +2180,100 @@ class AppLocalizationsKo extends AppLocalizations {
   String extProgressStepSemantics(String step, String status) {
     return '$step, $status';
   }
+
+  @override
+  String get extSummaryTitle => '리뷰 분석 요약';
+
+  @override
+  String get extSummaryFallbackTitle => '분석 상태·근거 안내';
+
+  @override
+  String get extSummaryFallbackIntro => '현재 불러온 리뷰의 분석 상태와 신뢰도 근거를 정리했어요.';
+
+  @override
+  String get extSummaryNoEvidence => '분석은 끝났지만 요약할 근거가 아직 없어요.';
+
+  @override
+  String get extSummaryNotAnalyzed => '아직 분석 전이라 표시할 요약이 없어요.';
+
+  @override
+  String get extSummaryInProgress => '분석 진행 상태는 위 단계에서 확인해 주세요.';
+
+  @override
+  String get extSummaryFailed => '분석에 실패해 요약을 표시할 수 없어요.';
+
+  @override
+  String get extSummaryDisabled => '분석이 비활성화되어 요약을 표시하지 않아요.';
+
+  @override
+  String get extSummaryUnavailable => '요약을 표시할 분석 상태가 아직 확인되지 않았어요.';
+
+  @override
+  String get extSummaryMissingValue => '미제공';
+
+  @override
+  String get extSummarySampling => '표본 여부';
+
+  @override
+  String get extSummaryNotSampled => '표본 분석 아님';
+
+  @override
+  String extSummaryLoadedScope(int count) {
+    final intl.NumberFormat countNumberFormat =
+        intl.NumberFormat.decimalPattern(localeName);
+    final String countString = countNumberFormat.format(count);
+
+    return '현재 불러온 리뷰 $countString개 기준';
+  }
+
+  @override
+  String get extSummaryV2Grades => '정책 지수 기준 등급 (v2)';
+
+  @override
+  String get extSummaryLegacyGrades => '신뢰도 등급 (v0.5)';
+
+  @override
+  String get extSummaryUnknownVersion => '분석 버전 미상';
+
+  @override
+  String extSummaryGradeCount(String grade, int count) {
+    final intl.NumberFormat countNumberFormat =
+        intl.NumberFormat.decimalPattern(localeName);
+    final String countString = countNumberFormat.format(count);
+
+    return '$grade: $countString개';
+  }
+
+  @override
+  String get extSummaryGradeSafe => 'SAFE';
+
+  @override
+  String get extSummaryGradeWarn => 'WARN';
+
+  @override
+  String get extSummaryGradeDanger => 'DANGER';
+
+  @override
+  String get extSummaryEvidenceTitle => '자주 확인된 신뢰도 근거';
+
+  @override
+  String get extSummaryEvidenceScope =>
+      '현재 불러온 리뷰의 신뢰도 분석 근거이며, 상품 품질 평가는 아니에요.';
+
+  @override
+  String extSummaryReasonCount(int count) {
+    final intl.NumberFormat countNumberFormat =
+        intl.NumberFormat.decimalPattern(localeName);
+    final String countString = countNumberFormat.format(count);
+
+    return '$countString개 리뷰에서 확인';
+  }
+
+  @override
+  String get extSummaryNoLoadedReviews => '현재 불러온 리뷰가 없어 등급 분포를 표시할 수 없어요.';
+
+  @override
+  String extSummaryFact(String label, String value) {
+    return '$label: $value';
+  }
 }

@@ -2254,4 +2254,108 @@ class AppLocalizationsEn extends AppLocalizations {
   String extProgressStepSemantics(String step, String status) {
     return '$step, $status';
   }
+
+  @override
+  String get extSummaryTitle => 'Review analysis summary';
+
+  @override
+  String get extSummaryFallbackTitle => 'Analysis status and evidence';
+
+  @override
+  String get extSummaryFallbackIntro =>
+      'Here are the analysis status and credibility evidence for the reviews currently loaded.';
+
+  @override
+  String get extSummaryNoEvidence =>
+      'Analysis is complete, but no evidence is available to summarize yet.';
+
+  @override
+  String get extSummaryNotAnalyzed =>
+      'There is no summary to display before analysis.';
+
+  @override
+  String get extSummaryInProgress =>
+      'See the steps above for analysis progress.';
+
+  @override
+  String get extSummaryFailed =>
+      'A summary cannot be displayed because analysis failed.';
+
+  @override
+  String get extSummaryDisabled =>
+      'No summary is displayed while analysis is disabled.';
+
+  @override
+  String get extSummaryUnavailable =>
+      'The analysis status needed to display a summary has not been confirmed.';
+
+  @override
+  String get extSummaryMissingValue => 'Not provided';
+
+  @override
+  String get extSummarySampling => 'Sampling';
+
+  @override
+  String get extSummaryNotSampled => 'Not sampled';
+
+  @override
+  String extSummaryLoadedScope(int count) {
+    final intl.NumberFormat countNumberFormat =
+        intl.NumberFormat.decimalPattern(localeName);
+    final String countString = countNumberFormat.format(count);
+
+    return 'Based on the $countString reviews currently loaded';
+  }
+
+  @override
+  String get extSummaryV2Grades => 'Policy index grades (v2)';
+
+  @override
+  String get extSummaryLegacyGrades => 'Credibility grades (v0.5)';
+
+  @override
+  String get extSummaryUnknownVersion => 'Unknown analysis version';
+
+  @override
+  String extSummaryGradeCount(String grade, int count) {
+    final intl.NumberFormat countNumberFormat =
+        intl.NumberFormat.decimalPattern(localeName);
+    final String countString = countNumberFormat.format(count);
+
+    return '$grade: $countString';
+  }
+
+  @override
+  String get extSummaryGradeSafe => 'SAFE';
+
+  @override
+  String get extSummaryGradeWarn => 'WARN';
+
+  @override
+  String get extSummaryGradeDanger => 'DANGER';
+
+  @override
+  String get extSummaryEvidenceTitle => 'Most frequent credibility evidence';
+
+  @override
+  String get extSummaryEvidenceScope =>
+      'This is credibility evidence from the reviews currently loaded, not an assessment of product quality.';
+
+  @override
+  String extSummaryReasonCount(int count) {
+    final intl.NumberFormat countNumberFormat =
+        intl.NumberFormat.decimalPattern(localeName);
+    final String countString = countNumberFormat.format(count);
+
+    return 'Found in $countString reviews';
+  }
+
+  @override
+  String get extSummaryNoLoadedReviews =>
+      'No reviews are currently loaded, so no grade distribution is available.';
+
+  @override
+  String extSummaryFact(String label, String value) {
+    return '$label: $value';
+  }
 }
