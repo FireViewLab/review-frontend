@@ -36,6 +36,13 @@ String failureMessage(BuildContext context, Failure failure) {
   if (businessKind && supplied != null && !_isTechnical(supplied)) {
     return supplied;
   }
+  // 상태 코드도 원인 예외도 없는 오류는 앱이 직접 쓴 안내 문구이므로 그대로 보여 준다.
+  if (failure.kind == FailureKind.unknown &&
+      failure.statusCode == null &&
+      failure.cause == null &&
+      !_isTechnical(failure.message)) {
+    return failure.message;
+  }
   return switch (failure.kind) {
     FailureKind.offline => l.failureMessageOffline,
     FailureKind.timeout => l.failureMessageTimeout,
