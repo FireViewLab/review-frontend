@@ -62,8 +62,13 @@ class AnalysisProgressState {
       ExternalAnalysisStatus.unknown => AnalysisStepStatus.unknown,
     };
     final failed =
-        [product, reviews, analysis].contains(AnalysisStepStatus.failed) ||
-        reviews == AnalysisStepStatus.partial ||
+        [product, reviews, analysis].any(
+          (status) =>
+              status == AnalysisStepStatus.failed ||
+              status == AnalysisStepStatus.partial,
+        ) ||
+        state.collection == CollectionStatus.failed ||
+        state.job?.productState == CollectionJobStatus.failed ||
         state.job?.status == CollectionJobStatus.failed ||
         state.job?.status == CollectionJobStatus.partial ||
         state.phase == ExternalProductPhase.failure;
