@@ -2101,4 +2101,83 @@ class AppLocalizationsKo extends AppLocalizations {
 
   @override
   String get owlGuideName => '리뷰엉이';
+
+  @override
+  String get extProgressProductStep => '상품 정보 수집';
+
+  @override
+  String get extProgressReviewsStep => '리뷰 수집';
+
+  @override
+  String get extProgressAnalysisStep => '리뷰 분석';
+
+  @override
+  String get extProgressStatusComplete => '완료';
+
+  @override
+  String get extProgressStatusInProgress => '진행 중';
+
+  @override
+  String get extProgressStatusWaiting => '대기';
+
+  @override
+  String get extProgressStatusFailed => '실패';
+
+  @override
+  String get extProgressStatusNotAnalyzed => '아직 분석 전';
+
+  @override
+  String get extProgressStatusUnknown => '확인 중';
+
+  @override
+  String get extProgressStatusRefreshing => '새로 수집 중';
+
+  @override
+  String get extProgressStatusDisabled => '비활성화됨';
+
+  @override
+  String get extProgressStatusUnavailable => '정보 없음';
+
+  @override
+  String get extProgressStatusPartial => '일부 완료';
+
+  @override
+  String get extProgressNoticeCollecting => '상품 정보와 리뷰의 수집 작업을 기다리고 있어요.';
+
+  @override
+  String get extProgressNoticeRefreshing =>
+      '이전에 수집한 정보를 보여드리고 있어요. 새 수집 작업이 대기 중이거나 진행 중이에요.';
+
+  @override
+  String get extProgressNoticeAnalyzing => '리뷰 분석이 대기 중이거나 진행 중이에요.';
+
+  @override
+  String get extProgressNoticeNotAnalyzed => '아직 리뷰 분석 전이에요.';
+
+  @override
+  String get extProgressNoticeComplete => '리뷰 분석이 완료됐어요.';
+
+  @override
+  String get extProgressNoticeFailed =>
+      '수집·분석 과정에서 문제가 확인됐어요. 단계별 상태를 확인해 주세요.';
+
+  @override
+  String get extProgressNoticeDelayed => '시간이 걸리고 있어요. 다시 확인해 주세요.';
+
+  @override
+  String get extProgressNoticeChecking => '현재 수집·분석 상태를 확인 중이에요.';
+
+  @override
+  String get extProgressNoticeDisabled => '리뷰 분석이 비활성화되어 있어요.';
+
+  @override
+  String get extProgressNoticeUnavailable => '현재 리뷰 분석 정보를 확인할 수 없어요.';
+
+  @override
+  String get extProgressRetry => '다시 확인';
+
+  @override
+  String extProgressStepSemantics(String step, String status) {
+    return '$step, $status';
+  }
 }

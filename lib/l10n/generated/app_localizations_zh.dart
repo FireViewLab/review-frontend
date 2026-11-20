@@ -2080,4 +2080,81 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get owlGuideName => '评论猫头鹰';
+
+  @override
+  String get extProgressProductStep => '商品信息采集';
+
+  @override
+  String get extProgressReviewsStep => '评论采集';
+
+  @override
+  String get extProgressAnalysisStep => '评论分析';
+
+  @override
+  String get extProgressStatusComplete => '已完成';
+
+  @override
+  String get extProgressStatusInProgress => '进行中';
+
+  @override
+  String get extProgressStatusWaiting => '等待中';
+
+  @override
+  String get extProgressStatusFailed => '失败';
+
+  @override
+  String get extProgressStatusNotAnalyzed => '尚未分析';
+
+  @override
+  String get extProgressStatusUnknown => '确认中';
+
+  @override
+  String get extProgressStatusRefreshing => '重新采集中';
+
+  @override
+  String get extProgressStatusDisabled => '已禁用';
+
+  @override
+  String get extProgressStatusUnavailable => '暂无信息';
+
+  @override
+  String get extProgressStatusPartial => '部分完成';
+
+  @override
+  String get extProgressNoticeCollecting => '正在等待商品信息和评论的采集。';
+
+  @override
+  String get extProgressNoticeRefreshing => '当前显示的是之前采集的信息。新的采集任务正在等待或进行中。';
+
+  @override
+  String get extProgressNoticeAnalyzing => '评论分析正在等待或进行中。';
+
+  @override
+  String get extProgressNoticeNotAnalyzed => '评论尚未进行分析。';
+
+  @override
+  String get extProgressNoticeComplete => '评论分析已完成。';
+
+  @override
+  String get extProgressNoticeFailed => '采集或分析过程中出现了问题，请查看各阶段的状态。';
+
+  @override
+  String get extProgressNoticeDelayed => '需要一些时间，请再次确认。';
+
+  @override
+  String get extProgressNoticeChecking => '正在确认当前的采集和分析状态。';
+
+  @override
+  String get extProgressNoticeDisabled => '评论分析已禁用。';
+
+  @override
+  String get extProgressNoticeUnavailable => '目前无法查看评论分析信息。';
+
+  @override
+  String get extProgressRetry => '再次确认';
+
+  @override
+  String extProgressStepSemantics(String step, String status) {
+    return '$step，$status';
+  }
 }
