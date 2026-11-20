@@ -27,7 +27,9 @@ class CartListHeader extends StatelessWidget {
         horizontal: AppSpacing.md,
         vertical: AppSpacing.sm,
       ),
-      child: Row(
+      child: Wrap(
+        crossAxisAlignment: WrapCrossAlignment.center,
+        runSpacing: AppSpacing.xs,
         children: [
           GestureDetector(
             onTap: onToggleSelectAll,
@@ -38,15 +40,23 @@ class CartListHeader extends StatelessWidget {
                   dimension: 20,
                   child: DecoratedBox(
                     decoration: BoxDecoration(
-                      color: isAllSelected ? AppColors.primary : AppColors.surface,
+                      color: isAllSelected
+                          ? AppColors.primary
+                          : AppColors.surface,
                       borderRadius: BorderRadius.circular(4),
                       border: Border.all(
-                        color: isAllSelected ? AppColors.primary : AppColors.borderStrong,
+                        color: isAllSelected
+                            ? AppColors.primary
+                            : AppColors.borderStrong,
                         width: 1.5,
                       ),
                     ),
                     child: isAllSelected
-                        ? const Icon(Icons.check, color: AppColors.onPrimary, size: 13)
+                        ? const Icon(
+                            Icons.check,
+                            color: AppColors.onPrimary,
+                            size: 13,
+                          )
                         : null,
                   ),
                 ),
@@ -90,10 +100,14 @@ class _HeaderButton extends StatelessWidget {
       child: Text(
         label,
         style: Theme.of(context).textTheme.labelMedium?.copyWith(
-          color: onTap == null ? AppColors.textTertiary : AppColors.textSecondary,
+          color: onTap == null
+              ? AppColors.textTertiary
+              : AppColors.textSecondary,
           fontWeight: FontWeight.w700,
           decoration: TextDecoration.underline,
-          decorationColor: onTap == null ? AppColors.textTertiary : AppColors.textSecondary,
+          decorationColor: onTap == null
+              ? AppColors.textTertiary
+              : AppColors.textSecondary,
         ),
       ),
     );

@@ -308,7 +308,9 @@ class _WishlistGrid extends StatelessWidget {
         crossAxisCount: crossAxisCount,
         crossAxisSpacing: AppSpacing.sm,
         mainAxisSpacing: AppSpacing.sm,
-        childAspectRatio: 0.62,
+        childAspectRatio: width < 1024
+            ? 0.62 / (MediaQuery.textScalerOf(context).scale(14) / 14)
+            : 0.62,
       ),
       itemCount: items.length,
       itemBuilder: (context, index) {
