@@ -3,14 +3,21 @@ import 'package:re_view_front/core/error/failure.dart';
 import 'package:re_view_front/core/network/api_response.dart';
 
 Failure failureFromApiResponseException(ApiResponseException error) {
-  return Failure(message: error.message, code: error.code, cause: error);
+  return Failure(
+    message: error.message,
+    serverMessage: error.message,
+    code: error.code,
+    cause: error,
+    kind: FailureKind.badResponse,
+  );
 }
 
 Failure failureFromDioException(DioException error) {
   final statusCode = error.response?.statusCode;
   final data = error.response?.data;
-  final serverMessage = data is Map<String, dynamic>
-      ? data['message']?.toString()
+  final rawMessage = data is Map<String, dynamic> ? data['message'] : null;
+  final serverMessage = rawMessage is String && rawMessage.trim().isNotEmpty
+      ? rawMessage
       : null;
   final errorCode = data is Map<String, dynamic>
       ? data['errorCode']?.toString()
@@ -18,6 +25,19 @@ Failure failureFromDioException(DioException error) {
 
   return Failure(
     message: serverMessage ?? _messageForType(error.type),
+    serverMessage: serverMessage,
+    kind: switch (error.type) {
+      DioExceptionType.connectionError => FailureKind.offline,
+      DioExceptionType.connectionTimeout ||
+      DioExceptionType.sendTimeout ||
+      DioExceptionType.receiveTimeout => FailureKind.timeout,
+      DioExceptionType.cancel => FailureKind.cancelled,
+      DioExceptionType.badResponse => FailureKind.badResponse,
+      _ =>
+        (error.error is FormatException || error.error is TypeError)
+            ? FailureKind.badResponse
+            : FailureKind.unknown,
+    },
     code: errorCode ?? error.type.name,
     statusCode: statusCode,
     cause: error,
