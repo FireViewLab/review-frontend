@@ -141,8 +141,34 @@ class ApiClient {
   Future<Response<dynamic>> get(
     String path, {
     Map<String, dynamic>? queryParameters,
-  }) {
-    return dio.get(path, queryParameters: queryParameters);
+  }) async {
+    try {
+      return await dio.get(path, queryParameters: queryParameters);
+    } on DioException catch (error) {
+      if (!_canRetryGet(error)) rethrow;
+      await Future<void>.delayed(const Duration(milliseconds: 600));
+      return dio.fetch<dynamic>(error.requestOptions);
+    }
+  }
+
+  static bool _canRetryGet(DioException error) {
+    final options = error.requestOptions;
+    if (options.method.toUpperCase() != 'GET' ||
+        options.cancelToken?.isCancelled == true) {
+      return false;
+    }
+    return switch (error.type) {
+      DioExceptionType.connectionError ||
+      DioExceptionType.connectionTimeout ||
+      DioExceptionType.sendTimeout ||
+      DioExceptionType.receiveTimeout => true,
+      DioExceptionType.badResponse => const {
+        502,
+        503,
+        504,
+      }.contains(error.response?.statusCode),
+      _ => false,
+    };
   }
 
   Future<Response<dynamic>> post(
