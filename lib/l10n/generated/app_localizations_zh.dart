@@ -2302,4 +2302,19 @@ class AppLocalizationsZh extends AppLocalizations {
   String extTrustScoreValue(String label, String score) {
     return '$label $score / 100';
   }
+
+  @override
+  String get extNavProgress => '分析进度';
+
+  @override
+  String get extNavSummary => 'AI摘要';
+
+  @override
+  String get extNavReport => '可信度报告';
+
+  @override
+  String get extNavReviews => '评论';
+
+  @override
+  String get extNavLabel => '跳转到版块';
 }
