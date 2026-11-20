@@ -359,8 +359,9 @@ class ResultToolbar extends StatelessWidget {
                 onChanged: onSortChanged,
               ),
             ),
-            Row(
-              mainAxisSize: MainAxisSize.min,
+            Wrap(
+              crossAxisAlignment: WrapCrossAlignment.center,
+              runSpacing: AppSpacing.xs,
               children: [
                 Text(
                   '$resultCount개 결과',

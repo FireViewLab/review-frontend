@@ -424,18 +424,29 @@ class _ResultsAreaSkeleton extends StatelessWidget {
         ),
         const SizedBox(height: AppSpacing.lg),
         // 툴바 행 (정렬 탭들 + 결과 수 + 보기 전환)
-        Row(
-          children: const [
-            ShimmerBox(width: 48, height: 32, radius: 6),
-            SizedBox(width: AppSpacing.xs),
-            ShimmerBox(width: 56, height: 32, radius: 6),
-            SizedBox(width: AppSpacing.xs),
-            ShimmerBox(width: 48, height: 32, radius: 6),
-            Spacer(),
-            ShimmerBox(width: 60, height: 16, radius: 4),
-            SizedBox(width: AppSpacing.sm),
-            ShimmerBox(width: 72, height: 32, radius: 6),
-          ],
+        LayoutBuilder(
+          builder: (context, constraints) {
+            const leading = <Widget>[
+              ShimmerBox(width: 48, height: 32, radius: 6),
+              SizedBox(width: AppSpacing.xs),
+              ShimmerBox(width: 56, height: 32, radius: 6),
+              SizedBox(width: AppSpacing.xs),
+              ShimmerBox(width: 48, height: 32, radius: 6),
+            ];
+            const trailing = <Widget>[
+              ShimmerBox(width: 60, height: 16, radius: 4),
+              SizedBox(width: AppSpacing.sm),
+              ShimmerBox(width: 72, height: 32, radius: 6),
+            ];
+            if (constraints.maxWidth < 320) {
+              return Wrap(
+                crossAxisAlignment: WrapCrossAlignment.center,
+                runSpacing: AppSpacing.xs,
+                children: const [...leading, ...trailing],
+              );
+            }
+            return Row(children: const [...leading, Spacer(), ...trailing]);
+          },
         ),
         const SizedBox(height: AppSpacing.md),
         // 상품 그리드
