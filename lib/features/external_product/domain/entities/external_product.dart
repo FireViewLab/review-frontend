@@ -2,42 +2,124 @@ import 'package:re_view_front/core/analysis/analysis_display.dart';
 import 'package:re_view_front/core/utils/product_image_urls.dart';
 import 'package:re_view_front/features/external_product/domain/entities/external_product_ref.dart';
 
-/// 서버가 알려 주는 수집 상태. 네 가지 모두 HTTP 200으로 온다.
+/// 서버가 알려 주는 수집 상태. 알 수 없는 값은 원문과 함께 보관한다.
 enum CollectionStatus {
-  /// 최신 데이터.
   fresh,
-
-  /// 오래됐지만 쓸 수 있는 데이터. 실패가 아니다.
   stale,
-
-  /// 처음 보는 상품이라 지금 수집 중이다. 상품 정보가 아직 없다.
   queued,
-
-  /// 상품이 없는 게 아니라 가져오지 못했다.
+  running,
+  done,
+  failed,
+  disabled,
   unavailable,
+  unknown;
+
+  static CollectionStatus parse(String? value) =>
+      switch (value?.toUpperCase()) {
+        'FRESH' => fresh,
+        'STALE' => stale,
+        'QUEUED' || 'PENDING' => queued,
+        'RUNNING' => running,
+        'DONE' => done,
+        'FAILED' => failed,
+        'DISABLED' => disabled,
+        'UNAVAILABLE' => unavailable,
+        _ => unknown,
+      };
+
+  bool get isActive => this == queued || this == running;
+  bool get isTerminal => this != unknown && !isActive;
 }
 
-/// 수집 작업의 진행 상태.
+enum ExternalAnalysisStatus {
+  pending,
+  running,
+  done,
+  failed,
+  disabled,
+  unavailable,
+
+  /// 아직 분석하지 않은 상품. 서버가 따로 분석을 돌리고 있지 않으므로 끝난 상태로 본다.
+  notAnalyzed,
+  unknown;
+
+  static ExternalAnalysisStatus parse(String? value) =>
+      switch (value?.toUpperCase()) {
+        'NOT_ANALYZED' => notAnalyzed,
+        'PENDING' || 'QUEUED' => pending,
+        'RUNNING' => running,
+        'DONE' => done,
+        'FAILED' => failed,
+        'DISABLED' => disabled,
+        'UNAVAILABLE' => unavailable,
+        _ => unknown,
+      };
+
+  bool get isActive => this == pending || this == running;
+  bool get isTerminal => this != unknown && !isActive;
+}
+
+/// 수집 작업 및 상품·리뷰 단계의 진행 상태.
 enum CollectionJobStatus {
   pending,
+  queued,
+  running,
   succeeded,
-
-  /// 상품은 수집했고 리뷰는 실패했다. 상품은 보여 줄 수 있다.
+  done,
   partial,
   failed,
+  disabled,
+  unknown;
+
+  static CollectionJobStatus parse(String? value) =>
+      switch (value?.toUpperCase()) {
+        'PENDING' => pending,
+        'QUEUED' => queued,
+        'RUNNING' => running,
+        'SUCCEEDED' => succeeded,
+        'DONE' => done,
+        'PARTIAL' => partial,
+        'FAILED' => failed,
+        'DISABLED' => disabled,
+        _ => unknown,
+      };
+
+  bool get isActive => this == pending || this == queued || this == running;
+  bool get isTerminal => this != unknown && !isActive;
 }
 
 class CollectionJob {
-  const CollectionJob({required this.id, required this.status, this.lastError});
+  const CollectionJob({
+    required this.id,
+    required this.status,
+    this.rawStatus,
+    this.productStatus,
+    this.reviewStatus,
+    this.lastError,
+  });
 
   final int id;
   final CollectionJobStatus status;
+  final String? rawStatus;
+  String get statusValue => rawStatus ?? status.name.toUpperCase();
+  final String? productStatus;
+  final String? reviewStatus;
   final String? lastError;
+
+  CollectionJobStatus get productState =>
+      CollectionJobStatus.parse(productStatus);
+  CollectionJobStatus get reviewState =>
+      CollectionJobStatus.parse(reviewStatus);
+  bool get isActive =>
+      status.isActive || productState.isActive || reviewState.isActive;
+  bool get isTerminal => status.isTerminal && !isActive;
 
   /// 수집이 끝나 상품을 다시 조회해도 되는지.
   bool get isFinished =>
-      status == CollectionJobStatus.succeeded ||
-      status == CollectionJobStatus.partial;
+      !isActive &&
+      (status == CollectionJobStatus.succeeded ||
+          status == CollectionJobStatus.done ||
+          status == CollectionJobStatus.partial);
 }
 
 /// Data 서버가 수집한 쇼핑몰 상품. 수집기가 채우지 못한 값은 null이다.
@@ -113,6 +195,7 @@ class ExternalReview {
 class ExternalProductSnapshot {
   const ExternalProductSnapshot({
     required this.status,
+    this.rawCollectionStatus,
     this.product,
     this.reviews = const [],
     this.nextCursor,
@@ -124,6 +207,11 @@ class ExternalProductSnapshot {
   });
 
   final CollectionStatus status;
+  final String? rawCollectionStatus;
+  String get collectionStatus =>
+      rawCollectionStatus ?? status.name.toUpperCase();
+  ExternalAnalysisStatus get analysisState =>
+      ExternalAnalysisStatus.parse(analysisStatus);
 
   /// [CollectionStatus.queued]·[CollectionStatus.unavailable]이면 null이다.
   final ExternalProduct? product;
@@ -146,6 +234,7 @@ class ExternalProductSnapshot {
 /// v2 응답의 분석 메타정보. 페이지 리뷰 평균을 상품 평균으로 만들지 않는다.
 class ExternalAnalysis {
   const ExternalAnalysis({
+    this.status,
     this.display,
     this.modelVersion,
     this.policyVersion,
@@ -153,6 +242,7 @@ class ExternalAnalysis {
     this.sampled,
     this.sourceReviewCount,
   });
+  final String? status;
   final AnalysisDisplay? display;
   final String? modelVersion;
   final String? policyVersion;

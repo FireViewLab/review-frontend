@@ -38,7 +38,8 @@ class ExternalProductRemoteDataSourceImpl
     final items = reviews is Map<String, dynamic> ? reviews['items'] : null;
 
     return ExternalProductSnapshot(
-      status: _status(body['collectionStatus'], hasProduct: product is Map),
+      status: CollectionStatus.parse(_text(body['collectionStatus'])),
+      rawCollectionStatus: _text(body['collectionStatus']),
       product: product is Map<String, dynamic> ? _product(product, ref) : null,
       reviews: [
         if (items is List)
@@ -64,7 +65,9 @@ class ExternalProductRemoteDataSourceImpl
       hasAnalysis: body['analysis'] is Map<String, dynamic>,
       analysisStatus:
           _text(body['analysisStatus']) ??
-          (body['analysis'] is Map ? 'DONE' : 'UNAVAILABLE'),
+          (body['analysis'] is Map
+              ? _text((body['analysis'] as Map)['status']) ?? 'DONE'
+              : 'UNAVAILABLE'),
       analysis: body['analysis'] is Map<String, dynamic>
           ? _analysis(
               body['analysis'] as Map<String, dynamic>,
@@ -88,17 +91,6 @@ class ExternalProductRemoteDataSourceImpl
       if (body is Map<String, dynamic>) return body;
     }
     throw const FormatException('Invalid external product response');
-  }
-
-  /// 모르는 상태 값이 와도 상품이 있으면 보여 주고, 없으면 가져오지 못한 것으로 본다.
-  CollectionStatus _status(Object? value, {required bool hasProduct}) {
-    return switch (value?.toString().toUpperCase()) {
-      'FRESH' => CollectionStatus.fresh,
-      'STALE' => CollectionStatus.stale,
-      'QUEUED' => CollectionStatus.queued,
-      'UNAVAILABLE' => CollectionStatus.unavailable,
-      _ => hasProduct ? CollectionStatus.fresh : CollectionStatus.unavailable,
-    };
   }
 
   ExternalProduct _product(Map<String, dynamic> json, ExternalProductRef ref) {
@@ -154,6 +146,7 @@ class ExternalProductRemoteDataSourceImpl
     Map<String, dynamic> json, {
     String? inheritedVersion,
   }) => ExternalAnalysis(
+    status: _text(json['status']),
     display: AnalysisContract.parse(
       json,
       catalog: true,
@@ -171,13 +164,10 @@ class ExternalProductRemoteDataSourceImpl
     if (id is! num) return null;
     return CollectionJob(
       id: id.toInt(),
-      status: switch (json['status']?.toString().toLowerCase()) {
-        'succeeded' => CollectionJobStatus.succeeded,
-        'partial' => CollectionJobStatus.partial,
-        'failed' => CollectionJobStatus.failed,
-        // pending, running 등 끝나지 않은 상태는 모두 계속 기다린다.
-        _ => CollectionJobStatus.pending,
-      },
+      status: CollectionJobStatus.parse(_text(json['status'])),
+      rawStatus: _text(json['status']),
+      productStatus: _text(json['productStatus']),
+      reviewStatus: _text(json['reviewStatus']),
       lastError: _text(json['lastError']),
     );
   }
