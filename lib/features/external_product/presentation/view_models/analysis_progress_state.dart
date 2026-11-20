@@ -50,7 +50,10 @@ class AnalysisProgressState {
             CollectionStatus.unavailable => AnalysisStepStatus.unavailable,
             _ => _jobStep(state.job?.productState),
           };
-    final reviews = _jobStep(state.job?.reviewState);
+    // job이 없는데 상품과 리뷰를 이미 받았다면 리뷰 수집은 끝난 것이다.
+    final reviews = state.job == null && state.reviews.isNotEmpty
+        ? AnalysisStepStatus.complete
+        : _jobStep(state.job?.reviewState);
     final analysis = switch (state.analysisState) {
       ExternalAnalysisStatus.pending => AnalysisStepStatus.waiting,
       ExternalAnalysisStatus.running => AnalysisStepStatus.inProgress,
