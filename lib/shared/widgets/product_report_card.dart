@@ -31,6 +31,8 @@ class ProductReportCard extends StatelessWidget {
     this.scoreLabel,
     this.metrics = const [],
     this.onDetailPressed,
+    this.resultHeader,
+    this.content,
   });
   final String summary;
   final Widget details;
@@ -39,6 +41,8 @@ class ProductReportCard extends StatelessWidget {
   final double? score;
   final List<ProductReportMetric> metrics;
   final VoidCallback? onDetailPressed;
+  final Widget? resultHeader;
+  final Widget? content;
 
   @override
   Widget build(BuildContext context) {
@@ -145,106 +149,109 @@ class ProductReportCard extends StatelessWidget {
               ],
             ),
             const SizedBox(height: AppSpacing.lg),
-            LayoutBuilder(
-              builder: (context, constraints) {
-                final stacked =
-                    constraints.maxWidth < 440 ||
-                    MediaQuery.textScalerOf(context).scale(16) > 24;
-                final result = Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Container(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 10,
-                        vertical: 6,
-                      ),
-                      decoration: BoxDecoration(
-                        color: color.withValues(alpha: .08),
-                        borderRadius: AppRadius.small,
-                      ),
-                      child: Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Icon(icon, color: color, size: 16),
-                          const SizedBox(width: 6),
-                          Flexible(
-                            child: Text(
-                              label,
-                              style: theme.labelMedium?.copyWith(
-                                color: color,
-                                fontWeight: FontWeight.w700,
+            if (resultHeader case final header?)
+              header
+            else
+              LayoutBuilder(
+                builder: (context, constraints) {
+                  final stacked =
+                      constraints.maxWidth < 440 ||
+                      MediaQuery.textScalerOf(context).scale(16) > 24;
+                  final result = Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Container(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 10,
+                          vertical: 6,
+                        ),
+                        decoration: BoxDecoration(
+                          color: color.withValues(alpha: .08),
+                          borderRadius: AppRadius.small,
+                        ),
+                        child: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Icon(icon, color: color, size: 16),
+                            const SizedBox(width: 6),
+                            Flexible(
+                              child: Text(
+                                label,
+                                style: theme.labelMedium?.copyWith(
+                                  color: color,
+                                  fontWeight: FontWeight.w700,
+                                ),
                               ),
                             ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    const SizedBox(height: AppSpacing.sm),
-                    Text(
-                      summary,
-                      style: theme.bodyMedium?.copyWith(
-                        color: AppColors.textPrimary,
-                        height: 1.6,
-                      ),
-                    ),
-                  ],
-                );
-                if (!validScore) return result;
-                final scoreCard = Container(
-                  width: stacked ? double.infinity : 160,
-                  padding: const EdgeInsets.all(AppSpacing.md),
-                  decoration: BoxDecoration(
-                    color: AppColors.primaryLight,
-                    borderRadius: BorderRadius.circular(14),
-                  ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        scoreLabel ?? l.reportScoreLabel,
-                        style: theme.labelMedium?.copyWith(
-                          color: AppColors.primary,
+                          ],
                         ),
                       ),
-                      const SizedBox(height: 4),
+                      const SizedBox(height: AppSpacing.sm),
                       Text(
-                        '${score == score!.roundToDouble() ? score!.toInt() : score!.toStringAsFixed(1)}',
-                        style: theme.headlineLarge?.copyWith(
-                          fontSize: 38,
-                          fontWeight: FontWeight.w800,
-                          color: AppColors.primary,
-                          height: 1.2,
+                        summary,
+                        style: theme.bodyMedium?.copyWith(
+                          color: AppColors.textPrimary,
+                          height: 1.6,
                         ),
                       ),
-                      Text(
-                        'RTI / 100',
-                        style: theme.labelSmall?.copyWith(
-                          color: AppColors.textSecondary,
-                        ),
-                      ),
-                    ],
-                  ),
-                );
-                if (stacked) {
-                  return Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      scoreCard,
-                      const SizedBox(height: AppSpacing.md),
-                      result,
                     ],
                   );
-                }
-                return Row(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    scoreCard,
-                    const SizedBox(width: AppSpacing.lg),
-                    Expanded(child: result),
-                  ],
-                );
-              },
-            ),
+                  if (!validScore) return result;
+                  final scoreCard = Container(
+                    width: stacked ? double.infinity : 160,
+                    padding: const EdgeInsets.all(AppSpacing.md),
+                    decoration: BoxDecoration(
+                      color: AppColors.primaryLight,
+                      borderRadius: BorderRadius.circular(14),
+                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          scoreLabel ?? l.reportScoreLabel,
+                          style: theme.labelMedium?.copyWith(
+                            color: AppColors.primary,
+                          ),
+                        ),
+                        const SizedBox(height: 4),
+                        Text(
+                          '${score == score!.roundToDouble() ? score!.toInt() : score!.toStringAsFixed(1)}',
+                          style: theme.headlineLarge?.copyWith(
+                            fontSize: 38,
+                            fontWeight: FontWeight.w800,
+                            color: AppColors.primary,
+                            height: 1.2,
+                          ),
+                        ),
+                        Text(
+                          'RTI / 100',
+                          style: theme.labelSmall?.copyWith(
+                            color: AppColors.textSecondary,
+                          ),
+                        ),
+                      ],
+                    ),
+                  );
+                  if (stacked) {
+                    return Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        scoreCard,
+                        const SizedBox(height: AppSpacing.md),
+                        result,
+                      ],
+                    );
+                  }
+                  return Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      scoreCard,
+                      const SizedBox(width: AppSpacing.lg),
+                      Expanded(child: result),
+                    ],
+                  );
+                },
+              ),
             if (metrics.isNotEmpty) ...[
               const SizedBox(height: AppSpacing.lg),
               Wrap(
@@ -284,6 +291,10 @@ class ProductReportCard extends StatelessWidget {
                     ),
                 ],
               ),
+            ],
+            if (content case final body?) ...[
+              const SizedBox(height: AppSpacing.lg),
+              body,
             ],
             const SizedBox(height: AppSpacing.lg),
             const Divider(height: 1),
