@@ -52,7 +52,7 @@ class _CartPageState extends ConsumerState<CartPage> {
                 CartFailure(:final failure) => SizedBox(
                   height: 320,
                   child: AppErrorView(
-                    message: failure.message,
+                    failure: failure,
                     onRetry: () =>
                         ref.read(cartViewModelProvider.notifier).load(),
                   ),

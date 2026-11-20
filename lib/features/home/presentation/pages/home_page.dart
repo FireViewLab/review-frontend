@@ -1,3 +1,4 @@
+import 'package:re_view_front/core/error/failure.dart';
 import 'package:re_view_front/shared/presentation/analysis_formatters.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:re_view_front/features/external_product/domain/entities/external_product_ref.dart';
@@ -109,7 +110,7 @@ class _HomePageState extends ConsumerState<HomePage> {
         SizedBox(
           height: 280,
           child: AppErrorView(
-            message: dashboardState.failure.message,
+            failure: dashboardState.failure,
             onRetry: () =>
                 ref.read(homeDashboardViewModelProvider.notifier).refresh(),
           ),
@@ -187,12 +188,14 @@ class _HomePageState extends ConsumerState<HomePage> {
                   ...browseTitle,
                   const ProductCardGridSkeleton(itemCount: 5),
                 ],
-                error: (_, _) => [
+                error: (error, _) => [
                   ...browseTitle,
                   SizedBox(
                     height: 280,
                     child: AppErrorView(
-                      message: '상품을 불러오지 못했습니다.',
+                      failure: error is Failure
+                          ? error
+                          : Failure(message: '상품을 불러오지 못했습니다.', cause: error),
                       onRetry: () => ref.invalidate(homeCatalogProvider),
                     ),
                   ),

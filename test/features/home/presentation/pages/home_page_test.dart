@@ -1,3 +1,4 @@
+import 'package:re_view_front/l10n/generated/app_localizations.dart';
 import 'package:re_view_front/app/router/app_shell.dart';
 import 'dart:async';
 
@@ -206,7 +207,11 @@ void main() {
     );
     await tester.pumpAndSettle();
 
-    expect(find.text('network failed', skipOffstage: false), findsOneWidget);
+    final l10n = AppLocalizations.of(tester.element(find.byType(HomePage)));
+    expect(
+      find.text(l10n.failureMessageUnknown, skipOffstage: false),
+      findsOneWidget,
+    );
     expect(find.text('다시 시도', skipOffstage: false), findsOneWidget);
   });
 

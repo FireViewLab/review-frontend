@@ -2337,4 +2337,70 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get extNavDescription => '商品详情';
+
+  @override
+  String get failureTitleOffline => '请检查网络连接';
+
+  @override
+  String get failureMessageOffline => '无法连接服务器，请检查网络连接后重试。';
+
+  @override
+  String get failureTitleTimeout => '响应时间过长';
+
+  @override
+  String get failureMessageTimeout => '连接或等待响应超时，请稍后重试。';
+
+  @override
+  String get failureTitleUnauthorized => '需要登录';
+
+  @override
+  String get failureMessageUnauthorized => '登录信息缺失或已过期，请重新登录。';
+
+  @override
+  String get failureTitleForbidden => '无访问权限';
+
+  @override
+  String get failureMessageForbidden => '您没有使用此功能的权限。';
+
+  @override
+  String get failureTitleNotFound => '未找到相关内容';
+
+  @override
+  String get failureMessageNotFound => '请求的信息不存在或已停止提供。';
+
+  @override
+  String get failureTitleRateLimited => '请求过多';
+
+  @override
+  String get failureMessageRateLimited => '当前请求过多，请稍后重试。';
+
+  @override
+  String get failureTitleServer => '服务器出现问题';
+
+  @override
+  String get failureMessageServer => '服务器发生错误，请稍后重试。';
+
+  @override
+  String get failureTitleCancelled => '请求已取消';
+
+  @override
+  String get failureMessageCancelled => '请求已取消，未加载结果。';
+
+  @override
+  String get failureTitleBadResponse => '无法读取响应';
+
+  @override
+  String get failureMessageBadResponse => '无法处理响应，请再次确认。';
+
+  @override
+  String get failureTitleUnknown => '出现问题';
+
+  @override
+  String get failureMessageUnknown => '无法完成请求，请稍后重试。';
+
+  @override
+  String get failureRetry => '重试';
+
+  @override
+  String get failureSearchRetry => '重新搜索';
 }

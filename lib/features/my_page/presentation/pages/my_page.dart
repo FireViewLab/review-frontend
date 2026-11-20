@@ -59,7 +59,7 @@ class _MyPageState extends ConsumerState<MyPage> {
       MyPageFailure(:final failure) => SizedBox(
         height: 360,
         child: AppErrorView(
-          message: failure.message,
+          failure: failure,
           onRetry: () => ref.read(myPageViewModelProvider.notifier).load(),
         ),
       ),

@@ -76,6 +76,7 @@ class _ProductDetailPageState extends ConsumerState<ProductDetailPage> {
                 ProductDetailLoading() => const ProductDetailLoadingView(),
                 ProductDetailFailure(:final failure) => ProductDetailErrorView(
                   message: failure.message,
+                  failure: failure,
                   onRetry: () => ref
                       .read(
                         productDetailViewModelProvider(

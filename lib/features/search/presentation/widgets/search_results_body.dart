@@ -1,3 +1,4 @@
+import 'package:re_view_front/core/error/failure.dart';
 import 'package:flutter/material.dart';
 import 'package:re_view_front/app/theme/app_colors.dart';
 import 'package:re_view_front/app/theme/app_spacing.dart';
@@ -45,6 +46,7 @@ class SearchResultsBody extends StatelessWidget {
     required this.onViewModeChanged,
     required this.onResetFilters,
     this.onRetry,
+    this.failure,
   });
 
   final GlobalKey? resultsKey;
@@ -77,19 +79,21 @@ class SearchResultsBody extends StatelessWidget {
   final ValueChanged<SearchViewMode> onViewModeChanged;
   final VoidCallback onResetFilters;
   final VoidCallback? onRetry;
+  final Failure? failure;
 
   @override
   Widget build(BuildContext context) {
     if (state.isLoading) {
       return const SliverToBoxAdapter(child: _SearchResultsSkeleton());
     }
-    if (state.hasError) {
+    if (failure != null || state.hasError) {
       return SliverToBoxAdapter(
         child: SizedBox(
           height: 420,
           child: AppErrorView(
-            message: state.errorMessage!,
-            retryLabel: '다시 검색',
+            message: state.errorMessage,
+            failure: failure,
+            retryLabel: AppLocalizations.of(context).failureSearchRetry,
             onRetry: onRetry,
           ),
         ),

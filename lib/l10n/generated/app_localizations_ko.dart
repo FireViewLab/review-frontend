@@ -2361,4 +2361,70 @@ class AppLocalizationsKo extends AppLocalizations {
 
   @override
   String get extNavDescription => '상세 설명';
+
+  @override
+  String get failureTitleOffline => '연결을 확인해 주세요';
+
+  @override
+  String get failureMessageOffline => '서버에 연결할 수 없어요. 인터넷 연결을 확인하고 다시 시도해 주세요.';
+
+  @override
+  String get failureTitleTimeout => '응답이 지연되고 있어요';
+
+  @override
+  String get failureMessageTimeout => '연결 또는 응답 대기 시간이 초과됐어요. 잠시 후 다시 시도해 주세요.';
+
+  @override
+  String get failureTitleUnauthorized => '로그인이 필요해요';
+
+  @override
+  String get failureMessageUnauthorized => '로그인 정보가 없거나 만료됐어요. 다시 로그인해 주세요.';
+
+  @override
+  String get failureTitleForbidden => '접근 권한이 없어요';
+
+  @override
+  String get failureMessageForbidden => '이 기능을 이용할 권한이 없어요.';
+
+  @override
+  String get failureTitleNotFound => '요청한 내용을 찾을 수 없어요';
+
+  @override
+  String get failureMessageNotFound => '요청한 정보가 없거나 더 이상 제공되지 않아요.';
+
+  @override
+  String get failureTitleRateLimited => '요청이 많아요';
+
+  @override
+  String get failureMessageRateLimited => '요청이 많아 잠시 후 다시 시도해 주세요.';
+
+  @override
+  String get failureTitleServer => '서버에서 문제가 발생했어요';
+
+  @override
+  String get failureMessageServer => '서버 오류가 발생했어요. 잠시 후 다시 시도해 주세요.';
+
+  @override
+  String get failureTitleCancelled => '요청이 취소됐어요';
+
+  @override
+  String get failureMessageCancelled => '요청이 취소되어 결과를 불러오지 않았어요.';
+
+  @override
+  String get failureTitleBadResponse => '응답을 확인할 수 없어요';
+
+  @override
+  String get failureMessageBadResponse => '응답을 처리하지 못했어요. 다시 확인해 주세요.';
+
+  @override
+  String get failureTitleUnknown => '문제가 발생했어요';
+
+  @override
+  String get failureMessageUnknown => '요청을 완료하지 못했어요. 잠시 후 다시 시도해 주세요.';
+
+  @override
+  String get failureRetry => '다시 시도';
+
+  @override
+  String get failureSearchRetry => '다시 검색';
 }

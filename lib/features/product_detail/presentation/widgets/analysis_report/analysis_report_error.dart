@@ -1,5 +1,8 @@
 // ignore_for_file: use_key_in_widget_constructors
 
+import 'package:re_view_front/core/error/failure.dart';
+import 'package:re_view_front/shared/widgets/error_view.dart';
+
 import 'package:flutter/material.dart';
 import 'package:re_view_front/app/theme/app_colors.dart';
 import 'package:re_view_front/app/theme/app_spacing.dart';
@@ -9,13 +12,24 @@ import 'package:re_view_front/app/theme/app_spacing.dart';
 // ─────────────────────────────────────────────────────────────────────────────
 
 class AnalysisReportErrorView extends StatelessWidget {
-  const AnalysisReportErrorView({required this.message, required this.onRetry});
+  const AnalysisReportErrorView({
+    required this.message,
+    required this.onRetry,
+    this.failure,
+  });
 
+  final Failure? failure;
   final String message;
   final VoidCallback onRetry;
 
   @override
   Widget build(BuildContext context) {
+    if (failure != null) {
+      return SizedBox(
+        height: 400,
+        child: AppErrorView(failure: failure, onRetry: onRetry),
+      );
+    }
     return SizedBox(
       height: 400,
       child: Center(

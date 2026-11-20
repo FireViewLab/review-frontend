@@ -220,6 +220,9 @@ class _SearchResultsPageState extends ConsumerState<SearchResultsPage> {
               sliver: SearchResultsBody(
                 resultsKey: _resultsKey,
                 state: uiState,
+                failure: searchState is SearchFailure
+                    ? searchState.failure
+                    : null,
                 products: uiState.products,
                 selectedQuickFilter: _selectedQuickFilter,
                 selectedCategories: _selectedCategories,

@@ -1459,5 +1459,93 @@
   "extNavDescription": "상세 설명",
   "@extNavDescription": {
     "description": "Product description section: extNavDescription"
+  },
+  "failureTitleOffline": "연결을 확인해 주세요",
+  "@failureTitleOffline": {
+    "description": "Shared failure presentation: failureTitleOffline"
+  },
+  "failureMessageOffline": "서버에 연결할 수 없어요. 인터넷 연결을 확인하고 다시 시도해 주세요.",
+  "@failureMessageOffline": {
+    "description": "Shared failure presentation: failureMessageOffline"
+  },
+  "failureTitleTimeout": "응답이 지연되고 있어요",
+  "@failureTitleTimeout": {
+    "description": "Shared failure presentation: failureTitleTimeout"
+  },
+  "failureMessageTimeout": "연결 또는 응답 대기 시간이 초과됐어요. 잠시 후 다시 시도해 주세요.",
+  "@failureMessageTimeout": {
+    "description": "Shared failure presentation: failureMessageTimeout"
+  },
+  "failureTitleUnauthorized": "로그인이 필요해요",
+  "@failureTitleUnauthorized": {
+    "description": "Shared failure presentation: failureTitleUnauthorized"
+  },
+  "failureMessageUnauthorized": "로그인 정보가 없거나 만료됐어요. 다시 로그인해 주세요.",
+  "@failureMessageUnauthorized": {
+    "description": "Shared failure presentation: failureMessageUnauthorized"
+  },
+  "failureTitleForbidden": "접근 권한이 없어요",
+  "@failureTitleForbidden": {
+    "description": "Shared failure presentation: failureTitleForbidden"
+  },
+  "failureMessageForbidden": "이 기능을 이용할 권한이 없어요.",
+  "@failureMessageForbidden": {
+    "description": "Shared failure presentation: failureMessageForbidden"
+  },
+  "failureTitleNotFound": "요청한 내용을 찾을 수 없어요",
+  "@failureTitleNotFound": {
+    "description": "Shared failure presentation: failureTitleNotFound"
+  },
+  "failureMessageNotFound": "요청한 정보가 없거나 더 이상 제공되지 않아요.",
+  "@failureMessageNotFound": {
+    "description": "Shared failure presentation: failureMessageNotFound"
+  },
+  "failureTitleRateLimited": "요청이 많아요",
+  "@failureTitleRateLimited": {
+    "description": "Shared failure presentation: failureTitleRateLimited"
+  },
+  "failureMessageRateLimited": "요청이 많아 잠시 후 다시 시도해 주세요.",
+  "@failureMessageRateLimited": {
+    "description": "Shared failure presentation: failureMessageRateLimited"
+  },
+  "failureTitleServer": "서버에서 문제가 발생했어요",
+  "@failureTitleServer": {
+    "description": "Shared failure presentation: failureTitleServer"
+  },
+  "failureMessageServer": "서버 오류가 발생했어요. 잠시 후 다시 시도해 주세요.",
+  "@failureMessageServer": {
+    "description": "Shared failure presentation: failureMessageServer"
+  },
+  "failureTitleCancelled": "요청이 취소됐어요",
+  "@failureTitleCancelled": {
+    "description": "Shared failure presentation: failureTitleCancelled"
+  },
+  "failureMessageCancelled": "요청이 취소되어 결과를 불러오지 않았어요.",
+  "@failureMessageCancelled": {
+    "description": "Shared failure presentation: failureMessageCancelled"
+  },
+  "failureTitleBadResponse": "응답을 확인할 수 없어요",
+  "@failureTitleBadResponse": {
+    "description": "Shared failure presentation: failureTitleBadResponse"
+  },
+  "failureMessageBadResponse": "응답을 처리하지 못했어요. 다시 확인해 주세요.",
+  "@failureMessageBadResponse": {
+    "description": "Shared failure presentation: failureMessageBadResponse"
+  },
+  "failureTitleUnknown": "문제가 발생했어요",
+  "@failureTitleUnknown": {
+    "description": "Shared failure presentation: failureTitleUnknown"
+  },
+  "failureMessageUnknown": "요청을 완료하지 못했어요. 잠시 후 다시 시도해 주세요.",
+  "@failureMessageUnknown": {
+    "description": "Shared failure presentation: failureMessageUnknown"
+  },
+  "failureRetry": "다시 시도",
+  "@failureRetry": {
+    "description": "Shared failure presentation: failureRetry"
+  },
+  "failureSearchRetry": "다시 검색",
+  "@failureSearchRetry": {
+    "description": "Shared failure presentation: failureSearchRetry"
   }
 }
