@@ -137,6 +137,8 @@ void main() {
     await tester.pump();
     await tester.pump(const Duration(seconds: 1));
     await tester.pump();
+    // 지연 로딩 뒤 생성된 화면의 provider 요청까지 진행한다.
+    await tester.pump(Duration.zero);
     return (container, router);
   }
 
@@ -149,6 +151,7 @@ void main() {
     await tester.pump();
     await tester.pump(const Duration(seconds: 1));
     await tester.pump();
+    await tester.pump(Duration.zero);
     expect(tester.takeException(), isNull);
     expect(find.byType(HomeHeader), findsOneWidget);
   }
