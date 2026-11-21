@@ -1,9 +1,12 @@
+import 'package:re_view_front/app/router/deferred_page.dart';
 import 'package:re_view_front/features/auth/presentation/providers/auth_providers.dart';
-import 'package:re_view_front/features/recent_products/presentation/widgets/recent_products_section.dart';
-import 'package:re_view_front/features/my_page/presentation/widgets/my_page/warning_products_section.dart';
-import 'package:re_view_front/features/payments/presentation/pages/cart_checkout_page.dart';
+import 'package:re_view_front/features/recent_products/presentation/widgets/recent_products_section.dart'
+    deferred as recent_products;
+import 'package:re_view_front/features/my_page/presentation/widgets/my_page/warning_products_section.dart'
+    deferred as warning_products;
+import 'package:re_view_front/app/router/payment_route_pages.dart'
+    deferred as payments;
 import 'package:re_view_front/features/payments/domain/entities/cart_checkout.dart';
-import 'package:re_view_front/features/payments/presentation/pages/test_payment_page.dart';
 import 'package:re_view_front/app/router/app_shell.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -12,33 +15,34 @@ import 'package:re_view_front/app/theme/app_motion.dart';
 import 'package:re_view_front/app/router/route_paths.dart';
 import 'package:re_view_front/core/providers/core_providers.dart';
 import 'package:re_view_front/features/account/presentation/widgets/account_shell.dart';
-import 'package:re_view_front/features/admin/presentation/pages/admin_analysis_feedbacks_page.dart';
-import 'package:re_view_front/features/admin/presentation/pages/admin_dashboard_page.dart';
-import 'package:re_view_front/features/admin/presentation/pages/admin_reports_page.dart';
-import 'package:re_view_front/features/admin/presentation/pages/admin_suspicious_reviews_page.dart';
-import 'package:re_view_front/features/admin/presentation/pages/admin_users_page.dart';
-import 'package:re_view_front/features/admin/presentation/pages/admin_banners_page.dart';
-import 'package:re_view_front/features/admin/presentation/widgets/admin_shell.dart';
+import 'package:re_view_front/app/router/admin_route_pages.dart'
+    deferred as admin;
 import 'package:re_view_front/features/auth/presentation/pages/login_page.dart';
 import 'package:re_view_front/features/auth/presentation/pages/oauth_callback_page.dart';
 import 'package:re_view_front/features/auth/presentation/pages/password_reset_page.dart';
 import 'package:re_view_front/features/auth/presentation/pages/signup_page.dart';
 import 'package:re_view_front/features/home/presentation/pages/home_page.dart';
 import 'package:re_view_front/features/landing/presentation/pages/landing_page.dart';
-import 'package:re_view_front/features/my_page/presentation/pages/my_page.dart';
+import 'package:re_view_front/features/my_page/presentation/pages/my_page.dart'
+    deferred as my_page;
 import 'package:re_view_front/features/onboarding/presentation/pages/onboarding_page.dart';
 import 'package:re_view_front/features/product_detail/presentation/pages/analysis_report_page.dart';
 import 'package:re_view_front/features/product_detail/presentation/pages/product_detail_page.dart';
 import 'package:re_view_front/features/cart/presentation/pages/cart_page.dart';
 import 'package:re_view_front/features/search/presentation/pages/search_results_page.dart';
-import 'package:re_view_front/features/review_report/presentation/pages/review_report_page.dart';
-import 'package:re_view_front/features/settings/presentation/pages/settings_page.dart';
+import 'package:re_view_front/features/review_report/presentation/pages/review_report_page.dart'
+    deferred as review_report;
+import 'package:re_view_front/features/settings/presentation/pages/settings_page.dart'
+    deferred as settings;
 import 'package:re_view_front/features/external_product/domain/entities/external_product_ref.dart';
 import 'package:re_view_front/features/external_product/presentation/pages/external_product_page.dart';
-import 'package:re_view_front/features/feedback_history/presentation/pages/feedback_history_page.dart';
+import 'package:re_view_front/features/feedback_history/presentation/pages/feedback_history_page.dart'
+    deferred as feedback_history;
 import 'package:re_view_front/features/wishlist/presentation/pages/wishlist_page.dart';
-import 'package:re_view_front/features/notifications/presentation/pages/notifications_page.dart';
-import 'package:re_view_front/features/plan/presentation/pages/plan_page.dart';
+import 'package:re_view_front/features/notifications/presentation/pages/notifications_page.dart'
+    deferred as notifications;
+import 'package:re_view_front/features/plan/presentation/pages/plan_page.dart'
+    deferred as plan;
 import 'package:re_view_front/features/chat/presentation/widgets/popup_route_tracker.dart';
 import 'package:re_view_front/features/search/presentation/view_models/search_results_state.dart';
 
@@ -253,48 +257,74 @@ final appRouterProvider = Provider<GoRouter>((ref) {
               final extra = state.extra as Map<String, dynamic>? ?? {};
               return _buildContentPage(
                 state,
-                ReviewReportPage(
-                  reviewId: extra['reviewId'] as int? ?? 0,
-                  productId: extra['productId'] as int?,
-                  productName: extra['productName'] as String? ?? '',
-                  reviewContent: extra['reviewContent'] as String? ?? '',
-                  rtiScore: extra['rtiScore'] as double? ?? 0,
-                  rtiGrade: extra['rtiGrade'] as String? ?? '',
+                DeferredPage(
+                  loadLibrary: review_report.loadLibrary,
+                  builder: (_) => review_report.ReviewReportPage(
+                    reviewId: extra['reviewId'] as int? ?? 0,
+                    productId: extra['productId'] as int?,
+                    productName: extra['productName'] as String? ?? '',
+                    reviewContent: extra['reviewContent'] as String? ?? '',
+                    rtiScore: extra['rtiScore'] as double? ?? 0,
+                    rtiGrade: extra['rtiGrade'] as String? ?? '',
+                  ),
                 ),
               );
             },
           ),
           GoRoute(
             path: RoutePaths.recentProducts,
-            pageBuilder: (context, state) =>
-                _buildContentPage(state, const RecentProductsPage()),
+            pageBuilder: (context, state) => _buildContentPage(
+              state,
+              DeferredPage(
+                loadLibrary: recent_products.loadLibrary,
+                builder: (_) => recent_products.RecentProductsPage(),
+              ),
+            ),
           ),
           GoRoute(
             path: RoutePaths.warningProducts,
-            pageBuilder: (context, state) =>
-                _buildContentPage(state, const WarningProductsPage()),
+            pageBuilder: (context, state) => _buildContentPage(
+              state,
+              DeferredPage(
+                loadLibrary: warning_products.loadLibrary,
+                builder: (_) => warning_products.WarningProductsPage(),
+              ),
+            ),
           ),
           GoRoute(
             path: RoutePaths.notifications,
             name: RouteNames.notifications,
-            pageBuilder: (context, state) =>
-                _buildContentPage(state, const NotificationsPage()),
+            pageBuilder: (context, state) => _buildContentPage(
+              state,
+              DeferredPage(
+                loadLibrary: notifications.loadLibrary,
+                builder: (_) => notifications.NotificationsPage(),
+              ),
+            ),
           ),
           GoRoute(
             path: RoutePaths.cartCheckout,
             pageBuilder: (context, state) => _buildContentPage(
               state,
-              CartCheckoutPage(
-                selection: state.extra is CartCheckoutSelection
-                    ? state.extra as CartCheckoutSelection
-                    : null,
+              DeferredPage(
+                loadLibrary: payments.loadLibrary,
+                builder: (_) => payments.CartCheckoutPage(
+                  selection: state.extra is CartCheckoutSelection
+                      ? state.extra as CartCheckoutSelection
+                      : null,
+                ),
               ),
             ),
           ),
           GoRoute(
             path: RoutePaths.testPayment,
-            pageBuilder: (context, state) =>
-                _buildContentPage(state, const TestPaymentPage()),
+            pageBuilder: (context, state) => _buildContentPage(
+              state,
+              DeferredPage(
+                loadLibrary: payments.loadLibrary,
+                builder: (_) => payments.TestPaymentPage(),
+              ),
+            ),
           ),
           // 계정 영역: 헤더와 메뉴는 그대로 두고 내용만 바꾼다.
           ShellRoute(
@@ -308,7 +338,10 @@ final appRouterProvider = Provider<GoRouter>((ref) {
                 name: RouteNames.myPage,
                 pageBuilder: (context, state) => _buildContentPage(
                   state,
-                  AccountContent(child: const MyPage()),
+                  DeferredPage(
+                    loadLibrary: my_page.loadLibrary,
+                    builder: (_) => AccountContent(child: my_page.MyPage()),
+                  ),
                 ),
               ),
               GoRoute(
@@ -316,7 +349,10 @@ final appRouterProvider = Provider<GoRouter>((ref) {
                 name: RouteNames.plan,
                 pageBuilder: (context, state) => _buildContentPage(
                   state,
-                  AccountContent(child: const PlanContent()),
+                  DeferredPage(
+                    loadLibrary: plan.loadLibrary,
+                    builder: (_) => AccountContent(child: plan.PlanContent()),
+                  ),
                 ),
               ),
               GoRoute(
@@ -324,7 +360,12 @@ final appRouterProvider = Provider<GoRouter>((ref) {
                 name: RouteNames.feedbackHistory,
                 pageBuilder: (context, state) => _buildContentPage(
                   state,
-                  AccountContent(child: const FeedbackHistoryPage()),
+                  DeferredPage(
+                    loadLibrary: feedback_history.loadLibrary,
+                    builder: (_) => AccountContent(
+                      child: feedback_history.FeedbackHistoryPage(),
+                    ),
+                  ),
                 ),
               ),
               GoRoute(
@@ -332,7 +373,11 @@ final appRouterProvider = Provider<GoRouter>((ref) {
                 name: RouteNames.settings,
                 pageBuilder: (context, state) => _buildContentPage(
                   state,
-                  AccountContent(child: const SettingsPage()),
+                  DeferredPage(
+                    loadLibrary: settings.loadLibrary,
+                    builder: (_) =>
+                        AccountContent(child: settings.SettingsPage()),
+                  ),
                 ),
               ),
             ],
@@ -340,43 +385,76 @@ final appRouterProvider = Provider<GoRouter>((ref) {
         ],
       ),
       ShellRoute(
-        builder: (context, state, child) => AdminShell(child: child),
+        builder: (context, state, child) => DeferredPage(
+          loadLibrary: admin.loadLibrary,
+          builder: (_) => admin.AdminShell(child: child),
+        ),
         routes: [
           GoRoute(
             path: RoutePaths.admin,
             name: RouteNames.admin,
-            pageBuilder: (context, state) =>
-                _buildTransitionPage(state, const AdminDashboardPage()),
+            pageBuilder: (context, state) => _buildTransitionPage(
+              state,
+              DeferredPage(
+                loadLibrary: admin.loadLibrary,
+                builder: (_) => admin.AdminDashboardPage(),
+              ),
+            ),
           ),
           GoRoute(
             path: RoutePaths.adminReviews,
             name: RouteNames.adminReviews,
-            pageBuilder: (context, state) =>
-                _buildTransitionPage(state, const AdminSuspiciousReviewsPage()),
+            pageBuilder: (context, state) => _buildTransitionPage(
+              state,
+              DeferredPage(
+                loadLibrary: admin.loadLibrary,
+                builder: (_) => admin.AdminSuspiciousReviewsPage(),
+              ),
+            ),
           ),
           GoRoute(
             path: RoutePaths.adminReports,
             name: RouteNames.adminReports,
-            pageBuilder: (context, state) =>
-                _buildTransitionPage(state, const AdminReportsPage()),
+            pageBuilder: (context, state) => _buildTransitionPage(
+              state,
+              DeferredPage(
+                loadLibrary: admin.loadLibrary,
+                builder: (_) => admin.AdminReportsPage(),
+              ),
+            ),
           ),
           GoRoute(
             path: RoutePaths.adminAnalysisFeedbacks,
             name: RouteNames.adminAnalysisFeedbacks,
-            pageBuilder: (context, state) =>
-                _buildTransitionPage(state, const AdminAnalysisFeedbacksPage()),
+            pageBuilder: (context, state) => _buildTransitionPage(
+              state,
+              DeferredPage(
+                loadLibrary: admin.loadLibrary,
+                builder: (_) => admin.AdminAnalysisFeedbacksPage(),
+              ),
+            ),
           ),
           GoRoute(
             path: RoutePaths.adminUsers,
             name: RouteNames.adminUsers,
-            pageBuilder: (context, state) =>
-                _buildTransitionPage(state, const AdminUsersPage()),
+            pageBuilder: (context, state) => _buildTransitionPage(
+              state,
+              DeferredPage(
+                loadLibrary: admin.loadLibrary,
+                builder: (_) => admin.AdminUsersPage(),
+              ),
+            ),
           ),
           GoRoute(
             path: RoutePaths.adminBanners,
             name: RouteNames.adminBanners,
-            pageBuilder: (context, state) =>
-                _buildTransitionPage(state, const AdminBannersPage()),
+            pageBuilder: (context, state) => _buildTransitionPage(
+              state,
+              DeferredPage(
+                loadLibrary: admin.loadLibrary,
+                builder: (_) => admin.AdminBannersPage(),
+              ),
+            ),
           ),
         ],
       ),
