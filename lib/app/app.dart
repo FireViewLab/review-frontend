@@ -67,7 +67,13 @@ class ReViewApp extends ConsumerWidget {
           // 시스템 큰 글씨는 따르되 화면이 무너지지 않게 1.6배까지만 키운다.
           return MediaQuery.withClampedTextScaling(
             maxScaleFactor: 1.6,
-            child: app,
+            child: GestureDetector(
+              behavior: HitTestBehavior.translucent,
+              excludeFromSemantics: true,
+              // 입력란·버튼의 탭 처리가 우선하고, 빈 영역을 탭하면 닫는다.
+              onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
+              child: app,
+            ),
           );
         },
         locale: locale,
