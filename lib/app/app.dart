@@ -61,6 +61,12 @@ class ReViewApp extends ConsumerWidget {
         theme: AppTheme.light,
         routerConfig: router,
         scaffoldMessengerKey: _messengerKey,
+        scrollBehavior: kIsWeb
+            ? null
+            : const MaterialScrollBehavior().copyWith(
+                keyboardDismissBehavior:
+                    ScrollViewKeyboardDismissBehavior.onDrag,
+              ),
         builder: (context, child) {
           final app = ChatOverlay(child: child!);
           if (kIsWeb) return app;
