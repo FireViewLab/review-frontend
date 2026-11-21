@@ -31,14 +31,41 @@ class ChatOverlay extends StatefulWidget {
 
 class _ChatOverlayState extends State<ChatOverlay> {
   late final OverlayEntry _entry = OverlayEntry(
-    builder: (_) => const _ChatLayer(),
+    builder: (_) => _ChatLayer(onBackHandlingChanged: _setPanelHandlesBack),
   );
+
+  bool _navigatorHandlesBack = false;
+  bool _panelHandlesBack = false;
+
+  void _setPanelHandlesBack(bool handlesBack) {
+    if (kIsWeb || _panelHandlesBack == handlesBack) return;
+    _panelHandlesBack = handlesBack;
+    // 패널의 마운트/해제는 빌드 중에도 일어나므로 트리가 안정된 뒤 알린다.
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (!mounted) return;
+      NavigationNotification(
+        canHandlePop: _panelHandlesBack || _navigatorHandlesBack,
+      ).dispatch(context);
+    });
+  }
+
+  bool _onNavigationNotification(NavigationNotification notification) {
+    if (kIsWeb) return false;
+    // 패널이 닫힐 때는 루트 화면 여부와 PopScope를 포함한 최신 값을 복원한다.
+    _navigatorHandlesBack = notification.canHandlePop;
+    if (!_panelHandlesBack || notification.canHandlePop) return false;
+    const NavigationNotification(canHandlePop: true).dispatch(context);
+    return true;
+  }
 
   @override
   Widget build(BuildContext context) {
     return Stack(
       children: [
-        widget.child,
+        NotificationListener<NavigationNotification>(
+          onNotification: _onNavigationNotification,
+          child: widget.child,
+        ),
         Positioned.fill(child: Overlay(initialEntries: [_entry])),
       ],
     );
@@ -63,7 +90,9 @@ const _hiddenPathPrefixes = [
 /// 상품만 찾을 수 있어서, 그 화면에서는 상품 없이 일반 질문으로 대화한다.
 
 class _ChatLayer extends ConsumerWidget {
-  const _ChatLayer();
+  const _ChatLayer({required this.onBackHandlingChanged});
+
+  final ValueChanged<bool> onBackHandlingChanged;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -93,6 +122,7 @@ class _ChatLayer extends ConsumerWidget {
             ? extra.chatProductId
             : productRef.externalId;
         return _ChatLauncherLayout(
+          onBackHandlingChanged: onBackHandlingChanged,
           router: router,
           productId: productId,
           // 홈 모바일은 하단 탭(72px) 위로 띄운다.
@@ -105,11 +135,13 @@ class _ChatLayer extends ConsumerWidget {
 
 class _ChatLauncherLayout extends ConsumerWidget {
   const _ChatLauncherLayout({
+    required this.onBackHandlingChanged,
     required this.router,
     required this.productId,
     required this.hasBottomTabs,
   });
 
+  final ValueChanged<bool> onBackHandlingChanged;
   final GoRouter router;
   final String? productId;
   final bool hasBottomTabs;
@@ -160,6 +192,7 @@ class _ChatLauncherLayout extends ConsumerWidget {
 
     // 패널에 닫기 버튼이 있으므로 열려 있는 동안 런처는 그리지 않는다.
     return _CloseOnBack(
+      onBackHandlingChanged: onBackHandlingChanged,
       dispatcher: router.backButtonDispatcher,
       onBack: ref.read(chatViewModelProvider.notifier).close,
       child: Stack(
@@ -212,15 +245,18 @@ class _ChatLauncherLayout extends ConsumerWidget {
 
 /// 앱에서 패널이 열려 있으면 Android 뒤로 가기가 화면 이동보다 먼저 패널을 닫는다.
 ///
-/// 패널은 Navigator 바깥이라 PopScope 대신 라우터의 뒤로 가기 처리 순서에 끼어든다.
+/// Navigator 바깥의 패널도 뒤로 가기를 처리한다고 내비게이션 알림에 합산한다.
+/// 루트 화면에서도 시스템이 라우터에 뒤로 가기를 전달하며, 자식 디스패처가 패널을 닫는다.
 /// 팝업이 떠 있으면 레이어가 숨겨져 해제되므로 팝업이 먼저 닫힌다.
 class _CloseOnBack extends StatefulWidget {
   const _CloseOnBack({
+    required this.onBackHandlingChanged,
     required this.dispatcher,
     required this.onBack,
     required this.child,
   });
 
+  final ValueChanged<bool> onBackHandlingChanged;
   final BackButtonDispatcher dispatcher;
   final VoidCallback onBack;
   final Widget child;
@@ -258,12 +294,14 @@ class _CloseOnBackState extends State<_CloseOnBack> {
     _dispatcher = widget.dispatcher.createChildBackButtonDispatcher()
       ..addCallback(_handleBack)
       ..takePriority();
+    widget.onBackHandlingChanged(true);
   }
 
   void _detach() {
     // 마지막 콜백을 지우면 부모 디스패처에서도 빠진다.
     _dispatcher?.removeCallback(_handleBack);
     _dispatcher = null;
+    if (!kIsWeb) widget.onBackHandlingChanged(false);
   }
 
   Future<bool> _handleBack() {
