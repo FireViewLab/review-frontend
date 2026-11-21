@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:re_view_front/l10n/generated/app_localizations.dart';
 import 'package:re_view_front/shared/widgets/error_view.dart';
 import 'package:re_view_front/shared/widgets/loading_view.dart';
 
@@ -20,14 +21,6 @@ class DeferredPage extends StatefulWidget {
 class _DeferredPageState extends State<DeferredPage> {
   late Future<void> _loading = Future<void>.sync(widget.loadLibrary);
 
-  @override
-  void didUpdateWidget(DeferredPage oldWidget) {
-    super.didUpdateWidget(oldWidget);
-    if (oldWidget.loadLibrary != widget.loadLibrary) {
-      _loading = Future<void>.sync(widget.loadLibrary);
-    }
-  }
-
   void _retry() {
     setState(() => _loading = Future<void>.sync(widget.loadLibrary));
   }
@@ -41,8 +34,11 @@ class _DeferredPageState extends State<DeferredPage> {
           return const AppLoadingView();
         }
         if (snapshot.hasError) {
+          // 화면 파일은 첫 진입 때 받으므로 실패는 대부분 연결 문제다.
+          final l10n = AppLocalizations.of(context);
           return AppErrorView(
-            message: '화면을 불러오지 못했습니다. 다시 시도해 주세요.',
+            title: l10n.failureTitleOffline,
+            message: l10n.failureMessageOffline,
             onRetry: _retry,
           );
         }
