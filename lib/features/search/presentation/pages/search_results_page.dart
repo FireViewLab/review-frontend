@@ -702,17 +702,32 @@ class _SearchResultsPageState extends ConsumerState<SearchResultsPage> {
         .toList(growable: false);
   }
 
+  /// 정책 지수(v2)와 RTI(v0.5)는 척도가 달라 서로 비교하지 않는다.
+  /// v2 그룹, v0.5 그룹, 점수 없음 순으로 두고 같은 그룹 안에서만 점수로 정렬한다.
+  static int _compareAnalysisScore(
+    SearchResultProduct a,
+    SearchResultProduct b,
+  ) {
+    int group(SearchResultProduct product) {
+      final display = product.analysisDisplay;
+      if (display.score == null) return 2;
+      return display.isV2 ? 0 : 1;
+    }
+
+    final byGroup = group(a).compareTo(group(b));
+    if (byGroup != 0) return byGroup;
+    return (b.analysisDisplay.score ?? -1).compareTo(
+      a.analysisDisplay.score ?? -1,
+    );
+  }
+
   List<SearchResultProduct> _sortProducts(List<SearchResultProduct> products) {
     final sorted = [...products];
     switch (_sortOption) {
       case SearchSortOption.accuracy:
         return sorted;
       case SearchSortOption.rti:
-        sorted.sort(
-          (a, b) => (b.analysisDisplay.score ?? -1).compareTo(
-            a.analysisDisplay.score ?? -1,
-          ),
-        );
+        sorted.sort(_compareAnalysisScore);
       case SearchSortOption.reviewCount:
         sorted.sort(
           (a, b) => (b.reviewCount ?? -1).compareTo(a.reviewCount ?? -1),
