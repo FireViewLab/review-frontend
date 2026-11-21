@@ -224,9 +224,17 @@ class ExternalProductViewModel extends Notifier<ExternalProductState>
     _pollTimer?.cancel();
     final interval = ref.read(externalProductPollIntervalProvider);
     // 상품을 이미 보여 주는 중이면 뒤에서 조용히 갱신하므로 덜 자주 확인한다.
-    _pollTimer = Timer(state.product == null ? interval : interval * 3, () {
+    final base = state.product == null ? interval : interval * 3;
+    _pollTimer = Timer(base * _backoffFactor(elapsed), () {
       _poll(generation);
     });
+  }
+
+  /// 오래 기다릴수록 서버 확인 간격을 늘린다(30초 이후 2배, 60초 이후 3배).
+  static int _backoffFactor(Duration elapsed) {
+    if (elapsed >= _slowAfter * 2) return 3;
+    if (elapsed >= _slowAfter) return 2;
+    return 1;
   }
 
   Future<void> _poll(int generation) async {
