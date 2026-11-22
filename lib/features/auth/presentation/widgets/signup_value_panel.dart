@@ -1,3 +1,4 @@
+import 'package:re_view_front/l10n/generated/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:re_view_front/app/theme/app_colors.dart';
 import 'package:re_view_front/app/theme/app_spacing.dart';
@@ -16,7 +17,7 @@ class SignupValuePanel extends StatelessWidget {
           const _SignupBadge(),
           const SizedBox(height: AppSpacing.lg),
           Text(
-            '내 쇼핑 기준에 맞는\n리뷰 신뢰 필터를\n만들어보세요.',
+            AppLocalizations.of(context).authSignupFilterHeadline,
             style: Theme.of(context).textTheme.displayMedium?.copyWith(
               color: AppColors.textPrimary,
               fontWeight: FontWeight.w900,
@@ -25,7 +26,7 @@ class SignupValuePanel extends StatelessWidget {
           ),
           const SizedBox(height: AppSpacing.lg),
           Text(
-            '회원가입 후 관심 카테고리와 기본 신뢰 필터를 설정하면, 상품을 볼 때마다 내 기준에 맞는 RTI 신호와 알림을 받을 수 있습니다.',
+            AppLocalizations.of(context).authSignupFilterDescription,
             style: Theme.of(context).textTheme.bodyLarge?.copyWith(
               color: AppColors.textSecondary,
               height: 1.7,
@@ -58,7 +59,7 @@ class _SignupBadge extends StatelessWidget {
           vertical: AppSpacing.xs,
         ),
         child: Text(
-          '새 계정 만들기',
+          AppLocalizations.of(context).authSignupCreateAccount,
           style: Theme.of(context).textTheme.labelMedium?.copyWith(
             color: AppColors.primary,
             fontWeight: FontWeight.w900,
@@ -74,24 +75,24 @@ class _SignupFlowCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    const steps = [
+    final steps = [
       (
         number: '1',
-        title: '계정 생성',
-        body: '이름과 이메일로 Re:view 계정을 만듭니다.',
-        status: '현재 단계',
+        title: AppLocalizations.of(context).authSignupAccountStep,
+        body: AppLocalizations.of(context).authSignupAccountStepDescription,
+        status: AppLocalizations.of(context).authSignupCurrentStep,
       ),
       (
         number: '2',
-        title: '관심 카테고리 선택',
-        body: '관심사가 쌓이면 더 나은 신뢰 신호를 제공합니다.',
-        status: '다음',
+        title: AppLocalizations.of(context).authSignupInterestStep,
+        body: AppLocalizations.of(context).authSignupInterestStepDescription,
+        status: AppLocalizations.of(context).authNext,
       ),
       (
         number: '3',
-        title: '신뢰 필터 설정',
-        body: '위험 리뷰 숨김, 최소 RTI 기준을 설정합니다.',
-        status: '완료',
+        title: AppLocalizations.of(context).authSignupFilterStep,
+        body: AppLocalizations.of(context).authSignupFilterStepDescription,
+        status: AppLocalizations.of(context).myPageOnboardingComplete,
       ),
     ];
 
@@ -120,14 +121,16 @@ class _SignupFlowCard extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        '가입 후 바로 이어지는 흐름',
+                        AppLocalizations.of(context).authSignupFollowupFlow,
                         style: Theme.of(context).textTheme.titleSmall?.copyWith(
                           fontWeight: FontWeight.w900,
                         ),
                       ),
                       const SizedBox(height: AppSpacing.xxs),
                       Text(
-                        '회원가입이 끝나면 온보딩에서 관심 카테고리와 기본 필터를 설정합니다.',
+                        AppLocalizations.of(
+                          context,
+                        ).authSignupFollowupDescription,
                         style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                           color: AppColors.textSecondary,
                         ),
@@ -136,7 +139,9 @@ class _SignupFlowCard extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(width: AppSpacing.md),
-                const _StepBadge(label: '3분 설정'),
+                _StepBadge(
+                  label: AppLocalizations.of(context).authSetupMinutes(3),
+                ),
               ],
             ),
             const SizedBox(height: AppSpacing.lg),
@@ -264,10 +269,24 @@ class _SignupBenefitGrid extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    const items = [
-      (mark: 'A', title: '개인화된 상품 탐색', body: '관심 카테고리에 맞는 신뢰 피드를 먼저 확인합니다.'),
-      (mark: 'B', title: '저장 상품 알림', body: '관심 상품의 위험 신호가 증가하면 알림을 받을 수 있습니다.'),
-      (mark: 'C', title: '피드백 기록 관리', body: '신고와 분석 피드백 처리 상태를 추적합니다.'),
+    final items = [
+      (
+        mark: 'A',
+        title: AppLocalizations.of(context).authSignupPersonalizedBrowse,
+        body: AppLocalizations.of(
+          context,
+        ).authSignupPersonalizedBrowseDescription,
+      ),
+      (
+        mark: 'B',
+        title: AppLocalizations.of(context).authSignupSavedAlerts,
+        body: AppLocalizations.of(context).authSignupSavedAlertsDescription,
+      ),
+      (
+        mark: 'C',
+        title: AppLocalizations.of(context).authSignupFeedbackHistory,
+        body: AppLocalizations.of(context).authSignupFeedbackHistoryDescription,
+      ),
     ];
 
     return LayoutBuilder(

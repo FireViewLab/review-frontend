@@ -1,3 +1,4 @@
+import 'package:re_view_front/l10n/generated/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:re_view_front/app/theme/app_spacing.dart';
 import 'package:re_view_front/features/onboarding/presentation/view_models/onboarding_state.dart';
@@ -21,48 +22,55 @@ class NotificationStep extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        Text('알림 설정', style: Theme.of(context).textTheme.titleLarge),
+        Text(
+          AppLocalizations.of(context).settingsNotifications,
+          style: Theme.of(context).textTheme.titleLarge,
+        ),
         const SizedBox(height: AppSpacing.sm),
-        const Text('알림함에서 받을 알림을 선택하세요. 실제 분석 결과가 생성된 경우에만 관련 알림을 받을 수 있어요.'),
+        Text(AppLocalizations.of(context).onboardingNotificationDescription),
         SwitchListTile(
           contentPadding: EdgeInsets.zero,
-          title: const Text('위험 상품 알림'),
+          title: Text(AppLocalizations.of(context).settingsRiskyProduct),
           value: settings.notifyRiskyProduct,
           onChanged: (value) =>
               onChanged(settings.copyWith(notifyRiskyProduct: value)),
         ),
         SwitchListTile(
           contentPadding: EdgeInsets.zero,
-          title: const Text('분석 완료 알림'),
+          title: Text(AppLocalizations.of(context).settingsAnalysisComplete),
           value: settings.notifyAnalysisComplete,
           onChanged: (value) =>
               onChanged(settings.copyWith(notifyAnalysisComplete: value)),
         ),
         SwitchListTile(
           contentPadding: EdgeInsets.zero,
-          title: const Text('피드백 처리 결과'),
+          title: Text(AppLocalizations.of(context).onboardingFeedbackResults),
           value: settings.notifyFeedbackResult,
           onChanged: (value) =>
               onChanged(settings.copyWith(notifyFeedbackResult: value)),
         ),
         SwitchListTile(
           contentPadding: EdgeInsets.zero,
-          title: const Text('마케팅·이벤트 알림 동의'),
+          title: Text(AppLocalizations.of(context).onboardingMarketingConsent),
           value: settings.notifyMarketing,
           onChanged: (value) =>
               onChanged(settings.copyWith(notifyMarketing: value)),
         ),
         const SizedBox(height: AppSpacing.md),
-        const Text(
-          '브라우저 푸시·이메일·문자 및 주간 리포트는 현재 제공되지 않습니다. 이 화면은 알림함 설정을 저장합니다.',
-        ),
+        Text(AppLocalizations.of(context).onboardingNotificationAvailability),
         const SizedBox(height: AppSpacing.lg),
         OverflowBar(
           alignment: MainAxisAlignment.spaceBetween,
           spacing: 12,
           children: [
-            OutlinedButton(onPressed: onPrevious, child: const Text('이전')),
-            FilledButton(onPressed: onComplete, child: const Text('저장하고 완료')),
+            OutlinedButton(
+              onPressed: onPrevious,
+              child: Text(AppLocalizations.of(context).onboardingPrevious),
+            ),
+            FilledButton(
+              onPressed: onComplete,
+              child: Text(AppLocalizations.of(context).onboardingSaveComplete),
+            ),
           ],
         ),
       ],

@@ -1,3 +1,4 @@
+import 'package:re_view_front/l10n/generated/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -32,9 +33,7 @@ class _OAuthCallbackPageState extends ConsumerState<OAuthCallbackPage> {
     ref.listen(oauthCallbackViewModelProvider, (_, next) {
       if (next.status == OAuthCallbackStatus.success) {
         context.go(
-          next.onboardingCompleted
-              ? RoutePaths.home
-              : RoutePaths.onboarding,
+          next.onboardingCompleted ? RoutePaths.home : RoutePaths.onboarding,
         );
       }
     });
@@ -48,10 +47,11 @@ class _OAuthCallbackPageState extends ConsumerState<OAuthCallbackPage> {
           OAuthCallbackStatus.processing => const CircularProgressIndicator(),
           OAuthCallbackStatus.success => const SizedBox.shrink(),
           OAuthCallbackStatus.failure => _OAuthErrorView(
-              message:
-                  state.errorMessage ?? 'OAuth 로그인에 실패했습니다.',
-              onBack: () => context.go(RoutePaths.login),
-            ),
+            message:
+                state.errorMessage ??
+                AppLocalizations.of(context).authOAuthLoginFailed,
+            onBack: () => context.go(RoutePaths.login),
+          ),
         },
       ),
     );
@@ -75,7 +75,7 @@ class _OAuthErrorView extends StatelessWidget {
         const SizedBox(height: 24),
         TextButton(
           onPressed: onBack,
-          child: const Text('로그인으로 돌아가기'),
+          child: Text(AppLocalizations.of(context).authBackToLogin),
         ),
       ],
     );

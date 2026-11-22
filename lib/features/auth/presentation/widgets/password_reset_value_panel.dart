@@ -1,3 +1,4 @@
+import 'package:re_view_front/l10n/generated/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:re_view_front/app/theme/app_colors.dart';
 import 'package:re_view_front/app/theme/app_spacing.dart';
@@ -22,19 +23,23 @@ class PasswordResetValuePanel extends StatelessWidget {
                 fontWeight: FontWeight.w900,
                 height: 1.16,
               ),
-              children: const [
-                TextSpan(text: '안전하게 인증하고\n'),
+              children: [
                 TextSpan(
-                  text: '비밀번호를 다시 설정',
+                  text: AppLocalizations.of(context).authResetVerifyHeadline,
+                ),
+                TextSpan(
+                  text: AppLocalizations.of(context).authResetHeadlineEmphasis,
                   style: TextStyle(color: AppColors.primary),
                 ),
-                TextSpan(text: ' 하세요.'),
+                TextSpan(
+                  text: AppLocalizations.of(context).authResetHeadlineEnd,
+                ),
               ],
             ),
           ),
           const SizedBox(height: AppSpacing.lg),
           Text(
-            'Re:view 계정의 저장 상품, 신뢰 필터, 피드백 내역을 보호하기 위해 이메일 후 새 비밀번호를 설정합니다.',
+            AppLocalizations.of(context).authResetValueDescription,
             style: Theme.of(context).textTheme.bodyLarge?.copyWith(
               color: AppColors.textSecondary,
               height: 1.7,
@@ -67,7 +72,7 @@ class _Badge extends StatelessWidget {
           vertical: AppSpacing.xs,
         ),
         child: Text(
-          '계정 복구',
+          AppLocalizations.of(context).authResetRecoveryBadge,
           style: Theme.of(context).textTheme.labelMedium?.copyWith(
             color: AppColors.primary,
             fontWeight: FontWeight.w900,
@@ -81,23 +86,22 @@ class _Badge extends StatelessWidget {
 class _ProcessCard extends StatelessWidget {
   const _ProcessCard();
 
-  static const _steps = [
-    (
-      label: '이메일 확인',
-      desc: '가입한 이메일 주소로 인증 코드를 발송합니다.',
-    ),
-    (
-      label: '인증 코드 입력',
-      desc: '메일로 받은 6자리 코드를 입력해 계정을 확인합니다.',
-    ),
-    (
-      label: '새 비밀번호 설정',
-      desc: '보안 기준을 만족하는 새 비밀번호를 등록합니다.',
-    ),
-  ];
-
   @override
   Widget build(BuildContext context) {
+    final steps = [
+      (
+        label: AppLocalizations.of(context).authVerifyEmail,
+        desc: AppLocalizations.of(context).authResetEmailStepDescription,
+      ),
+      (
+        label: AppLocalizations.of(context).authResetCodeStep,
+        desc: AppLocalizations.of(context).authResetCodeStepDescription(6),
+      ),
+      (
+        label: AppLocalizations.of(context).authResetNewPasswordStep,
+        desc: AppLocalizations.of(context).authResetNewPasswordStepDescription,
+      ),
+    ];
     return DecoratedBox(
       decoration: BoxDecoration(
         color: AppColors.surface,
@@ -120,7 +124,7 @@ class _ProcessCard extends StatelessWidget {
               children: [
                 Expanded(
                   child: Text(
-                    '비밀번호 재설정 과정',
+                    AppLocalizations.of(context).authResetProcessTitle,
                     style: Theme.of(context).textTheme.titleSmall?.copyWith(
                       fontWeight: FontWeight.w900,
                     ),
@@ -131,19 +135,19 @@ class _ProcessCard extends StatelessWidget {
             ),
             const SizedBox(height: AppSpacing.xs),
             Text(
-              '계정 소유 확인 후 안전하게 비밀번호를 변경합니다.',
-              style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                color: AppColors.textSecondary,
-              ),
+              AppLocalizations.of(context).authResetProcessDescription,
+              style: Theme.of(
+                context,
+              ).textTheme.bodySmall?.copyWith(color: AppColors.textSecondary),
             ),
             const SizedBox(height: AppSpacing.lg),
-            for (int i = 0; i < _steps.length; i++) ...[
+            for (int i = 0; i < steps.length; i++) ...[
               _ProcessStep(
                 number: i + 1,
-                label: _steps[i].label,
-                desc: _steps[i].desc,
+                label: steps[i].label,
+                desc: steps[i].desc,
               ),
-              if (i < _steps.length - 1) const SizedBox(height: AppSpacing.md),
+              if (i < steps.length - 1) const SizedBox(height: AppSpacing.md),
             ],
           ],
         ),
@@ -172,7 +176,7 @@ class _SecurityBadge extends StatelessWidget {
             const Icon(Icons.lock_outline, size: 12, color: AppColors.primary),
             const SizedBox(width: 4),
             Text(
-              '보안 인증',
+              AppLocalizations.of(context).authResetSecurityBadge,
               style: Theme.of(context).textTheme.labelSmall?.copyWith(
                 color: AppColors.primary,
                 fontWeight: FontWeight.w900,
@@ -224,9 +228,9 @@ class _ProcessStep extends StatelessWidget {
             children: [
               Text(
                 label,
-                style: Theme.of(context).textTheme.labelLarge?.copyWith(
-                  fontWeight: FontWeight.w900,
-                ),
+                style: Theme.of(
+                  context,
+                ).textTheme.labelLarge?.copyWith(fontWeight: FontWeight.w900),
               ),
               const SizedBox(height: AppSpacing.xxs),
               Text(
@@ -247,31 +251,30 @@ class _ProcessStep extends StatelessWidget {
 class _BenefitGrid extends StatelessWidget {
   const _BenefitGrid();
 
-  static const _items = [
-    (
-      label: 'A',
-      title: '계정 데이터 유지',
-      body: '비밀번호를 바꿔도 저장 필터 설정은 그대로',
-    ),
-    (
-      label: 'B',
-      title: '인증 코드 보호',
-      body: '인증 코드는 일정 시간 후 만료되며 타인에게 공유하지 않아야 합니다.',
-    ),
-    (
-      label: 'C',
-      title: '로그인 재확인',
-      body: '비밀번호 변경 후 새 다시 로그인합니다.',
-    ),
-  ];
-
   @override
   Widget build(BuildContext context) {
+    final items = [
+      (
+        label: 'A',
+        title: AppLocalizations.of(context).authResetKeepData,
+        body: AppLocalizations.of(context).authResetKeepDataDescription,
+      ),
+      (
+        label: 'B',
+        title: AppLocalizations.of(context).authResetProtectCode,
+        body: AppLocalizations.of(context).authResetProtectCodeDescription,
+      ),
+      (
+        label: 'C',
+        title: AppLocalizations.of(context).authResetSignInAgain,
+        body: AppLocalizations.of(context).authResetSignInAgainDescription,
+      ),
+    ];
     return LayoutBuilder(
       builder: (context, constraints) {
         final useRow = constraints.maxWidth >= 560;
         final cards = [
-          for (final item in _items)
+          for (final item in items)
             _BenefitCard(label: item.label, title: item.title, body: item.body),
         ];
 
@@ -343,9 +346,9 @@ class _BenefitCard extends StatelessWidget {
             const SizedBox(height: AppSpacing.md),
             Text(
               title,
-              style: Theme.of(context).textTheme.labelLarge?.copyWith(
-                fontWeight: FontWeight.w900,
-              ),
+              style: Theme.of(
+                context,
+              ).textTheme.labelLarge?.copyWith(fontWeight: FontWeight.w900),
             ),
             const SizedBox(height: AppSpacing.xs),
             Text(

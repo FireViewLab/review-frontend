@@ -1,3 +1,4 @@
+import 'package:re_view_front/features/auth/presentation/auth_validation_messages.dart';
 import 'package:re_view_front/l10n/generated/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:re_view_front/app/theme/app_colors.dart';
@@ -125,7 +126,10 @@ class _SignupCardState extends State<SignupCard> {
                 hintText: AppLocalizations.of(context).authNameHint,
                 prefixIcon: Icons.person_outline,
                 textInputAction: TextInputAction.next,
-                errorText: widget.nameError,
+                errorText: localizedAuthValidationError(
+                  context,
+                  widget.nameError,
+                ),
                 onSubmitted: () => _emailFocusNode.requestFocus(),
               ),
               const SizedBox(height: AppSpacing.sm),
@@ -136,7 +140,10 @@ class _SignupCardState extends State<SignupCard> {
                 keyboardType: TextInputType.emailAddress,
                 textInputAction: TextInputAction.next,
                 prefixIcon: Icons.mail_outline,
-                errorText: widget.emailError,
+                errorText: localizedAuthValidationError(
+                  context,
+                  widget.emailError,
+                ),
                 focusNode: _emailFocusNode,
                 onSubmitted: () => _passwordFocusNode.requestFocus(),
               ),
@@ -148,7 +155,10 @@ class _SignupCardState extends State<SignupCard> {
                 obscureText: widget.obscurePassword,
                 textInputAction: TextInputAction.next,
                 prefixIcon: Icons.lock_outline,
-                errorText: widget.passwordError,
+                errorText: localizedAuthValidationError(
+                  context,
+                  widget.passwordError,
+                ),
                 helperText: AppLocalizations.of(context).authPasswordGuidance,
                 focusNode: _passwordFocusNode,
                 onSubmitted: () => _passwordConfirmFocusNode.requestFocus(),
@@ -171,7 +181,10 @@ class _SignupCardState extends State<SignupCard> {
                 obscureText: widget.obscurePasswordConfirm,
                 textInputAction: TextInputAction.done,
                 prefixIcon: Icons.check,
-                errorText: widget.passwordConfirmError,
+                errorText: localizedAuthValidationError(
+                  context,
+                  widget.passwordConfirmError,
+                ),
                 focusNode: _passwordConfirmFocusNode,
                 onSubmitted: widget.isLoading ? null : widget.onSignupPressed,
                 trailing: TextButton(
@@ -189,7 +202,10 @@ class _SignupCardState extends State<SignupCard> {
               _AgreementBox(
                 agreedToTerms: widget.agreedToTerms,
                 agreedToMarketing: widget.agreedToMarketing,
-                termsError: widget.termsError,
+                termsError: localizedAuthValidationError(
+                  context,
+                  widget.termsError,
+                ),
                 isLoading: widget.isLoading,
                 onTermsChanged: widget.onTermsChanged,
                 onMarketingChanged: widget.onMarketingChanged,

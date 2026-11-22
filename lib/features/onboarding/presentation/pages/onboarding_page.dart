@@ -1,3 +1,4 @@
+import 'package:re_view_front/l10n/generated/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -58,7 +59,9 @@ class OnboardingPage extends ConsumerWidget {
                       ),
                       TextButton(
                         onPressed: state.isLoading ? null : vm.load,
-                        child: const Text('다시 불러오기'),
+                        child: Text(
+                          AppLocalizations.of(context).onboardingReload,
+                        ),
                       ),
                     ],
                     if (state.isLoading)

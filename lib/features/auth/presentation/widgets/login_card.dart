@@ -1,3 +1,4 @@
+import 'package:re_view_front/features/auth/presentation/auth_validation_messages.dart';
 import 'package:re_view_front/l10n/generated/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:re_view_front/app/theme/app_colors.dart';
@@ -122,7 +123,7 @@ class LoginCard extends StatelessWidget {
                 keyboardType: TextInputType.emailAddress,
                 textInputAction: TextInputAction.next,
                 prefixIcon: Icons.mail_outline,
-                errorText: emailError,
+                errorText: localizedAuthValidationError(context, emailError),
               ),
               const SizedBox(height: AppSpacing.lg),
               _LoginInputField(
@@ -132,7 +133,7 @@ class LoginCard extends StatelessWidget {
                 obscureText: obscurePassword,
                 textInputAction: TextInputAction.done,
                 prefixIcon: Icons.lock_outline,
-                errorText: passwordError,
+                errorText: localizedAuthValidationError(context, passwordError),
                 onForgotPassword: onForgotPasswordPressed,
                 onSubmitted: onLoginPressed,
                 trailing: TextButton(

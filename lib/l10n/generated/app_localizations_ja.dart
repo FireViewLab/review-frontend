@@ -2841,4 +2841,266 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String get homeCategoryRecommendedLabel => 'おすすめ';
+
+  @override
+  String get authLoginContinue => '気になる商品の管理を続けましょう。';
+
+  @override
+  String get authLoginTrackHeadline => '気になる商品のレビュー信頼度を\n継続して追跡しましょう。';
+
+  @override
+  String get authLoginManageDescription =>
+      'ログインすると、保存した商品、信頼度フィルター、分析フィードバックをひとつのアカウントで引き続き管理できます。';
+
+  @override
+  String get authLoginSafeShopping => '安心して買い物するためにログイン';
+
+  @override
+  String get authLoginRecentProducts => '最近確認した商品';
+
+  @override
+  String get authLoginRestoreRecords => 'ログイン後、保存した商品と分析記録を読み込みます。';
+
+  @override
+  String get authLoginKeepTrackingRti => 'RTIを継続して追跡';
+
+  @override
+  String get authMetricText => 'テキスト';
+
+  @override
+  String get authMetricBehavior => '行動';
+
+  @override
+  String get authMetricPurchaseContext => '購入の背景';
+
+  @override
+  String get authProductUncategorized => 'カテゴリー未分類';
+
+  @override
+  String get authLoginSavedProducts => '保存商品の管理';
+
+  @override
+  String get authLoginSavedProductsDescription =>
+      '気になる商品をまとめて、RTIの変化やリスクの兆候を確認します。';
+
+  @override
+  String get authLoginPersonalFilters => '個人用の信頼度フィルター';
+
+  @override
+  String get authLoginPersonalFiltersDescription =>
+      '危険なレビューの非表示や最小RTI基準など、自分に合ったフィルターを維持します。';
+
+  @override
+  String get authLoginFeedbackTracking => '分析フィードバックの追跡';
+
+  @override
+  String get authLoginFeedbackTrackingDescription =>
+      '通報とフィードバックの処理状況をひとつの場所で確認します。';
+
+  @override
+  String get authFooterContact => 'お問い合わせ';
+
+  @override
+  String get authSignupFilterHeadline =>
+      '自分の買い物の基準に合う\nレビュー信頼度フィルターを\n作ってみましょう。';
+
+  @override
+  String get authSignupFilterDescription =>
+      '登録後に興味のあるカテゴリーと基本の信頼度フィルターを設定すると、商品を見るたびに自分の基準に合うRTIの情報や通知を受け取れます。';
+
+  @override
+  String get authSignupCreateAccount => '新しいアカウントを作成';
+
+  @override
+  String get authSignupAccountStep => 'アカウント作成';
+
+  @override
+  String get authSignupAccountStepDescription =>
+      '名前とメールアドレスでRe:viewアカウントを作成します。';
+
+  @override
+  String get authSignupCurrentStep => '現在のステップ';
+
+  @override
+  String get authSignupInterestStep => '興味のあるカテゴリーを選択';
+
+  @override
+  String get authSignupInterestStepDescription =>
+      '興味のある情報が増えると、よりよい信頼度の情報を提供します。';
+
+  @override
+  String get authSignupFilterStep => '信頼度フィルターを設定';
+
+  @override
+  String get authSignupFilterStepDescription => '危険なレビューの非表示や最小RTI基準を設定します。';
+
+  @override
+  String get authSignupFollowupFlow => '登録後すぐに続く流れ';
+
+  @override
+  String get authSignupFollowupDescription =>
+      '登録が完了すると、オンボーディングで興味のあるカテゴリーと基本フィルターを設定します。';
+
+  @override
+  String get authSignupPersonalizedBrowse => '自分に合った商品探し';
+
+  @override
+  String get authSignupPersonalizedBrowseDescription =>
+      '興味のあるカテゴリーに合う信頼度フィードを先に確認します。';
+
+  @override
+  String get authSignupSavedAlerts => '保存商品の通知';
+
+  @override
+  String get authSignupSavedAlertsDescription =>
+      '気になる商品のリスクの兆候が増えたときに通知を受け取れます。';
+
+  @override
+  String get authSignupFeedbackHistory => 'フィードバック記録の管理';
+
+  @override
+  String get authSignupFeedbackHistoryDescription => '通報と分析フィードバックの処理状況を追跡します。';
+
+  @override
+  String authSetupMinutes(int minutes) {
+    return '$minutes分で設定';
+  }
+
+  @override
+  String get authValidationNameRequired => '名前を入力してください。';
+
+  @override
+  String get authValidationEmailRequired => 'メールアドレスを入力してください。';
+
+  @override
+  String get authValidationEmailInvalid => '正しい形式のメールアドレスを入力してください。';
+
+  @override
+  String get authValidationPasswordRequired => 'パスワードを入力してください。';
+
+  @override
+  String get authValidationPasswordComposition => '英字、数字、記号をすべて含めてください。';
+
+  @override
+  String get authValidationPasswordConfirmRequired => 'パスワードをもう一度入力してください。';
+
+  @override
+  String get authValidationPasswordMismatch => 'パスワードが一致しません。';
+
+  @override
+  String get authValidationTermsRequired => '必須の規約に同意してください。';
+
+  @override
+  String authValidationPasswordMinLength(int minLength) {
+    return 'パスワードは$minLength文字以上で入力してください。';
+  }
+
+  @override
+  String get authResetVerifyHeadline => '安全に認証して\n';
+
+  @override
+  String get authResetHeadlineEmphasis => 'パスワードを再設定';
+
+  @override
+  String get authResetHeadlineEnd => 'しましょう。';
+
+  @override
+  String get authResetValueDescription =>
+      'Re:viewアカウントの保存商品、信頼度フィルター、フィードバック履歴を守るため、メール確認後に新しいパスワードを設定します。';
+
+  @override
+  String get authResetRecoveryBadge => 'アカウント復旧';
+
+  @override
+  String get authResetEmailStepDescription => '登録したメールアドレスに認証コードを送信します。';
+
+  @override
+  String get authResetCodeStep => '認証コードを入力';
+
+  @override
+  String get authResetNewPasswordStep => '新しいパスワードを設定';
+
+  @override
+  String get authResetNewPasswordStepDescription =>
+      'セキュリティ基準を満たす新しいパスワードを登録します。';
+
+  @override
+  String get authResetProcessTitle => 'パスワード再設定の流れ';
+
+  @override
+  String get authResetProcessDescription => 'アカウントの所有を確認してから、安全にパスワードを変更します。';
+
+  @override
+  String get authResetSecurityBadge => 'セキュリティ認証';
+
+  @override
+  String get authResetKeepData => 'アカウントデータを維持';
+
+  @override
+  String get authResetKeepDataDescription => 'パスワードを変更しても保存済みのフィルター設定はそのまま';
+
+  @override
+  String get authResetProtectCode => '認証コードを保護';
+
+  @override
+  String get authResetProtectCodeDescription =>
+      '認証コードは一定時間後に期限切れとなります。他の人に共有しないでください。';
+
+  @override
+  String get authResetSignInAgain => 'ログインを再確認';
+
+  @override
+  String get authResetSignInAgainDescription => 'パスワード変更後、新しいパスワードで再度ログインします。';
+
+  @override
+  String authResetCodeStepDescription(int digits) {
+    return 'メールで届いた$digits桁のコードを入力してアカウントを確認します。';
+  }
+
+  @override
+  String get authOAuthLoginFailed => 'OAuthログインに失敗しました。';
+
+  @override
+  String get onboardingCategoryTitle => '興味のあるカテゴリーを選んでください';
+
+  @override
+  String get onboardingCategoryDescription =>
+      '選択しなくても進めます。興味のあるカテゴリーは後から設定で変更できます。';
+
+  @override
+  String get onboardingUnanalyzedNotice => '分析前の商品を安全な商品とは判定しません。';
+
+  @override
+  String get onboardingSkipExisting => '現在の設定でスキップ';
+
+  @override
+  String onboardingTrustThreshold(int score) {
+    return '信頼度の基準：$score点';
+  }
+
+  @override
+  String get onboardingNotificationDescription =>
+      '通知ボックスで受け取る通知を選びましょう。実際の分析結果が生成された場合にのみ関連する通知を受け取れます。';
+
+  @override
+  String get onboardingFeedbackResults => 'フィードバックの処理結果';
+
+  @override
+  String get onboardingMarketingConsent => 'マーケティング・イベント通知に同意';
+
+  @override
+  String get onboardingNotificationAvailability =>
+      'ブラウザのプッシュ通知・メール・SMS・週間レポートは現在提供していません。この画面では通知ボックスの設定を保存します。';
+
+  @override
+  String get onboardingPrevious => '前へ';
+
+  @override
+  String get onboardingSaveComplete => '保存して完了';
+
+  @override
+  String get onboardingPreferredCategories => '好みのカテゴリー';
+
+  @override
+  String get onboardingReload => '再読み込み';
 }

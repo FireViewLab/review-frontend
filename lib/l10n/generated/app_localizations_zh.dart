@@ -2819,4 +2819,255 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get homeCategoryRecommendedLabel => '推荐';
+
+  @override
+  String get authLoginContinue => '继续管理您关注的商品。';
+
+  @override
+  String get authLoginTrackHeadline => '持续追踪您关注商品的\n评价可信度。';
+
+  @override
+  String get authLoginManageDescription =>
+      '登录后，您可以在一个账户中继续管理收藏商品、可信度筛选设置和分析反馈记录。';
+
+  @override
+  String get authLoginSafeShopping => '登录，安心购物';
+
+  @override
+  String get authLoginRecentProducts => '最近查看的商品';
+
+  @override
+  String get authLoginRestoreRecords => '登录后将加载收藏商品和分析记录。';
+
+  @override
+  String get authLoginKeepTrackingRti => '持续追踪 RTI';
+
+  @override
+  String get authMetricText => '文本';
+
+  @override
+  String get authMetricBehavior => '行为';
+
+  @override
+  String get authMetricPurchaseContext => '购买情境';
+
+  @override
+  String get authProductUncategorized => '未分类';
+
+  @override
+  String get authLoginSavedProducts => '管理收藏商品';
+
+  @override
+  String get authLoginSavedProductsDescription => '集中收藏关注的商品，查看 RTI 变化及风险信号。';
+
+  @override
+  String get authLoginPersonalFilters => '个人可信度筛选';
+
+  @override
+  String get authLoginPersonalFiltersDescription =>
+      '保留适合您的筛选设置，如隐藏风险评价和最低 RTI 门槛。';
+
+  @override
+  String get authLoginFeedbackTracking => '追踪分析反馈';
+
+  @override
+  String get authLoginFeedbackTrackingDescription => '在同一处查看举报和反馈的处理状态。';
+
+  @override
+  String get authFooterContact => '联系';
+
+  @override
+  String get authSignupFilterHeadline => '创建符合您购物标准的\n评价可信度\n筛选条件。';
+
+  @override
+  String get authSignupFilterDescription =>
+      '注册后设置感兴趣的分类和默认可信度筛选，浏览商品时即可获得符合您标准的 RTI 信号和通知。';
+
+  @override
+  String get authSignupCreateAccount => '创建新账户';
+
+  @override
+  String get authSignupAccountStep => '创建账户';
+
+  @override
+  String get authSignupAccountStepDescription => '使用姓名和邮箱创建 Re:view 账户。';
+
+  @override
+  String get authSignupCurrentStep => '当前步骤';
+
+  @override
+  String get authSignupInterestStep => '选择感兴趣的分类';
+
+  @override
+  String get authSignupInterestStepDescription => '随着兴趣信息的积累，我们会提供更好的可信度信号。';
+
+  @override
+  String get authSignupFilterStep => '设置信任筛选';
+
+  @override
+  String get authSignupFilterStepDescription => '设置隐藏风险评价和最低 RTI 门槛。';
+
+  @override
+  String get authSignupFollowupFlow => '注册后的下一步';
+
+  @override
+  String get authSignupFollowupDescription => '注册完成后，可在引导流程中设置感兴趣的分类和默认筛选。';
+
+  @override
+  String get authSignupPersonalizedBrowse => '个性化商品浏览';
+
+  @override
+  String get authSignupPersonalizedBrowseDescription => '优先查看符合兴趣分类的可信度信息流。';
+
+  @override
+  String get authSignupSavedAlerts => '收藏商品通知';
+
+  @override
+  String get authSignupSavedAlertsDescription => '关注商品的风险信号增加时，您可以收到通知。';
+
+  @override
+  String get authSignupFeedbackHistory => '管理反馈记录';
+
+  @override
+  String get authSignupFeedbackHistoryDescription => '追踪举报和分析反馈的处理状态。';
+
+  @override
+  String authSetupMinutes(int minutes) {
+    return '$minutes 分钟设置';
+  }
+
+  @override
+  String get authValidationNameRequired => '请输入姓名。';
+
+  @override
+  String get authValidationEmailRequired => '请输入邮箱。';
+
+  @override
+  String get authValidationEmailInvalid => '请输入有效的邮箱地址。';
+
+  @override
+  String get authValidationPasswordRequired => '请输入密码。';
+
+  @override
+  String get authValidationPasswordComposition => '请同时包含英文字母、数字和特殊字符。';
+
+  @override
+  String get authValidationPasswordConfirmRequired => '请再次输入密码。';
+
+  @override
+  String get authValidationPasswordMismatch => '两次输入的密码不一致。';
+
+  @override
+  String get authValidationTermsRequired => '请同意必选条款。';
+
+  @override
+  String authValidationPasswordMinLength(int minLength) {
+    return '密码至少需要 $minLength 个字符。';
+  }
+
+  @override
+  String get authResetVerifyHeadline => '安全验证后\n';
+
+  @override
+  String get authResetHeadlineEmphasis => '重置密码';
+
+  @override
+  String get authResetHeadlineEnd => '。';
+
+  @override
+  String get authResetValueDescription =>
+      '通过邮箱验证后设置新密码，以保护 Re:view 账户中的收藏商品、可信度筛选和反馈记录。';
+
+  @override
+  String get authResetRecoveryBadge => '账户恢复';
+
+  @override
+  String get authResetEmailStepDescription => '验证码将发送至注册邮箱。';
+
+  @override
+  String get authResetCodeStep => '输入验证码';
+
+  @override
+  String get authResetNewPasswordStep => '设置新密码';
+
+  @override
+  String get authResetNewPasswordStepDescription => '设置符合安全要求的新密码。';
+
+  @override
+  String get authResetProcessTitle => '密码重置流程';
+
+  @override
+  String get authResetProcessDescription => '确认账户归属后安全更改密码。';
+
+  @override
+  String get authResetSecurityBadge => '安全验证';
+
+  @override
+  String get authResetKeepData => '保留账户数据';
+
+  @override
+  String get authResetKeepDataDescription => '更改密码后，已保存的筛选设置保持不变';
+
+  @override
+  String get authResetProtectCode => '保护验证码';
+
+  @override
+  String get authResetProtectCodeDescription => '验证码将在一定时间后失效，请勿与他人分享。';
+
+  @override
+  String get authResetSignInAgain => '重新确认登录';
+
+  @override
+  String get authResetSignInAgainDescription => '更改密码后，使用新密码重新登录。';
+
+  @override
+  String authResetCodeStepDescription(int digits) {
+    return '输入邮件中的 $digits 位验证码以验证账户。';
+  }
+
+  @override
+  String get authOAuthLoginFailed => 'OAuth 登录失败。';
+
+  @override
+  String get onboardingCategoryTitle => '请选择感兴趣的分类';
+
+  @override
+  String get onboardingCategoryDescription => '不选择也可以继续，之后可在设置中更改兴趣偏好。';
+
+  @override
+  String get onboardingUnanalyzedNotice => '未经分析的商品不会被判定为安全商品。';
+
+  @override
+  String get onboardingSkipExisting => '使用现有设置跳过';
+
+  @override
+  String onboardingTrustThreshold(int score) {
+    return '可信度门槛：$score 分';
+  }
+
+  @override
+  String get onboardingNotificationDescription =>
+      '选择通知中心要接收的通知。只有生成实际分析结果时，才会收到相关通知。';
+
+  @override
+  String get onboardingFeedbackResults => '反馈处理结果';
+
+  @override
+  String get onboardingMarketingConsent => '同意接收营销及活动通知';
+
+  @override
+  String get onboardingNotificationAvailability =>
+      '目前不提供浏览器推送、邮件、短信及每周报告。此页面用于保存通知中心设置。';
+
+  @override
+  String get onboardingPrevious => '上一步';
+
+  @override
+  String get onboardingSaveComplete => '保存并完成';
+
+  @override
+  String get onboardingPreferredCategories => '偏好分类';
+
+  @override
+  String get onboardingReload => '重新加载';
 }

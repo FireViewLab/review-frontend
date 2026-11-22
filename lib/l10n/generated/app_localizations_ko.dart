@@ -2845,4 +2845,263 @@ class AppLocalizationsKo extends AppLocalizations {
 
   @override
   String get homeCategoryRecommendedLabel => '추천';
+
+  @override
+  String get authLoginContinue => '내 관심 상품을 이어서 관리하세요.';
+
+  @override
+  String get authLoginTrackHeadline => '내 관심 상품의 리뷰 신뢰도를\n계속 추적하세요.';
+
+  @override
+  String get authLoginManageDescription =>
+      '로그인하면 저장한 상품, 신뢰 필터 설정, 분석 피드백 내역을 한 계정에서 이어서 관리할 수 있습니다.';
+
+  @override
+  String get authLoginSafeShopping => '안전한 쇼핑을 위한 로그인';
+
+  @override
+  String get authLoginRecentProducts => '최근 확인한 상품';
+
+  @override
+  String get authLoginRestoreRecords => '로그인 후 저장 상품과 분석 기록을 불러옵니다.';
+
+  @override
+  String get authLoginKeepTrackingRti => 'RTI 계속 추적';
+
+  @override
+  String get authMetricText => '텍스트';
+
+  @override
+  String get authMetricBehavior => '행동';
+
+  @override
+  String get authMetricPurchaseContext => '구매맥락';
+
+  @override
+  String get authProductUncategorized => '카테고리 미분류';
+
+  @override
+  String get authLoginSavedProducts => '저장 상품 관리';
+
+  @override
+  String get authLoginSavedProductsDescription =>
+      '관심 상품을 모아두고 RTI 변화 위협 신호를 확인합니다.';
+
+  @override
+  String get authLoginPersonalFilters => '개인 신뢰 필터';
+
+  @override
+  String get authLoginPersonalFiltersDescription =>
+      '위험 리뷰 숨김, 최소 RTI 기준 등 나에게 맞는 필터를 유지합니다.';
+
+  @override
+  String get authLoginFeedbackTracking => '분석 피드백 추적';
+
+  @override
+  String get authLoginFeedbackTrackingDescription =>
+      '신고와 피드백 처리 상태를 한곳에서 확인합니다.';
+
+  @override
+  String get authFooterContact => '문의';
+
+  @override
+  String get authSignupFilterHeadline => '내 쇼핑 기준에 맞는\n리뷰 신뢰 필터를\n만들어보세요.';
+
+  @override
+  String get authSignupFilterDescription =>
+      '회원가입 후 관심 카테고리와 기본 신뢰 필터를 설정하면, 상품을 볼 때마다 내 기준에 맞는 RTI 신호와 알림을 받을 수 있습니다.';
+
+  @override
+  String get authSignupCreateAccount => '새 계정 만들기';
+
+  @override
+  String get authSignupAccountStep => '계정 생성';
+
+  @override
+  String get authSignupAccountStepDescription => '이름과 이메일로 Re:view 계정을 만듭니다.';
+
+  @override
+  String get authSignupCurrentStep => '현재 단계';
+
+  @override
+  String get authSignupInterestStep => '관심 카테고리 선택';
+
+  @override
+  String get authSignupInterestStepDescription => '관심사가 쌓이면 더 나은 신뢰 신호를 제공합니다.';
+
+  @override
+  String get authSignupFilterStep => '신뢰 필터 설정';
+
+  @override
+  String get authSignupFilterStepDescription => '위험 리뷰 숨김, 최소 RTI 기준을 설정합니다.';
+
+  @override
+  String get authSignupFollowupFlow => '가입 후 바로 이어지는 흐름';
+
+  @override
+  String get authSignupFollowupDescription =>
+      '회원가입이 끝나면 온보딩에서 관심 카테고리와 기본 필터를 설정합니다.';
+
+  @override
+  String get authSignupPersonalizedBrowse => '개인화된 상품 탐색';
+
+  @override
+  String get authSignupPersonalizedBrowseDescription =>
+      '관심 카테고리에 맞는 신뢰 피드를 먼저 확인합니다.';
+
+  @override
+  String get authSignupSavedAlerts => '저장 상품 알림';
+
+  @override
+  String get authSignupSavedAlertsDescription =>
+      '관심 상품의 위험 신호가 증가하면 알림을 받을 수 있습니다.';
+
+  @override
+  String get authSignupFeedbackHistory => '피드백 기록 관리';
+
+  @override
+  String get authSignupFeedbackHistoryDescription => '신고와 분석 피드백 처리 상태를 추적합니다.';
+
+  @override
+  String authSetupMinutes(int minutes) {
+    return '$minutes분 설정';
+  }
+
+  @override
+  String get authValidationNameRequired => '이름을 입력해주세요.';
+
+  @override
+  String get authValidationEmailRequired => '이메일을 입력해주세요.';
+
+  @override
+  String get authValidationEmailInvalid => '올바른 이메일 형식으로 입력해주세요.';
+
+  @override
+  String get authValidationPasswordRequired => '비밀번호를 입력해주세요.';
+
+  @override
+  String get authValidationPasswordComposition => '영문, 숫자, 특수문자를 모두 포함해주세요.';
+
+  @override
+  String get authValidationPasswordConfirmRequired => '비밀번호를 한 번 더 입력해주세요.';
+
+  @override
+  String get authValidationPasswordMismatch => '비밀번호가 일치하지 않습니다.';
+
+  @override
+  String get authValidationTermsRequired => '필수 약관에 동의해주세요.';
+
+  @override
+  String authValidationPasswordMinLength(int minLength) {
+    return '비밀번호는 $minLength자 이상이어야 합니다.';
+  }
+
+  @override
+  String get authResetVerifyHeadline => '안전하게 인증하고\n';
+
+  @override
+  String get authResetHeadlineEmphasis => '비밀번호를 다시 설정';
+
+  @override
+  String get authResetHeadlineEnd => ' 하세요.';
+
+  @override
+  String get authResetValueDescription =>
+      'Re:view 계정의 저장 상품, 신뢰 필터, 피드백 내역을 보호하기 위해 이메일 후 새 비밀번호를 설정합니다.';
+
+  @override
+  String get authResetRecoveryBadge => '계정 복구';
+
+  @override
+  String get authResetEmailStepDescription => '가입한 이메일 주소로 인증 코드를 발송합니다.';
+
+  @override
+  String get authResetCodeStep => '인증 코드 입력';
+
+  @override
+  String get authResetNewPasswordStep => '새 비밀번호 설정';
+
+  @override
+  String get authResetNewPasswordStepDescription =>
+      '보안 기준을 만족하는 새 비밀번호를 등록합니다.';
+
+  @override
+  String get authResetProcessTitle => '비밀번호 재설정 과정';
+
+  @override
+  String get authResetProcessDescription => '계정 소유 확인 후 안전하게 비밀번호를 변경합니다.';
+
+  @override
+  String get authResetSecurityBadge => '보안 인증';
+
+  @override
+  String get authResetKeepData => '계정 데이터 유지';
+
+  @override
+  String get authResetKeepDataDescription => '비밀번호를 바꿔도 저장 필터 설정은 그대로';
+
+  @override
+  String get authResetProtectCode => '인증 코드 보호';
+
+  @override
+  String get authResetProtectCodeDescription =>
+      '인증 코드는 일정 시간 후 만료되며 타인에게 공유하지 않아야 합니다.';
+
+  @override
+  String get authResetSignInAgain => '로그인 재확인';
+
+  @override
+  String get authResetSignInAgainDescription => '비밀번호 변경 후 새 다시 로그인합니다.';
+
+  @override
+  String authResetCodeStepDescription(int digits) {
+    return '메일로 받은 $digits자리 코드를 입력해 계정을 확인합니다.';
+  }
+
+  @override
+  String get authOAuthLoginFailed => 'OAuth 로그인에 실패했습니다.';
+
+  @override
+  String get onboardingCategoryTitle => '관심 있는 카테고리를 선택해 주세요';
+
+  @override
+  String get onboardingCategoryDescription =>
+      '선택하지 않아도 진행할 수 있습니다. 관심 설정은 나중에 설정에서 다시 변경할 수 있어요.';
+
+  @override
+  String get onboardingUnanalyzedNotice => '분석 전 상품을 안전한 상품으로 판정하지 않습니다.';
+
+  @override
+  String get onboardingSkipExisting => '기존 설정으로 건너뛰기';
+
+  @override
+  String onboardingTrustThreshold(int score) {
+    return '신뢰도 기준: $score점';
+  }
+
+  @override
+  String get onboardingNotificationDescription =>
+      '알림함에서 받을 알림을 선택하세요. 실제 분석 결과가 생성된 경우에만 관련 알림을 받을 수 있어요.';
+
+  @override
+  String get onboardingFeedbackResults => '피드백 처리 결과';
+
+  @override
+  String get onboardingMarketingConsent => '마케팅·이벤트 알림 동의';
+
+  @override
+  String get onboardingNotificationAvailability =>
+      '브라우저 푸시·이메일·문자 및 주간 리포트는 현재 제공되지 않습니다. 이 화면은 알림함 설정을 저장합니다.';
+
+  @override
+  String get onboardingPrevious => '이전';
+
+  @override
+  String get onboardingSaveComplete => '저장하고 완료';
+
+  @override
+  String get onboardingPreferredCategories => '선호 카테고리';
+
+  @override
+  String get onboardingReload => '다시 불러오기';
 }
