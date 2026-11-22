@@ -19,7 +19,7 @@ class ProductCard extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final preferences = ref.watch(confirmedDisplayPreferencesProvider);
-    final policyLabel = Text(
+    final label = Text(
       product.rtiLabel,
       maxLines: 1,
       overflow: TextOverflow.ellipsis,
@@ -29,6 +29,9 @@ class ProductCard extends ConsumerWidget {
         fontWeight: FontWeight.w900,
       ),
     );
+    final policyLabel = product.analysisDescription == null
+        ? label
+        : Tooltip(message: product.analysisDescription!, child: label);
     return MouseRegion(
       cursor: SystemMouseCursors.click,
       child: GestureDetector(
@@ -141,6 +144,11 @@ class ProductCard extends ConsumerWidget {
                                 : policyLabel,
                         ],
                       ),
+                      if (product.attentionReviewLabel case final String label)
+                        Text(
+                          label,
+                          style: Theme.of(context).textTheme.labelSmall,
+                        ),
                     ],
                   ),
                 ),

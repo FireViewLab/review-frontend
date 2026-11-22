@@ -46,13 +46,7 @@ class ProductTrustReportData {
         ? ProductScoreSource.none
         : ProductScoreSource.catalog;
     final breakdown = _supported(selected) ? selected : null;
-    final text = breakdown?.isV2 == true ? breakdown?.summary?.trim() : null;
-    final reasons = text != null && text.isNotEmpty
-        ? [text]
-        : [
-            for (final reason in breakdown?.reasons ?? const <String>[])
-              if (reason.trim().isNotEmpty) reason.trim(),
-          ];
+    final reasons = breakdown?.displayReasons ?? const <String>[];
     return ProductTrustReportData._(
       analysis: selected,
       breakdown: breakdown,

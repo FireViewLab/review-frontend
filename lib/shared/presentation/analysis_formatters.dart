@@ -8,10 +8,24 @@ extension AnalysisFormatting on AnalysisDisplay {
   String badgeText(BuildContext context, {String? legacyMissingLabel}) =>
       score == null
       ? (isV2
-            ? AppLocalizations.of(context).analysisNotCalculable
+            ? AppLocalizations.of(context).analysisPending
             : (legacyMissingLabel ?? AppLocalizations.of(context).reportBefore))
       : '${scoreName(context)} ${score!.round()}';
+  List<String> localizedReasons(BuildContext context) => isV2
+      ? (needsAttentionExplanation
+            ? [AppLocalizations.of(context).analysisTextCaution]
+            : const [])
+      : displayReasons;
+
+  String? attentionReviewsLabel(BuildContext context) {
+    final count = attentionReviewCount;
+    return count == null
+        ? null
+        : AppLocalizations.of(context).analysisAttentionReviews(count);
+  }
+
   String? gradeLabel(BuildContext context) {
+    if (isAwaitingScore) return null;
     final l = AppLocalizations.of(context);
     return switch (level?.toUpperCase()) {
       'SAFE' => l.reviewAnalysisSafe,
@@ -21,10 +35,12 @@ extension AnalysisFormatting on AnalysisDisplay {
     };
   }
 
-  Color get color => switch (level?.toUpperCase()) {
-    'SAFE' => const Color(0xFF22C55E),
-    'WARN' || 'SUSPICIOUS' => const Color(0xFFF59E0B),
-    'DANGER' => const Color(0xFFEF4444),
-    _ => const Color(0xFF64748B),
-  };
+  Color get color => isAwaitingScore
+      ? const Color(0xFF64748B)
+      : switch (level?.toUpperCase()) {
+          'SAFE' => const Color(0xFF22C55E),
+          'WARN' || 'SUSPICIOUS' => const Color(0xFFF59E0B),
+          'DANGER' => const Color(0xFFEF4444),
+          _ => const Color(0xFF64748B),
+        };
 }

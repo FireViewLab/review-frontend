@@ -223,6 +223,9 @@ class _ProductInfo extends StatelessWidget {
           const SizedBox(height: AppSpacing.xxs),
           _VariantChip(label: item.variant!),
         ],
+        if (item.analysisDisplay.attentionReviewsLabel(context)
+            case final String label)
+          Text(label, style: Theme.of(context).textTheme.labelSmall),
         const SizedBox(height: AppSpacing.xs),
         Wrap(
           crossAxisAlignment: WrapCrossAlignment.center,

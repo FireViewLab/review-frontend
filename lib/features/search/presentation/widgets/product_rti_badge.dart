@@ -23,7 +23,7 @@ class RtiBadge extends ConsumerWidget {
     final preferences = ref.watch(confirmedDisplayPreferencesProvider);
     if (preferences?.rtiLabelStyle == 'NONE') return const SizedBox.shrink();
     final large = preferences?.rtiLabelStyle == 'BADGE_LARGE';
-    return DecoratedBox(
+    final badge = DecoratedBox(
       decoration: BoxDecoration(
         color: AppColors.surface.withValues(alpha: 0.82),
         borderRadius: AppRadius.small,
@@ -61,5 +61,9 @@ class RtiBadge extends ConsumerWidget {
         ),
       ),
     );
+    final reasons = analysis?.localizedReasons(context) ?? const <String>[];
+    return reasons.isEmpty
+        ? badge
+        : Tooltip(message: reasons.join('\n'), child: badge);
   }
 }

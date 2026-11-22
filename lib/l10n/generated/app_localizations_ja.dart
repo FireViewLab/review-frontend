@@ -1386,7 +1386,7 @@ class AppLocalizationsJa extends AppLocalizations {
   String get externalReal => '本物のレビューだと思う';
 
   @override
-  String get externalFake => '偽物のレビューだと思う';
+  String get externalFake => '注意が必要なレビューだと思う';
 
   @override
   String get externalNotCollected => '商品収集の完了後に再試行してください。';
@@ -2422,4 +2422,15 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String get failureSearchRetry => '再検索';
+
+  @override
+  String get analysisPending => '分析中';
+
+  @override
+  String get analysisTextCaution => '本文の繰り返し・宣伝・説明文の表現を確認してください。';
+
+  @override
+  String analysisAttentionReviews(int count) {
+    return '注意が必要なレビュー $count件';
+  }
 }

@@ -44,7 +44,8 @@ class AnalysisSummaryData {
         'v0.5' => LoadedAnalysisContract.legacy,
         _ => LoadedAnalysisContract.unknown,
       };
-      final grade = contract == LoadedAnalysisContract.unknown
+      final grade =
+          contract == LoadedAnalysisContract.unknown || display.isAwaitingScore
           ? LoadedReviewGrade.notCalculable
           : switch (display.level?.trim().toUpperCase()) {
               'SAFE' => LoadedReviewGrade.safe,
@@ -56,7 +57,7 @@ class AnalysisSummaryData {
       group.update(grade, (count) => count + 1, ifAbsent: () => 1);
       if (contract == LoadedAnalysisContract.unknown) continue;
       // 같은 리뷰에 반복된 문장은 해당 리뷰에서 한 번만 센다.
-      final sentences = display.reasons
+      final sentences = display.displayReasons
           .map((reason) => reason.trim().replaceAll(whitespace, ' '))
           .where((reason) => reason.isNotEmpty)
           .toSet();

@@ -1,3 +1,4 @@
+import 'package:re_view_front/shared/presentation/analysis_formatters.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
@@ -35,7 +36,14 @@ class AnalysisSummaryCard extends ConsumerWidget {
       );
     }
     final analysis = state.analysis;
-    final summary = analysis?.summary?.trim();
+    final display = analysis?.display;
+    // 상세 응답의 상품 분석에는 v4 평균이 없으므로, v4 모델 정보가 왔는데
+    // 점수가 비어 있을 때만 분석 중으로 안내한다.
+    final explanation =
+        display?.isAwaitingScore == true && display?.modelVersion != null
+        ? l10n.analysisPending
+        : display?.localizedReasons(context).firstOrNull;
+    final summary = display?.isV2 == true ? null : analysis?.summary?.trim();
     if (summary != null && summary.isNotEmpty) {
       return OwlGuide(message: summary, title: l10n.extSummaryTitle);
     }
@@ -61,9 +69,10 @@ class AnalysisSummaryCard extends ConsumerWidget {
             _SummaryHeading(l10n.extSummaryFallbackTitle),
             const SizedBox(height: AppSpacing.xs),
             Text(
-              data.topReasons.isEmpty
-                  ? l10n.extSummaryNoEvidence
-                  : l10n.extSummaryFallbackIntro,
+              explanation ??
+                  (data.topReasons.isEmpty
+                      ? l10n.extSummaryNoEvidence
+                      : l10n.extSummaryFallbackIntro),
               style: textTheme.bodyMedium?.copyWith(height: 1.5),
             ),
             const SizedBox(height: AppSpacing.md),
@@ -85,11 +94,11 @@ class AnalysisSummaryCard extends ConsumerWidget {
             ),
             _SummaryFact(
               label: l10n.reportModel,
-              value: version(analysis?.modelVersion),
+              value: version(display?.modelVersion ?? analysis?.modelVersion),
             ),
             _SummaryFact(
               label: l10n.reportPolicy,
-              value: version(analysis?.policyVersion),
+              value: version(display?.policyVersion ?? analysis?.policyVersion),
             ),
             const Divider(height: AppSpacing.xl),
             _SummaryHeading(l10n.extSummaryLoadedScope(data.loadedCount)),

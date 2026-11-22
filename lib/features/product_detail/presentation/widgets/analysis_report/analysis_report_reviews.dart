@@ -160,7 +160,9 @@ class AnalysisReportReviewRow extends StatelessWidget {
                 maxLines: 2,
                 overflow: TextOverflow.ellipsis,
               ),
-              if (review.analysisDisplay.displayReasons.isNotEmpty) ...[
+              if (review.analysisDisplay
+                  .localizedReasons(context)
+                  .isNotEmpty) ...[
                 const SizedBox(height: AppSpacing.xxs),
                 Wrap(
                   spacing: AppSpacing.xxs,
@@ -168,7 +170,7 @@ class AnalysisReportReviewRow extends StatelessWidget {
                   children:
                       ReviewEvidenceFormatter.list(
                             context,
-                            review.analysisDisplay.displayReasons,
+                            review.analysisDisplay.localizedReasons(context),
                           )
                           .take(2)
                           .map(

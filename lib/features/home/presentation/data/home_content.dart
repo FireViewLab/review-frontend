@@ -213,6 +213,8 @@ class HomeProductData {
     required this.ratingLabel,
     required this.reviewCountLabel,
     required this.rtiLabel,
+    this.attentionReviewLabel,
+    this.analysisDescription,
     required this.imageUrl,
     required this.label,
   });
@@ -227,6 +229,8 @@ class HomeProductData {
   final String ratingLabel;
   final String reviewCountLabel;
   final String rtiLabel;
+  final String? attentionReviewLabel;
+  final String? analysisDescription;
   final String imageUrl;
   final String label;
 }

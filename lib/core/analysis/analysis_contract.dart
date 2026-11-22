@@ -32,6 +32,23 @@ abstract final class AnalysisContract {
           reason,
   ];
 
+  static double? _probability(Object? value) {
+    final parsed = score(value);
+    return parsed != null && parsed <= 1 ? parsed : null;
+  }
+
+  static Map<String, int>? _levelCounts(Object? value) {
+    if (value is! Map) return null;
+    const levels = ['SAFE', 'WARN', 'DANGER'];
+    for (final level in levels) {
+      final count = value[level];
+      if (count is! int || count < 0) return null;
+    }
+    return Map.unmodifiable({
+      for (final level in levels) level: value[level] as int,
+    });
+  }
+
   static AnalysisDisplay parse(
     Map<String, dynamic> json, {
     bool catalog = false,
@@ -40,7 +57,16 @@ abstract final class AnalysisContract {
     final contract =
         version(json) ??
         inheritedVersion ??
-        (catalog && score(read(json, AnalysisKeys.averagePolicyIndex)) != null
+        ([
+              ...AnalysisKeys.policyIndex,
+              ...AnalysisKeys.averagePolicyIndex,
+              ...AnalysisKeys.evidenceLevel,
+              ...AnalysisKeys.textScore,
+              ...AnalysisKeys.textProbability,
+              ...AnalysisKeys.modelVersion,
+              ...AnalysisKeys.policyVersion,
+              ...AnalysisKeys.levelCounts,
+            ].any(json.containsKey)
             ? 'v2'
             : 'v0.5');
     final v2 = contract == 'v2';
@@ -57,7 +83,9 @@ abstract final class AnalysisContract {
     final rawLevel = text(
       read(json, v2 ? AnalysisKeys.evidenceLevel : AnalysisKeys.level),
     );
-    final level = v2 && catalog && rawLevel == null && value != null
+    final level = v2 && value == null
+        ? null
+        : v2 && catalog && rawLevel == null && value != null
         ? (value >= 70
               ? 'SAFE'
               : value >= 40
@@ -68,15 +96,21 @@ abstract final class AnalysisContract {
       contractVersion: contract,
       score: value,
       level: level,
-      summary: v2 ? text(read(json, AnalysisKeys.summary)) : null,
-      reasons: _reasons(
-        read(json, v2 ? AnalysisKeys.rulesReasons : AnalysisKeys.reasons),
-      ),
-      evidenceReasons: _reasons(read(json, AnalysisKeys.evidenceReasons)),
-      reasonSource: text(read(json, AnalysisKeys.reasonSource)),
+      summary: null,
+      reasons: v2 ? const [] : _reasons(read(json, AnalysisKeys.reasons)),
+      evidenceReasons: const [],
+      reasonSource: v2 ? null : text(read(json, AnalysisKeys.reasonSource)),
       textScore: score(read(json, AnalysisKeys.textScore)),
       behaviorScore: score(read(json, AnalysisKeys.behaviorScore)),
       networkScore: score(read(json, AnalysisKeys.networkScore)),
+      textProbability: v2
+          ? _probability(read(json, AnalysisKeys.textProbability))
+          : null,
+      modelVersion: text(read(json, AnalysisKeys.modelVersion)),
+      policyVersion: text(read(json, AnalysisKeys.policyVersion)),
+      levelCounts: v2 && catalog
+          ? _levelCounts(read(json, AnalysisKeys.levelCounts))
+          : null,
     );
   }
 }

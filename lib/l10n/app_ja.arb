@@ -433,7 +433,7 @@
   "externalReviewMenu": "レビューメニュー",
   "externalReport": "報告する",
   "externalReal": "本物のレビューだと思う",
-  "externalFake": "偽物のレビューだと思う",
+  "externalFake": "注意が必要なレビューだと思う",
   "externalNotCollected": "商品収集の完了後に再試行してください。",
   "externalUnavailable": "データサーバーに接続できません。後ほど再試行してください。",
   "externalReportDuplicate": "このレビューは報告済みです。",
@@ -763,5 +763,8 @@
   "failureTitleUnknown": "問題が発生しました",
   "failureMessageUnknown": "リクエストを完了できませんでした。しばらくしてからお試しください。",
   "failureRetry": "もう一度試す",
-  "failureSearchRetry": "再検索"
+  "failureSearchRetry": "再検索",
+  "analysisPending": "分析中",
+  "analysisTextCaution": "本文の繰り返し・宣伝・説明文の表現を確認してください。",
+  "analysisAttentionReviews": "注意が必要なレビュー {count}件"
 }

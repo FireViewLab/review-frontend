@@ -518,7 +518,7 @@ class ReviewCard extends StatelessWidget {
                   height: 1.6,
                 ),
               ),
-              if (review.analysisDisplay.displayReasons.isNotEmpty &&
+              if (review.analysisDisplay.localizedReasons(context).isNotEmpty &&
                   preferences?.showSuspiciousLabel != false) ...[
                 const SizedBox(height: AppSpacing.xs),
                 Wrap(
@@ -526,7 +526,7 @@ class ReviewCard extends StatelessWidget {
                   runSpacing: AppSpacing.xs,
                   children: ReviewEvidenceFormatter.list(
                     context,
-                    review.analysisDisplay.displayReasons,
+                    review.analysisDisplay.localizedReasons(context),
                   ).map((r) => _ReasonChip(label: r, color: rtiColor)).toList(),
                 ),
               ],

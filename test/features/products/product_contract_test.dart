@@ -1,3 +1,13 @@
+import 'package:re_view_front/features/cart/presentation/widgets/cart_item_card.dart';
+import 'package:re_view_front/features/wishlist/presentation/widgets/wishlist_product_card.dart';
+import 'package:re_view_front/features/home/presentation/data/home_content.dart';
+import 'package:re_view_front/features/home/presentation/widgets/home/product_recommendation_section.dart';
+import 'package:re_view_front/shared/presentation/analysis_formatters.dart';
+import 'package:re_view_front/core/analysis/analysis_contract.dart';
+import 'package:go_router/go_router.dart';
+import 'package:re_view_front/features/external_product/presentation/widgets/analysis_summary_card.dart';
+import 'package:re_view_front/features/external_product/presentation/view_models/external_product_state.dart';
+import '../../helpers/pump_app.dart';
 import 'package:re_view_front/l10n/generated/app_localizations.dart';
 import 'package:re_view_front/features/category/domain/entities/product_category_resolver.dart';
 import 'package:re_view_front/features/home/presentation/providers/home_providers.dart';
@@ -337,4 +347,296 @@ void main() {
     expect(zero.product?.rating, 0);
     client.dio.close();
   });
+  test(
+    'catalog v4 values and attention counts survive product DTO conversion',
+    () {
+      final payload = {
+        ...realProduct,
+        'productId': 1,
+        'cartItemId': 7,
+        'quantity': 1,
+        'contractVersion': 'v2',
+        'avgPolicyIndexV4': 50,
+        'avgPolicyIndexV3': 99,
+        'analysisStatus': 'DONE',
+        'v4LevelCounts': {'SAFE': 8, 'WARN': 2, 'DANGER': 1},
+      };
+      final displays = [
+        SearchResultProductDto.fromJson(payload).toEntity().analysisDisplay,
+        DashboardProductDto.fromJson(payload).toEntity().analysisDisplay,
+        WishlistItemDto.fromJson(payload).toEntity().analysisDisplay,
+        CartItemDto.fromJson(payload).toEntity().analysisDisplay,
+      ];
+      for (final display in displays) {
+        expect(display.score, 50);
+        expect(display.level, 'WARN');
+        expect(display.attentionReviewCount, 3);
+      }
+    },
+  );
+
+  test(
+    'detail prefers v4 model and policy versions and hides old summary fallback',
+    () async {
+      final client = ApiClient(AppConfig.fromEnvironment());
+      addTearDown(() => client.dio.close(force: true));
+      var analysis = <String, dynamic>{
+        'contractVersion': 'v2',
+        'avgPolicyIndexV4': 55,
+        'modelVersion': 'old-model',
+        'policyVersion': 'old-policy',
+        'modelVersionV4': 'ptext-koelectra-v4.0',
+        'policyVersionV4': 'text-first-v1',
+        'analysisSummaryKo': '이전 기준 요약',
+        'rulesReasonsKo': ['이전 기준 이유'],
+      };
+      client.dio.interceptors.add(
+        InterceptorsWrapper(
+          onRequest: (options, handler) {
+            handler.resolve(
+              Response(
+                requestOptions: options,
+                data: {
+                  'success': true,
+                  'data': {
+                    'collectionStatus': 'FRESH',
+                    'analysisStatus': 'DONE',
+                    'product': {'name': '상품'},
+                    'analysis': analysis,
+                    'analysisSummaryKo': '본문의 이전 기준 요약',
+                  },
+                },
+              ),
+            );
+          },
+        ),
+      );
+      final source = ExternalProductRemoteDataSourceImpl(client);
+      const productRef = ExternalProductRef(
+        platform: 'kurly',
+        productId: 'test',
+      );
+      final result = await source.getProduct(productRef);
+      expect(result.analysis?.modelVersion, 'ptext-koelectra-v4.0');
+      expect(result.analysis?.policyVersion, 'text-first-v1');
+      expect(result.analysis?.summary, isNull);
+      expect(result.analysis?.display?.displayReasons, isEmpty);
+      analysis = {
+        'contractVersion': 'v2',
+        'modelVersion': 'old-model',
+        'policyVersion': 'old-policy',
+      };
+      final fallback = await source.getProduct(productRef);
+      expect(fallback.analysis?.modelVersion, 'old-model');
+      expect(fallback.analysis?.policyVersion, 'old-policy');
+      expect(fallback.analysis?.display?.isAwaitingScore, isTrue);
+    },
+  );
+
+  for (final counts in <Map<String, int>?>[
+    null,
+    {'SAFE': 10, 'WARN': 2, 'DANGER': 1},
+    {'SAFE': 10, 'WARN': 0, 'DANGER': 0},
+  ]) {
+    testWidgets(
+      'v4 search card shows only supplied attention review counts ($counts)',
+      (tester) async {
+        tester.view.physicalSize = const Size(320, 700);
+        tester.view.devicePixelRatio = 1;
+        addTearDown(tester.view.resetPhysicalSize);
+        addTearDown(tester.view.resetDevicePixelRatio);
+        final product = SearchResultProductDto.fromJson({
+          ...realProduct,
+          'contractVersion': 'v2',
+          'avgPolicyIndexV4': 50,
+          'v4LevelCounts': ?counts,
+        }).toEntity();
+        final router = GoRouter(
+          routes: [
+            GoRoute(
+              path: '/',
+              builder: (context, _) => Scaffold(
+                body: MediaQuery.withClampedTextScaling(
+                  minScaleFactor: 1.6,
+                  maxScaleFactor: 1.6,
+                  child: SizedBox(
+                    width: 300,
+                    height: 550,
+                    child: SearchProductCard(product: product),
+                  ),
+                ),
+              ),
+            ),
+          ],
+        );
+        addTearDown(router.dispose);
+        await pumpApp(
+          tester,
+          ProviderScope(
+            overrides: [isLoggedInProvider.overrideWithValue(false)],
+            child: localizedApp(router: router),
+          ),
+        );
+        await tester.pumpAndSettle();
+        final l = AppLocalizations.of(
+          tester.element(find.byType(SearchProductCard)),
+        );
+        if (counts == null) {
+          expect(find.textContaining('주의 리뷰'), findsNothing);
+        } else {
+          expect(
+            find.text(
+              l.analysisAttentionReviews(counts['WARN']! + counts['DANGER']!),
+            ),
+            findsOneWidget,
+          );
+        }
+        expect(tester.takeException(), isNull);
+      },
+    );
+  }
+
+  testWidgets(
+    'v4 summary keeps model and policy metadata beside the fixed caution text',
+    (tester) async {
+      final router = GoRouter(
+        routes: [
+          GoRoute(
+            path: '/',
+            builder: (context, _) => Scaffold(
+              body: SingleChildScrollView(
+                child: AnalysisSummaryCard(
+                  state: ExternalProductState(
+                    analysisStatus: 'DONE',
+                    analysis: ExternalAnalysis(
+                      summary: '이전 기준 요약',
+                      modelVersion: 'old-model',
+                      policyVersion: 'old-policy',
+                      display: AnalysisContract.parse({
+                        'contractVersion': 'v2',
+                        'avgPolicyIndexV4': 50,
+                        'modelVersionV4': 'ptext-koelectra-v4.0',
+                        'policyVersionV4': 'text-first-v1',
+                      }, catalog: true),
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ],
+      );
+      addTearDown(router.dispose);
+      await pumpApp(tester, ProviderScope(child: localizedApp(router: router)));
+      final l = AppLocalizations.of(
+        tester.element(find.byType(AnalysisSummaryCard)),
+      );
+      expect(find.text(l.analysisTextCaution), findsOneWidget);
+      expect(find.textContaining('ptext-koelectra-v4.0'), findsOneWidget);
+      expect(find.textContaining('text-first-v1'), findsOneWidget);
+      expect(find.text('이전 기준 요약'), findsNothing);
+      expect(find.textContaining('old-model'), findsNothing);
+    },
+  );
+  for (final width in [320.0, 1280.0]) {
+    testWidgets(
+      'catalog cards retain attention counts with large text at width $width',
+      (tester) async {
+        tester.view.physicalSize = Size(width, 1500);
+        tester.view.devicePixelRatio = 1;
+        addTearDown(tester.view.resetPhysicalSize);
+        addTearDown(tester.view.resetDevicePixelRatio);
+        final payload = {
+          ...realProduct,
+          'contractVersion': 'v2',
+          'avgPolicyIndexV4': 50,
+          'v4LevelCounts': {'SAFE': 1, 'WARN': 2, 'DANGER': 1},
+          'productId': 1,
+          'cartItemId': 7,
+          'quantity': 1,
+        };
+        final analysis = SearchResultProductDto.fromJson(
+          payload,
+        ).toEntity().analysisDisplay;
+        final router = GoRouter(
+          routes: [
+            GoRoute(
+              path: '/',
+              builder: (context, _) {
+                final home = HomeProductData(
+                  productId: '1',
+                  name: '상품 이름',
+                  storeName: '컬리',
+                  priceLabel: '10,000원',
+                  ratingLabel: '4.5',
+                  reviewCountLabel: '10',
+                  rtiLabel: analysis.badgeText(context),
+                  attentionReviewLabel: width == 1280
+                      ? 'Reviews needing attention: 3'
+                      : analysis.attentionReviewsLabel(context),
+                  analysisDescription: analysis
+                      .localizedReasons(context)
+                      .firstOrNull,
+                  imageUrl: '',
+                  label: '뷰티',
+                );
+                return Scaffold(
+                  body: MediaQuery.withClampedTextScaling(
+                    minScaleFactor: 1.6,
+                    maxScaleFactor: 1.6,
+                    child: SingleChildScrollView(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: [
+                          ProductRecommendationSection(
+                            showHeader: false,
+                            products: [home, home],
+                          ),
+                          SizedBox(
+                            width: 300,
+                            height: 500,
+                            child: WishlistProductCard(
+                              item: WishlistItemDto.fromJson(
+                                payload,
+                              ).toEntity(),
+                              isToggling: false,
+                              onRemove: () {},
+                            ),
+                          ),
+                          CartItemCard(
+                            item: CartItemDto.fromJson(payload).toEntity(),
+                            isSelected: false,
+                            isUpdating: false,
+                            onToggleSelect: () {},
+                            onQuantityChanged: (_) {},
+                            onRemove: () {},
+                            onMoveToWishlist: () {},
+                            onSaveForLater: () {},
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                );
+              },
+            ),
+          ],
+        );
+        addTearDown(router.dispose);
+        await pumpApp(
+          tester,
+          ProviderScope(
+            overrides: [isLoggedInProvider.overrideWithValue(false)],
+            child: localizedApp(router: router),
+          ),
+        );
+        await tester.pumpAndSettle();
+        expect(find.text('주의 리뷰 3건'), findsNWidgets(width == 1280 ? 2 : 4));
+        if (width == 1280) {
+          expect(find.text('Reviews needing attention: 3'), findsNWidgets(2));
+        }
+        expect(tester.takeException(), isNull);
+      },
+    );
+  }
 }

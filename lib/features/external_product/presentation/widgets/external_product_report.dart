@@ -1,3 +1,4 @@
+import 'package:re_view_front/shared/presentation/analysis_formatters.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:re_view_front/app/theme/app_colors.dart';
@@ -20,7 +21,9 @@ class ExternalProductReport extends StatelessWidget {
     final l = AppLocalizations.of(context);
     final analysis = state.analysis;
     final data = ProductTrustReportData.fromState(state);
-    final reportStatus = state.phase == ExternalProductPhase.collecting
+    final reportStatus = data.isNotCalculable
+        ? ProductReportStatus.running
+        : state.phase == ExternalProductPhase.collecting
         ? ProductReportStatus.collecting
         : switch (state.analysisState) {
             ExternalAnalysisStatus.done => ProductReportStatus.ready,
@@ -36,13 +39,12 @@ class ExternalProductReport extends StatelessWidget {
           };
     final message = switch (reportStatus) {
       ProductReportStatus.collecting => l.reportCollecting,
-      ProductReportStatus.running => l.extTrustRunning,
+      ProductReportStatus.running =>
+        data.isNotCalculable ? l.analysisPending : l.extTrustRunning,
       ProductReportStatus.failed => l.reportFailed,
       ProductReportStatus.disabled => l.reportDisabled,
       ProductReportStatus.stale => l.reportStale,
       ProductReportStatus.pending => l.extTrustBefore,
-      ProductReportStatus.ready when data.isNotCalculable =>
-        l.analysisNotCalculable,
       ProductReportStatus.ready when data.score == null => l.extTrustNoAverage,
       ProductReportStatus.ready => l.reportDone,
       ProductReportStatus.unavailable => l.reportUnavailable,
@@ -51,7 +53,10 @@ class ExternalProductReport extends StatelessWidget {
     final reviews = done
         ? state.reviews.where((r) => r.analysisDisplay.hasResult).toList()
         : const <ExternalReview>[];
-    final hasDetails = data.hasComponents || data.reasons.isNotEmpty;
+    final hasDetails =
+        data.hasComponents ||
+        data.reasons.isNotEmpty ||
+        data.breakdown?.needsAttentionExplanation == true;
     final coverageInSummary =
         done &&
         analysis != null &&
@@ -125,15 +130,21 @@ class ExternalProductReport extends StatelessWidget {
                                 ? l.reportSampled
                                 : l.extSummaryNotSampled,
                           ),
-                        if (analysis.modelVersion != null)
+                        if (analysis.display?.modelVersion != null ||
+                            analysis.modelVersion != null)
                           ReportFactRow(
                             label: l.reportModel,
-                            value: analysis.modelVersion!,
+                            value:
+                                analysis.display?.modelVersion ??
+                                analysis.modelVersion!,
                           ),
-                        if (analysis.policyVersion != null)
+                        if (analysis.display?.policyVersion != null ||
+                            analysis.policyVersion != null)
                           ReportFactRow(
                             label: l.reportPolicy,
-                            value: analysis.policyVersion!,
+                            value:
+                                analysis.display?.policyVersion ??
+                                analysis.policyVersion!,
                           ),
                       ],
                     ),
@@ -177,6 +188,7 @@ class _ScoreDetails extends StatelessWidget {
   Widget build(BuildContext context) {
     final l = AppLocalizations.of(context);
     final breakdown = data.breakdown;
+    final reasons = breakdown?.localizedReasons(context) ?? const <String>[];
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
@@ -202,10 +214,10 @@ class _ScoreDetails extends StatelessWidget {
         ],
         ReportSectionTitle(title: l.reportReasons),
         const SizedBox(height: AppSpacing.sm),
-        if (data.reasons.isEmpty)
+        if (reasons.isEmpty)
           Text(l.extTrustNoEvidence)
         else
-          for (final reason in data.reasons)
+          for (final reason in reasons)
             Padding(
               padding: const EdgeInsets.only(bottom: AppSpacing.xs),
               child: Text(
