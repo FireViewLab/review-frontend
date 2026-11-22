@@ -2551,4 +2551,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get cartRemoved => 'Removed from cart';
+
+  @override
+  String get listLoading => 'Loading';
 }

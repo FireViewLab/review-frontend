@@ -2445,4 +2445,7 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String get cartRemoved => 'カートから削除しました';
+
+  @override
+  String get listLoading => '読み込み中';
 }
