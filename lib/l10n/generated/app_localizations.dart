@@ -309,7 +309,7 @@ abstract class AppLocalizations {
   /// 위시리스트 빈 상태 제목
   ///
   /// In ko, this message translates to:
-  /// **'찜한 상품이 없습니다'**
+  /// **'찜한 상품이 없어요'**
   String get wishlistEmpty;
 
   /// 위시리스트 빈 상태 설명
@@ -321,7 +321,7 @@ abstract class AppLocalizations {
   /// 위시리스트 빈 상태 탐색 버튼
   ///
   /// In ko, this message translates to:
-  /// **'상품 탐색하러 가기'**
+  /// **'상품 둘러보기'**
   String get wishlistBrowse;
 
   /// 필터 결과 없음 메시지
@@ -4721,6 +4721,90 @@ abstract class AppLocalizations {
   /// In ko, this message translates to:
   /// **'불러오는 중'**
   String get listLoading;
+
+  /// No description provided for @cartEmptyTitle.
+  ///
+  /// In ko, this message translates to:
+  /// **'장바구니가 비어 있어요'**
+  String get cartEmptyTitle;
+
+  /// No description provided for @cartEmptyDescription.
+  ///
+  /// In ko, this message translates to:
+  /// **'마음에 드는 상품을 담아보세요.'**
+  String get cartEmptyDescription;
+
+  /// No description provided for @emptyViewWishlist.
+  ///
+  /// In ko, this message translates to:
+  /// **'찜 목록 보기'**
+  String get emptyViewWishlist;
+
+  /// No description provided for @recentProductsEmptyTitle.
+  ///
+  /// In ko, this message translates to:
+  /// **'최근 본 상품이 없어요'**
+  String get recentProductsEmptyTitle;
+
+  /// No description provided for @recentProductsEmptyDescription.
+  ///
+  /// In ko, this message translates to:
+  /// **'궁금한 상품을 둘러보세요. 최근 조회 기록은 여기에 모여요.'**
+  String get recentProductsEmptyDescription;
+
+  /// No description provided for @warningProductsEmptyTitle.
+  ///
+  /// In ko, this message translates to:
+  /// **'주의 상품이 없어요'**
+  String get warningProductsEmptyTitle;
+
+  /// No description provided for @warningProductsFilteredEmptyTitle.
+  ///
+  /// In ko, this message translates to:
+  /// **'선택한 등급의 주의 상품이 없어요'**
+  String get warningProductsFilteredEmptyTitle;
+
+  /// No description provided for @warningProductsEmptyDescription.
+  ///
+  /// In ko, this message translates to:
+  /// **'다른 상품도 둘러보고 관심 있는 상품을 찜해보세요.'**
+  String get warningProductsEmptyDescription;
+
+  /// No description provided for @searchEmptyTitle.
+  ///
+  /// In ko, this message translates to:
+  /// **'검색 결과가 없어요'**
+  String get searchEmptyTitle;
+
+  /// No description provided for @searchEmptyQueryDescription.
+  ///
+  /// In ko, this message translates to:
+  /// **'상품명이나 카테고리를 입력해 검색해보세요.'**
+  String get searchEmptyQueryDescription;
+
+  /// No description provided for @searchEmptyDescription.
+  ///
+  /// In ko, this message translates to:
+  /// **'다른 검색어나 더 넓은 카테고리로 다시 검색해보세요.'**
+  String get searchEmptyDescription;
+
+  /// No description provided for @searchFilteredEmptyTitle.
+  ///
+  /// In ko, this message translates to:
+  /// **'필터에 맞는 상품이 없어요'**
+  String get searchFilteredEmptyTitle;
+
+  /// No description provided for @searchFilteredEmptyDescription.
+  ///
+  /// In ko, this message translates to:
+  /// **'필터를 초기화하거나 조건을 조금 넓혀보세요.'**
+  String get searchFilteredEmptyDescription;
+
+  /// No description provided for @searchResetFilters.
+  ///
+  /// In ko, this message translates to:
+  /// **'필터 초기화'**
+  String get searchResetFilters;
 }
 
 class _AppLocalizationsDelegate

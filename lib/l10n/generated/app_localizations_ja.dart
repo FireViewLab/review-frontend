@@ -2448,4 +2448,48 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String get listLoading => '読み込み中';
+
+  @override
+  String get cartEmptyTitle => 'カートは空です';
+
+  @override
+  String get cartEmptyDescription => '気になる商品をカートに入れてみましょう。';
+
+  @override
+  String get emptyViewWishlist => 'お気に入りを見る';
+
+  @override
+  String get recentProductsEmptyTitle => '最近見た商品はありません';
+
+  @override
+  String get recentProductsEmptyDescription =>
+      '気になる商品を見てみましょう。最近見た商品がここに表示されます。';
+
+  @override
+  String get warningProductsEmptyTitle => '注意が必要な商品はありません';
+
+  @override
+  String get warningProductsFilteredEmptyTitle => '選択した評価に該当する商品はありません';
+
+  @override
+  String get warningProductsEmptyDescription =>
+      'ほかの商品も見て、気になる商品をお気に入りに追加してみましょう。';
+
+  @override
+  String get searchEmptyTitle => '検索結果がありません';
+
+  @override
+  String get searchEmptyQueryDescription => '商品名やカテゴリーを入力して検索してみましょう。';
+
+  @override
+  String get searchEmptyDescription => '別のキーワードや、より広いカテゴリーで検索してみましょう。';
+
+  @override
+  String get searchFilteredEmptyTitle => '条件に合う商品がありません';
+
+  @override
+  String get searchFilteredEmptyDescription => 'フィルターをリセットするか、条件を広げてみましょう。';
+
+  @override
+  String get searchResetFilters => 'フィルターをリセット';
 }

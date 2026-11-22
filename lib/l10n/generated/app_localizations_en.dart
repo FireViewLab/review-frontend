@@ -2554,4 +2554,52 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get listLoading => 'Loading';
+
+  @override
+  String get cartEmptyTitle => 'Your cart is empty';
+
+  @override
+  String get cartEmptyDescription => 'Add products you like to your cart.';
+
+  @override
+  String get emptyViewWishlist => 'View wishlist';
+
+  @override
+  String get recentProductsEmptyTitle => 'No recently viewed products';
+
+  @override
+  String get recentProductsEmptyDescription =>
+      'Explore products that interest you. Your recent views appear here.';
+
+  @override
+  String get warningProductsEmptyTitle => 'No products needing attention';
+
+  @override
+  String get warningProductsFilteredEmptyTitle =>
+      'No products needing attention in this grade';
+
+  @override
+  String get warningProductsEmptyDescription =>
+      'Explore more products and save any that interest you.';
+
+  @override
+  String get searchEmptyTitle => 'No search results';
+
+  @override
+  String get searchEmptyQueryDescription =>
+      'Try searching by product name or category.';
+
+  @override
+  String get searchEmptyDescription =>
+      'Try another search term or a broader category.';
+
+  @override
+  String get searchFilteredEmptyTitle => 'No products match your filters';
+
+  @override
+  String get searchFilteredEmptyDescription =>
+      'Reset your filters or broaden the conditions.';
+
+  @override
+  String get searchResetFilters => 'Reset filters';
 }

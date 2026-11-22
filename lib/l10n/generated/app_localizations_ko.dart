@@ -119,13 +119,13 @@ class AppLocalizationsKo extends AppLocalizations {
   }
 
   @override
-  String get wishlistEmpty => '찜한 상품이 없습니다';
+  String get wishlistEmpty => '찜한 상품이 없어요';
 
   @override
   String get wishlistEmptyDesc => '상품 카드의 하트를 눌러 찜 목록에 추가해보세요.';
 
   @override
-  String get wishlistBrowse => '상품 탐색하러 가기';
+  String get wishlistBrowse => '상품 둘러보기';
 
   @override
   String get wishlistFilteredEmpty => '선택한 필터에 해당하는 찜 상품이 없습니다.';
@@ -2453,4 +2453,47 @@ class AppLocalizationsKo extends AppLocalizations {
 
   @override
   String get listLoading => '불러오는 중';
+
+  @override
+  String get cartEmptyTitle => '장바구니가 비어 있어요';
+
+  @override
+  String get cartEmptyDescription => '마음에 드는 상품을 담아보세요.';
+
+  @override
+  String get emptyViewWishlist => '찜 목록 보기';
+
+  @override
+  String get recentProductsEmptyTitle => '최근 본 상품이 없어요';
+
+  @override
+  String get recentProductsEmptyDescription =>
+      '궁금한 상품을 둘러보세요. 최근 조회 기록은 여기에 모여요.';
+
+  @override
+  String get warningProductsEmptyTitle => '주의 상품이 없어요';
+
+  @override
+  String get warningProductsFilteredEmptyTitle => '선택한 등급의 주의 상품이 없어요';
+
+  @override
+  String get warningProductsEmptyDescription => '다른 상품도 둘러보고 관심 있는 상품을 찜해보세요.';
+
+  @override
+  String get searchEmptyTitle => '검색 결과가 없어요';
+
+  @override
+  String get searchEmptyQueryDescription => '상품명이나 카테고리를 입력해 검색해보세요.';
+
+  @override
+  String get searchEmptyDescription => '다른 검색어나 더 넓은 카테고리로 다시 검색해보세요.';
+
+  @override
+  String get searchFilteredEmptyTitle => '필터에 맞는 상품이 없어요';
+
+  @override
+  String get searchFilteredEmptyDescription => '필터를 초기화하거나 조건을 조금 넓혀보세요.';
+
+  @override
+  String get searchResetFilters => '필터 초기화';
 }
