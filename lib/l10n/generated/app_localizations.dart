@@ -7067,6 +7067,252 @@ abstract class AppLocalizations {
   /// In ko, this message translates to:
   /// **'가격비교 {count}'**
   String detailComparisonTabCount(int count);
+
+  /// No description provided for @searchGridView.
+  ///
+  /// In ko, this message translates to:
+  /// **'카드형 보기'**
+  String get searchGridView;
+
+  /// No description provided for @searchListView.
+  ///
+  /// In ko, this message translates to:
+  /// **'리스트형 보기'**
+  String get searchListView;
+
+  /// No description provided for @searchSort.
+  ///
+  /// In ko, this message translates to:
+  /// **'정렬'**
+  String get searchSort;
+
+  /// No description provided for @searchPageSize.
+  ///
+  /// In ko, this message translates to:
+  /// **'페이지당 상품 수'**
+  String get searchPageSize;
+
+  /// No description provided for @searchResultCountLabel.
+  ///
+  /// In ko, this message translates to:
+  /// **'{count}개 결과'**
+  String searchResultCountLabel(int count);
+
+  /// No description provided for @searchPageSizeCount.
+  ///
+  /// In ko, this message translates to:
+  /// **'{count}개씩 보기'**
+  String searchPageSizeCount(int count);
+
+  /// No description provided for @searchCartAdded.
+  ///
+  /// In ko, this message translates to:
+  /// **'장바구니에 담겼습니다.'**
+  String get searchCartAdded;
+
+  /// No description provided for @searchCartAddFailed.
+  ///
+  /// In ko, this message translates to:
+  /// **'장바구니 담기에 실패했습니다.'**
+  String get searchCartAddFailed;
+
+  /// No description provided for @searchFormattedReviewCount.
+  ///
+  /// In ko, this message translates to:
+  /// **'(리뷰 {count})'**
+  String searchFormattedReviewCount(String count);
+
+  /// No description provided for @searchAllProducts.
+  ///
+  /// In ko, this message translates to:
+  /// **'전체 상품'**
+  String get searchAllProducts;
+
+  /// No description provided for @searchCategoryProducts.
+  ///
+  /// In ko, this message translates to:
+  /// **'카테고리 상품'**
+  String get searchCategoryProducts;
+
+  /// No description provided for @searchResultsTitle.
+  ///
+  /// In ko, this message translates to:
+  /// **'검색 결과'**
+  String get searchResultsTitle;
+
+  /// No description provided for @searchAboutRti.
+  ///
+  /// In ko, this message translates to:
+  /// **'Re:view Trust Index(RTI)란?'**
+  String get searchAboutRti;
+
+  /// No description provided for @searchAboutRtiDescription.
+  ///
+  /// In ko, this message translates to:
+  /// **'실제 구매자 리뷰의 신뢰도를 종합해 산출한 지표입니다.'**
+  String get searchAboutRtiDescription;
+
+  /// No description provided for @searchFormattedProductCount.
+  ///
+  /// In ko, this message translates to:
+  /// **'{count}개 상품'**
+  String searchFormattedProductCount(String count);
+
+  /// No description provided for @searchQuickFilterAllCount.
+  ///
+  /// In ko, this message translates to:
+  /// **'전체 {count}'**
+  String searchQuickFilterAllCount(int count);
+
+  /// No description provided for @searchMultiStoreTitle.
+  ///
+  /// In ko, this message translates to:
+  /// **'멀티 스토어 통합 검색'**
+  String get searchMultiStoreTitle;
+
+  /// No description provided for @searchComparedProducts.
+  ///
+  /// In ko, this message translates to:
+  /// **'비교 상품'**
+  String get searchComparedProducts;
+
+  /// No description provided for @searchCollectedReviews.
+  ///
+  /// In ko, this message translates to:
+  /// **'수집 리뷰'**
+  String get searchCollectedReviews;
+
+  /// No description provided for @searchNotCounted.
+  ///
+  /// In ko, this message translates to:
+  /// **'미집계'**
+  String get searchNotCounted;
+
+  /// No description provided for @searchReviewBasedComparison.
+  ///
+  /// In ko, this message translates to:
+  /// **'실사용 리뷰 기반 비교'**
+  String get searchReviewBasedComparison;
+
+  /// No description provided for @searchComparisonDescription.
+  ///
+  /// In ko, this message translates to:
+  /// **'가격과 리뷰, RTI 신뢰도를 한 번에 비교해 신뢰도 높은 상품을 빠르게 골라보세요.'**
+  String get searchComparisonDescription;
+
+  /// No description provided for @searchLowestPriceComparison.
+  ///
+  /// In ko, this message translates to:
+  /// **'최저가 비교'**
+  String get searchLowestPriceComparison;
+
+  /// No description provided for @searchReviewTrust.
+  ///
+  /// In ko, this message translates to:
+  /// **'리뷰 신뢰도'**
+  String get searchReviewTrust;
+
+  /// No description provided for @searchFastDelivery.
+  ///
+  /// In ko, this message translates to:
+  /// **'빠른 배송'**
+  String get searchFastDelivery;
+
+  /// No description provided for @searchOfficialStores.
+  ///
+  /// In ko, this message translates to:
+  /// **'공식몰 포함'**
+  String get searchOfficialStores;
+
+  /// No description provided for @searchVeryHighTrust.
+  ///
+  /// In ko, this message translates to:
+  /// **'매우 신뢰 높음'**
+  String get searchVeryHighTrust;
+
+  /// No description provided for @searchModerateTrust.
+  ///
+  /// In ko, this message translates to:
+  /// **'보통'**
+  String get searchModerateTrust;
+
+  /// No description provided for @searchLowTrust.
+  ///
+  /// In ko, this message translates to:
+  /// **'낮음'**
+  String get searchLowTrust;
+
+  /// No description provided for @searchComparedProductCount.
+  ///
+  /// In ko, this message translates to:
+  /// **'{count}개'**
+  String searchComparedProductCount(String count);
+
+  /// No description provided for @searchCollectedReviewCount.
+  ///
+  /// In ko, this message translates to:
+  /// **'{count}건'**
+  String searchCollectedReviewCount(String count);
+
+  /// No description provided for @searchUnconfirmedCategoriesNotice.
+  ///
+  /// In ko, this message translates to:
+  /// **'쇼핑몰 상품은 카테고리 이름으로 검색하며, 분류가 확정되지 않은 결과도 함께 표시합니다. 상세 분류는 쇼핑몰 원문을 확인해 주세요.'**
+  String get searchUnconfirmedCategoriesNotice;
+
+  /// No description provided for @searchLoadedProductsScope.
+  ///
+  /// In ko, this message translates to:
+  /// **'현재 불러온 {count}개 상품에서 필터·정렬합니다. 키워드 검색은 최대 {limit}개 결과이며 전체 쇼핑몰 상품 검색 필터가 아닙니다. 배송·판매량·출시일·사진 리뷰 정보는 제공되지 않아 해당 조건은 지원하지 않습니다.'**
+  String searchLoadedProductsScope(int count, int limit);
+
+  /// No description provided for @searchSortAccuracy.
+  ///
+  /// In ko, this message translates to:
+  /// **'추천순'**
+  String get searchSortAccuracy;
+
+  /// No description provided for @searchSortRti.
+  ///
+  /// In ko, this message translates to:
+  /// **'RTI순'**
+  String get searchSortRti;
+
+  /// No description provided for @searchSortReviewCount.
+  ///
+  /// In ko, this message translates to:
+  /// **'리뷰 많은순'**
+  String get searchSortReviewCount;
+
+  /// No description provided for @searchSortSales.
+  ///
+  /// In ko, this message translates to:
+  /// **'판매 많은순'**
+  String get searchSortSales;
+
+  /// No description provided for @searchSortPriceLow.
+  ///
+  /// In ko, this message translates to:
+  /// **'최저가순'**
+  String get searchSortPriceLow;
+
+  /// No description provided for @searchSortPriceHigh.
+  ///
+  /// In ko, this message translates to:
+  /// **'높은 가격순'**
+  String get searchSortPriceHigh;
+
+  /// No description provided for @searchSortNewest.
+  ///
+  /// In ko, this message translates to:
+  /// **'신상품순'**
+  String get searchSortNewest;
+
+  /// No description provided for @searchMissingClassification.
+  ///
+  /// In ko, this message translates to:
+  /// **'분류 정보 없음'**
+  String get searchMissingClassification;
 }
 
 class _AppLocalizationsDelegate

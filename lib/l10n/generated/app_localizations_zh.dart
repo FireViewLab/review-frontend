@@ -3677,4 +3677,144 @@ class AppLocalizationsZh extends AppLocalizations {
   String detailComparisonTabCount(int count) {
     return '比价 $count';
   }
+
+  @override
+  String get searchGridView => '卡片视图';
+
+  @override
+  String get searchListView => '列表视图';
+
+  @override
+  String get searchSort => '排序';
+
+  @override
+  String get searchPageSize => '每页商品数';
+
+  @override
+  String searchResultCountLabel(int count) {
+    return '$count 条结果';
+  }
+
+  @override
+  String searchPageSizeCount(int count) {
+    return '每页显示 $count 件';
+  }
+
+  @override
+  String get searchCartAdded => '已加入购物车。';
+
+  @override
+  String get searchCartAddFailed => '加入购物车失败。';
+
+  @override
+  String searchFormattedReviewCount(String count) {
+    return '（$count 条评价）';
+  }
+
+  @override
+  String get searchAllProducts => '全部商品';
+
+  @override
+  String get searchCategoryProducts => '分类商品';
+
+  @override
+  String get searchResultsTitle => '搜索结果';
+
+  @override
+  String get searchAboutRti => '什么是 Re:view Trust Index（RTI）？';
+
+  @override
+  String get searchAboutRtiDescription => '综合实际买家评价可信度得出的指标。';
+
+  @override
+  String searchFormattedProductCount(String count) {
+    return '$count 件商品';
+  }
+
+  @override
+  String searchQuickFilterAllCount(int count) {
+    return '全部 $count';
+  }
+
+  @override
+  String get searchMultiStoreTitle => '多店铺统一搜索';
+
+  @override
+  String get searchComparedProducts => '对比商品';
+
+  @override
+  String get searchCollectedReviews => '已收集评价';
+
+  @override
+  String get searchNotCounted => '未统计';
+
+  @override
+  String get searchReviewBasedComparison => '基于实际使用评价对比';
+
+  @override
+  String get searchComparisonDescription => '同时比较价格、评价和 RTI 可信度，快速挑选可信赖的商品。';
+
+  @override
+  String get searchLowestPriceComparison => '最低价对比';
+
+  @override
+  String get searchReviewTrust => '评价可信度';
+
+  @override
+  String get searchFastDelivery => '快速配送';
+
+  @override
+  String get searchOfficialStores => '包含官方店铺';
+
+  @override
+  String get searchVeryHighTrust => '可信度很高';
+
+  @override
+  String get searchModerateTrust => '一般';
+
+  @override
+  String get searchLowTrust => '低';
+
+  @override
+  String searchComparedProductCount(String count) {
+    return '$count 件';
+  }
+
+  @override
+  String searchCollectedReviewCount(String count) {
+    return '$count 条';
+  }
+
+  @override
+  String get searchUnconfirmedCategoriesNotice =>
+      '商城商品按分类名称搜索，也会显示尚未确认分类的结果。详细分类请查看商城原文。';
+
+  @override
+  String searchLoadedProductsScope(int count, int limit) {
+    return '对当前加载的 $count 件商品进行筛选和排序。关键词搜索最多返回 $limit 条结果，并非针对商城全部商品的搜索筛选。未提供配送、销量、发布日期和图片评价信息，因此不支持这些条件。';
+  }
+
+  @override
+  String get searchSortAccuracy => '推荐';
+
+  @override
+  String get searchSortRti => '按 RTI';
+
+  @override
+  String get searchSortReviewCount => '评价最多';
+
+  @override
+  String get searchSortSales => '销量最多';
+
+  @override
+  String get searchSortPriceLow => '价格从低到高';
+
+  @override
+  String get searchSortPriceHigh => '价格从高到低';
+
+  @override
+  String get searchSortNewest => '最新商品';
+
+  @override
+  String get searchMissingClassification => '暂无分类信息';
 }

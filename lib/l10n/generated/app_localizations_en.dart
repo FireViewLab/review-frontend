@@ -3888,4 +3888,146 @@ class AppLocalizationsEn extends AppLocalizations {
   String detailComparisonTabCount(int count) {
     return 'Compare prices $count';
   }
+
+  @override
+  String get searchGridView => 'Card view';
+
+  @override
+  String get searchListView => 'List view';
+
+  @override
+  String get searchSort => 'Sort';
+
+  @override
+  String get searchPageSize => 'Products per page';
+
+  @override
+  String searchResultCountLabel(int count) {
+    return '$count results';
+  }
+
+  @override
+  String searchPageSizeCount(int count) {
+    return 'Show $count per page';
+  }
+
+  @override
+  String get searchCartAdded => 'Added to cart.';
+
+  @override
+  String get searchCartAddFailed => 'Could not add to cart.';
+
+  @override
+  String searchFormattedReviewCount(String count) {
+    return '($count reviews)';
+  }
+
+  @override
+  String get searchAllProducts => 'All products';
+
+  @override
+  String get searchCategoryProducts => 'Category products';
+
+  @override
+  String get searchResultsTitle => 'Search results';
+
+  @override
+  String get searchAboutRti => 'What is the Re:view Trust Index (RTI)?';
+
+  @override
+  String get searchAboutRtiDescription =>
+      'An index combining the trustworthiness of reviews from actual buyers.';
+
+  @override
+  String searchFormattedProductCount(String count) {
+    return '$count products';
+  }
+
+  @override
+  String searchQuickFilterAllCount(int count) {
+    return 'All $count';
+  }
+
+  @override
+  String get searchMultiStoreTitle => 'Multi-store search';
+
+  @override
+  String get searchComparedProducts => 'Products compared';
+
+  @override
+  String get searchCollectedReviews => 'Collected reviews';
+
+  @override
+  String get searchNotCounted => 'Not counted';
+
+  @override
+  String get searchReviewBasedComparison => 'Compare with real-use reviews';
+
+  @override
+  String get searchComparisonDescription =>
+      'Compare prices, reviews, and RTI trust at once to find trustworthy products faster.';
+
+  @override
+  String get searchLowestPriceComparison => 'Compare lowest prices';
+
+  @override
+  String get searchReviewTrust => 'Review trust';
+
+  @override
+  String get searchFastDelivery => 'Fast delivery';
+
+  @override
+  String get searchOfficialStores => 'Includes official stores';
+
+  @override
+  String get searchVeryHighTrust => 'Very high trust';
+
+  @override
+  String get searchModerateTrust => 'Moderate';
+
+  @override
+  String get searchLowTrust => 'Low';
+
+  @override
+  String searchComparedProductCount(String count) {
+    return '$count products';
+  }
+
+  @override
+  String searchCollectedReviewCount(String count) {
+    return '$count reviews';
+  }
+
+  @override
+  String get searchUnconfirmedCategoriesNotice =>
+      'Shop products are searched by category name and may include unconfirmed classifications. Check the shop\'s original listing for detailed categories.';
+
+  @override
+  String searchLoadedProductsScope(int count, int limit) {
+    return 'Filters and sorting apply to the $count loaded products. Keyword searches return up to $limit results, not all shop products. Shipping, sales, release dates, and photo-review data are unavailable, so those conditions are unsupported.';
+  }
+
+  @override
+  String get searchSortAccuracy => 'Recommended';
+
+  @override
+  String get searchSortRti => 'By RTI';
+
+  @override
+  String get searchSortReviewCount => 'Most reviews';
+
+  @override
+  String get searchSortSales => 'Most sales';
+
+  @override
+  String get searchSortPriceLow => 'Lowest price';
+
+  @override
+  String get searchSortPriceHigh => 'Highest price';
+
+  @override
+  String get searchSortNewest => 'Newest';
+
+  @override
+  String get searchMissingClassification => 'No classification information';
 }

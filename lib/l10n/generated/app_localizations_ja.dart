@@ -3730,4 +3730,145 @@ class AppLocalizationsJa extends AppLocalizations {
   String detailComparisonTabCount(int count) {
     return '価格比較 $count';
   }
+
+  @override
+  String get searchGridView => 'カード表示';
+
+  @override
+  String get searchListView => 'リスト表示';
+
+  @override
+  String get searchSort => '並べ替え';
+
+  @override
+  String get searchPageSize => '1ページの商品数';
+
+  @override
+  String searchResultCountLabel(int count) {
+    return '$count件の結果';
+  }
+
+  @override
+  String searchPageSizeCount(int count) {
+    return '$count件ずつ表示';
+  }
+
+  @override
+  String get searchCartAdded => 'カートに追加しました。';
+
+  @override
+  String get searchCartAddFailed => 'カートに追加できませんでした。';
+
+  @override
+  String searchFormattedReviewCount(String count) {
+    return '（レビュー$count件）';
+  }
+
+  @override
+  String get searchAllProducts => 'すべての商品';
+
+  @override
+  String get searchCategoryProducts => 'カテゴリーの商品';
+
+  @override
+  String get searchResultsTitle => '検索結果';
+
+  @override
+  String get searchAboutRti => 'Re:view Trust Index（RTI）とは？';
+
+  @override
+  String get searchAboutRtiDescription => '実際の購入者レビューの信頼度を総合して算出した指標です。';
+
+  @override
+  String searchFormattedProductCount(String count) {
+    return '$count商品';
+  }
+
+  @override
+  String searchQuickFilterAllCount(int count) {
+    return 'すべて $count';
+  }
+
+  @override
+  String get searchMultiStoreTitle => '複数ストアをまとめて検索';
+
+  @override
+  String get searchComparedProducts => '比較商品';
+
+  @override
+  String get searchCollectedReviews => '収集レビュー';
+
+  @override
+  String get searchNotCounted => '未集計';
+
+  @override
+  String get searchReviewBasedComparison => '実際の使用レビューに基づく比較';
+
+  @override
+  String get searchComparisonDescription =>
+      '価格・レビュー・RTI信頼度をまとめて比較し、信頼できる商品をすばやく選びましょう。';
+
+  @override
+  String get searchLowestPriceComparison => '最安値を比較';
+
+  @override
+  String get searchReviewTrust => 'レビューの信頼度';
+
+  @override
+  String get searchFastDelivery => 'スピード配送';
+
+  @override
+  String get searchOfficialStores => '公式ストアを含む';
+
+  @override
+  String get searchVeryHighTrust => '信頼度がとても高い';
+
+  @override
+  String get searchModerateTrust => '普通';
+
+  @override
+  String get searchLowTrust => '低い';
+
+  @override
+  String searchComparedProductCount(String count) {
+    return '$count件';
+  }
+
+  @override
+  String searchCollectedReviewCount(String count) {
+    return '$count件';
+  }
+
+  @override
+  String get searchUnconfirmedCategoriesNotice =>
+      'ショップ商品はカテゴリー名で検索し、分類が未確定の結果も表示します。詳しい分類はショップの原文で確認してください。';
+
+  @override
+  String searchLoadedProductsScope(int count, int limit) {
+    return '読み込んだ$count件の商品を絞り込み・並べ替えます。キーワード検索は最大$limit件で、ショップ全商品の検索フィルターではありません。配送・販売数・発売日・写真レビューの情報がないため、これらの条件は非対応です。';
+  }
+
+  @override
+  String get searchSortAccuracy => 'おすすめ順';
+
+  @override
+  String get searchSortRti => 'RTI順';
+
+  @override
+  String get searchSortReviewCount => 'レビューが多い順';
+
+  @override
+  String get searchSortSales => '販売数が多い順';
+
+  @override
+  String get searchSortPriceLow => '価格が安い順';
+
+  @override
+  String get searchSortPriceHigh => '価格が高い順';
+
+  @override
+  String get searchSortNewest => '新商品順';
+
+  @override
+  String get searchMissingClassification => '分類情報なし';
 }

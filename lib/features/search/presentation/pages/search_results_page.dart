@@ -1,3 +1,4 @@
+import 'package:re_view_front/l10n/generated/app_localizations.dart';
 import 'package:re_view_front/shared/widgets/scroll_to_top_button.dart';
 import 'package:flutter/foundation.dart' show kIsWeb, mapEquals;
 import 'package:re_view_front/shared/widgets/sliver_width_builder.dart';
@@ -196,17 +197,19 @@ class _SearchResultsPageState extends ConsumerState<SearchResultsPage> {
           child: Padding(
             padding: const EdgeInsets.all(AppSpacing.md),
             child: Text(
-              '현재 불러온 ${products.length}개 상품에서 필터·정렬합니다. 키워드 검색은 최대 40개 결과이며 전체 쇼핑몰 상품 검색 필터가 아닙니다. 배송·판매량·출시일·사진 리뷰 정보는 제공되지 않아 해당 조건은 지원하지 않습니다.',
+              AppLocalizations.of(
+                context,
+              ).searchLoadedProductsScope(products.length, 40),
             ),
           ),
         ),
         if (widget.categoryId != null &&
             products.any((p) => !_hasResolvedCategory(p)))
-          const SliverToBoxAdapter(
+          SliverToBoxAdapter(
             child: Padding(
               padding: EdgeInsets.all(AppSpacing.md),
               child: Text(
-                '쇼핑몰 상품은 카테고리 이름으로 검색하며, 분류가 확정되지 않은 결과도 함께 표시합니다. 상세 분류는 쇼핑몰 원문을 확인해 주세요.',
+                AppLocalizations.of(context).searchUnconfirmedCategoriesNotice,
               ),
             ),
           ),

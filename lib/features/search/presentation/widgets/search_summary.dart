@@ -1,3 +1,4 @@
+import 'package:re_view_front/features/search/presentation/search_labels.dart';
 import 'package:re_view_front/shared/widgets/empty_state_view.dart';
 import 'package:re_view_front/l10n/generated/app_localizations.dart';
 import 'package:flutter/material.dart';
@@ -39,7 +40,7 @@ class SearchSummary extends StatelessWidget {
     final title = isCategoryBrowse
         ? categoryPath.last.label
         : state.query.isEmpty
-        ? '전체 상품'
+        ? AppLocalizations.of(context).searchAllProducts
         : state.query;
 
     return Column(
@@ -66,7 +67,9 @@ class SearchSummary extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.only(bottom: 3),
               child: Text(
-                isCategoryBrowse ? '카테고리 상품' : '검색 결과',
+                isCategoryBrowse
+                    ? AppLocalizations.of(context).searchCategoryProducts
+                    : AppLocalizations.of(context).searchResultsTitle,
                 style: Theme.of(context).textTheme.titleMedium?.copyWith(
                   color: AppColors.textPrimary,
                   fontWeight: FontWeight.w900,
@@ -77,7 +80,9 @@ class SearchSummary extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.only(bottom: 4),
               child: Text(
-                '${formatSearchCount(state.displayTotalCount)}개 상품',
+                AppLocalizations.of(context).searchFormattedProductCount(
+                  formatSearchCount(state.displayTotalCount),
+                ),
                 style: Theme.of(context).textTheme.bodySmall?.copyWith(
                   color: AppColors.textSecondary,
                   fontWeight: FontWeight.w800,
@@ -95,7 +100,7 @@ class SearchSummary extends StatelessWidget {
             Text(
               state.sourceProducts.any((p) => p.analysisDisplay.isV2)
                   ? AppLocalizations.of(context).analysisScore
-                  : 'Re:view Trust Index(RTI)란?',
+                  : AppLocalizations.of(context).searchAboutRti,
               style: Theme.of(context).textTheme.bodySmall?.copyWith(
                 color: AppColors.primary,
                 fontWeight: FontWeight.w800,
@@ -105,7 +110,7 @@ class SearchSummary extends StatelessWidget {
             Text(
               state.sourceProducts.any((p) => p.analysisDisplay.isV2)
                   ? AppLocalizations.of(context).analysisSeparateContracts
-                  : '실제 구매자 리뷰의 신뢰도를 종합해 산출한 지표입니다.',
+                  : AppLocalizations.of(context).searchAboutRtiDescription,
               style: Theme.of(context).textTheme.bodySmall?.copyWith(
                 color: AppColors.textSecondary,
                 fontWeight: FontWeight.w700,
@@ -142,8 +147,13 @@ class QuickFilterRow extends StatelessWidget {
               padding: const EdgeInsets.only(right: AppSpacing.xs),
               child: QuickFilterPill(
                 label: filter.label == '전체'
-                    ? '전체 ${filter.count}'
-                    : filter.label,
+                    ? AppLocalizations.of(
+                        context,
+                      ).searchQuickFilterAllCount(filter.count)
+                    : searchQuickLabel(
+                        AppLocalizations.of(context),
+                        filter.label,
+                      ),
                 selected: filter.label == selectedFilter,
                 onPressed: () => onSelected(filter.label),
               ),
@@ -247,7 +257,7 @@ class _CategoryBreadcrumb extends StatelessWidget {
       children: [
         // 홈 카테고리 시트의 전체보기와 같은 목록으로 간다.
         link(
-          '전체',
+          AppLocalizations.of(context).wishlistFilterAll,
           () => context.goNamed(
             RouteNames.search,
             queryParameters: {'sort': SearchSortOption.accuracy.name},
