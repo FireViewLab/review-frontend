@@ -767,5 +767,8 @@
   "analysisPending": "分析中",
   "analysisTextCaution": "本文の繰り返し・宣伝・説明文の表現を確認してください。",
   "analysisAttentionReviews": "注意が必要なレビュー {count}件",
-  "scrollToTop": "一番上へ"
+  "scrollToTop": "一番上へ",
+  "actionUndo": "元に戻す",
+  "wishlistRemoved": "お気に入りから削除しました",
+  "cartRemoved": "カートから削除しました"
 }

@@ -4697,6 +4697,24 @@ abstract class AppLocalizations {
   /// In ko, this message translates to:
   /// **'맨 위로'**
   String get scrollToTop;
+
+  /// No description provided for @actionUndo.
+  ///
+  /// In ko, this message translates to:
+  /// **'되돌리기'**
+  String get actionUndo;
+
+  /// No description provided for @wishlistRemoved.
+  ///
+  /// In ko, this message translates to:
+  /// **'찜에서 뺐어요'**
+  String get wishlistRemoved;
+
+  /// No description provided for @cartRemoved.
+  ///
+  /// In ko, this message translates to:
+  /// **'장바구니에서 뺐어요'**
+  String get cartRemoved;
 }
 
 class _AppLocalizationsDelegate

@@ -2436,4 +2436,13 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String get scrollToTop => '一番上へ';
+
+  @override
+  String get actionUndo => '元に戻す';
+
+  @override
+  String get wishlistRemoved => 'お気に入りから削除しました';
+
+  @override
+  String get cartRemoved => 'カートから削除しました';
 }

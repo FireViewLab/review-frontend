@@ -2417,4 +2417,13 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get scrollToTop => '回到顶部';
+
+  @override
+  String get actionUndo => '撤销';
+
+  @override
+  String get wishlistRemoved => '已从收藏中移除';
+
+  @override
+  String get cartRemoved => '已从购物车移除';
 }

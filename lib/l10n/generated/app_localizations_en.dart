@@ -2542,4 +2542,13 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get scrollToTop => 'Back to top';
+
+  @override
+  String get actionUndo => 'Undo';
+
+  @override
+  String get wishlistRemoved => 'Removed from wishlist';
+
+  @override
+  String get cartRemoved => 'Removed from cart';
 }

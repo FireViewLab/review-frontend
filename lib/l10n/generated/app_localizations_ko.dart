@@ -2441,4 +2441,13 @@ class AppLocalizationsKo extends AppLocalizations {
 
   @override
   String get scrollToTop => '맨 위로';
+
+  @override
+  String get actionUndo => '되돌리기';
+
+  @override
+  String get wishlistRemoved => '찜에서 뺐어요';
+
+  @override
+  String get cartRemoved => '장바구니에서 뺐어요';
 }

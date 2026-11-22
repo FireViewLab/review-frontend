@@ -1558,5 +1558,8 @@
       }
     }
   },
-  "scrollToTop": "맨 위로"
+  "scrollToTop": "맨 위로",
+  "actionUndo": "되돌리기",
+  "wishlistRemoved": "찜에서 뺐어요",
+  "cartRemoved": "장바구니에서 뺐어요"
 }
