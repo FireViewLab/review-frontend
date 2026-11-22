@@ -2845,4 +2845,154 @@ class AppLocalizationsKo extends AppLocalizations {
 
   @override
   String get homeCategoryRecommendedLabel => '추천';
+
+  @override
+  String get authLoginContinue => '내 관심 상품을 이어서 관리하세요.';
+
+  @override
+  String get authLoginTrackHeadline => '내 관심 상품의 리뷰 신뢰도를\n계속 추적하세요.';
+
+  @override
+  String get authLoginManageDescription =>
+      '로그인하면 저장한 상품, 신뢰 필터 설정, 분석 피드백 내역을 한 계정에서 이어서 관리할 수 있습니다.';
+
+  @override
+  String get authLoginSafeShopping => '안전한 쇼핑을 위한 로그인';
+
+  @override
+  String get authLoginRecentProducts => '최근 확인한 상품';
+
+  @override
+  String get authLoginRestoreRecords => '로그인 후 저장 상품과 분석 기록을 불러옵니다.';
+
+  @override
+  String get authLoginKeepTrackingRti => 'RTI 계속 추적';
+
+  @override
+  String get authMetricText => '텍스트';
+
+  @override
+  String get authMetricBehavior => '행동';
+
+  @override
+  String get authMetricPurchaseContext => '구매맥락';
+
+  @override
+  String get authProductUncategorized => '카테고리 미분류';
+
+  @override
+  String get authLoginSavedProducts => '저장 상품 관리';
+
+  @override
+  String get authLoginSavedProductsDescription =>
+      '관심 상품을 모아두고 RTI 변화 위협 신호를 확인합니다.';
+
+  @override
+  String get authLoginPersonalFilters => '개인 신뢰 필터';
+
+  @override
+  String get authLoginPersonalFiltersDescription =>
+      '위험 리뷰 숨김, 최소 RTI 기준 등 나에게 맞는 필터를 유지합니다.';
+
+  @override
+  String get authLoginFeedbackTracking => '분석 피드백 추적';
+
+  @override
+  String get authLoginFeedbackTrackingDescription =>
+      '신고와 피드백 처리 상태를 한곳에서 확인합니다.';
+
+  @override
+  String get authFooterContact => '문의';
+
+  @override
+  String get authSignupFilterHeadline => '내 쇼핑 기준에 맞는\n리뷰 신뢰 필터를\n만들어보세요.';
+
+  @override
+  String get authSignupFilterDescription =>
+      '회원가입 후 관심 카테고리와 기본 신뢰 필터를 설정하면, 상품을 볼 때마다 내 기준에 맞는 RTI 신호와 알림을 받을 수 있습니다.';
+
+  @override
+  String get authSignupCreateAccount => '새 계정 만들기';
+
+  @override
+  String get authSignupAccountStep => '계정 생성';
+
+  @override
+  String get authSignupAccountStepDescription => '이름과 이메일로 Re:view 계정을 만듭니다.';
+
+  @override
+  String get authSignupCurrentStep => '현재 단계';
+
+  @override
+  String get authSignupInterestStep => '관심 카테고리 선택';
+
+  @override
+  String get authSignupInterestStepDescription => '관심사가 쌓이면 더 나은 신뢰 신호를 제공합니다.';
+
+  @override
+  String get authSignupFilterStep => '신뢰 필터 설정';
+
+  @override
+  String get authSignupFilterStepDescription => '위험 리뷰 숨김, 최소 RTI 기준을 설정합니다.';
+
+  @override
+  String get authSignupFollowupFlow => '가입 후 바로 이어지는 흐름';
+
+  @override
+  String get authSignupFollowupDescription =>
+      '회원가입이 끝나면 온보딩에서 관심 카테고리와 기본 필터를 설정합니다.';
+
+  @override
+  String get authSignupPersonalizedBrowse => '개인화된 상품 탐색';
+
+  @override
+  String get authSignupPersonalizedBrowseDescription =>
+      '관심 카테고리에 맞는 신뢰 피드를 먼저 확인합니다.';
+
+  @override
+  String get authSignupSavedAlerts => '저장 상품 알림';
+
+  @override
+  String get authSignupSavedAlertsDescription =>
+      '관심 상품의 위험 신호가 증가하면 알림을 받을 수 있습니다.';
+
+  @override
+  String get authSignupFeedbackHistory => '피드백 기록 관리';
+
+  @override
+  String get authSignupFeedbackHistoryDescription => '신고와 분석 피드백 처리 상태를 추적합니다.';
+
+  @override
+  String authSetupMinutes(int minutes) {
+    return '$minutes분 설정';
+  }
+
+  @override
+  String get authValidationNameRequired => '이름을 입력해주세요.';
+
+  @override
+  String get authValidationEmailRequired => '이메일을 입력해주세요.';
+
+  @override
+  String get authValidationEmailInvalid => '올바른 이메일 형식으로 입력해주세요.';
+
+  @override
+  String get authValidationPasswordRequired => '비밀번호를 입력해주세요.';
+
+  @override
+  String get authValidationPasswordComposition => '영문, 숫자, 특수문자를 모두 포함해주세요.';
+
+  @override
+  String get authValidationPasswordConfirmRequired => '비밀번호를 한 번 더 입력해주세요.';
+
+  @override
+  String get authValidationPasswordMismatch => '비밀번호가 일치하지 않습니다.';
+
+  @override
+  String get authValidationTermsRequired => '필수 약관에 동의해주세요.';
+
+  @override
+  String authValidationPasswordMinLength(int minLength) {
+    return '비밀번호는 $minLength자 이상이어야 합니다.';
+  }
 }

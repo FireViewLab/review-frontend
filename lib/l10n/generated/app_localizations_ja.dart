@@ -2841,4 +2841,157 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String get homeCategoryRecommendedLabel => 'おすすめ';
+
+  @override
+  String get authLoginContinue => '気になる商品の管理を続けましょう。';
+
+  @override
+  String get authLoginTrackHeadline => '気になる商品のレビュー信頼度を\n継続して追跡しましょう。';
+
+  @override
+  String get authLoginManageDescription =>
+      'ログインすると、保存した商品、信頼度フィルター、分析フィードバックをひとつのアカウントで引き続き管理できます。';
+
+  @override
+  String get authLoginSafeShopping => '安心して買い物するためにログイン';
+
+  @override
+  String get authLoginRecentProducts => '最近確認した商品';
+
+  @override
+  String get authLoginRestoreRecords => 'ログイン後、保存した商品と分析記録を読み込みます。';
+
+  @override
+  String get authLoginKeepTrackingRti => 'RTIを継続して追跡';
+
+  @override
+  String get authMetricText => 'テキスト';
+
+  @override
+  String get authMetricBehavior => '行動';
+
+  @override
+  String get authMetricPurchaseContext => '購入の背景';
+
+  @override
+  String get authProductUncategorized => 'カテゴリー未分類';
+
+  @override
+  String get authLoginSavedProducts => '保存商品の管理';
+
+  @override
+  String get authLoginSavedProductsDescription =>
+      '気になる商品をまとめて、RTIの変化やリスクの兆候を確認します。';
+
+  @override
+  String get authLoginPersonalFilters => '個人用の信頼度フィルター';
+
+  @override
+  String get authLoginPersonalFiltersDescription =>
+      '危険なレビューの非表示や最小RTI基準など、自分に合ったフィルターを維持します。';
+
+  @override
+  String get authLoginFeedbackTracking => '分析フィードバックの追跡';
+
+  @override
+  String get authLoginFeedbackTrackingDescription =>
+      '通報とフィードバックの処理状況をひとつの場所で確認します。';
+
+  @override
+  String get authFooterContact => 'お問い合わせ';
+
+  @override
+  String get authSignupFilterHeadline =>
+      '自分の買い物の基準に合う\nレビュー信頼度フィルターを\n作ってみましょう。';
+
+  @override
+  String get authSignupFilterDescription =>
+      '登録後に興味のあるカテゴリーと基本の信頼度フィルターを設定すると、商品を見るたびに自分の基準に合うRTIの情報や通知を受け取れます。';
+
+  @override
+  String get authSignupCreateAccount => '新しいアカウントを作成';
+
+  @override
+  String get authSignupAccountStep => 'アカウント作成';
+
+  @override
+  String get authSignupAccountStepDescription =>
+      '名前とメールアドレスでRe:viewアカウントを作成します。';
+
+  @override
+  String get authSignupCurrentStep => '現在のステップ';
+
+  @override
+  String get authSignupInterestStep => '興味のあるカテゴリーを選択';
+
+  @override
+  String get authSignupInterestStepDescription =>
+      '興味のある情報が増えると、よりよい信頼度の情報を提供します。';
+
+  @override
+  String get authSignupFilterStep => '信頼度フィルターを設定';
+
+  @override
+  String get authSignupFilterStepDescription => '危険なレビューの非表示や最小RTI基準を設定します。';
+
+  @override
+  String get authSignupFollowupFlow => '登録後すぐに続く流れ';
+
+  @override
+  String get authSignupFollowupDescription =>
+      '登録が完了すると、オンボーディングで興味のあるカテゴリーと基本フィルターを設定します。';
+
+  @override
+  String get authSignupPersonalizedBrowse => '自分に合った商品探し';
+
+  @override
+  String get authSignupPersonalizedBrowseDescription =>
+      '興味のあるカテゴリーに合う信頼度フィードを先に確認します。';
+
+  @override
+  String get authSignupSavedAlerts => '保存商品の通知';
+
+  @override
+  String get authSignupSavedAlertsDescription =>
+      '気になる商品のリスクの兆候が増えたときに通知を受け取れます。';
+
+  @override
+  String get authSignupFeedbackHistory => 'フィードバック記録の管理';
+
+  @override
+  String get authSignupFeedbackHistoryDescription => '通報と分析フィードバックの処理状況を追跡します。';
+
+  @override
+  String authSetupMinutes(int minutes) {
+    return '$minutes分で設定';
+  }
+
+  @override
+  String get authValidationNameRequired => '名前を入力してください。';
+
+  @override
+  String get authValidationEmailRequired => 'メールアドレスを入力してください。';
+
+  @override
+  String get authValidationEmailInvalid => '正しい形式のメールアドレスを入力してください。';
+
+  @override
+  String get authValidationPasswordRequired => 'パスワードを入力してください。';
+
+  @override
+  String get authValidationPasswordComposition => '英字、数字、記号をすべて含めてください。';
+
+  @override
+  String get authValidationPasswordConfirmRequired => 'パスワードをもう一度入力してください。';
+
+  @override
+  String get authValidationPasswordMismatch => 'パスワードが一致しません。';
+
+  @override
+  String get authValidationTermsRequired => '必須の規約に同意してください。';
+
+  @override
+  String authValidationPasswordMinLength(int minLength) {
+    return 'パスワードは$minLength文字以上で入力してください。';
+  }
 }

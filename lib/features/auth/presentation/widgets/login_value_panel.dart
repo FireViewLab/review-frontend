@@ -1,3 +1,4 @@
+import 'package:re_view_front/l10n/generated/app_localizations.dart';
 import 'package:re_view_front/shared/presentation/analysis_formatters.dart';
 import 'package:re_view_front/shared/widgets/analysis_result_view.dart';
 import 'package:flutter/material.dart';
@@ -18,7 +19,7 @@ class LoginValuePanel extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     if (compact) {
       return Text(
-        '내 관심 상품을 이어서 관리하세요.',
+        AppLocalizations.of(context).authLoginContinue,
         style: Theme.of(context).textTheme.titleLarge?.copyWith(
           color: AppColors.textPrimary,
           fontWeight: FontWeight.w800,
@@ -37,7 +38,7 @@ class LoginValuePanel extends ConsumerWidget {
           const _LoginBadge(),
           const SizedBox(height: AppSpacing.lg),
           Text(
-            '내 관심 상품의 리뷰 신뢰도를\n계속 추적하세요.',
+            AppLocalizations.of(context).authLoginTrackHeadline,
             style: Theme.of(context).textTheme.displayMedium?.copyWith(
               color: AppColors.textPrimary,
               fontWeight: FontWeight.w900,
@@ -46,7 +47,7 @@ class LoginValuePanel extends ConsumerWidget {
           ),
           const SizedBox(height: AppSpacing.lg),
           Text(
-            '로그인하면 저장한 상품, 신뢰 필터 설정, 분석 피드백 내역을 한 계정에서 이어서 관리할 수 있습니다.',
+            AppLocalizations.of(context).authLoginManageDescription,
             style: Theme.of(context).textTheme.bodyLarge?.copyWith(
               color: AppColors.textSecondary,
               height: 1.7,
@@ -79,7 +80,7 @@ class _LoginBadge extends StatelessWidget {
           vertical: AppSpacing.xs,
         ),
         child: Text(
-          '안전한 쇼핑을 위한 로그인',
+          AppLocalizations.of(context).authLoginSafeShopping,
           style: Theme.of(context).textTheme.labelMedium?.copyWith(
             color: AppColors.primary,
             fontWeight: FontWeight.w900,
@@ -122,14 +123,14 @@ class _TrustSummaryCard extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        '최근 확인한 상품',
+                        AppLocalizations.of(context).authLoginRecentProducts,
                         style: Theme.of(context).textTheme.titleSmall?.copyWith(
                           fontWeight: FontWeight.w900,
                         ),
                       ),
                       const SizedBox(height: AppSpacing.xxs),
                       Text(
-                        '로그인 후 저장 상품과 분석 기록을 불러옵니다.',
+                        AppLocalizations.of(context).authLoginRestoreRecords,
                         style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                           color: AppColors.textSecondary,
                         ),
@@ -167,7 +168,7 @@ class _TrackingBadge extends StatelessWidget {
           vertical: AppSpacing.xs,
         ),
         child: Text(
-          'RTI 계속 추적',
+          AppLocalizations.of(context).authLoginKeepTrackingRti,
           style: Theme.of(context).textTheme.labelMedium?.copyWith(
             color: AppColors.primary,
             fontWeight: FontWeight.w900,
@@ -308,18 +309,27 @@ class _ProductDetails extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (product == null) {
-      return const Column(
+      return Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           _SkeletonBox(width: 300, height: 20, radius: 8),
           SizedBox(height: AppSpacing.sm),
           _SkeletonBox(width: 230, height: 14, radius: 7),
           SizedBox(height: AppSpacing.lg),
-          _SkeletonMetricRow(label: '텍스트', widthFactor: 0.64),
+          _SkeletonMetricRow(
+            label: AppLocalizations.of(context).authMetricText,
+            widthFactor: 0.64,
+          ),
           SizedBox(height: AppSpacing.sm),
-          _SkeletonMetricRow(label: '행동', widthFactor: 0.78),
+          _SkeletonMetricRow(
+            label: AppLocalizations.of(context).authMetricBehavior,
+            widthFactor: 0.78,
+          ),
           SizedBox(height: AppSpacing.sm),
-          _SkeletonMetricRow(label: '구매맥락', widthFactor: 0.86),
+          _SkeletonMetricRow(
+            label: AppLocalizations.of(context).authMetricPurchaseContext,
+            widthFactor: 0.86,
+          ),
         ],
       );
     }
@@ -347,23 +357,28 @@ class _ProductDetails extends StatelessWidget {
         ),
         const SizedBox(height: AppSpacing.sm),
         Text(
-          product!.storeName.isNotEmpty ? product!.storeName : '카테고리 미분류',
+          product!.storeName.isNotEmpty
+              ? product!.storeName
+              : AppLocalizations.of(context).authProductUncategorized,
           style: Theme.of(
             context,
           ).textTheme.bodySmall?.copyWith(color: AppColors.textSecondary),
         ),
         const SizedBox(height: AppSpacing.lg),
         _SkeletonMetricRow(
-          label: '텍스트',
+          label: AppLocalizations.of(context).authMetricText,
           widthFactor: (rti * 0.90).clamp(0, 100) / 100,
         ),
         const SizedBox(height: AppSpacing.sm),
         _SkeletonMetricRow(
-          label: '행동',
+          label: AppLocalizations.of(context).authMetricBehavior,
           widthFactor: (rti * 1.05).clamp(0, 100) / 100,
         ),
         const SizedBox(height: AppSpacing.sm),
-        _SkeletonMetricRow(label: '구매맥락', widthFactor: rti / 100),
+        _SkeletonMetricRow(
+          label: AppLocalizations.of(context).authMetricPurchaseContext,
+          widthFactor: rti / 100,
+        ),
       ],
     );
   }
@@ -462,18 +477,22 @@ class _LoginBenefitGrid extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    const items = [
+    final items = [
       (
         number: '1',
-        title: '저장 상품 관리',
-        body: '관심 상품을 모아두고 RTI 변화 위협 신호를 확인합니다.',
+        title: AppLocalizations.of(context).authLoginSavedProducts,
+        body: AppLocalizations.of(context).authLoginSavedProductsDescription,
       ),
       (
         number: '2',
-        title: '개인 신뢰 필터',
-        body: '위험 리뷰 숨김, 최소 RTI 기준 등 나에게 맞는 필터를 유지합니다.',
+        title: AppLocalizations.of(context).authLoginPersonalFilters,
+        body: AppLocalizations.of(context).authLoginPersonalFiltersDescription,
       ),
-      (number: '3', title: '분석 피드백 추적', body: '신고와 피드백 처리 상태를 한곳에서 확인합니다.'),
+      (
+        number: '3',
+        title: AppLocalizations.of(context).authLoginFeedbackTracking,
+        body: AppLocalizations.of(context).authLoginFeedbackTrackingDescription,
+      ),
     ];
 
     return LayoutBuilder(

@@ -1,3 +1,4 @@
+import 'package:re_view_front/l10n/generated/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:re_view_front/app/theme/app_colors.dart';
 import 'package:re_view_front/app/theme/app_spacing.dart';
@@ -59,7 +60,11 @@ class _FooterLinks extends StatelessWidget {
     return Wrap(
       spacing: AppSpacing.lg,
       children: [
-        for (final link in ['이용약관', '개인정보처리방침', '문의'])
+        for (final link in [
+          AppLocalizations.of(context).homeFooterTerms,
+          AppLocalizations.of(context).homeFooterPrivacy,
+          AppLocalizations.of(context).authFooterContact,
+        ])
           Text(
             link,
             style: Theme.of(context).textTheme.labelMedium?.copyWith(

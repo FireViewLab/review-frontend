@@ -5477,6 +5477,282 @@ abstract class AppLocalizations {
   /// In ko, this message translates to:
   /// **'추천'**
   String get homeCategoryRecommendedLabel;
+
+  /// No description provided for @authLoginContinue.
+  ///
+  /// In ko, this message translates to:
+  /// **'내 관심 상품을 이어서 관리하세요.'**
+  String get authLoginContinue;
+
+  /// No description provided for @authLoginTrackHeadline.
+  ///
+  /// In ko, this message translates to:
+  /// **'내 관심 상품의 리뷰 신뢰도를\n계속 추적하세요.'**
+  String get authLoginTrackHeadline;
+
+  /// No description provided for @authLoginManageDescription.
+  ///
+  /// In ko, this message translates to:
+  /// **'로그인하면 저장한 상품, 신뢰 필터 설정, 분석 피드백 내역을 한 계정에서 이어서 관리할 수 있습니다.'**
+  String get authLoginManageDescription;
+
+  /// No description provided for @authLoginSafeShopping.
+  ///
+  /// In ko, this message translates to:
+  /// **'안전한 쇼핑을 위한 로그인'**
+  String get authLoginSafeShopping;
+
+  /// No description provided for @authLoginRecentProducts.
+  ///
+  /// In ko, this message translates to:
+  /// **'최근 확인한 상품'**
+  String get authLoginRecentProducts;
+
+  /// No description provided for @authLoginRestoreRecords.
+  ///
+  /// In ko, this message translates to:
+  /// **'로그인 후 저장 상품과 분석 기록을 불러옵니다.'**
+  String get authLoginRestoreRecords;
+
+  /// No description provided for @authLoginKeepTrackingRti.
+  ///
+  /// In ko, this message translates to:
+  /// **'RTI 계속 추적'**
+  String get authLoginKeepTrackingRti;
+
+  /// No description provided for @authMetricText.
+  ///
+  /// In ko, this message translates to:
+  /// **'텍스트'**
+  String get authMetricText;
+
+  /// No description provided for @authMetricBehavior.
+  ///
+  /// In ko, this message translates to:
+  /// **'행동'**
+  String get authMetricBehavior;
+
+  /// No description provided for @authMetricPurchaseContext.
+  ///
+  /// In ko, this message translates to:
+  /// **'구매맥락'**
+  String get authMetricPurchaseContext;
+
+  /// No description provided for @authProductUncategorized.
+  ///
+  /// In ko, this message translates to:
+  /// **'카테고리 미분류'**
+  String get authProductUncategorized;
+
+  /// No description provided for @authLoginSavedProducts.
+  ///
+  /// In ko, this message translates to:
+  /// **'저장 상품 관리'**
+  String get authLoginSavedProducts;
+
+  /// No description provided for @authLoginSavedProductsDescription.
+  ///
+  /// In ko, this message translates to:
+  /// **'관심 상품을 모아두고 RTI 변화 위협 신호를 확인합니다.'**
+  String get authLoginSavedProductsDescription;
+
+  /// No description provided for @authLoginPersonalFilters.
+  ///
+  /// In ko, this message translates to:
+  /// **'개인 신뢰 필터'**
+  String get authLoginPersonalFilters;
+
+  /// No description provided for @authLoginPersonalFiltersDescription.
+  ///
+  /// In ko, this message translates to:
+  /// **'위험 리뷰 숨김, 최소 RTI 기준 등 나에게 맞는 필터를 유지합니다.'**
+  String get authLoginPersonalFiltersDescription;
+
+  /// No description provided for @authLoginFeedbackTracking.
+  ///
+  /// In ko, this message translates to:
+  /// **'분석 피드백 추적'**
+  String get authLoginFeedbackTracking;
+
+  /// No description provided for @authLoginFeedbackTrackingDescription.
+  ///
+  /// In ko, this message translates to:
+  /// **'신고와 피드백 처리 상태를 한곳에서 확인합니다.'**
+  String get authLoginFeedbackTrackingDescription;
+
+  /// No description provided for @authFooterContact.
+  ///
+  /// In ko, this message translates to:
+  /// **'문의'**
+  String get authFooterContact;
+
+  /// No description provided for @authSignupFilterHeadline.
+  ///
+  /// In ko, this message translates to:
+  /// **'내 쇼핑 기준에 맞는\n리뷰 신뢰 필터를\n만들어보세요.'**
+  String get authSignupFilterHeadline;
+
+  /// No description provided for @authSignupFilterDescription.
+  ///
+  /// In ko, this message translates to:
+  /// **'회원가입 후 관심 카테고리와 기본 신뢰 필터를 설정하면, 상품을 볼 때마다 내 기준에 맞는 RTI 신호와 알림을 받을 수 있습니다.'**
+  String get authSignupFilterDescription;
+
+  /// No description provided for @authSignupCreateAccount.
+  ///
+  /// In ko, this message translates to:
+  /// **'새 계정 만들기'**
+  String get authSignupCreateAccount;
+
+  /// No description provided for @authSignupAccountStep.
+  ///
+  /// In ko, this message translates to:
+  /// **'계정 생성'**
+  String get authSignupAccountStep;
+
+  /// No description provided for @authSignupAccountStepDescription.
+  ///
+  /// In ko, this message translates to:
+  /// **'이름과 이메일로 Re:view 계정을 만듭니다.'**
+  String get authSignupAccountStepDescription;
+
+  /// No description provided for @authSignupCurrentStep.
+  ///
+  /// In ko, this message translates to:
+  /// **'현재 단계'**
+  String get authSignupCurrentStep;
+
+  /// No description provided for @authSignupInterestStep.
+  ///
+  /// In ko, this message translates to:
+  /// **'관심 카테고리 선택'**
+  String get authSignupInterestStep;
+
+  /// No description provided for @authSignupInterestStepDescription.
+  ///
+  /// In ko, this message translates to:
+  /// **'관심사가 쌓이면 더 나은 신뢰 신호를 제공합니다.'**
+  String get authSignupInterestStepDescription;
+
+  /// No description provided for @authSignupFilterStep.
+  ///
+  /// In ko, this message translates to:
+  /// **'신뢰 필터 설정'**
+  String get authSignupFilterStep;
+
+  /// No description provided for @authSignupFilterStepDescription.
+  ///
+  /// In ko, this message translates to:
+  /// **'위험 리뷰 숨김, 최소 RTI 기준을 설정합니다.'**
+  String get authSignupFilterStepDescription;
+
+  /// No description provided for @authSignupFollowupFlow.
+  ///
+  /// In ko, this message translates to:
+  /// **'가입 후 바로 이어지는 흐름'**
+  String get authSignupFollowupFlow;
+
+  /// No description provided for @authSignupFollowupDescription.
+  ///
+  /// In ko, this message translates to:
+  /// **'회원가입이 끝나면 온보딩에서 관심 카테고리와 기본 필터를 설정합니다.'**
+  String get authSignupFollowupDescription;
+
+  /// No description provided for @authSignupPersonalizedBrowse.
+  ///
+  /// In ko, this message translates to:
+  /// **'개인화된 상품 탐색'**
+  String get authSignupPersonalizedBrowse;
+
+  /// No description provided for @authSignupPersonalizedBrowseDescription.
+  ///
+  /// In ko, this message translates to:
+  /// **'관심 카테고리에 맞는 신뢰 피드를 먼저 확인합니다.'**
+  String get authSignupPersonalizedBrowseDescription;
+
+  /// No description provided for @authSignupSavedAlerts.
+  ///
+  /// In ko, this message translates to:
+  /// **'저장 상품 알림'**
+  String get authSignupSavedAlerts;
+
+  /// No description provided for @authSignupSavedAlertsDescription.
+  ///
+  /// In ko, this message translates to:
+  /// **'관심 상품의 위험 신호가 증가하면 알림을 받을 수 있습니다.'**
+  String get authSignupSavedAlertsDescription;
+
+  /// No description provided for @authSignupFeedbackHistory.
+  ///
+  /// In ko, this message translates to:
+  /// **'피드백 기록 관리'**
+  String get authSignupFeedbackHistory;
+
+  /// No description provided for @authSignupFeedbackHistoryDescription.
+  ///
+  /// In ko, this message translates to:
+  /// **'신고와 분석 피드백 처리 상태를 추적합니다.'**
+  String get authSignupFeedbackHistoryDescription;
+
+  /// No description provided for @authSetupMinutes.
+  ///
+  /// In ko, this message translates to:
+  /// **'{minutes}분 설정'**
+  String authSetupMinutes(int minutes);
+
+  /// No description provided for @authValidationNameRequired.
+  ///
+  /// In ko, this message translates to:
+  /// **'이름을 입력해주세요.'**
+  String get authValidationNameRequired;
+
+  /// No description provided for @authValidationEmailRequired.
+  ///
+  /// In ko, this message translates to:
+  /// **'이메일을 입력해주세요.'**
+  String get authValidationEmailRequired;
+
+  /// No description provided for @authValidationEmailInvalid.
+  ///
+  /// In ko, this message translates to:
+  /// **'올바른 이메일 형식으로 입력해주세요.'**
+  String get authValidationEmailInvalid;
+
+  /// No description provided for @authValidationPasswordRequired.
+  ///
+  /// In ko, this message translates to:
+  /// **'비밀번호를 입력해주세요.'**
+  String get authValidationPasswordRequired;
+
+  /// No description provided for @authValidationPasswordComposition.
+  ///
+  /// In ko, this message translates to:
+  /// **'영문, 숫자, 특수문자를 모두 포함해주세요.'**
+  String get authValidationPasswordComposition;
+
+  /// No description provided for @authValidationPasswordConfirmRequired.
+  ///
+  /// In ko, this message translates to:
+  /// **'비밀번호를 한 번 더 입력해주세요.'**
+  String get authValidationPasswordConfirmRequired;
+
+  /// No description provided for @authValidationPasswordMismatch.
+  ///
+  /// In ko, this message translates to:
+  /// **'비밀번호가 일치하지 않습니다.'**
+  String get authValidationPasswordMismatch;
+
+  /// No description provided for @authValidationTermsRequired.
+  ///
+  /// In ko, this message translates to:
+  /// **'필수 약관에 동의해주세요.'**
+  String get authValidationTermsRequired;
+
+  /// No description provided for @authValidationPasswordMinLength.
+  ///
+  /// In ko, this message translates to:
+  /// **'비밀번호는 {minLength}자 이상이어야 합니다.'**
+  String authValidationPasswordMinLength(int minLength);
 }
 
 class _AppLocalizationsDelegate

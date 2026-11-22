@@ -2961,4 +2961,165 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get homeCategoryRecommendedLabel => 'Recommended';
+
+  @override
+  String get authLoginContinue => 'Keep managing products you care about.';
+
+  @override
+  String get authLoginTrackHeadline =>
+      'Keep tracking review trust\nfor the products you care about.';
+
+  @override
+  String get authLoginManageDescription =>
+      'Log in to keep managing saved products, trust filters, and analysis feedback in one account.';
+
+  @override
+  String get authLoginSafeShopping => 'Log in for safer shopping';
+
+  @override
+  String get authLoginRecentProducts => 'Recently viewed products';
+
+  @override
+  String get authLoginRestoreRecords =>
+      'Saved products and analysis records load after login.';
+
+  @override
+  String get authLoginKeepTrackingRti => 'Keep tracking RTI';
+
+  @override
+  String get authMetricText => 'Text';
+
+  @override
+  String get authMetricBehavior => 'Behavior';
+
+  @override
+  String get authMetricPurchaseContext => 'Purchase context';
+
+  @override
+  String get authProductUncategorized => 'Uncategorized';
+
+  @override
+  String get authLoginSavedProducts => 'Manage saved products';
+
+  @override
+  String get authLoginSavedProductsDescription =>
+      'Collect products you care about and check RTI changes and risk signals.';
+
+  @override
+  String get authLoginPersonalFilters => 'Personal trust filters';
+
+  @override
+  String get authLoginPersonalFiltersDescription =>
+      'Keep filters that suit you, including hidden risky reviews and a minimum RTI threshold.';
+
+  @override
+  String get authLoginFeedbackTracking => 'Track analysis feedback';
+
+  @override
+  String get authLoginFeedbackTrackingDescription =>
+      'Check report and feedback status in one place.';
+
+  @override
+  String get authFooterContact => 'Contact';
+
+  @override
+  String get authSignupFilterHeadline =>
+      'Create review trust filters\nthat match your\nshopping standards.';
+
+  @override
+  String get authSignupFilterDescription =>
+      'After signing up, set your interests and trust filters to get RTI signals and notifications matching your standards when browsing products.';
+
+  @override
+  String get authSignupCreateAccount => 'Create a new account';
+
+  @override
+  String get authSignupAccountStep => 'Create account';
+
+  @override
+  String get authSignupAccountStepDescription =>
+      'Create a Re:view account with your name and email.';
+
+  @override
+  String get authSignupCurrentStep => 'Current step';
+
+  @override
+  String get authSignupInterestStep => 'Choose interests';
+
+  @override
+  String get authSignupInterestStepDescription =>
+      'Your interests help us provide better trust signals.';
+
+  @override
+  String get authSignupFilterStep => 'Set trust filters';
+
+  @override
+  String get authSignupFilterStepDescription =>
+      'Set risky review visibility and a minimum RTI threshold.';
+
+  @override
+  String get authSignupFollowupFlow => 'What follows signup';
+
+  @override
+  String get authSignupFollowupDescription =>
+      'After signup, set your interests and default filters during onboarding.';
+
+  @override
+  String get authSignupPersonalizedBrowse => 'Personalized product browsing';
+
+  @override
+  String get authSignupPersonalizedBrowseDescription =>
+      'See the trust feed for your interests first.';
+
+  @override
+  String get authSignupSavedAlerts => 'Saved product alerts';
+
+  @override
+  String get authSignupSavedAlertsDescription =>
+      'Receive alerts when risk signals increase for products you care about.';
+
+  @override
+  String get authSignupFeedbackHistory => 'Manage feedback history';
+
+  @override
+  String get authSignupFeedbackHistoryDescription =>
+      'Track reports and analysis feedback status.';
+
+  @override
+  String authSetupMinutes(int minutes) {
+    return '$minutes-minute setup';
+  }
+
+  @override
+  String get authValidationNameRequired => 'Please enter your name.';
+
+  @override
+  String get authValidationEmailRequired => 'Please enter your email.';
+
+  @override
+  String get authValidationEmailInvalid =>
+      'Please enter a valid email address.';
+
+  @override
+  String get authValidationPasswordRequired => 'Please enter your password.';
+
+  @override
+  String get authValidationPasswordComposition =>
+      'Include letters, numbers, and special characters.';
+
+  @override
+  String get authValidationPasswordConfirmRequired =>
+      'Please enter your password again.';
+
+  @override
+  String get authValidationPasswordMismatch => 'Passwords do not match.';
+
+  @override
+  String get authValidationTermsRequired =>
+      'Please agree to the required terms.';
+
+  @override
+  String authValidationPasswordMinLength(int minLength) {
+    return 'Password must be at least $minLength characters.';
+  }
 }

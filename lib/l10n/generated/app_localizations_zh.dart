@@ -2819,4 +2819,149 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get homeCategoryRecommendedLabel => '推荐';
+
+  @override
+  String get authLoginContinue => '继续管理您关注的商品。';
+
+  @override
+  String get authLoginTrackHeadline => '持续追踪您关注商品的\n评价可信度。';
+
+  @override
+  String get authLoginManageDescription =>
+      '登录后，您可以在一个账户中继续管理收藏商品、可信度筛选设置和分析反馈记录。';
+
+  @override
+  String get authLoginSafeShopping => '登录，安心购物';
+
+  @override
+  String get authLoginRecentProducts => '最近查看的商品';
+
+  @override
+  String get authLoginRestoreRecords => '登录后将加载收藏商品和分析记录。';
+
+  @override
+  String get authLoginKeepTrackingRti => '持续追踪 RTI';
+
+  @override
+  String get authMetricText => '文本';
+
+  @override
+  String get authMetricBehavior => '行为';
+
+  @override
+  String get authMetricPurchaseContext => '购买情境';
+
+  @override
+  String get authProductUncategorized => '未分类';
+
+  @override
+  String get authLoginSavedProducts => '管理收藏商品';
+
+  @override
+  String get authLoginSavedProductsDescription => '集中收藏关注的商品，查看 RTI 变化及风险信号。';
+
+  @override
+  String get authLoginPersonalFilters => '个人可信度筛选';
+
+  @override
+  String get authLoginPersonalFiltersDescription =>
+      '保留适合您的筛选设置，如隐藏风险评价和最低 RTI 门槛。';
+
+  @override
+  String get authLoginFeedbackTracking => '追踪分析反馈';
+
+  @override
+  String get authLoginFeedbackTrackingDescription => '在同一处查看举报和反馈的处理状态。';
+
+  @override
+  String get authFooterContact => '联系';
+
+  @override
+  String get authSignupFilterHeadline => '创建符合您购物标准的\n评价可信度\n筛选条件。';
+
+  @override
+  String get authSignupFilterDescription =>
+      '注册后设置感兴趣的分类和默认可信度筛选，浏览商品时即可获得符合您标准的 RTI 信号和通知。';
+
+  @override
+  String get authSignupCreateAccount => '创建新账户';
+
+  @override
+  String get authSignupAccountStep => '创建账户';
+
+  @override
+  String get authSignupAccountStepDescription => '使用姓名和邮箱创建 Re:view 账户。';
+
+  @override
+  String get authSignupCurrentStep => '当前步骤';
+
+  @override
+  String get authSignupInterestStep => '选择感兴趣的分类';
+
+  @override
+  String get authSignupInterestStepDescription => '随着兴趣信息的积累，我们会提供更好的可信度信号。';
+
+  @override
+  String get authSignupFilterStep => '设置信任筛选';
+
+  @override
+  String get authSignupFilterStepDescription => '设置隐藏风险评价和最低 RTI 门槛。';
+
+  @override
+  String get authSignupFollowupFlow => '注册后的下一步';
+
+  @override
+  String get authSignupFollowupDescription => '注册完成后，可在引导流程中设置感兴趣的分类和默认筛选。';
+
+  @override
+  String get authSignupPersonalizedBrowse => '个性化商品浏览';
+
+  @override
+  String get authSignupPersonalizedBrowseDescription => '优先查看符合兴趣分类的可信度信息流。';
+
+  @override
+  String get authSignupSavedAlerts => '收藏商品通知';
+
+  @override
+  String get authSignupSavedAlertsDescription => '关注商品的风险信号增加时，您可以收到通知。';
+
+  @override
+  String get authSignupFeedbackHistory => '管理反馈记录';
+
+  @override
+  String get authSignupFeedbackHistoryDescription => '追踪举报和分析反馈的处理状态。';
+
+  @override
+  String authSetupMinutes(int minutes) {
+    return '$minutes 分钟设置';
+  }
+
+  @override
+  String get authValidationNameRequired => '请输入姓名。';
+
+  @override
+  String get authValidationEmailRequired => '请输入邮箱。';
+
+  @override
+  String get authValidationEmailInvalid => '请输入有效的邮箱地址。';
+
+  @override
+  String get authValidationPasswordRequired => '请输入密码。';
+
+  @override
+  String get authValidationPasswordComposition => '请同时包含英文字母、数字和特殊字符。';
+
+  @override
+  String get authValidationPasswordConfirmRequired => '请再次输入密码。';
+
+  @override
+  String get authValidationPasswordMismatch => '两次输入的密码不一致。';
+
+  @override
+  String get authValidationTermsRequired => '请同意必选条款。';
+
+  @override
+  String authValidationPasswordMinLength(int minLength) {
+    return '密码至少需要 $minLength 个字符。';
+  }
 }
