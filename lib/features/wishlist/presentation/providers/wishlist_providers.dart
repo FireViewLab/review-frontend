@@ -1,3 +1,4 @@
+import 'package:re_view_front/shared/presentation/action_feedback.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:re_view_front/core/providers/core_providers.dart';
 import 'package:re_view_front/features/wishlist/data/datasources/wishlist_remote_data_source.dart';
@@ -113,6 +114,7 @@ class WishlistButtonNotifier extends AsyncNotifier<bool> {
     _isToggling = false;
     return result.when<String?>(
       success: (_) {
+        ActionFeedback.selection();
         state = AsyncData(!current);
         ref.invalidate(_wishlistSnapshotProvider);
         ref.invalidate(wishlistViewModelProvider);

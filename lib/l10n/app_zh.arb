@@ -767,5 +767,8 @@
   "analysisPending": "分析中",
   "analysisTextCaution": "请留意正文中的重复、推广或说明性表达。",
   "analysisAttentionReviews": "需留意的评论 {count}条",
-  "scrollToTop": "回到顶部"
+  "scrollToTop": "回到顶部",
+  "actionUndo": "撤销",
+  "wishlistRemoved": "已从收藏中移除",
+  "cartRemoved": "已从购物车移除"
 }

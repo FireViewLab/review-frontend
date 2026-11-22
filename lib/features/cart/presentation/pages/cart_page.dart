@@ -1,3 +1,7 @@
+import 'package:re_view_front/core/result/result.dart';
+import 'package:re_view_front/features/cart/domain/entities/cart_item.dart';
+import 'package:re_view_front/features/cart/presentation/view_models/cart_view_model.dart';
+import 'package:re_view_front/l10n/generated/app_localizations.dart';
 import 'package:re_view_front/features/payments/domain/entities/cart_checkout.dart';
 import 'package:re_view_front/core/providers/core_providers.dart';
 import 'package:flutter/material.dart';
@@ -30,6 +34,79 @@ class _CartPageState extends ConsumerState<CartPage> {
     Future.microtask(() => ref.read(cartViewModelProvider.notifier).load());
   }
 
+  Future<void> _removeItem(int productId) async {
+    final session = ref.read(authSessionProvider);
+    final state = ref.read(cartViewModelProvider);
+    if (state is! CartSuccess || state.isUpdating) return;
+    final item = state.items.where((i) => i.productId == productId).firstOrNull;
+    if (item == null) return;
+    final result = await ref
+        .read(cartViewModelProvider.notifier)
+        .removeItem(productId);
+    if (!mounted ||
+        ref.read(authSessionProvider) != session ||
+        result is! Success<void>) {
+      return;
+    }
+    _showRemoved([item]);
+  }
+
+  Future<void> _removeSelected() async {
+    final session = ref.read(authSessionProvider);
+    final result = await ref
+        .read(cartViewModelProvider.notifier)
+        .removeSelected();
+    if (!mounted ||
+        ref.read(authSessionProvider) != session ||
+        result == null ||
+        result.items.isEmpty) {
+      return;
+    }
+    _showRemoved(result.items, errorMessage: result.errorMessage);
+  }
+
+  void _showRemoved(List<CartItem> items, {String? errorMessage}) {
+    final session = ref.read(authSessionProvider);
+    final l = AppLocalizations.of(context);
+    final messenger = ScaffoldMessenger.of(context);
+    final container = ProviderScope.containerOf(context, listen: false);
+    messenger.hideCurrentSnackBar();
+    messenger.showSnackBar(
+      SnackBar(
+        content: Text(
+          errorMessage == null
+              ? l.cartRemoved
+              : '${l.cartRemoved}\n$errorMessage',
+        ),
+        action: CartViewModel.canRestore(items)
+            ? SnackBarAction(
+                label: l.actionUndo,
+                onPressed: () async {
+                  if (!messenger.mounted ||
+                      container.read(authSessionProvider) != session) {
+                    return;
+                  }
+                  final result = await container
+                      .read(cartViewModelProvider.notifier)
+                      .restoreItems(items);
+                  if (!messenger.mounted ||
+                      container.read(authSessionProvider) != session) {
+                    return;
+                  }
+                  if (result is! Success<void>) {
+                    final message = result is FailureResult<void>
+                        ? result.failure.message
+                        : l.failureMessageUnknown;
+                    messenger.hideCurrentSnackBar();
+                    messenger.showSnackBar(SnackBar(content: Text(message)));
+                  }
+                },
+              )
+            : null,
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final cartState = ref.watch(cartViewModelProvider);
@@ -60,7 +137,11 @@ class _CartPageState extends ConsumerState<CartPage> {
                 CartEmpty() => _CartEmptyBody(
                   onGoHome: () => context.go(RoutePaths.home),
                 ),
-                CartSuccess() => _CartBody(cartState: cartState),
+                CartSuccess() => _CartBody(
+                  cartState: cartState,
+                  onRemove: _removeItem,
+                  onRemoveSelected: _removeSelected,
+                ),
               },
             ),
           ),
@@ -71,9 +152,15 @@ class _CartPageState extends ConsumerState<CartPage> {
 }
 
 class _CartBody extends ConsumerWidget {
-  const _CartBody({required this.cartState});
+  const _CartBody({
+    required this.cartState,
+    required this.onRemove,
+    required this.onRemoveSelected,
+  });
 
   final CartSuccess cartState;
+  final ValueChanged<int> onRemove;
+  final VoidCallback onRemoveSelected;
 
   Future<void> _showPurchaseChoices(BuildContext context) => showDialog<void>(
     context: context,
@@ -148,7 +235,7 @@ class _CartBody extends ConsumerWidget {
                 selectedCount: cartState.selectedIds.length,
                 isAllSelected: cartState.isAllSelected,
                 onToggleSelectAll: vm.toggleSelectAll,
-                onDeleteSelected: () => vm.removeSelected(),
+                onDeleteSelected: onRemoveSelected,
               ),
               const Divider(height: 1, color: AppColors.border),
               for (final item in cartState.items)
@@ -159,7 +246,7 @@ class _CartBody extends ConsumerWidget {
                   onToggleSelect: () => vm.toggleSelectItem(item.productId),
                   onQuantityChanged: (qty) =>
                       vm.updateQuantity(item.productId, qty),
-                  onRemove: () => vm.removeItem(item.productId),
+                  onRemove: () => onRemove(item.productId),
                   onMoveToWishlist: () => vm.saveToWishlist(item.productId),
                   onSaveForLater: () =>
                       vm.saveToWishlist(item.productId, removeFromCart: true),

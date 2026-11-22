@@ -1,3 +1,5 @@
+import 'package:re_view_front/core/providers/core_providers.dart';
+import 'package:re_view_front/core/result/result.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -29,6 +31,50 @@ class _WishlistPageState extends ConsumerState<WishlistPage> {
   WishlistFilterOption _selectedFilter = WishlistFilterOption.all;
   WishlistSortOption _sortOption = WishlistSortOption.recent;
   String? _facet;
+
+  Future<void> _removeItem(int productId) async {
+    final session = ref.read(authSessionProvider);
+    final result = await ref
+        .read(wishlistViewModelProvider.notifier)
+        .removeItem(productId);
+    if (!mounted ||
+        ref.read(authSessionProvider) != session ||
+        result is! Success<void>) {
+      return;
+    }
+    final l = AppLocalizations.of(context);
+    final messenger = ScaffoldMessenger.of(context);
+    final container = ProviderScope.containerOf(context, listen: false);
+    messenger.hideCurrentSnackBar();
+    messenger.showSnackBar(
+      SnackBar(
+        content: Text(l.wishlistRemoved),
+        action: SnackBarAction(
+          label: l.actionUndo,
+          onPressed: () async {
+            if (!messenger.mounted ||
+                container.read(authSessionProvider) != session) {
+              return;
+            }
+            final restored = await container
+                .read(wishlistViewModelProvider.notifier)
+                .restoreItem(productId);
+            if (!messenger.mounted ||
+                container.read(authSessionProvider) != session) {
+              return;
+            }
+            if (restored is! Success<void>) {
+              final message = restored is FailureResult<void>
+                  ? restored.failure.message
+                  : l.failureMessageUnknown;
+              messenger.hideCurrentSnackBar();
+              messenger.showSnackBar(SnackBar(content: Text(message)));
+            }
+          },
+        ),
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -88,9 +134,7 @@ class _WishlistPageState extends ConsumerState<WishlistPage> {
                     }
                   }),
                   onSortChanged: (s) => setState(() => _sortOption = s),
-                  onRemove: (productId) => ref
-                      .read(wishlistViewModelProvider.notifier)
-                      .removeItem(productId),
+                  onRemove: _removeItem,
                 ),
             },
           ),

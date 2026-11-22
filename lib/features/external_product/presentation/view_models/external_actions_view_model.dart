@@ -1,3 +1,4 @@
+import 'package:re_view_front/shared/presentation/action_feedback.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:re_view_front/core/error/failure.dart';
 import 'package:re_view_front/core/providers/core_providers.dart';
@@ -94,6 +95,7 @@ class ExternalActionsViewModel extends Notifier<ExternalActionsState> {
       cartAdded: !wishlist && successful ? true : previous.cartAdded,
     );
     if (successful) {
+      if (result is Success<void>) ActionFeedback.selection();
       if (wishlist) {
         refreshWishlistSnapshot(ref);
         ref.invalidate(wishlistButtonProvider(_id!));

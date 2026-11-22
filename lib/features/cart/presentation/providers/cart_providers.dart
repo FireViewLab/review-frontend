@@ -1,3 +1,4 @@
+import 'package:re_view_front/shared/presentation/action_feedback.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:re_view_front/core/providers/core_providers.dart';
 import 'package:re_view_front/features/cart/data/datasources/cart_remote_data_source.dart';
@@ -97,6 +98,7 @@ class CartButtonNotifier extends AsyncNotifier<bool> {
     _isAdding = false;
     result.when(
       success: (_) {
+        ActionFeedback.selection();
         state = const AsyncData(true);
         ref.invalidate(_cartSnapshotProvider);
       },

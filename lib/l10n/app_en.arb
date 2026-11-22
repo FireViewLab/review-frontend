@@ -781,5 +781,8 @@
   "analysisPending": "Analysis in progress",
   "analysisTextCaution": "Check the review text for repeated, promotional, or descriptive wording.",
   "analysisAttentionReviews": "Reviews needing attention: {count}",
-  "scrollToTop": "Back to top"
+  "scrollToTop": "Back to top",
+  "actionUndo": "Undo",
+  "wishlistRemoved": "Removed from wishlist",
+  "cartRemoved": "Removed from cart"
 }
