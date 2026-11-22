@@ -4805,6 +4805,12 @@ abstract class AppLocalizations {
   /// In ko, this message translates to:
   /// **'필터 초기화'**
   String get searchResetFilters;
+
+  /// No description provided for @extProductVisitShopGeneric.
+  ///
+  /// In ko, this message translates to:
+  /// **'쇼핑몰에서 보기'**
+  String get extProductVisitShopGeneric;
 }
 
 class _AppLocalizationsDelegate

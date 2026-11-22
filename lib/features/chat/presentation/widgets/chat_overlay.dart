@@ -1,3 +1,4 @@
+import 'package:re_view_front/shared/presentation/bottom_action_bar_height.dart';
 import 'package:re_view_front/features/external_product/domain/entities/external_product_ref.dart';
 import 'dart:math' as math;
 
@@ -157,10 +158,16 @@ class _ChatLauncherLayout extends ConsumerWidget {
     final media = MediaQuery.of(context);
     final isMobile = AppBreakpoints.isMobile(media.size.width);
     final edge = isMobile ? AppSpacing.md : AppSpacing.lg;
+    final uri = router.routerDelegate.currentConfiguration.uri;
+    final actionPath = ExternalProductRef.fromRoute(uri)?.routePath ?? uri.path;
+    final actionBarHeight = isMobile
+        ? ref.watch(bottomActionBarHeightProvider(actionPath))
+        : 0.0;
     final bottom =
         media.padding.bottom +
         edge +
-        (isMobile && hasBottomTabs ? _bottomTabsHeight : 0);
+        (isMobile && hasBottomTabs ? _bottomTabsHeight : 0) +
+        actionBarHeight;
 
     void onPlanPressed() {
       // 모바일에서는 패널이 화면을 덮으므로 닫고 이동한다.

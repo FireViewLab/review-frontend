@@ -2471,4 +2471,7 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get searchResetFilters => '重置筛选';
+
+  @override
+  String get extProductVisitShopGeneric => '前往商城查看';
 }

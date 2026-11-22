@@ -785,5 +785,6 @@
   "searchEmptyDescription": "別のキーワードや、より広いカテゴリーで検索してみましょう。",
   "searchFilteredEmptyTitle": "条件に合う商品がありません",
   "searchFilteredEmptyDescription": "フィルターをリセットするか、条件を広げてみましょう。",
-  "searchResetFilters": "フィルターをリセット"
+  "searchResetFilters": "フィルターをリセット",
+  "extProductVisitShopGeneric": "ショップで見る"
 }

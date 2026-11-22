@@ -1,3 +1,5 @@
+import 'package:re_view_front/features/external_product/domain/entities/external_product.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -7,19 +9,35 @@ import 'package:re_view_front/features/external_product/presentation/view_models
 import 'package:re_view_front/features/external_product/presentation/widgets/external_action_notice.dart';
 import 'package:re_view_front/l10n/generated/app_localizations.dart';
 
+VoidCallback? externalProductShopAction(ExternalProduct product) {
+  final url = Uri.tryParse(product.url ?? '');
+  if (url == null ||
+      !['https', 'http'].contains(url.scheme) ||
+      url.host.isEmpty) {
+    return null;
+  }
+  return () => launchUrl(url, mode: LaunchMode.externalApplication);
+}
+
 class ExternalProductActionBar extends StatelessWidget {
   const ExternalProductActionBar({
     super.key,
     required this.product,
     this.springProductId,
+    this.compact = false,
+    this.onVisitShop,
   });
   final ExternalProductRef product;
   final int? springProductId;
+  final bool compact;
+  final VoidCallback? onVisitShop;
   @override
   Widget build(BuildContext context) => _ExternalProductActionBar(
     key: ValueKey((product, springProductId)),
     product: product,
     springProductId: springProductId,
+    compact: compact,
+    onVisitShop: onVisitShop,
   );
 }
 
@@ -28,9 +46,13 @@ class _ExternalProductActionBar extends ConsumerWidget {
     super.key,
     required this.product,
     this.springProductId,
+    this.compact = false,
+    this.onVisitShop,
   });
   final ExternalProductRef product;
   final int? springProductId;
+  final bool compact;
+  final VoidCallback? onVisitShop;
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final provider = externalActionsProvider((
@@ -57,6 +79,50 @@ class _ExternalProductActionBar extends ConsumerWidget {
         return;
       }
       showExternalActionResult(context, product, result);
+    }
+
+    if (compact) {
+      return Row(
+        children: [
+          IconButton.outlined(
+            isSelected: state.wished,
+            constraints: const BoxConstraints(minWidth: 48, minHeight: 48),
+            onPressed: state.busy || state.initializing
+                ? null
+                : () => act(true),
+            tooltip: state.wished ? l.externalWishRemove : l.externalWishAdd,
+            icon: Icon(state.wished ? Icons.favorite : Icons.favorite_border),
+          ),
+          const SizedBox(width: 8),
+          Expanded(
+            child: FilledButton(
+              style: FilledButton.styleFrom(padding: const EdgeInsets.all(8)),
+              onPressed: state.busy || state.initializing || state.cartAdded
+                  ? null
+                  : () => act(false),
+              child: Text(
+                state.cartAdded ? l.externalCartAdded : l.externalCartAdd,
+                textAlign: TextAlign.center,
+              ),
+            ),
+          ),
+          if (onVisitShop != null) ...[
+            const SizedBox(width: 8),
+            Expanded(
+              child: OutlinedButton(
+                style: OutlinedButton.styleFrom(
+                  padding: const EdgeInsets.all(8),
+                ),
+                onPressed: onVisitShop,
+                child: Text(
+                  l.extProductVisitShopGeneric,
+                  textAlign: TextAlign.center,
+                ),
+              ),
+            ),
+          ],
+        ],
+      );
     }
 
     return Wrap(
