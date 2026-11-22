@@ -1,3 +1,4 @@
+import 'package:re_view_front/features/home/presentation/home_navigation.dart';
 // ignore_for_file: use_key_in_widget_constructors
 
 import 'package:flutter/material.dart';
@@ -88,17 +89,21 @@ class HomeHeaderDesktop extends StatelessWidget {
                       child: Row(
                         children: [
                           HomeHeaderTopLink(
-                            label: '고객센터',
+                            label: AppLocalizations.of(context).headerSupport,
                             onTap: onLoginPressed,
                           ),
                           const SizedBox(width: AppSpacing.lg),
                           HomeHeaderTopLink(
-                            label: '판매자 입점',
+                            label: AppLocalizations.of(
+                              context,
+                            ).headerSellerRegistration,
                             onTap: onLoginPressed,
                           ),
                           const SizedBox(width: AppSpacing.lg),
                           HomeHeaderTopLink(
-                            label: '앱 다운로드',
+                            label: AppLocalizations.of(
+                              context,
+                            ).headerAppDownload,
                             onTap: onLoginPressed,
                           ),
                         ],
@@ -144,7 +149,7 @@ class HomeHeaderDesktop extends StatelessWidget {
                     ),
                     HomeHeaderAction(
                       icon: Icons.favorite_border,
-                      label: '찜',
+                      label: AppLocalizations.of(context).navWishShort,
                       onTap: onWishPressed,
                       badge: wishlistCount == null || wishlistCount == 0
                           ? null
@@ -152,7 +157,7 @@ class HomeHeaderDesktop extends StatelessWidget {
                     ),
                     HomeHeaderAction(
                       icon: Icons.shopping_cart_outlined,
-                      label: '장바구니',
+                      label: AppLocalizations.of(context).headerCart,
                       onTap: onCartPressed,
                       badge: cartCount == null || cartCount == 0
                           ? null
@@ -161,12 +166,12 @@ class HomeHeaderDesktop extends StatelessWidget {
                   ] else ...[
                     HomeHeaderAction(
                       icon: Icons.person_outline,
-                      label: '로그인',
+                      label: AppLocalizations.of(context).actionLogin,
                       onTap: onLoginPressed,
                     ),
                     HomeHeaderAction(
                       icon: Icons.favorite_border,
-                      label: '찜',
+                      label: AppLocalizations.of(context).navWishShort,
                       onTap: onWishPressed,
                       badge: wishlistCount == null || wishlistCount == 0
                           ? null
@@ -174,7 +179,7 @@ class HomeHeaderDesktop extends StatelessWidget {
                     ),
                     HomeHeaderAction(
                       icon: Icons.shopping_cart_outlined,
-                      label: '장바구니',
+                      label: AppLocalizations.of(context).headerCart,
                       onTap: onCartPressed,
                       badge: cartCount == null || cartCount == 0
                           ? null
@@ -214,7 +219,7 @@ class HomeHeaderDesktop extends StatelessWidget {
                                   : AppColors.textPrimary,
                             ),
                             child: Text(
-                              item,
+                              homeNavItemLabel(context, item),
                               style: Theme.of(context).textTheme.labelLarge
                                   ?.copyWith(
                                     color: item == selectedNavItem
@@ -322,7 +327,7 @@ class HomeHeaderMobile extends StatelessWidget {
               )
             else
               IconButton(
-                tooltip: '로그인',
+                tooltip: AppLocalizations.of(context).actionLogin,
                 onPressed: onLoginPressed,
                 icon: const Icon(Icons.person_outline),
               ),
@@ -337,7 +342,7 @@ class HomeHeaderMobile extends StatelessWidget {
                 ),
               ),
             IconButton(
-              tooltip: '장바구니',
+              tooltip: AppLocalizations.of(context).headerCart,
               onPressed: onCartPressed,
               icon: const Icon(Icons.shopping_cart_outlined),
             ),

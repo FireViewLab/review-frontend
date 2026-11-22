@@ -171,7 +171,7 @@ class _SettingsBody extends StatelessWidget {
           child: TextButton.icon(
             onPressed: () => context.push('${RoutePaths.onboarding}?edit=true'),
             icon: const Icon(Icons.interests_outlined),
-            label: const Text('관심 카테고리·알림 설정 다시 편집'),
+            label: Text(AppLocalizations.of(context).settingsEditInterests),
           ),
         ),
         const SizedBox(height: AppSpacing.lg),

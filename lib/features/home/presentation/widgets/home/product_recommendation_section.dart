@@ -140,12 +140,14 @@ class _ProductEmptyState extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      '추천 상품 API 연결 대기 중',
+                      AppLocalizations.of(context).homeRecommendationsPending,
                       style: Theme.of(context).textTheme.titleMedium,
                     ),
                     const SizedBox(height: AppSpacing.xxs),
                     Text(
-                      '임의 상품을 만들지 않고 실제 상품 데이터가 연결되면 카드 목록으로 표시됩니다.',
+                      AppLocalizations.of(
+                        context,
+                      ).homeRecommendationsPendingDescription,
                       style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                         color: AppColors.textSecondary,
                       ),

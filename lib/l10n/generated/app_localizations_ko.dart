@@ -2499,4 +2499,350 @@ class AppLocalizationsKo extends AppLocalizations {
 
   @override
   String get extProductVisitShopGeneric => '쇼핑몰에서 보기';
+
+  @override
+  String get headerSupport => '고객센터';
+
+  @override
+  String get headerSellerRegistration => '판매자 입점';
+
+  @override
+  String get headerAppDownload => '앱 다운로드';
+
+  @override
+  String get headerCart => '장바구니';
+
+  @override
+  String get headerMyAccount => '내 계정';
+
+  @override
+  String get headerMember => '회원';
+
+  @override
+  String headerMemberName(String name) {
+    return '$name님';
+  }
+
+  @override
+  String get headerMemberBadge => 'Re:view 멤버';
+
+  @override
+  String get headerOrderActivity => '주문/활동';
+
+  @override
+  String get homeNavBest => '베스트';
+
+  @override
+  String get homeNavNew => '신상품';
+
+  @override
+  String get homeNavReviewRanking => '리뷰랭킹';
+
+  @override
+  String get homePopularCategoriesNow => '지금 인기 카테고리';
+
+  @override
+  String get homeCategoryPickTitle => '카테고리 추천 PICK';
+
+  @override
+  String get homeAllCategoriesTitle => '모든 카테고리를 한눈에';
+
+  @override
+  String get homeAllCategoriesDescription => '리뷰 데이터 기반 인기 상품과 카테고리를 확인해보세요.';
+
+  @override
+  String homeCategoryViewAll(String category) {
+    return '$category 전체보기  >';
+  }
+
+  @override
+  String get homeBannerFallbackNotice => '배너를 불러오지 못해 기본 배너를 표시합니다.';
+
+  @override
+  String get homeProductsLoadFailed => '상품을 불러오지 못했습니다.';
+
+  @override
+  String get homeViewAllProducts => '전체 상품 보기';
+
+  @override
+  String get homeBannerLinkFailed => '배너 링크를 열지 못했습니다.';
+
+  @override
+  String get homePriceUnavailable => '가격 정보 없음';
+
+  @override
+  String get homeRecommendationsPending => '추천 상품 API 연결 대기 중';
+
+  @override
+  String get homeRecommendationsPendingDescription =>
+      '임의 상품을 만들지 않고 실제 상품 데이터가 연결되면 카드 목록으로 표시됩니다.';
+
+  @override
+  String get homeTrustTitle => 'Re:view가 더 믿을 수 있는 이유';
+
+  @override
+  String get homeTrustIndexTitle => 'RTI 리뷰 신뢰도 지수';
+
+  @override
+  String get homeFooterAbout => '서비스 소개';
+
+  @override
+  String get homeFooterTerms => '이용약관';
+
+  @override
+  String get homeFooterPrivacy => '개인정보처리방침';
+
+  @override
+  String get homeSuggestedProductsPending => '추천상품 API 연결 대기 중';
+
+  @override
+  String get homeRtiChecking => 'RTI 확인 중';
+
+  @override
+  String get homeTrustAnalyzedProduct => '신뢰도 분석 상품';
+
+  @override
+  String get homeBannerPlay => '재생';
+
+  @override
+  String get homeBannerPause => '일시정지';
+
+  @override
+  String get homeBannerPrevious => '이전 배너';
+
+  @override
+  String get homeBannerNext => '다음 배너';
+
+  @override
+  String homeBannerPosition(int index, int count) {
+    return '배너 $index/$count';
+  }
+
+  @override
+  String homeBannerTrustLabel(String badge) {
+    return '$badge\n신뢰도 확인';
+  }
+
+  @override
+  String get landingHomeTooltip => '홈으로';
+
+  @override
+  String get landingFeatureRti => 'RTI 기반';
+
+  @override
+  String get landingFeatureAdPatterns => '광고성 패턴 분석';
+
+  @override
+  String get landingFeatureEvidence => '판별 근거 제공';
+
+  @override
+  String get landingHeroDescription =>
+      '상품별 리뷰를 분석하고, RTI로 판단한 신뢰 지수를 제공해\n더 믿을 수 있는 구매 결정을 도와드려요.';
+
+  @override
+  String get landingHeroHeadline => '가짜 리뷰에 흔들리지 않는\n더 똑똑한 쇼핑, ';
+
+  @override
+  String get landingStart => '시작하기';
+
+  @override
+  String get landingLearnRti => 'RTI 알아보기';
+
+  @override
+  String get landingCloseHint => '언제든 닫고 홈으로 이동할 수 있어요';
+
+  @override
+  String get landingGradeHigh => '신뢰 높음';
+
+  @override
+  String landingRtiReliabilityScore(String score) {
+    return 'RTI 신뢰도 $score%';
+  }
+
+  @override
+  String get landingRtiAnalyzing => 'RTI 신뢰도 분석 중';
+
+  @override
+  String get landingSummaryLowAd => '광고 패턴 낮음';
+
+  @override
+  String get landingSummaryFewRepeats => '반복 문구 적음';
+
+  @override
+  String get landingSummaryNoAnomalies => '이상 징후 없음';
+
+  @override
+  String get landingAnalysisSummary => 'Re:view 분석 요약';
+
+  @override
+  String get landingAnalysisDisclaimer =>
+      '실제 사용자 리뷰를 기반으로 분석하여\n광고성/조작 신호는 필터링되어 분석에 반영됩니다.';
+
+  @override
+  String get settingsEditInterests => '관심 카테고리·알림 설정 다시 편집';
+
+  @override
+  String get homeCategoryBenefitReviewBased => '리뷰 데이터 기반 추천';
+
+  @override
+  String get homeCategoryBenefitRtiRanking => 'RTI 랭킹 확인';
+
+  @override
+  String get homeCategoryBenefitFastShippingProducts => '빠른 배송 상품';
+
+  @override
+  String get homeCategoryBenefitAllOffers => '혜택 모아보기';
+
+  @override
+  String get homeCategoryBenefitSize => '사이즈 추천';
+
+  @override
+  String get homeCategoryBenefitStyle => '스타일 추천';
+
+  @override
+  String get homeCategoryBenefitGenderDeals => '성별 핫딜';
+
+  @override
+  String get homeCategoryBenefitGifts => '베스트 선물';
+
+  @override
+  String get homeCategoryBenefitAuthenticityCheck => '정품 인증';
+
+  @override
+  String get homeCategoryBenefitBrandEvents => '브랜드 기획전';
+
+  @override
+  String get homeCategoryBenefitGiftWrapping => '선물 포장 서비스';
+
+  @override
+  String get homeCategoryBenefitFreeReturns => '무료 반품';
+
+  @override
+  String get homeCategoryBenefitIngredients => '성분으로 찾기';
+
+  @override
+  String get homeCategoryBenefitSkinType => '피부 타입 추천';
+
+  @override
+  String get homeCategoryBenefitReviewRanking => '리뷰 랭킹';
+
+  @override
+  String get homeCategoryBenefitSamples => '샘플 체험';
+
+  @override
+  String get homeCategoryBenefitDawnDelivery => '새벽배송';
+
+  @override
+  String get homeCategoryBenefitBulkDiscount => '대용량 할인';
+
+  @override
+  String get homeCategoryBenefitReviewFavorites => '리뷰 인기상품';
+
+  @override
+  String get homeCategoryBenefitSubscriptions => '정기배송';
+
+  @override
+  String get homeCategoryBenefitTodayDeals => '오늘의 특가';
+
+  @override
+  String get homeCategoryBenefitHousewarming => '집들이 추천';
+
+  @override
+  String get homeCategoryBenefitFastShipping => '빠른배송';
+
+  @override
+  String get homeCategoryBenefitByRoom => '공간별 추천';
+
+  @override
+  String get homeCategoryBenefitPopularInteriors => '인기 인테리어';
+
+  @override
+  String get homeCategoryBenefitInstallation => '설치 서비스';
+
+  @override
+  String get homeCategoryBenefitSeasonalDecor => '시즌 데코';
+
+  @override
+  String get homeCategoryBenefitBeginners => '입문자 추천';
+
+  @override
+  String get homeCategoryBenefitTopGear => '베스트 장비';
+
+  @override
+  String get homeCategoryBenefitSeasonalOutdoors => '시즌 아웃도어';
+
+  @override
+  String get homeCategoryBenefitQuickCompare => '빠른 비교';
+
+  @override
+  String get homeCategoryBenefitCarCare => '차량관리 필수템';
+
+  @override
+  String get homeCategoryBenefitMaintenance => '정비용품 추천';
+
+  @override
+  String get homeCategoryBenefitBrandDeals => '브랜드 특가';
+
+  @override
+  String get homeCategoryBenefitSafetyGear => '안전장비 모음';
+
+  @override
+  String get homeCategoryBenefitParenting => '육아 필수템';
+
+  @override
+  String get homeCategoryBenefitByAge => '연령별 추천';
+
+  @override
+  String get homeCategoryBenefitSafetyCertification => '안전인증';
+
+  @override
+  String get homeCategoryBenefitSpecialOffers => '기획전';
+
+  @override
+  String get homeCategoryBenefitPopularTreats => '인기 간식';
+
+  @override
+  String get homeCategoryBenefitVetPicks => '수의사 추천';
+
+  @override
+  String get homeCategoryBenefitPetPersonalized => '우리 아이 맞춤';
+
+  @override
+  String get homeCategoryBenefitMerchandiserPicks => 'MD 추천';
+
+  @override
+  String get homeCategoryBenefitPreorders => '예약판매';
+
+  @override
+  String get homeCategoryBenefitLimitedMerch => '한정판 굿즈';
+
+  @override
+  String get homeCategoryBenefitBestsellers => '베스트셀러';
+
+  @override
+  String get homeCategoryBenefitTravelChecklist => '여행 준비 체크리스트';
+
+  @override
+  String get homeCategoryBenefitPopularStays => '인기 숙소';
+
+  @override
+  String get homeCategoryBenefitDiscountTickets => '할인 티켓';
+
+  @override
+  String get homeCategoryBenefitSubscriptionOffers => '구독 혜택';
+
+  @override
+  String get homeCategoryBenefitAuthenticityGuarantee => '정품 보증';
+
+  @override
+  String get homeCategoryBenefitBrandWeek => '브랜드 위크';
+
+  @override
+  String get homeCategoryBenefitPremiumOffers => '프리미엄 혜택';
+
+  @override
+  String get homeCategoryBenefitExclusiveOffers => '단독 오퍼';
+
+  @override
+  String get homeCategoryRecommendedLabel => '추천';
 }

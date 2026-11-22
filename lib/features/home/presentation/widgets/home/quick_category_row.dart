@@ -1,3 +1,4 @@
+import 'package:re_view_front/features/home/presentation/home_navigation.dart';
 import 'package:flutter/material.dart';
 import 'package:re_view_front/app/theme/app_colors.dart';
 import 'package:re_view_front/app/theme/app_spacing.dart';
@@ -88,7 +89,7 @@ class QuickCategoryRow extends StatelessWidget {
                                 height: compact ? AppSpacing.xs : AppSpacing.sm,
                               ),
                               Text(
-                                item.label,
+                                homeNavItemLabel(context, item.label),
                                 textAlign: TextAlign.center,
                                 style: Theme.of(context).textTheme.labelMedium
                                     ?.copyWith(

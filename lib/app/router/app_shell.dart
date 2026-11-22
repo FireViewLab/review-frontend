@@ -1,3 +1,4 @@
+import 'package:re_view_front/l10n/generated/app_localizations.dart';
 import 'package:re_view_front/shared/presentation/analysis_formatters.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -91,7 +92,9 @@ class _AppShellState extends ConsumerState<AppShell> {
                 detailPath: p.detailPath,
                 name: p.name,
                 storeName: p.storeName,
-                priceLabel: '${p.price}원',
+                priceLabel: AppLocalizations.of(
+                  context,
+                ).extProductPrice(p.price.toString()),
                 ratingLabel: p.rating?.toStringAsFixed(1) ?? '-',
                 reviewCountLabel: p.reviewCount?.toString() ?? '-',
                 rtiLabel: p.analysisDisplay.badgeText(

@@ -1,3 +1,4 @@
+import 'package:re_view_front/l10n/generated/app_localizations.dart';
 // ignore_for_file: use_key_in_widget_constructors
 
 import 'package:flutter/material.dart';
@@ -33,7 +34,7 @@ class HomeHeaderCategorySideNav extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               HomeHeaderCategorySideNavItem(
-                label: '전체보기',
+                label: AppLocalizations.of(context).homeViewAll,
                 isSelected: selectedCategory == null,
                 onTap: onAllPressed,
               ),
@@ -113,14 +114,14 @@ class HomeHeaderAllCategoryOverview extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                '모든 카테고리를 한눈에',
+                AppLocalizations.of(context).homeAllCategoriesTitle,
                 style: Theme.of(
                   context,
                 ).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w900),
               ),
               const SizedBox(height: AppSpacing.xxs),
               Text(
-                '리뷰 데이터 기반 인기 상품과 카테고리를 확인해보세요.',
+                AppLocalizations.of(context).homeAllCategoriesDescription,
                 style: Theme.of(context).textTheme.labelSmall?.copyWith(
                   color: AppColors.textSecondary,
                   fontWeight: FontWeight.w600,
@@ -206,7 +207,9 @@ class HomeHeaderSelectedCategoryView extends StatelessWidget {
               foregroundColor: AppColors.primary,
               padding: const EdgeInsets.symmetric(horizontal: AppSpacing.sm),
             ),
-            child: Text('${category.label} 전체보기  >'),
+            child: Text(
+              AppLocalizations.of(context).homeCategoryViewAll(category.label),
+            ),
           ),
         ),
       ],

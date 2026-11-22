@@ -1,3 +1,4 @@
+import 'package:re_view_front/l10n/generated/app_localizations.dart';
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:re_view_front/app/theme/app_spacing.dart';
@@ -233,7 +234,10 @@ class _HeroBannerCarouselState extends State<HeroBannerCarousel> {
                     bottom: AppSpacing.md,
                     child: Semantics(
                       liveRegion: true,
-                      label: '배너 ${_activeIndex + 1}/${widget.items.length}',
+                      label: AppLocalizations.of(context).homeBannerPosition(
+                        _activeIndex + 1,
+                        widget.items.length,
+                      ),
                       child: HeroBannerProgress(
                         itemCount: widget.items.length,
                         activeIndex: _activeIndex,

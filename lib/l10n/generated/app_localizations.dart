@@ -4811,6 +4811,672 @@ abstract class AppLocalizations {
   /// In ko, this message translates to:
   /// **'쇼핑몰에서 보기'**
   String get extProductVisitShopGeneric;
+
+  /// No description provided for @headerSupport.
+  ///
+  /// In ko, this message translates to:
+  /// **'고객센터'**
+  String get headerSupport;
+
+  /// No description provided for @headerSellerRegistration.
+  ///
+  /// In ko, this message translates to:
+  /// **'판매자 입점'**
+  String get headerSellerRegistration;
+
+  /// No description provided for @headerAppDownload.
+  ///
+  /// In ko, this message translates to:
+  /// **'앱 다운로드'**
+  String get headerAppDownload;
+
+  /// No description provided for @headerCart.
+  ///
+  /// In ko, this message translates to:
+  /// **'장바구니'**
+  String get headerCart;
+
+  /// No description provided for @headerMyAccount.
+  ///
+  /// In ko, this message translates to:
+  /// **'내 계정'**
+  String get headerMyAccount;
+
+  /// No description provided for @headerMember.
+  ///
+  /// In ko, this message translates to:
+  /// **'회원'**
+  String get headerMember;
+
+  /// No description provided for @headerMemberName.
+  ///
+  /// In ko, this message translates to:
+  /// **'{name}님'**
+  String headerMemberName(String name);
+
+  /// No description provided for @headerMemberBadge.
+  ///
+  /// In ko, this message translates to:
+  /// **'Re:view 멤버'**
+  String get headerMemberBadge;
+
+  /// No description provided for @headerOrderActivity.
+  ///
+  /// In ko, this message translates to:
+  /// **'주문/활동'**
+  String get headerOrderActivity;
+
+  /// No description provided for @homeNavBest.
+  ///
+  /// In ko, this message translates to:
+  /// **'베스트'**
+  String get homeNavBest;
+
+  /// No description provided for @homeNavNew.
+  ///
+  /// In ko, this message translates to:
+  /// **'신상품'**
+  String get homeNavNew;
+
+  /// No description provided for @homeNavReviewRanking.
+  ///
+  /// In ko, this message translates to:
+  /// **'리뷰랭킹'**
+  String get homeNavReviewRanking;
+
+  /// No description provided for @homePopularCategoriesNow.
+  ///
+  /// In ko, this message translates to:
+  /// **'지금 인기 카테고리'**
+  String get homePopularCategoriesNow;
+
+  /// No description provided for @homeCategoryPickTitle.
+  ///
+  /// In ko, this message translates to:
+  /// **'카테고리 추천 PICK'**
+  String get homeCategoryPickTitle;
+
+  /// No description provided for @homeAllCategoriesTitle.
+  ///
+  /// In ko, this message translates to:
+  /// **'모든 카테고리를 한눈에'**
+  String get homeAllCategoriesTitle;
+
+  /// No description provided for @homeAllCategoriesDescription.
+  ///
+  /// In ko, this message translates to:
+  /// **'리뷰 데이터 기반 인기 상품과 카테고리를 확인해보세요.'**
+  String get homeAllCategoriesDescription;
+
+  /// No description provided for @homeCategoryViewAll.
+  ///
+  /// In ko, this message translates to:
+  /// **'{category} 전체보기  >'**
+  String homeCategoryViewAll(String category);
+
+  /// No description provided for @homeBannerFallbackNotice.
+  ///
+  /// In ko, this message translates to:
+  /// **'배너를 불러오지 못해 기본 배너를 표시합니다.'**
+  String get homeBannerFallbackNotice;
+
+  /// No description provided for @homeProductsLoadFailed.
+  ///
+  /// In ko, this message translates to:
+  /// **'상품을 불러오지 못했습니다.'**
+  String get homeProductsLoadFailed;
+
+  /// No description provided for @homeViewAllProducts.
+  ///
+  /// In ko, this message translates to:
+  /// **'전체 상품 보기'**
+  String get homeViewAllProducts;
+
+  /// No description provided for @homeBannerLinkFailed.
+  ///
+  /// In ko, this message translates to:
+  /// **'배너 링크를 열지 못했습니다.'**
+  String get homeBannerLinkFailed;
+
+  /// No description provided for @homePriceUnavailable.
+  ///
+  /// In ko, this message translates to:
+  /// **'가격 정보 없음'**
+  String get homePriceUnavailable;
+
+  /// No description provided for @homeRecommendationsPending.
+  ///
+  /// In ko, this message translates to:
+  /// **'추천 상품 API 연결 대기 중'**
+  String get homeRecommendationsPending;
+
+  /// No description provided for @homeRecommendationsPendingDescription.
+  ///
+  /// In ko, this message translates to:
+  /// **'임의 상품을 만들지 않고 실제 상품 데이터가 연결되면 카드 목록으로 표시됩니다.'**
+  String get homeRecommendationsPendingDescription;
+
+  /// No description provided for @homeTrustTitle.
+  ///
+  /// In ko, this message translates to:
+  /// **'Re:view가 더 믿을 수 있는 이유'**
+  String get homeTrustTitle;
+
+  /// No description provided for @homeTrustIndexTitle.
+  ///
+  /// In ko, this message translates to:
+  /// **'RTI 리뷰 신뢰도 지수'**
+  String get homeTrustIndexTitle;
+
+  /// No description provided for @homeFooterAbout.
+  ///
+  /// In ko, this message translates to:
+  /// **'서비스 소개'**
+  String get homeFooterAbout;
+
+  /// No description provided for @homeFooterTerms.
+  ///
+  /// In ko, this message translates to:
+  /// **'이용약관'**
+  String get homeFooterTerms;
+
+  /// No description provided for @homeFooterPrivacy.
+  ///
+  /// In ko, this message translates to:
+  /// **'개인정보처리방침'**
+  String get homeFooterPrivacy;
+
+  /// No description provided for @homeSuggestedProductsPending.
+  ///
+  /// In ko, this message translates to:
+  /// **'추천상품 API 연결 대기 중'**
+  String get homeSuggestedProductsPending;
+
+  /// No description provided for @homeRtiChecking.
+  ///
+  /// In ko, this message translates to:
+  /// **'RTI 확인 중'**
+  String get homeRtiChecking;
+
+  /// No description provided for @homeTrustAnalyzedProduct.
+  ///
+  /// In ko, this message translates to:
+  /// **'신뢰도 분석 상품'**
+  String get homeTrustAnalyzedProduct;
+
+  /// No description provided for @homeBannerPlay.
+  ///
+  /// In ko, this message translates to:
+  /// **'재생'**
+  String get homeBannerPlay;
+
+  /// No description provided for @homeBannerPause.
+  ///
+  /// In ko, this message translates to:
+  /// **'일시정지'**
+  String get homeBannerPause;
+
+  /// No description provided for @homeBannerPrevious.
+  ///
+  /// In ko, this message translates to:
+  /// **'이전 배너'**
+  String get homeBannerPrevious;
+
+  /// No description provided for @homeBannerNext.
+  ///
+  /// In ko, this message translates to:
+  /// **'다음 배너'**
+  String get homeBannerNext;
+
+  /// No description provided for @homeBannerPosition.
+  ///
+  /// In ko, this message translates to:
+  /// **'배너 {index}/{count}'**
+  String homeBannerPosition(int index, int count);
+
+  /// No description provided for @homeBannerTrustLabel.
+  ///
+  /// In ko, this message translates to:
+  /// **'{badge}\n신뢰도 확인'**
+  String homeBannerTrustLabel(String badge);
+
+  /// No description provided for @landingHomeTooltip.
+  ///
+  /// In ko, this message translates to:
+  /// **'홈으로'**
+  String get landingHomeTooltip;
+
+  /// No description provided for @landingFeatureRti.
+  ///
+  /// In ko, this message translates to:
+  /// **'RTI 기반'**
+  String get landingFeatureRti;
+
+  /// No description provided for @landingFeatureAdPatterns.
+  ///
+  /// In ko, this message translates to:
+  /// **'광고성 패턴 분석'**
+  String get landingFeatureAdPatterns;
+
+  /// No description provided for @landingFeatureEvidence.
+  ///
+  /// In ko, this message translates to:
+  /// **'판별 근거 제공'**
+  String get landingFeatureEvidence;
+
+  /// No description provided for @landingHeroDescription.
+  ///
+  /// In ko, this message translates to:
+  /// **'상품별 리뷰를 분석하고, RTI로 판단한 신뢰 지수를 제공해\n더 믿을 수 있는 구매 결정을 도와드려요.'**
+  String get landingHeroDescription;
+
+  /// No description provided for @landingHeroHeadline.
+  ///
+  /// In ko, this message translates to:
+  /// **'가짜 리뷰에 흔들리지 않는\n더 똑똑한 쇼핑, '**
+  String get landingHeroHeadline;
+
+  /// No description provided for @landingStart.
+  ///
+  /// In ko, this message translates to:
+  /// **'시작하기'**
+  String get landingStart;
+
+  /// No description provided for @landingLearnRti.
+  ///
+  /// In ko, this message translates to:
+  /// **'RTI 알아보기'**
+  String get landingLearnRti;
+
+  /// No description provided for @landingCloseHint.
+  ///
+  /// In ko, this message translates to:
+  /// **'언제든 닫고 홈으로 이동할 수 있어요'**
+  String get landingCloseHint;
+
+  /// No description provided for @landingGradeHigh.
+  ///
+  /// In ko, this message translates to:
+  /// **'신뢰 높음'**
+  String get landingGradeHigh;
+
+  /// No description provided for @landingRtiReliabilityScore.
+  ///
+  /// In ko, this message translates to:
+  /// **'RTI 신뢰도 {score}%'**
+  String landingRtiReliabilityScore(String score);
+
+  /// No description provided for @landingRtiAnalyzing.
+  ///
+  /// In ko, this message translates to:
+  /// **'RTI 신뢰도 분석 중'**
+  String get landingRtiAnalyzing;
+
+  /// No description provided for @landingSummaryLowAd.
+  ///
+  /// In ko, this message translates to:
+  /// **'광고 패턴 낮음'**
+  String get landingSummaryLowAd;
+
+  /// No description provided for @landingSummaryFewRepeats.
+  ///
+  /// In ko, this message translates to:
+  /// **'반복 문구 적음'**
+  String get landingSummaryFewRepeats;
+
+  /// No description provided for @landingSummaryNoAnomalies.
+  ///
+  /// In ko, this message translates to:
+  /// **'이상 징후 없음'**
+  String get landingSummaryNoAnomalies;
+
+  /// No description provided for @landingAnalysisSummary.
+  ///
+  /// In ko, this message translates to:
+  /// **'Re:view 분석 요약'**
+  String get landingAnalysisSummary;
+
+  /// No description provided for @landingAnalysisDisclaimer.
+  ///
+  /// In ko, this message translates to:
+  /// **'실제 사용자 리뷰를 기반으로 분석하여\n광고성/조작 신호는 필터링되어 분석에 반영됩니다.'**
+  String get landingAnalysisDisclaimer;
+
+  /// No description provided for @settingsEditInterests.
+  ///
+  /// In ko, this message translates to:
+  /// **'관심 카테고리·알림 설정 다시 편집'**
+  String get settingsEditInterests;
+
+  /// No description provided for @homeCategoryBenefitReviewBased.
+  ///
+  /// In ko, this message translates to:
+  /// **'리뷰 데이터 기반 추천'**
+  String get homeCategoryBenefitReviewBased;
+
+  /// No description provided for @homeCategoryBenefitRtiRanking.
+  ///
+  /// In ko, this message translates to:
+  /// **'RTI 랭킹 확인'**
+  String get homeCategoryBenefitRtiRanking;
+
+  /// No description provided for @homeCategoryBenefitFastShippingProducts.
+  ///
+  /// In ko, this message translates to:
+  /// **'빠른 배송 상품'**
+  String get homeCategoryBenefitFastShippingProducts;
+
+  /// No description provided for @homeCategoryBenefitAllOffers.
+  ///
+  /// In ko, this message translates to:
+  /// **'혜택 모아보기'**
+  String get homeCategoryBenefitAllOffers;
+
+  /// No description provided for @homeCategoryBenefitSize.
+  ///
+  /// In ko, this message translates to:
+  /// **'사이즈 추천'**
+  String get homeCategoryBenefitSize;
+
+  /// No description provided for @homeCategoryBenefitStyle.
+  ///
+  /// In ko, this message translates to:
+  /// **'스타일 추천'**
+  String get homeCategoryBenefitStyle;
+
+  /// No description provided for @homeCategoryBenefitGenderDeals.
+  ///
+  /// In ko, this message translates to:
+  /// **'성별 핫딜'**
+  String get homeCategoryBenefitGenderDeals;
+
+  /// No description provided for @homeCategoryBenefitGifts.
+  ///
+  /// In ko, this message translates to:
+  /// **'베스트 선물'**
+  String get homeCategoryBenefitGifts;
+
+  /// No description provided for @homeCategoryBenefitAuthenticityCheck.
+  ///
+  /// In ko, this message translates to:
+  /// **'정품 인증'**
+  String get homeCategoryBenefitAuthenticityCheck;
+
+  /// No description provided for @homeCategoryBenefitBrandEvents.
+  ///
+  /// In ko, this message translates to:
+  /// **'브랜드 기획전'**
+  String get homeCategoryBenefitBrandEvents;
+
+  /// No description provided for @homeCategoryBenefitGiftWrapping.
+  ///
+  /// In ko, this message translates to:
+  /// **'선물 포장 서비스'**
+  String get homeCategoryBenefitGiftWrapping;
+
+  /// No description provided for @homeCategoryBenefitFreeReturns.
+  ///
+  /// In ko, this message translates to:
+  /// **'무료 반품'**
+  String get homeCategoryBenefitFreeReturns;
+
+  /// No description provided for @homeCategoryBenefitIngredients.
+  ///
+  /// In ko, this message translates to:
+  /// **'성분으로 찾기'**
+  String get homeCategoryBenefitIngredients;
+
+  /// No description provided for @homeCategoryBenefitSkinType.
+  ///
+  /// In ko, this message translates to:
+  /// **'피부 타입 추천'**
+  String get homeCategoryBenefitSkinType;
+
+  /// No description provided for @homeCategoryBenefitReviewRanking.
+  ///
+  /// In ko, this message translates to:
+  /// **'리뷰 랭킹'**
+  String get homeCategoryBenefitReviewRanking;
+
+  /// No description provided for @homeCategoryBenefitSamples.
+  ///
+  /// In ko, this message translates to:
+  /// **'샘플 체험'**
+  String get homeCategoryBenefitSamples;
+
+  /// No description provided for @homeCategoryBenefitDawnDelivery.
+  ///
+  /// In ko, this message translates to:
+  /// **'새벽배송'**
+  String get homeCategoryBenefitDawnDelivery;
+
+  /// No description provided for @homeCategoryBenefitBulkDiscount.
+  ///
+  /// In ko, this message translates to:
+  /// **'대용량 할인'**
+  String get homeCategoryBenefitBulkDiscount;
+
+  /// No description provided for @homeCategoryBenefitReviewFavorites.
+  ///
+  /// In ko, this message translates to:
+  /// **'리뷰 인기상품'**
+  String get homeCategoryBenefitReviewFavorites;
+
+  /// No description provided for @homeCategoryBenefitSubscriptions.
+  ///
+  /// In ko, this message translates to:
+  /// **'정기배송'**
+  String get homeCategoryBenefitSubscriptions;
+
+  /// No description provided for @homeCategoryBenefitTodayDeals.
+  ///
+  /// In ko, this message translates to:
+  /// **'오늘의 특가'**
+  String get homeCategoryBenefitTodayDeals;
+
+  /// No description provided for @homeCategoryBenefitHousewarming.
+  ///
+  /// In ko, this message translates to:
+  /// **'집들이 추천'**
+  String get homeCategoryBenefitHousewarming;
+
+  /// No description provided for @homeCategoryBenefitFastShipping.
+  ///
+  /// In ko, this message translates to:
+  /// **'빠른배송'**
+  String get homeCategoryBenefitFastShipping;
+
+  /// No description provided for @homeCategoryBenefitByRoom.
+  ///
+  /// In ko, this message translates to:
+  /// **'공간별 추천'**
+  String get homeCategoryBenefitByRoom;
+
+  /// No description provided for @homeCategoryBenefitPopularInteriors.
+  ///
+  /// In ko, this message translates to:
+  /// **'인기 인테리어'**
+  String get homeCategoryBenefitPopularInteriors;
+
+  /// No description provided for @homeCategoryBenefitInstallation.
+  ///
+  /// In ko, this message translates to:
+  /// **'설치 서비스'**
+  String get homeCategoryBenefitInstallation;
+
+  /// No description provided for @homeCategoryBenefitSeasonalDecor.
+  ///
+  /// In ko, this message translates to:
+  /// **'시즌 데코'**
+  String get homeCategoryBenefitSeasonalDecor;
+
+  /// No description provided for @homeCategoryBenefitBeginners.
+  ///
+  /// In ko, this message translates to:
+  /// **'입문자 추천'**
+  String get homeCategoryBenefitBeginners;
+
+  /// No description provided for @homeCategoryBenefitTopGear.
+  ///
+  /// In ko, this message translates to:
+  /// **'베스트 장비'**
+  String get homeCategoryBenefitTopGear;
+
+  /// No description provided for @homeCategoryBenefitSeasonalOutdoors.
+  ///
+  /// In ko, this message translates to:
+  /// **'시즌 아웃도어'**
+  String get homeCategoryBenefitSeasonalOutdoors;
+
+  /// No description provided for @homeCategoryBenefitQuickCompare.
+  ///
+  /// In ko, this message translates to:
+  /// **'빠른 비교'**
+  String get homeCategoryBenefitQuickCompare;
+
+  /// No description provided for @homeCategoryBenefitCarCare.
+  ///
+  /// In ko, this message translates to:
+  /// **'차량관리 필수템'**
+  String get homeCategoryBenefitCarCare;
+
+  /// No description provided for @homeCategoryBenefitMaintenance.
+  ///
+  /// In ko, this message translates to:
+  /// **'정비용품 추천'**
+  String get homeCategoryBenefitMaintenance;
+
+  /// No description provided for @homeCategoryBenefitBrandDeals.
+  ///
+  /// In ko, this message translates to:
+  /// **'브랜드 특가'**
+  String get homeCategoryBenefitBrandDeals;
+
+  /// No description provided for @homeCategoryBenefitSafetyGear.
+  ///
+  /// In ko, this message translates to:
+  /// **'안전장비 모음'**
+  String get homeCategoryBenefitSafetyGear;
+
+  /// No description provided for @homeCategoryBenefitParenting.
+  ///
+  /// In ko, this message translates to:
+  /// **'육아 필수템'**
+  String get homeCategoryBenefitParenting;
+
+  /// No description provided for @homeCategoryBenefitByAge.
+  ///
+  /// In ko, this message translates to:
+  /// **'연령별 추천'**
+  String get homeCategoryBenefitByAge;
+
+  /// No description provided for @homeCategoryBenefitSafetyCertification.
+  ///
+  /// In ko, this message translates to:
+  /// **'안전인증'**
+  String get homeCategoryBenefitSafetyCertification;
+
+  /// No description provided for @homeCategoryBenefitSpecialOffers.
+  ///
+  /// In ko, this message translates to:
+  /// **'기획전'**
+  String get homeCategoryBenefitSpecialOffers;
+
+  /// No description provided for @homeCategoryBenefitPopularTreats.
+  ///
+  /// In ko, this message translates to:
+  /// **'인기 간식'**
+  String get homeCategoryBenefitPopularTreats;
+
+  /// No description provided for @homeCategoryBenefitVetPicks.
+  ///
+  /// In ko, this message translates to:
+  /// **'수의사 추천'**
+  String get homeCategoryBenefitVetPicks;
+
+  /// No description provided for @homeCategoryBenefitPetPersonalized.
+  ///
+  /// In ko, this message translates to:
+  /// **'우리 아이 맞춤'**
+  String get homeCategoryBenefitPetPersonalized;
+
+  /// No description provided for @homeCategoryBenefitMerchandiserPicks.
+  ///
+  /// In ko, this message translates to:
+  /// **'MD 추천'**
+  String get homeCategoryBenefitMerchandiserPicks;
+
+  /// No description provided for @homeCategoryBenefitPreorders.
+  ///
+  /// In ko, this message translates to:
+  /// **'예약판매'**
+  String get homeCategoryBenefitPreorders;
+
+  /// No description provided for @homeCategoryBenefitLimitedMerch.
+  ///
+  /// In ko, this message translates to:
+  /// **'한정판 굿즈'**
+  String get homeCategoryBenefitLimitedMerch;
+
+  /// No description provided for @homeCategoryBenefitBestsellers.
+  ///
+  /// In ko, this message translates to:
+  /// **'베스트셀러'**
+  String get homeCategoryBenefitBestsellers;
+
+  /// No description provided for @homeCategoryBenefitTravelChecklist.
+  ///
+  /// In ko, this message translates to:
+  /// **'여행 준비 체크리스트'**
+  String get homeCategoryBenefitTravelChecklist;
+
+  /// No description provided for @homeCategoryBenefitPopularStays.
+  ///
+  /// In ko, this message translates to:
+  /// **'인기 숙소'**
+  String get homeCategoryBenefitPopularStays;
+
+  /// No description provided for @homeCategoryBenefitDiscountTickets.
+  ///
+  /// In ko, this message translates to:
+  /// **'할인 티켓'**
+  String get homeCategoryBenefitDiscountTickets;
+
+  /// No description provided for @homeCategoryBenefitSubscriptionOffers.
+  ///
+  /// In ko, this message translates to:
+  /// **'구독 혜택'**
+  String get homeCategoryBenefitSubscriptionOffers;
+
+  /// No description provided for @homeCategoryBenefitAuthenticityGuarantee.
+  ///
+  /// In ko, this message translates to:
+  /// **'정품 보증'**
+  String get homeCategoryBenefitAuthenticityGuarantee;
+
+  /// No description provided for @homeCategoryBenefitBrandWeek.
+  ///
+  /// In ko, this message translates to:
+  /// **'브랜드 위크'**
+  String get homeCategoryBenefitBrandWeek;
+
+  /// No description provided for @homeCategoryBenefitPremiumOffers.
+  ///
+  /// In ko, this message translates to:
+  /// **'프리미엄 혜택'**
+  String get homeCategoryBenefitPremiumOffers;
+
+  /// No description provided for @homeCategoryBenefitExclusiveOffers.
+  ///
+  /// In ko, this message translates to:
+  /// **'단독 오퍼'**
+  String get homeCategoryBenefitExclusiveOffers;
+
+  /// No description provided for @homeCategoryRecommendedLabel.
+  ///
+  /// In ko, this message translates to:
+  /// **'추천'**
+  String get homeCategoryRecommendedLabel;
 }
 
 class _AppLocalizationsDelegate

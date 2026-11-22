@@ -1,3 +1,4 @@
+import 'package:re_view_front/l10n/generated/app_localizations.dart';
 // ignore_for_file: use_key_in_widget_constructors
 
 import 'package:flutter/material.dart';
@@ -187,7 +188,7 @@ class HomeHeaderCategoryMenuButtonState
             const Icon(Icons.menu, color: AppColors.textPrimary, size: 22),
             const SizedBox(width: AppSpacing.xs),
             Text(
-              '카테고리',
+              AppLocalizations.of(context).navCategory,
               style: Theme.of(context).textTheme.labelLarge?.copyWith(
                 color: AppColors.textPrimary,
                 fontWeight: FontWeight.w700,

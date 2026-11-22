@@ -116,7 +116,7 @@ class HomeHeaderUserProfileButtonState extends State<HeaderUserProfileButton> {
   Widget build(BuildContext context) {
     final displayName = widget.nickname != null && widget.nickname!.isNotEmpty
         ? _maskName(widget.nickname!)
-        : '내 계정';
+        : AppLocalizations.of(context).headerMyAccount;
 
     return CompositedTransformTarget(
       link: _layerLink,
@@ -205,7 +205,7 @@ class HomeHeaderProfileDropdown extends StatelessWidget {
   Widget build(BuildContext context) {
     final displayName = nickname != null && nickname!.isNotEmpty
         ? nickname!
-        : '회원';
+        : AppLocalizations.of(context).headerMember;
 
     return Material(
       color: Colors.transparent,
@@ -254,7 +254,9 @@ class HomeHeaderProfileDropdown extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          '$displayName님',
+                          AppLocalizations.of(
+                            context,
+                          ).headerMemberName(displayName),
                           style: Theme.of(context).textTheme.bodyMedium
                               ?.copyWith(
                                 color: AppColors.textPrimary,
@@ -263,7 +265,7 @@ class HomeHeaderProfileDropdown extends StatelessWidget {
                         ),
                         const SizedBox(height: 2),
                         Text(
-                          'Re:view 멤버',
+                          AppLocalizations.of(context).headerMemberBadge,
                           style: Theme.of(context).textTheme.labelSmall
                               ?.copyWith(
                                 color: AppColors.primary,
@@ -279,17 +281,17 @@ class HomeHeaderProfileDropdown extends StatelessWidget {
             const Divider(height: 1, color: AppColors.border),
             HomeHeaderDropdownItem(
               icon: Icons.person_outline,
-              label: '마이페이지',
+              label: AppLocalizations.of(context).navMyPage,
               onTap: onMyPagePressed,
             ),
             HomeHeaderDropdownItem(
               icon: Icons.favorite_border,
-              label: '찜한 상품',
+              label: AppLocalizations.of(context).wishlistTitle,
               onTap: onProfileWishPressed,
             ),
             HomeHeaderDropdownItem(
               icon: Icons.receipt_long_outlined,
-              label: '주문/활동',
+              label: AppLocalizations.of(context).headerOrderActivity,
               onTap: onProfileOrderPressed,
             ),
             // 관리자 계정에만 보인다. 권한은 로그인 응답의 role 기준이다.
@@ -305,7 +307,7 @@ class HomeHeaderProfileDropdown extends StatelessWidget {
             const Divider(height: 1, color: AppColors.border),
             HomeHeaderDropdownItem(
               icon: Icons.logout,
-              label: '로그아웃',
+              label: AppLocalizations.of(context).adminMenuLogout,
               onTap: onLogoutPressed,
               isDestructive: true,
             ),

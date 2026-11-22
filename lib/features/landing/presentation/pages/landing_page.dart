@@ -1,3 +1,4 @@
+import 'package:re_view_front/l10n/generated/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:re_view_front/app/responsive/breakpoints.dart';
@@ -205,7 +206,7 @@ class _CloseButton extends StatelessWidget {
       onPressed: onPressed,
       icon: const Icon(Icons.close),
       color: AppColors.textSecondary,
-      tooltip: '홈으로',
+      tooltip: AppLocalizations.of(context).landingHomeTooltip,
       style: IconButton.styleFrom(
         backgroundColor: AppColors.surface,
         shape: const CircleBorder(),

@@ -2474,4 +2474,349 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get extProductVisitShopGeneric => '前往商城查看';
+
+  @override
+  String get headerSupport => '客服中心';
+
+  @override
+  String get headerSellerRegistration => '商家入驻';
+
+  @override
+  String get headerAppDownload => '下载应用';
+
+  @override
+  String get headerCart => '购物车';
+
+  @override
+  String get headerMyAccount => '我的账户';
+
+  @override
+  String get headerMember => '会员';
+
+  @override
+  String headerMemberName(String name) {
+    return '$name';
+  }
+
+  @override
+  String get headerMemberBadge => 'Re:view 会员';
+
+  @override
+  String get headerOrderActivity => '订单/动态';
+
+  @override
+  String get homeNavBest => '热销商品';
+
+  @override
+  String get homeNavNew => '新品';
+
+  @override
+  String get homeNavReviewRanking => '评价排行';
+
+  @override
+  String get homePopularCategoriesNow => '当前热门分类';
+
+  @override
+  String get homeCategoryPickTitle => '分类精选 PICK';
+
+  @override
+  String get homeAllCategoriesTitle => '一览所有分类';
+
+  @override
+  String get homeAllCategoriesDescription => '查看基于评价数据的热门商品和分类。';
+
+  @override
+  String homeCategoryViewAll(String category) {
+    return '查看全部$category  >';
+  }
+
+  @override
+  String get homeBannerFallbackNotice => '未能加载横幅，现显示默认横幅。';
+
+  @override
+  String get homeProductsLoadFailed => '未能加载商品。';
+
+  @override
+  String get homeViewAllProducts => '查看全部商品';
+
+  @override
+  String get homeBannerLinkFailed => '无法打开横幅链接。';
+
+  @override
+  String get homePriceUnavailable => '暂无价格信息';
+
+  @override
+  String get homeRecommendationsPending => '正在等待推荐商品 API 连接';
+
+  @override
+  String get homeRecommendationsPendingDescription =>
+      '接入真实商品数据后将显示商品卡片列表，不会生成虚构商品。';
+
+  @override
+  String get homeTrustTitle => '为什么 Re:view 更值得信赖';
+
+  @override
+  String get homeTrustIndexTitle => 'RTI 评价可信度指数';
+
+  @override
+  String get homeFooterAbout => '服务介绍';
+
+  @override
+  String get homeFooterTerms => '使用条款';
+
+  @override
+  String get homeFooterPrivacy => '隐私政策';
+
+  @override
+  String get homeSuggestedProductsPending => '正在等待推荐商品 API 连接';
+
+  @override
+  String get homeRtiChecking => '正在确认 RTI';
+
+  @override
+  String get homeTrustAnalyzedProduct => '已进行可信度分析的商品';
+
+  @override
+  String get homeBannerPlay => '播放';
+
+  @override
+  String get homeBannerPause => '暂停';
+
+  @override
+  String get homeBannerPrevious => '上一个横幅';
+
+  @override
+  String get homeBannerNext => '下一个横幅';
+
+  @override
+  String homeBannerPosition(int index, int count) {
+    return '横幅 $index/$count';
+  }
+
+  @override
+  String homeBannerTrustLabel(String badge) {
+    return '$badge\n查看可信度';
+  }
+
+  @override
+  String get landingHomeTooltip => '返回首页';
+
+  @override
+  String get landingFeatureRti => '基于 RTI';
+
+  @override
+  String get landingFeatureAdPatterns => '广告模式分析';
+
+  @override
+  String get landingFeatureEvidence => '提供判断依据';
+
+  @override
+  String get landingHeroDescription =>
+      '我们分析商品评价，并提供基于 RTI 的可信度指数，\n帮助您做出更可靠的购买决策。';
+
+  @override
+  String get landingHeroHeadline => '不被虚假评价左右，\n更明智的购物选择，';
+
+  @override
+  String get landingStart => '开始使用';
+
+  @override
+  String get landingLearnRti => '了解 RTI';
+
+  @override
+  String get landingCloseHint => '您可以随时关闭并返回首页';
+
+  @override
+  String get landingGradeHigh => '可信度高';
+
+  @override
+  String landingRtiReliabilityScore(String score) {
+    return 'RTI 可信度 $score%';
+  }
+
+  @override
+  String get landingRtiAnalyzing => '正在分析 RTI 可信度';
+
+  @override
+  String get landingSummaryLowAd => '广告模式较少';
+
+  @override
+  String get landingSummaryFewRepeats => '重复措辞较少';
+
+  @override
+  String get landingSummaryNoAnomalies => '未见异常迹象';
+
+  @override
+  String get landingAnalysisSummary => 'Re:view 分析摘要';
+
+  @override
+  String get landingAnalysisDisclaimer => '分析基于真实用户评价，\n广告或操纵信号会被筛选并纳入分析。';
+
+  @override
+  String get settingsEditInterests => '重新编辑感兴趣的分类和通知设置';
+
+  @override
+  String get homeCategoryBenefitReviewBased => '基于评价数据的推荐';
+
+  @override
+  String get homeCategoryBenefitRtiRanking => '查看 RTI 排行';
+
+  @override
+  String get homeCategoryBenefitFastShippingProducts => '快速配送商品';
+
+  @override
+  String get homeCategoryBenefitAllOffers => '查看所有优惠';
+
+  @override
+  String get homeCategoryBenefitSize => '尺码推荐';
+
+  @override
+  String get homeCategoryBenefitStyle => '风格推荐';
+
+  @override
+  String get homeCategoryBenefitGenderDeals => '按性别精选优惠';
+
+  @override
+  String get homeCategoryBenefitGifts => '热门礼物';
+
+  @override
+  String get homeCategoryBenefitAuthenticityCheck => '正品认证';
+
+  @override
+  String get homeCategoryBenefitBrandEvents => '品牌专场';
+
+  @override
+  String get homeCategoryBenefitGiftWrapping => '礼品包装服务';
+
+  @override
+  String get homeCategoryBenefitFreeReturns => '免费退货';
+
+  @override
+  String get homeCategoryBenefitIngredients => '按成分查找';
+
+  @override
+  String get homeCategoryBenefitSkinType => '按肤质推荐';
+
+  @override
+  String get homeCategoryBenefitReviewRanking => '评价排行';
+
+  @override
+  String get homeCategoryBenefitSamples => '试用体验';
+
+  @override
+  String get homeCategoryBenefitDawnDelivery => '清晨配送';
+
+  @override
+  String get homeCategoryBenefitBulkDiscount => '大包装优惠';
+
+  @override
+  String get homeCategoryBenefitReviewFavorites => '评价热门商品';
+
+  @override
+  String get homeCategoryBenefitSubscriptions => '定期配送';
+
+  @override
+  String get homeCategoryBenefitTodayDeals => '今日特惠';
+
+  @override
+  String get homeCategoryBenefitHousewarming => '乔迁好物推荐';
+
+  @override
+  String get homeCategoryBenefitFastShipping => '快速配送';
+
+  @override
+  String get homeCategoryBenefitByRoom => '按空间推荐';
+
+  @override
+  String get homeCategoryBenefitPopularInteriors => '热门家居装饰';
+
+  @override
+  String get homeCategoryBenefitInstallation => '安装服务';
+
+  @override
+  String get homeCategoryBenefitSeasonalDecor => '当季装饰';
+
+  @override
+  String get homeCategoryBenefitBeginners => '新手推荐';
+
+  @override
+  String get homeCategoryBenefitTopGear => '热门装备';
+
+  @override
+  String get homeCategoryBenefitSeasonalOutdoors => '当季户外装备';
+
+  @override
+  String get homeCategoryBenefitQuickCompare => '快速对比';
+
+  @override
+  String get homeCategoryBenefitCarCare => '汽车养护必备';
+
+  @override
+  String get homeCategoryBenefitMaintenance => '维修用品推荐';
+
+  @override
+  String get homeCategoryBenefitBrandDeals => '品牌特惠';
+
+  @override
+  String get homeCategoryBenefitSafetyGear => '安全装备合集';
+
+  @override
+  String get homeCategoryBenefitParenting => '育儿必备';
+
+  @override
+  String get homeCategoryBenefitByAge => '按年龄推荐';
+
+  @override
+  String get homeCategoryBenefitSafetyCertification => '安全认证';
+
+  @override
+  String get homeCategoryBenefitSpecialOffers => '专题优惠';
+
+  @override
+  String get homeCategoryBenefitPopularTreats => '热门零食';
+
+  @override
+  String get homeCategoryBenefitVetPicks => '兽医推荐';
+
+  @override
+  String get homeCategoryBenefitPetPersonalized => '为爱宠精选';
+
+  @override
+  String get homeCategoryBenefitMerchandiserPicks => '买手推荐';
+
+  @override
+  String get homeCategoryBenefitPreorders => '预售';
+
+  @override
+  String get homeCategoryBenefitLimitedMerch => '限量周边';
+
+  @override
+  String get homeCategoryBenefitBestsellers => '畅销商品';
+
+  @override
+  String get homeCategoryBenefitTravelChecklist => '旅行准备清单';
+
+  @override
+  String get homeCategoryBenefitPopularStays => '热门住宿';
+
+  @override
+  String get homeCategoryBenefitDiscountTickets => '优惠门票';
+
+  @override
+  String get homeCategoryBenefitSubscriptionOffers => '订阅优惠';
+
+  @override
+  String get homeCategoryBenefitAuthenticityGuarantee => '正品保证';
+
+  @override
+  String get homeCategoryBenefitBrandWeek => '品牌周';
+
+  @override
+  String get homeCategoryBenefitPremiumOffers => '尊享优惠';
+
+  @override
+  String get homeCategoryBenefitExclusiveOffers => '独家优惠';
+
+  @override
+  String get homeCategoryRecommendedLabel => '推荐';
 }

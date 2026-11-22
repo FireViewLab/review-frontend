@@ -2605,4 +2605,360 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get extProductVisitShopGeneric => 'View in shop';
+
+  @override
+  String get headerSupport => 'Customer support';
+
+  @override
+  String get headerSellerRegistration => 'Sell with us';
+
+  @override
+  String get headerAppDownload => 'Download the app';
+
+  @override
+  String get headerCart => 'Cart';
+
+  @override
+  String get headerMyAccount => 'My account';
+
+  @override
+  String get headerMember => 'Member';
+
+  @override
+  String headerMemberName(String name) {
+    return '$name';
+  }
+
+  @override
+  String get headerMemberBadge => 'Re:view member';
+
+  @override
+  String get headerOrderActivity => 'Orders / activity';
+
+  @override
+  String get homeNavBest => 'Best sellers';
+
+  @override
+  String get homeNavNew => 'New arrivals';
+
+  @override
+  String get homeNavReviewRanking => 'Review ranking';
+
+  @override
+  String get homePopularCategoriesNow => 'Trending categories';
+
+  @override
+  String get homeCategoryPickTitle => 'Category picks';
+
+  @override
+  String get homeAllCategoriesTitle => 'All categories at a glance';
+
+  @override
+  String get homeAllCategoriesDescription =>
+      'Explore popular products and categories based on review data.';
+
+  @override
+  String homeCategoryViewAll(String category) {
+    return 'View all $category  >';
+  }
+
+  @override
+  String get homeBannerFallbackNotice =>
+      'Could not load banners. Showing default banners.';
+
+  @override
+  String get homeProductsLoadFailed => 'Could not load products.';
+
+  @override
+  String get homeViewAllProducts => 'View all products';
+
+  @override
+  String get homeBannerLinkFailed => 'Could not open the banner link.';
+
+  @override
+  String get homePriceUnavailable => 'Price unavailable';
+
+  @override
+  String get homeRecommendationsPending =>
+      'Waiting for the recommended products API';
+
+  @override
+  String get homeRecommendationsPendingDescription =>
+      'Product cards will appear when real product data is connected; no sample products are generated.';
+
+  @override
+  String get homeTrustTitle => 'Why you can trust Re:view';
+
+  @override
+  String get homeTrustIndexTitle => 'RTI review trust index';
+
+  @override
+  String get homeFooterAbout => 'About the service';
+
+  @override
+  String get homeFooterTerms => 'Terms of service';
+
+  @override
+  String get homeFooterPrivacy => 'Privacy policy';
+
+  @override
+  String get homeSuggestedProductsPending =>
+      'Waiting for the recommended products API';
+
+  @override
+  String get homeRtiChecking => 'Checking RTI';
+
+  @override
+  String get homeTrustAnalyzedProduct => 'Trust-analyzed product';
+
+  @override
+  String get homeBannerPlay => 'Play';
+
+  @override
+  String get homeBannerPause => 'Pause';
+
+  @override
+  String get homeBannerPrevious => 'Previous banner';
+
+  @override
+  String get homeBannerNext => 'Next banner';
+
+  @override
+  String homeBannerPosition(int index, int count) {
+    return 'Banner $index/$count';
+  }
+
+  @override
+  String homeBannerTrustLabel(String badge) {
+    return '$badge\nCheck trust';
+  }
+
+  @override
+  String get landingHomeTooltip => 'Go home';
+
+  @override
+  String get landingFeatureRti => 'RTI-based';
+
+  @override
+  String get landingFeatureAdPatterns => 'Ad pattern analysis';
+
+  @override
+  String get landingFeatureEvidence => 'Evidence behind the assessment';
+
+  @override
+  String get landingHeroDescription =>
+      'We analyze product reviews and provide an RTI trust index\nto help you make more confident purchase decisions.';
+
+  @override
+  String get landingHeroHeadline =>
+      'Smarter shopping,\nunswayed by fake reviews, ';
+
+  @override
+  String get landingStart => 'Get started';
+
+  @override
+  String get landingLearnRti => 'Learn about RTI';
+
+  @override
+  String get landingCloseHint => 'You can close this and go home at any time';
+
+  @override
+  String get landingGradeHigh => 'High trust';
+
+  @override
+  String landingRtiReliabilityScore(String score) {
+    return 'RTI trust $score%';
+  }
+
+  @override
+  String get landingRtiAnalyzing => 'Analyzing RTI trust';
+
+  @override
+  String get landingSummaryLowAd => 'Few ad patterns';
+
+  @override
+  String get landingSummaryFewRepeats => 'Few repeated phrases';
+
+  @override
+  String get landingSummaryNoAnomalies => 'No anomalies';
+
+  @override
+  String get landingAnalysisSummary => 'Re:view analysis summary';
+
+  @override
+  String get landingAnalysisDisclaimer =>
+      'Analysis is based on real user reviews.\nAdvertising and manipulation signals are filtered in the analysis.';
+
+  @override
+  String get settingsEditInterests =>
+      'Edit category interests and notifications again';
+
+  @override
+  String get homeCategoryBenefitReviewBased => 'Review-based recommendations';
+
+  @override
+  String get homeCategoryBenefitRtiRanking => 'View RTI rankings';
+
+  @override
+  String get homeCategoryBenefitFastShippingProducts =>
+      'Fast-shipping products';
+
+  @override
+  String get homeCategoryBenefitAllOffers => 'Browse offers';
+
+  @override
+  String get homeCategoryBenefitSize => 'Size recommendations';
+
+  @override
+  String get homeCategoryBenefitStyle => 'Style recommendations';
+
+  @override
+  String get homeCategoryBenefitGenderDeals => 'Deals by gender';
+
+  @override
+  String get homeCategoryBenefitGifts => 'Top gifts';
+
+  @override
+  String get homeCategoryBenefitAuthenticityCheck =>
+      'Authenticity verification';
+
+  @override
+  String get homeCategoryBenefitBrandEvents => 'Brand showcases';
+
+  @override
+  String get homeCategoryBenefitGiftWrapping => 'Gift wrapping';
+
+  @override
+  String get homeCategoryBenefitFreeReturns => 'Free returns';
+
+  @override
+  String get homeCategoryBenefitIngredients => 'Search by ingredient';
+
+  @override
+  String get homeCategoryBenefitSkinType => 'Skin type recommendations';
+
+  @override
+  String get homeCategoryBenefitReviewRanking => 'Review ranking';
+
+  @override
+  String get homeCategoryBenefitSamples => 'Try samples';
+
+  @override
+  String get homeCategoryBenefitDawnDelivery => 'Early-morning delivery';
+
+  @override
+  String get homeCategoryBenefitBulkDiscount => 'Bulk discounts';
+
+  @override
+  String get homeCategoryBenefitReviewFavorites => 'Review favorites';
+
+  @override
+  String get homeCategoryBenefitSubscriptions => 'Subscription delivery';
+
+  @override
+  String get homeCategoryBenefitTodayDeals => 'Today\'s deals';
+
+  @override
+  String get homeCategoryBenefitHousewarming => 'Housewarming picks';
+
+  @override
+  String get homeCategoryBenefitFastShipping => 'Fast shipping';
+
+  @override
+  String get homeCategoryBenefitByRoom => 'Picks by room';
+
+  @override
+  String get homeCategoryBenefitPopularInteriors => 'Popular interiors';
+
+  @override
+  String get homeCategoryBenefitInstallation => 'Installation service';
+
+  @override
+  String get homeCategoryBenefitSeasonalDecor => 'Seasonal decor';
+
+  @override
+  String get homeCategoryBenefitBeginners => 'Beginner picks';
+
+  @override
+  String get homeCategoryBenefitTopGear => 'Top equipment';
+
+  @override
+  String get homeCategoryBenefitSeasonalOutdoors => 'Seasonal outdoor gear';
+
+  @override
+  String get homeCategoryBenefitQuickCompare => 'Quick comparison';
+
+  @override
+  String get homeCategoryBenefitCarCare => 'Car-care essentials';
+
+  @override
+  String get homeCategoryBenefitMaintenance => 'Maintenance picks';
+
+  @override
+  String get homeCategoryBenefitBrandDeals => 'Brand deals';
+
+  @override
+  String get homeCategoryBenefitSafetyGear => 'Safety equipment';
+
+  @override
+  String get homeCategoryBenefitParenting => 'Parenting essentials';
+
+  @override
+  String get homeCategoryBenefitByAge => 'Picks by age';
+
+  @override
+  String get homeCategoryBenefitSafetyCertification => 'Safety certification';
+
+  @override
+  String get homeCategoryBenefitSpecialOffers => 'Special offers';
+
+  @override
+  String get homeCategoryBenefitPopularTreats => 'Popular treats';
+
+  @override
+  String get homeCategoryBenefitVetPicks => 'Veterinarian picks';
+
+  @override
+  String get homeCategoryBenefitPetPersonalized => 'Tailored to your pet';
+
+  @override
+  String get homeCategoryBenefitMerchandiserPicks => 'Merchandiser picks';
+
+  @override
+  String get homeCategoryBenefitPreorders => 'Preorders';
+
+  @override
+  String get homeCategoryBenefitLimitedMerch => 'Limited-edition merchandise';
+
+  @override
+  String get homeCategoryBenefitBestsellers => 'Bestsellers';
+
+  @override
+  String get homeCategoryBenefitTravelChecklist =>
+      'Travel preparation checklist';
+
+  @override
+  String get homeCategoryBenefitPopularStays => 'Popular stays';
+
+  @override
+  String get homeCategoryBenefitDiscountTickets => 'Discount tickets';
+
+  @override
+  String get homeCategoryBenefitSubscriptionOffers => 'Subscription benefits';
+
+  @override
+  String get homeCategoryBenefitAuthenticityGuarantee =>
+      'Authenticity guarantee';
+
+  @override
+  String get homeCategoryBenefitBrandWeek => 'Brand week';
+
+  @override
+  String get homeCategoryBenefitPremiumOffers => 'Premium benefits';
+
+  @override
+  String get homeCategoryBenefitExclusiveOffers => 'Exclusive offers';
+
+  @override
+  String get homeCategoryRecommendedLabel => 'Recommended';
 }

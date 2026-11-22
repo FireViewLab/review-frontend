@@ -1,3 +1,4 @@
+import 'package:re_view_front/l10n/generated/app_localizations.dart';
 // ignore_for_file: use_key_in_widget_constructors
 
 import 'package:flutter/material.dart';
@@ -5,28 +6,98 @@ import 'package:re_view_front/app/theme/app_colors.dart';
 import 'package:re_view_front/app/theme/app_spacing.dart';
 import 'package:re_view_front/features/category/domain/entities/product_category.dart';
 
-const _defaultBenefitLabels = [
-  '리뷰 데이터 기반 추천',
-  'RTI 랭킹 확인',
-  '빠른 배송 상품',
-  '혜택 모아보기',
+List<String> _defaultBenefitLabels(AppLocalizations l10n) => [
+  l10n.homeCategoryBenefitReviewBased,
+  l10n.homeCategoryBenefitRtiRanking,
+  l10n.homeCategoryBenefitFastShippingProducts,
+  l10n.homeCategoryBenefitAllOffers,
 ];
 
-const _categoryBenefitLabels = {
-  'digital-appliance': ['리뷰 데이터 기반 추천', 'RTI 랭킹 확인', '빠른 배송 상품', '혜택 모아보기'],
-  'fashion-clothing': ['사이즈 추천', '스타일 추천', '성별 핫딜', '베스트 선물'],
-  'fashion-accessory': ['정품 인증', '브랜드 기획전', '선물 포장 서비스', '무료 반품'],
-  'beauty': ['성분으로 찾기', '피부 타입 추천', '리뷰 랭킹', '샘플 체험'],
-  'food': ['새벽배송', '대용량 할인', '리뷰 인기상품', '정기배송'],
-  'living-kitchen': ['오늘의 특가', '집들이 추천', '리뷰 랭킹', '빠른배송'],
-  'furniture-interior': ['공간별 추천', '인기 인테리어', '설치 서비스', '시즌 데코'],
-  'sports-leisure': ['입문자 추천', '베스트 장비', '시즌 아웃도어', '빠른 비교'],
-  'car-tools': ['차량관리 필수템', '정비용품 추천', '브랜드 특가', '안전장비 모음'],
-  'baby-kids': ['육아 필수템', '연령별 추천', '안전인증', '기획전'],
-  'pet': ['인기 간식', '정기배송', '수의사 추천', '우리 아이 맞춤'],
-  'book-stationery-hobby': ['MD 추천', '예약판매', '한정판 굿즈', '베스트셀러'],
-  'travel-service': ['여행 준비 체크리스트', '인기 숙소', '할인 티켓', '구독 혜택'],
-  'luxury-brand': ['정품 보증', '브랜드 위크', '프리미엄 혜택', '단독 오퍼'],
+Map<String, List<String>> _categoryBenefitLabels(AppLocalizations l10n) => {
+  'digital-appliance': [
+    l10n.homeCategoryBenefitReviewBased,
+    l10n.homeCategoryBenefitRtiRanking,
+    l10n.homeCategoryBenefitFastShippingProducts,
+    l10n.homeCategoryBenefitAllOffers,
+  ],
+  'fashion-clothing': [
+    l10n.homeCategoryBenefitSize,
+    l10n.homeCategoryBenefitStyle,
+    l10n.homeCategoryBenefitGenderDeals,
+    l10n.homeCategoryBenefitGifts,
+  ],
+  'fashion-accessory': [
+    l10n.homeCategoryBenefitAuthenticityCheck,
+    l10n.homeCategoryBenefitBrandEvents,
+    l10n.homeCategoryBenefitGiftWrapping,
+    l10n.homeCategoryBenefitFreeReturns,
+  ],
+  'beauty': [
+    l10n.homeCategoryBenefitIngredients,
+    l10n.homeCategoryBenefitSkinType,
+    l10n.homeCategoryBenefitReviewRanking,
+    l10n.homeCategoryBenefitSamples,
+  ],
+  'food': [
+    l10n.homeCategoryBenefitDawnDelivery,
+    l10n.homeCategoryBenefitBulkDiscount,
+    l10n.homeCategoryBenefitReviewFavorites,
+    l10n.homeCategoryBenefitSubscriptions,
+  ],
+  'living-kitchen': [
+    l10n.homeCategoryBenefitTodayDeals,
+    l10n.homeCategoryBenefitHousewarming,
+    l10n.homeCategoryBenefitReviewRanking,
+    l10n.homeCategoryBenefitFastShipping,
+  ],
+  'furniture-interior': [
+    l10n.homeCategoryBenefitByRoom,
+    l10n.homeCategoryBenefitPopularInteriors,
+    l10n.homeCategoryBenefitInstallation,
+    l10n.homeCategoryBenefitSeasonalDecor,
+  ],
+  'sports-leisure': [
+    l10n.homeCategoryBenefitBeginners,
+    l10n.homeCategoryBenefitTopGear,
+    l10n.homeCategoryBenefitSeasonalOutdoors,
+    l10n.homeCategoryBenefitQuickCompare,
+  ],
+  'car-tools': [
+    l10n.homeCategoryBenefitCarCare,
+    l10n.homeCategoryBenefitMaintenance,
+    l10n.homeCategoryBenefitBrandDeals,
+    l10n.homeCategoryBenefitSafetyGear,
+  ],
+  'baby-kids': [
+    l10n.homeCategoryBenefitParenting,
+    l10n.homeCategoryBenefitByAge,
+    l10n.homeCategoryBenefitSafetyCertification,
+    l10n.homeCategoryBenefitSpecialOffers,
+  ],
+  'pet': [
+    l10n.homeCategoryBenefitPopularTreats,
+    l10n.homeCategoryBenefitSubscriptions,
+    l10n.homeCategoryBenefitVetPicks,
+    l10n.homeCategoryBenefitPetPersonalized,
+  ],
+  'book-stationery-hobby': [
+    l10n.homeCategoryBenefitMerchandiserPicks,
+    l10n.homeCategoryBenefitPreorders,
+    l10n.homeCategoryBenefitLimitedMerch,
+    l10n.homeCategoryBenefitBestsellers,
+  ],
+  'travel-service': [
+    l10n.homeCategoryBenefitTravelChecklist,
+    l10n.homeCategoryBenefitPopularStays,
+    l10n.homeCategoryBenefitDiscountTickets,
+    l10n.homeCategoryBenefitSubscriptionOffers,
+  ],
+  'luxury-brand': [
+    l10n.homeCategoryBenefitAuthenticityGuarantee,
+    l10n.homeCategoryBenefitBrandWeek,
+    l10n.homeCategoryBenefitPremiumOffers,
+    l10n.homeCategoryBenefitExclusiveOffers,
+  ],
 };
 
 class HomeHeaderCategoryBenefitStrip extends StatelessWidget {
@@ -36,7 +107,10 @@ class HomeHeaderCategoryBenefitStrip extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final items = _categoryBenefitLabels[category.id] ?? _defaultBenefitLabels;
+    final l10n = AppLocalizations.of(context);
+    final items =
+        _categoryBenefitLabels(l10n)[category.id] ??
+        _defaultBenefitLabels(l10n);
 
     return DecoratedBox(
       decoration: BoxDecoration(

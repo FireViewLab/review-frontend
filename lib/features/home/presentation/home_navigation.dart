@@ -1,3 +1,4 @@
+import 'package:re_view_front/l10n/generated/app_localizations.dart';
 import 'package:flutter/widgets.dart';
 import 'package:go_router/go_router.dart';
 import 'package:re_view_front/app/router/route_paths.dart';
@@ -31,4 +32,16 @@ void openHomeNavItem(BuildContext context, String item) {
         ? {'q': item}
         : {'categoryId': category.id, 'category': category.label},
   );
+}
+
+String homeNavItemLabel(BuildContext context, String item) {
+  final l10n = AppLocalizations.of(context);
+  return switch (item) {
+    '홈' => l10n.navHome,
+    '베스트' => l10n.homeNavBest,
+    '신상품' => l10n.homeNavNew,
+    '리뷰랭킹' => l10n.homeNavReviewRanking,
+    '전체보기' => l10n.homeViewAll,
+    _ => item,
+  };
 }
