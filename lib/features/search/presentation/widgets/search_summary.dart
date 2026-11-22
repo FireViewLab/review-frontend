@@ -1,3 +1,4 @@
+import 'package:re_view_front/shared/widgets/empty_state_view.dart';
 import 'package:re_view_front/l10n/generated/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -7,23 +8,21 @@ import 'package:re_view_front/app/theme/app_spacing.dart';
 import 'package:re_view_front/shared/presentation/product_formatters.dart';
 import 'package:re_view_front/features/search/presentation/view_models/search_results_state.dart';
 import 'package:re_view_front/shared/extensions/context_extensions.dart';
-import 'package:re_view_front/shared/widgets/error_view.dart';
 
 class SearchEmptyState extends StatelessWidget {
   const SearchEmptyState({super.key, required this.state});
-
   final SearchResultsState state;
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      height: 360,
-      child: AppEmptyView(
-        title: '검색 결과가 없어요',
-        message: state.query.isEmpty
-            ? '상품명이나 카테고리를 입력하면 리뷰 기반 추천 상품을 보여드려요.'
-            : '다른 검색어나 더 넓은 카테고리로 다시 검색해보세요.',
-      ),
+    final l10n = AppLocalizations.of(context);
+    return EmptyStateView(
+      title: l10n.searchEmptyTitle,
+      message: state.query.isEmpty
+          ? l10n.searchEmptyQueryDescription
+          : l10n.searchEmptyDescription,
+      primaryActionLabel: l10n.wishlistBrowse,
+      onPrimaryAction: () => context.go(RoutePaths.home),
     );
   }
 }

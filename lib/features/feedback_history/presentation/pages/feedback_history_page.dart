@@ -1,3 +1,4 @@
+import 'package:re_view_front/shared/widgets/empty_state_view.dart';
 import 'package:re_view_front/shared/widgets/list_row_skeleton.dart';
 import 'package:re_view_front/features/external_product/presentation/widgets/external_history_review_content.dart';
 import 'package:re_view_front/features/external_product/domain/entities/external_history_target.dart';
@@ -143,44 +144,16 @@ class _PageHeader extends StatelessWidget {
 
 class _EmptyBody extends StatelessWidget {
   const _EmptyBody({required this.onGoHome});
-
   final VoidCallback onGoHome;
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      height: 400,
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          const Icon(
-            Icons.rate_review_outlined,
-            size: 56,
-            color: AppColors.textTertiary,
-          ),
-          const SizedBox(height: AppSpacing.md),
-          Text(
-            AppLocalizations.of(context).feedbackHistoryEmpty,
-            style: Theme.of(context).textTheme.titleMedium?.copyWith(
-              color: AppColors.textPrimary,
-              fontWeight: FontWeight.w800,
-            ),
-          ),
-          const SizedBox(height: AppSpacing.xs),
-          Text(
-            AppLocalizations.of(context).feedbackHistoryEmptyDesc,
-            textAlign: TextAlign.center,
-            style: Theme.of(
-              context,
-            ).textTheme.bodyMedium?.copyWith(color: AppColors.textSecondary),
-          ),
-          const SizedBox(height: AppSpacing.lg),
-          OutlinedButton(
-            onPressed: onGoHome,
-            child: Text(AppLocalizations.of(context).wishlistBrowse),
-          ),
-        ],
-      ),
+    final l10n = AppLocalizations.of(context);
+    return EmptyStateView(
+      title: l10n.feedbackHistoryEmpty,
+      message: l10n.feedbackHistoryEmptyDesc,
+      primaryActionLabel: l10n.wishlistBrowse,
+      onPrimaryAction: onGoHome,
     );
   }
 }

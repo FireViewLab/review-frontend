@@ -1,3 +1,5 @@
+import 'package:re_view_front/shared/widgets/empty_state_view.dart';
+import 'package:re_view_front/l10n/generated/app_localizations.dart';
 import 'package:re_view_front/shared/widgets/list_row_skeleton.dart';
 import 'package:re_view_front/shared/presentation/analysis_formatters.dart';
 import 'package:flutter/material.dart';
@@ -90,10 +92,13 @@ class _RecentBody extends ConsumerWidget {
     }
     final items = state.value ?? const <SearchResultProduct>[];
     if (items.isEmpty) {
+      final l10n = AppLocalizations.of(context);
       return status(
-        const Padding(
-          padding: EdgeInsets.all(24),
-          child: Text('서버에 기록된 최근 본 상품이 없어요.'),
+        EmptyStateView(
+          title: l10n.recentProductsEmptyTitle,
+          message: l10n.recentProductsEmptyDescription,
+          primaryActionLabel: l10n.wishlistBrowse,
+          onPrimaryAction: () => context.go(RoutePaths.home),
         ),
       );
     }

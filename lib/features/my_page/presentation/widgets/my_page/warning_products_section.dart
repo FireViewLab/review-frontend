@@ -1,3 +1,5 @@
+import 'package:re_view_front/shared/widgets/empty_state_view.dart';
+import 'package:re_view_front/l10n/generated/app_localizations.dart';
 import 'package:re_view_front/shared/widgets/list_row_skeleton.dart';
 import 'package:re_view_front/shared/presentation/analysis_formatters.dart';
 import 'package:flutter/material.dart';
@@ -112,12 +114,27 @@ class WarningProductsPageState extends ConsumerState<WarningProductsPage> {
           ? const SliverToBoxAdapter(child: ListLoadingSkeleton())
           : items.isEmpty
           ? SliverToBoxAdapter(
-              child: Padding(
-                padding: const EdgeInsets.all(24),
-                child: Text(
-                  failed == null ? '해당 등급의 찜 상품이 없어요.' : '주의 상품을 확인할 수 없어요.',
-                ),
-              ),
+              child: failed != null
+                  ? const Padding(
+                      padding: EdgeInsets.all(24),
+                      child: Text('주의 상품을 확인할 수 없어요.'),
+                    )
+                  : EmptyStateView(
+                      title: _grade == null
+                          ? AppLocalizations.of(
+                              context,
+                            ).warningProductsEmptyTitle
+                          : AppLocalizations.of(
+                              context,
+                            ).warningProductsFilteredEmptyTitle,
+                      message: AppLocalizations.of(
+                        context,
+                      ).warningProductsEmptyDescription,
+                      primaryActionLabel: AppLocalizations.of(
+                        context,
+                      ).wishlistBrowse,
+                      onPrimaryAction: () => context.go(RoutePaths.home),
+                    ),
             )
           : SliverList.builder(
               itemCount: items.length,

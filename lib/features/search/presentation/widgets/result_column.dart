@@ -1,3 +1,4 @@
+import 'package:re_view_front/shared/widgets/empty_state_view.dart';
 import 'package:re_view_front/l10n/generated/app_localizations.dart';
 import 'package:re_view_front/shared/widgets/sliver_width_builder.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -13,7 +14,6 @@ import 'package:re_view_front/features/search/presentation/widgets/review_compar
 import 'package:re_view_front/features/search/presentation/widgets/search_product_card.dart';
 import 'package:re_view_front/features/search/presentation/widgets/search_product_list_tile.dart';
 import 'package:re_view_front/features/search/presentation/widgets/filter_select_widgets.dart';
-import 'package:re_view_front/shared/widgets/error_view.dart';
 import 'package:re_view_front/shared/widgets/shimmer_box.dart';
 
 class ResultColumn extends StatelessWidget {
@@ -84,19 +84,15 @@ class ResultColumn extends StatelessWidget {
             ),
             if (products.isEmpty)
               SliverToBoxAdapter(
-                child: SizedBox(
-                  height: 360,
-                  child: AppEmptyView(
-                    title: '필터에 맞는 상품이 없어요',
-                    message: '필터를 초기화하거나 조건을 조금 넓혀보세요.',
-                    action: onResetFilters == null
-                        ? null
-                        : OutlinedButton.icon(
-                            onPressed: onResetFilters,
-                            icon: const Icon(Icons.refresh, size: 18),
-                            label: const Text('필터 초기화'),
-                          ),
-                  ),
+                child: EmptyStateView(
+                  title: AppLocalizations.of(context).searchFilteredEmptyTitle,
+                  message: AppLocalizations.of(
+                    context,
+                  ).searchFilteredEmptyDescription,
+                  primaryActionLabel: onResetFilters == null
+                      ? null
+                      : AppLocalizations.of(context).searchResetFilters,
+                  onPrimaryAction: onResetFilters,
                 ),
               )
             else ...[
