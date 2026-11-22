@@ -3544,4 +3544,192 @@ class AppLocalizationsKo extends AppLocalizations {
   @override
   String get planRefreshFailed =>
       '요금제 변경 요청은 처리됐지만 현재 플랜과 한도를 확인하지 못했습니다. 다시 불러와 확인해 주세요.';
+
+  @override
+  String get detailSettingsRetry => '표시 설정을 불러오지 못했습니다. 재시도';
+
+  @override
+  String get detailHelpfulUnavailable => '도움 횟수가 제공되지 않아 기존 리뷰 순서로 표시합니다.';
+
+  @override
+  String get detailNoReviews => '아직 등록된 리뷰가 없습니다.';
+
+  @override
+  String get detailNoMatchingReviews => '해당 조건에 맞는 리뷰가 없습니다.';
+
+  @override
+  String get detailVerified => '구매인증';
+
+  @override
+  String get detailSortRti => 'RTI 높은순';
+
+  @override
+  String get detailViewReviewAnalysis => '리뷰 분석 보기';
+
+  @override
+  String get detailHelpful => '도움이 됐어요';
+
+  @override
+  String get detailNotHelpful => '도움이 안 됐어요';
+
+  @override
+  String get detailFeedbackSubmitted => '피드백이 제출됐습니다.';
+
+  @override
+  String get detailFeedbackFailed => '피드백 제출에 실패했습니다. 다시 시도해주세요.';
+
+  @override
+  String detailShowHiddenReviews(int count) {
+    return '설정 기준 이하 리뷰 $count개 표시';
+  }
+
+  @override
+  String detailMoreReviewsRemaining(int count) {
+    return '리뷰 더보기 ($count개 남음)';
+  }
+
+  @override
+  String get detailLowestPrice => '최저가';
+
+  @override
+  String get detailShipping => '배송';
+
+  @override
+  String detailCompareAllSellers(int count) {
+    return '전체 $count개 판매처 가격 비교';
+  }
+
+  @override
+  String get detailInsights => '리뷰 인사이트';
+
+  @override
+  String get detailMentionedKeywords => '많이 언급된 키워드';
+
+  @override
+  String get detailPositivePoints => '만족 포인트';
+
+  @override
+  String get detailNegativePoints => '아쉬운 포인트';
+
+  @override
+  String get detailMoreInsights => '리뷰 인사이트 더보기';
+
+  @override
+  String get detailRiskSummary => '종합 위험 요약';
+
+  @override
+  String get detailRiskSummaryTooltip => '이 상품의 전체 리뷰에 대한\nAI 신뢰도 분석 결과입니다.';
+
+  @override
+  String get detailScoreTooltip =>
+      'RTI 신뢰도 점수는 구매 인증, 텍스트 신뢰도,\n반복 표현, 시점 패턴 등을 종합해 산출됩니다.';
+
+  @override
+  String get detailDisclaimer => '분석 결과는 참고용이며 최종 판단은 여러 리뷰를 함께 확인해주세요.';
+
+  @override
+  String get detailCriteria => '분석 기준';
+
+  @override
+  String get detailReported => '신고 완료';
+
+  @override
+  String get detailReportReview => '리뷰 신고';
+
+  @override
+  String get detailSignalsTitle => 'RTI 구성 신호';
+
+  @override
+  String get detailSignalsTooltip =>
+      'RTI 점수를 구성하는 신호와 각각의 점수입니다.\n텍스트·행동·네트워크 분석을 종합해 산출합니다.';
+
+  @override
+  String get detailEvidenceTooltip =>
+      '리뷰 신뢰도를 판단한 구체적인 근거와\n각 근거가 점수에 기여한 비중입니다.';
+
+  @override
+  String get detailAlsoViewed => '이 제품을 본 고객이 함께 본 제품';
+
+  @override
+  String get detailKeySignals => '주요 판단 신호';
+
+  @override
+  String get detailTrend => '위험도 추이';
+
+  @override
+  String get detailTrendDescription => '상품 리뷰의 평균 RTI와 위험 리뷰 비율 변화를 보여줘요.';
+
+  @override
+  String get detailTrendPending => 'AI 분석 완료 후 위험도 추이를 확인할 수 있습니다';
+
+  @override
+  String get detailAverageRti => '평균 RTI';
+
+  @override
+  String get detailRiskyReviewRatio => '위험 리뷰 비율';
+
+  @override
+  String get detailToday => '오늘';
+
+  @override
+  String get detailRecentReviewOrder => '최신 리뷰 순서';
+
+  @override
+  String get detailAnalyzing => 'AI 분석 중';
+
+  @override
+  String get detailNoAnalyzedReviews => '분석된 리뷰가 없습니다.';
+
+  @override
+  String get detailOfficialSeller => '공식 판매처';
+
+  @override
+  String get detailTrustHigh => '리뷰 신뢰도 높음';
+
+  @override
+  String get detailTrustMedium => '리뷰 신뢰도 보통';
+
+  @override
+  String get detailTrustLow => '리뷰 신뢰도 낮음';
+
+  @override
+  String detailFormattedReviewCount(String count) {
+    return '리뷰 $count개';
+  }
+
+  @override
+  String get detailBrand => '브랜드';
+
+  @override
+  String get detailAverageRating => '평균 별점';
+
+  @override
+  String detailSellerCount(int count) {
+    return '$count곳';
+  }
+
+  @override
+  String detailRatingReviewCount(String rating, String count) {
+    return '$rating (리뷰 $count개)';
+  }
+
+  @override
+  String get detailAnalysisInProgress => 'AI 리뷰 분석 진행 중';
+
+  @override
+  String get detailAnalysisInProgressDescription =>
+      'Re:view AI가 리뷰를 실시간 분석하고 있습니다. 완료 후 신뢰도 점수가 자동으로 업데이트됩니다.';
+
+  @override
+  String get detailInformation => '상품 정보';
+
+  @override
+  String detailReviewTabCount(String count) {
+    return '리뷰 $count';
+  }
+
+  @override
+  String detailComparisonTabCount(int count) {
+    return '가격비교 $count';
+  }
 }

@@ -1,3 +1,4 @@
+import 'package:re_view_front/l10n/generated/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:re_view_front/app/theme/app_colors.dart';
 import 'package:re_view_front/app/theme/app_spacing.dart';
@@ -17,93 +18,93 @@ class ReviewInsightPanel extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-        padding: const EdgeInsets.all(AppSpacing.md),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
+      padding: const EdgeInsets.all(AppSpacing.md),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            AppLocalizations.of(context).detailInsights,
+            style: Theme.of(context).textTheme.titleSmall?.copyWith(
+              color: AppColors.textPrimary,
+              fontWeight: FontWeight.w900,
+            ),
+          ),
+          const SizedBox(height: AppSpacing.md),
+          if (insight.keywords.isNotEmpty) ...[
             Text(
-              '리뷰 인사이트',
-              style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                color: AppColors.textPrimary,
-                fontWeight: FontWeight.w900,
+              AppLocalizations.of(context).detailMentionedKeywords,
+              style: Theme.of(context).textTheme.labelSmall?.copyWith(
+                color: AppColors.textSecondary,
+                fontWeight: FontWeight.w700,
               ),
+            ),
+            const SizedBox(height: AppSpacing.xs),
+            Wrap(
+              spacing: AppSpacing.xs,
+              runSpacing: AppSpacing.xs,
+              children: insight.keywords
+                  .map((kw) => _KeywordChip(keyword: kw))
+                  .toList(),
             ),
             const SizedBox(height: AppSpacing.md),
-            if (insight.keywords.isNotEmpty) ...[
-              Text(
-                '많이 언급된 키워드',
-                style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                  color: AppColors.textSecondary,
-                  fontWeight: FontWeight.w700,
-                ),
-              ),
-              const SizedBox(height: AppSpacing.xs),
-              Wrap(
-                spacing: AppSpacing.xs,
-                runSpacing: AppSpacing.xs,
-                children: insight.keywords
-                    .map((kw) => _KeywordChip(keyword: kw))
-                    .toList(),
-              ),
-              const SizedBox(height: AppSpacing.md),
-            ],
-            if (insight.satisfactionPoints.isNotEmpty) ...[
-              Text(
-                '만족 포인트',
-                style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                  color: AppColors.textSecondary,
-                  fontWeight: FontWeight.w700,
-                ),
-              ),
-              const SizedBox(height: AppSpacing.xs),
-              for (final point in insight.satisfactionPoints)
-                _InsightPoint(label: point, isPositive: true),
-              const SizedBox(height: AppSpacing.md),
-            ],
-            if (insight.dissatisfactionPoints.isNotEmpty) ...[
-              Text(
-                '아쉬운 포인트',
-                style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                  color: AppColors.textSecondary,
-                  fontWeight: FontWeight.w700,
-                ),
-              ),
-              const SizedBox(height: AppSpacing.xs),
-              for (final point in insight.dissatisfactionPoints)
-                _InsightPoint(label: point, isPositive: false),
-              const SizedBox(height: AppSpacing.md),
-            ],
-            Align(
-              alignment: Alignment.centerRight,
-              child: TextButton(
-                onPressed: onMorePressed,
-                style: TextButton.styleFrom(
-                  padding: EdgeInsets.zero,
-                  minimumSize: Size.zero,
-                  tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                ),
-                child: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Text(
-                      '리뷰 인사이트 더보기',
-                      style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                        color: AppColors.primary,
-                        fontWeight: FontWeight.w700,
-                      ),
-                    ),
-                    const SizedBox(width: 2),
-                    const Icon(
-                      Icons.chevron_right,
-                      size: 14,
-                      color: AppColors.primary,
-                    ),
-                  ],
-                ),
+          ],
+          if (insight.satisfactionPoints.isNotEmpty) ...[
+            Text(
+              AppLocalizations.of(context).detailPositivePoints,
+              style: Theme.of(context).textTheme.labelSmall?.copyWith(
+                color: AppColors.textSecondary,
+                fontWeight: FontWeight.w700,
               ),
             ),
+            const SizedBox(height: AppSpacing.xs),
+            for (final point in insight.satisfactionPoints)
+              _InsightPoint(label: point, isPositive: true),
+            const SizedBox(height: AppSpacing.md),
           ],
-        ),
+          if (insight.dissatisfactionPoints.isNotEmpty) ...[
+            Text(
+              AppLocalizations.of(context).detailNegativePoints,
+              style: Theme.of(context).textTheme.labelSmall?.copyWith(
+                color: AppColors.textSecondary,
+                fontWeight: FontWeight.w700,
+              ),
+            ),
+            const SizedBox(height: AppSpacing.xs),
+            for (final point in insight.dissatisfactionPoints)
+              _InsightPoint(label: point, isPositive: false),
+            const SizedBox(height: AppSpacing.md),
+          ],
+          Align(
+            alignment: Alignment.centerRight,
+            child: TextButton(
+              onPressed: onMorePressed,
+              style: TextButton.styleFrom(
+                padding: EdgeInsets.zero,
+                minimumSize: Size.zero,
+                tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+              ),
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Text(
+                    AppLocalizations.of(context).detailMoreInsights,
+                    style: Theme.of(context).textTheme.labelSmall?.copyWith(
+                      color: AppColors.primary,
+                      fontWeight: FontWeight.w700,
+                    ),
+                  ),
+                  const SizedBox(width: 2),
+                  const Icon(
+                    Icons.chevron_right,
+                    size: 14,
+                    color: AppColors.primary,
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ],
+      ),
     );
   }
 }

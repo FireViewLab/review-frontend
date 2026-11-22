@@ -1,3 +1,4 @@
+import 'package:re_view_front/l10n/generated/app_localizations.dart';
 import 'package:re_view_front/core/error/failure.dart';
 import 'package:re_view_front/shared/widgets/error_view.dart';
 import 'package:flutter/material.dart';
@@ -61,7 +62,10 @@ class ProductDetailErrorView extends StatelessWidget {
               textAlign: TextAlign.center,
             ),
             const SizedBox(height: AppSpacing.md),
-            OutlinedButton(onPressed: onRetry, child: const Text('다시 시도')),
+            OutlinedButton(
+              onPressed: onRetry,
+              child: Text(AppLocalizations.of(context).actionRetry),
+            ),
           ],
         ),
       ),

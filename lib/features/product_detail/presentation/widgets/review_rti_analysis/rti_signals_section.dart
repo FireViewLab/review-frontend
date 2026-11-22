@@ -17,9 +17,9 @@ class RtiSignalsSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return RtiSectionCard(
-      title: 'RTI 구성 신호',
+      title: AppLocalizations.of(context).detailSignalsTitle,
       showInfo: true,
-      infoTooltip: 'RTI 점수를 구성하는 신호와 각각의 점수입니다.\n텍스트·행동·네트워크 분석을 종합해 산출합니다.',
+      infoTooltip: AppLocalizations.of(context).detailSignalsTooltip,
       child: Column(
         children: signals
             .map(
@@ -131,7 +131,7 @@ class RtiJudgmentBasisSection extends StatelessWidget {
     return RtiSectionCard(
       title: AppLocalizations.of(context).reportReasons,
       showInfo: true,
-      infoTooltip: '리뷰 신뢰도를 판단한 구체적인 근거와\n각 근거가 점수에 기여한 비중입니다.',
+      infoTooltip: AppLocalizations.of(context).detailEvidenceTooltip,
       child: Column(
         children: bases
             .map(

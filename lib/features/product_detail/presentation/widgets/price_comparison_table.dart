@@ -1,3 +1,4 @@
+import 'package:re_view_front/l10n/generated/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:re_view_front/app/theme/app_colors.dart';
 import 'package:re_view_front/app/theme/app_spacing.dart';
@@ -44,7 +45,7 @@ class _PriceComparisonTableState extends State<PriceComparisonTable> {
                   Expanded(
                     flex: 3,
                     child: Text(
-                      '판매처',
+                      AppLocalizations.of(context).searchFilterSeller,
                       style: Theme.of(context).textTheme.labelSmall?.copyWith(
                         color: AppColors.textSecondary,
                         fontWeight: FontWeight.w700,
@@ -54,7 +55,7 @@ class _PriceComparisonTableState extends State<PriceComparisonTable> {
                   Expanded(
                     flex: 2,
                     child: Text(
-                      '최저가',
+                      AppLocalizations.of(context).detailLowestPrice,
                       style: Theme.of(context).textTheme.labelSmall?.copyWith(
                         color: AppColors.textSecondary,
                         fontWeight: FontWeight.w700,
@@ -65,7 +66,7 @@ class _PriceComparisonTableState extends State<PriceComparisonTable> {
                   Expanded(
                     flex: 3,
                     child: Text(
-                      '배송',
+                      AppLocalizations.of(context).detailShipping,
                       style: Theme.of(context).textTheme.labelSmall?.copyWith(
                         color: AppColors.textSecondary,
                         fontWeight: FontWeight.w700,
@@ -257,7 +258,7 @@ class _LowestBadge extends StatelessWidget {
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 1),
         child: Text(
-          '최저가',
+          AppLocalizations.of(context).detailLowestPrice,
           style: Theme.of(context).textTheme.labelSmall?.copyWith(
             color: AppColors.primary,
             fontWeight: FontWeight.w900,
@@ -365,7 +366,9 @@ class _ExpandButton extends StatelessWidget {
           children: [
             Flexible(
               child: Text(
-                '전체 $totalCount개 판매처 가격 비교',
+                AppLocalizations.of(
+                  context,
+                ).detailCompareAllSellers(totalCount),
                 style: Theme.of(context).textTheme.labelSmall?.copyWith(
                   color: AppColors.textSecondary,
                   fontWeight: FontWeight.w700,

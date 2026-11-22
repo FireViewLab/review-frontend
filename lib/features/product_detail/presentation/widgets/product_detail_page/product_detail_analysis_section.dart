@@ -1,3 +1,4 @@
+import 'package:re_view_front/l10n/generated/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:re_view_front/app/theme/app_colors.dart';
 import 'package:re_view_front/app/theme/app_spacing.dart';
@@ -185,7 +186,7 @@ class _AnalyzingBannerState extends State<ProductDetailAnalyzingBanner>
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      'AI 리뷰 분석 진행 중',
+                      AppLocalizations.of(context).detailAnalysisInProgress,
                       style: Theme.of(context).textTheme.labelMedium?.copyWith(
                         color: AppColors.primary,
                         fontWeight: FontWeight.w800,
@@ -193,7 +194,9 @@ class _AnalyzingBannerState extends State<ProductDetailAnalyzingBanner>
                     ),
                     const SizedBox(height: 2),
                     Text(
-                      'Re:view AI가 리뷰를 실시간 분석하고 있습니다. 완료 후 신뢰도 점수가 자동으로 업데이트됩니다.',
+                      AppLocalizations.of(
+                        context,
+                      ).detailAnalysisInProgressDescription,
                       style: Theme.of(context).textTheme.labelSmall?.copyWith(
                         color: AppColors.primary.withValues(alpha: 0.75),
                         fontWeight: FontWeight.w500,

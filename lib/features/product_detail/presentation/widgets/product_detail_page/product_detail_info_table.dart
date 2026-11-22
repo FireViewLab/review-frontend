@@ -1,3 +1,4 @@
+import 'package:re_view_front/l10n/generated/app_localizations.dart';
 import 'package:re_view_front/shared/presentation/analysis_formatters.dart';
 import 'package:flutter/material.dart';
 import 'package:re_view_front/app/theme/app_colors.dart';
@@ -16,16 +17,32 @@ class ProductDetailInfoTable extends StatelessWidget {
         ? detail.breadcrumbs.join(' > ')
         : detail.categoryDisplayName;
     final rows = <(String, String)>[
-      ('상품명', detail.name),
-      if (detail.brand.isNotEmpty) ('브랜드', detail.brand),
-      if (category.isNotEmpty) ('카테고리', category),
-      if (detail.price > 0) ('최저가', '${_formatWon(detail.price)}원'),
-      if (detail.totalSellerCount > 0) ('판매처', '${detail.totalSellerCount}곳'),
+      (AppLocalizations.of(context).adminProductName, detail.name),
+      if (detail.brand.isNotEmpty)
+        (AppLocalizations.of(context).detailBrand, detail.brand),
+      if (category.isNotEmpty)
+        (AppLocalizations.of(context).wishlistFilterCategory, category),
+      if (detail.price > 0)
+        (
+          AppLocalizations.of(context).detailLowestPrice,
+          AppLocalizations.of(
+            context,
+          ).extProductPrice(_formatWon(detail.price)),
+        ),
+      if (detail.totalSellerCount > 0)
+        (
+          AppLocalizations.of(context).searchFilterSeller,
+          AppLocalizations.of(
+            context,
+          ).detailSellerCount(detail.totalSellerCount),
+        ),
       if (detail.avgRating != null)
         (
-          '평균 별점',
-          '${detail.avgRating!.toStringAsFixed(1)} '
-              '(리뷰 ${_formatWon(detail.reviewCount ?? 0)}개)',
+          AppLocalizations.of(context).detailAverageRating,
+          AppLocalizations.of(context).detailRatingReviewCount(
+            detail.avgRating!.toStringAsFixed(1),
+            _formatWon(detail.reviewCount ?? 0),
+          ),
         ),
       if (detail.analysisDisplay.isV2)
         (
@@ -38,10 +55,10 @@ class ProductDetailInfoTable extends StatelessWidget {
           (detail.rtiGrade?.isEmpty ?? true)
               ? detail.analysisDisplay.score!.toStringAsFixed(1)
               : '${detail.analysisDisplay.score!.toStringAsFixed(1)} · '
-                    '${_gradeLabel(detail.rtiGrade!)}',
+                    '${_gradeLabel(context, detail.rtiGrade!)}',
         ),
       if (detail.deliveryInfo?.isNotEmpty ?? false)
-        ('배송', detail.deliveryInfo!),
+        (AppLocalizations.of(context).detailShipping, detail.deliveryInfo!),
     ];
     final textTheme = Theme.of(context).textTheme;
 
@@ -90,12 +107,13 @@ class ProductDetailInfoTable extends StatelessWidget {
     );
   }
 
-  static String _gradeLabel(String grade) => switch (grade) {
-    'SAFE' => '안전',
-    'SUSPICIOUS' => '의심',
-    'DANGER' => '위험',
-    _ => grade,
-  };
+  static String _gradeLabel(BuildContext context, String grade) =>
+      switch (grade) {
+        'SAFE' => AppLocalizations.of(context).adminSafe,
+        'SUSPICIOUS' => AppLocalizations.of(context).adminSuspicious,
+        'DANGER' => AppLocalizations.of(context).adminDanger,
+        _ => grade,
+      };
 
   static String _formatWon(int value) {
     final digits = value.toString();

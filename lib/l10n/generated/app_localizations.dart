@@ -6731,6 +6731,342 @@ abstract class AppLocalizations {
   /// In ko, this message translates to:
   /// **'요금제 변경 요청은 처리됐지만 현재 플랜과 한도를 확인하지 못했습니다. 다시 불러와 확인해 주세요.'**
   String get planRefreshFailed;
+
+  /// No description provided for @detailSettingsRetry.
+  ///
+  /// In ko, this message translates to:
+  /// **'표시 설정을 불러오지 못했습니다. 재시도'**
+  String get detailSettingsRetry;
+
+  /// No description provided for @detailHelpfulUnavailable.
+  ///
+  /// In ko, this message translates to:
+  /// **'도움 횟수가 제공되지 않아 기존 리뷰 순서로 표시합니다.'**
+  String get detailHelpfulUnavailable;
+
+  /// No description provided for @detailNoReviews.
+  ///
+  /// In ko, this message translates to:
+  /// **'아직 등록된 리뷰가 없습니다.'**
+  String get detailNoReviews;
+
+  /// No description provided for @detailNoMatchingReviews.
+  ///
+  /// In ko, this message translates to:
+  /// **'해당 조건에 맞는 리뷰가 없습니다.'**
+  String get detailNoMatchingReviews;
+
+  /// No description provided for @detailVerified.
+  ///
+  /// In ko, this message translates to:
+  /// **'구매인증'**
+  String get detailVerified;
+
+  /// No description provided for @detailSortRti.
+  ///
+  /// In ko, this message translates to:
+  /// **'RTI 높은순'**
+  String get detailSortRti;
+
+  /// No description provided for @detailViewReviewAnalysis.
+  ///
+  /// In ko, this message translates to:
+  /// **'리뷰 분석 보기'**
+  String get detailViewReviewAnalysis;
+
+  /// No description provided for @detailHelpful.
+  ///
+  /// In ko, this message translates to:
+  /// **'도움이 됐어요'**
+  String get detailHelpful;
+
+  /// No description provided for @detailNotHelpful.
+  ///
+  /// In ko, this message translates to:
+  /// **'도움이 안 됐어요'**
+  String get detailNotHelpful;
+
+  /// No description provided for @detailFeedbackSubmitted.
+  ///
+  /// In ko, this message translates to:
+  /// **'피드백이 제출됐습니다.'**
+  String get detailFeedbackSubmitted;
+
+  /// No description provided for @detailFeedbackFailed.
+  ///
+  /// In ko, this message translates to:
+  /// **'피드백 제출에 실패했습니다. 다시 시도해주세요.'**
+  String get detailFeedbackFailed;
+
+  /// No description provided for @detailShowHiddenReviews.
+  ///
+  /// In ko, this message translates to:
+  /// **'설정 기준 이하 리뷰 {count}개 표시'**
+  String detailShowHiddenReviews(int count);
+
+  /// No description provided for @detailMoreReviewsRemaining.
+  ///
+  /// In ko, this message translates to:
+  /// **'리뷰 더보기 ({count}개 남음)'**
+  String detailMoreReviewsRemaining(int count);
+
+  /// No description provided for @detailLowestPrice.
+  ///
+  /// In ko, this message translates to:
+  /// **'최저가'**
+  String get detailLowestPrice;
+
+  /// No description provided for @detailShipping.
+  ///
+  /// In ko, this message translates to:
+  /// **'배송'**
+  String get detailShipping;
+
+  /// No description provided for @detailCompareAllSellers.
+  ///
+  /// In ko, this message translates to:
+  /// **'전체 {count}개 판매처 가격 비교'**
+  String detailCompareAllSellers(int count);
+
+  /// No description provided for @detailInsights.
+  ///
+  /// In ko, this message translates to:
+  /// **'리뷰 인사이트'**
+  String get detailInsights;
+
+  /// No description provided for @detailMentionedKeywords.
+  ///
+  /// In ko, this message translates to:
+  /// **'많이 언급된 키워드'**
+  String get detailMentionedKeywords;
+
+  /// No description provided for @detailPositivePoints.
+  ///
+  /// In ko, this message translates to:
+  /// **'만족 포인트'**
+  String get detailPositivePoints;
+
+  /// No description provided for @detailNegativePoints.
+  ///
+  /// In ko, this message translates to:
+  /// **'아쉬운 포인트'**
+  String get detailNegativePoints;
+
+  /// No description provided for @detailMoreInsights.
+  ///
+  /// In ko, this message translates to:
+  /// **'리뷰 인사이트 더보기'**
+  String get detailMoreInsights;
+
+  /// No description provided for @detailRiskSummary.
+  ///
+  /// In ko, this message translates to:
+  /// **'종합 위험 요약'**
+  String get detailRiskSummary;
+
+  /// No description provided for @detailRiskSummaryTooltip.
+  ///
+  /// In ko, this message translates to:
+  /// **'이 상품의 전체 리뷰에 대한\nAI 신뢰도 분석 결과입니다.'**
+  String get detailRiskSummaryTooltip;
+
+  /// No description provided for @detailScoreTooltip.
+  ///
+  /// In ko, this message translates to:
+  /// **'RTI 신뢰도 점수는 구매 인증, 텍스트 신뢰도,\n반복 표현, 시점 패턴 등을 종합해 산출됩니다.'**
+  String get detailScoreTooltip;
+
+  /// No description provided for @detailDisclaimer.
+  ///
+  /// In ko, this message translates to:
+  /// **'분석 결과는 참고용이며 최종 판단은 여러 리뷰를 함께 확인해주세요.'**
+  String get detailDisclaimer;
+
+  /// No description provided for @detailCriteria.
+  ///
+  /// In ko, this message translates to:
+  /// **'분석 기준'**
+  String get detailCriteria;
+
+  /// No description provided for @detailReported.
+  ///
+  /// In ko, this message translates to:
+  /// **'신고 완료'**
+  String get detailReported;
+
+  /// No description provided for @detailReportReview.
+  ///
+  /// In ko, this message translates to:
+  /// **'리뷰 신고'**
+  String get detailReportReview;
+
+  /// No description provided for @detailSignalsTitle.
+  ///
+  /// In ko, this message translates to:
+  /// **'RTI 구성 신호'**
+  String get detailSignalsTitle;
+
+  /// No description provided for @detailSignalsTooltip.
+  ///
+  /// In ko, this message translates to:
+  /// **'RTI 점수를 구성하는 신호와 각각의 점수입니다.\n텍스트·행동·네트워크 분석을 종합해 산출합니다.'**
+  String get detailSignalsTooltip;
+
+  /// No description provided for @detailEvidenceTooltip.
+  ///
+  /// In ko, this message translates to:
+  /// **'리뷰 신뢰도를 판단한 구체적인 근거와\n각 근거가 점수에 기여한 비중입니다.'**
+  String get detailEvidenceTooltip;
+
+  /// No description provided for @detailAlsoViewed.
+  ///
+  /// In ko, this message translates to:
+  /// **'이 제품을 본 고객이 함께 본 제품'**
+  String get detailAlsoViewed;
+
+  /// No description provided for @detailKeySignals.
+  ///
+  /// In ko, this message translates to:
+  /// **'주요 판단 신호'**
+  String get detailKeySignals;
+
+  /// No description provided for @detailTrend.
+  ///
+  /// In ko, this message translates to:
+  /// **'위험도 추이'**
+  String get detailTrend;
+
+  /// No description provided for @detailTrendDescription.
+  ///
+  /// In ko, this message translates to:
+  /// **'상품 리뷰의 평균 RTI와 위험 리뷰 비율 변화를 보여줘요.'**
+  String get detailTrendDescription;
+
+  /// No description provided for @detailTrendPending.
+  ///
+  /// In ko, this message translates to:
+  /// **'AI 분석 완료 후 위험도 추이를 확인할 수 있습니다'**
+  String get detailTrendPending;
+
+  /// No description provided for @detailAverageRti.
+  ///
+  /// In ko, this message translates to:
+  /// **'평균 RTI'**
+  String get detailAverageRti;
+
+  /// No description provided for @detailRiskyReviewRatio.
+  ///
+  /// In ko, this message translates to:
+  /// **'위험 리뷰 비율'**
+  String get detailRiskyReviewRatio;
+
+  /// No description provided for @detailToday.
+  ///
+  /// In ko, this message translates to:
+  /// **'오늘'**
+  String get detailToday;
+
+  /// No description provided for @detailRecentReviewOrder.
+  ///
+  /// In ko, this message translates to:
+  /// **'최신 리뷰 순서'**
+  String get detailRecentReviewOrder;
+
+  /// No description provided for @detailAnalyzing.
+  ///
+  /// In ko, this message translates to:
+  /// **'AI 분석 중'**
+  String get detailAnalyzing;
+
+  /// No description provided for @detailNoAnalyzedReviews.
+  ///
+  /// In ko, this message translates to:
+  /// **'분석된 리뷰가 없습니다.'**
+  String get detailNoAnalyzedReviews;
+
+  /// No description provided for @detailOfficialSeller.
+  ///
+  /// In ko, this message translates to:
+  /// **'공식 판매처'**
+  String get detailOfficialSeller;
+
+  /// No description provided for @detailTrustHigh.
+  ///
+  /// In ko, this message translates to:
+  /// **'리뷰 신뢰도 높음'**
+  String get detailTrustHigh;
+
+  /// No description provided for @detailTrustMedium.
+  ///
+  /// In ko, this message translates to:
+  /// **'리뷰 신뢰도 보통'**
+  String get detailTrustMedium;
+
+  /// No description provided for @detailTrustLow.
+  ///
+  /// In ko, this message translates to:
+  /// **'리뷰 신뢰도 낮음'**
+  String get detailTrustLow;
+
+  /// No description provided for @detailFormattedReviewCount.
+  ///
+  /// In ko, this message translates to:
+  /// **'리뷰 {count}개'**
+  String detailFormattedReviewCount(String count);
+
+  /// No description provided for @detailBrand.
+  ///
+  /// In ko, this message translates to:
+  /// **'브랜드'**
+  String get detailBrand;
+
+  /// No description provided for @detailAverageRating.
+  ///
+  /// In ko, this message translates to:
+  /// **'평균 별점'**
+  String get detailAverageRating;
+
+  /// No description provided for @detailSellerCount.
+  ///
+  /// In ko, this message translates to:
+  /// **'{count}곳'**
+  String detailSellerCount(int count);
+
+  /// No description provided for @detailRatingReviewCount.
+  ///
+  /// In ko, this message translates to:
+  /// **'{rating} (리뷰 {count}개)'**
+  String detailRatingReviewCount(String rating, String count);
+
+  /// No description provided for @detailAnalysisInProgress.
+  ///
+  /// In ko, this message translates to:
+  /// **'AI 리뷰 분석 진행 중'**
+  String get detailAnalysisInProgress;
+
+  /// No description provided for @detailAnalysisInProgressDescription.
+  ///
+  /// In ko, this message translates to:
+  /// **'Re:view AI가 리뷰를 실시간 분석하고 있습니다. 완료 후 신뢰도 점수가 자동으로 업데이트됩니다.'**
+  String get detailAnalysisInProgressDescription;
+
+  /// No description provided for @detailInformation.
+  ///
+  /// In ko, this message translates to:
+  /// **'상품 정보'**
+  String get detailInformation;
+
+  /// No description provided for @detailReviewTabCount.
+  ///
+  /// In ko, this message translates to:
+  /// **'리뷰 {count}'**
+  String detailReviewTabCount(String count);
+
+  /// No description provided for @detailComparisonTabCount.
+  ///
+  /// In ko, this message translates to:
+  /// **'가격비교 {count}'**
+  String detailComparisonTabCount(int count);
 }
 
 class _AppLocalizationsDelegate

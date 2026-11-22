@@ -3492,4 +3492,189 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get planRefreshFailed => '套餐更改请求已处理，但未能确认当前套餐和额度，请重新加载确认。';
+
+  @override
+  String get detailSettingsRetry => '无法加载显示设置，重试';
+
+  @override
+  String get detailHelpfulUnavailable => '未提供有用次数，因此按原评价顺序显示。';
+
+  @override
+  String get detailNoReviews => '暂无已发布的评价。';
+
+  @override
+  String get detailNoMatchingReviews => '没有符合这些条件的评价。';
+
+  @override
+  String get detailVerified => '已验证购买';
+
+  @override
+  String get detailSortRti => 'RTI 从高到低';
+
+  @override
+  String get detailViewReviewAnalysis => '查看评价分析';
+
+  @override
+  String get detailHelpful => '有帮助';
+
+  @override
+  String get detailNotHelpful => '没有帮助';
+
+  @override
+  String get detailFeedbackSubmitted => '反馈已提交。';
+
+  @override
+  String get detailFeedbackFailed => '反馈提交失败，请重试。';
+
+  @override
+  String detailShowHiddenReviews(int count) {
+    return '显示低于设置门槛的 $count 条评价';
+  }
+
+  @override
+  String detailMoreReviewsRemaining(int count) {
+    return '查看更多评价（剩余 $count 条）';
+  }
+
+  @override
+  String get detailLowestPrice => '最低价';
+
+  @override
+  String get detailShipping => '配送';
+
+  @override
+  String detailCompareAllSellers(int count) {
+    return '比较全部 $count 家卖家的价格';
+  }
+
+  @override
+  String get detailInsights => '评价洞察';
+
+  @override
+  String get detailMentionedKeywords => '高频提及关键词';
+
+  @override
+  String get detailPositivePoints => '满意之处';
+
+  @override
+  String get detailNegativePoints => '不足之处';
+
+  @override
+  String get detailMoreInsights => '查看更多评价洞察';
+
+  @override
+  String get detailRiskSummary => '综合风险摘要';
+
+  @override
+  String get detailRiskSummaryTooltip => '此商品全部评价的\nAI 可信度分析结果。';
+
+  @override
+  String get detailScoreTooltip => 'RTI 可信度分数综合考虑购买验证、文本可信度、\n重复表达及时间模式等因素。';
+
+  @override
+  String get detailDisclaimer => '分析结果仅供参考，请结合多条评价做出最终判断。';
+
+  @override
+  String get detailCriteria => '分析标准';
+
+  @override
+  String get detailReported => '已举报';
+
+  @override
+  String get detailReportReview => '举报评价';
+
+  @override
+  String get detailSignalsTitle => 'RTI 组成信号';
+
+  @override
+  String get detailSignalsTooltip => '组成 RTI 的信号及各项分数，\n综合文本、行为及网络分析得出。';
+
+  @override
+  String get detailEvidenceTooltip => '判断评价可信度的具体依据，\n以及各项依据对分数的贡献比例。';
+
+  @override
+  String get detailAlsoViewed => '浏览此商品的用户也看过';
+
+  @override
+  String get detailKeySignals => '主要判断信号';
+
+  @override
+  String get detailTrend => '风险趋势';
+
+  @override
+  String get detailTrendDescription => '显示商品评价平均 RTI 和风险评价比例的变化。';
+
+  @override
+  String get detailTrendPending => 'AI 分析完成后可查看风险趋势';
+
+  @override
+  String get detailAverageRti => '平均 RTI';
+
+  @override
+  String get detailRiskyReviewRatio => '风险评价比例';
+
+  @override
+  String get detailToday => '今天';
+
+  @override
+  String get detailRecentReviewOrder => '最新评价顺序';
+
+  @override
+  String get detailAnalyzing => 'AI 分析中';
+
+  @override
+  String get detailNoAnalyzedReviews => '暂无已分析的评价。';
+
+  @override
+  String get detailOfficialSeller => '官方卖家';
+
+  @override
+  String get detailTrustHigh => '评价可信度高';
+
+  @override
+  String get detailTrustMedium => '评价可信度一般';
+
+  @override
+  String get detailTrustLow => '评价可信度低';
+
+  @override
+  String detailFormattedReviewCount(String count) {
+    return '$count 条评价';
+  }
+
+  @override
+  String get detailBrand => '品牌';
+
+  @override
+  String get detailAverageRating => '平均评分';
+
+  @override
+  String detailSellerCount(int count) {
+    return '$count 家';
+  }
+
+  @override
+  String detailRatingReviewCount(String rating, String count) {
+    return '$rating（$count 条评价）';
+  }
+
+  @override
+  String get detailAnalysisInProgress => 'AI 评价分析进行中';
+
+  @override
+  String get detailAnalysisInProgressDescription =>
+      'Re:view AI 正在实时分析评价，完成后将自动更新可信度分数。';
+
+  @override
+  String get detailInformation => '商品信息';
+
+  @override
+  String detailReviewTabCount(String count) {
+    return '评价 $count';
+  }
+
+  @override
+  String detailComparisonTabCount(int count) {
+    return '比价 $count';
+  }
 }

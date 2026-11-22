@@ -1,3 +1,4 @@
+import 'package:re_view_front/l10n/generated/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:re_view_front/app/theme/app_colors.dart';
@@ -39,14 +40,18 @@ class _WishlistButton extends ConsumerWidget {
       child: SizedBox.square(
         dimension: 40,
         child: IconButton(
-          tooltip: liked ? '찜 취소' : '찜하기',
+          tooltip: liked
+              ? AppLocalizations.of(context).externalWishRemove
+              : AppLocalizations.of(context).externalWishAdd,
           onPressed: asyncStatus.isLoading
               ? null
               : () async {
                   if (!ref.read(authSessionProvider).isLoggedIn) {
                     ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(
-                        content: Text('로그인이 필요합니다.'),
+                      SnackBar(
+                        content: Text(
+                          AppLocalizations.of(context).homeLoginRequired,
+                        ),
                         duration: Duration(seconds: 2),
                       ),
                     );

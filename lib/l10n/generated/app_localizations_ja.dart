@@ -3542,4 +3542,192 @@ class AppLocalizationsJa extends AppLocalizations {
   @override
   String get planRefreshFailed =>
       'プラン変更は処理されましたが、現在のプランと上限を確認できませんでした。再読み込みして確認してください。';
+
+  @override
+  String get detailSettingsRetry => '表示設定を読み込めませんでした。再試行';
+
+  @override
+  String get detailHelpfulUnavailable => '役に立った件数がないため、元のレビュー順で表示します。';
+
+  @override
+  String get detailNoReviews => 'まだレビューがありません。';
+
+  @override
+  String get detailNoMatchingReviews => '条件に合うレビューがありません。';
+
+  @override
+  String get detailVerified => '購入認証';
+
+  @override
+  String get detailSortRti => 'RTIが高い順';
+
+  @override
+  String get detailViewReviewAnalysis => 'レビュー分析を見る';
+
+  @override
+  String get detailHelpful => '役に立ちました';
+
+  @override
+  String get detailNotHelpful => '役に立ちませんでした';
+
+  @override
+  String get detailFeedbackSubmitted => 'フィードバックを送信しました。';
+
+  @override
+  String get detailFeedbackFailed => 'フィードバックを送信できませんでした。再度お試しください。';
+
+  @override
+  String detailShowHiddenReviews(int count) {
+    return '設定基準未満のレビュー$count件を表示';
+  }
+
+  @override
+  String detailMoreReviewsRemaining(int count) {
+    return 'レビューをもっと見る（残り$count件）';
+  }
+
+  @override
+  String get detailLowestPrice => '最安値';
+
+  @override
+  String get detailShipping => '配送';
+
+  @override
+  String detailCompareAllSellers(int count) {
+    return '全$count店舗の価格を比較';
+  }
+
+  @override
+  String get detailInsights => 'レビューのインサイト';
+
+  @override
+  String get detailMentionedKeywords => 'よく挙げられるキーワード';
+
+  @override
+  String get detailPositivePoints => '満足した点';
+
+  @override
+  String get detailNegativePoints => '惜しい点';
+
+  @override
+  String get detailMoreInsights => 'レビューのインサイトをもっと見る';
+
+  @override
+  String get detailRiskSummary => '総合リスクの概要';
+
+  @override
+  String get detailRiskSummaryTooltip => 'この商品の全レビューに対する\nAI信頼度分析の結果です。';
+
+  @override
+  String get detailScoreTooltip =>
+      'RTI信頼度スコアは購入認証、文章の信頼度、\n繰り返し表現や投稿時期のパターンなどを総合して算出します。';
+
+  @override
+  String get detailDisclaimer => '分析結果は参考情報です。最終判断の前に複数のレビューを併せて確認してください。';
+
+  @override
+  String get detailCriteria => '分析基準';
+
+  @override
+  String get detailReported => '通報済み';
+
+  @override
+  String get detailReportReview => 'レビューを通報';
+
+  @override
+  String get detailSignalsTitle => 'RTIを構成する情報';
+
+  @override
+  String get detailSignalsTooltip =>
+      'RTIを構成する情報とそれぞれのスコアです。\n文章・行動・ネットワークの分析を総合して算出します。';
+
+  @override
+  String get detailEvidenceTooltip =>
+      'レビューの信頼度を判断した具体的な根拠と、\n各根拠がスコアに寄与した割合です。';
+
+  @override
+  String get detailAlsoViewed => 'この商品を見たお客様が併せて見た商品';
+
+  @override
+  String get detailKeySignals => '主な判断材料';
+
+  @override
+  String get detailTrend => 'リスクの推移';
+
+  @override
+  String get detailTrendDescription => '商品レビューの平均RTIと危険なレビューの割合の変化を表示します。';
+
+  @override
+  String get detailTrendPending => 'AI分析の完了後にリスクの推移を確認できます';
+
+  @override
+  String get detailAverageRti => '平均RTI';
+
+  @override
+  String get detailRiskyReviewRatio => '危険なレビューの割合';
+
+  @override
+  String get detailToday => '今日';
+
+  @override
+  String get detailRecentReviewOrder => '新しいレビュー順';
+
+  @override
+  String get detailAnalyzing => 'AI分析中';
+
+  @override
+  String get detailNoAnalyzedReviews => '分析済みのレビューがありません。';
+
+  @override
+  String get detailOfficialSeller => '公式販売店';
+
+  @override
+  String get detailTrustHigh => 'レビューの信頼度が高い';
+
+  @override
+  String get detailTrustMedium => 'レビューの信頼度は普通';
+
+  @override
+  String get detailTrustLow => 'レビューの信頼度が低い';
+
+  @override
+  String detailFormattedReviewCount(String count) {
+    return 'レビュー$count件';
+  }
+
+  @override
+  String get detailBrand => 'ブランド';
+
+  @override
+  String get detailAverageRating => '平均評価';
+
+  @override
+  String detailSellerCount(int count) {
+    return '$count店舗';
+  }
+
+  @override
+  String detailRatingReviewCount(String rating, String count) {
+    return '$rating（レビュー$count件）';
+  }
+
+  @override
+  String get detailAnalysisInProgress => 'AIによるレビュー分析中';
+
+  @override
+  String get detailAnalysisInProgressDescription =>
+      'Re:view AIがレビューをリアルタイムで分析しています。完了後、信頼度スコアが自動更新されます。';
+
+  @override
+  String get detailInformation => '商品情報';
+
+  @override
+  String detailReviewTabCount(String count) {
+    return 'レビュー $count';
+  }
+
+  @override
+  String detailComparisonTabCount(int count) {
+    return '価格比較 $count';
+  }
 }

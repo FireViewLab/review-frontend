@@ -3694,4 +3694,198 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get planRefreshFailed =>
       'The plan change was processed, but the current plan and limits could not be verified. Reload to check.';
+
+  @override
+  String get detailSettingsRetry => 'Could not load display settings. Retry';
+
+  @override
+  String get detailHelpfulUnavailable =>
+      'Helpful counts are unavailable, so the original review order is used.';
+
+  @override
+  String get detailNoReviews => 'No reviews have been posted yet.';
+
+  @override
+  String get detailNoMatchingReviews => 'No reviews match these conditions.';
+
+  @override
+  String get detailVerified => 'Verified purchase';
+
+  @override
+  String get detailSortRti => 'Highest RTI';
+
+  @override
+  String get detailViewReviewAnalysis => 'View review analysis';
+
+  @override
+  String get detailHelpful => 'Helpful';
+
+  @override
+  String get detailNotHelpful => 'Not helpful';
+
+  @override
+  String get detailFeedbackSubmitted => 'Feedback submitted.';
+
+  @override
+  String get detailFeedbackFailed => 'Could not submit feedback. Please retry.';
+
+  @override
+  String detailShowHiddenReviews(int count) {
+    return 'Show $count reviews below your threshold';
+  }
+
+  @override
+  String detailMoreReviewsRemaining(int count) {
+    return 'More reviews ($count remaining)';
+  }
+
+  @override
+  String get detailLowestPrice => 'Lowest price';
+
+  @override
+  String get detailShipping => 'Shipping';
+
+  @override
+  String detailCompareAllSellers(int count) {
+    return 'Compare prices from all $count sellers';
+  }
+
+  @override
+  String get detailInsights => 'Review insights';
+
+  @override
+  String get detailMentionedKeywords => 'Frequently mentioned keywords';
+
+  @override
+  String get detailPositivePoints => 'What people liked';
+
+  @override
+  String get detailNegativePoints => 'What could be better';
+
+  @override
+  String get detailMoreInsights => 'More review insights';
+
+  @override
+  String get detailRiskSummary => 'Overall risk summary';
+
+  @override
+  String get detailRiskSummaryTooltip =>
+      'AI trust analysis results\nfor all reviews of this product.';
+
+  @override
+  String get detailScoreTooltip =>
+      'RTI trust scores combine purchase verification, text trust,\nrepeated expressions, timing patterns, and more.';
+
+  @override
+  String get detailDisclaimer =>
+      'Analysis is for reference. Check multiple reviews before making a final judgment.';
+
+  @override
+  String get detailCriteria => 'Analysis criteria';
+
+  @override
+  String get detailReported => 'Reported';
+
+  @override
+  String get detailReportReview => 'Report review';
+
+  @override
+  String get detailSignalsTitle => 'RTI component signals';
+
+  @override
+  String get detailSignalsTooltip =>
+      'Signals contributing to RTI and their scores.\nCalculated from text, behavior, and network analysis.';
+
+  @override
+  String get detailEvidenceTooltip =>
+      'Specific evidence behind review trust assessments\nand its contribution to the score.';
+
+  @override
+  String get detailAlsoViewed =>
+      'Products also viewed by customers who viewed this item';
+
+  @override
+  String get detailKeySignals => 'Key assessment signals';
+
+  @override
+  String get detailTrend => 'Risk trend';
+
+  @override
+  String get detailTrendDescription =>
+      'Shows changes in average review RTI and the share of risky reviews.';
+
+  @override
+  String get detailTrendPending =>
+      'Risk trends are available after AI analysis is complete';
+
+  @override
+  String get detailAverageRti => 'Average RTI';
+
+  @override
+  String get detailRiskyReviewRatio => 'Risky review ratio';
+
+  @override
+  String get detailToday => 'Today';
+
+  @override
+  String get detailRecentReviewOrder => 'Most recent reviews';
+
+  @override
+  String get detailAnalyzing => 'AI analysis in progress';
+
+  @override
+  String get detailNoAnalyzedReviews => 'No analyzed reviews.';
+
+  @override
+  String get detailOfficialSeller => 'Official seller';
+
+  @override
+  String get detailTrustHigh => 'High review trust';
+
+  @override
+  String get detailTrustMedium => 'Moderate review trust';
+
+  @override
+  String get detailTrustLow => 'Low review trust';
+
+  @override
+  String detailFormattedReviewCount(String count) {
+    return '$count reviews';
+  }
+
+  @override
+  String get detailBrand => 'Brand';
+
+  @override
+  String get detailAverageRating => 'Average rating';
+
+  @override
+  String detailSellerCount(int count) {
+    return '$count sellers';
+  }
+
+  @override
+  String detailRatingReviewCount(String rating, String count) {
+    return '$rating ($count reviews)';
+  }
+
+  @override
+  String get detailAnalysisInProgress => 'AI review analysis in progress';
+
+  @override
+  String get detailAnalysisInProgressDescription =>
+      'Re:view AI is analyzing reviews in real time. Trust scores update automatically when complete.';
+
+  @override
+  String get detailInformation => 'Product information';
+
+  @override
+  String detailReviewTabCount(String count) {
+    return 'Reviews $count';
+  }
+
+  @override
+  String detailComparisonTabCount(int count) {
+    return 'Compare prices $count';
+  }
 }

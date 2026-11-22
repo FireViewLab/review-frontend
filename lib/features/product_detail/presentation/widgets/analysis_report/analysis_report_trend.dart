@@ -1,3 +1,4 @@
+import 'package:re_view_front/l10n/generated/app_localizations.dart';
 // ignore_for_file: use_key_in_widget_constructors
 
 import 'package:flutter/material.dart';
@@ -68,7 +69,7 @@ class AnalysisReportTrendSectionState
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        '위험도 추이',
+                        AppLocalizations.of(context).detailTrend,
                         style: Theme.of(context).textTheme.titleSmall?.copyWith(
                           color: AppColors.textPrimary,
                           fontWeight: FontWeight.w900,
@@ -76,7 +77,7 @@ class AnalysisReportTrendSectionState
                       ),
                       const SizedBox(height: 2),
                       Text(
-                        '상품 리뷰의 평균 RTI와 위험 리뷰 비율 변화를 보여줘요.',
+                        AppLocalizations.of(context).detailTrendDescription,
                         style: Theme.of(context).textTheme.labelSmall?.copyWith(
                           color: AppColors.textSecondary,
                           fontSize: 11,
@@ -120,7 +121,7 @@ class AnalysisReportTrendSectionState
                                   : null,
                             ),
                             child: Text(
-                              '$d일',
+                              AppLocalizations.of(context).adminPeriodDays(d),
                               style: Theme.of(context).textTheme.labelSmall
                                   ?.copyWith(
                                     color: selected
@@ -174,7 +175,7 @@ class AnalysisReportTrendSectionState
                       ),
                       const SizedBox(height: AppSpacing.xs),
                       Text(
-                        'AI 분석 완료 후 위험도 추이를 확인할 수 있습니다',
+                        AppLocalizations.of(context).detailTrendPending,
                         style: Theme.of(context).textTheme.labelSmall?.copyWith(
                           color: AppColors.textTertiary,
                         ),
@@ -194,12 +195,12 @@ class AnalysisReportTrendSectionState
                 children: [
                   AnalysisReportLegendDot(
                     color: AppColors.primary,
-                    label: '평균 RTI',
+                    label: AppLocalizations.of(context).detailAverageRti,
                   ),
                   const SizedBox(width: AppSpacing.md),
                   AnalysisReportLegendDash(
                     color: const Color(0xFFF97316),
-                    label: '위험 리뷰 비율',
+                    label: AppLocalizations.of(context).detailRiskyReviewRatio,
                   ),
                 ],
               ),

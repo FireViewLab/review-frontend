@@ -1,3 +1,4 @@
+import 'package:re_view_front/l10n/generated/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:re_view_front/app/theme/app_colors.dart';
 import 'package:re_view_front/app/theme/app_spacing.dart';
@@ -23,11 +24,18 @@ class ProductDetailTabBar extends StatelessWidget {
       (
         ProductDetailTab.review,
         detail.reviewCount == null
-            ? '리뷰'
-            : '리뷰 ${_formatTabCount(detail.reviewCount!)}',
+            ? AppLocalizations.of(context).extProductReviewsTitle
+            : AppLocalizations.of(
+                context,
+              ).detailReviewTabCount(_formatTabCount(detail.reviewCount!)),
       ),
-      (ProductDetailTab.priceComparison, '가격비교 ${detail.totalSellerCount}'),
-      (ProductDetailTab.info, '상품 정보'),
+      (
+        ProductDetailTab.priceComparison,
+        AppLocalizations.of(
+          context,
+        ).detailComparisonTabCount(detail.totalSellerCount),
+      ),
+      (ProductDetailTab.info, AppLocalizations.of(context).detailInformation),
     ];
 
     return DecoratedBox(

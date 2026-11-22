@@ -27,27 +27,27 @@ class RtiRiskSummarySection extends StatelessWidget {
     final total = safeCount + warnCount + dangerCount;
 
     return RtiSectionCard(
-      title: '종합 위험 요약',
+      title: AppLocalizations.of(context).detailRiskSummary,
       showInfo: true,
-      infoTooltip: '이 상품의 전체 리뷰에 대한\nAI 신뢰도 분석 결과입니다.',
+      infoTooltip: AppLocalizations.of(context).detailRiskSummaryTooltip,
       child: Column(
         children: [
           RtiRiskBar(
-            label: '안전',
+            label: AppLocalizations.of(context).adminSafe,
             count: safeCount,
             total: total,
             color: const Color(0xFF22C55E),
           ),
           const SizedBox(height: AppSpacing.xs),
           RtiRiskBar(
-            label: '의심',
+            label: AppLocalizations.of(context).adminSuspicious,
             count: warnCount,
             total: total,
             color: const Color(0xFFF59E0B),
           ),
           const SizedBox(height: AppSpacing.xs),
           RtiRiskBar(
-            label: '위험',
+            label: AppLocalizations.of(context).adminDanger,
             count: dangerCount,
             total: total,
             color: const Color(0xFFEF4444),
@@ -148,10 +148,10 @@ class RtiScoreCard extends StatelessWidget {
     return RtiSectionCard(
       title: AppLocalizations.of(context).reviewResultTitle,
       showInfo: true,
-      infoTooltip: 'RTI 신뢰도 점수는 구매 인증, 텍스트 신뢰도,\n반복 표현, 시점 패턴 등을 종합해 산출됩니다.',
+      infoTooltip: AppLocalizations.of(context).detailScoreTooltip,
       child: score == null
           ? Text(
-              '분석 전',
+              AppLocalizations.of(context).externalUnanalyzed,
               style: Theme.of(context).textTheme.titleMedium?.copyWith(
                 color: AppColors.textSecondary,
                 fontWeight: FontWeight.w800,

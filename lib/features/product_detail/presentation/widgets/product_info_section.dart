@@ -1,3 +1,4 @@
+import 'package:re_view_front/l10n/generated/app_localizations.dart';
 import 'package:re_view_front/shared/presentation/analysis_formatters.dart';
 import 'package:flutter/material.dart';
 import 'package:re_view_front/app/theme/app_colors.dart';
@@ -40,7 +41,7 @@ class ProductInfoSection extends StatelessWidget {
                     style: TextStyle(color: detail.analysisDisplay.color),
                   )
                 : detail.analysisDisplay.score == null
-                ? const Text('분석 전')
+                ? Text(AppLocalizations.of(context).externalUnanalyzed)
                 : _RtiBadgeLarge(
                     score: detail.analysisDisplay.score!.round(),
                     color: rtiColor,
@@ -80,7 +81,7 @@ class _OfficialBadge extends StatelessWidget {
           vertical: 2,
         ),
         child: Text(
-          '공식 판매처',
+          AppLocalizations.of(context).detailOfficialSeller,
           style: Theme.of(context).textTheme.labelSmall?.copyWith(
             color: AppColors.primary,
             fontWeight: FontWeight.w800,
@@ -100,7 +101,7 @@ class _RtiBadgeLarge extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final label = _rtiLabel(score);
+    final label = _rtiLabel(context, score);
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
       decoration: BoxDecoration(
@@ -174,7 +175,9 @@ class _RatingRow extends StatelessWidget {
           ),
         if (detail.reviewCount != null)
           Text(
-            '리뷰 ${formatSearchCount(detail.reviewCount)}개',
+            AppLocalizations.of(
+              context,
+            ).detailFormattedReviewCount(formatSearchCount(detail.reviewCount)),
             style: Theme.of(context).textTheme.labelSmall?.copyWith(
               color: AppColors.textSecondary,
               fontWeight: FontWeight.w600,
@@ -231,10 +234,10 @@ class ProductSpecChips extends StatelessWidget {
   }
 }
 
-String _rtiLabel(int score) {
-  if (score >= 80) return '리뷰 신뢰도 높음';
-  if (score >= 60) return '리뷰 신뢰도 보통';
-  return '리뷰 신뢰도 낮음';
+String _rtiLabel(BuildContext context, int score) {
+  if (score >= 80) return AppLocalizations.of(context).detailTrustHigh;
+  if (score >= 60) return AppLocalizations.of(context).detailTrustMedium;
+  return AppLocalizations.of(context).detailTrustLow;
 }
 
 IconData _iconDataFor(String tag) => switch (tag) {

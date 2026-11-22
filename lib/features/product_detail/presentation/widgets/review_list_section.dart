@@ -1,3 +1,4 @@
+import 'package:re_view_front/l10n/generated/app_localizations.dart';
 import 'package:re_view_front/shared/presentation/analysis_formatters.dart';
 import 'package:re_view_front/core/analysis/analysis_display.dart';
 import 'package:re_view_front/shared/presentation/review_evidence_formatter.dart';
@@ -154,18 +155,20 @@ class _ReviewListSectionState extends ConsumerState<ReviewListSection> {
           TextButton.icon(
             onPressed: () => ref.invalidate(savedDisplayPreferencesProvider),
             icon: const Icon(Icons.refresh),
-            label: const Text('표시 설정을 불러오지 못했습니다. 재시도'),
+            label: Text(AppLocalizations.of(context).detailSettingsRetry),
           ),
         if (hiddenCount > 0)
           TextButton(
             onPressed: () => setState(() {
               _showHidden = true;
             }),
-            child: Text('설정 기준 이하 리뷰 $hiddenCount개 표시'),
+            child: Text(
+              AppLocalizations.of(context).detailShowHiddenReviews(hiddenCount),
+            ),
           ),
         if (_sortOption == ReviewSortOption.helpful &&
             !widget.reviews.any((r) => r.helpfulCount != null))
-          const Text('도움 횟수가 제공되지 않아 기존 리뷰 순서로 표시합니다.'),
+          Text(AppLocalizations.of(context).detailHelpfulUnavailable),
         ReviewPhotoToolbar(
           photoOnly: _photoOnly,
           photoView: _photoView,
@@ -196,7 +199,7 @@ class _ReviewListSectionState extends ConsumerState<ReviewListSection> {
                   ),
                   const SizedBox(height: AppSpacing.sm),
                   Text(
-                    '아직 등록된 리뷰가 없습니다.',
+                    AppLocalizations.of(context).detailNoReviews,
                     style: Theme.of(context).textTheme.bodySmall?.copyWith(
                       color: AppColors.textSecondary,
                     ),
@@ -210,7 +213,7 @@ class _ReviewListSectionState extends ConsumerState<ReviewListSection> {
             padding: const EdgeInsets.symmetric(vertical: AppSpacing.xl),
             child: Center(
               child: Text(
-                '해당 조건에 맞는 리뷰가 없습니다.',
+                AppLocalizations.of(context).detailNoMatchingReviews,
                 style: Theme.of(
                   context,
                 ).textTheme.bodySmall?.copyWith(color: AppColors.textSecondary),
@@ -259,7 +262,11 @@ class _ReviewListSectionState extends ConsumerState<ReviewListSection> {
                   shape: RoundedRectangleBorder(borderRadius: AppRadius.small),
                   foregroundColor: AppColors.textPrimary,
                 ),
-                child: Text('리뷰 더보기 (${reviews.length - _visibleCount}개 남음)'),
+                child: Text(
+                  AppLocalizations.of(
+                    context,
+                  ).detailMoreReviewsRemaining(reviews.length - _visibleCount),
+                ),
               ),
             ),
         ],
@@ -282,22 +289,22 @@ class _FilterRow extends StatelessWidget {
       crossAxisAlignment: WrapCrossAlignment.center,
       children: [
         _FilterChip(
-          label: '최신순',
+          label: AppLocalizations.of(context).settingsSortRecent,
           selected: sortOption == ReviewSortOption.newest,
           onTap: () => onSortChanged(ReviewSortOption.newest),
         ),
         _FilterChip(
-          label: '구매인증',
+          label: AppLocalizations.of(context).detailVerified,
           selected: sortOption == ReviewSortOption.verified,
           onTap: () => onSortChanged(ReviewSortOption.verified),
         ),
         _FilterChip(
-          label: '도움순',
+          label: AppLocalizations.of(context).settingsSortHelpful,
           selected: sortOption == ReviewSortOption.helpful,
           onTap: () => onSortChanged(ReviewSortOption.helpful),
         ),
         _FilterChip(
-          label: 'RTI 높은순',
+          label: AppLocalizations.of(context).detailSortRti,
           selected: sortOption == ReviewSortOption.rtiHigh,
           onTap: () => onSortChanged(ReviewSortOption.rtiHigh),
         ),
@@ -471,12 +478,22 @@ class ReviewCard extends StatelessWidget {
                       color: AppColors.textTertiary,
                     ),
                     padding: EdgeInsets.zero,
-                    itemBuilder: (_) => const [
-                      PopupMenuItem(value: 'ANALYSIS', child: Text('리뷰 분석 보기')),
-                      PopupMenuItem(value: 'HELPFUL', child: Text('도움이 됐어요')),
+                    itemBuilder: (_) => [
+                      PopupMenuItem(
+                        value: 'ANALYSIS',
+                        child: Text(
+                          AppLocalizations.of(context).detailViewReviewAnalysis,
+                        ),
+                      ),
+                      PopupMenuItem(
+                        value: 'HELPFUL',
+                        child: Text(AppLocalizations.of(context).detailHelpful),
+                      ),
                       PopupMenuItem(
                         value: 'NOT_HELPFUL',
-                        child: Text('도움이 안 됐어요'),
+                        child: Text(
+                          AppLocalizations.of(context).detailNotHelpful,
+                        ),
                       ),
                     ],
                     onSelected: (value) async {
@@ -499,8 +516,12 @@ class ReviewCard extends StatelessWidget {
                           SnackBar(
                             content: Text(
                               success
-                                  ? '피드백이 제출됐습니다.'
-                                  : '피드백 제출에 실패했습니다. 다시 시도해주세요.',
+                                  ? AppLocalizations.of(
+                                      context,
+                                    ).detailFeedbackSubmitted
+                                  : AppLocalizations.of(
+                                      context,
+                                    ).detailFeedbackFailed,
                             ),
                             duration: const Duration(seconds: 2),
                           ),
@@ -587,7 +608,7 @@ class _VerifiedBadge extends StatelessWidget {
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 1),
         child: Text(
-          '구매인증',
+          AppLocalizations.of(context).detailVerified,
           style: Theme.of(context).textTheme.labelSmall?.copyWith(
             color: AppColors.primary,
             fontWeight: FontWeight.w800,
@@ -633,7 +654,9 @@ class _RtiBadgeSmall extends StatelessWidget {
           Text(
             analysis?.isV2 == true
                 ? analysis!.badgeText(context)
-                : (score != null ? 'RTI $score' : '분석 전'),
+                : (score != null
+                      ? 'RTI $score'
+                      : AppLocalizations.of(context).externalUnanalyzed),
             style: Theme.of(context).textTheme.labelSmall?.copyWith(
               color: color,
               fontWeight: FontWeight.w900,

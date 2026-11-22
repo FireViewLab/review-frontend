@@ -170,7 +170,7 @@ class RtiReviewAuthorRow extends StatelessWidget {
                     ),
                     const SizedBox(width: 2),
                     Text(
-                      '구매인증',
+                      AppLocalizations.of(context).detailVerified,
                       style: Theme.of(context).textTheme.labelSmall?.copyWith(
                         color: AppColors.primary,
                         fontSize: 11,
