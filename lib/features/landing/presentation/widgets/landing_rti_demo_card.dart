@@ -1,3 +1,4 @@
+import 'package:re_view_front/l10n/generated/app_localizations.dart';
 import 'package:re_view_front/shared/widgets/analysis_result_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -48,12 +49,12 @@ class _TrustBadgeRow extends StatelessWidget {
 
   final DashboardProduct? product;
 
-  String get _gradeLabel {
+  String _gradeLabel(BuildContext context) {
     final score = product?.rtiScore;
-    if (score == null) return '신뢰 높음';
-    if (score >= 80) return '신뢰 높음';
-    if (score >= 50) return '의심';
-    return '위험';
+    if (score == null) return AppLocalizations.of(context).landingGradeHigh;
+    if (score >= 80) return AppLocalizations.of(context).landingGradeHigh;
+    if (score >= 50) return AppLocalizations.of(context).adminSuspicious;
+    return AppLocalizations.of(context).adminDanger;
   }
 
   Color get _gradeColor {
@@ -78,7 +79,7 @@ class _TrustBadgeRow extends StatelessWidget {
         Icon(Icons.shield, color: _gradeColor, size: 16),
         const SizedBox(width: AppSpacing.xxs),
         Text(
-          _gradeLabel,
+          _gradeLabel(context),
           style: AppTextStyles.labelLarge.copyWith(color: _gradeColor),
         ),
         const SizedBox(width: AppSpacing.xs),
@@ -92,7 +93,11 @@ class _TrustBadgeRow extends StatelessWidget {
             borderRadius: BorderRadius.circular(AppRadius.xs),
           ),
           child: Text(
-            score != null ? 'RTI 신뢰도 $score%' : 'RTI 신뢰도 분석 중',
+            score != null
+                ? AppLocalizations.of(
+                    context,
+                  ).landingRtiReliabilityScore(score.toString())
+                : AppLocalizations.of(context).landingRtiAnalyzing,
             style: AppTextStyles.caption.copyWith(
               color: _gradeColor,
               fontWeight: FontWeight.w600,
@@ -146,7 +151,9 @@ class _ProductCard extends StatelessWidget {
                 ],
                 const SizedBox(height: AppSpacing.xs),
                 Text(
-                  '${_formatPrice(product!.price)}원',
+                  AppLocalizations.of(
+                    context,
+                  ).extProductPrice(_formatPrice(product!.price)),
                   style: AppTextStyles.bodyMedium.copyWith(
                     fontWeight: FontWeight.w700,
                   ),
@@ -154,7 +161,9 @@ class _ProductCard extends StatelessWidget {
                 if (product!.reviewCount != null) ...[
                   const SizedBox(height: AppSpacing.xxs),
                   Text(
-                    '리뷰 ${product!.reviewCount}개',
+                    AppLocalizations.of(
+                      context,
+                    ).extProductReviewCount(product!.reviewCount!),
                     style: AppTextStyles.caption.copyWith(
                       color: AppColors.textTertiary,
                     ),
@@ -237,7 +246,6 @@ class _ProductCardSkeleton extends StatelessWidget {
 class _RtiSummarySection extends StatelessWidget {
   const _RtiSummarySection();
 
-  static const _labels = ['신뢰 높음', '광고 패턴 낮음', '반복 문구 적음', '이상 징후 없음'];
   static const _icons = [
     Icons.verified_user_outlined,
     Icons.trending_down,
@@ -253,6 +261,12 @@ class _RtiSummarySection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final labels = [
+      AppLocalizations.of(context).landingGradeHigh,
+      AppLocalizations.of(context).landingSummaryLowAd,
+      AppLocalizations.of(context).landingSummaryFewRepeats,
+      AppLocalizations.of(context).landingSummaryNoAnomalies,
+    ];
     return Container(
       decoration: BoxDecoration(
         color: AppColors.surface,
@@ -265,7 +279,10 @@ class _RtiSummarySection extends StatelessWidget {
         children: [
           Row(
             children: [
-              Text('Re:view 분석 요약', style: AppTextStyles.labelLarge),
+              Text(
+                AppLocalizations.of(context).landingAnalysisSummary,
+                style: AppTextStyles.labelLarge,
+              ),
               const SizedBox(width: AppSpacing.xxs),
               const Icon(
                 Icons.info_outline,
@@ -277,14 +294,14 @@ class _RtiSummarySection extends StatelessWidget {
           const SizedBox(height: AppSpacing.md),
           Row(
             children: [
-              for (var i = 0; i < _labels.length; i++)
+              for (var i = 0; i < labels.length; i++)
                 Expanded(
                   child: Column(
                     children: [
                       Icon(_icons[i], color: _colors[i], size: 22),
                       const SizedBox(height: AppSpacing.xxs),
                       Text(
-                        _labels[i],
+                        labels[i],
                         style: AppTextStyles.caption.copyWith(
                           color: AppColors.textSecondary,
                         ),
@@ -315,7 +332,7 @@ class _RtiDisclaimer extends StatelessWidget {
         const SizedBox(width: AppSpacing.xxs),
         Expanded(
           child: Text(
-            '실제 사용자 리뷰를 기반으로 분석하여\n광고성/조작 신호는 필터링되어 분석에 반영됩니다.',
+            AppLocalizations.of(context).landingAnalysisDisclaimer,
             style: AppTextStyles.caption,
           ),
         ),

@@ -2622,4 +2622,62 @@ class AppLocalizationsKo extends AppLocalizations {
   String homeBannerTrustLabel(String badge) {
     return '$badge\n신뢰도 확인';
   }
+
+  @override
+  String get landingHomeTooltip => '홈으로';
+
+  @override
+  String get landingFeatureRti => 'RTI 기반';
+
+  @override
+  String get landingFeatureAdPatterns => '광고성 패턴 분석';
+
+  @override
+  String get landingFeatureEvidence => '판별 근거 제공';
+
+  @override
+  String get landingHeroDescription =>
+      '상품별 리뷰를 분석하고, RTI로 판단한 신뢰 지수를 제공해\n더 믿을 수 있는 구매 결정을 도와드려요.';
+
+  @override
+  String get landingHeroHeadline => '가짜 리뷰에 흔들리지 않는\n더 똑똑한 쇼핑, ';
+
+  @override
+  String get landingStart => '시작하기';
+
+  @override
+  String get landingLearnRti => 'RTI 알아보기';
+
+  @override
+  String get landingCloseHint => '언제든 닫고 홈으로 이동할 수 있어요';
+
+  @override
+  String get landingGradeHigh => '신뢰 높음';
+
+  @override
+  String landingRtiReliabilityScore(String score) {
+    return 'RTI 신뢰도 $score%';
+  }
+
+  @override
+  String get landingRtiAnalyzing => 'RTI 신뢰도 분석 중';
+
+  @override
+  String get landingSummaryLowAd => '광고 패턴 낮음';
+
+  @override
+  String get landingSummaryFewRepeats => '반복 문구 적음';
+
+  @override
+  String get landingSummaryNoAnomalies => '이상 징후 없음';
+
+  @override
+  String get landingAnalysisSummary => 'Re:view 분석 요약';
+
+  @override
+  String get landingAnalysisDisclaimer =>
+      '실제 사용자 리뷰를 기반으로 분석하여\n광고성/조작 신호는 필터링되어 분석에 반영됩니다.';
+
+  @override
+  String get settingsEditInterests => '관심 카테고리·알림 설정 다시 편집';
 }

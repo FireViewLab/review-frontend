@@ -2597,4 +2597,61 @@ class AppLocalizationsZh extends AppLocalizations {
   String homeBannerTrustLabel(String badge) {
     return '$badge\n查看可信度';
   }
+
+  @override
+  String get landingHomeTooltip => '返回首页';
+
+  @override
+  String get landingFeatureRti => '基于 RTI';
+
+  @override
+  String get landingFeatureAdPatterns => '广告模式分析';
+
+  @override
+  String get landingFeatureEvidence => '提供判断依据';
+
+  @override
+  String get landingHeroDescription =>
+      '我们分析商品评价，并提供基于 RTI 的可信度指数，\n帮助您做出更可靠的购买决策。';
+
+  @override
+  String get landingHeroHeadline => '不被虚假评价左右，\n更明智的购物选择，';
+
+  @override
+  String get landingStart => '开始使用';
+
+  @override
+  String get landingLearnRti => '了解 RTI';
+
+  @override
+  String get landingCloseHint => '您可以随时关闭并返回首页';
+
+  @override
+  String get landingGradeHigh => '可信度高';
+
+  @override
+  String landingRtiReliabilityScore(String score) {
+    return 'RTI 可信度 $score%';
+  }
+
+  @override
+  String get landingRtiAnalyzing => '正在分析 RTI 可信度';
+
+  @override
+  String get landingSummaryLowAd => '广告模式较少';
+
+  @override
+  String get landingSummaryFewRepeats => '重复措辞较少';
+
+  @override
+  String get landingSummaryNoAnomalies => '未见异常迹象';
+
+  @override
+  String get landingAnalysisSummary => 'Re:view 分析摘要';
+
+  @override
+  String get landingAnalysisDisclaimer => '分析基于真实用户评价，\n广告或操纵信号会被筛选并纳入分析。';
+
+  @override
+  String get settingsEditInterests => '重新编辑感兴趣的分类和通知设置';
 }

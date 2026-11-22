@@ -1,3 +1,4 @@
+import 'package:re_view_front/l10n/generated/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:re_view_front/app/theme/app_colors.dart';
 import 'package:re_view_front/app/theme/app_spacing.dart';
@@ -14,14 +15,19 @@ class LandingHeroSection extends StatelessWidget {
   final VoidCallback onStartPressed;
   final VoidCallback onRtiInfoPressed;
 
-  static const _features = [
-    (Icons.shield_outlined, 'RTI 기반'),
-    (Icons.bar_chart_outlined, '광고성 패턴 분석'),
-    (Icons.list_alt_outlined, '판별 근거 제공'),
-  ];
-
   @override
   Widget build(BuildContext context) {
+    final features = [
+      (Icons.shield_outlined, AppLocalizations.of(context).landingFeatureRti),
+      (
+        Icons.bar_chart_outlined,
+        AppLocalizations.of(context).landingFeatureAdPatterns,
+      ),
+      (
+        Icons.list_alt_outlined,
+        AppLocalizations.of(context).landingFeatureEvidence,
+      ),
+    ];
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisSize: MainAxisSize.min,
@@ -31,7 +37,7 @@ class LandingHeroSection extends StatelessWidget {
         _Headline(),
         const SizedBox(height: AppSpacing.md),
         Text(
-          '상품별 리뷰를 분석하고, RTI로 판단한 신뢰 지수를 제공해\n더 믿을 수 있는 구매 결정을 도와드려요.',
+          AppLocalizations.of(context).landingHeroDescription,
           style: AppTextStyles.bodyLarge.copyWith(
             color: AppColors.textSecondary,
             height: 1.6,
@@ -42,7 +48,7 @@ class LandingHeroSection extends StatelessWidget {
           spacing: AppSpacing.xs,
           runSpacing: AppSpacing.xs,
           children: [
-            for (final (icon, label) in _features)
+            for (final (icon, label) in features)
               _FeatureChip(icon: icon, label: label),
           ],
         ),
@@ -85,8 +91,8 @@ class _Headline extends StatelessWidget {
     return RichText(
       text: TextSpan(
         style: AppTextStyles.headlineSmall,
-        children: const [
-          TextSpan(text: '가짜 리뷰에 흔들리지 않는\n더 똑똑한 쇼핑, '),
+        children: [
+          TextSpan(text: AppLocalizations.of(context).landingHeroHeadline),
           TextSpan(
             text: 'Re:view',
             style: TextStyle(color: AppColors.primary),
@@ -146,12 +152,15 @@ class _CtaRow extends StatelessWidget {
       children: [
         SizedBox(
           height: 52,
-          child: AppButton(label: '시작하기', onPressed: onStartPressed),
+          child: AppButton(
+            label: AppLocalizations.of(context).landingStart,
+            onPressed: onStartPressed,
+          ),
         ),
         SizedBox(
           height: 52,
           child: AppButton(
-            label: 'RTI 알아보기',
+            label: AppLocalizations.of(context).landingLearnRti,
             onPressed: onRtiInfoPressed,
             variant: AppButtonVariant.outlined,
           ),
@@ -169,7 +178,10 @@ class _CloseHint extends StatelessWidget {
       spacing: AppSpacing.xxs,
       children: [
         const Icon(Icons.lock_outline, size: 13, color: AppColors.textTertiary),
-        Text('언제든 닫고 홈으로 이동할 수 있어요', style: AppTextStyles.caption),
+        Text(
+          AppLocalizations.of(context).landingCloseHint,
+          style: AppTextStyles.caption,
+        ),
       ],
     );
   }

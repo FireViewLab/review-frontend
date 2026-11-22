@@ -2618,4 +2618,62 @@ class AppLocalizationsJa extends AppLocalizations {
   String homeBannerTrustLabel(String badge) {
     return '$badge\n信頼度を確認';
   }
+
+  @override
+  String get landingHomeTooltip => 'ホームへ';
+
+  @override
+  String get landingFeatureRti => 'RTIベース';
+
+  @override
+  String get landingFeatureAdPatterns => '広告パターン分析';
+
+  @override
+  String get landingFeatureEvidence => '判定の根拠を提示';
+
+  @override
+  String get landingHeroDescription =>
+      '商品ごとのレビューを分析し、RTIによる信頼度指数を提供して\nより信頼できる購入判断をお手伝いします。';
+
+  @override
+  String get landingHeroHeadline => '偽レビューに惑わされない\nもっと賢いショッピング、';
+
+  @override
+  String get landingStart => 'はじめる';
+
+  @override
+  String get landingLearnRti => 'RTIについて';
+
+  @override
+  String get landingCloseHint => 'いつでも閉じてホームへ移動できます';
+
+  @override
+  String get landingGradeHigh => '信頼度が高い';
+
+  @override
+  String landingRtiReliabilityScore(String score) {
+    return 'RTI信頼度 $score%';
+  }
+
+  @override
+  String get landingRtiAnalyzing => 'RTI信頼度を分析中';
+
+  @override
+  String get landingSummaryLowAd => '広告パターンが少ない';
+
+  @override
+  String get landingSummaryFewRepeats => '繰り返し表現が少ない';
+
+  @override
+  String get landingSummaryNoAnomalies => '異常の兆候なし';
+
+  @override
+  String get landingAnalysisSummary => 'Re:view分析サマリー';
+
+  @override
+  String get landingAnalysisDisclaimer =>
+      '実際のユーザーレビューを基に分析し、\n広告・操作の兆候をフィルタリングして分析に反映します。';
+
+  @override
+  String get settingsEditInterests => '興味のあるカテゴリー・通知設定を再編集';
 }

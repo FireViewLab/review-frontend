@@ -2732,4 +2732,64 @@ class AppLocalizationsEn extends AppLocalizations {
   String homeBannerTrustLabel(String badge) {
     return '$badge\nCheck trust';
   }
+
+  @override
+  String get landingHomeTooltip => 'Go home';
+
+  @override
+  String get landingFeatureRti => 'RTI-based';
+
+  @override
+  String get landingFeatureAdPatterns => 'Ad pattern analysis';
+
+  @override
+  String get landingFeatureEvidence => 'Evidence behind the assessment';
+
+  @override
+  String get landingHeroDescription =>
+      'We analyze product reviews and provide an RTI trust index\nto help you make more confident purchase decisions.';
+
+  @override
+  String get landingHeroHeadline =>
+      'Smarter shopping,\nunswayed by fake reviews, ';
+
+  @override
+  String get landingStart => 'Get started';
+
+  @override
+  String get landingLearnRti => 'Learn about RTI';
+
+  @override
+  String get landingCloseHint => 'You can close this and go home at any time';
+
+  @override
+  String get landingGradeHigh => 'High trust';
+
+  @override
+  String landingRtiReliabilityScore(String score) {
+    return 'RTI trust $score%';
+  }
+
+  @override
+  String get landingRtiAnalyzing => 'Analyzing RTI trust';
+
+  @override
+  String get landingSummaryLowAd => 'Few ad patterns';
+
+  @override
+  String get landingSummaryFewRepeats => 'Few repeated phrases';
+
+  @override
+  String get landingSummaryNoAnomalies => 'No anomalies';
+
+  @override
+  String get landingAnalysisSummary => 'Re:view analysis summary';
+
+  @override
+  String get landingAnalysisDisclaimer =>
+      'Analysis is based on real user reviews.\nAdvertising and manipulation signals are filtered in the analysis.';
+
+  @override
+  String get settingsEditInterests =>
+      'Edit category interests and notifications again';
 }

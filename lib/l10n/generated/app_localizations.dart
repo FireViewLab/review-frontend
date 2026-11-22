@@ -5039,6 +5039,114 @@ abstract class AppLocalizations {
   /// In ko, this message translates to:
   /// **'{badge}\n신뢰도 확인'**
   String homeBannerTrustLabel(String badge);
+
+  /// No description provided for @landingHomeTooltip.
+  ///
+  /// In ko, this message translates to:
+  /// **'홈으로'**
+  String get landingHomeTooltip;
+
+  /// No description provided for @landingFeatureRti.
+  ///
+  /// In ko, this message translates to:
+  /// **'RTI 기반'**
+  String get landingFeatureRti;
+
+  /// No description provided for @landingFeatureAdPatterns.
+  ///
+  /// In ko, this message translates to:
+  /// **'광고성 패턴 분석'**
+  String get landingFeatureAdPatterns;
+
+  /// No description provided for @landingFeatureEvidence.
+  ///
+  /// In ko, this message translates to:
+  /// **'판별 근거 제공'**
+  String get landingFeatureEvidence;
+
+  /// No description provided for @landingHeroDescription.
+  ///
+  /// In ko, this message translates to:
+  /// **'상품별 리뷰를 분석하고, RTI로 판단한 신뢰 지수를 제공해\n더 믿을 수 있는 구매 결정을 도와드려요.'**
+  String get landingHeroDescription;
+
+  /// No description provided for @landingHeroHeadline.
+  ///
+  /// In ko, this message translates to:
+  /// **'가짜 리뷰에 흔들리지 않는\n더 똑똑한 쇼핑, '**
+  String get landingHeroHeadline;
+
+  /// No description provided for @landingStart.
+  ///
+  /// In ko, this message translates to:
+  /// **'시작하기'**
+  String get landingStart;
+
+  /// No description provided for @landingLearnRti.
+  ///
+  /// In ko, this message translates to:
+  /// **'RTI 알아보기'**
+  String get landingLearnRti;
+
+  /// No description provided for @landingCloseHint.
+  ///
+  /// In ko, this message translates to:
+  /// **'언제든 닫고 홈으로 이동할 수 있어요'**
+  String get landingCloseHint;
+
+  /// No description provided for @landingGradeHigh.
+  ///
+  /// In ko, this message translates to:
+  /// **'신뢰 높음'**
+  String get landingGradeHigh;
+
+  /// No description provided for @landingRtiReliabilityScore.
+  ///
+  /// In ko, this message translates to:
+  /// **'RTI 신뢰도 {score}%'**
+  String landingRtiReliabilityScore(String score);
+
+  /// No description provided for @landingRtiAnalyzing.
+  ///
+  /// In ko, this message translates to:
+  /// **'RTI 신뢰도 분석 중'**
+  String get landingRtiAnalyzing;
+
+  /// No description provided for @landingSummaryLowAd.
+  ///
+  /// In ko, this message translates to:
+  /// **'광고 패턴 낮음'**
+  String get landingSummaryLowAd;
+
+  /// No description provided for @landingSummaryFewRepeats.
+  ///
+  /// In ko, this message translates to:
+  /// **'반복 문구 적음'**
+  String get landingSummaryFewRepeats;
+
+  /// No description provided for @landingSummaryNoAnomalies.
+  ///
+  /// In ko, this message translates to:
+  /// **'이상 징후 없음'**
+  String get landingSummaryNoAnomalies;
+
+  /// No description provided for @landingAnalysisSummary.
+  ///
+  /// In ko, this message translates to:
+  /// **'Re:view 분석 요약'**
+  String get landingAnalysisSummary;
+
+  /// No description provided for @landingAnalysisDisclaimer.
+  ///
+  /// In ko, this message translates to:
+  /// **'실제 사용자 리뷰를 기반으로 분석하여\n광고성/조작 신호는 필터링되어 분석에 반영됩니다.'**
+  String get landingAnalysisDisclaimer;
+
+  /// No description provided for @settingsEditInterests.
+  ///
+  /// In ko, this message translates to:
+  /// **'관심 카테고리·알림 설정 다시 편집'**
+  String get settingsEditInterests;
 }
 
 class _AppLocalizationsDelegate
