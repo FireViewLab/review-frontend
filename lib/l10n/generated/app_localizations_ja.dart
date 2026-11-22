@@ -2676,4 +2676,169 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String get settingsEditInterests => '興味のあるカテゴリー・通知設定を再編集';
+
+  @override
+  String get homeCategoryBenefitReviewBased => 'レビューデータに基づくおすすめ';
+
+  @override
+  String get homeCategoryBenefitRtiRanking => 'RTIランキングを確認';
+
+  @override
+  String get homeCategoryBenefitFastShippingProducts => '配送が早い商品';
+
+  @override
+  String get homeCategoryBenefitAllOffers => '特典をまとめて見る';
+
+  @override
+  String get homeCategoryBenefitSize => 'サイズのおすすめ';
+
+  @override
+  String get homeCategoryBenefitStyle => 'スタイルのおすすめ';
+
+  @override
+  String get homeCategoryBenefitGenderDeals => '性別ごとのお得情報';
+
+  @override
+  String get homeCategoryBenefitGifts => '人気のギフト';
+
+  @override
+  String get homeCategoryBenefitAuthenticityCheck => '正規品認証';
+
+  @override
+  String get homeCategoryBenefitBrandEvents => 'ブランド特集';
+
+  @override
+  String get homeCategoryBenefitGiftWrapping => 'ギフト包装サービス';
+
+  @override
+  String get homeCategoryBenefitFreeReturns => '返品無料';
+
+  @override
+  String get homeCategoryBenefitIngredients => '成分で探す';
+
+  @override
+  String get homeCategoryBenefitSkinType => '肌タイプ別のおすすめ';
+
+  @override
+  String get homeCategoryBenefitReviewRanking => 'レビューランキング';
+
+  @override
+  String get homeCategoryBenefitSamples => 'サンプル体験';
+
+  @override
+  String get homeCategoryBenefitDawnDelivery => '早朝配送';
+
+  @override
+  String get homeCategoryBenefitBulkDiscount => '大容量割引';
+
+  @override
+  String get homeCategoryBenefitReviewFavorites => 'レビューで人気の商品';
+
+  @override
+  String get homeCategoryBenefitSubscriptions => '定期配送';
+
+  @override
+  String get homeCategoryBenefitTodayDeals => '今日の特価';
+
+  @override
+  String get homeCategoryBenefitHousewarming => '引っ越し祝いのおすすめ';
+
+  @override
+  String get homeCategoryBenefitFastShipping => 'スピード配送';
+
+  @override
+  String get homeCategoryBenefitByRoom => '空間別のおすすめ';
+
+  @override
+  String get homeCategoryBenefitPopularInteriors => '人気のインテリア';
+
+  @override
+  String get homeCategoryBenefitInstallation => '設置サービス';
+
+  @override
+  String get homeCategoryBenefitSeasonalDecor => '季節のデコレーション';
+
+  @override
+  String get homeCategoryBenefitBeginners => '初心者向けのおすすめ';
+
+  @override
+  String get homeCategoryBenefitTopGear => '人気の用具';
+
+  @override
+  String get homeCategoryBenefitSeasonalOutdoors => '季節のアウトドア用品';
+
+  @override
+  String get homeCategoryBenefitQuickCompare => 'かんたん比較';
+
+  @override
+  String get homeCategoryBenefitCarCare => 'カーケアの必需品';
+
+  @override
+  String get homeCategoryBenefitMaintenance => 'メンテナンス用品のおすすめ';
+
+  @override
+  String get homeCategoryBenefitBrandDeals => 'ブランド特価';
+
+  @override
+  String get homeCategoryBenefitSafetyGear => '安全用品をまとめて見る';
+
+  @override
+  String get homeCategoryBenefitParenting => '育児の必需品';
+
+  @override
+  String get homeCategoryBenefitByAge => '年齢別のおすすめ';
+
+  @override
+  String get homeCategoryBenefitSafetyCertification => '安全認証';
+
+  @override
+  String get homeCategoryBenefitSpecialOffers => '特集';
+
+  @override
+  String get homeCategoryBenefitPopularTreats => '人気のおやつ';
+
+  @override
+  String get homeCategoryBenefitVetPicks => '獣医師のおすすめ';
+
+  @override
+  String get homeCategoryBenefitPetPersonalized => 'うちの子にぴったり';
+
+  @override
+  String get homeCategoryBenefitMerchandiserPicks => 'MDのおすすめ';
+
+  @override
+  String get homeCategoryBenefitPreorders => '予約販売';
+
+  @override
+  String get homeCategoryBenefitLimitedMerch => '限定グッズ';
+
+  @override
+  String get homeCategoryBenefitBestsellers => 'ベストセラー';
+
+  @override
+  String get homeCategoryBenefitTravelChecklist => '旅行準備チェックリスト';
+
+  @override
+  String get homeCategoryBenefitPopularStays => '人気の宿泊施設';
+
+  @override
+  String get homeCategoryBenefitDiscountTickets => '割引チケット';
+
+  @override
+  String get homeCategoryBenefitSubscriptionOffers => 'サブスクリプション特典';
+
+  @override
+  String get homeCategoryBenefitAuthenticityGuarantee => '正規品保証';
+
+  @override
+  String get homeCategoryBenefitBrandWeek => 'ブランドウィーク';
+
+  @override
+  String get homeCategoryBenefitPremiumOffers => 'プレミアム特典';
+
+  @override
+  String get homeCategoryBenefitExclusiveOffers => '限定オファー';
+
+  @override
+  String get homeCategoryRecommendedLabel => 'おすすめ';
 }

@@ -2680,4 +2680,169 @@ class AppLocalizationsKo extends AppLocalizations {
 
   @override
   String get settingsEditInterests => '관심 카테고리·알림 설정 다시 편집';
+
+  @override
+  String get homeCategoryBenefitReviewBased => '리뷰 데이터 기반 추천';
+
+  @override
+  String get homeCategoryBenefitRtiRanking => 'RTI 랭킹 확인';
+
+  @override
+  String get homeCategoryBenefitFastShippingProducts => '빠른 배송 상품';
+
+  @override
+  String get homeCategoryBenefitAllOffers => '혜택 모아보기';
+
+  @override
+  String get homeCategoryBenefitSize => '사이즈 추천';
+
+  @override
+  String get homeCategoryBenefitStyle => '스타일 추천';
+
+  @override
+  String get homeCategoryBenefitGenderDeals => '성별 핫딜';
+
+  @override
+  String get homeCategoryBenefitGifts => '베스트 선물';
+
+  @override
+  String get homeCategoryBenefitAuthenticityCheck => '정품 인증';
+
+  @override
+  String get homeCategoryBenefitBrandEvents => '브랜드 기획전';
+
+  @override
+  String get homeCategoryBenefitGiftWrapping => '선물 포장 서비스';
+
+  @override
+  String get homeCategoryBenefitFreeReturns => '무료 반품';
+
+  @override
+  String get homeCategoryBenefitIngredients => '성분으로 찾기';
+
+  @override
+  String get homeCategoryBenefitSkinType => '피부 타입 추천';
+
+  @override
+  String get homeCategoryBenefitReviewRanking => '리뷰 랭킹';
+
+  @override
+  String get homeCategoryBenefitSamples => '샘플 체험';
+
+  @override
+  String get homeCategoryBenefitDawnDelivery => '새벽배송';
+
+  @override
+  String get homeCategoryBenefitBulkDiscount => '대용량 할인';
+
+  @override
+  String get homeCategoryBenefitReviewFavorites => '리뷰 인기상품';
+
+  @override
+  String get homeCategoryBenefitSubscriptions => '정기배송';
+
+  @override
+  String get homeCategoryBenefitTodayDeals => '오늘의 특가';
+
+  @override
+  String get homeCategoryBenefitHousewarming => '집들이 추천';
+
+  @override
+  String get homeCategoryBenefitFastShipping => '빠른배송';
+
+  @override
+  String get homeCategoryBenefitByRoom => '공간별 추천';
+
+  @override
+  String get homeCategoryBenefitPopularInteriors => '인기 인테리어';
+
+  @override
+  String get homeCategoryBenefitInstallation => '설치 서비스';
+
+  @override
+  String get homeCategoryBenefitSeasonalDecor => '시즌 데코';
+
+  @override
+  String get homeCategoryBenefitBeginners => '입문자 추천';
+
+  @override
+  String get homeCategoryBenefitTopGear => '베스트 장비';
+
+  @override
+  String get homeCategoryBenefitSeasonalOutdoors => '시즌 아웃도어';
+
+  @override
+  String get homeCategoryBenefitQuickCompare => '빠른 비교';
+
+  @override
+  String get homeCategoryBenefitCarCare => '차량관리 필수템';
+
+  @override
+  String get homeCategoryBenefitMaintenance => '정비용품 추천';
+
+  @override
+  String get homeCategoryBenefitBrandDeals => '브랜드 특가';
+
+  @override
+  String get homeCategoryBenefitSafetyGear => '안전장비 모음';
+
+  @override
+  String get homeCategoryBenefitParenting => '육아 필수템';
+
+  @override
+  String get homeCategoryBenefitByAge => '연령별 추천';
+
+  @override
+  String get homeCategoryBenefitSafetyCertification => '안전인증';
+
+  @override
+  String get homeCategoryBenefitSpecialOffers => '기획전';
+
+  @override
+  String get homeCategoryBenefitPopularTreats => '인기 간식';
+
+  @override
+  String get homeCategoryBenefitVetPicks => '수의사 추천';
+
+  @override
+  String get homeCategoryBenefitPetPersonalized => '우리 아이 맞춤';
+
+  @override
+  String get homeCategoryBenefitMerchandiserPicks => 'MD 추천';
+
+  @override
+  String get homeCategoryBenefitPreorders => '예약판매';
+
+  @override
+  String get homeCategoryBenefitLimitedMerch => '한정판 굿즈';
+
+  @override
+  String get homeCategoryBenefitBestsellers => '베스트셀러';
+
+  @override
+  String get homeCategoryBenefitTravelChecklist => '여행 준비 체크리스트';
+
+  @override
+  String get homeCategoryBenefitPopularStays => '인기 숙소';
+
+  @override
+  String get homeCategoryBenefitDiscountTickets => '할인 티켓';
+
+  @override
+  String get homeCategoryBenefitSubscriptionOffers => '구독 혜택';
+
+  @override
+  String get homeCategoryBenefitAuthenticityGuarantee => '정품 보증';
+
+  @override
+  String get homeCategoryBenefitBrandWeek => '브랜드 위크';
+
+  @override
+  String get homeCategoryBenefitPremiumOffers => '프리미엄 혜택';
+
+  @override
+  String get homeCategoryBenefitExclusiveOffers => '단독 오퍼';
+
+  @override
+  String get homeCategoryRecommendedLabel => '추천';
 }

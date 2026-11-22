@@ -99,14 +99,14 @@ class HomeHeaderPopularCategoryAndPickPreview extends StatelessWidget {
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              for (final item in _pickItems.take(4)) ...[
+              for (final item in _pickItems(context).take(4)) ...[
                 Expanded(
                   child: HomeHeaderCategoryPickCard(
                     item: item,
                     onTap: () => onCategorySelected(item.searchLabel),
                   ),
                 ),
-                if (item != _pickItems.take(4).last)
+                if (item != _pickItems(context).take(4).last)
                   const SizedBox(width: AppSpacing.xs),
               ],
             ],
@@ -116,11 +116,16 @@ class HomeHeaderPopularCategoryAndPickPreview extends StatelessWidget {
     );
   }
 
-  List<HomeHeaderCategoryPickItem> get _pickItems {
+  List<HomeHeaderCategoryPickItem> _pickItems(BuildContext context) {
     if (products.isNotEmpty) {
       return [
         for (final product in products.take(4))
-          HomeHeaderCategoryPickItem.product(product),
+          HomeHeaderCategoryPickItem.product(
+            product,
+            fallbackLabel: AppLocalizations.of(
+              context,
+            ).homeCategoryRecommendedLabel,
+          ),
       ];
     }
 
@@ -274,10 +279,13 @@ class HomeHeaderCategoryPickItem {
     required this.searchLabel,
   });
 
-  factory HomeHeaderCategoryPickItem.product(HomeProductData product) {
+  factory HomeHeaderCategoryPickItem.product(
+    HomeProductData product, {
+    required String fallbackLabel,
+  }) {
     return HomeHeaderCategoryPickItem(
       title: product.name,
-      categoryLabel: product.label.isEmpty ? '추천' : product.label,
+      categoryLabel: product.label.isEmpty ? fallbackLabel : product.label,
       imageUrl: product.imageUrl.isEmpty
           ? _fallbackAssetPathForProduct(product)
           : product.imageUrl,

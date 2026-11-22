@@ -2792,4 +2792,173 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get settingsEditInterests =>
       'Edit category interests and notifications again';
+
+  @override
+  String get homeCategoryBenefitReviewBased => 'Review-based recommendations';
+
+  @override
+  String get homeCategoryBenefitRtiRanking => 'View RTI rankings';
+
+  @override
+  String get homeCategoryBenefitFastShippingProducts =>
+      'Fast-shipping products';
+
+  @override
+  String get homeCategoryBenefitAllOffers => 'Browse offers';
+
+  @override
+  String get homeCategoryBenefitSize => 'Size recommendations';
+
+  @override
+  String get homeCategoryBenefitStyle => 'Style recommendations';
+
+  @override
+  String get homeCategoryBenefitGenderDeals => 'Deals by gender';
+
+  @override
+  String get homeCategoryBenefitGifts => 'Top gifts';
+
+  @override
+  String get homeCategoryBenefitAuthenticityCheck =>
+      'Authenticity verification';
+
+  @override
+  String get homeCategoryBenefitBrandEvents => 'Brand showcases';
+
+  @override
+  String get homeCategoryBenefitGiftWrapping => 'Gift wrapping';
+
+  @override
+  String get homeCategoryBenefitFreeReturns => 'Free returns';
+
+  @override
+  String get homeCategoryBenefitIngredients => 'Search by ingredient';
+
+  @override
+  String get homeCategoryBenefitSkinType => 'Skin type recommendations';
+
+  @override
+  String get homeCategoryBenefitReviewRanking => 'Review ranking';
+
+  @override
+  String get homeCategoryBenefitSamples => 'Try samples';
+
+  @override
+  String get homeCategoryBenefitDawnDelivery => 'Early-morning delivery';
+
+  @override
+  String get homeCategoryBenefitBulkDiscount => 'Bulk discounts';
+
+  @override
+  String get homeCategoryBenefitReviewFavorites => 'Review favorites';
+
+  @override
+  String get homeCategoryBenefitSubscriptions => 'Subscription delivery';
+
+  @override
+  String get homeCategoryBenefitTodayDeals => 'Today\'s deals';
+
+  @override
+  String get homeCategoryBenefitHousewarming => 'Housewarming picks';
+
+  @override
+  String get homeCategoryBenefitFastShipping => 'Fast shipping';
+
+  @override
+  String get homeCategoryBenefitByRoom => 'Picks by room';
+
+  @override
+  String get homeCategoryBenefitPopularInteriors => 'Popular interiors';
+
+  @override
+  String get homeCategoryBenefitInstallation => 'Installation service';
+
+  @override
+  String get homeCategoryBenefitSeasonalDecor => 'Seasonal decor';
+
+  @override
+  String get homeCategoryBenefitBeginners => 'Beginner picks';
+
+  @override
+  String get homeCategoryBenefitTopGear => 'Top equipment';
+
+  @override
+  String get homeCategoryBenefitSeasonalOutdoors => 'Seasonal outdoor gear';
+
+  @override
+  String get homeCategoryBenefitQuickCompare => 'Quick comparison';
+
+  @override
+  String get homeCategoryBenefitCarCare => 'Car-care essentials';
+
+  @override
+  String get homeCategoryBenefitMaintenance => 'Maintenance picks';
+
+  @override
+  String get homeCategoryBenefitBrandDeals => 'Brand deals';
+
+  @override
+  String get homeCategoryBenefitSafetyGear => 'Safety equipment';
+
+  @override
+  String get homeCategoryBenefitParenting => 'Parenting essentials';
+
+  @override
+  String get homeCategoryBenefitByAge => 'Picks by age';
+
+  @override
+  String get homeCategoryBenefitSafetyCertification => 'Safety certification';
+
+  @override
+  String get homeCategoryBenefitSpecialOffers => 'Special offers';
+
+  @override
+  String get homeCategoryBenefitPopularTreats => 'Popular treats';
+
+  @override
+  String get homeCategoryBenefitVetPicks => 'Veterinarian picks';
+
+  @override
+  String get homeCategoryBenefitPetPersonalized => 'Tailored to your pet';
+
+  @override
+  String get homeCategoryBenefitMerchandiserPicks => 'Merchandiser picks';
+
+  @override
+  String get homeCategoryBenefitPreorders => 'Preorders';
+
+  @override
+  String get homeCategoryBenefitLimitedMerch => 'Limited-edition merchandise';
+
+  @override
+  String get homeCategoryBenefitBestsellers => 'Bestsellers';
+
+  @override
+  String get homeCategoryBenefitTravelChecklist =>
+      'Travel preparation checklist';
+
+  @override
+  String get homeCategoryBenefitPopularStays => 'Popular stays';
+
+  @override
+  String get homeCategoryBenefitDiscountTickets => 'Discount tickets';
+
+  @override
+  String get homeCategoryBenefitSubscriptionOffers => 'Subscription benefits';
+
+  @override
+  String get homeCategoryBenefitAuthenticityGuarantee =>
+      'Authenticity guarantee';
+
+  @override
+  String get homeCategoryBenefitBrandWeek => 'Brand week';
+
+  @override
+  String get homeCategoryBenefitPremiumOffers => 'Premium benefits';
+
+  @override
+  String get homeCategoryBenefitExclusiveOffers => 'Exclusive offers';
+
+  @override
+  String get homeCategoryRecommendedLabel => 'Recommended';
 }

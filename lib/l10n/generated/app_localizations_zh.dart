@@ -2654,4 +2654,169 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get settingsEditInterests => '重新编辑感兴趣的分类和通知设置';
+
+  @override
+  String get homeCategoryBenefitReviewBased => '基于评价数据的推荐';
+
+  @override
+  String get homeCategoryBenefitRtiRanking => '查看 RTI 排行';
+
+  @override
+  String get homeCategoryBenefitFastShippingProducts => '快速配送商品';
+
+  @override
+  String get homeCategoryBenefitAllOffers => '查看所有优惠';
+
+  @override
+  String get homeCategoryBenefitSize => '尺码推荐';
+
+  @override
+  String get homeCategoryBenefitStyle => '风格推荐';
+
+  @override
+  String get homeCategoryBenefitGenderDeals => '按性别精选优惠';
+
+  @override
+  String get homeCategoryBenefitGifts => '热门礼物';
+
+  @override
+  String get homeCategoryBenefitAuthenticityCheck => '正品认证';
+
+  @override
+  String get homeCategoryBenefitBrandEvents => '品牌专场';
+
+  @override
+  String get homeCategoryBenefitGiftWrapping => '礼品包装服务';
+
+  @override
+  String get homeCategoryBenefitFreeReturns => '免费退货';
+
+  @override
+  String get homeCategoryBenefitIngredients => '按成分查找';
+
+  @override
+  String get homeCategoryBenefitSkinType => '按肤质推荐';
+
+  @override
+  String get homeCategoryBenefitReviewRanking => '评价排行';
+
+  @override
+  String get homeCategoryBenefitSamples => '试用体验';
+
+  @override
+  String get homeCategoryBenefitDawnDelivery => '清晨配送';
+
+  @override
+  String get homeCategoryBenefitBulkDiscount => '大包装优惠';
+
+  @override
+  String get homeCategoryBenefitReviewFavorites => '评价热门商品';
+
+  @override
+  String get homeCategoryBenefitSubscriptions => '定期配送';
+
+  @override
+  String get homeCategoryBenefitTodayDeals => '今日特惠';
+
+  @override
+  String get homeCategoryBenefitHousewarming => '乔迁好物推荐';
+
+  @override
+  String get homeCategoryBenefitFastShipping => '快速配送';
+
+  @override
+  String get homeCategoryBenefitByRoom => '按空间推荐';
+
+  @override
+  String get homeCategoryBenefitPopularInteriors => '热门家居装饰';
+
+  @override
+  String get homeCategoryBenefitInstallation => '安装服务';
+
+  @override
+  String get homeCategoryBenefitSeasonalDecor => '当季装饰';
+
+  @override
+  String get homeCategoryBenefitBeginners => '新手推荐';
+
+  @override
+  String get homeCategoryBenefitTopGear => '热门装备';
+
+  @override
+  String get homeCategoryBenefitSeasonalOutdoors => '当季户外装备';
+
+  @override
+  String get homeCategoryBenefitQuickCompare => '快速对比';
+
+  @override
+  String get homeCategoryBenefitCarCare => '汽车养护必备';
+
+  @override
+  String get homeCategoryBenefitMaintenance => '维修用品推荐';
+
+  @override
+  String get homeCategoryBenefitBrandDeals => '品牌特惠';
+
+  @override
+  String get homeCategoryBenefitSafetyGear => '安全装备合集';
+
+  @override
+  String get homeCategoryBenefitParenting => '育儿必备';
+
+  @override
+  String get homeCategoryBenefitByAge => '按年龄推荐';
+
+  @override
+  String get homeCategoryBenefitSafetyCertification => '安全认证';
+
+  @override
+  String get homeCategoryBenefitSpecialOffers => '专题优惠';
+
+  @override
+  String get homeCategoryBenefitPopularTreats => '热门零食';
+
+  @override
+  String get homeCategoryBenefitVetPicks => '兽医推荐';
+
+  @override
+  String get homeCategoryBenefitPetPersonalized => '为爱宠精选';
+
+  @override
+  String get homeCategoryBenefitMerchandiserPicks => '买手推荐';
+
+  @override
+  String get homeCategoryBenefitPreorders => '预售';
+
+  @override
+  String get homeCategoryBenefitLimitedMerch => '限量周边';
+
+  @override
+  String get homeCategoryBenefitBestsellers => '畅销商品';
+
+  @override
+  String get homeCategoryBenefitTravelChecklist => '旅行准备清单';
+
+  @override
+  String get homeCategoryBenefitPopularStays => '热门住宿';
+
+  @override
+  String get homeCategoryBenefitDiscountTickets => '优惠门票';
+
+  @override
+  String get homeCategoryBenefitSubscriptionOffers => '订阅优惠';
+
+  @override
+  String get homeCategoryBenefitAuthenticityGuarantee => '正品保证';
+
+  @override
+  String get homeCategoryBenefitBrandWeek => '品牌周';
+
+  @override
+  String get homeCategoryBenefitPremiumOffers => '尊享优惠';
+
+  @override
+  String get homeCategoryBenefitExclusiveOffers => '独家优惠';
+
+  @override
+  String get homeCategoryRecommendedLabel => '推荐';
 }
