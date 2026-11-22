@@ -2496,4 +2496,7 @@ class AppLocalizationsKo extends AppLocalizations {
 
   @override
   String get searchResetFilters => '필터 초기화';
+
+  @override
+  String get extProductVisitShopGeneric => '쇼핑몰에서 보기';
 }

@@ -54,6 +54,7 @@ class ExternalProductSummary extends StatelessWidget {
     required this.isStale,
     required this.onVisitShop,
     required this.actions,
+    this.actionsKey,
   });
 
   final ExternalProduct product;
@@ -64,6 +65,7 @@ class ExternalProductSummary extends StatelessWidget {
 
   /// 찜·장바구니, 질문 버튼 등 상품 아래에 붙는 동작.
   final List<Widget> actions;
+  final Key? actionsKey;
 
   @override
   Widget build(BuildContext context) {
@@ -154,6 +156,7 @@ class ExternalProductSummary extends StatelessWidget {
         ],
         const SizedBox(height: AppSpacing.lg),
         ProductPurchaseArea(
+          key: actionsKey,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [

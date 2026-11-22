@@ -2602,4 +2602,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get searchResetFilters => 'Reset filters';
+
+  @override
+  String get extProductVisitShopGeneric => 'View in shop';
 }

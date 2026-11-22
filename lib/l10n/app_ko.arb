@@ -1576,5 +1576,6 @@
   "searchEmptyDescription": "다른 검색어나 더 넓은 카테고리로 다시 검색해보세요.",
   "searchFilteredEmptyTitle": "필터에 맞는 상품이 없어요",
   "searchFilteredEmptyDescription": "필터를 초기화하거나 조건을 조금 넓혀보세요.",
-  "searchResetFilters": "필터 초기화"
+  "searchResetFilters": "필터 초기화",
+  "extProductVisitShopGeneric": "쇼핑몰에서 보기"
 }

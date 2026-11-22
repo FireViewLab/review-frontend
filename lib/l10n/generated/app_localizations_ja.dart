@@ -2492,4 +2492,7 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String get searchResetFilters => 'フィルターをリセット';
+
+  @override
+  String get extProductVisitShopGeneric => 'ショップで見る';
 }

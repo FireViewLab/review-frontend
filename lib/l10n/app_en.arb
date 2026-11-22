@@ -799,5 +799,6 @@
   "searchEmptyDescription": "Try another search term or a broader category.",
   "searchFilteredEmptyTitle": "No products match your filters",
   "searchFilteredEmptyDescription": "Reset your filters or broaden the conditions.",
-  "searchResetFilters": "Reset filters"
+  "searchResetFilters": "Reset filters",
+  "extProductVisitShopGeneric": "View in shop"
 }

@@ -785,5 +785,6 @@
   "searchEmptyDescription": "试试其他关键词或更宽泛的分类。",
   "searchFilteredEmptyTitle": "没有符合筛选条件的商品",
   "searchFilteredEmptyDescription": "请重置筛选或放宽条件。",
-  "searchResetFilters": "重置筛选"
+  "searchResetFilters": "重置筛选",
+  "extProductVisitShopGeneric": "前往商城查看"
 }
