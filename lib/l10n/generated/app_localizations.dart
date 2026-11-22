@@ -4691,6 +4691,12 @@ abstract class AppLocalizations {
   /// In ko, this message translates to:
   /// **'주의 리뷰 {count}건'**
   String analysisAttentionReviews(int count);
+
+  /// No description provided for @scrollToTop.
+  ///
+  /// In ko, this message translates to:
+  /// **'맨 위로'**
+  String get scrollToTop;
 }
 
 class _AppLocalizationsDelegate

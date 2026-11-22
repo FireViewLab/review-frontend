@@ -2433,4 +2433,7 @@ class AppLocalizationsJa extends AppLocalizations {
   String analysisAttentionReviews(int count) {
     return '注意が必要なレビュー $count件';
   }
+
+  @override
+  String get scrollToTop => '一番上へ';
 }

@@ -1557,5 +1557,6 @@
         "type": "int"
       }
     }
-  }
+  },
+  "scrollToTop": "맨 위로"
 }

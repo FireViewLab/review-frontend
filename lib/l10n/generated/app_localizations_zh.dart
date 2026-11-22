@@ -2414,4 +2414,7 @@ class AppLocalizationsZh extends AppLocalizations {
   String analysisAttentionReviews(int count) {
     return '需留意的评论 $count条';
   }
+
+  @override
+  String get scrollToTop => '回到顶部';
 }
