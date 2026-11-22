@@ -225,6 +225,11 @@ class _HomePageState extends ConsumerState<HomePage> {
                                   p.avgRating?.toStringAsFixed(1) ?? '',
                               reviewCountLabel: p.reviewCount?.toString() ?? '',
                               rtiLabel: p.analysisDisplay.badgeText(context),
+                              attentionReviewLabel: p.analysisDisplay
+                                  .attentionReviewsLabel(context),
+                              analysisDescription: p.analysisDisplay
+                                  .localizedReasons(context)
+                                  .firstOrNull,
                               imageUrl: p.imageUrl,
                               label: p.subCategory ?? '',
                             ),
@@ -569,6 +574,12 @@ class _HomePageState extends ConsumerState<HomePage> {
         context,
         legacyMissingLabel: '',
       ),
+      attentionReviewLabel: product.analysisDisplay.attentionReviewsLabel(
+        context,
+      ),
+      analysisDescription: product.analysisDisplay
+          .localizedReasons(context)
+          .firstOrNull,
       imageUrl: product.imageUrl,
       label: product.label ?? '',
     );

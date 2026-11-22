@@ -37,9 +37,15 @@ class ProductRecommendationSection extends ConsumerWidget {
                   columns;
               const imageAspectRatio = 16.0 / 9.0;
               final imageHeight = cardWidth / imageAspectRatio;
-              final textAreaHeight = compact ? 196.0 : 212.0;
+              final textAreaHeight =
+                  (compact ? 196.0 : 212.0) +
+                  (products.any((p) => p.attentionReviewLabel != null)
+                      ? MediaQuery.textScalerOf(context).scale(14) * 2 +
+                            AppSpacing.xs
+                      : 0);
 
-              if (MediaQuery.sizeOf(context).width < 1024) {
+              if (MediaQuery.sizeOf(context).width < 1024 ||
+                  products.any((p) => p.attentionReviewLabel != null)) {
                 return Wrap(
                   spacing: AppSpacing.md,
                   runSpacing: AppSpacing.md,

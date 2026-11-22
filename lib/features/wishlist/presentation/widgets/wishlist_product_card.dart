@@ -108,6 +108,9 @@ class WishlistProductCard extends StatelessWidget {
                           : Row(children: children);
                     },
                   ),
+                  if (item.analysisDisplay.attentionReviewsLabel(context)
+                      case final String label)
+                    Text(label, style: Theme.of(context).textTheme.labelSmall),
                   const SizedBox(height: 2),
                   Text(
                     item.name,

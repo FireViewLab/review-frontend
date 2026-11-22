@@ -157,6 +157,9 @@ class ListTileDetails extends StatelessWidget {
             ),
           ],
         ),
+        if (product.analysisDisplay.attentionReviewsLabel(context)
+            case final String label)
+          Text(label, style: Theme.of(context).textTheme.labelSmall),
         if (product.subCategory?.isNotEmpty ?? false)
           Text(
             product.subCategory!,
