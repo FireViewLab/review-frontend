@@ -2964,4 +2964,67 @@ class AppLocalizationsZh extends AppLocalizations {
   String authValidationPasswordMinLength(int minLength) {
     return '密码至少需要 $minLength 个字符。';
   }
+
+  @override
+  String get authResetVerifyHeadline => '安全验证后\n';
+
+  @override
+  String get authResetHeadlineEmphasis => '重置密码';
+
+  @override
+  String get authResetHeadlineEnd => '。';
+
+  @override
+  String get authResetValueDescription =>
+      '通过邮箱验证后设置新密码，以保护 Re:view 账户中的收藏商品、可信度筛选和反馈记录。';
+
+  @override
+  String get authResetRecoveryBadge => '账户恢复';
+
+  @override
+  String get authResetEmailStepDescription => '验证码将发送至注册邮箱。';
+
+  @override
+  String get authResetCodeStep => '输入验证码';
+
+  @override
+  String get authResetNewPasswordStep => '设置新密码';
+
+  @override
+  String get authResetNewPasswordStepDescription => '设置符合安全要求的新密码。';
+
+  @override
+  String get authResetProcessTitle => '密码重置流程';
+
+  @override
+  String get authResetProcessDescription => '确认账户归属后安全更改密码。';
+
+  @override
+  String get authResetSecurityBadge => '安全验证';
+
+  @override
+  String get authResetKeepData => '保留账户数据';
+
+  @override
+  String get authResetKeepDataDescription => '更改密码后，已保存的筛选设置保持不变';
+
+  @override
+  String get authResetProtectCode => '保护验证码';
+
+  @override
+  String get authResetProtectCodeDescription => '验证码将在一定时间后失效，请勿与他人分享。';
+
+  @override
+  String get authResetSignInAgain => '重新确认登录';
+
+  @override
+  String get authResetSignInAgainDescription => '更改密码后，使用新密码重新登录。';
+
+  @override
+  String authResetCodeStepDescription(int digits) {
+    return '输入邮件中的 $digits 位验证码以验证账户。';
+  }
+
+  @override
+  String get authOAuthLoginFailed => 'OAuth 登录失败。';
 }

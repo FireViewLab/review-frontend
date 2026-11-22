@@ -2995,4 +2995,69 @@ class AppLocalizationsKo extends AppLocalizations {
   String authValidationPasswordMinLength(int minLength) {
     return '비밀번호는 $minLength자 이상이어야 합니다.';
   }
+
+  @override
+  String get authResetVerifyHeadline => '안전하게 인증하고\n';
+
+  @override
+  String get authResetHeadlineEmphasis => '비밀번호를 다시 설정';
+
+  @override
+  String get authResetHeadlineEnd => ' 하세요.';
+
+  @override
+  String get authResetValueDescription =>
+      'Re:view 계정의 저장 상품, 신뢰 필터, 피드백 내역을 보호하기 위해 이메일 후 새 비밀번호를 설정합니다.';
+
+  @override
+  String get authResetRecoveryBadge => '계정 복구';
+
+  @override
+  String get authResetEmailStepDescription => '가입한 이메일 주소로 인증 코드를 발송합니다.';
+
+  @override
+  String get authResetCodeStep => '인증 코드 입력';
+
+  @override
+  String get authResetNewPasswordStep => '새 비밀번호 설정';
+
+  @override
+  String get authResetNewPasswordStepDescription =>
+      '보안 기준을 만족하는 새 비밀번호를 등록합니다.';
+
+  @override
+  String get authResetProcessTitle => '비밀번호 재설정 과정';
+
+  @override
+  String get authResetProcessDescription => '계정 소유 확인 후 안전하게 비밀번호를 변경합니다.';
+
+  @override
+  String get authResetSecurityBadge => '보안 인증';
+
+  @override
+  String get authResetKeepData => '계정 데이터 유지';
+
+  @override
+  String get authResetKeepDataDescription => '비밀번호를 바꿔도 저장 필터 설정은 그대로';
+
+  @override
+  String get authResetProtectCode => '인증 코드 보호';
+
+  @override
+  String get authResetProtectCodeDescription =>
+      '인증 코드는 일정 시간 후 만료되며 타인에게 공유하지 않아야 합니다.';
+
+  @override
+  String get authResetSignInAgain => '로그인 재확인';
+
+  @override
+  String get authResetSignInAgainDescription => '비밀번호 변경 후 새 다시 로그인합니다.';
+
+  @override
+  String authResetCodeStepDescription(int digits) {
+    return '메일로 받은 $digits자리 코드를 입력해 계정을 확인합니다.';
+  }
+
+  @override
+  String get authOAuthLoginFailed => 'OAuth 로그인에 실패했습니다.';
 }

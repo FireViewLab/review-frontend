@@ -3122,4 +3122,73 @@ class AppLocalizationsEn extends AppLocalizations {
   String authValidationPasswordMinLength(int minLength) {
     return 'Password must be at least $minLength characters.';
   }
+
+  @override
+  String get authResetVerifyHeadline => 'Verify securely\n';
+
+  @override
+  String get authResetHeadlineEmphasis => 'reset your password';
+
+  @override
+  String get authResetHeadlineEnd => '.';
+
+  @override
+  String get authResetValueDescription =>
+      'After email verification, set a new password to protect your saved products, trust filters, and feedback history in Re:view.';
+
+  @override
+  String get authResetRecoveryBadge => 'Account recovery';
+
+  @override
+  String get authResetEmailStepDescription =>
+      'A verification code is sent to your registered email address.';
+
+  @override
+  String get authResetCodeStep => 'Enter verification code';
+
+  @override
+  String get authResetNewPasswordStep => 'Set a new password';
+
+  @override
+  String get authResetNewPasswordStepDescription =>
+      'Register a new password that meets the security requirements.';
+
+  @override
+  String get authResetProcessTitle => 'Password reset process';
+
+  @override
+  String get authResetProcessDescription =>
+      'Change your password securely after verifying account ownership.';
+
+  @override
+  String get authResetSecurityBadge => 'Security verification';
+
+  @override
+  String get authResetKeepData => 'Keep account data';
+
+  @override
+  String get authResetKeepDataDescription =>
+      'Saved filter settings stay the same when you change your password';
+
+  @override
+  String get authResetProtectCode => 'Protect verification codes';
+
+  @override
+  String get authResetProtectCodeDescription =>
+      'Verification codes expire after a time and must not be shared with others.';
+
+  @override
+  String get authResetSignInAgain => 'Sign in again';
+
+  @override
+  String get authResetSignInAgainDescription =>
+      'After changing your password, log in again with the new password.';
+
+  @override
+  String authResetCodeStepDescription(int digits) {
+    return 'Enter the $digits-digit code from your email to verify your account.';
+  }
+
+  @override
+  String get authOAuthLoginFailed => 'OAuth login failed.';
 }

@@ -2994,4 +2994,69 @@ class AppLocalizationsJa extends AppLocalizations {
   String authValidationPasswordMinLength(int minLength) {
     return 'パスワードは$minLength文字以上で入力してください。';
   }
+
+  @override
+  String get authResetVerifyHeadline => '安全に認証して\n';
+
+  @override
+  String get authResetHeadlineEmphasis => 'パスワードを再設定';
+
+  @override
+  String get authResetHeadlineEnd => 'しましょう。';
+
+  @override
+  String get authResetValueDescription =>
+      'Re:viewアカウントの保存商品、信頼度フィルター、フィードバック履歴を守るため、メール確認後に新しいパスワードを設定します。';
+
+  @override
+  String get authResetRecoveryBadge => 'アカウント復旧';
+
+  @override
+  String get authResetEmailStepDescription => '登録したメールアドレスに認証コードを送信します。';
+
+  @override
+  String get authResetCodeStep => '認証コードを入力';
+
+  @override
+  String get authResetNewPasswordStep => '新しいパスワードを設定';
+
+  @override
+  String get authResetNewPasswordStepDescription =>
+      'セキュリティ基準を満たす新しいパスワードを登録します。';
+
+  @override
+  String get authResetProcessTitle => 'パスワード再設定の流れ';
+
+  @override
+  String get authResetProcessDescription => 'アカウントの所有を確認してから、安全にパスワードを変更します。';
+
+  @override
+  String get authResetSecurityBadge => 'セキュリティ認証';
+
+  @override
+  String get authResetKeepData => 'アカウントデータを維持';
+
+  @override
+  String get authResetKeepDataDescription => 'パスワードを変更しても保存済みのフィルター設定はそのまま';
+
+  @override
+  String get authResetProtectCode => '認証コードを保護';
+
+  @override
+  String get authResetProtectCodeDescription =>
+      '認証コードは一定時間後に期限切れとなります。他の人に共有しないでください。';
+
+  @override
+  String get authResetSignInAgain => 'ログインを再確認';
+
+  @override
+  String get authResetSignInAgainDescription => 'パスワード変更後、新しいパスワードで再度ログインします。';
+
+  @override
+  String authResetCodeStepDescription(int digits) {
+    return 'メールで届いた$digits桁のコードを入力してアカウントを確認します。';
+  }
+
+  @override
+  String get authOAuthLoginFailed => 'OAuthログインに失敗しました。';
 }

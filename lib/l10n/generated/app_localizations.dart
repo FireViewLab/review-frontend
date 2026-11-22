@@ -5753,6 +5753,126 @@ abstract class AppLocalizations {
   /// In ko, this message translates to:
   /// **'비밀번호는 {minLength}자 이상이어야 합니다.'**
   String authValidationPasswordMinLength(int minLength);
+
+  /// No description provided for @authResetVerifyHeadline.
+  ///
+  /// In ko, this message translates to:
+  /// **'안전하게 인증하고\n'**
+  String get authResetVerifyHeadline;
+
+  /// No description provided for @authResetHeadlineEmphasis.
+  ///
+  /// In ko, this message translates to:
+  /// **'비밀번호를 다시 설정'**
+  String get authResetHeadlineEmphasis;
+
+  /// No description provided for @authResetHeadlineEnd.
+  ///
+  /// In ko, this message translates to:
+  /// **' 하세요.'**
+  String get authResetHeadlineEnd;
+
+  /// No description provided for @authResetValueDescription.
+  ///
+  /// In ko, this message translates to:
+  /// **'Re:view 계정의 저장 상품, 신뢰 필터, 피드백 내역을 보호하기 위해 이메일 후 새 비밀번호를 설정합니다.'**
+  String get authResetValueDescription;
+
+  /// No description provided for @authResetRecoveryBadge.
+  ///
+  /// In ko, this message translates to:
+  /// **'계정 복구'**
+  String get authResetRecoveryBadge;
+
+  /// No description provided for @authResetEmailStepDescription.
+  ///
+  /// In ko, this message translates to:
+  /// **'가입한 이메일 주소로 인증 코드를 발송합니다.'**
+  String get authResetEmailStepDescription;
+
+  /// No description provided for @authResetCodeStep.
+  ///
+  /// In ko, this message translates to:
+  /// **'인증 코드 입력'**
+  String get authResetCodeStep;
+
+  /// No description provided for @authResetNewPasswordStep.
+  ///
+  /// In ko, this message translates to:
+  /// **'새 비밀번호 설정'**
+  String get authResetNewPasswordStep;
+
+  /// No description provided for @authResetNewPasswordStepDescription.
+  ///
+  /// In ko, this message translates to:
+  /// **'보안 기준을 만족하는 새 비밀번호를 등록합니다.'**
+  String get authResetNewPasswordStepDescription;
+
+  /// No description provided for @authResetProcessTitle.
+  ///
+  /// In ko, this message translates to:
+  /// **'비밀번호 재설정 과정'**
+  String get authResetProcessTitle;
+
+  /// No description provided for @authResetProcessDescription.
+  ///
+  /// In ko, this message translates to:
+  /// **'계정 소유 확인 후 안전하게 비밀번호를 변경합니다.'**
+  String get authResetProcessDescription;
+
+  /// No description provided for @authResetSecurityBadge.
+  ///
+  /// In ko, this message translates to:
+  /// **'보안 인증'**
+  String get authResetSecurityBadge;
+
+  /// No description provided for @authResetKeepData.
+  ///
+  /// In ko, this message translates to:
+  /// **'계정 데이터 유지'**
+  String get authResetKeepData;
+
+  /// No description provided for @authResetKeepDataDescription.
+  ///
+  /// In ko, this message translates to:
+  /// **'비밀번호를 바꿔도 저장 필터 설정은 그대로'**
+  String get authResetKeepDataDescription;
+
+  /// No description provided for @authResetProtectCode.
+  ///
+  /// In ko, this message translates to:
+  /// **'인증 코드 보호'**
+  String get authResetProtectCode;
+
+  /// No description provided for @authResetProtectCodeDescription.
+  ///
+  /// In ko, this message translates to:
+  /// **'인증 코드는 일정 시간 후 만료되며 타인에게 공유하지 않아야 합니다.'**
+  String get authResetProtectCodeDescription;
+
+  /// No description provided for @authResetSignInAgain.
+  ///
+  /// In ko, this message translates to:
+  /// **'로그인 재확인'**
+  String get authResetSignInAgain;
+
+  /// No description provided for @authResetSignInAgainDescription.
+  ///
+  /// In ko, this message translates to:
+  /// **'비밀번호 변경 후 새 다시 로그인합니다.'**
+  String get authResetSignInAgainDescription;
+
+  /// No description provided for @authResetCodeStepDescription.
+  ///
+  /// In ko, this message translates to:
+  /// **'메일로 받은 {digits}자리 코드를 입력해 계정을 확인합니다.'**
+  String authResetCodeStepDescription(int digits);
+
+  /// No description provided for @authOAuthLoginFailed.
+  ///
+  /// In ko, this message translates to:
+  /// **'OAuth 로그인에 실패했습니다.'**
+  String get authOAuthLoginFailed;
 }
 
 class _AppLocalizationsDelegate
