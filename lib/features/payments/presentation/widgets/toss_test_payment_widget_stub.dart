@@ -1,3 +1,4 @@
+import 'package:re_view_front/l10n/generated/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:re_view_front/features/payments/domain/entities/test_payment.dart';
 
@@ -19,5 +20,5 @@ class TossTestPaymentWidget extends StatelessWidget {
   final ValueChanged<String> onError;
   @override
   Widget build(BuildContext context) =>
-      const Text('TEST 결제는 웹 브라우저에서만 사용할 수 있습니다.');
+      Text(AppLocalizations.of(context).paymentTestWebBrowserOnly);
 }

@@ -3238,4 +3238,460 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get onboardingReload => 'Reload';
+
+  @override
+  String get reportSubmit => 'Submit report';
+
+  @override
+  String get reportReceived => 'Report received';
+
+  @override
+  String get reportReceivedDescription =>
+      'The review and report reasons are saved.';
+
+  @override
+  String get reportAssistedReview => 'AI-assisted review';
+
+  @override
+  String get reportAssistedReviewDescription =>
+      'RTI signals and similar review history are checked together.';
+
+  @override
+  String get reportTeamDecision => 'Operations team decision';
+
+  @override
+  String get reportTeamDecisionDescription =>
+      'The review status is updated if false or malicious intent is found.';
+
+  @override
+  String get reportResultNotification => 'Result notification';
+
+  @override
+  String get reportResultNotificationDescription =>
+      'Results appear in feedback history when the review is complete.';
+
+  @override
+  String get reportProcessTitle => 'Review process';
+
+  @override
+  String get reportProcessDescription =>
+      'This is how the operations team reviews a report.';
+
+  @override
+  String get reportGuideRepeated => 'Describe repeated phrases specifically';
+
+  @override
+  String get reportGuideRepeatedDescription =>
+      'Specify the location, wording, or pattern that stood out.';
+
+  @override
+  String get reportGuideContext => 'Check the product usage context';
+
+  @override
+  String get reportGuideContextDescription =>
+      'Point out content unrelated to the product or actual use.';
+
+  @override
+  String get reportGuideAttachments => 'Attach supporting material';
+
+  @override
+  String get reportGuideAttachmentsDescription =>
+      'Attachments help when the same evidence appears in multiple contexts.';
+
+  @override
+  String get reportGuideTitle => 'Reporting guide';
+
+  @override
+  String get reportGuideDescription => 'These details help us process reports.';
+
+  @override
+  String get reportSummaryTitle => 'Submission summary';
+
+  @override
+  String get reportSummaryDescription =>
+      'Check your details before submitting.';
+
+  @override
+  String get reportLiveBadge => 'Live';
+
+  @override
+  String get reportSelectedReasons => 'Selected reasons';
+
+  @override
+  String get reportAnalysisEvidence => 'AI evidence';
+
+  @override
+  String get reportTargetReviews => 'Target reviews';
+
+  @override
+  String get reportReasonTitle => 'Select report reasons';
+
+  @override
+  String get reportReasonDescription =>
+      'Tap cards to select · Multiple selections allowed.';
+
+  @override
+  String get reportViewCriteria => 'View reporting criteria';
+
+  @override
+  String get reportStepTarget => 'Check target';
+
+  @override
+  String get reportStepTargetDescription => 'Check product and review details';
+
+  @override
+  String get reportStepReasonDescription => 'Choose issue types';
+
+  @override
+  String get reportStepDetails => 'Supporting details';
+
+  @override
+  String get reportStepDetailsDescription => 'Enter additional details';
+
+  @override
+  String get reportStepComplete => 'Submitted';
+
+  @override
+  String get reportStepCompleteDescription => 'Track review status';
+
+  @override
+  String get reportTargetDescription =>
+      'Confirm the product and review you want to report.';
+
+  @override
+  String get reportFromAnalysis => 'Opened from analysis popup';
+
+  @override
+  String get reportPrivacyConsent =>
+      'I agree to the data collection and report processing notice.';
+
+  @override
+  String get reportPrivacyDescription =>
+      'Report details are used for review intake, result notices, and model quality improvements, and retained as needed.';
+
+  @override
+  String get reportTruthConsent => 'I confirm this is not a false report.';
+
+  @override
+  String get reportTruthDescription =>
+      'Reports that do not match the facts may receive lower priority.';
+
+  @override
+  String get reportTitleText => 'Report a review';
+
+  @override
+  String get reportDescription =>
+      'Describe the issue and evidence for a suspicious review. Reports support operations checks and model improvement feedback.';
+
+  @override
+  String get reportViewMyFeedback => 'View my feedback';
+
+  @override
+  String get reportReportBreadcrumb => 'Report';
+
+  @override
+  String get reportEvidenceTitle => 'Include analysis evidence (optional)';
+
+  @override
+  String get reportEvidenceDescription =>
+      'You can attach this review\'s RTI signals as evidence.';
+
+  @override
+  String get reportAttachEvidence => 'Attach AI analysis evidence';
+
+  @override
+  String get reportAttachEvidenceDescription =>
+      'RTI signal data is submitted with your evidence.';
+
+  @override
+  String get reportViewEvidence => 'View evidence';
+
+  @override
+  String get reportDetailsTitle => 'Enter supporting details';
+
+  @override
+  String get reportDetailsDescription =>
+      'Provide details that help assess the report.';
+
+  @override
+  String get reportType => 'Report type';
+
+  @override
+  String get reportVisibility => 'Result visibility';
+
+  @override
+  String get reportDetailHint =>
+      'Describe the issue and its context specifically.';
+
+  @override
+  String get reportAttachments => 'Attachments ';
+
+  @override
+  String get reportOptional => '(optional)';
+
+  @override
+  String get reportAttachmentsFull => 'Attachment limit reached';
+
+  @override
+  String get reportAttachmentsHint =>
+      'Attach screenshots or additional evidence';
+
+  @override
+  String get reportChooseFiles => 'Choose files';
+
+  @override
+  String get reportConsentsRequired => 'Please check all consent items.';
+
+  @override
+  String get reportSubmittedTitle => 'Report submitted';
+
+  @override
+  String get reportSubmittedDescription =>
+      'Your report was received.\nCheck the result in your feedback history.';
+
+  @override
+  String get reportViewFeedback => 'View feedback history';
+
+  @override
+  String get reportAlreadyReportedTitle => 'Already reported';
+
+  @override
+  String get reportAlreadyReportedDescription =>
+      'You have already reported this review.\nDuplicate reports are not accepted.';
+
+  @override
+  String reportReviewCount(int count) {
+    return '$count reviews';
+  }
+
+  @override
+  String reportAverageReviewRound(int round) {
+    return 'Average round $round review';
+  }
+
+  @override
+  String reportRiskyReviewScore(String score) {
+    return 'Risky review · RTI $score';
+  }
+
+  @override
+  String reportMaxAttachments(int count) {
+    return 'You can attach up to $count files.';
+  }
+
+  @override
+  String reportFileTooLarge(String name, int size) {
+    return '$name exceeds ${size}MB.';
+  }
+
+  @override
+  String reportMinimumCharacters(int count) {
+    return 'Enter at least $count characters.';
+  }
+
+  @override
+  String reportMinimumCharactersHelp(int count) {
+    return 'At least $count characters help the operations team review your report.';
+  }
+
+  @override
+  String reportCharacterCount(int count) {
+    return '$count characters';
+  }
+
+  @override
+  String reportAttachmentLimits(int size, int count) {
+    return 'PNG, JPG, PDF · Up to ${size}MB · Up to $count files';
+  }
+
+  @override
+  String reportReasonRequired(int count) {
+    return 'Select at least $count report reason.';
+  }
+
+  @override
+  String reportDetailsRequired(int count) {
+    return 'Enter at least $count characters of detail.';
+  }
+
+  @override
+  String get reportReasonFake => 'Suspected fake review / paid reviewer';
+
+  @override
+  String get reportReasonGenerated => 'Signs of AI generation';
+
+  @override
+  String get reportReasonFakeDescription =>
+      'A review with repetition, excessive praise, or possibly coordinated purchase histories.';
+
+  @override
+  String get reportReasonGeneratedDescription =>
+      'A review with overly precise repetition or recurring sentence structures.';
+
+  @override
+  String get reportReasonIrrelevantDescription =>
+      'Content unrelated to actual product use, or copied from another product or page.';
+
+  @override
+  String get reportReasonInappropriateDescription =>
+      'A review containing slander, hate speech, or personal information such as names.';
+
+  @override
+  String get reportReasonAdDescription => 'This is an advertising review.';
+
+  @override
+  String get reportReasonRepeatDescription => 'This content is repetitive.';
+
+  @override
+  String get reportReasonOtherDescription => 'Another reason for reporting.';
+
+  @override
+  String get reportTypeRepetition => 'Repeated phrases';
+
+  @override
+  String get reportTypeNewAccount => 'Immediately after account creation';
+
+  @override
+  String get reportTypeSimilarCluster => 'Similar review cluster';
+
+  @override
+  String get reportPrivate => 'Private';
+
+  @override
+  String get reportOnlyMe => 'Only visible to me';
+
+  @override
+  String get reportTeamOnly => 'Share with operations team';
+
+  @override
+  String get reportSelectPrompt => 'Please select';
+
+  @override
+  String get reportGuideBadge => 'Guide';
+
+  @override
+  String get paymentTestCartTitle => 'Cart Toss TEST payment';
+
+  @override
+  String get paymentTestServiceTitle => 'Toss TEST service payment';
+
+  @override
+  String get paymentTestCartDescription =>
+      'For TEST orders and payments only. No real payment or shipping occurs. Server quotes confirm eligible products and final amounts.';
+
+  @override
+  String get paymentTestServiceDescription =>
+      'For testing only. No external shop orders, real payments, or automatic plan changes occur.';
+
+  @override
+  String get paymentTestLoginRequired =>
+      'Log in to view orders and pay. Reopen the payment callback URL after login.';
+
+  @override
+  String get paymentTestNotConfigured =>
+      'TEST payment keys and server order/approval contracts are not ready. Payments cannot currently be started or completed.';
+
+  @override
+  String get paymentTestWebOnly =>
+      'TEST payments are currently supported only in a web browser.';
+
+  @override
+  String get paymentTestOrder => 'TEST order';
+
+  @override
+  String get paymentTestReloadTargets => 'Reload payment targets';
+
+  @override
+  String get paymentTestOpening => 'Opening TEST payment';
+
+  @override
+  String get paymentTestOpen => 'Open TEST payment';
+
+  @override
+  String get paymentTestReloadWindow => 'Reload payment window';
+
+  @override
+  String get paymentTestReloadApproval => 'Check server approval again';
+
+  @override
+  String get paymentTestBackToOrders => 'Back to TEST order selection';
+
+  @override
+  String get paymentTestCheckPlan => 'Check current plan';
+
+  @override
+  String get paymentCheckoutTitle => 'Cart TEST order';
+
+  @override
+  String get paymentCheckoutDescription =>
+      'No real payment or shipping occurs. The server must confirm whether this service can sell and ship shop products. Displayed prices are indicative; shipping and final totals come from server quotes.';
+
+  @override
+  String get paymentCheckoutNotConfigured =>
+      'TEST public keys and cart quote/order/approval APIs are not available yet. Orders and payments are unavailable. Addresses are neither sent to nor saved on the server.';
+
+  @override
+  String get paymentCheckoutLoginSelect => 'Log in to select an order';
+
+  @override
+  String get paymentCheckoutNoSelection =>
+      'No products selected for this account. Select products in your cart.';
+
+  @override
+  String get paymentCheckoutRecipient => 'Recipient';
+
+  @override
+  String get paymentCheckoutPhone => 'Phone number';
+
+  @override
+  String get paymentCheckoutPostalCode => 'Postal code';
+
+  @override
+  String get paymentCheckoutAddress => 'Address';
+
+  @override
+  String get paymentCheckoutAddressDetail => 'Address details (optional)';
+
+  @override
+  String get paymentCheckoutRequired => 'Please enter a value.';
+
+  @override
+  String get paymentCheckoutPhoneInvalid => 'Check the phone number format.';
+
+  @override
+  String get paymentCheckoutQuote => 'Check server TEST quote';
+
+  @override
+  String get paymentCheckoutBack => 'Back to cart';
+
+  @override
+  String paymentCheckoutUnitPrice(String price) {
+    return 'Indicative unit price: ₩$price';
+  }
+
+  @override
+  String paymentCheckoutQuantity(int count, String price) {
+    return '$count items · $price';
+  }
+
+  @override
+  String paymentCheckoutPostalLength(int count) {
+    return 'Enter a $count-digit postal code.';
+  }
+
+  @override
+  String get paymentTestRequestFailed =>
+      'The payment request was canceled or failed. It was not marked as complete.';
+
+  @override
+  String get paymentTestLoadFailed =>
+      'Could not load TEST payment. Check your network and configuration, then retry.';
+
+  @override
+  String get paymentTestWebBrowserOnly =>
+      'TEST payment is available only in a web browser.';
+
+  @override
+  String get planRefreshFailed =>
+      'The plan change was processed, but the current plan and limits could not be verified. Reload to check.';
 }

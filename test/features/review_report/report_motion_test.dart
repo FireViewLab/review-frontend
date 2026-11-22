@@ -1,3 +1,4 @@
+import 'package:re_view_front/l10n/generated/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:re_view_front/features/review_report/domain/entities/review_report.dart';
@@ -22,6 +23,9 @@ void main() {
       var submitting = false;
       await tester.pumpWidget(
         MaterialApp(
+          locale: const Locale('ko'),
+          supportedLocales: AppLocalizations.supportedLocales,
+          localizationsDelegates: AppLocalizations.localizationsDelegates,
           home: MediaQuery(
             data: MediaQueryData(disableAnimations: reduced),
             child: Scaffold(
@@ -93,6 +97,9 @@ void main() {
     String? selected;
     await tester.pumpWidget(
       MaterialApp(
+        locale: const Locale('ko'),
+        supportedLocales: AppLocalizations.supportedLocales,
+        localizationsDelegates: AppLocalizations.localizationsDelegates,
         home: MediaQuery(
           data: const MediaQueryData(disableAnimations: true),
           child: Scaffold(

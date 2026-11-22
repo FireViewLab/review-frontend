@@ -1,3 +1,4 @@
+import 'package:re_view_front/l10n/generated/app_localizations.dart';
 import 'package:re_view_front/app/theme/app_motion.dart';
 import 'package:flutter/material.dart';
 import 'package:re_view_front/app/theme/app_colors.dart';
@@ -30,11 +31,11 @@ class ReportSummaryCard extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          const SidePanelHeader(
+          SidePanelHeader(
             icon: Icons.assignment_outlined,
-            title: '접수 요약',
-            description: '제출 전 입력한 내용을 확인하세요.',
-            badgeLabel: '실시간',
+            title: AppLocalizations.of(context).reportSummaryTitle,
+            description: AppLocalizations.of(context).reportSummaryDescription,
+            badgeLabel: AppLocalizations.of(context).reportLiveBadge,
           ),
           const SizedBox(height: AppSpacing.md),
           Row(
@@ -42,7 +43,7 @@ class ReportSummaryCard extends StatelessWidget {
               Expanded(
                 child: _MetricBox(
                   value: '$selectedCount',
-                  label: '선택 사유',
+                  label: AppLocalizations.of(context).reportSelectedReasons,
                   highlight: selectedCount > 0,
                 ),
               ),
@@ -50,7 +51,7 @@ class ReportSummaryCard extends StatelessWidget {
               Expanded(
                 child: _MetricBox(
                   value: '$evidenceCount',
-                  label: 'AI 근거',
+                  label: AppLocalizations.of(context).reportAnalysisEvidence,
                   highlight: evidenceCount > 0,
                 ),
               ),
@@ -62,12 +63,19 @@ class ReportSummaryCard extends StatelessWidget {
               Expanded(
                 child: _MetricBox(
                   value: '${avgReviewHours}h',
-                  label: '평균 1차 검토',
+                  label: AppLocalizations.of(
+                    context,
+                  ).reportAverageReviewRound(1),
                 ),
               ),
               const SizedBox(width: AppSpacing.xs),
               Expanded(
-                child: _MetricBox(value: '$reviewTargetCount건', label: '대상 리뷰'),
+                child: _MetricBox(
+                  value: AppLocalizations.of(
+                    context,
+                  ).reportReviewCount(reviewTargetCount),
+                  label: AppLocalizations.of(context).reportTargetReviews,
+                ),
               ),
             ],
           ),

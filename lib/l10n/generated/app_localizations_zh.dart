@@ -3070,4 +3070,426 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get onboardingReload => '重新加载';
+
+  @override
+  String get reportSubmit => '提交举报';
+
+  @override
+  String get reportReceived => '受理举报';
+
+  @override
+  String get reportReceivedDescription => '将保存目标评价和举报原因。';
+
+  @override
+  String get reportAssistedReview => 'AI 辅助审核';
+
+  @override
+  String get reportAssistedReviewDescription => '一并查看 RTI 信号和类似评价记录。';
+
+  @override
+  String get reportTeamDecision => '运营团队判断';
+
+  @override
+  String get reportTeamDecisionDescription => '发现虚假或恶意情况时将更新审核状态。';
+
+  @override
+  String get reportResultNotification => '结果通知';
+
+  @override
+  String get reportResultNotificationDescription => '审核完成后，结果将显示在反馈记录中。';
+
+  @override
+  String get reportProcessTitle => '处理流程';
+
+  @override
+  String get reportProcessDescription => '这是运营团队在受理举报后的审核流程。';
+
+  @override
+  String get reportGuideRepeated => '具体说明重复措辞';
+
+  @override
+  String get reportGuideRepeatedDescription => '请说明具体位置、句子或明显的表达模式。';
+
+  @override
+  String get reportGuideContext => '核实商品使用情境';
+
+  @override
+  String get reportGuideContextDescription => '请指出缺乏实际使用经历或与商品无关的内容。';
+
+  @override
+  String get reportGuideAttachments => '附上相关材料';
+
+  @override
+  String get reportGuideAttachmentsDescription => '同类证据在多个情境中重复出现时，建议附上材料。';
+
+  @override
+  String get reportGuideTitle => '举报指南';
+
+  @override
+  String get reportGuideDescription => '这些信息有助于处理举报。';
+
+  @override
+  String get reportSummaryTitle => '提交摘要';
+
+  @override
+  String get reportSummaryDescription => '提交前请核对填写内容。';
+
+  @override
+  String get reportLiveBadge => '实时';
+
+  @override
+  String get reportSelectedReasons => '所选原因';
+
+  @override
+  String get reportAnalysisEvidence => 'AI 依据';
+
+  @override
+  String get reportTargetReviews => '目标评价';
+
+  @override
+  String get reportReasonTitle => '选择举报原因';
+
+  @override
+  String get reportReasonDescription => '点击卡片选择 · 可多选。';
+
+  @override
+  String get reportViewCriteria => '查看举报标准';
+
+  @override
+  String get reportStepTarget => '确认对象';
+
+  @override
+  String get reportStepTargetDescription => '核对商品和评价信息';
+
+  @override
+  String get reportStepReasonDescription => '选择问题类型';
+
+  @override
+  String get reportStepDetails => '详细依据';
+
+  @override
+  String get reportStepDetailsDescription => '输入补充说明';
+
+  @override
+  String get reportStepComplete => '提交完成';
+
+  @override
+  String get reportStepCompleteDescription => '追踪审核状态';
+
+  @override
+  String get reportTargetDescription => '请确认要举报的商品和评价是否正确。';
+
+  @override
+  String get reportFromAnalysis => '从分析弹窗进入';
+
+  @override
+  String get reportPrivacyConsent => '我同意个人信息收集及举报处理说明。';
+
+  @override
+  String get reportPrivacyDescription => '举报内容将用于评价受理、处理结果通知和模型质量改进，并在必要期限内保存。';
+
+  @override
+  String get reportTruthConsent => '我确认这不是虚假举报。';
+
+  @override
+  String get reportTruthDescription => '举报内容与事实不符时，处理优先级可能降低。';
+
+  @override
+  String get reportTitleText => '提交评价举报';
+
+  @override
+  String get reportDescription => '请填写可疑评价的问题类型和依据。举报将用于运营审核和模型改进反馈。';
+
+  @override
+  String get reportViewMyFeedback => '查看我的反馈记录';
+
+  @override
+  String get reportReportBreadcrumb => '报告';
+
+  @override
+  String get reportEvidenceTitle => '同时提交分析依据（选填）';
+
+  @override
+  String get reportEvidenceDescription => '您可以将此评价的 RTI 分析信号附作举报依据。';
+
+  @override
+  String get reportAttachEvidence => '附上 AI 分析依据';
+
+  @override
+  String get reportAttachEvidenceDescription => 'RTI 信号数据会随举报依据一并提交。';
+
+  @override
+  String get reportViewEvidence => '查看依据';
+
+  @override
+  String get reportDetailsTitle => '填写详细依据';
+
+  @override
+  String get reportDetailsDescription => '请填写有助于判断举报的信息。';
+
+  @override
+  String get reportType => '举报类型';
+
+  @override
+  String get reportVisibility => '处理结果公开范围';
+
+  @override
+  String get reportDetailHint => '请具体说明问题内容和情境。';
+
+  @override
+  String get reportAttachments => '附件材料 ';
+
+  @override
+  String get reportOptional => '（选填）';
+
+  @override
+  String get reportAttachmentsFull => '已达到附件数量上限';
+
+  @override
+  String get reportAttachmentsHint => '请附上截图或补充依据';
+
+  @override
+  String get reportChooseFiles => '选择文件';
+
+  @override
+  String get reportConsentsRequired => '请确认所有同意事项。';
+
+  @override
+  String get reportSubmittedTitle => '举报提交成功';
+
+  @override
+  String get reportSubmittedDescription => '举报已受理。\n可在反馈记录中查看处理结果。';
+
+  @override
+  String get reportViewFeedback => '查看反馈记录';
+
+  @override
+  String get reportAlreadyReportedTitle => '已举报的评价';
+
+  @override
+  String get reportAlreadyReportedDescription => '您已举报过此评价。\n不受理重复举报。';
+
+  @override
+  String reportReviewCount(int count) {
+    return '$count 条';
+  }
+
+  @override
+  String reportAverageReviewRound(int round) {
+    return '平均第 $round 轮审核';
+  }
+
+  @override
+  String reportRiskyReviewScore(String score) {
+    return '风险评价 · RTI $score';
+  }
+
+  @override
+  String reportMaxAttachments(int count) {
+    return '最多可添加 $count 个附件。';
+  }
+
+  @override
+  String reportFileTooLarge(String name, int size) {
+    return '$name 超过 ${size}MB。';
+  }
+
+  @override
+  String reportMinimumCharacters(int count) {
+    return '请至少输入 $count 个字符。';
+  }
+
+  @override
+  String reportMinimumCharactersHelp(int count) {
+    return '至少填写 $count 个字符将更有助于运营团队审核。';
+  }
+
+  @override
+  String reportCharacterCount(int count) {
+    return '$count 个字符';
+  }
+
+  @override
+  String reportAttachmentLimits(int size, int count) {
+    return 'PNG, JPG, PDF · 最大 ${size}MB · 最多 $count 个';
+  }
+
+  @override
+  String reportReasonRequired(int count) {
+    return '请至少选择 $count 个举报原因。';
+  }
+
+  @override
+  String reportDetailsRequired(int count) {
+    return '详细说明请至少输入 $count 个字符。';
+  }
+
+  @override
+  String get reportReasonFake => '疑似虚假评价／有偿评价';
+
+  @override
+  String get reportReasonGenerated => '疑似 AI 生成痕迹';
+
+  @override
+  String get reportReasonFakeDescription => '存在重复、过度赞美或多个购买记录可能相互呼应的评价。';
+
+  @override
+  String get reportReasonGeneratedDescription => '重复过于精确或反复使用相同句式的评价。';
+
+  @override
+  String get reportReasonIrrelevantDescription => '内容与实际商品使用无关，或包含其他商品／页面的内容。';
+
+  @override
+  String get reportReasonInappropriateDescription => '包含诽谤、仇恨言论或姓名等个人信息的评价。';
+
+  @override
+  String get reportReasonAdDescription => '这是广告评价。';
+
+  @override
+  String get reportReasonRepeatDescription => '内容重复。';
+
+  @override
+  String get reportReasonOtherDescription => '其他举报原因。';
+
+  @override
+  String get reportTypeRepetition => '重复措辞';
+
+  @override
+  String get reportTypeNewAccount => '账户创建后不久';
+
+  @override
+  String get reportTypeSimilarCluster => '相似评价群';
+
+  @override
+  String get reportPrivate => '不公开';
+
+  @override
+  String get reportOnlyMe => '仅自己可见';
+
+  @override
+  String get reportTeamOnly => '与运营团队共享';
+
+  @override
+  String get reportSelectPrompt => '请选择';
+
+  @override
+  String get reportGuideBadge => '说明';
+
+  @override
+  String get paymentTestCartTitle => '购物车 Toss TEST 支付';
+
+  @override
+  String get paymentTestServiceTitle => 'Toss TEST 服务支付';
+
+  @override
+  String get paymentTestCartDescription =>
+      '仅用于 TEST 订单和支付，不会进行真实发货或扣款。可销售配送的商品及最终金额以服务器报价为准。';
+
+  @override
+  String get paymentTestServiceDescription => '仅用于测试，不会下单购买外部商城商品、真实扣款或自动更改套餐。';
+
+  @override
+  String get paymentTestLoginRequired => '查看订单和支付需要登录。请登录后重新打开支付回调地址。';
+
+  @override
+  String get paymentTestNotConfigured =>
+      'TEST 支付密钥及服务器订单和审批接口尚未就绪，目前无法发起或完成支付。';
+
+  @override
+  String get paymentTestWebOnly => '目前仅网页浏览器支持 TEST 支付。';
+
+  @override
+  String get paymentTestOrder => 'TEST 订单';
+
+  @override
+  String get paymentTestReloadTargets => '重新查询支付对象';
+
+  @override
+  String get paymentTestOpening => '正在打开 TEST 支付窗口';
+
+  @override
+  String get paymentTestOpen => '打开 TEST 支付窗口';
+
+  @override
+  String get paymentTestReloadWindow => '重新加载支付窗口';
+
+  @override
+  String get paymentTestReloadApproval => '重新查询服务器审批状态';
+
+  @override
+  String get paymentTestBackToOrders => '返回 TEST 订单选择';
+
+  @override
+  String get paymentTestCheckPlan => '查看当前套餐';
+
+  @override
+  String get paymentCheckoutTitle => '购物车 TEST 订单';
+
+  @override
+  String get paymentCheckoutDescription =>
+      '不会真实扣款或发货。此服务能否销售和配送商城商品须由服务器确认。显示价格仅供参考，运费及最终金额以服务器报价为准。';
+
+  @override
+  String get paymentCheckoutNotConfigured =>
+      'TEST 公钥及购物车报价、订单和审批 API 尚未就绪，无法保存订单或支付。地址不会发送或保存至服务器。';
+
+  @override
+  String get paymentCheckoutLoginSelect => '登录后选择订单';
+
+  @override
+  String get paymentCheckoutNoSelection => '当前账户未选择商品，请在购物车中选择商品。';
+
+  @override
+  String get paymentCheckoutRecipient => '收件人';
+
+  @override
+  String get paymentCheckoutPhone => '联系电话';
+
+  @override
+  String get paymentCheckoutPostalCode => '邮政编码';
+
+  @override
+  String get paymentCheckoutAddress => '地址';
+
+  @override
+  String get paymentCheckoutAddressDetail => '详细地址（选填）';
+
+  @override
+  String get paymentCheckoutRequired => '请填写。';
+
+  @override
+  String get paymentCheckoutPhoneInvalid => '请检查联系电话格式。';
+
+  @override
+  String get paymentCheckoutQuote => '查看服务器 TEST 报价';
+
+  @override
+  String get paymentCheckoutBack => '返回购物车';
+
+  @override
+  String paymentCheckoutUnitPrice(String price) {
+    return '参考单价：$price 韩元';
+  }
+
+  @override
+  String paymentCheckoutQuantity(int count, String price) {
+    return '$count 件 · $price';
+  }
+
+  @override
+  String paymentCheckoutPostalLength(int count) {
+    return '请输入 $count 位邮政编码。';
+  }
+
+  @override
+  String get paymentTestRequestFailed => '支付窗口请求已取消或失败，未将支付标记为完成。';
+
+  @override
+  String get paymentTestLoadFailed => '无法加载 TEST 支付窗口，请检查网络和配置后重试。';
+
+  @override
+  String get paymentTestWebBrowserOnly => 'TEST 支付仅可在网页浏览器中使用。';
+
+  @override
+  String get planRefreshFailed => '套餐更改请求已处理，但未能确认当前套餐和额度，请重新加载确认。';
 }

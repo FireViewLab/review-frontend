@@ -3103,4 +3103,443 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String get onboardingReload => '再読み込み';
+
+  @override
+  String get reportSubmit => '通報を送信';
+
+  @override
+  String get reportReceived => '通報受付';
+
+  @override
+  String get reportReceivedDescription => '対象レビューと通報理由を保存します。';
+
+  @override
+  String get reportAssistedReview => 'AIによる補助確認';
+
+  @override
+  String get reportAssistedReviewDescription => 'RTIの情報と類似レビューの履歴を併せて確認します。';
+
+  @override
+  String get reportTeamDecision => '運営チームの判断';
+
+  @override
+  String get reportTeamDecisionDescription => '虚偽・悪意がある場合は審査状況が更新されます。';
+
+  @override
+  String get reportResultNotification => '結果の通知';
+
+  @override
+  String get reportResultNotificationDescription =>
+      '確認が完了するとフィードバック履歴に結果が反映されます。';
+
+  @override
+  String get reportProcessTitle => '処理の流れ';
+
+  @override
+  String get reportProcessDescription => '通報受付後、運営チームが確認する流れです。';
+
+  @override
+  String get reportGuideRepeated => '繰り返し表現を具体的に記載';
+
+  @override
+  String get reportGuideRepeatedDescription => '目立った箇所・文・パターンを具体的に記載してください。';
+
+  @override
+  String get reportGuideContext => '商品を使用した背景を確認';
+
+  @override
+  String get reportGuideContextDescription =>
+      '実際の使用経験がない内容や、商品と無関係な部分を教えてください。';
+
+  @override
+  String get reportGuideAttachments => '参考資料を添付';
+
+  @override
+  String get reportGuideAttachmentsDescription =>
+      '同じ根拠が複数の場面で繰り返される場合は添付が役立ちます。';
+
+  @override
+  String get reportGuideTitle => '通報ガイド';
+
+  @override
+  String get reportGuideDescription => 'このような情報が通報の処理に役立ちます。';
+
+  @override
+  String get reportSummaryTitle => '受付内容の概要';
+
+  @override
+  String get reportSummaryDescription => '送信前に入力内容を確認してください。';
+
+  @override
+  String get reportLiveBadge => 'リアルタイム';
+
+  @override
+  String get reportSelectedReasons => '選択した理由';
+
+  @override
+  String get reportAnalysisEvidence => 'AIの根拠';
+
+  @override
+  String get reportTargetReviews => '対象レビュー';
+
+  @override
+  String get reportReasonTitle => '通報理由を選択';
+
+  @override
+  String get reportReasonDescription => 'カードをタップして選択・複数選択できます。';
+
+  @override
+  String get reportViewCriteria => '通報基準を見る';
+
+  @override
+  String get reportStepTarget => '対象を確認';
+
+  @override
+  String get reportStepTargetDescription => '商品とレビューの情報を確認';
+
+  @override
+  String get reportStepReasonDescription => '問題の種類を選択';
+
+  @override
+  String get reportStepDetails => '詳しい根拠';
+
+  @override
+  String get reportStepDetailsDescription => '追加説明を入力';
+
+  @override
+  String get reportStepComplete => '受付完了';
+
+  @override
+  String get reportStepCompleteDescription => '確認状況を追跡';
+
+  @override
+  String get reportTargetDescription => '通報する商品とレビューが正しいか確認してください。';
+
+  @override
+  String get reportFromAnalysis => '分析ポップアップから移動';
+
+  @override
+  String get reportPrivacyConsent => '個人情報の収集と通報処理の案内に同意します。';
+
+  @override
+  String get reportPrivacyDescription =>
+      '通報内容はレビュー受付、処理結果の案内、モデル品質の改善に使用し、必要な期間保管します。';
+
+  @override
+  String get reportTruthConsent => '虚偽の通報ではないことを確認します。';
+
+  @override
+  String get reportTruthDescription => '通報内容が事実と異なる場合、処理の優先順位が下がることがあります。';
+
+  @override
+  String get reportTitleText => 'レビュー通報の受付';
+
+  @override
+  String get reportDescription =>
+      '疑わしいレビューの問題点と根拠を記載してください。通報は運営の確認とモデル改善のフィードバックに活用します。';
+
+  @override
+  String get reportViewMyFeedback => '自分のフィードバック履歴を見る';
+
+  @override
+  String get reportReportBreadcrumb => 'レポート';
+
+  @override
+  String get reportEvidenceTitle => '分析の根拠を併せて提出（任意）';
+
+  @override
+  String get reportEvidenceDescription => '現在のレビューのRTI分析情報を通報の根拠として添付できます。';
+
+  @override
+  String get reportAttachEvidence => 'AI分析の根拠を添付';
+
+  @override
+  String get reportAttachEvidenceDescription => 'RTIの情報が通報の根拠と一緒に提出されます。';
+
+  @override
+  String get reportViewEvidence => '根拠を見る';
+
+  @override
+  String get reportDetailsTitle => '詳しい根拠を入力';
+
+  @override
+  String get reportDetailsDescription => '通報の判断に役立つ内容を記載してください。';
+
+  @override
+  String get reportType => '通報の種類';
+
+  @override
+  String get reportVisibility => '処理結果の公開範囲';
+
+  @override
+  String get reportDetailHint => '具体的な問題とその背景を入力してください。';
+
+  @override
+  String get reportAttachments => '添付資料 ';
+
+  @override
+  String get reportOptional => '（任意）';
+
+  @override
+  String get reportAttachmentsFull => '添付できる数の上限に達しました';
+
+  @override
+  String get reportAttachmentsHint => 'スクリーンショットや追加の根拠を添付してください';
+
+  @override
+  String get reportChooseFiles => 'ファイルを選択';
+
+  @override
+  String get reportConsentsRequired => 'すべての同意項目を確認してください。';
+
+  @override
+  String get reportSubmittedTitle => '通報の受付完了';
+
+  @override
+  String get reportSubmittedDescription =>
+      '通報を受け付けました。\n処理結果はフィードバック履歴で確認できます。';
+
+  @override
+  String get reportViewFeedback => 'フィードバック履歴を見る';
+
+  @override
+  String get reportAlreadyReportedTitle => '通報済みのレビュー';
+
+  @override
+  String get reportAlreadyReportedDescription =>
+      'このレビューはすでに通報済みです。\n重複した通報は受け付けません。';
+
+  @override
+  String reportReviewCount(int count) {
+    return '$count件';
+  }
+
+  @override
+  String reportAverageReviewRound(int round) {
+    return '平均第$round回確認';
+  }
+
+  @override
+  String reportRiskyReviewScore(String score) {
+    return '危険なレビュー · RTI $score';
+  }
+
+  @override
+  String reportMaxAttachments(int count) {
+    return '最大$count件まで添付できます。';
+  }
+
+  @override
+  String reportFileTooLarge(String name, int size) {
+    return '$nameは${size}MBを超えています。';
+  }
+
+  @override
+  String reportMinimumCharacters(int count) {
+    return '$count文字以上入力してください。';
+  }
+
+  @override
+  String reportMinimumCharactersHelp(int count) {
+    return '$count文字以上入力すると、運営チームの確認に役立ちます。';
+  }
+
+  @override
+  String reportCharacterCount(int count) {
+    return '$count文字';
+  }
+
+  @override
+  String reportAttachmentLimits(int size, int count) {
+    return 'PNG, JPG, PDF · 最大${size}MB · 最大$count件';
+  }
+
+  @override
+  String reportReasonRequired(int count) {
+    return '通報理由を$count件以上選んでください。';
+  }
+
+  @override
+  String reportDetailsRequired(int count) {
+    return '詳しい説明を$count文字以上入力してください。';
+  }
+
+  @override
+  String get reportReasonFake => '偽レビュー・有償レビュアーの疑い';
+
+  @override
+  String get reportReasonGenerated => 'AI生成の痕跡の疑い';
+
+  @override
+  String get reportReasonFakeDescription =>
+      '繰り返しや過度な称賛があり、複数の購入履歴が連動している可能性のあるレビューです。';
+
+  @override
+  String get reportReasonGeneratedDescription =>
+      '繰り返しが過度に精密だったり、同じ文の構造が繰り返されるレビューです。';
+
+  @override
+  String get reportReasonIrrelevantDescription =>
+      '実際の商品使用とは関係がない内容や、別の商品・ページの内容を含みます。';
+
+  @override
+  String get reportReasonInappropriateDescription =>
+      '誹謗中傷、差別表現、氏名などの個人情報を含むレビューです。';
+
+  @override
+  String get reportReasonAdDescription => '広告レビューです。';
+
+  @override
+  String get reportReasonRepeatDescription => '繰り返しの内容です。';
+
+  @override
+  String get reportReasonOtherDescription => 'その他の通報理由です。';
+
+  @override
+  String get reportTypeRepetition => '繰り返しの表現';
+
+  @override
+  String get reportTypeNewAccount => 'アカウント作成直後';
+
+  @override
+  String get reportTypeSimilarCluster => '類似レビューの集まり';
+
+  @override
+  String get reportPrivate => '非公開';
+
+  @override
+  String get reportOnlyMe => '自分のみに公開';
+
+  @override
+  String get reportTeamOnly => '運営チームと共有';
+
+  @override
+  String get reportSelectPrompt => '選択してください';
+
+  @override
+  String get reportGuideBadge => 'ご案内';
+
+  @override
+  String get paymentTestCartTitle => 'カートのToss TEST決済';
+
+  @override
+  String get paymentTestServiceTitle => 'Toss TESTサービス決済';
+
+  @override
+  String get paymentTestCartDescription =>
+      'TEST注文・決済専用です。実際の配送や決済は行いません。販売・配送可能な商品と最終金額はサーバーの見積もりで確認します。';
+
+  @override
+  String get paymentTestServiceDescription =>
+      'テスト専用です。外部ショップへの注文、実際の決済、プランの自動変更は行いません。';
+
+  @override
+  String get paymentTestLoginRequired =>
+      '注文の確認と決済にはログインが必要です。決済のコールバックURLはログイン後に開き直してください。';
+
+  @override
+  String get paymentTestNotConfigured =>
+      'TEST決済キーとサーバーの注文・承認仕様はまだ準備されていません。現在は決済を開始・完了できません。';
+
+  @override
+  String get paymentTestWebOnly => '現在、TEST決済はウェブブラウザのみ対応しています。';
+
+  @override
+  String get paymentTestOrder => 'TEST注文';
+
+  @override
+  String get paymentTestReloadTargets => '決済対象を再取得';
+
+  @override
+  String get paymentTestOpening => 'TEST決済画面を開いています';
+
+  @override
+  String get paymentTestOpen => 'TEST決済画面を開く';
+
+  @override
+  String get paymentTestReloadWindow => '決済画面を再読み込み';
+
+  @override
+  String get paymentTestReloadApproval => 'サーバーの承認状況を再確認';
+
+  @override
+  String get paymentTestBackToOrders => 'TEST注文の選択に戻る';
+
+  @override
+  String get paymentTestCheckPlan => '現在のプランを確認';
+
+  @override
+  String get paymentCheckoutTitle => 'カートのTEST注文';
+
+  @override
+  String get paymentCheckoutDescription =>
+      '実際の決済・配送は行いません。このサービスでショップの商品を販売・配送できるかサーバーでの確認が必要です。表示価格は参考で、送料と最終金額はサーバーの見積もりで確認します。';
+
+  @override
+  String get paymentCheckoutNotConfigured =>
+      'TEST公開キーとカートの見積もり・注文・承認APIはまだありません。注文保存と決済は利用できません。住所はサーバーに送信・保存しません。';
+
+  @override
+  String get paymentCheckoutLoginSelect => 'ログインして注文を選択';
+
+  @override
+  String get paymentCheckoutNoSelection =>
+      '現在のアカウントで選択した商品がありません。カートで商品を選んでください。';
+
+  @override
+  String get paymentCheckoutRecipient => '受取人';
+
+  @override
+  String get paymentCheckoutPhone => '連絡先';
+
+  @override
+  String get paymentCheckoutPostalCode => '郵便番号';
+
+  @override
+  String get paymentCheckoutAddress => '住所';
+
+  @override
+  String get paymentCheckoutAddressDetail => '住所の詳細（任意）';
+
+  @override
+  String get paymentCheckoutRequired => '入力してください。';
+
+  @override
+  String get paymentCheckoutPhoneInvalid => '連絡先の形式を確認してください。';
+
+  @override
+  String get paymentCheckoutQuote => 'サーバーのTEST見積もりを確認';
+
+  @override
+  String get paymentCheckoutBack => 'カートに戻る';
+
+  @override
+  String paymentCheckoutUnitPrice(String price) {
+    return '参考単価：$priceウォン';
+  }
+
+  @override
+  String paymentCheckoutQuantity(int count, String price) {
+    return '$count個 · $price';
+  }
+
+  @override
+  String paymentCheckoutPostalLength(int count) {
+    return '$count桁の郵便番号を入力してください。';
+  }
+
+  @override
+  String get paymentTestRequestFailed =>
+      '決済画面のリクエストがキャンセルされたか失敗しました。決済完了として処理していません。';
+
+  @override
+  String get paymentTestLoadFailed =>
+      'TEST決済画面を読み込めませんでした。ネットワークと設定を確認して再度お試しください。';
+
+  @override
+  String get paymentTestWebBrowserOnly => 'TEST決済はウェブブラウザのみ利用できます。';
+
+  @override
+  String get planRefreshFailed =>
+      'プラン変更は処理されましたが、現在のプランと上限を確認できませんでした。再読み込みして確認してください。';
 }

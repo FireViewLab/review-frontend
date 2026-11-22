@@ -1,3 +1,5 @@
+import 'package:re_view_front/features/review_report/presentation/report_labels.dart';
+import 'package:re_view_front/l10n/generated/app_localizations.dart';
 import 'package:re_view_front/app/theme/app_motion.dart';
 import 'package:flutter/material.dart';
 import 'package:re_view_front/app/theme/app_colors.dart';
@@ -194,7 +196,10 @@ class _TrendyDropdownState extends State<TrendyDropdown>
                   children: [
                     Expanded(
                       child: Text(
-                        hasValue ? widget.value! : widget.hint,
+                        reportLabel(
+                          AppLocalizations.of(context),
+                          hasValue ? widget.value! : widget.hint,
+                        ),
                         style: TextStyle(
                           fontSize: 14,
                           fontWeight: hasValue
@@ -262,7 +267,7 @@ class _DropdownMenu extends StatelessWidget {
           children: [
             for (final item in items)
               _MenuItem(
-                label: item,
+                label: reportLabel(AppLocalizations.of(context), item),
                 selected: item == value,
                 onTap: () => onSelected(item),
               ),

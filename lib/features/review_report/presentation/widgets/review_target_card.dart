@@ -1,3 +1,4 @@
+import 'package:re_view_front/l10n/generated/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:re_view_front/app/theme/app_colors.dart';
 import 'package:re_view_front/app/theme/app_spacing.dart';
@@ -27,8 +28,8 @@ class ReviewTargetCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SectionCard(
-      title: '신고 대상 리뷰',
-      description: '신고하려는 상품과 리뷰가 맞는지 확인해주세요.',
+      title: AppLocalizations.of(context).adminReportedReview,
+      description: AppLocalizations.of(context).reportTargetDescription,
       trailing: rtiScore > 0
           ? _RtiBadge(isDanger: _isDanger, score: rtiScore)
           : null,
@@ -76,13 +77,12 @@ class ReviewTargetCard extends StatelessWidget {
                       child: Padding(
                         padding: const EdgeInsets.symmetric(vertical: 2),
                         child: Text(
-                          '분석 팝업에서 이동',
-                          style: Theme.of(
-                            context,
-                          ).textTheme.labelSmall?.copyWith(
-                            color: AppColors.primary,
-                            fontWeight: FontWeight.w700,
-                          ),
+                          AppLocalizations.of(context).reportFromAnalysis,
+                          style: Theme.of(context).textTheme.labelSmall
+                              ?.copyWith(
+                                color: AppColors.primary,
+                                fontWeight: FontWeight.w700,
+                              ),
                         ),
                       ),
                     ),
@@ -163,7 +163,9 @@ class _RtiBadge extends StatelessWidget {
       ),
       child: Text(
         isDanger
-            ? '위험 리뷰 · RTI ${score.toStringAsFixed(0)}'
+            ? AppLocalizations.of(
+                context,
+              ).reportRiskyReviewScore(score.toStringAsFixed(0))
             : 'RTI ${score.toStringAsFixed(0)}',
         style: TextStyle(
           color: color,

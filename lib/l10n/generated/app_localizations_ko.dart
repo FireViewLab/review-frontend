@@ -3104,4 +3104,444 @@ class AppLocalizationsKo extends AppLocalizations {
 
   @override
   String get onboardingReload => '다시 불러오기';
+
+  @override
+  String get reportSubmit => '신고 접수하기';
+
+  @override
+  String get reportReceived => '신고 접수';
+
+  @override
+  String get reportReceivedDescription => '대상 리뷰와 신고 사유가 저장됩니다.';
+
+  @override
+  String get reportAssistedReview => 'AI 보조 검토';
+
+  @override
+  String get reportAssistedReviewDescription => 'RTI 신호와 유사 리뷰 이력을 함께 확인합니다.';
+
+  @override
+  String get reportTeamDecision => '운영팀 판단';
+
+  @override
+  String get reportTeamDecisionDescription => '허위/악의성이면 무선 검토 상태가 갱신됩니다.';
+
+  @override
+  String get reportResultNotification => '결과 알림';
+
+  @override
+  String get reportResultNotificationDescription =>
+      '검토 완료되면 피드백 내역에 결과가 반영됩니다.';
+
+  @override
+  String get reportProcessTitle => '처리 절차';
+
+  @override
+  String get reportProcessDescription => '신고 접수 후 운영팀이 검토하는 흐름이에요.';
+
+  @override
+  String get reportGuideRepeated => '반복 문구를 구체적으로 적기';
+
+  @override
+  String get reportGuideRepeatedDescription =>
+      '정확한 위치/문장/패턴 등 눈에 띄는 표현을 적어주세요.';
+
+  @override
+  String get reportGuideContext => '상품 사용 맥락 확인';
+
+  @override
+  String get reportGuideContextDescription =>
+      '실제 사용 경험이 없거나 상품과 무관한 부분을 알려주세요.';
+
+  @override
+  String get reportGuideAttachments => '첨부 자료 첨부';
+
+  @override
+  String get reportGuideAttachmentsDescription =>
+      '해당 근거가 여러 상황에 반복된다면 첨부가 좋습니다.';
+
+  @override
+  String get reportGuideTitle => '신고 가이드';
+
+  @override
+  String get reportGuideDescription => '이런 경우 신고가 더 잘 처리돼요.';
+
+  @override
+  String get reportSummaryTitle => '접수 요약';
+
+  @override
+  String get reportSummaryDescription => '제출 전 입력한 내용을 확인하세요.';
+
+  @override
+  String get reportLiveBadge => '실시간';
+
+  @override
+  String get reportSelectedReasons => '선택 사유';
+
+  @override
+  String get reportAnalysisEvidence => 'AI 근거';
+
+  @override
+  String get reportTargetReviews => '대상 리뷰';
+
+  @override
+  String get reportReasonTitle => '신고 사유 선택';
+
+  @override
+  String get reportReasonDescription => '카드를 탭해서 선택하세요 · 여러 개 선택 가능합니다.';
+
+  @override
+  String get reportViewCriteria => '신고 기준 보기';
+
+  @override
+  String get reportStepTarget => '대상 확인';
+
+  @override
+  String get reportStepTargetDescription => '상품과 리뷰 정보 확인';
+
+  @override
+  String get reportStepReasonDescription => '문제 유형 선택';
+
+  @override
+  String get reportStepDetails => '상세 근거';
+
+  @override
+  String get reportStepDetailsDescription => '추가 설명 입력';
+
+  @override
+  String get reportStepComplete => '접수 완료';
+
+  @override
+  String get reportStepCompleteDescription => '검토 상태 추적';
+
+  @override
+  String get reportTargetDescription => '신고하려는 상품과 리뷰가 맞는지 확인해주세요.';
+
+  @override
+  String get reportFromAnalysis => '분석 팝업에서 이동';
+
+  @override
+  String get reportPrivacyConsent => '개인정보 수집 및 신고 처리 안내에 동의합니다.';
+
+  @override
+  String get reportPrivacyDescription =>
+      '신고 내용은 리뷰 접수, 처리 결과 안내, 모델 품질 개선을 위해 사용되며 필요한 기간 동안 보관됩니다.';
+
+  @override
+  String get reportTruthConsent => '허위 신고가 아님을 확인합니다.';
+
+  @override
+  String get reportTruthDescription => '신고 내용이 사실과 다를 경우 처리 우선순위가 낮아질 수 있습니다.';
+
+  @override
+  String get reportTitleText => '리뷰 신고 접수';
+
+  @override
+  String get reportDescription =>
+      '의심 리뷰의 문제 유형과 근거를 남겨주세요. 제출된 신고는 운영 검수와 모델 개선 피드백에 함께 활용됩니다.';
+
+  @override
+  String get reportViewMyFeedback => '내 피드백 내역 보기';
+
+  @override
+  String get reportReportBreadcrumb => '리포트';
+
+  @override
+  String get reportEvidenceTitle => '분석 근거 함께 제출 (선택)';
+
+  @override
+  String get reportEvidenceDescription => '현재 리뷰의 RTI 분석 신호를 신고 근거로 첨부할 수 있어요.';
+
+  @override
+  String get reportAttachEvidence => 'AI 분석 근거 첨부';
+
+  @override
+  String get reportAttachEvidenceDescription => 'RTI 신호 데이터가 신고 근거와 함께 제출돼요.';
+
+  @override
+  String get reportViewEvidence => '근거 보기';
+
+  @override
+  String get reportDetailsTitle => '상세 근거 입력';
+
+  @override
+  String get reportDetailsDescription => '신고 판단에 도움이 되는 내용을 남겨주세요.';
+
+  @override
+  String get reportType => '신고 유형';
+
+  @override
+  String get reportVisibility => '처리 결과 공개 범위';
+
+  @override
+  String get reportDetailHint => '구체적인 문제 내용과 맥락을 입력해주세요.';
+
+  @override
+  String get reportAttachments => '첨부 자료 ';
+
+  @override
+  String get reportOptional => '(선택)';
+
+  @override
+  String get reportAttachmentsFull => '첨부 가능한 개수를 모두 채웠어요';
+
+  @override
+  String get reportAttachmentsHint => '스크린샷이나 추가 근거를 첨부해주세요';
+
+  @override
+  String get reportChooseFiles => '파일 선택';
+
+  @override
+  String get reportConsentsRequired => '동의 항목을 모두 확인해주세요.';
+
+  @override
+  String get reportSubmittedTitle => '신고 접수 완료';
+
+  @override
+  String get reportSubmittedDescription =>
+      '신고가 접수되었습니다.\n처리 결과는 피드백 내역에서 확인할 수 있어요.';
+
+  @override
+  String get reportViewFeedback => '피드백 내역 보기';
+
+  @override
+  String get reportAlreadyReportedTitle => '이미 신고한 리뷰';
+
+  @override
+  String get reportAlreadyReportedDescription =>
+      '이 리뷰는 이미 신고하셨습니다.\n중복 신고는 접수되지 않아요.';
+
+  @override
+  String reportReviewCount(int count) {
+    return '$count건';
+  }
+
+  @override
+  String reportAverageReviewRound(int round) {
+    return '평균 $round차 검토';
+  }
+
+  @override
+  String reportRiskyReviewScore(String score) {
+    return '위험 리뷰 · RTI $score';
+  }
+
+  @override
+  String reportMaxAttachments(int count) {
+    return '최대 $count개까지만 첨부할 수 있어요.';
+  }
+
+  @override
+  String reportFileTooLarge(String name, int size) {
+    return '$name은 ${size}MB를 초과합니다.';
+  }
+
+  @override
+  String reportMinimumCharacters(int count) {
+    return '최소 $count자 이상 입력해주세요.';
+  }
+
+  @override
+  String reportMinimumCharactersHelp(int count) {
+    return '최소 $count자 이상 입력하면 운영팀 검토에 더 도움이 돼요.';
+  }
+
+  @override
+  String reportCharacterCount(int count) {
+    return '$count자';
+  }
+
+  @override
+  String reportAttachmentLimits(int size, int count) {
+    return 'PNG, JPG, PDF · 최대 ${size}MB · 최대 $count개';
+  }
+
+  @override
+  String reportReasonRequired(int count) {
+    return '신고 사유를 $count개 이상 선택해주세요.';
+  }
+
+  @override
+  String reportDetailsRequired(int count) {
+    return '상세 설명을 $count자 이상 입력해주세요.';
+  }
+
+  @override
+  String get reportReasonFake => '가짜 리뷰 / 리뷰 날바 의심';
+
+  @override
+  String get reportReasonGenerated => 'AI 생성 흔적 의심';
+
+  @override
+  String get reportReasonFakeDescription =>
+      '반복되고, 과도한 칭찬, 구매 이력 복수가 동조하는 가능성이 있는 리뷰예요.';
+
+  @override
+  String get reportReasonGeneratedDescription =>
+      '반복이 지나치게 정밀하거나, 동일한 문장 구조가 반복되는 리뷰예요.';
+
+  @override
+  String get reportReasonIrrelevantDescription =>
+      '실제 상품 사용 경험과 관련이 없는 내용이거나 다른 상품/페이지의 내용을 포함해요.';
+
+  @override
+  String get reportReasonInappropriateDescription =>
+      '비방, 혐오 표현, 이름 등 개인정보가 포함된 리뷰예요.';
+
+  @override
+  String get reportReasonAdDescription => '광고 리뷰입니다.';
+
+  @override
+  String get reportReasonRepeatDescription => '반복되는 내용입니다.';
+
+  @override
+  String get reportReasonOtherDescription => '기타 신고 사유입니다.';
+
+  @override
+  String get reportTypeRepetition => '반복 문구';
+
+  @override
+  String get reportTypeNewAccount => '계정 생성 직후';
+
+  @override
+  String get reportTypeSimilarCluster => '유사 리뷰 군집';
+
+  @override
+  String get reportPrivate => '비공개';
+
+  @override
+  String get reportOnlyMe => '나에게만 공개';
+
+  @override
+  String get reportTeamOnly => '운영팀 공유';
+
+  @override
+  String get reportSelectPrompt => '선택해주세요';
+
+  @override
+  String get reportGuideBadge => '안내';
+
+  @override
+  String get paymentTestCartTitle => '장바구니 토스 TEST 결제';
+
+  @override
+  String get paymentTestServiceTitle => '토스 TEST 서비스 결제';
+
+  @override
+  String get paymentTestCartDescription =>
+      'TEST 주문·결제 전용입니다. 실제 상품 배송과 실결제는 진행하지 않습니다. 판매·배송 가능 상품과 최종 금액은 서버 견적으로 확인합니다.';
+
+  @override
+  String get paymentTestServiceDescription =>
+      '테스트 전용입니다. 외부 쇼핑몰 상품 주문·실결제·자동 플랜 변경을 진행하지 않습니다.';
+
+  @override
+  String get paymentTestLoginRequired =>
+      '주문 조회와 결제는 로그인이 필요합니다. 결제 콜백 주소는 로그인 후 다시 열어 주세요.';
+
+  @override
+  String get paymentTestNotConfigured =>
+      'TEST 결제 키와 서버 주문·승인 계약이 아직 준비되지 않았습니다. 현재 결제를 시작하거나 완료할 수 없습니다.';
+
+  @override
+  String get paymentTestWebOnly => '현재 TEST 결제는 웹 브라우저에서만 지원합니다.';
+
+  @override
+  String get paymentTestOrder => 'TEST 주문';
+
+  @override
+  String get paymentTestReloadTargets => '결제 대상 다시 조회';
+
+  @override
+  String get paymentTestOpening => 'TEST 결제창 여는 중';
+
+  @override
+  String get paymentTestOpen => 'TEST 결제창 열기';
+
+  @override
+  String get paymentTestReloadWindow => '결제창 다시 불러오기';
+
+  @override
+  String get paymentTestReloadApproval => '서버 승인 상태 다시 조회';
+
+  @override
+  String get paymentTestBackToOrders => 'TEST 주문 선택으로 돌아가기';
+
+  @override
+  String get paymentTestCheckPlan => '현재 플랜 확인';
+
+  @override
+  String get paymentCheckoutTitle => '장바구니 TEST 주문';
+
+  @override
+  String get paymentCheckoutDescription =>
+      '실결제·실제 배송은 진행하지 않습니다. 쇼핑몰 상품을 이 서비스가 판매·배송할 수 있는지 서버 확인이 필요합니다. 표시 가격은 참고용이며 배송비·최종 금액은 서버 견적으로 확인합니다.';
+
+  @override
+  String get paymentCheckoutNotConfigured =>
+      'TEST 공개 키와 장바구니 견적·주문·승인 API가 아직 없습니다. 주문 저장과 결제는 사용할 수 없습니다. 주소는 서버에 보내거나 저장하지 않습니다.';
+
+  @override
+  String get paymentCheckoutLoginSelect => '로그인 후 주문 선택';
+
+  @override
+  String get paymentCheckoutNoSelection =>
+      '현재 계정의 선택 상품이 없습니다. 장바구니에서 상품을 선택해 주세요.';
+
+  @override
+  String get paymentCheckoutRecipient => '수령인';
+
+  @override
+  String get paymentCheckoutPhone => '연락처';
+
+  @override
+  String get paymentCheckoutPostalCode => '우편번호';
+
+  @override
+  String get paymentCheckoutAddress => '주소';
+
+  @override
+  String get paymentCheckoutAddressDetail => '상세 주소 (선택)';
+
+  @override
+  String get paymentCheckoutRequired => '입력해 주세요.';
+
+  @override
+  String get paymentCheckoutPhoneInvalid => '연락처 형식을 확인해 주세요.';
+
+  @override
+  String get paymentCheckoutQuote => '서버 TEST 견적 확인';
+
+  @override
+  String get paymentCheckoutBack => '장바구니로 돌아가기';
+
+  @override
+  String paymentCheckoutUnitPrice(String price) {
+    return '참고 개당 $price원';
+  }
+
+  @override
+  String paymentCheckoutQuantity(int count, String price) {
+    return '$count개 · $price';
+  }
+
+  @override
+  String paymentCheckoutPostalLength(int count) {
+    return '우편번호 $count자리를 입력해 주세요.';
+  }
+
+  @override
+  String get paymentTestRequestFailed =>
+      '결제창 요청이 취소되었거나 실패했습니다. 결제 완료로 처리하지 않았습니다.';
+
+  @override
+  String get paymentTestLoadFailed =>
+      'TEST 결제창을 불러오지 못했습니다. 네트워크와 설정을 확인한 뒤 다시 시도해 주세요.';
+
+  @override
+  String get paymentTestWebBrowserOnly => 'TEST 결제는 웹 브라우저에서만 사용할 수 있습니다.';
+
+  @override
+  String get planRefreshFailed =>
+      '요금제 변경 요청은 처리됐지만 현재 플랜과 한도를 확인하지 못했습니다. 다시 불러와 확인해 주세요.';
 }

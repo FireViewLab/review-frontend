@@ -1,3 +1,4 @@
+import 'package:re_view_front/l10n/generated/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:re_view_front/app/theme/app_colors.dart';
 import 'package:re_view_front/app/theme/app_spacing.dart';
@@ -8,11 +9,23 @@ class ReportProcessCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    const steps = [
-      ('신고 접수', '대상 리뷰와 신고 사유가 저장됩니다.'),
-      ('AI 보조 검토', 'RTI 신호와 유사 리뷰 이력을 함께 확인합니다.'),
-      ('운영팀 판단', '허위/악의성이면 무선 검토 상태가 갱신됩니다.'),
-      ('결과 알림', '검토 완료되면 피드백 내역에 결과가 반영됩니다.'),
+    final steps = [
+      (
+        AppLocalizations.of(context).reportReceived,
+        AppLocalizations.of(context).reportReceivedDescription,
+      ),
+      (
+        AppLocalizations.of(context).reportAssistedReview,
+        AppLocalizations.of(context).reportAssistedReviewDescription,
+      ),
+      (
+        AppLocalizations.of(context).reportTeamDecision,
+        AppLocalizations.of(context).reportTeamDecisionDescription,
+      ),
+      (
+        AppLocalizations.of(context).reportResultNotification,
+        AppLocalizations.of(context).reportResultNotificationDescription,
+      ),
     ];
 
     return Container(
@@ -25,10 +38,10 @@ class ReportProcessCard extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          const SidePanelHeader(
+          SidePanelHeader(
             icon: Icons.task_alt,
-            title: '처리 절차',
-            description: '신고 접수 후 운영팀이 검토하는 흐름이에요.',
+            title: AppLocalizations.of(context).reportProcessTitle,
+            description: AppLocalizations.of(context).reportProcessDescription,
           ),
           const SizedBox(height: AppSpacing.md),
           for (var i = 0; i < steps.length; i++) ...[
