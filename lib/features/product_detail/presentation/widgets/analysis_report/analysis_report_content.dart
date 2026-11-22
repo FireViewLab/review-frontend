@@ -96,7 +96,7 @@ class AnalysisReportContent extends StatelessWidget {
             isAnalyzing: isAnalyzing,
           ),
           for (final review in analyzed.where(
-            (r) => r.analysisDisplay.displayReasons.isNotEmpty,
+            (r) => r.analysisDisplay.localizedReasons(context).isNotEmpty,
           ))
             ExpansionTile(
               title: Text(
@@ -108,7 +108,7 @@ class AnalysisReportContent extends StatelessWidget {
               children: [
                 for (final reason in ReviewEvidenceFormatter.list(
                   context,
-                  review.analysisDisplay.displayReasons,
+                  review.analysisDisplay.localizedReasons(context),
                   detailed: true,
                 ))
                   ListTile(title: Text(reason)),

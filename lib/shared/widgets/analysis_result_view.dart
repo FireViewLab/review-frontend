@@ -22,7 +22,7 @@ class AnalysisResultView extends StatelessWidget {
       children: [
         if (compact && score != null) Text(analysis.scoreName(context)),
         if (score == null)
-          Text('${analysis.scoreName(context)} · ${l.analysisNotCalculable}')
+          Text(analysis.badgeText(context))
         else
           RtiScoreRing(
             score: score,
@@ -38,7 +38,7 @@ class AnalysisResultView extends StatelessWidget {
               fontWeight: FontWeight.w700,
             ),
           ),
-        for (final reason in analysis.displayReasons)
+        for (final reason in analysis.localizedReasons(context))
           Padding(
             padding: const EdgeInsets.only(top: 8),
             child: Text(

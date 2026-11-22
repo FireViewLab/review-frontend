@@ -433,7 +433,7 @@
   "externalReviewMenu": "评论菜单",
   "externalReport": "举报评论",
   "externalReal": "像真实评论",
-  "externalFake": "像虚假评论",
+  "externalFake": "这条评论需要留意",
   "externalNotCollected": "请在商品采集完成后重试。",
   "externalUnavailable": "数据服务器暂不可用，请稍后重试。",
   "externalReportDuplicate": "您已举报此评论。",
@@ -763,5 +763,8 @@
   "failureTitleUnknown": "出现问题",
   "failureMessageUnknown": "无法完成请求，请稍后重试。",
   "failureRetry": "重试",
-  "failureSearchRetry": "重新搜索"
+  "failureSearchRetry": "重新搜索",
+  "analysisPending": "分析中",
+  "analysisTextCaution": "请留意正文中的重复、推广或说明性表达。",
+  "analysisAttentionReviews": "需留意的评论 {count}条"
 }

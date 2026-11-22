@@ -447,7 +447,7 @@
   "externalReviewMenu": "Review menu",
   "externalReport": "Report review",
   "externalReal": "Looks real",
-  "externalFake": "Looks fake",
+  "externalFake": "This review needs attention",
   "externalNotCollected": "Try again after product collection is complete.",
   "externalUnavailable": "The data server is unavailable. Try again later.",
   "externalReportDuplicate": "You already reported this review.",
@@ -777,5 +777,8 @@
   "failureTitleUnknown": "Something went wrong",
   "failureMessageUnknown": "The request could not be completed. Please try again shortly.",
   "failureRetry": "Try again",
-  "failureSearchRetry": "Search again"
+  "failureSearchRetry": "Search again",
+  "analysisPending": "Analysis in progress",
+  "analysisTextCaution": "Check the review text for repeated, promotional, or descriptive wording.",
+  "analysisAttentionReviews": "Reviews needing attention: {count}"
 }

@@ -2697,7 +2697,7 @@ abstract class AppLocalizations {
   /// No description provided for @externalFake.
   ///
   /// In ko, this message translates to:
-  /// **'가짜 리뷰 같아요'**
+  /// **'주의가 필요한 리뷰 같아요'**
   String get externalFake;
 
   /// No description provided for @externalNotCollected.
@@ -4673,6 +4673,24 @@ abstract class AppLocalizations {
   /// In ko, this message translates to:
   /// **'다시 검색'**
   String get failureSearchRetry;
+
+  /// No description provided for @analysisPending.
+  ///
+  /// In ko, this message translates to:
+  /// **'분석 중'**
+  String get analysisPending;
+
+  /// No description provided for @analysisTextCaution.
+  ///
+  /// In ko, this message translates to:
+  /// **'본문의 반복·홍보·설명문 표현을 확인해 주세요.'**
+  String get analysisTextCaution;
+
+  /// No description provided for @analysisAttentionReviews.
+  ///
+  /// In ko, this message translates to:
+  /// **'주의 리뷰 {count}건'**
+  String analysisAttentionReviews(int count);
 }
 
 class _AppLocalizationsDelegate

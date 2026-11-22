@@ -1421,7 +1421,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get externalReal => 'Looks real';
 
   @override
-  String get externalFake => 'Looks fake';
+  String get externalFake => 'This review needs attention';
 
   @override
   String get externalNotCollected =>
@@ -2527,4 +2527,16 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get failureSearchRetry => 'Search again';
+
+  @override
+  String get analysisPending => 'Analysis in progress';
+
+  @override
+  String get analysisTextCaution =>
+      'Check the review text for repeated, promotional, or descriptive wording.';
+
+  @override
+  String analysisAttentionReviews(int count) {
+    return 'Reviews needing attention: $count';
+  }
 }

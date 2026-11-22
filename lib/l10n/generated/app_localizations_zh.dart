@@ -1379,7 +1379,7 @@ class AppLocalizationsZh extends AppLocalizations {
   String get externalReal => '像真实评论';
 
   @override
-  String get externalFake => '像虚假评论';
+  String get externalFake => '这条评论需要留意';
 
   @override
   String get externalNotCollected => '请在商品采集完成后重试。';
@@ -2403,4 +2403,15 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get failureSearchRetry => '重新搜索';
+
+  @override
+  String get analysisPending => '分析中';
+
+  @override
+  String get analysisTextCaution => '请留意正文中的重复、推广或说明性表达。';
+
+  @override
+  String analysisAttentionReviews(int count) {
+    return '需留意的评论 $count条';
+  }
 }

@@ -1,3 +1,6 @@
+import 'package:go_router/go_router.dart';
+import 'package:re_view_front/core/analysis/analysis_contract.dart';
+import '../../../../helpers/pump_app.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:re_view_front/l10n/generated/app_localizations.dart';
@@ -40,4 +43,58 @@ void main() {
     expect(find.textContaining('多'), findsNothing);
     expect(find.text('50'), findsOneWidget);
   });
+  for (final (score, level) in [
+    (null, 'DANGER'),
+    (0, 'DANGER'),
+    (50, 'WARN'),
+    (90, 'SAFE'),
+  ]) {
+    testWidgets(
+      'policy summary keeps null pending and uses cautious wording at $score/$level',
+      (tester) async {
+        final analysis = AnalysisContract.parse({
+          'contractVersion': 'v2',
+          'policyIndexV4': score,
+          'levelV4': level,
+          'policyIndexV3': 99,
+          'analysisSummaryKo': '이전 요약',
+          'rulesReasonsKo': ['이전 이유'],
+          'textProbabilityV4': 0.75,
+        });
+        final router = GoRouter(
+          routes: [
+            GoRoute(
+              path: '/',
+              builder: (context, _) => Scaffold(
+                body: RtiSummaryCard(
+                  analysis: analysis,
+                  rtiSummary: null,
+                  onDetailPressed: () {},
+                ),
+              ),
+            ),
+          ],
+        );
+        addTearDown(router.dispose);
+        await pumpApp(tester, localizedApp(router: router));
+        final l = AppLocalizations.of(
+          tester.element(find.byType(RtiSummaryCard)),
+        );
+        expect(
+          find.text(l.analysisTextCaution),
+          score != null && level != 'SAFE' ? findsOneWidget : findsNothing,
+        );
+        if (score == null) {
+          expect(find.textContaining(l.analysisPending), findsWidgets);
+          expect(find.text(l.reviewAnalysisDanger), findsNothing);
+          expect(find.text('0'), findsNothing);
+        } else {
+          expect(find.text('$score'), findsOneWidget);
+        }
+        expect(find.text('이전 요약'), findsNothing);
+        expect(find.text('이전 이유'), findsNothing);
+        expect(find.text('75%'), findsNothing);
+      },
+    );
+  }
 }

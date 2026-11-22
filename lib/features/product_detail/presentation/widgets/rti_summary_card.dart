@@ -26,7 +26,7 @@ class RtiSummaryCard extends StatelessWidget {
     final l = AppLocalizations.of(context);
     final summary = rtiSummary;
     return ProductReportCard(
-      status: isAnalyzing
+      status: isAnalyzing || analysis?.isAwaitingScore == true
           ? ProductReportStatus.running
           : summary != null || analysis?.isV2 == true || loadedAnalysisCount > 0
           ? ProductReportStatus.ready
@@ -38,7 +38,8 @@ class RtiSummaryCard extends StatelessWidget {
       summary: analysis?.isV2 == true && !isAnalyzing
           ? (analysis?.score == null
                 ? analysis!.badgeText(context)
-                : l.reportDone)
+                : analysis!.localizedReasons(context).firstOrNull ??
+                      l.reportDone)
           : isAnalyzing
           ? l.reportRunning
           : summary != null

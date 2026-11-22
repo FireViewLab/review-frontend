@@ -861,7 +861,7 @@
   "externalReviewMenu": "리뷰 메뉴",
   "externalReport": "신고하기",
   "externalReal": "실제 리뷰 같아요",
-  "externalFake": "가짜 리뷰 같아요",
+  "externalFake": "주의가 필요한 리뷰 같아요",
   "externalNotCollected": "상품 수집이 끝난 뒤 다시 시도해주세요.",
   "externalUnavailable": "데이터 서버에 연결할 수 없습니다. 잠시 후 다시 시도해주세요.",
   "externalReportDuplicate": "이미 신고한 리뷰입니다.",
@@ -1547,5 +1547,15 @@
   "failureSearchRetry": "다시 검색",
   "@failureSearchRetry": {
     "description": "Shared failure presentation: failureSearchRetry"
+  },
+  "analysisPending": "분석 중",
+  "analysisTextCaution": "본문의 반복·홍보·설명문 표현을 확인해 주세요.",
+  "analysisAttentionReviews": "주의 리뷰 {count}건",
+  "@analysisAttentionReviews": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
   }
 }

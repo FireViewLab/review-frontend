@@ -1387,7 +1387,7 @@ class AppLocalizationsKo extends AppLocalizations {
   String get externalReal => '실제 리뷰 같아요';
 
   @override
-  String get externalFake => '가짜 리뷰 같아요';
+  String get externalFake => '주의가 필요한 리뷰 같아요';
 
   @override
   String get externalNotCollected => '상품 수집이 끝난 뒤 다시 시도해주세요.';
@@ -2427,4 +2427,15 @@ class AppLocalizationsKo extends AppLocalizations {
 
   @override
   String get failureSearchRetry => '다시 검색';
+
+  @override
+  String get analysisPending => '분석 중';
+
+  @override
+  String get analysisTextCaution => '본문의 반복·홍보·설명문 표현을 확인해 주세요.';
+
+  @override
+  String analysisAttentionReviews(int count) {
+    return '주의 리뷰 $count건';
+  }
 }
