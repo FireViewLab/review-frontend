@@ -1,3 +1,4 @@
+import 'package:re_view_front/shared/widgets/scroll_to_top_button.dart';
 import 'package:re_view_front/features/external_product/presentation/widgets/product_description_section.dart';
 import 'package:re_view_front/features/external_product/presentation/widgets/analysis_summary_card.dart';
 import 'package:re_view_front/shared/widgets/section_jump_bar.dart';
@@ -47,6 +48,14 @@ class ExternalProductPage extends ConsumerStatefulWidget {
 }
 
 class _ExternalProductPageState extends ConsumerState<ExternalProductPage> {
+  final _scrollController = ScrollController();
+
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
+  }
+
   void _rememberSummary() {
     final summary = widget.summary;
     if (summary != null && summary.matches(widget.productRef)) {
@@ -69,8 +78,10 @@ class _ExternalProductPageState extends ConsumerState<ExternalProductPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      floatingActionButton: ScrollToTopButton(controller: _scrollController),
       backgroundColor: AppColors.surface,
       body: CustomScrollView(
+        controller: _scrollController,
         slivers: [
           SliverWidthBuilder(
             builder: (context, width) {

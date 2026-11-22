@@ -1,3 +1,4 @@
+import 'package:re_view_front/shared/widgets/scroll_to_top_button.dart';
 import 'package:re_view_front/core/error/failure.dart';
 import 'package:re_view_front/shared/presentation/analysis_formatters.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
@@ -379,6 +380,7 @@ class _HomePageState extends ConsumerState<HomePage> {
       ],
     );
     final page = Scaffold(
+      floatingActionButton: ScrollToTopButton(controller: _scrollController),
       backgroundColor: AppColors.background,
       body: kIsWeb
           ? scrollView
