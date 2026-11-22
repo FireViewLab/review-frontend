@@ -2426,4 +2426,7 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get cartRemoved => '已从购物车移除';
+
+  @override
+  String get listLoading => '正在加载';
 }

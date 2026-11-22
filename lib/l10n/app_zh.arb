@@ -770,5 +770,6 @@
   "scrollToTop": "回到顶部",
   "actionUndo": "撤销",
   "wishlistRemoved": "已从收藏中移除",
-  "cartRemoved": "已从购物车移除"
+  "cartRemoved": "已从购物车移除",
+  "listLoading": "正在加载"
 }

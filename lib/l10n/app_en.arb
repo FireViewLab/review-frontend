@@ -784,5 +784,6 @@
   "scrollToTop": "Back to top",
   "actionUndo": "Undo",
   "wishlistRemoved": "Removed from wishlist",
-  "cartRemoved": "Removed from cart"
+  "cartRemoved": "Removed from cart",
+  "listLoading": "Loading"
 }

@@ -1,3 +1,4 @@
+import 'package:re_view_front/shared/widgets/list_row_skeleton.dart';
 import 'package:re_view_front/core/result/result.dart';
 import 'package:re_view_front/features/cart/domain/entities/cart_item.dart';
 import 'package:re_view_front/features/cart/presentation/view_models/cart_view_model.dart';
@@ -459,11 +460,11 @@ class _CartSkeleton extends StatelessWidget {
   Widget build(BuildContext context) {
     final isMobile = MediaQuery.sizeOf(context).width < 600;
 
-    return ShimmerWrapper(
+    return LoadingSkeleton(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          for (var i = 0; i < 3; i++) ...[
+          for (var i = 0; i < 4; i++) ...[
             DecoratedBox(
               decoration: BoxDecoration(
                 color: AppColors.surface,

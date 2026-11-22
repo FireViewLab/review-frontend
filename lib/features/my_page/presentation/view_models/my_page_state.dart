@@ -6,7 +6,9 @@ sealed class MyPageState {
 }
 
 class MyPageLoading extends MyPageState {
-  const MyPageLoading();
+  const MyPageLoading({this.isRefresh = false});
+
+  final bool isRefresh;
 }
 
 class MyPageSuccess extends MyPageState {

@@ -2450,4 +2450,7 @@ class AppLocalizationsKo extends AppLocalizations {
 
   @override
   String get cartRemoved => '장바구니에서 뺐어요';
+
+  @override
+  String get listLoading => '불러오는 중';
 }

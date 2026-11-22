@@ -10,7 +10,9 @@ class FeedbackHistoryInitial extends FeedbackHistoryState {
 }
 
 class FeedbackHistoryLoading extends FeedbackHistoryState {
-  const FeedbackHistoryLoading();
+  const FeedbackHistoryLoading({this.isRefresh = false});
+
+  final bool isRefresh;
 }
 
 class FeedbackHistorySuccess extends FeedbackHistoryState {

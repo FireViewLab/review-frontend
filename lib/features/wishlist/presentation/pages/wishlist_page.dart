@@ -1,3 +1,4 @@
+import 'package:re_view_front/shared/widgets/list_row_skeleton.dart';
 import 'package:re_view_front/core/providers/core_providers.dart';
 import 'package:re_view_front/core/result/result.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
@@ -469,7 +470,7 @@ class _WishlistGridSkeleton extends StatelessWidget {
       _ => 2,
     };
 
-    return ShimmerWrapper(
+    return LoadingSkeleton(
       child: GridView.builder(
         shrinkWrap: true,
         physics: const NeverScrollableScrollPhysics(),
@@ -479,7 +480,7 @@ class _WishlistGridSkeleton extends StatelessWidget {
           mainAxisSpacing: AppSpacing.sm,
           childAspectRatio: 0.62,
         ),
-        itemCount: crossAxisCount * 2,
+        itemCount: 6,
         itemBuilder: (context, _) => const _WishlistCardSkeleton(),
       ),
     );

@@ -1,3 +1,4 @@
+import 'package:re_view_front/shared/widgets/list_row_skeleton.dart';
 import 'package:re_view_front/shared/presentation/analysis_formatters.dart';
 import 'package:flutter/material.dart';
 import 'package:re_view_front/app/router/route_paths.dart';
@@ -60,6 +61,9 @@ class _RecentBody extends ConsumerWidget {
     Widget status(Widget child) =>
         all ? SliverToBoxAdapter(child: child) : child;
     // Account changes rebuild this provider with no previous account's history.
+    if (state.isLoading && !state.hasValue) {
+      return status(const ListLoadingSkeleton());
+    }
     if (state.isLoading) {
       return status(
         const Center(

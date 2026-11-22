@@ -4715,6 +4715,12 @@ abstract class AppLocalizations {
   /// In ko, this message translates to:
   /// **'장바구니에서 뺐어요'**
   String get cartRemoved;
+
+  /// No description provided for @listLoading.
+  ///
+  /// In ko, this message translates to:
+  /// **'불러오는 중'**
+  String get listLoading;
 }
 
 class _AppLocalizationsDelegate

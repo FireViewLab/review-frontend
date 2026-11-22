@@ -1,3 +1,5 @@
+import 'package:re_view_front/shared/widgets/loading_view.dart';
+import 'package:re_view_front/shared/widgets/list_row_skeleton.dart';
 import 'package:re_view_front/shared/presentation/analysis_formatters.dart';
 // ignore_for_file: use_key_in_widget_constructors
 
@@ -7,7 +9,6 @@ import 'package:re_view_front/app/theme/app_spacing.dart';
 import 'package:re_view_front/features/wishlist/domain/entities/wishlist_item.dart';
 import 'package:re_view_front/l10n/generated/app_localizations.dart';
 import 'package:re_view_front/shared/widgets/app_network_image.dart';
-import 'package:re_view_front/shared/widgets/loading_view.dart';
 import 'package:re_view_front/features/my_page/presentation/widgets/my_page/my_page_common.dart';
 
 class MyPageSavedProductsSection extends StatelessWidget {
@@ -24,6 +25,9 @@ class MyPageSavedProductsSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (isLoading) {
+      if (items.isEmpty) {
+        return const ListLoadingSkeleton(responsiveGrid: true);
+      }
       return SizedBox(
         height: 180,
         child: AppLoadingView(

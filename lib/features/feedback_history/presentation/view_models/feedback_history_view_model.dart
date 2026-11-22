@@ -20,14 +20,20 @@ class FeedbackHistoryViewModel extends Notifier<FeedbackHistoryState> {
       return;
     }
 
-    state = const FeedbackHistoryLoading();
+    final isRefresh = switch (state) {
+      FeedbackHistorySuccess() => true,
+      FeedbackHistoryLoading(:final isRefresh) => isRefresh,
+      _ => false,
+    };
+    state = FeedbackHistoryLoading(isRefresh: isRefresh);
 
     final result = await _getUseCase();
 
     if (!ref.mounted) return;
     state = result.when(
-      success: (items) =>
-          items.isEmpty ? const FeedbackHistoryEmpty() : FeedbackHistorySuccess(items),
+      success: (items) => items.isEmpty
+          ? const FeedbackHistoryEmpty()
+          : FeedbackHistorySuccess(items),
       failure: FeedbackHistoryFailure.new,
     );
   }

@@ -1,3 +1,4 @@
+import 'package:re_view_front/shared/widgets/list_row_skeleton.dart';
 // ignore_for_file: use_key_in_widget_constructors
 
 import 'package:flutter/material.dart';
@@ -18,7 +19,10 @@ class MyPageRecentActivitySection extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final activityState = ref.watch(myActivitiesProvider);
-    if (activityState.isLoading) return const LinearProgressIndicator();
+    if (activityState.isLoading) {
+      if (activityState.hasValue) return const LinearProgressIndicator();
+      return const ListLoadingSkeleton(leadingSize: 22, lineCount: 1);
+    }
     if (activityState.hasError) {
       return Column(
         children: [

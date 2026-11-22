@@ -1,3 +1,4 @@
+import 'package:re_view_front/shared/widgets/list_row_skeleton.dart';
 import 'package:re_view_front/features/external_product/presentation/widgets/external_history_review_content.dart';
 import 'package:re_view_front/features/external_product/domain/entities/external_history_target.dart';
 import 'package:flutter/material.dart';
@@ -39,7 +40,11 @@ class _FeedbackHistoryPageState extends ConsumerState<FeedbackHistoryPage> {
         _PageHeader(onBack: () => context.go(RoutePaths.myPage)),
         const SizedBox(height: AppSpacing.xl),
         switch (state) {
-          FeedbackHistoryInitial() || FeedbackHistoryLoading() => SizedBox(
+          FeedbackHistoryInitial() ||
+          FeedbackHistoryLoading(
+            isRefresh: false,
+          ) => const ListLoadingSkeleton(leadingSize: 0, lineCount: 6),
+          FeedbackHistoryLoading() => SizedBox(
             height: 320,
             child: AppLoadingView(
               message: AppLocalizations.of(context).feedbackHistoryLoading,
