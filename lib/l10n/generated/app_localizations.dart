@@ -4811,6 +4811,234 @@ abstract class AppLocalizations {
   /// In ko, this message translates to:
   /// **'쇼핑몰에서 보기'**
   String get extProductVisitShopGeneric;
+
+  /// No description provided for @headerSupport.
+  ///
+  /// In ko, this message translates to:
+  /// **'고객센터'**
+  String get headerSupport;
+
+  /// No description provided for @headerSellerRegistration.
+  ///
+  /// In ko, this message translates to:
+  /// **'판매자 입점'**
+  String get headerSellerRegistration;
+
+  /// No description provided for @headerAppDownload.
+  ///
+  /// In ko, this message translates to:
+  /// **'앱 다운로드'**
+  String get headerAppDownload;
+
+  /// No description provided for @headerCart.
+  ///
+  /// In ko, this message translates to:
+  /// **'장바구니'**
+  String get headerCart;
+
+  /// No description provided for @headerMyAccount.
+  ///
+  /// In ko, this message translates to:
+  /// **'내 계정'**
+  String get headerMyAccount;
+
+  /// No description provided for @headerMember.
+  ///
+  /// In ko, this message translates to:
+  /// **'회원'**
+  String get headerMember;
+
+  /// No description provided for @headerMemberName.
+  ///
+  /// In ko, this message translates to:
+  /// **'{name}님'**
+  String headerMemberName(String name);
+
+  /// No description provided for @headerMemberBadge.
+  ///
+  /// In ko, this message translates to:
+  /// **'Re:view 멤버'**
+  String get headerMemberBadge;
+
+  /// No description provided for @headerOrderActivity.
+  ///
+  /// In ko, this message translates to:
+  /// **'주문/활동'**
+  String get headerOrderActivity;
+
+  /// No description provided for @homeNavBest.
+  ///
+  /// In ko, this message translates to:
+  /// **'베스트'**
+  String get homeNavBest;
+
+  /// No description provided for @homeNavNew.
+  ///
+  /// In ko, this message translates to:
+  /// **'신상품'**
+  String get homeNavNew;
+
+  /// No description provided for @homeNavReviewRanking.
+  ///
+  /// In ko, this message translates to:
+  /// **'리뷰랭킹'**
+  String get homeNavReviewRanking;
+
+  /// No description provided for @homePopularCategoriesNow.
+  ///
+  /// In ko, this message translates to:
+  /// **'지금 인기 카테고리'**
+  String get homePopularCategoriesNow;
+
+  /// No description provided for @homeCategoryPickTitle.
+  ///
+  /// In ko, this message translates to:
+  /// **'카테고리 추천 PICK'**
+  String get homeCategoryPickTitle;
+
+  /// No description provided for @homeAllCategoriesTitle.
+  ///
+  /// In ko, this message translates to:
+  /// **'모든 카테고리를 한눈에'**
+  String get homeAllCategoriesTitle;
+
+  /// No description provided for @homeAllCategoriesDescription.
+  ///
+  /// In ko, this message translates to:
+  /// **'리뷰 데이터 기반 인기 상품과 카테고리를 확인해보세요.'**
+  String get homeAllCategoriesDescription;
+
+  /// No description provided for @homeCategoryViewAll.
+  ///
+  /// In ko, this message translates to:
+  /// **'{category} 전체보기  >'**
+  String homeCategoryViewAll(String category);
+
+  /// No description provided for @homeBannerFallbackNotice.
+  ///
+  /// In ko, this message translates to:
+  /// **'배너를 불러오지 못해 기본 배너를 표시합니다.'**
+  String get homeBannerFallbackNotice;
+
+  /// No description provided for @homeProductsLoadFailed.
+  ///
+  /// In ko, this message translates to:
+  /// **'상품을 불러오지 못했습니다.'**
+  String get homeProductsLoadFailed;
+
+  /// No description provided for @homeViewAllProducts.
+  ///
+  /// In ko, this message translates to:
+  /// **'전체 상품 보기'**
+  String get homeViewAllProducts;
+
+  /// No description provided for @homeBannerLinkFailed.
+  ///
+  /// In ko, this message translates to:
+  /// **'배너 링크를 열지 못했습니다.'**
+  String get homeBannerLinkFailed;
+
+  /// No description provided for @homePriceUnavailable.
+  ///
+  /// In ko, this message translates to:
+  /// **'가격 정보 없음'**
+  String get homePriceUnavailable;
+
+  /// No description provided for @homeRecommendationsPending.
+  ///
+  /// In ko, this message translates to:
+  /// **'추천 상품 API 연결 대기 중'**
+  String get homeRecommendationsPending;
+
+  /// No description provided for @homeRecommendationsPendingDescription.
+  ///
+  /// In ko, this message translates to:
+  /// **'임의 상품을 만들지 않고 실제 상품 데이터가 연결되면 카드 목록으로 표시됩니다.'**
+  String get homeRecommendationsPendingDescription;
+
+  /// No description provided for @homeTrustTitle.
+  ///
+  /// In ko, this message translates to:
+  /// **'Re:view가 더 믿을 수 있는 이유'**
+  String get homeTrustTitle;
+
+  /// No description provided for @homeTrustIndexTitle.
+  ///
+  /// In ko, this message translates to:
+  /// **'RTI 리뷰 신뢰도 지수'**
+  String get homeTrustIndexTitle;
+
+  /// No description provided for @homeFooterAbout.
+  ///
+  /// In ko, this message translates to:
+  /// **'서비스 소개'**
+  String get homeFooterAbout;
+
+  /// No description provided for @homeFooterTerms.
+  ///
+  /// In ko, this message translates to:
+  /// **'이용약관'**
+  String get homeFooterTerms;
+
+  /// No description provided for @homeFooterPrivacy.
+  ///
+  /// In ko, this message translates to:
+  /// **'개인정보처리방침'**
+  String get homeFooterPrivacy;
+
+  /// No description provided for @homeSuggestedProductsPending.
+  ///
+  /// In ko, this message translates to:
+  /// **'추천상품 API 연결 대기 중'**
+  String get homeSuggestedProductsPending;
+
+  /// No description provided for @homeRtiChecking.
+  ///
+  /// In ko, this message translates to:
+  /// **'RTI 확인 중'**
+  String get homeRtiChecking;
+
+  /// No description provided for @homeTrustAnalyzedProduct.
+  ///
+  /// In ko, this message translates to:
+  /// **'신뢰도 분석 상품'**
+  String get homeTrustAnalyzedProduct;
+
+  /// No description provided for @homeBannerPlay.
+  ///
+  /// In ko, this message translates to:
+  /// **'재생'**
+  String get homeBannerPlay;
+
+  /// No description provided for @homeBannerPause.
+  ///
+  /// In ko, this message translates to:
+  /// **'일시정지'**
+  String get homeBannerPause;
+
+  /// No description provided for @homeBannerPrevious.
+  ///
+  /// In ko, this message translates to:
+  /// **'이전 배너'**
+  String get homeBannerPrevious;
+
+  /// No description provided for @homeBannerNext.
+  ///
+  /// In ko, this message translates to:
+  /// **'다음 배너'**
+  String get homeBannerNext;
+
+  /// No description provided for @homeBannerPosition.
+  ///
+  /// In ko, this message translates to:
+  /// **'배너 {index}/{count}'**
+  String homeBannerPosition(int index, int count);
+
+  /// No description provided for @homeBannerTrustLabel.
+  ///
+  /// In ko, this message translates to:
+  /// **'{badge}\n신뢰도 확인'**
+  String homeBannerTrustLabel(String badge);
 }
 
 class _AppLocalizationsDelegate

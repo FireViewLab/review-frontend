@@ -1,3 +1,4 @@
+import 'package:re_view_front/l10n/generated/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:re_view_front/app/theme/app_colors.dart';
 import 'package:re_view_front/app/theme/app_spacing.dart';
@@ -8,7 +9,12 @@ class HomeFooter extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final links = ['서비스 소개', '이용약관', '개인정보처리방침', '고객센터'];
+    final links = [
+      AppLocalizations.of(context).homeFooterAbout,
+      AppLocalizations.of(context).homeFooterTerms,
+      AppLocalizations.of(context).homeFooterPrivacy,
+      AppLocalizations.of(context).headerSupport,
+    ];
 
     return Container(
       width: double.infinity,

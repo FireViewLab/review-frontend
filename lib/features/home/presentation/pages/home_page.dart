@@ -129,7 +129,10 @@ class _HomePageState extends ConsumerState<HomePage> {
       ],
     ];
     final browseTitle = <Widget>[
-      Text('상품 둘러보기', style: Theme.of(context).textTheme.titleMedium),
+      Text(
+        AppLocalizations.of(context).wishlistBrowse,
+        style: Theme.of(context).textTheme.titleMedium,
+      ),
       const SizedBox(height: AppSpacing.md),
     ];
     final scrollView = CustomScrollView(
@@ -158,10 +161,10 @@ class _HomePageState extends ConsumerState<HomePage> {
               child: Wrap(
                 crossAxisAlignment: WrapCrossAlignment.center,
                 children: [
-                  const Text('배너를 불러오지 못해 기본 배너를 표시합니다.'),
+                  Text(AppLocalizations.of(context).homeBannerFallbackNotice),
                   TextButton(
                     onPressed: () => ref.invalidate(publicBannersProvider),
-                    child: const Text('다시 시도'),
+                    child: Text(AppLocalizations.of(context).actionRetry),
                   ),
                 ],
               ),
@@ -196,7 +199,12 @@ class _HomePageState extends ConsumerState<HomePage> {
                     child: AppErrorView(
                       failure: error is Failure
                           ? error
-                          : Failure(message: '상품을 불러오지 못했습니다.', cause: error),
+                          : Failure(
+                              message: AppLocalizations.of(
+                                context,
+                              ).homeProductsLoadFailed,
+                              cause: error,
+                            ),
                       onRetry: () => ref.invalidate(homeCatalogProvider),
                     ),
                   ),
@@ -245,7 +253,9 @@ class _HomePageState extends ConsumerState<HomePage> {
                           RouteNames.search,
                           queryParameters: {'sort': 'accuracy'},
                         ),
-                        child: const Text('전체 상품 보기'),
+                        child: Text(
+                          AppLocalizations.of(context).homeViewAllProducts,
+                        ),
                       ),
                     ),
                   ];
@@ -477,15 +487,23 @@ class _HomePageState extends ConsumerState<HomePage> {
             mode: LaunchMode.externalApplication,
           );
           if (!opened && mounted) {
-            ScaffoldMessenger.of(
-              context,
-            ).showSnackBar(const SnackBar(content: Text('배너 링크를 열지 못했습니다.')));
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text(
+                  AppLocalizations.of(context).homeBannerLinkFailed,
+                ),
+              ),
+            );
           }
         } catch (_) {
           if (mounted) {
-            ScaffoldMessenger.of(
-              context,
-            ).showSnackBar(const SnackBar(content: Text('배너 링크를 열지 못했습니다.')));
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text(
+                  AppLocalizations.of(context).homeBannerLinkFailed,
+                ),
+              ),
+            );
           }
         }
       }
@@ -590,7 +608,7 @@ class _HomePageState extends ConsumerState<HomePage> {
   String _toKeywordLabel(TrendingKeyword keyword) => keyword.keyword;
 
   String _formatPrice(int? price) {
-    if (price == null) return '가격 정보 없음';
+    if (price == null) return AppLocalizations.of(context).homePriceUnavailable;
     final digits = price.toString();
     final buffer = StringBuffer();
     for (var i = 0; i < digits.length; i++) {
@@ -600,7 +618,7 @@ class _HomePageState extends ConsumerState<HomePage> {
       buffer.write(digits[i]);
     }
 
-    return '$buffer원';
+    return AppLocalizations.of(context).extProductPrice(buffer.toString());
   }
 }
 

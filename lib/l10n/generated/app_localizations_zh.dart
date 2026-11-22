@@ -2474,4 +2474,127 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get extProductVisitShopGeneric => '前往商城查看';
+
+  @override
+  String get headerSupport => '客服中心';
+
+  @override
+  String get headerSellerRegistration => '商家入驻';
+
+  @override
+  String get headerAppDownload => '下载应用';
+
+  @override
+  String get headerCart => '购物车';
+
+  @override
+  String get headerMyAccount => '我的账户';
+
+  @override
+  String get headerMember => '会员';
+
+  @override
+  String headerMemberName(String name) {
+    return '$name';
+  }
+
+  @override
+  String get headerMemberBadge => 'Re:view 会员';
+
+  @override
+  String get headerOrderActivity => '订单/动态';
+
+  @override
+  String get homeNavBest => '热销商品';
+
+  @override
+  String get homeNavNew => '新品';
+
+  @override
+  String get homeNavReviewRanking => '评价排行';
+
+  @override
+  String get homePopularCategoriesNow => '当前热门分类';
+
+  @override
+  String get homeCategoryPickTitle => '分类精选 PICK';
+
+  @override
+  String get homeAllCategoriesTitle => '一览所有分类';
+
+  @override
+  String get homeAllCategoriesDescription => '查看基于评价数据的热门商品和分类。';
+
+  @override
+  String homeCategoryViewAll(String category) {
+    return '查看全部$category  >';
+  }
+
+  @override
+  String get homeBannerFallbackNotice => '未能加载横幅，现显示默认横幅。';
+
+  @override
+  String get homeProductsLoadFailed => '未能加载商品。';
+
+  @override
+  String get homeViewAllProducts => '查看全部商品';
+
+  @override
+  String get homeBannerLinkFailed => '无法打开横幅链接。';
+
+  @override
+  String get homePriceUnavailable => '暂无价格信息';
+
+  @override
+  String get homeRecommendationsPending => '正在等待推荐商品 API 连接';
+
+  @override
+  String get homeRecommendationsPendingDescription =>
+      '接入真实商品数据后将显示商品卡片列表，不会生成虚构商品。';
+
+  @override
+  String get homeTrustTitle => '为什么 Re:view 更值得信赖';
+
+  @override
+  String get homeTrustIndexTitle => 'RTI 评价可信度指数';
+
+  @override
+  String get homeFooterAbout => '服务介绍';
+
+  @override
+  String get homeFooterTerms => '使用条款';
+
+  @override
+  String get homeFooterPrivacy => '隐私政策';
+
+  @override
+  String get homeSuggestedProductsPending => '正在等待推荐商品 API 连接';
+
+  @override
+  String get homeRtiChecking => '正在确认 RTI';
+
+  @override
+  String get homeTrustAnalyzedProduct => '已进行可信度分析的商品';
+
+  @override
+  String get homeBannerPlay => '播放';
+
+  @override
+  String get homeBannerPause => '暂停';
+
+  @override
+  String get homeBannerPrevious => '上一个横幅';
+
+  @override
+  String get homeBannerNext => '下一个横幅';
+
+  @override
+  String homeBannerPosition(int index, int count) {
+    return '横幅 $index/$count';
+  }
+
+  @override
+  String homeBannerTrustLabel(String badge) {
+    return '$badge\n查看可信度';
+  }
 }

@@ -2605,4 +2605,131 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get extProductVisitShopGeneric => 'View in shop';
+
+  @override
+  String get headerSupport => 'Customer support';
+
+  @override
+  String get headerSellerRegistration => 'Sell with us';
+
+  @override
+  String get headerAppDownload => 'Download the app';
+
+  @override
+  String get headerCart => 'Cart';
+
+  @override
+  String get headerMyAccount => 'My account';
+
+  @override
+  String get headerMember => 'Member';
+
+  @override
+  String headerMemberName(String name) {
+    return '$name';
+  }
+
+  @override
+  String get headerMemberBadge => 'Re:view member';
+
+  @override
+  String get headerOrderActivity => 'Orders / activity';
+
+  @override
+  String get homeNavBest => 'Best sellers';
+
+  @override
+  String get homeNavNew => 'New arrivals';
+
+  @override
+  String get homeNavReviewRanking => 'Review ranking';
+
+  @override
+  String get homePopularCategoriesNow => 'Trending categories';
+
+  @override
+  String get homeCategoryPickTitle => 'Category picks';
+
+  @override
+  String get homeAllCategoriesTitle => 'All categories at a glance';
+
+  @override
+  String get homeAllCategoriesDescription =>
+      'Explore popular products and categories based on review data.';
+
+  @override
+  String homeCategoryViewAll(String category) {
+    return 'View all $category  >';
+  }
+
+  @override
+  String get homeBannerFallbackNotice =>
+      'Could not load banners. Showing default banners.';
+
+  @override
+  String get homeProductsLoadFailed => 'Could not load products.';
+
+  @override
+  String get homeViewAllProducts => 'View all products';
+
+  @override
+  String get homeBannerLinkFailed => 'Could not open the banner link.';
+
+  @override
+  String get homePriceUnavailable => 'Price unavailable';
+
+  @override
+  String get homeRecommendationsPending =>
+      'Waiting for the recommended products API';
+
+  @override
+  String get homeRecommendationsPendingDescription =>
+      'Product cards will appear when real product data is connected; no sample products are generated.';
+
+  @override
+  String get homeTrustTitle => 'Why you can trust Re:view';
+
+  @override
+  String get homeTrustIndexTitle => 'RTI review trust index';
+
+  @override
+  String get homeFooterAbout => 'About the service';
+
+  @override
+  String get homeFooterTerms => 'Terms of service';
+
+  @override
+  String get homeFooterPrivacy => 'Privacy policy';
+
+  @override
+  String get homeSuggestedProductsPending =>
+      'Waiting for the recommended products API';
+
+  @override
+  String get homeRtiChecking => 'Checking RTI';
+
+  @override
+  String get homeTrustAnalyzedProduct => 'Trust-analyzed product';
+
+  @override
+  String get homeBannerPlay => 'Play';
+
+  @override
+  String get homeBannerPause => 'Pause';
+
+  @override
+  String get homeBannerPrevious => 'Previous banner';
+
+  @override
+  String get homeBannerNext => 'Next banner';
+
+  @override
+  String homeBannerPosition(int index, int count) {
+    return 'Banner $index/$count';
+  }
+
+  @override
+  String homeBannerTrustLabel(String badge) {
+    return '$badge\nCheck trust';
+  }
 }

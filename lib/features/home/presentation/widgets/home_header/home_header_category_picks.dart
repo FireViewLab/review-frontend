@@ -1,3 +1,4 @@
+import 'package:re_view_front/l10n/generated/app_localizations.dart';
 // ignore_for_file: use_key_in_widget_constructors
 
 import 'package:flutter/material.dart';
@@ -27,7 +28,7 @@ class HomeHeaderPopularCategoryAndPickPreview extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          '지금 인기 카테고리',
+          AppLocalizations.of(context).homePopularCategoriesNow,
           style: Theme.of(
             context,
           ).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w900),
@@ -78,7 +79,7 @@ class HomeHeaderPopularCategoryAndPickPreview extends StatelessWidget {
         Row(
           children: [
             Text(
-              '카테고리 추천 PICK',
+              AppLocalizations.of(context).homeCategoryPickTitle,
               style: Theme.of(context).textTheme.labelLarge?.copyWith(
                 color: AppColors.textPrimary,
                 fontWeight: FontWeight.w900,

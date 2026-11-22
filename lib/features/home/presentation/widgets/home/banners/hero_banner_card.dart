@@ -1,3 +1,4 @@
+import 'package:re_view_front/l10n/generated/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:re_view_front/app/theme/app_colors.dart';
 import 'package:re_view_front/app/theme/app_spacing.dart';
@@ -196,7 +197,9 @@ class HeroBannerVisual extends StatelessWidget {
               ],
             ),
             child: Text(
-              '${item.badgeLabel}\n신뢰도 확인',
+              AppLocalizations.of(
+                context,
+              ).homeBannerTrustLabel(item.badgeLabel),
               textAlign: TextAlign.center,
               style: Theme.of(context).textTheme.labelMedium?.copyWith(
                 color: AppColors.primary,

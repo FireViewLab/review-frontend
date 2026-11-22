@@ -2495,4 +2495,127 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String get extProductVisitShopGeneric => 'ショップで見る';
+
+  @override
+  String get headerSupport => 'カスタマーサポート';
+
+  @override
+  String get headerSellerRegistration => '出店案内';
+
+  @override
+  String get headerAppDownload => 'アプリをダウンロード';
+
+  @override
+  String get headerCart => 'カート';
+
+  @override
+  String get headerMyAccount => 'マイアカウント';
+
+  @override
+  String get headerMember => '会員';
+
+  @override
+  String headerMemberName(String name) {
+    return '$nameさん';
+  }
+
+  @override
+  String get headerMemberBadge => 'Re:viewメンバー';
+
+  @override
+  String get headerOrderActivity => '注文・アクティビティ';
+
+  @override
+  String get homeNavBest => '人気商品';
+
+  @override
+  String get homeNavNew => '新着商品';
+
+  @override
+  String get homeNavReviewRanking => 'レビューランキング';
+
+  @override
+  String get homePopularCategoriesNow => '今人気のカテゴリー';
+
+  @override
+  String get homeCategoryPickTitle => 'カテゴリーのおすすめ PICK';
+
+  @override
+  String get homeAllCategoriesTitle => 'すべてのカテゴリーをひと目で';
+
+  @override
+  String get homeAllCategoriesDescription => 'レビューデータに基づく人気商品やカテゴリーをご覧ください。';
+
+  @override
+  String homeCategoryViewAll(String category) {
+    return '$categoryをすべて見る  >';
+  }
+
+  @override
+  String get homeBannerFallbackNotice => 'バナーを読み込めないため、標準のバナーを表示しています。';
+
+  @override
+  String get homeProductsLoadFailed => '商品を読み込めませんでした。';
+
+  @override
+  String get homeViewAllProducts => 'すべての商品を見る';
+
+  @override
+  String get homeBannerLinkFailed => 'バナーのリンクを開けませんでした。';
+
+  @override
+  String get homePriceUnavailable => '価格情報なし';
+
+  @override
+  String get homeRecommendationsPending => 'おすすめ商品APIへの接続待ち';
+
+  @override
+  String get homeRecommendationsPendingDescription =>
+      '仮の商品は作成せず、実際の商品データが接続されるとカード一覧に表示します。';
+
+  @override
+  String get homeTrustTitle => 'Re:viewをより信頼できる理由';
+
+  @override
+  String get homeTrustIndexTitle => 'RTIレビュー信頼度指数';
+
+  @override
+  String get homeFooterAbout => 'サービス紹介';
+
+  @override
+  String get homeFooterTerms => '利用規約';
+
+  @override
+  String get homeFooterPrivacy => 'プライバシーポリシー';
+
+  @override
+  String get homeSuggestedProductsPending => 'おすすめ商品APIへの接続待ち';
+
+  @override
+  String get homeRtiChecking => 'RTIを確認中';
+
+  @override
+  String get homeTrustAnalyzedProduct => '信頼度分析対象商品';
+
+  @override
+  String get homeBannerPlay => '再生';
+
+  @override
+  String get homeBannerPause => '一時停止';
+
+  @override
+  String get homeBannerPrevious => '前のバナー';
+
+  @override
+  String get homeBannerNext => '次のバナー';
+
+  @override
+  String homeBannerPosition(int index, int count) {
+    return 'バナー $index/$count';
+  }
+
+  @override
+  String homeBannerTrustLabel(String badge) {
+    return '$badge\n信頼度を確認';
+  }
 }

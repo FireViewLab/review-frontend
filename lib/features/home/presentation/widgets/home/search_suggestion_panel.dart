@@ -172,7 +172,11 @@ class SearchSuggestionPanel extends StatelessWidget {
               ),
               const SizedBox(height: AppSpacing.sm),
               if (products.isEmpty)
-                const _PanelEmptyRow(message: '추천상품 API 연결 대기 중')
+                _PanelEmptyRow(
+                  message: AppLocalizations.of(
+                    context,
+                  ).homeSuggestedProductsPending,
+                )
               else
                 for (final (index, product) in products.indexed)
                   _SuggestedProductTile(
@@ -381,7 +385,9 @@ class _SuggestedProductTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final rtiLabel = product.rtiLabel.isEmpty ? 'RTI 확인 중' : product.rtiLabel;
+    final rtiLabel = product.rtiLabel.isEmpty
+        ? AppLocalizations.of(context).homeRtiChecking
+        : product.rtiLabel;
 
     return SizedBox(
       height: 58,
@@ -426,7 +432,11 @@ class _SuggestedProductTile extends StatelessWidget {
                     ),
                     const SizedBox(height: 2),
                     Text(
-                      product.label.isEmpty ? '신뢰도 분석 상품' : product.label,
+                      product.label.isEmpty
+                          ? AppLocalizations.of(
+                              context,
+                            ).homeTrustAnalyzedProduct
+                          : product.label,
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                       style: Theme.of(context).textTheme.labelSmall?.copyWith(

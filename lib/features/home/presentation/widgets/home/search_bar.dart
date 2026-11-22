@@ -176,7 +176,7 @@ class _SearchBarState extends State<SearchBar> {
                     color: AppColors.textTertiary,
                   ),
                   suffixIcon: IconButton(
-                    tooltip: '검색',
+                    tooltip: AppLocalizations.of(context).navSearch,
                     icon: const Icon(Icons.search, color: AppColors.primary),
                     onPressed:
                         widget.onSubmitted == null &&

@@ -2499,4 +2499,127 @@ class AppLocalizationsKo extends AppLocalizations {
 
   @override
   String get extProductVisitShopGeneric => '쇼핑몰에서 보기';
+
+  @override
+  String get headerSupport => '고객센터';
+
+  @override
+  String get headerSellerRegistration => '판매자 입점';
+
+  @override
+  String get headerAppDownload => '앱 다운로드';
+
+  @override
+  String get headerCart => '장바구니';
+
+  @override
+  String get headerMyAccount => '내 계정';
+
+  @override
+  String get headerMember => '회원';
+
+  @override
+  String headerMemberName(String name) {
+    return '$name님';
+  }
+
+  @override
+  String get headerMemberBadge => 'Re:view 멤버';
+
+  @override
+  String get headerOrderActivity => '주문/활동';
+
+  @override
+  String get homeNavBest => '베스트';
+
+  @override
+  String get homeNavNew => '신상품';
+
+  @override
+  String get homeNavReviewRanking => '리뷰랭킹';
+
+  @override
+  String get homePopularCategoriesNow => '지금 인기 카테고리';
+
+  @override
+  String get homeCategoryPickTitle => '카테고리 추천 PICK';
+
+  @override
+  String get homeAllCategoriesTitle => '모든 카테고리를 한눈에';
+
+  @override
+  String get homeAllCategoriesDescription => '리뷰 데이터 기반 인기 상품과 카테고리를 확인해보세요.';
+
+  @override
+  String homeCategoryViewAll(String category) {
+    return '$category 전체보기  >';
+  }
+
+  @override
+  String get homeBannerFallbackNotice => '배너를 불러오지 못해 기본 배너를 표시합니다.';
+
+  @override
+  String get homeProductsLoadFailed => '상품을 불러오지 못했습니다.';
+
+  @override
+  String get homeViewAllProducts => '전체 상품 보기';
+
+  @override
+  String get homeBannerLinkFailed => '배너 링크를 열지 못했습니다.';
+
+  @override
+  String get homePriceUnavailable => '가격 정보 없음';
+
+  @override
+  String get homeRecommendationsPending => '추천 상품 API 연결 대기 중';
+
+  @override
+  String get homeRecommendationsPendingDescription =>
+      '임의 상품을 만들지 않고 실제 상품 데이터가 연결되면 카드 목록으로 표시됩니다.';
+
+  @override
+  String get homeTrustTitle => 'Re:view가 더 믿을 수 있는 이유';
+
+  @override
+  String get homeTrustIndexTitle => 'RTI 리뷰 신뢰도 지수';
+
+  @override
+  String get homeFooterAbout => '서비스 소개';
+
+  @override
+  String get homeFooterTerms => '이용약관';
+
+  @override
+  String get homeFooterPrivacy => '개인정보처리방침';
+
+  @override
+  String get homeSuggestedProductsPending => '추천상품 API 연결 대기 중';
+
+  @override
+  String get homeRtiChecking => 'RTI 확인 중';
+
+  @override
+  String get homeTrustAnalyzedProduct => '신뢰도 분석 상품';
+
+  @override
+  String get homeBannerPlay => '재생';
+
+  @override
+  String get homeBannerPause => '일시정지';
+
+  @override
+  String get homeBannerPrevious => '이전 배너';
+
+  @override
+  String get homeBannerNext => '다음 배너';
+
+  @override
+  String homeBannerPosition(int index, int count) {
+    return '배너 $index/$count';
+  }
+
+  @override
+  String homeBannerTrustLabel(String badge) {
+    return '$badge\n신뢰도 확인';
+  }
 }

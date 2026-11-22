@@ -1,3 +1,4 @@
+import 'package:re_view_front/l10n/generated/app_localizations.dart';
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:re_view_front/app/theme/app_colors.dart';
@@ -107,7 +108,9 @@ class HeroBannerProgress extends StatelessWidget {
             bottom: 0,
             width: 48,
             child: IconButton(
-              tooltip: isPaused ? '재생' : '일시정지',
+              tooltip: isPaused
+                  ? AppLocalizations.of(context).homeBannerPlay
+                  : AppLocalizations.of(context).homeBannerPause,
               onPressed: reducedMotion ? null : onPauseToggle,
               icon: Icon(
                 isPaused ? Icons.play_arrow_rounded : Icons.pause_rounded,
@@ -141,7 +144,9 @@ class HeroBannerCircleControl extends StatelessWidget {
       elevation: 4,
       shadowColor: AppColors.shadow,
       child: IconButton(
-        tooltip: icon == Icons.chevron_left ? '이전 배너' : '다음 배너',
+        tooltip: icon == Icons.chevron_left
+            ? AppLocalizations.of(context).homeBannerPrevious
+            : AppLocalizations.of(context).homeBannerNext,
         onPressed: onTap,
         icon: Icon(icon, color: AppColors.textPrimary),
       ),

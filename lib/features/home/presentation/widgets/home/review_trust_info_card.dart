@@ -67,7 +67,7 @@ class _TrustMain extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          'Re:view가 더 믿을 수 있는 이유',
+          AppLocalizations.of(context).homeTrustTitle,
           style: Theme.of(context).textTheme.titleMedium,
         ),
         const SizedBox(height: AppSpacing.lg),
@@ -79,7 +79,7 @@ class _TrustMain extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    'RTI 리뷰 신뢰도 지수',
+                    AppLocalizations.of(context).homeTrustIndexTitle,
                     style: Theme.of(context).textTheme.labelLarge?.copyWith(
                       color: AppColors.textPrimary,
                       fontWeight: FontWeight.w900,
