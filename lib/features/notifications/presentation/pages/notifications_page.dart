@@ -1,3 +1,4 @@
+import 'package:re_view_front/shared/widgets/empty_state_view.dart';
 import 'package:re_view_front/shared/widgets/list_row_skeleton.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:re_view_front/features/price_watch/presentation/widgets/price_watch_section.dart';
@@ -232,33 +233,9 @@ class _Body extends StatelessWidget {
     }
     if (state.items.isEmpty) {
       return SliverToBoxAdapter(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(vertical: AppSpacing.xxxl),
-          child: Column(
-            children: [
-              const Icon(
-                Icons.notifications_none_rounded,
-                size: 48,
-                color: AppColors.textTertiary,
-              ),
-              const SizedBox(height: AppSpacing.md),
-              Text(
-                l10n.notificationsEmpty,
-                style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                  color: AppColors.textPrimary,
-                  fontWeight: FontWeight.w700,
-                ),
-              ),
-              const SizedBox(height: AppSpacing.xs),
-              Text(
-                l10n.notificationsEmptyBody,
-                textAlign: TextAlign.center,
-                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                  color: AppColors.textSecondary,
-                ),
-              ),
-            ],
-          ),
+        child: EmptyStateView(
+          title: l10n.notificationsEmpty,
+          message: l10n.notificationsEmptyBody,
         ),
       );
     }

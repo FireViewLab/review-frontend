@@ -1,3 +1,4 @@
+import 'package:re_view_front/shared/widgets/empty_state_view.dart';
 import 'package:re_view_front/shared/widgets/list_row_skeleton.dart';
 import 'package:re_view_front/core/result/result.dart';
 import 'package:re_view_front/features/cart/domain/entities/cart_item.dart';
@@ -415,40 +416,18 @@ class _RtiCheckBanner extends StatelessWidget {
 
 class _CartEmptyBody extends StatelessWidget {
   const _CartEmptyBody({required this.onGoHome});
-
   final VoidCallback onGoHome;
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      height: 400,
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          const Icon(
-            Icons.shopping_cart_outlined,
-            size: 56,
-            color: AppColors.textTertiary,
-          ),
-          const SizedBox(height: AppSpacing.md),
-          Text(
-            '장바구니가 비어 있습니다',
-            style: Theme.of(context).textTheme.titleMedium?.copyWith(
-              color: AppColors.textPrimary,
-              fontWeight: FontWeight.w800,
-            ),
-          ),
-          const SizedBox(height: AppSpacing.xs),
-          Text(
-            '마음에 드는 상품을 담아보세요.',
-            style: Theme.of(
-              context,
-            ).textTheme.bodyMedium?.copyWith(color: AppColors.textSecondary),
-          ),
-          const SizedBox(height: AppSpacing.lg),
-          OutlinedButton(onPressed: onGoHome, child: const Text('쇼핑 계속하기')),
-        ],
-      ),
+    final l10n = AppLocalizations.of(context);
+    return EmptyStateView(
+      title: l10n.cartEmptyTitle,
+      message: l10n.cartEmptyDescription,
+      primaryActionLabel: l10n.wishlistBrowse,
+      onPrimaryAction: onGoHome,
+      secondaryActionLabel: l10n.emptyViewWishlist,
+      onSecondaryAction: () => context.go(RoutePaths.wishlist),
     );
   }
 }

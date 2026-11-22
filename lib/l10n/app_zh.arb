@@ -771,5 +771,19 @@
   "actionUndo": "撤销",
   "wishlistRemoved": "已从收藏中移除",
   "cartRemoved": "已从购物车移除",
-  "listLoading": "正在加载"
+  "listLoading": "正在加载",
+  "cartEmptyTitle": "购物车是空的",
+  "cartEmptyDescription": "把喜欢的商品加入购物车吧。",
+  "emptyViewWishlist": "查看收藏",
+  "recentProductsEmptyTitle": "暂无最近浏览的商品",
+  "recentProductsEmptyDescription": "逛逛感兴趣的商品，最近浏览的记录会显示在这里。",
+  "warningProductsEmptyTitle": "暂无需要留意的商品",
+  "warningProductsFilteredEmptyTitle": "所选等级下暂无需要留意的商品",
+  "warningProductsEmptyDescription": "逛逛其他商品，收藏感兴趣的商品吧。",
+  "searchEmptyTitle": "暂无搜索结果",
+  "searchEmptyQueryDescription": "试试输入商品名称或分类进行搜索。",
+  "searchEmptyDescription": "试试其他关键词或更宽泛的分类。",
+  "searchFilteredEmptyTitle": "没有符合筛选条件的商品",
+  "searchFilteredEmptyDescription": "请重置筛选或放宽条件。",
+  "searchResetFilters": "重置筛选"
 }

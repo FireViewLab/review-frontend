@@ -2429,4 +2429,46 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get listLoading => '正在加载';
+
+  @override
+  String get cartEmptyTitle => '购物车是空的';
+
+  @override
+  String get cartEmptyDescription => '把喜欢的商品加入购物车吧。';
+
+  @override
+  String get emptyViewWishlist => '查看收藏';
+
+  @override
+  String get recentProductsEmptyTitle => '暂无最近浏览的商品';
+
+  @override
+  String get recentProductsEmptyDescription => '逛逛感兴趣的商品，最近浏览的记录会显示在这里。';
+
+  @override
+  String get warningProductsEmptyTitle => '暂无需要留意的商品';
+
+  @override
+  String get warningProductsFilteredEmptyTitle => '所选等级下暂无需要留意的商品';
+
+  @override
+  String get warningProductsEmptyDescription => '逛逛其他商品，收藏感兴趣的商品吧。';
+
+  @override
+  String get searchEmptyTitle => '暂无搜索结果';
+
+  @override
+  String get searchEmptyQueryDescription => '试试输入商品名称或分类进行搜索。';
+
+  @override
+  String get searchEmptyDescription => '试试其他关键词或更宽泛的分类。';
+
+  @override
+  String get searchFilteredEmptyTitle => '没有符合筛选条件的商品';
+
+  @override
+  String get searchFilteredEmptyDescription => '请重置筛选或放宽条件。';
+
+  @override
+  String get searchResetFilters => '重置筛选';
 }

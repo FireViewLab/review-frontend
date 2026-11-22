@@ -1,3 +1,4 @@
+import 'package:re_view_front/shared/widgets/empty_state_view.dart';
 import 'package:re_view_front/shared/widgets/list_row_skeleton.dart';
 import 'package:re_view_front/core/providers/core_providers.dart';
 import 'package:re_view_front/core/result/result.dart';
@@ -415,43 +416,16 @@ class _WishlistPageHeader extends StatelessWidget {
 
 class _WishlistEmptyBody extends StatelessWidget {
   const _WishlistEmptyBody({required this.onGoHome});
-
   final VoidCallback onGoHome;
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      height: 400,
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          const Icon(
-            Icons.favorite_border,
-            size: 56,
-            color: AppColors.textTertiary,
-          ),
-          const SizedBox(height: AppSpacing.md),
-          Text(
-            AppLocalizations.of(context).wishlistEmpty,
-            style: Theme.of(context).textTheme.titleMedium?.copyWith(
-              color: AppColors.textPrimary,
-              fontWeight: FontWeight.w800,
-            ),
-          ),
-          const SizedBox(height: AppSpacing.xs),
-          Text(
-            AppLocalizations.of(context).wishlistEmptyDesc,
-            style: Theme.of(
-              context,
-            ).textTheme.bodyMedium?.copyWith(color: AppColors.textSecondary),
-          ),
-          const SizedBox(height: AppSpacing.lg),
-          OutlinedButton(
-            onPressed: onGoHome,
-            child: Text(AppLocalizations.of(context).wishlistBrowse),
-          ),
-        ],
-      ),
+    final l10n = AppLocalizations.of(context);
+    return EmptyStateView(
+      title: l10n.wishlistEmpty,
+      message: l10n.wishlistEmptyDesc,
+      primaryActionLabel: l10n.wishlistBrowse,
+      onPrimaryAction: onGoHome,
     );
   }
 }

@@ -785,5 +785,19 @@
   "actionUndo": "Undo",
   "wishlistRemoved": "Removed from wishlist",
   "cartRemoved": "Removed from cart",
-  "listLoading": "Loading"
+  "listLoading": "Loading",
+  "cartEmptyTitle": "Your cart is empty",
+  "cartEmptyDescription": "Add products you like to your cart.",
+  "emptyViewWishlist": "View wishlist",
+  "recentProductsEmptyTitle": "No recently viewed products",
+  "recentProductsEmptyDescription": "Explore products that interest you. Your recent views appear here.",
+  "warningProductsEmptyTitle": "No products needing attention",
+  "warningProductsFilteredEmptyTitle": "No products needing attention in this grade",
+  "warningProductsEmptyDescription": "Explore more products and save any that interest you.",
+  "searchEmptyTitle": "No search results",
+  "searchEmptyQueryDescription": "Try searching by product name or category.",
+  "searchEmptyDescription": "Try another search term or a broader category.",
+  "searchFilteredEmptyTitle": "No products match your filters",
+  "searchFilteredEmptyDescription": "Reset your filters or broaden the conditions.",
+  "searchResetFilters": "Reset filters"
 }
