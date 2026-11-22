@@ -259,7 +259,7 @@ class _WishlistBody extends StatelessWidget {
           Text(errorMessage!, style: const TextStyle(color: AppColors.error)),
           TextButton(
             onPressed: togglingProductIds.isEmpty ? onRetry : null,
-            child: const Text('다시 불러오기'),
+            child: Text(AppLocalizations.of(context).onboardingReload),
           ),
         ],
         const SizedBox(height: AppSpacing.md),
@@ -280,7 +280,7 @@ class _WishlistBody extends StatelessWidget {
             runSpacing: 8,
             children: [
               ChoiceChip(
-                label: const Text('전체'),
+                label: Text(AppLocalizations.of(context).wishlistFilterAll),
                 selected: facet == null,
                 onSelected: (_) => onFacetSelected(null),
               ),
@@ -291,7 +291,13 @@ class _WishlistBody extends StatelessWidget {
                       : _category(item),
               })
                 ChoiceChip(
-                  label: Text(value),
+                  label: Text(switch (value) {
+                    '미분류' => AppLocalizations.of(context).wishlistUncategorized,
+                    '쇼핑몰 정보 없음' => AppLocalizations.of(
+                      context,
+                    ).wishlistShopUnknown,
+                    _ => value,
+                  }),
                   selected: facet == value,
                   onSelected: (_) => onFacetSelected(value),
                 ),

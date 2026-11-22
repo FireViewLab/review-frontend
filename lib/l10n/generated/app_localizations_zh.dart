@@ -3817,4 +3817,272 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get searchMissingClassification => '暂无分类信息';
+
+  @override
+  String get cartSelectionSummary => '所选商品摘要';
+
+  @override
+  String get cartUnknownPriceExcluded => '无价格信息的商品已从合计中排除。';
+
+  @override
+  String get cartReferencePriceNotice => '显示价格仅供参考，请前往各商城购买并确认运费及优惠券。';
+
+  @override
+  String get cartViewSelectedSellers => '查看所选商品购买渠道';
+
+  @override
+  String get cartContinueShopping => '继续购物';
+
+  @override
+  String get cartShippingConditions => '配送条件请向卖家确认';
+
+  @override
+  String get cartSaveLater => '稍后再买';
+
+  @override
+  String get cartDelete => '删除';
+
+  @override
+  String cartTrustLevel(String level) {
+    return '可信度 $level';
+  }
+
+  @override
+  String cartPriceReduction(String price) {
+    return '降价 $price';
+  }
+
+  @override
+  String cartEstimatedArrival(String date) {
+    return '预计 $date 送达';
+  }
+
+  @override
+  String cartStockRemaining(int count) {
+    return '库存剩余 $count 件';
+  }
+
+  @override
+  String get cartDeleteSelected => '删除所选';
+
+  @override
+  String get cartMoveToWishlist => '移至收藏';
+
+  @override
+  String cartSelectAllCount(int selected, int total) {
+    return '全选（$selected/$total）';
+  }
+
+  @override
+  String get cartSellersTitle => '查看购买渠道';
+
+  @override
+  String get cartSellersDescription =>
+      '请使用商品详情提供的商城购买链接。TEST 下单功能正由独立页面筹备，目前尚无服务器销售和配送接口。';
+
+  @override
+  String get cartViewProductAndSeller => '查看商品详情及购买渠道';
+
+  @override
+  String get cartDescription => '查看已加入的商品，下单前比较评价可信度。';
+
+  @override
+  String get cartTrustCheckTitle => '检查评价可信度';
+
+  @override
+  String get cartTrustCheckDescription => '查看各商品的 RTI 指数，选择可信评价较多的商品。';
+
+  @override
+  String cartTotalProducts(int count) {
+    return '共 $count 件商品';
+  }
+
+  @override
+  String wishlistCountItems(int count) {
+    return '$count 项';
+  }
+
+  @override
+  String get wishlistShoppingMall => '商城';
+
+  @override
+  String get wishlistPriceComparisonUnavailable => '服务器未提供降价对比信息，这并不代表价格没有变化。';
+
+  @override
+  String get wishlistUncategorized => '未分类';
+
+  @override
+  String get wishlistShopUnknown => '暂无商城信息';
+
+  @override
+  String get myPageTrustUnavailable => '无法查看收藏商品的分析信息。';
+
+  @override
+  String get myPageTrustScope => '以收藏商品已分析的 RTI 平均值及服务器需留意等级为准。';
+
+  @override
+  String myPageTrustScorePoints(int score) {
+    return '$score 分';
+  }
+
+  @override
+  String get myPageBack => '返回我的页面';
+
+  @override
+  String get myPageActivityLoadFailed => '无法加载近期动态。';
+
+  @override
+  String get myPageActivityRecent => '最近';
+
+  @override
+  String get myPageActivityJustNow => '刚刚';
+
+  @override
+  String myPageActivityDaysAgo(int count) {
+    return '$count 天前';
+  }
+
+  @override
+  String myPageActivityHoursAgo(int count) {
+    return '$count 小时前';
+  }
+
+  @override
+  String myPageNamedDescription(String name) {
+    return '管理 $name 的信息和收藏商品动态。';
+  }
+
+  @override
+  String get myPageWarningScope => '收藏商品中由服务器分析为可疑或危险等级的商品，不包含尚未分析的商品。';
+
+  @override
+  String get myPageCheckList => '查看列表';
+
+  @override
+  String get myPageAllWarnings => '全部需留意等级';
+
+  @override
+  String get myPageLoadFailed => '无法查看需留意的商品。';
+
+  @override
+  String myPageViewListCount(int count) {
+    return '查看列表（$count）';
+  }
+
+  @override
+  String recentProductsScope(int count) {
+    return '已从服务器最近 $count 条浏览记录中去除重复商品，数量可能不同于全部历史商品数。';
+  }
+
+  @override
+  String get recentProductsLoadFailed => '无法加载最近浏览的商品。';
+
+  @override
+  String get notificationsAll => '全部通知';
+
+  @override
+  String get notificationsPriceAlerts => '价格通知';
+
+  @override
+  String get notificationsSavedSettings => '已保存的通知接收设置';
+
+  @override
+  String get notificationsMore => '查看更多';
+
+  @override
+  String get notificationsTargetUnsupported => '暂不支持此通知的跳转目标。';
+
+  @override
+  String get notificationsCheckingUnreadShort => '正在检查未读通知';
+
+  @override
+  String get notificationsUnreadFailedShort => '未能查询通知数量。';
+
+  @override
+  String get notificationsManageInboxAndPrices => '通知中心 · 管理价格通知';
+
+  @override
+  String get notificationsServiceTitle => '服务通知';
+
+  @override
+  String get notificationsCheckingUnread => '正在检查未读通知。';
+
+  @override
+  String get notificationsUnreadFailed => '未能查询未读通知数量。';
+
+  @override
+  String get notificationsSettingsFailed => '无法加载已保存的通知设置。';
+
+  @override
+  String get notificationsSettingsChecking => '正在查询已保存的通知设置';
+
+  @override
+  String get notificationsReviewSettings => '通知及评价设置';
+
+  @override
+  String get notificationsMonitoringNotice => '风险变化自动监测需要服务器接入，仅开启接收设置并不会开始监测。';
+
+  @override
+  String get notificationsInboxNotice => '查看保存在通知中心的通知，不支持浏览器推送、邮件和短信。';
+
+  @override
+  String notificationsUnreadCount(int count) {
+    return '$count 条未读通知';
+  }
+
+  @override
+  String get notificationsReceiving => '接收';
+
+  @override
+  String get notificationsNotReceiving => '不接收';
+
+  @override
+  String notificationsRiskStatus(String status) {
+    return '风险检测 $status';
+  }
+
+  @override
+  String notificationsAnalysisStatus(String status) {
+    return '分析结果 $status';
+  }
+
+  @override
+  String notificationsFeedbackStatus(String status) {
+    return '处理结果 $status';
+  }
+
+  @override
+  String get priceWatchTitle => '降价 · 价格通知管理';
+
+  @override
+  String get priceWatchHistoryNotice =>
+      '暂不支持价格通知记录和订阅保存。下方为收藏商品的服务器降价标记，并非通知记录。';
+
+  @override
+  String get priceWatchComparisonUnavailable => '服务器未提供收藏商品的对比价格，无法确认是否降价。';
+
+  @override
+  String get priceWatchRefreshWishlistPrices => '刷新收藏商品价格';
+
+  @override
+  String get priceWatchViewWishlist => '查看收藏商品';
+
+  @override
+  String get priceWatchSubscriptionNotice => '接入服务器价格历史和订阅保存后才可申请。';
+
+  @override
+  String get priceWatchSubscriptionUnavailable => '申请价格通知 · 暂不支持';
+
+  @override
+  String get priceWatchDropIndicator => '服务器降价标记 · 无降价金额或比例信息';
+
+  @override
+  String priceWatchLoadFailed(String message) {
+    return '未能查询降价标记。$message';
+  }
+
+  @override
+  String priceWatchDropCounts(int total, int known, int drops) {
+    return '$total 件收藏商品中有 $known 件提供降价信息，其中 $drops 件标记为降价。未提供基准价格及时间。';
+  }
 }

@@ -33,7 +33,7 @@ enum WishlistFilterOption {
     WishlistFilterOption.priceDrop => l10n.wishlistFilterPriceDrop,
     WishlistFilterOption.rti => l10n.wishlistFilterRti,
     WishlistFilterOption.lowestPrice => l10n.wishlistFilterLowestPrice,
-    WishlistFilterOption.brand => '쇼핑몰',
+    WishlistFilterOption.brand => l10n.wishlistShoppingMall,
     WishlistFilterOption.category => l10n.wishlistFilterCategory,
   };
 }
@@ -83,9 +83,11 @@ class WishlistFilterBar extends StatelessWidget {
                               (item) => item.hasPriceDropInformation,
                             )) {
                           ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(
+                            SnackBar(
                               content: Text(
-                                '서버에서 가격하락 비교 정보를 제공하지 않고 있어요. 가격이 변하지 않았다는 뜻은 아니에요.',
+                                AppLocalizations.of(
+                                  context,
+                                ).wishlistPriceComparisonUnavailable,
                               ),
                             ),
                           );

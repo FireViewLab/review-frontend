@@ -7313,6 +7313,462 @@ abstract class AppLocalizations {
   /// In ko, this message translates to:
   /// **'분류 정보 없음'**
   String get searchMissingClassification;
+
+  /// No description provided for @cartSelectionSummary.
+  ///
+  /// In ko, this message translates to:
+  /// **'선택 상품 요약'**
+  String get cartSelectionSummary;
+
+  /// No description provided for @cartUnknownPriceExcluded.
+  ///
+  /// In ko, this message translates to:
+  /// **'가격 정보가 없는 상품은 합계에서 제외했어요.'**
+  String get cartUnknownPriceExcluded;
+
+  /// No description provided for @cartReferencePriceNotice.
+  ///
+  /// In ko, this message translates to:
+  /// **'표시 가격은 참고용입니다. 구매와 배송비·쿠폰 확인은 각 쇼핑몰에서 진행해 주세요.'**
+  String get cartReferencePriceNotice;
+
+  /// No description provided for @cartViewSelectedSellers.
+  ///
+  /// In ko, this message translates to:
+  /// **'선택 상품 구매처 확인'**
+  String get cartViewSelectedSellers;
+
+  /// No description provided for @cartContinueShopping.
+  ///
+  /// In ko, this message translates to:
+  /// **'쇼핑 계속하기'**
+  String get cartContinueShopping;
+
+  /// No description provided for @cartShippingConditions.
+  ///
+  /// In ko, this message translates to:
+  /// **'배송 조건은 구매처에서 확인'**
+  String get cartShippingConditions;
+
+  /// No description provided for @cartSaveLater.
+  ///
+  /// In ko, this message translates to:
+  /// **'나중에 담기'**
+  String get cartSaveLater;
+
+  /// No description provided for @cartDelete.
+  ///
+  /// In ko, this message translates to:
+  /// **'삭제'**
+  String get cartDelete;
+
+  /// No description provided for @cartTrustLevel.
+  ///
+  /// In ko, this message translates to:
+  /// **'신뢰도 {level}'**
+  String cartTrustLevel(String level);
+
+  /// No description provided for @cartPriceReduction.
+  ///
+  /// In ko, this message translates to:
+  /// **'{price} 인하'**
+  String cartPriceReduction(String price);
+
+  /// No description provided for @cartEstimatedArrival.
+  ///
+  /// In ko, this message translates to:
+  /// **'{date} 도착 예정'**
+  String cartEstimatedArrival(String date);
+
+  /// No description provided for @cartStockRemaining.
+  ///
+  /// In ko, this message translates to:
+  /// **'재고 {count}개 남음'**
+  String cartStockRemaining(int count);
+
+  /// No description provided for @cartDeleteSelected.
+  ///
+  /// In ko, this message translates to:
+  /// **'선택 삭제'**
+  String get cartDeleteSelected;
+
+  /// No description provided for @cartMoveToWishlist.
+  ///
+  /// In ko, this message translates to:
+  /// **'찜한 상품으로 이동'**
+  String get cartMoveToWishlist;
+
+  /// No description provided for @cartSelectAllCount.
+  ///
+  /// In ko, this message translates to:
+  /// **'전체 선택 ({selected}/{total})'**
+  String cartSelectAllCount(int selected, int total);
+
+  /// No description provided for @cartSellersTitle.
+  ///
+  /// In ko, this message translates to:
+  /// **'구매처 확인'**
+  String get cartSellersTitle;
+
+  /// No description provided for @cartSellersDescription.
+  ///
+  /// In ko, this message translates to:
+  /// **'상품 상세에서 제공되는 쇼핑몰 구매 링크를 이용해 주세요. TEST 주문 기능은 별도 화면에서 준비하며 현재 서버 판매·배송 계약은 없습니다.'**
+  String get cartSellersDescription;
+
+  /// No description provided for @cartViewProductAndSeller.
+  ///
+  /// In ko, this message translates to:
+  /// **'상품 상세 및 구매처 보기'**
+  String get cartViewProductAndSeller;
+
+  /// No description provided for @cartDescription.
+  ///
+  /// In ko, this message translates to:
+  /// **'담아둔 상품을 확인하고 주문 전 리뷰 신뢰도도 함께 비교하세요.'**
+  String get cartDescription;
+
+  /// No description provided for @cartTrustCheckTitle.
+  ///
+  /// In ko, this message translates to:
+  /// **'리뷰 신뢰도 체크'**
+  String get cartTrustCheckTitle;
+
+  /// No description provided for @cartTrustCheckDescription.
+  ///
+  /// In ko, this message translates to:
+  /// **'제품별 RTI 지수를 확인하고, 신뢰할 수 있는 리뷰가 많은 상품을 선택해보세요.'**
+  String get cartTrustCheckDescription;
+
+  /// No description provided for @cartTotalProducts.
+  ///
+  /// In ko, this message translates to:
+  /// **'총 {count}개 상품'**
+  String cartTotalProducts(int count);
+
+  /// No description provided for @wishlistCountItems.
+  ///
+  /// In ko, this message translates to:
+  /// **'{count}개'**
+  String wishlistCountItems(int count);
+
+  /// No description provided for @wishlistShoppingMall.
+  ///
+  /// In ko, this message translates to:
+  /// **'쇼핑몰'**
+  String get wishlistShoppingMall;
+
+  /// No description provided for @wishlistPriceComparisonUnavailable.
+  ///
+  /// In ko, this message translates to:
+  /// **'서버에서 가격하락 비교 정보를 제공하지 않고 있어요. 가격이 변하지 않았다는 뜻은 아니에요.'**
+  String get wishlistPriceComparisonUnavailable;
+
+  /// No description provided for @wishlistUncategorized.
+  ///
+  /// In ko, this message translates to:
+  /// **'미분류'**
+  String get wishlistUncategorized;
+
+  /// No description provided for @wishlistShopUnknown.
+  ///
+  /// In ko, this message translates to:
+  /// **'쇼핑몰 정보 없음'**
+  String get wishlistShopUnknown;
+
+  /// No description provided for @myPageTrustUnavailable.
+  ///
+  /// In ko, this message translates to:
+  /// **'찜 상품의 분석 정보를 확인할 수 없어요.'**
+  String get myPageTrustUnavailable;
+
+  /// No description provided for @myPageTrustScope.
+  ///
+  /// In ko, this message translates to:
+  /// **'찜한 상품 중 분석된 RTI의 평균과 서버 주의 등급 기준입니다.'**
+  String get myPageTrustScope;
+
+  /// No description provided for @myPageTrustScorePoints.
+  ///
+  /// In ko, this message translates to:
+  /// **'{score}점'**
+  String myPageTrustScorePoints(int score);
+
+  /// No description provided for @myPageBack.
+  ///
+  /// In ko, this message translates to:
+  /// **'마이페이지로 돌아가기'**
+  String get myPageBack;
+
+  /// No description provided for @myPageActivityLoadFailed.
+  ///
+  /// In ko, this message translates to:
+  /// **'최근 활동을 불러오지 못했어요.'**
+  String get myPageActivityLoadFailed;
+
+  /// No description provided for @myPageActivityRecent.
+  ///
+  /// In ko, this message translates to:
+  /// **'최근'**
+  String get myPageActivityRecent;
+
+  /// No description provided for @myPageActivityJustNow.
+  ///
+  /// In ko, this message translates to:
+  /// **'방금 전'**
+  String get myPageActivityJustNow;
+
+  /// No description provided for @myPageActivityDaysAgo.
+  ///
+  /// In ko, this message translates to:
+  /// **'{count}일 전'**
+  String myPageActivityDaysAgo(int count);
+
+  /// No description provided for @myPageActivityHoursAgo.
+  ///
+  /// In ko, this message translates to:
+  /// **'{count}시간 전'**
+  String myPageActivityHoursAgo(int count);
+
+  /// No description provided for @myPageNamedDescription.
+  ///
+  /// In ko, this message translates to:
+  /// **'{name}님의 정보와 저장한 상품 활동을 관리해요.'**
+  String myPageNamedDescription(String name);
+
+  /// No description provided for @myPageWarningScope.
+  ///
+  /// In ko, this message translates to:
+  /// **'찜한 상품 중 서버가 의심·위험 등급으로 분석한 상품이에요. 분석 전 상품은 포함하지 않아요.'**
+  String get myPageWarningScope;
+
+  /// No description provided for @myPageCheckList.
+  ///
+  /// In ko, this message translates to:
+  /// **'목록 확인'**
+  String get myPageCheckList;
+
+  /// No description provided for @myPageAllWarnings.
+  ///
+  /// In ko, this message translates to:
+  /// **'전체 주의'**
+  String get myPageAllWarnings;
+
+  /// No description provided for @myPageLoadFailed.
+  ///
+  /// In ko, this message translates to:
+  /// **'주의 상품을 확인할 수 없어요.'**
+  String get myPageLoadFailed;
+
+  /// No description provided for @myPageViewListCount.
+  ///
+  /// In ko, this message translates to:
+  /// **'목록 보기 ({count})'**
+  String myPageViewListCount(int count);
+
+  /// No description provided for @recentProductsScope.
+  ///
+  /// In ko, this message translates to:
+  /// **'서버의 최근 {count}개 조회 기록에서 중복 상품을 제외했어요. 전체 기간의 상품 수와는 다를 수 있어요.'**
+  String recentProductsScope(int count);
+
+  /// No description provided for @recentProductsLoadFailed.
+  ///
+  /// In ko, this message translates to:
+  /// **'최근 본 상품을 불러오지 못했어요.'**
+  String get recentProductsLoadFailed;
+
+  /// No description provided for @notificationsAll.
+  ///
+  /// In ko, this message translates to:
+  /// **'전체 알림'**
+  String get notificationsAll;
+
+  /// No description provided for @notificationsPriceAlerts.
+  ///
+  /// In ko, this message translates to:
+  /// **'가격 알림'**
+  String get notificationsPriceAlerts;
+
+  /// No description provided for @notificationsSavedSettings.
+  ///
+  /// In ko, this message translates to:
+  /// **'저장된 알림 수신 설정'**
+  String get notificationsSavedSettings;
+
+  /// No description provided for @notificationsMore.
+  ///
+  /// In ko, this message translates to:
+  /// **'더 보기'**
+  String get notificationsMore;
+
+  /// No description provided for @notificationsTargetUnsupported.
+  ///
+  /// In ko, this message translates to:
+  /// **'이 알림의 이동 대상은 아직 지원되지 않습니다.'**
+  String get notificationsTargetUnsupported;
+
+  /// No description provided for @notificationsCheckingUnreadShort.
+  ///
+  /// In ko, this message translates to:
+  /// **'읽지 않은 알림 확인 중'**
+  String get notificationsCheckingUnreadShort;
+
+  /// No description provided for @notificationsUnreadFailedShort.
+  ///
+  /// In ko, this message translates to:
+  /// **'알림 수를 확인하지 못했어요.'**
+  String get notificationsUnreadFailedShort;
+
+  /// No description provided for @notificationsManageInboxAndPrices.
+  ///
+  /// In ko, this message translates to:
+  /// **'알림함 · 가격 알림 관리'**
+  String get notificationsManageInboxAndPrices;
+
+  /// No description provided for @notificationsServiceTitle.
+  ///
+  /// In ko, this message translates to:
+  /// **'서비스 알림'**
+  String get notificationsServiceTitle;
+
+  /// No description provided for @notificationsCheckingUnread.
+  ///
+  /// In ko, this message translates to:
+  /// **'읽지 않은 알림을 확인하고 있어요.'**
+  String get notificationsCheckingUnread;
+
+  /// No description provided for @notificationsUnreadFailed.
+  ///
+  /// In ko, this message translates to:
+  /// **'읽지 않은 알림 수를 확인하지 못했어요.'**
+  String get notificationsUnreadFailed;
+
+  /// No description provided for @notificationsSettingsFailed.
+  ///
+  /// In ko, this message translates to:
+  /// **'저장된 알림 설정을 불러오지 못했어요.'**
+  String get notificationsSettingsFailed;
+
+  /// No description provided for @notificationsSettingsChecking.
+  ///
+  /// In ko, this message translates to:
+  /// **'저장된 알림 설정 확인 중'**
+  String get notificationsSettingsChecking;
+
+  /// No description provided for @notificationsReviewSettings.
+  ///
+  /// In ko, this message translates to:
+  /// **'알림·리뷰 설정'**
+  String get notificationsReviewSettings;
+
+  /// No description provided for @notificationsMonitoringNotice.
+  ///
+  /// In ko, this message translates to:
+  /// **'위험 변화 자동 감시는 서버 연동이 필요해요. 수신 설정을 켜는 것만으로 감시가 시작되지는 않아요.'**
+  String get notificationsMonitoringNotice;
+
+  /// No description provided for @notificationsInboxNotice.
+  ///
+  /// In ko, this message translates to:
+  /// **'알림함에 저장된 알림을 확인해요. 브라우저 푸시·이메일·문자는 지원하지 않아요.'**
+  String get notificationsInboxNotice;
+
+  /// No description provided for @notificationsUnreadCount.
+  ///
+  /// In ko, this message translates to:
+  /// **'읽지 않은 알림 {count}개'**
+  String notificationsUnreadCount(int count);
+
+  /// No description provided for @notificationsReceiving.
+  ///
+  /// In ko, this message translates to:
+  /// **'받음'**
+  String get notificationsReceiving;
+
+  /// No description provided for @notificationsNotReceiving.
+  ///
+  /// In ko, this message translates to:
+  /// **'받지 않음'**
+  String get notificationsNotReceiving;
+
+  /// No description provided for @notificationsRiskStatus.
+  ///
+  /// In ko, this message translates to:
+  /// **'위험 감지 {status}'**
+  String notificationsRiskStatus(String status);
+
+  /// No description provided for @notificationsAnalysisStatus.
+  ///
+  /// In ko, this message translates to:
+  /// **'분석 결과 {status}'**
+  String notificationsAnalysisStatus(String status);
+
+  /// No description provided for @notificationsFeedbackStatus.
+  ///
+  /// In ko, this message translates to:
+  /// **'처리 결과 {status}'**
+  String notificationsFeedbackStatus(String status);
+
+  /// No description provided for @priceWatchTitle.
+  ///
+  /// In ko, this message translates to:
+  /// **'가격하락 · 가격 알림 관리'**
+  String get priceWatchTitle;
+
+  /// No description provided for @priceWatchHistoryNotice.
+  ///
+  /// In ko, this message translates to:
+  /// **'가격 알림 이력·구독 저장은 아직 지원되지 않아요. 아래는 알림 기록이 아닌 찜 상품의 서버 가격하락 표시입니다.'**
+  String get priceWatchHistoryNotice;
+
+  /// No description provided for @priceWatchComparisonUnavailable.
+  ///
+  /// In ko, this message translates to:
+  /// **'서버가 찜 상품의 비교 가격 정보를 제공하지 않아 하락 여부를 확인할 수 없어요.'**
+  String get priceWatchComparisonUnavailable;
+
+  /// No description provided for @priceWatchRefreshWishlistPrices.
+  ///
+  /// In ko, this message translates to:
+  /// **'찜 가격 정보 새로고침'**
+  String get priceWatchRefreshWishlistPrices;
+
+  /// No description provided for @priceWatchViewWishlist.
+  ///
+  /// In ko, this message translates to:
+  /// **'찜 상품 확인'**
+  String get priceWatchViewWishlist;
+
+  /// No description provided for @priceWatchSubscriptionNotice.
+  ///
+  /// In ko, this message translates to:
+  /// **'서버 가격이력·구독 저장 연동 후 신청할 수 있어요.'**
+  String get priceWatchSubscriptionNotice;
+
+  /// No description provided for @priceWatchSubscriptionUnavailable.
+  ///
+  /// In ko, this message translates to:
+  /// **'가격 알림 신청 · 미지원'**
+  String get priceWatchSubscriptionUnavailable;
+
+  /// No description provided for @priceWatchDropIndicator.
+  ///
+  /// In ko, this message translates to:
+  /// **'서버 가격하락 표시 · 하락액/비율 정보 없음'**
+  String get priceWatchDropIndicator;
+
+  /// No description provided for @priceWatchLoadFailed.
+  ///
+  /// In ko, this message translates to:
+  /// **'가격하락 표시를 확인하지 못했어요. {message}'**
+  String priceWatchLoadFailed(String message);
+
+  /// No description provided for @priceWatchDropCounts.
+  ///
+  /// In ko, this message translates to:
+  /// **'찜 {total}개 중 가격하락 정보가 있는 {known}개에서 {drops}개가 하락으로 표시됐어요. 기준 가격·시점은 제공되지 않았어요.'**
+  String priceWatchDropCounts(int total, int known, int drops);
 }
 
 class _AppLocalizationsDelegate

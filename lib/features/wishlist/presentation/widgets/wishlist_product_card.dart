@@ -146,7 +146,11 @@ class WishlistProductCard extends StatelessWidget {
                         child: Text(
                           item.reviewCount == null
                               ? ''
-                              : '(리뷰 ${formatSearchCount(item.reviewCount)})',
+                              : AppLocalizations.of(
+                                  context,
+                                ).searchFormattedReviewCount(
+                                  formatSearchCount(item.reviewCount),
+                                ),
                           overflow: TextOverflow.ellipsis,
                           style: Theme.of(context).textTheme.labelSmall
                               ?.copyWith(
@@ -161,7 +165,7 @@ class WishlistProductCard extends StatelessWidget {
                   const SizedBox(height: AppSpacing.xs),
                   Text(
                     item.price == null
-                        ? '가격 정보 없음'
+                        ? AppLocalizations.of(context).homePriceUnavailable
                         : formatSearchPrice(item.price!),
                     style: Theme.of(context).textTheme.titleMedium?.copyWith(
                       color: AppColors.textPrimary,

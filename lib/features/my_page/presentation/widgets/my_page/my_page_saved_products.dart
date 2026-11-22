@@ -145,7 +145,9 @@ class MyPageCompactProductCard extends StatelessWidget {
                 ),
                 const SizedBox(height: AppSpacing.xs),
                 Text(
-                  price == null ? '가격 정보 없음' : myPageFormatPrice(price!),
+                  price == null
+                      ? AppLocalizations.of(context).homePriceUnavailable
+                      : myPageFormatPrice(context, price!),
                   style: Theme.of(context).textTheme.labelLarge?.copyWith(
                     color: AppColors.textPrimary,
                     fontWeight: FontWeight.w900,

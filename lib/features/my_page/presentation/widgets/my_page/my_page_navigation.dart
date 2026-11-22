@@ -56,7 +56,9 @@ class MyPageTitle extends StatelessWidget {
               ),
             ),
             Text(
-              '${profile.nickname}님의 정보와 저장한 상품 활동을 관리해요.',
+              AppLocalizations.of(
+                context,
+              ).myPageNamedDescription(profile.nickname),
               style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                 color: AppColors.textSecondary,
                 fontWeight: FontWeight.w700,

@@ -4030,4 +4030,292 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get searchMissingClassification => 'No classification information';
+
+  @override
+  String get cartSelectionSummary => 'Selected products summary';
+
+  @override
+  String get cartUnknownPriceExcluded =>
+      'Products without price information are excluded from the total.';
+
+  @override
+  String get cartReferencePriceNotice =>
+      'Displayed prices are indicative. Purchase and check shipping/coupons at each shop.';
+
+  @override
+  String get cartViewSelectedSellers => 'View sellers for selected products';
+
+  @override
+  String get cartContinueShopping => 'Continue shopping';
+
+  @override
+  String get cartShippingConditions => 'Check delivery terms at the seller';
+
+  @override
+  String get cartSaveLater => 'Save for later';
+
+  @override
+  String get cartDelete => 'Delete';
+
+  @override
+  String cartTrustLevel(String level) {
+    return 'Trust $level';
+  }
+
+  @override
+  String cartPriceReduction(String price) {
+    return '$price reduction';
+  }
+
+  @override
+  String cartEstimatedArrival(String date) {
+    return 'Expected arrival: $date';
+  }
+
+  @override
+  String cartStockRemaining(int count) {
+    return '$count left in stock';
+  }
+
+  @override
+  String get cartDeleteSelected => 'Delete selected';
+
+  @override
+  String get cartMoveToWishlist => 'Move to wishlist';
+
+  @override
+  String cartSelectAllCount(int selected, int total) {
+    return 'Select all ($selected/$total)';
+  }
+
+  @override
+  String get cartSellersTitle => 'View sellers';
+
+  @override
+  String get cartSellersDescription =>
+      'Use the shop links in product details. TEST ordering is being prepared on a separate screen; server sales/shipping contracts are not available yet.';
+
+  @override
+  String get cartViewProductAndSeller => 'View product details and seller';
+
+  @override
+  String get cartDescription =>
+      'Check saved products and compare review trust before ordering.';
+
+  @override
+  String get cartTrustCheckTitle => 'Check review trust';
+
+  @override
+  String get cartTrustCheckDescription =>
+      'Check each product\'s RTI and choose products with more trustworthy reviews.';
+
+  @override
+  String cartTotalProducts(int count) {
+    return '$count products in total';
+  }
+
+  @override
+  String wishlistCountItems(int count) {
+    return '$count items';
+  }
+
+  @override
+  String get wishlistShoppingMall => 'Shop';
+
+  @override
+  String get wishlistPriceComparisonUnavailable =>
+      'The server does not provide price-drop comparisons. This does not mean prices have stayed the same.';
+
+  @override
+  String get wishlistUncategorized => 'Uncategorized';
+
+  @override
+  String get wishlistShopUnknown => 'Shop information unavailable';
+
+  @override
+  String get myPageTrustUnavailable =>
+      'Could not check analysis information for wishlisted products.';
+
+  @override
+  String get myPageTrustScope =>
+      'Based on average analyzed RTI and server attention grades for wishlisted products.';
+
+  @override
+  String myPageTrustScorePoints(int score) {
+    return '$score points';
+  }
+
+  @override
+  String get myPageBack => 'Back to my page';
+
+  @override
+  String get myPageActivityLoadFailed => 'Could not load recent activity.';
+
+  @override
+  String get myPageActivityRecent => 'Recent';
+
+  @override
+  String get myPageActivityJustNow => 'Just now';
+
+  @override
+  String myPageActivityDaysAgo(int count) {
+    return '$count days ago';
+  }
+
+  @override
+  String myPageActivityHoursAgo(int count) {
+    return '$count hours ago';
+  }
+
+  @override
+  String myPageNamedDescription(String name) {
+    return 'Manage $name’s information and saved-product activity.';
+  }
+
+  @override
+  String get myPageWarningScope =>
+      'Wishlisted products graded suspicious or dangerous by the server. Unanalyzed products are excluded.';
+
+  @override
+  String get myPageCheckList => 'Check list';
+
+  @override
+  String get myPageAllWarnings => 'All attention grades';
+
+  @override
+  String get myPageLoadFailed => 'Could not check products needing attention.';
+
+  @override
+  String myPageViewListCount(int count) {
+    return 'View list ($count)';
+  }
+
+  @override
+  String recentProductsScope(int count) {
+    return 'Duplicates were removed from the server’s latest $count view records. This may differ from the all-time product count.';
+  }
+
+  @override
+  String get recentProductsLoadFailed =>
+      'Could not load recently viewed products.';
+
+  @override
+  String get notificationsAll => 'All notifications';
+
+  @override
+  String get notificationsPriceAlerts => 'Price alerts';
+
+  @override
+  String get notificationsSavedSettings => 'Saved notification preferences';
+
+  @override
+  String get notificationsMore => 'View more';
+
+  @override
+  String get notificationsTargetUnsupported =>
+      'This notification’s destination is not supported yet.';
+
+  @override
+  String get notificationsCheckingUnreadShort =>
+      'Checking unread notifications';
+
+  @override
+  String get notificationsUnreadFailedShort =>
+      'Could not check the notification count.';
+
+  @override
+  String get notificationsManageInboxAndPrices => 'Inbox · Manage price alerts';
+
+  @override
+  String get notificationsServiceTitle => 'Service notifications';
+
+  @override
+  String get notificationsCheckingUnread => 'Checking unread notifications.';
+
+  @override
+  String get notificationsUnreadFailed => 'Could not check the unread count.';
+
+  @override
+  String get notificationsSettingsFailed =>
+      'Could not load saved notification settings.';
+
+  @override
+  String get notificationsSettingsChecking =>
+      'Checking saved notification settings';
+
+  @override
+  String get notificationsReviewSettings => 'Notification and review settings';
+
+  @override
+  String get notificationsMonitoringNotice =>
+      'Automatic risk monitoring requires server integration. Enabling notifications alone does not start monitoring.';
+
+  @override
+  String get notificationsInboxNotice =>
+      'View notifications saved in your inbox. Browser push, email, and SMS are unsupported.';
+
+  @override
+  String notificationsUnreadCount(int count) {
+    return '$count unread notifications';
+  }
+
+  @override
+  String get notificationsReceiving => 'On';
+
+  @override
+  String get notificationsNotReceiving => 'Off';
+
+  @override
+  String notificationsRiskStatus(String status) {
+    return 'Risk detection $status';
+  }
+
+  @override
+  String notificationsAnalysisStatus(String status) {
+    return 'Analysis results $status';
+  }
+
+  @override
+  String notificationsFeedbackStatus(String status) {
+    return 'Review outcomes $status';
+  }
+
+  @override
+  String get priceWatchTitle => 'Price drops · Manage price alerts';
+
+  @override
+  String get priceWatchHistoryNotice =>
+      'Price alert history and saved subscriptions are not supported yet. Below are server price-drop indicators for wishlisted products, rather than notification records.';
+
+  @override
+  String get priceWatchComparisonUnavailable =>
+      'The server does not provide comparative prices for wishlisted products, so price drops cannot be checked.';
+
+  @override
+  String get priceWatchRefreshWishlistPrices => 'Refresh wishlist prices';
+
+  @override
+  String get priceWatchViewWishlist => 'View wishlisted products';
+
+  @override
+  String get priceWatchSubscriptionNotice =>
+      'Available once server price history and subscription storage are connected.';
+
+  @override
+  String get priceWatchSubscriptionUnavailable =>
+      'Price alert signup · Unavailable';
+
+  @override
+  String get priceWatchDropIndicator =>
+      'Server price-drop indicator · No amount/percentage provided';
+
+  @override
+  String priceWatchLoadFailed(String message) {
+    return 'Could not check price-drop indicators. $message';
+  }
+
+  @override
+  String priceWatchDropCounts(int total, int known, int drops) {
+    return 'Of $total wishlisted products, $known have price-drop data and $drops are marked as lower. Reference prices and dates are unavailable.';
+  }
 }

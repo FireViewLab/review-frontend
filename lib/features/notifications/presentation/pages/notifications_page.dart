@@ -92,12 +92,16 @@ class _NotificationsPageState extends ConsumerState<NotificationsPage> {
                     runSpacing: 8,
                     children: [
                       ChoiceChip(
-                        label: const Text('전체 알림'),
+                        label: Text(
+                          AppLocalizations.of(context).notificationsAll,
+                        ),
                         selected: !_priceMode,
                         onSelected: (_) => setState(() => _priceMode = false),
                       ),
                       ChoiceChip(
-                        label: const Text('가격 알림'),
+                        label: Text(
+                          AppLocalizations.of(context).notificationsPriceAlerts,
+                        ),
                         selected: _priceMode,
                         onSelected: (_) => setState(() => _priceMode = true),
                       ),
@@ -112,17 +116,23 @@ class _NotificationsPageState extends ConsumerState<NotificationsPage> {
                               ? null
                               : vm.refresh,
                           icon: const Icon(Icons.refresh),
-                          label: const Text('새로고침'),
+                          label: Text(
+                            AppLocalizations.of(context).adminRefresh,
+                          ),
                         ),
                         TextButton.icon(
                           onPressed: () => context.push(RoutePaths.settings),
                           icon: const Icon(Icons.settings_outlined),
-                          label: const Text('알림 설정'),
+                          label: Text(
+                            AppLocalizations.of(context).settingsNotifications,
+                          ),
                         ),
                       ],
                     ),
-                    const ExpansionTile(
-                      title: Text('저장된 알림 수신 설정'),
+                    ExpansionTile(
+                      title: Text(
+                        AppLocalizations.of(context).notificationsSavedSettings,
+                      ),
                       childrenPadding: EdgeInsets.all(12),
                       children: [NotificationSettingsSummary()],
                     ),
@@ -134,7 +144,7 @@ class _NotificationsPageState extends ConsumerState<NotificationsPage> {
                       ),
                       TextButton(
                         onPressed: state.failedPage ? vm.retryMore : vm.refresh,
-                        child: const Text('다시 시도'),
+                        child: Text(AppLocalizations.of(context).actionRetry),
                       ),
                     ],
                     if (!state.isLast &&
@@ -144,7 +154,9 @@ class _NotificationsPageState extends ConsumerState<NotificationsPage> {
                         onPressed: state.isLoadingMore || state.isMutating
                             ? null
                             : vm.loadMore,
-                        child: const Text('더 보기'),
+                        child: Text(
+                          AppLocalizations.of(context).notificationsMore,
+                        ),
                       ),
                   ],
                   const SizedBox(height: AppSpacing.lg),
@@ -175,8 +187,12 @@ class _NotificationsPageState extends ConsumerState<NotificationsPage> {
                         context.push(route);
                       } else if (notification.targetUrl != null) {
                         ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(
-                            content: Text('이 알림의 이동 대상은 아직 지원되지 않습니다.'),
+                          SnackBar(
+                            content: Text(
+                              AppLocalizations.of(
+                                context,
+                              ).notificationsTargetUnsupported,
+                            ),
                           ),
                         );
                       }

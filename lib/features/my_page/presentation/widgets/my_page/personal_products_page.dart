@@ -1,3 +1,4 @@
+import 'package:re_view_front/l10n/generated/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:re_view_front/app/router/route_paths.dart';
@@ -38,7 +39,7 @@ class PersonalProductsPage extends StatelessWidget {
                     Row(
                       children: [
                         IconButton(
-                          tooltip: '마이페이지로 돌아가기',
+                          tooltip: AppLocalizations.of(context).myPageBack,
                           onPressed: () {
                             if (context.canPop()) {
                               context.pop();
@@ -55,7 +56,7 @@ class PersonalProductsPage extends StatelessWidget {
                           ),
                         ),
                         IconButton(
-                          tooltip: '새로고침',
+                          tooltip: AppLocalizations.of(context).adminRefresh,
                           onPressed: onRefresh,
                           icon: const Icon(Icons.refresh),
                         ),

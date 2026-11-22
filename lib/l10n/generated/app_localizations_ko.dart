@@ -3873,4 +3873,279 @@ class AppLocalizationsKo extends AppLocalizations {
 
   @override
   String get searchMissingClassification => '분류 정보 없음';
+
+  @override
+  String get cartSelectionSummary => '선택 상품 요약';
+
+  @override
+  String get cartUnknownPriceExcluded => '가격 정보가 없는 상품은 합계에서 제외했어요.';
+
+  @override
+  String get cartReferencePriceNotice =>
+      '표시 가격은 참고용입니다. 구매와 배송비·쿠폰 확인은 각 쇼핑몰에서 진행해 주세요.';
+
+  @override
+  String get cartViewSelectedSellers => '선택 상품 구매처 확인';
+
+  @override
+  String get cartContinueShopping => '쇼핑 계속하기';
+
+  @override
+  String get cartShippingConditions => '배송 조건은 구매처에서 확인';
+
+  @override
+  String get cartSaveLater => '나중에 담기';
+
+  @override
+  String get cartDelete => '삭제';
+
+  @override
+  String cartTrustLevel(String level) {
+    return '신뢰도 $level';
+  }
+
+  @override
+  String cartPriceReduction(String price) {
+    return '$price 인하';
+  }
+
+  @override
+  String cartEstimatedArrival(String date) {
+    return '$date 도착 예정';
+  }
+
+  @override
+  String cartStockRemaining(int count) {
+    return '재고 $count개 남음';
+  }
+
+  @override
+  String get cartDeleteSelected => '선택 삭제';
+
+  @override
+  String get cartMoveToWishlist => '찜한 상품으로 이동';
+
+  @override
+  String cartSelectAllCount(int selected, int total) {
+    return '전체 선택 ($selected/$total)';
+  }
+
+  @override
+  String get cartSellersTitle => '구매처 확인';
+
+  @override
+  String get cartSellersDescription =>
+      '상품 상세에서 제공되는 쇼핑몰 구매 링크를 이용해 주세요. TEST 주문 기능은 별도 화면에서 준비하며 현재 서버 판매·배송 계약은 없습니다.';
+
+  @override
+  String get cartViewProductAndSeller => '상품 상세 및 구매처 보기';
+
+  @override
+  String get cartDescription => '담아둔 상품을 확인하고 주문 전 리뷰 신뢰도도 함께 비교하세요.';
+
+  @override
+  String get cartTrustCheckTitle => '리뷰 신뢰도 체크';
+
+  @override
+  String get cartTrustCheckDescription =>
+      '제품별 RTI 지수를 확인하고, 신뢰할 수 있는 리뷰가 많은 상품을 선택해보세요.';
+
+  @override
+  String cartTotalProducts(int count) {
+    return '총 $count개 상품';
+  }
+
+  @override
+  String wishlistCountItems(int count) {
+    return '$count개';
+  }
+
+  @override
+  String get wishlistShoppingMall => '쇼핑몰';
+
+  @override
+  String get wishlistPriceComparisonUnavailable =>
+      '서버에서 가격하락 비교 정보를 제공하지 않고 있어요. 가격이 변하지 않았다는 뜻은 아니에요.';
+
+  @override
+  String get wishlistUncategorized => '미분류';
+
+  @override
+  String get wishlistShopUnknown => '쇼핑몰 정보 없음';
+
+  @override
+  String get myPageTrustUnavailable => '찜 상품의 분석 정보를 확인할 수 없어요.';
+
+  @override
+  String get myPageTrustScope => '찜한 상품 중 분석된 RTI의 평균과 서버 주의 등급 기준입니다.';
+
+  @override
+  String myPageTrustScorePoints(int score) {
+    return '$score점';
+  }
+
+  @override
+  String get myPageBack => '마이페이지로 돌아가기';
+
+  @override
+  String get myPageActivityLoadFailed => '최근 활동을 불러오지 못했어요.';
+
+  @override
+  String get myPageActivityRecent => '최근';
+
+  @override
+  String get myPageActivityJustNow => '방금 전';
+
+  @override
+  String myPageActivityDaysAgo(int count) {
+    return '$count일 전';
+  }
+
+  @override
+  String myPageActivityHoursAgo(int count) {
+    return '$count시간 전';
+  }
+
+  @override
+  String myPageNamedDescription(String name) {
+    return '$name님의 정보와 저장한 상품 활동을 관리해요.';
+  }
+
+  @override
+  String get myPageWarningScope =>
+      '찜한 상품 중 서버가 의심·위험 등급으로 분석한 상품이에요. 분석 전 상품은 포함하지 않아요.';
+
+  @override
+  String get myPageCheckList => '목록 확인';
+
+  @override
+  String get myPageAllWarnings => '전체 주의';
+
+  @override
+  String get myPageLoadFailed => '주의 상품을 확인할 수 없어요.';
+
+  @override
+  String myPageViewListCount(int count) {
+    return '목록 보기 ($count)';
+  }
+
+  @override
+  String recentProductsScope(int count) {
+    return '서버의 최근 $count개 조회 기록에서 중복 상품을 제외했어요. 전체 기간의 상품 수와는 다를 수 있어요.';
+  }
+
+  @override
+  String get recentProductsLoadFailed => '최근 본 상품을 불러오지 못했어요.';
+
+  @override
+  String get notificationsAll => '전체 알림';
+
+  @override
+  String get notificationsPriceAlerts => '가격 알림';
+
+  @override
+  String get notificationsSavedSettings => '저장된 알림 수신 설정';
+
+  @override
+  String get notificationsMore => '더 보기';
+
+  @override
+  String get notificationsTargetUnsupported => '이 알림의 이동 대상은 아직 지원되지 않습니다.';
+
+  @override
+  String get notificationsCheckingUnreadShort => '읽지 않은 알림 확인 중';
+
+  @override
+  String get notificationsUnreadFailedShort => '알림 수를 확인하지 못했어요.';
+
+  @override
+  String get notificationsManageInboxAndPrices => '알림함 · 가격 알림 관리';
+
+  @override
+  String get notificationsServiceTitle => '서비스 알림';
+
+  @override
+  String get notificationsCheckingUnread => '읽지 않은 알림을 확인하고 있어요.';
+
+  @override
+  String get notificationsUnreadFailed => '읽지 않은 알림 수를 확인하지 못했어요.';
+
+  @override
+  String get notificationsSettingsFailed => '저장된 알림 설정을 불러오지 못했어요.';
+
+  @override
+  String get notificationsSettingsChecking => '저장된 알림 설정 확인 중';
+
+  @override
+  String get notificationsReviewSettings => '알림·리뷰 설정';
+
+  @override
+  String get notificationsMonitoringNotice =>
+      '위험 변화 자동 감시는 서버 연동이 필요해요. 수신 설정을 켜는 것만으로 감시가 시작되지는 않아요.';
+
+  @override
+  String get notificationsInboxNotice =>
+      '알림함에 저장된 알림을 확인해요. 브라우저 푸시·이메일·문자는 지원하지 않아요.';
+
+  @override
+  String notificationsUnreadCount(int count) {
+    return '읽지 않은 알림 $count개';
+  }
+
+  @override
+  String get notificationsReceiving => '받음';
+
+  @override
+  String get notificationsNotReceiving => '받지 않음';
+
+  @override
+  String notificationsRiskStatus(String status) {
+    return '위험 감지 $status';
+  }
+
+  @override
+  String notificationsAnalysisStatus(String status) {
+    return '분석 결과 $status';
+  }
+
+  @override
+  String notificationsFeedbackStatus(String status) {
+    return '처리 결과 $status';
+  }
+
+  @override
+  String get priceWatchTitle => '가격하락 · 가격 알림 관리';
+
+  @override
+  String get priceWatchHistoryNotice =>
+      '가격 알림 이력·구독 저장은 아직 지원되지 않아요. 아래는 알림 기록이 아닌 찜 상품의 서버 가격하락 표시입니다.';
+
+  @override
+  String get priceWatchComparisonUnavailable =>
+      '서버가 찜 상품의 비교 가격 정보를 제공하지 않아 하락 여부를 확인할 수 없어요.';
+
+  @override
+  String get priceWatchRefreshWishlistPrices => '찜 가격 정보 새로고침';
+
+  @override
+  String get priceWatchViewWishlist => '찜 상품 확인';
+
+  @override
+  String get priceWatchSubscriptionNotice => '서버 가격이력·구독 저장 연동 후 신청할 수 있어요.';
+
+  @override
+  String get priceWatchSubscriptionUnavailable => '가격 알림 신청 · 미지원';
+
+  @override
+  String get priceWatchDropIndicator => '서버 가격하락 표시 · 하락액/비율 정보 없음';
+
+  @override
+  String priceWatchLoadFailed(String message) {
+    return '가격하락 표시를 확인하지 못했어요. $message';
+  }
+
+  @override
+  String priceWatchDropCounts(int total, int known, int drops) {
+    return '찜 $total개 중 가격하락 정보가 있는 $known개에서 $drops개가 하락으로 표시됐어요. 기준 가격·시점은 제공되지 않았어요.';
+  }
 }

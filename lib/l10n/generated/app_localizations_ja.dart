@@ -3871,4 +3871,278 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String get searchMissingClassification => '分類情報なし';
+
+  @override
+  String get cartSelectionSummary => '選択商品の概要';
+
+  @override
+  String get cartUnknownPriceExcluded => '価格情報のない商品は合計から除外しています。';
+
+  @override
+  String get cartReferencePriceNotice =>
+      '表示価格は参考情報です。購入や送料・クーポンの確認は各ショップで行ってください。';
+
+  @override
+  String get cartViewSelectedSellers => '選択商品の購入先を確認';
+
+  @override
+  String get cartContinueShopping => '買い物を続ける';
+
+  @override
+  String get cartShippingConditions => '配送条件は購入先で確認';
+
+  @override
+  String get cartSaveLater => '後で追加';
+
+  @override
+  String get cartDelete => '削除';
+
+  @override
+  String cartTrustLevel(String level) {
+    return '信頼度 $level';
+  }
+
+  @override
+  String cartPriceReduction(String price) {
+    return '$price値下げ';
+  }
+
+  @override
+  String cartEstimatedArrival(String date) {
+    return '$date到着予定';
+  }
+
+  @override
+  String cartStockRemaining(int count) {
+    return '在庫残り$count個';
+  }
+
+  @override
+  String get cartDeleteSelected => '選択項目を削除';
+
+  @override
+  String get cartMoveToWishlist => 'お気に入りに移動';
+
+  @override
+  String cartSelectAllCount(int selected, int total) {
+    return 'すべて選択（$selected/$total）';
+  }
+
+  @override
+  String get cartSellersTitle => '購入先を確認';
+
+  @override
+  String get cartSellersDescription =>
+      '商品詳細のショップ購入リンクをご利用ください。TEST注文は別画面で準備中で、現在サーバーの販売・配送契約はありません。';
+
+  @override
+  String get cartViewProductAndSeller => '商品詳細と購入先を見る';
+
+  @override
+  String get cartDescription => 'カートの商品を確認し、注文前にレビューの信頼度も比較しましょう。';
+
+  @override
+  String get cartTrustCheckTitle => 'レビューの信頼度をチェック';
+
+  @override
+  String get cartTrustCheckDescription => '商品ごとのRTIを確認し、信頼できるレビューが多い商品を選びましょう。';
+
+  @override
+  String cartTotalProducts(int count) {
+    return '全$count商品';
+  }
+
+  @override
+  String wishlistCountItems(int count) {
+    return '$count件';
+  }
+
+  @override
+  String get wishlistShoppingMall => 'ショップ';
+
+  @override
+  String get wishlistPriceComparisonUnavailable =>
+      'サーバーは値下げの比較情報を提供していません。価格が変わっていないという意味ではありません。';
+
+  @override
+  String get wishlistUncategorized => '未分類';
+
+  @override
+  String get wishlistShopUnknown => 'ショップ情報なし';
+
+  @override
+  String get myPageTrustUnavailable => 'お気に入り商品の分析情報を確認できません。';
+
+  @override
+  String get myPageTrustScope => 'お気に入り商品の分析済みRTIの平均とサーバーの注意等級を基準にしています。';
+
+  @override
+  String myPageTrustScorePoints(int score) {
+    return '$score点';
+  }
+
+  @override
+  String get myPageBack => 'マイページに戻る';
+
+  @override
+  String get myPageActivityLoadFailed => '最近のアクティビティを読み込めませんでした。';
+
+  @override
+  String get myPageActivityRecent => '最近';
+
+  @override
+  String get myPageActivityJustNow => 'たった今';
+
+  @override
+  String myPageActivityDaysAgo(int count) {
+    return '$count日前';
+  }
+
+  @override
+  String myPageActivityHoursAgo(int count) {
+    return '$count時間前';
+  }
+
+  @override
+  String myPageNamedDescription(String name) {
+    return '$nameさんの情報と保存商品のアクティビティを管理します。';
+  }
+
+  @override
+  String get myPageWarningScope =>
+      'お気に入り商品のうち、サーバーが疑わしい・危険と分析した商品です。分析前の商品は含みません。';
+
+  @override
+  String get myPageCheckList => '一覧を確認';
+
+  @override
+  String get myPageAllWarnings => 'すべての注意等級';
+
+  @override
+  String get myPageLoadFailed => '注意が必要な商品を確認できません。';
+
+  @override
+  String myPageViewListCount(int count) {
+    return '一覧を見る（$count）';
+  }
+
+  @override
+  String recentProductsScope(int count) {
+    return 'サーバーの直近$count件の閲覧記録から重複商品を除いています。全期間の商品数とは異なる場合があります。';
+  }
+
+  @override
+  String get recentProductsLoadFailed => '最近見た商品を読み込めませんでした。';
+
+  @override
+  String get notificationsAll => 'すべての通知';
+
+  @override
+  String get notificationsPriceAlerts => '価格通知';
+
+  @override
+  String get notificationsSavedSettings => '保存済みの通知受信設定';
+
+  @override
+  String get notificationsMore => 'もっと見る';
+
+  @override
+  String get notificationsTargetUnsupported => 'この通知の移動先はまだ対応していません。';
+
+  @override
+  String get notificationsCheckingUnreadShort => '未読の通知を確認中';
+
+  @override
+  String get notificationsUnreadFailedShort => '通知数を確認できませんでした。';
+
+  @override
+  String get notificationsManageInboxAndPrices => '通知ボックス・価格通知の管理';
+
+  @override
+  String get notificationsServiceTitle => 'サービス通知';
+
+  @override
+  String get notificationsCheckingUnread => '未読の通知を確認しています。';
+
+  @override
+  String get notificationsUnreadFailed => '未読通知の数を確認できませんでした。';
+
+  @override
+  String get notificationsSettingsFailed => '保存済みの通知設定を読み込めませんでした。';
+
+  @override
+  String get notificationsSettingsChecking => '保存済みの通知設定を確認中';
+
+  @override
+  String get notificationsReviewSettings => '通知・レビュー設定';
+
+  @override
+  String get notificationsMonitoringNotice =>
+      'リスク変化の自動監視にはサーバー連携が必要です。受信設定をオンにするだけでは監視は開始されません。';
+
+  @override
+  String get notificationsInboxNotice =>
+      '通知ボックスに保存された通知を確認できます。ブラウザのプッシュ通知・メール・SMSは非対応です。';
+
+  @override
+  String notificationsUnreadCount(int count) {
+    return '未読の通知$count件';
+  }
+
+  @override
+  String get notificationsReceiving => '受信';
+
+  @override
+  String get notificationsNotReceiving => '受信しない';
+
+  @override
+  String notificationsRiskStatus(String status) {
+    return 'リスク検知 $status';
+  }
+
+  @override
+  String notificationsAnalysisStatus(String status) {
+    return '分析結果 $status';
+  }
+
+  @override
+  String notificationsFeedbackStatus(String status) {
+    return '処理結果 $status';
+  }
+
+  @override
+  String get priceWatchTitle => '値下げ・価格通知の管理';
+
+  @override
+  String get priceWatchHistoryNotice =>
+      '価格通知の履歴・購読の保存はまだ非対応です。以下は通知記録ではなく、お気に入り商品に対するサーバーの値下げ表示です。';
+
+  @override
+  String get priceWatchComparisonUnavailable =>
+      'サーバーがお気に入り商品の比較価格を提供していないため、値下げの有無を確認できません。';
+
+  @override
+  String get priceWatchRefreshWishlistPrices => 'お気に入り商品の価格を更新';
+
+  @override
+  String get priceWatchViewWishlist => 'お気に入り商品を確認';
+
+  @override
+  String get priceWatchSubscriptionNotice => 'サーバーの価格履歴・購読保存と連携した後に申し込めます。';
+
+  @override
+  String get priceWatchSubscriptionUnavailable => '価格通知の申込・非対応';
+
+  @override
+  String get priceWatchDropIndicator => 'サーバーの値下げ表示・値下げ額と割合の情報なし';
+
+  @override
+  String priceWatchLoadFailed(String message) {
+    return '値下げ表示を確認できませんでした。$message';
+  }
+
+  @override
+  String priceWatchDropCounts(int total, int known, int drops) {
+    return 'お気に入り$total件のうち、値下げ情報がある$known件中$drops件が値下げと表示されています。基準価格と時点は提供されていません。';
+  }
 }
