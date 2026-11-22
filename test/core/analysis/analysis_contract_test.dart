@@ -45,8 +45,8 @@ void main() {
                 snakeCase
                     ? {
                         'contract_version': 'v2',
-                        'policy_index_v3': '81.5',
-                        'evidence_level_v3': entry.key,
+                        'policy_index_v4': '81.5',
+                        'level_v4': entry.key,
                         'analysis_summary_ko': ' 상품 분석 요약 ',
                         'rules_reasons_ko': [
                           {'message': '규칙 사유'},
@@ -57,14 +57,14 @@ void main() {
                         ],
                         'evidence_reasons_v3': ['증거 사유'],
                         'reason_source': 'rules',
-                        'text_score': 91,
+                        'text_score_v4': 91,
                         'behavior_score': '64',
                         'network_score': 0,
                       }
                     : {
                         'contractVersion': 'v2',
-                        'policyIndexV3': '81.5',
-                        'evidenceLevelV3': entry.key,
+                        'policyIndexV4': '81.5',
+                        'levelV4': entry.key,
                         'analysisSummaryKo': ' 상품 분석 요약 ',
                         'rulesReasonsKo': [
                           {'message': '규칙 사유'},
@@ -75,7 +75,7 @@ void main() {
                         ],
                         'evidenceReasonsV3': ['증거 사유'],
                         'reasonSource': 'rules',
-                        'textScore': 91,
+                        'textScoreV4': 91,
                         'behaviorScore': '64',
                         'networkScore': 0,
                       },
@@ -84,11 +84,11 @@ void main() {
               expect(result.score, 81.5);
               expect(result.level, entry.key);
               expect(result.colorHex, entry.value);
-              expect(result.summary, '상품 분석 요약');
-              expect(result.reasons, ['규칙 사유', 'RULE_2', '직접 사유']);
-              expect(result.displayReasons, ['상품 분석 요약']);
-              expect(result.evidenceReasons, ['증거 사유']);
-              expect(result.reasonSource, 'rules');
+              expect(result.summary, isNull);
+              expect(result.reasons, isEmpty);
+              expect(result.displayReasons, isEmpty);
+              expect(result.evidenceReasons, isEmpty);
+              expect(result.reasonSource, isNull);
               expect(
                 [result.textScore, result.behaviorScore, result.networkScore],
                 [91, 64, 0],
@@ -106,8 +106,8 @@ void main() {
               {},
               {
                 'rti': null,
-                'policyIndexV3': null,
-                'textScore': null,
+                'policyIndexV4': null,
+                'textScoreV4': null,
                 'behaviorScore': null,
                 'networkScore': null,
               },
@@ -143,7 +143,7 @@ void main() {
         expect(result.colorHex, isNull);
       });
 
-      test('falls back to rule reasons when the v2 summary is blank', () {
+      test('hides old rule reasons even when the policy summary is blank', () {
         final result = AnalysisContract.parse({
           'contractVersion': 'v2',
           'analysisSummaryKo': ' ',
@@ -151,20 +151,20 @@ void main() {
         });
         expect(result.hasResult, isTrue);
         expect(result.summary, isNull);
-        expect(result.displayReasons, ['사유']);
+        expect(result.displayReasons, isEmpty);
       });
 
       test('inherits the outer v2 contract but honors an explicit version', () {
         expect(
           AnalysisContract.parse({
-            'policy_index_v3': 42,
+            'policy_index_v4': 42,
           }, inheritedVersion: 'v2').score,
           42,
         );
         final legacy = AnalysisContract.parse({
           'contractVersion': 'v0.5',
           'rti': 12,
-          'policyIndexV3': 80,
+          'policyIndexV4': 80,
         }, inheritedVersion: 'v2');
         expect(legacy.isV2, isFalse);
         expect(legacy.score, 12);
@@ -182,7 +182,7 @@ void main() {
           'infers catalog evidence level ${entry.value} at ${entry.key}',
           () {
             final result = AnalysisContract.parse({
-              'avg_policy_index_v3': entry.key,
+              'avg_policy_index_v4': entry.key,
             }, catalog: true);
             expect(result.isV2, isTrue);
             expect(result.score, entry.key);
@@ -205,6 +205,142 @@ void main() {
           );
         },
       );
+    });
+
+    group('v4 migration', () {
+      test(
+        'never uses v3 scores, grades or explanations as a policy fallback',
+        () {
+          final result = AnalysisContract.parse({
+            'contractVersion': 'v2',
+            'policyIndexV3': 90,
+            'evidenceLevelV3': 'SAFE',
+            'textScore': 95,
+            'rti': 99,
+            'analysisSummaryKo': '이전 요약',
+            'rulesReasonsKo': ['이전 이유'],
+            'reasons': ['이전 리뷰 근거'],
+          });
+          expect(result.isAwaitingScore, isTrue);
+          expect(result.score, isNull);
+          expect(result.level, isNull);
+          expect(result.textScore, isNull);
+          expect(result.summary, isNull);
+          expect(result.displayReasons, isEmpty);
+        },
+      );
+      test(
+        'preserves explicit null catalog v4 scores instead of legacy averages',
+        () {
+          final result = AnalysisContract.parse({
+            'avgPolicyIndexV4': null,
+            'avgPolicyIndexV3': 91,
+            'avgRti': 99,
+            'levelV4': 'SAFE',
+          }, catalog: true);
+          expect(result.isV2, isTrue);
+          expect(result.isAwaitingScore, isTrue);
+          expect(result.level, isNull);
+          expect(result.score, isNull);
+        },
+      );
+      test(
+        'recognizes a catalog with v4 counts but no index as still awaiting its score',
+        () {
+          final result = AnalysisContract.parse({
+            'v4LevelCounts': {'SAFE': 4, 'WARN': 2, 'DANGER': 1},
+            'avgRti': 99,
+          }, catalog: true);
+          expect(result.isAwaitingScore, isTrue);
+          expect(result.score, isNull);
+          expect(result.attentionReviewCount, 3);
+        },
+      );
+      test('keeps a genuine zero v4 index and its danger grade', () {
+        final result = AnalysisContract.parse({
+          'contractVersion': 'v2',
+          'policyIndexV4': 0,
+          'levelV4': 'DANGER',
+        });
+        expect(result.score, 0);
+        expect(result.isAwaitingScore, isFalse);
+        expect(result.needsAttentionExplanation, isTrue);
+      });
+      for (final snake in [false, true]) {
+        test(
+          'parses ${snake ? 'snake' : 'camel'} v4 metadata, probability and catalog counts',
+          () {
+            final result = AnalysisContract.parse(
+              snake
+                  ? {
+                      'contract_version': 'v2',
+                      'avg_policy_index_v4': 50,
+                      'text_score_v4': 40,
+                      'text_probability_v4': 0.75,
+                      'model_version_v4': 'ptext-koelectra-v4.0',
+                      'policy_version_v4': 'text-first-v1',
+                      'v4_level_counts': {'SAFE': 4, 'WARN': 2, 'DANGER': 1},
+                    }
+                  : {
+                      'contractVersion': 'v2',
+                      'avgPolicyIndexV4': 50,
+                      'textScoreV4': 40,
+                      'textProbabilityV4': 0.75,
+                      'modelVersionV4': 'ptext-koelectra-v4.0',
+                      'policyVersionV4': 'text-first-v1',
+                      'v4LevelCounts': {'SAFE': 4, 'WARN': 2, 'DANGER': 1},
+                    },
+              catalog: true,
+            );
+            expect(result.textProbability, 0.75);
+            expect(result.modelVersion, 'ptext-koelectra-v4.0');
+            expect(result.policyVersion, 'text-first-v1');
+            expect(result.levelCounts, {'SAFE': 4, 'WARN': 2, 'DANGER': 1});
+            expect(result.attentionReviewCount, 3);
+            expect(
+              () => result.levelCounts!['WARN'] = 100,
+              throwsUnsupportedError,
+            );
+          },
+        );
+      }
+      test(
+        'keeps absent or malformed review counts absent and real zero counts at zero',
+        () {
+          for (final counts in [
+            null,
+            {},
+            {'SAFE': 1, 'WARN': -1, 'DANGER': 0},
+            {'SAFE': 1, 'WARN': 2.5, 'DANGER': 0},
+          ]) {
+            expect(
+              AnalysisContract.parse({
+                'contractVersion': 'v2',
+                'v4LevelCounts': counts,
+              }, catalog: true).attentionReviewCount,
+              isNull,
+            );
+          }
+          expect(
+            AnalysisContract.parse({
+              'contractVersion': 'v2',
+              'v4LevelCounts': {'SAFE': 10, 'WARN': 0, 'DANGER': 0},
+            }, catalog: true).attentionReviewCount,
+            0,
+          );
+        },
+      );
+      test('rejects out-of-range or nonfinite model probabilities', () {
+        for (final probability in [-0.1, 1.1, double.nan, double.infinity]) {
+          expect(
+            AnalysisContract.parse({
+              'contractVersion': 'v2',
+              'textProbabilityV4': probability,
+            }).textProbability,
+            isNull,
+          );
+        }
+      });
     });
 
     group('score', () {

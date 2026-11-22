@@ -39,9 +39,19 @@ class ExternalProductRemoteDataSourceImpl
     final job = body['job'];
     final items = reviews is Map<String, dynamic> ? reviews['items'] : null;
     final analysis = body['analysis'];
+    final contractVersion = analysis is Map<String, dynamic>
+        ? AnalysisContract.version(analysis) ?? AnalysisContract.version(body)
+        : AnalysisContract.version(body);
+    final policyContract = AnalysisContract.parse(
+      analysis is Map<String, dynamic> ? analysis : body,
+      catalog: true,
+      inheritedVersion: contractVersion,
+    ).isV2;
     final summary =
-        (analysis is Map<String, dynamic> ? _productSummary(analysis) : null) ??
-        _productSummary(body);
+        (analysis is Map<String, dynamic>
+            ? _productSummary(analysis, policyContract: policyContract)
+            : null) ??
+        _productSummary(body, policyContract: policyContract);
 
     return ExternalProductSnapshot(
       status: CollectionStatus.parse(_text(body['collectionStatus'])),
@@ -153,8 +163,12 @@ class ExternalProductRemoteDataSourceImpl
     );
   }
 
-  String? _productSummary(Map<String, dynamic> json) {
+  String? _productSummary(
+    Map<String, dynamic> json, {
+    required bool policyContract,
+  }) {
     for (final key in AnalysisKeys.productSummary) {
+      if (policyContract && AnalysisKeys.summary.contains(key)) continue;
       final value = AnalysisContract.text(json[key]);
       if (value != null) return value;
     }
@@ -173,8 +187,20 @@ class ExternalProductRemoteDataSourceImpl
       catalog: true,
       inheritedVersion: inheritedVersion,
     ),
-    modelVersion: _text(json['modelVersion']),
-    policyVersion: _text(json['policyVersion']),
+    modelVersion:
+        AnalysisContract.text(
+          AnalysisContract.read(json, AnalysisKeys.modelVersion),
+        ) ??
+        AnalysisContract.text(
+          AnalysisContract.read(json, AnalysisKeys.modelVersionV3),
+        ),
+    policyVersion:
+        AnalysisContract.text(
+          AnalysisContract.read(json, AnalysisKeys.policyVersion),
+        ) ??
+        AnalysisContract.text(
+          AnalysisContract.read(json, AnalysisKeys.policyVersionV3),
+        ),
     reviewCount: (json['reviewCount'] as num?)?.toInt(),
     sampled: json['sampled'] as bool?,
     sourceReviewCount: (json['sourceReviewCount'] as num?)?.toInt(),
