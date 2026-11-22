@@ -963,5 +963,18 @@
   "authResetSignInAgain": "重新确认登录",
   "authResetSignInAgainDescription": "更改密码后，使用新密码重新登录。",
   "authResetCodeStepDescription": "输入邮件中的 {digits} 位验证码以验证账户。",
-  "authOAuthLoginFailed": "OAuth 登录失败。"
+  "authOAuthLoginFailed": "OAuth 登录失败。",
+  "onboardingCategoryTitle": "请选择感兴趣的分类",
+  "onboardingCategoryDescription": "不选择也可以继续，之后可在设置中更改兴趣偏好。",
+  "onboardingUnanalyzedNotice": "未经分析的商品不会被判定为安全商品。",
+  "onboardingSkipExisting": "使用现有设置跳过",
+  "onboardingTrustThreshold": "可信度门槛：{score} 分",
+  "onboardingNotificationDescription": "选择通知中心要接收的通知。只有生成实际分析结果时，才会收到相关通知。",
+  "onboardingFeedbackResults": "反馈处理结果",
+  "onboardingMarketingConsent": "同意接收营销及活动通知",
+  "onboardingNotificationAvailability": "目前不提供浏览器推送、邮件、短信及每周报告。此页面用于保存通知中心设置。",
+  "onboardingPrevious": "上一步",
+  "onboardingSaveComplete": "保存并完成",
+  "onboardingPreferredCategories": "偏好分类",
+  "onboardingReload": "重新加载"
 }

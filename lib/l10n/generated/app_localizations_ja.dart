@@ -3059,4 +3059,48 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String get authOAuthLoginFailed => 'OAuthログインに失敗しました。';
+
+  @override
+  String get onboardingCategoryTitle => '興味のあるカテゴリーを選んでください';
+
+  @override
+  String get onboardingCategoryDescription =>
+      '選択しなくても進めます。興味のあるカテゴリーは後から設定で変更できます。';
+
+  @override
+  String get onboardingUnanalyzedNotice => '分析前の商品を安全な商品とは判定しません。';
+
+  @override
+  String get onboardingSkipExisting => '現在の設定でスキップ';
+
+  @override
+  String onboardingTrustThreshold(int score) {
+    return '信頼度の基準：$score点';
+  }
+
+  @override
+  String get onboardingNotificationDescription =>
+      '通知ボックスで受け取る通知を選びましょう。実際の分析結果が生成された場合にのみ関連する通知を受け取れます。';
+
+  @override
+  String get onboardingFeedbackResults => 'フィードバックの処理結果';
+
+  @override
+  String get onboardingMarketingConsent => 'マーケティング・イベント通知に同意';
+
+  @override
+  String get onboardingNotificationAvailability =>
+      'ブラウザのプッシュ通知・メール・SMS・週間レポートは現在提供していません。この画面では通知ボックスの設定を保存します。';
+
+  @override
+  String get onboardingPrevious => '前へ';
+
+  @override
+  String get onboardingSaveComplete => '保存して完了';
+
+  @override
+  String get onboardingPreferredCategories => '好みのカテゴリー';
+
+  @override
+  String get onboardingReload => '再読み込み';
 }

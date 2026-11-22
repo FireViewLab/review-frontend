@@ -1,3 +1,4 @@
+import 'package:re_view_front/l10n/generated/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:re_view_front/app/theme/app_colors.dart';
 import 'package:re_view_front/app/theme/app_text_styles.dart';
@@ -14,7 +15,7 @@ class OnboardingStepIndicator extends StatelessWidget {
       children: [
         _StepNode(
           step: 1,
-          label: '선호 카테고리',
+          label: AppLocalizations.of(context).onboardingPreferredCategories,
           isActive: currentStep == 1,
           isDone: currentStep > 1,
         ),
@@ -29,7 +30,7 @@ class OnboardingStepIndicator extends StatelessWidget {
         ),
         _StepNode(
           step: 2,
-          label: '알림 설정',
+          label: AppLocalizations.of(context).settingsNotifications,
           isActive: currentStep == 2,
           isDone: false,
         ),
@@ -103,7 +104,9 @@ class _StepCircle extends StatelessWidget {
                 style: TextStyle(
                   fontSize: 14,
                   fontWeight: FontWeight.w700,
-                  color: isActive ? AppColors.onPrimary : AppColors.textTertiary,
+                  color: isActive
+                      ? AppColors.onPrimary
+                      : AppColors.textTertiary,
                 ),
               ),
       ),

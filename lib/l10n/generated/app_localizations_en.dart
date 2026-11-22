@@ -3191,4 +3191,51 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get authOAuthLoginFailed => 'OAuth login failed.';
+
+  @override
+  String get onboardingCategoryTitle =>
+      'Choose the categories you are interested in';
+
+  @override
+  String get onboardingCategoryDescription =>
+      'You can continue without selecting any. You can change your interests later in settings.';
+
+  @override
+  String get onboardingUnanalyzedNotice =>
+      'Products that have not been analyzed are not classified as safe.';
+
+  @override
+  String get onboardingSkipExisting => 'Skip with existing settings';
+
+  @override
+  String onboardingTrustThreshold(int score) {
+    return 'Trust threshold: $score points';
+  }
+
+  @override
+  String get onboardingNotificationDescription =>
+      'Choose notifications for your inbox. Related notifications are available only when actual analysis results are generated.';
+
+  @override
+  String get onboardingFeedbackResults => 'Feedback results';
+
+  @override
+  String get onboardingMarketingConsent =>
+      'Consent to marketing and event notifications';
+
+  @override
+  String get onboardingNotificationAvailability =>
+      'Browser push, email, text messages, and weekly reports are not currently available. This screen saves inbox notification settings.';
+
+  @override
+  String get onboardingPrevious => 'Previous';
+
+  @override
+  String get onboardingSaveComplete => 'Save and finish';
+
+  @override
+  String get onboardingPreferredCategories => 'Preferred categories';
+
+  @override
+  String get onboardingReload => 'Reload';
 }

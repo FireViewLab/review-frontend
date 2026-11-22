@@ -977,5 +977,18 @@
   "authResetSignInAgain": "Sign in again",
   "authResetSignInAgainDescription": "After changing your password, log in again with the new password.",
   "authResetCodeStepDescription": "Enter the {digits}-digit code from your email to verify your account.",
-  "authOAuthLoginFailed": "OAuth login failed."
+  "authOAuthLoginFailed": "OAuth login failed.",
+  "onboardingCategoryTitle": "Choose the categories you are interested in",
+  "onboardingCategoryDescription": "You can continue without selecting any. You can change your interests later in settings.",
+  "onboardingUnanalyzedNotice": "Products that have not been analyzed are not classified as safe.",
+  "onboardingSkipExisting": "Skip with existing settings",
+  "onboardingTrustThreshold": "Trust threshold: {score} points",
+  "onboardingNotificationDescription": "Choose notifications for your inbox. Related notifications are available only when actual analysis results are generated.",
+  "onboardingFeedbackResults": "Feedback results",
+  "onboardingMarketingConsent": "Consent to marketing and event notifications",
+  "onboardingNotificationAvailability": "Browser push, email, text messages, and weekly reports are not currently available. This screen saves inbox notification settings.",
+  "onboardingPrevious": "Previous",
+  "onboardingSaveComplete": "Save and finish",
+  "onboardingPreferredCategories": "Preferred categories",
+  "onboardingReload": "Reload"
 }

@@ -3027,4 +3027,47 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get authOAuthLoginFailed => 'OAuth 登录失败。';
+
+  @override
+  String get onboardingCategoryTitle => '请选择感兴趣的分类';
+
+  @override
+  String get onboardingCategoryDescription => '不选择也可以继续，之后可在设置中更改兴趣偏好。';
+
+  @override
+  String get onboardingUnanalyzedNotice => '未经分析的商品不会被判定为安全商品。';
+
+  @override
+  String get onboardingSkipExisting => '使用现有设置跳过';
+
+  @override
+  String onboardingTrustThreshold(int score) {
+    return '可信度门槛：$score 分';
+  }
+
+  @override
+  String get onboardingNotificationDescription =>
+      '选择通知中心要接收的通知。只有生成实际分析结果时，才会收到相关通知。';
+
+  @override
+  String get onboardingFeedbackResults => '反馈处理结果';
+
+  @override
+  String get onboardingMarketingConsent => '同意接收营销及活动通知';
+
+  @override
+  String get onboardingNotificationAvailability =>
+      '目前不提供浏览器推送、邮件、短信及每周报告。此页面用于保存通知中心设置。';
+
+  @override
+  String get onboardingPrevious => '上一步';
+
+  @override
+  String get onboardingSaveComplete => '保存并完成';
+
+  @override
+  String get onboardingPreferredCategories => '偏好分类';
+
+  @override
+  String get onboardingReload => '重新加载';
 }

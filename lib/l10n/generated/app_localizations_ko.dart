@@ -3060,4 +3060,48 @@ class AppLocalizationsKo extends AppLocalizations {
 
   @override
   String get authOAuthLoginFailed => 'OAuth 로그인에 실패했습니다.';
+
+  @override
+  String get onboardingCategoryTitle => '관심 있는 카테고리를 선택해 주세요';
+
+  @override
+  String get onboardingCategoryDescription =>
+      '선택하지 않아도 진행할 수 있습니다. 관심 설정은 나중에 설정에서 다시 변경할 수 있어요.';
+
+  @override
+  String get onboardingUnanalyzedNotice => '분석 전 상품을 안전한 상품으로 판정하지 않습니다.';
+
+  @override
+  String get onboardingSkipExisting => '기존 설정으로 건너뛰기';
+
+  @override
+  String onboardingTrustThreshold(int score) {
+    return '신뢰도 기준: $score점';
+  }
+
+  @override
+  String get onboardingNotificationDescription =>
+      '알림함에서 받을 알림을 선택하세요. 실제 분석 결과가 생성된 경우에만 관련 알림을 받을 수 있어요.';
+
+  @override
+  String get onboardingFeedbackResults => '피드백 처리 결과';
+
+  @override
+  String get onboardingMarketingConsent => '마케팅·이벤트 알림 동의';
+
+  @override
+  String get onboardingNotificationAvailability =>
+      '브라우저 푸시·이메일·문자 및 주간 리포트는 현재 제공되지 않습니다. 이 화면은 알림함 설정을 저장합니다.';
+
+  @override
+  String get onboardingPrevious => '이전';
+
+  @override
+  String get onboardingSaveComplete => '저장하고 완료';
+
+  @override
+  String get onboardingPreferredCategories => '선호 카테고리';
+
+  @override
+  String get onboardingReload => '다시 불러오기';
 }

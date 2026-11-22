@@ -5873,6 +5873,84 @@ abstract class AppLocalizations {
   /// In ko, this message translates to:
   /// **'OAuth 로그인에 실패했습니다.'**
   String get authOAuthLoginFailed;
+
+  /// No description provided for @onboardingCategoryTitle.
+  ///
+  /// In ko, this message translates to:
+  /// **'관심 있는 카테고리를 선택해 주세요'**
+  String get onboardingCategoryTitle;
+
+  /// No description provided for @onboardingCategoryDescription.
+  ///
+  /// In ko, this message translates to:
+  /// **'선택하지 않아도 진행할 수 있습니다. 관심 설정은 나중에 설정에서 다시 변경할 수 있어요.'**
+  String get onboardingCategoryDescription;
+
+  /// No description provided for @onboardingUnanalyzedNotice.
+  ///
+  /// In ko, this message translates to:
+  /// **'분석 전 상품을 안전한 상품으로 판정하지 않습니다.'**
+  String get onboardingUnanalyzedNotice;
+
+  /// No description provided for @onboardingSkipExisting.
+  ///
+  /// In ko, this message translates to:
+  /// **'기존 설정으로 건너뛰기'**
+  String get onboardingSkipExisting;
+
+  /// No description provided for @onboardingTrustThreshold.
+  ///
+  /// In ko, this message translates to:
+  /// **'신뢰도 기준: {score}점'**
+  String onboardingTrustThreshold(int score);
+
+  /// No description provided for @onboardingNotificationDescription.
+  ///
+  /// In ko, this message translates to:
+  /// **'알림함에서 받을 알림을 선택하세요. 실제 분석 결과가 생성된 경우에만 관련 알림을 받을 수 있어요.'**
+  String get onboardingNotificationDescription;
+
+  /// No description provided for @onboardingFeedbackResults.
+  ///
+  /// In ko, this message translates to:
+  /// **'피드백 처리 결과'**
+  String get onboardingFeedbackResults;
+
+  /// No description provided for @onboardingMarketingConsent.
+  ///
+  /// In ko, this message translates to:
+  /// **'마케팅·이벤트 알림 동의'**
+  String get onboardingMarketingConsent;
+
+  /// No description provided for @onboardingNotificationAvailability.
+  ///
+  /// In ko, this message translates to:
+  /// **'브라우저 푸시·이메일·문자 및 주간 리포트는 현재 제공되지 않습니다. 이 화면은 알림함 설정을 저장합니다.'**
+  String get onboardingNotificationAvailability;
+
+  /// No description provided for @onboardingPrevious.
+  ///
+  /// In ko, this message translates to:
+  /// **'이전'**
+  String get onboardingPrevious;
+
+  /// No description provided for @onboardingSaveComplete.
+  ///
+  /// In ko, this message translates to:
+  /// **'저장하고 완료'**
+  String get onboardingSaveComplete;
+
+  /// No description provided for @onboardingPreferredCategories.
+  ///
+  /// In ko, this message translates to:
+  /// **'선호 카테고리'**
+  String get onboardingPreferredCategories;
+
+  /// No description provided for @onboardingReload.
+  ///
+  /// In ko, this message translates to:
+  /// **'다시 불러오기'**
+  String get onboardingReload;
 }
 
 class _AppLocalizationsDelegate
