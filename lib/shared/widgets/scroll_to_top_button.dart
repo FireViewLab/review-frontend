@@ -7,9 +7,14 @@ import 'package:re_view_front/l10n/generated/app_localizations.dart';
 
 /// Scaffold의 floatingActionButton 영역에서 채팅 런처 위에 배치한다.
 class ScrollToTopButton extends StatefulWidget {
-  const ScrollToTopButton({required this.controller, super.key});
+  const ScrollToTopButton({
+    required this.controller,
+    this.besideChat = false,
+    super.key,
+  });
 
   final ScrollController controller;
+  final bool besideChat;
 
   @override
   State<ScrollToTopButton> createState() => _ScrollToTopButtonState();
@@ -88,8 +93,8 @@ class _ScrollToTopButtonState extends State<ScrollToTopButton> {
     // Scaffold가 하단 탭과 safe area를 피한다. 런처 높이 52px와 간격을 더한다.
     return Padding(
       padding: EdgeInsets.only(
-        right: extraEdge,
-        bottom: 52 + AppSpacing.md + extraEdge,
+        right: extraEdge + (widget.besideChat ? 52 + AppSpacing.md : 0),
+        bottom: extraEdge + (widget.besideChat ? 0 : 52 + AppSpacing.md),
       ),
       child: IgnorePointer(
         ignoring: !_visible,

@@ -1,3 +1,4 @@
+import 'package:re_view_front/features/external_product/presentation/widgets/external_product_sticky_actions.dart';
 import 'package:re_view_front/shared/widgets/scroll_to_top_button.dart';
 import 'package:re_view_front/features/external_product/presentation/widgets/product_description_section.dart';
 import 'package:re_view_front/features/external_product/presentation/widgets/analysis_summary_card.dart';
@@ -27,7 +28,6 @@ import 'package:re_view_front/shared/widgets/sliver_width_builder.dart';
 import 'dart:math' as math;
 import 'package:re_view_front/shared/widgets/product_image_viewer.dart';
 import 'package:re_view_front/shared/widgets/error_view.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 /// Data 서버가 수집한 쇼핑몰 상품의 상세 화면.
 class ExternalProductPage extends ConsumerStatefulWidget {
@@ -49,6 +49,8 @@ class ExternalProductPage extends ConsumerStatefulWidget {
 
 class _ExternalProductPageState extends ConsumerState<ExternalProductPage> {
   final _scrollController = ScrollController();
+  final _actionsKey = GlobalKey();
+  final _viewportKey = GlobalKey();
 
   @override
   void dispose() {
@@ -78,9 +80,19 @@ class _ExternalProductPageState extends ConsumerState<ExternalProductPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      floatingActionButton: ScrollToTopButton(controller: _scrollController),
+      floatingActionButton: ScrollToTopButton(
+        controller: _scrollController,
+        besideChat: context.isMobile && MediaQuery.sizeOf(context).height < 480,
+      ),
+      bottomNavigationBar: ExternalProductStickyActions(
+        productRef: widget.productRef,
+        controller: _scrollController,
+        actionsKey: _actionsKey,
+        viewportKey: _viewportKey,
+      ),
       backgroundColor: AppColors.surface,
       body: CustomScrollView(
+        key: _viewportKey,
         controller: _scrollController,
         slivers: [
           SliverWidthBuilder(
@@ -96,6 +108,7 @@ class _ExternalProductPageState extends ConsumerState<ExternalProductPage> {
                 ),
                 sliver: ExternalProductContent(
                   asSliver: true,
+                  actionsKey: _actionsKey,
                   key: ValueKey(widget.productRef),
                   productRef: widget.productRef,
                   viewAlreadyRecorded: widget.viewAlreadyRecorded,
@@ -116,6 +129,7 @@ class ExternalProductContent extends ConsumerStatefulWidget {
     required this.productRef,
     this.viewAlreadyRecorded = false,
     this.asSliver = false,
+    this.actionsKey,
   });
 
   final ExternalProductRef productRef;
@@ -125,6 +139,7 @@ class ExternalProductContent extends ConsumerStatefulWidget {
   /// The product route uses the parent viewport. Box embedding is kept for
   /// existing isolated consumers that do not supply a sliver viewport.
   final bool asSliver;
+  final GlobalKey? actionsKey;
   @override
   ConsumerState<ExternalProductContent> createState() =>
       _ExternalProductContentState();
@@ -232,6 +247,7 @@ class _ExternalProductContentState
         _Ready(
           key: ValueKey(product.ref),
           state: state,
+          actionsKey: widget.actionsKey,
           product: product,
           onLoadMore: vm.loadMoreReviews,
           onRetry: vm.load,
@@ -344,6 +360,7 @@ class _Ready extends ConsumerStatefulWidget {
     required this.onLoadMore,
     required this.onRetry,
     this.collectionStatus,
+    this.actionsKey,
   });
 
   final ExternalProductState state;
@@ -351,6 +368,7 @@ class _Ready extends ConsumerStatefulWidget {
   final VoidCallback onLoadMore;
   final VoidCallback onRetry;
   final Widget? collectionStatus;
+  final GlobalKey? actionsKey;
 
   @override
   ConsumerState<_Ready> createState() => _ReadyState();
@@ -419,7 +437,6 @@ class _ReadyState extends ConsumerState<_Ready> {
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);
     final textTheme = Theme.of(context).textTheme;
-    final url = Uri.tryParse(product.url ?? '');
     final category = product.category;
     final preferences = ref.watch(confirmedDisplayPreferencesProvider);
     final visibleReviews = _prepareReviews(
@@ -431,12 +448,8 @@ class _ReadyState extends ConsumerState<_Ready> {
     final summary = ExternalProductSummary(
       product: product,
       isStale: state.isStale,
-      onVisitShop:
-          url == null ||
-              !['https', 'http'].contains(url.scheme) ||
-              url.host.isEmpty
-          ? null
-          : () => launchUrl(url, mode: LaunchMode.externalApplication),
+      actionsKey: widget.actionsKey,
+      onVisitShop: externalProductShopAction(product),
       actions: [
         ExternalProductActionBar(
           product: product.ref,
