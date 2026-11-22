@@ -1,3 +1,5 @@
+import 'package:re_view_front/features/review_report/presentation/report_labels.dart';
+import 'package:re_view_front/l10n/generated/app_localizations.dart';
 import 'package:re_view_front/app/theme/app_motion.dart';
 import 'package:flutter/material.dart';
 import 'package:re_view_front/app/theme/app_colors.dart';
@@ -108,7 +110,7 @@ class _ReasonCardState extends State<ReasonCard> with TouchHoverFeedback {
               ),
               const SizedBox(height: AppSpacing.sm),
               Text(
-                widget.reason.label,
+                reportLabel(AppLocalizations.of(context), widget.reason.label),
                 maxLines: 2,
                 overflow: TextOverflow.ellipsis,
                 style: Theme.of(context).textTheme.labelMedium?.copyWith(
@@ -121,7 +123,10 @@ class _ReasonCardState extends State<ReasonCard> with TouchHoverFeedback {
               const SizedBox(height: AppSpacing.xxs),
               Flexible(
                 child: Text(
-                  widget.reason.description,
+                  reportLabel(
+                    AppLocalizations.of(context),
+                    widget.reason.description,
+                  ),
                   maxLines: 3,
                   overflow: TextOverflow.ellipsis,
                   style: Theme.of(context).textTheme.labelSmall?.copyWith(

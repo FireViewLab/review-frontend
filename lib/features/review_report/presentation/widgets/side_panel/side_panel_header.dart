@@ -1,3 +1,5 @@
+import 'package:re_view_front/features/review_report/presentation/report_labels.dart';
+import 'package:re_view_front/l10n/generated/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:re_view_front/app/theme/app_colors.dart';
 import 'package:re_view_front/app/theme/app_spacing.dart';
@@ -42,7 +44,7 @@ class SidePanelHeader extends StatelessWidget {
                 border: Border.all(color: AppColors.border),
               ),
               child: Text(
-                badgeLabel,
+                reportLabel(AppLocalizations.of(context), badgeLabel),
                 style: const TextStyle(
                   fontSize: 11,
                   fontWeight: FontWeight.w800,
@@ -55,9 +57,9 @@ class SidePanelHeader extends StatelessWidget {
         const SizedBox(height: AppSpacing.xxs),
         Text(
           description,
-          style: Theme.of(context).textTheme.labelSmall?.copyWith(
-            color: AppColors.textSecondary,
-          ),
+          style: Theme.of(
+            context,
+          ).textTheme.labelSmall?.copyWith(color: AppColors.textSecondary),
         ),
       ],
     );

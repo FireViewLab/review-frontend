@@ -11,7 +11,8 @@ import 'package:re_view_front/features/recent_products/presentation/providers/re
 import 'package:re_view_front/features/search/domain/entities/search_result_product.dart';
 import 'package:re_view_front/features/my_page/presentation/widgets/my_page/my_page_saved_products.dart';
 
-const _scope = '서버의 최근 10개 조회 기록에서 중복 상품을 제외했어요. 전체 기간의 상품 수와는 다를 수 있어요.';
+String _scope(BuildContext context) =>
+    AppLocalizations.of(context).recentProductsScope(10);
 
 void showRecentProducts(BuildContext context) =>
     context.push(RoutePaths.recentProducts);
@@ -24,19 +25,19 @@ class RecentProductsSection extends ConsumerWidget {
     children: [
       Row(
         children: [
-          const Expanded(
+          Expanded(
             child: Text(
-              '최근 본 상품',
+              AppLocalizations.of(context).myPageSideNavRecentlyViewed,
               style: TextStyle(fontWeight: FontWeight.w700),
             ),
           ),
           TextButton(
             onPressed: () => showRecentProducts(context),
-            child: const Text('전체 보기'),
+            child: Text(AppLocalizations.of(context).actionViewAll),
           ),
         ],
       ),
-      const Text(_scope),
+      Text(_scope(context)),
       const SizedBox(height: 12),
       _RecentBody(all: false),
     ],
@@ -47,8 +48,8 @@ class RecentProductsPage extends ConsumerWidget {
   const RecentProductsPage({super.key});
   @override
   Widget build(BuildContext context, WidgetRef ref) => PersonalProductsPage(
-    title: '최근 본 상품',
-    scope: _scope,
+    title: AppLocalizations.of(context).myPageSideNavRecentlyViewed,
+    scope: _scope(context),
     onRefresh: () => ref.invalidate(recentProductsProvider),
     sliver: const _RecentBody(all: true),
   );
@@ -81,10 +82,10 @@ class _RecentBody extends ConsumerWidget {
         Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            const Text('최근 본 상품을 불러오지 못했어요.'),
+            Text(AppLocalizations.of(context).recentProductsLoadFailed),
             TextButton(
               onPressed: () => ref.invalidate(recentProductsProvider),
-              child: const Text('다시 시도'),
+              child: Text(AppLocalizations.of(context).actionRetry),
             ),
           ],
         ),

@@ -1,3 +1,4 @@
+import 'package:re_view_front/l10n/generated/app_localizations.dart';
 // ignore_for_file: use_key_in_widget_constructors
 
 import 'package:re_view_front/core/error/failure.dart';
@@ -50,7 +51,10 @@ class AnalysisReportErrorView extends StatelessWidget {
               textAlign: TextAlign.center,
             ),
             const SizedBox(height: AppSpacing.md),
-            OutlinedButton(onPressed: onRetry, child: const Text('다시 시도')),
+            OutlinedButton(
+              onPressed: onRetry,
+              child: Text(AppLocalizations.of(context).actionRetry),
+            ),
           ],
         ),
       ),

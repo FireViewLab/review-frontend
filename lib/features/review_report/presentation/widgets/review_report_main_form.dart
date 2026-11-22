@@ -1,3 +1,4 @@
+import 'package:re_view_front/l10n/generated/app_localizations.dart';
 import 'package:re_view_front/app/theme/app_motion.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
@@ -231,8 +232,8 @@ class _StepNavigationBar extends StatelessWidget {
               shape: RoundedRectangleBorder(borderRadius: AppRadius.small),
             ),
             icon: const Icon(Icons.arrow_back_rounded, size: 16),
-            label: const Text(
-              '이전',
+            label: Text(
+              AppLocalizations.of(context).onboardingPrevious,
               style: TextStyle(fontWeight: FontWeight.w700),
             ),
           )
@@ -270,7 +271,9 @@ class _StepNavigationBar extends StatelessWidget {
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     Text(
-                      isLastStep ? '신고 접수하기' : '다음',
+                      isLastStep
+                          ? AppLocalizations.of(context).reportSubmit
+                          : AppLocalizations.of(context).authNext,
                       style: const TextStyle(fontWeight: FontWeight.w700),
                     ),
                     if (!isLastStep) ...[

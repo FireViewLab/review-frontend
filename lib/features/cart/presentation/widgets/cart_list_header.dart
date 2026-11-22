@@ -1,3 +1,4 @@
+import 'package:re_view_front/l10n/generated/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:re_view_front/app/router/route_paths.dart';
@@ -62,7 +63,9 @@ class CartListHeader extends StatelessWidget {
                 ),
                 const SizedBox(width: AppSpacing.xs),
                 Text(
-                  '전체 선택 ($selectedCount/$totalCount)',
+                  AppLocalizations.of(
+                    context,
+                  ).cartSelectAllCount(selectedCount, totalCount),
                   style: Theme.of(context).textTheme.labelMedium?.copyWith(
                     color: AppColors.textPrimary,
                     fontWeight: FontWeight.w700,
@@ -73,12 +76,12 @@ class CartListHeader extends StatelessWidget {
           ),
           const SizedBox(width: AppSpacing.md),
           _HeaderButton(
-            label: '선택 삭제',
+            label: AppLocalizations.of(context).cartDeleteSelected,
             onTap: selectedCount > 0 ? onDeleteSelected : null,
           ),
           const SizedBox(width: AppSpacing.xs),
           _HeaderButton(
-            label: '찜한 상품으로 이동',
+            label: AppLocalizations.of(context).cartMoveToWishlist,
             onTap: () => context.go(RoutePaths.wishlist),
           ),
         ],

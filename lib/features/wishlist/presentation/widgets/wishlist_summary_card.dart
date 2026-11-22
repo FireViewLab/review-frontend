@@ -71,8 +71,12 @@ class WishlistSummaryCard extends StatelessWidget {
                     iconColor: AppColors.error,
                     bgColor: AppColors.errorSoft,
                     value: summary.hasPriceDropInformation
-                        ? '${summary.priceDropCount}개'
-                        : '정보 없음',
+                        ? AppLocalizations.of(
+                            context,
+                          ).wishlistCountItems(summary.priceDropCount)
+                        : AppLocalizations.of(
+                            context,
+                          ).extProgressStatusUnavailable,
                     label: AppLocalizations.of(
                       context,
                     ).wishlistSummaryPriceDrop,
@@ -84,7 +88,9 @@ class WishlistSummaryCard extends StatelessWidget {
                     icon: Icons.notifications_outlined,
                     iconColor: AppColors.info,
                     bgColor: AppColors.infoSoft,
-                    value: '${summary.newAlertCount}개',
+                    value: AppLocalizations.of(
+                      context,
+                    ).wishlistCountItems(summary.newAlertCount),
                     label: AppLocalizations.of(context).wishlistSummaryNewAlert,
                   ),
                 ),
@@ -94,7 +100,9 @@ class WishlistSummaryCard extends StatelessWidget {
                     icon: Icons.rate_review_outlined,
                     iconColor: AppColors.textSecondary,
                     bgColor: AppColors.surfaceMuted,
-                    value: '${summary.totalReviewCount}개',
+                    value: AppLocalizations.of(
+                      context,
+                    ).wishlistCountItems(summary.totalReviewCount),
                     label: AppLocalizations.of(
                       context,
                     ).wishlistSummaryTotalReview,

@@ -28,7 +28,9 @@ class MyPageTrustSummaryPanel extends ConsumerWidget {
     final score = (policyOnly ? savedAveragePolicyIndex : savedAverageRti)
         ?.clamp(0, 100)
         .toDouble();
-    final scoreText = score == null ? '-' : '${score.round()}점';
+    final scoreText = score == null
+        ? '-'
+        : AppLocalizations.of(context).myPageTrustScorePoints(score.round());
 
     return MyPagePanel(
       child: Column(
@@ -84,7 +86,7 @@ class MyPageTrustSummaryPanel extends ConsumerWidget {
             score == null
                 ? (policyOnly ? l.analysisNotCalculable : l.myPageRtiSaveHint)
                 : riskyCount == null
-                ? '찜 상품의 분석 정보를 확인할 수 없어요.'
+                ? AppLocalizations.of(context).myPageTrustUnavailable
                 : riskyCount == 0
                 ? AppLocalizations.of(context).myPageRiskyNone
                 : AppLocalizations.of(context).myPageRiskyCount(riskyCount!),
@@ -96,7 +98,7 @@ class MyPageTrustSummaryPanel extends ConsumerWidget {
           Text(
             hasPolicyProducts
                 ? l.analysisSeparateContracts
-                : '찜한 상품 중 분석된 RTI의 평균과 서버 주의 등급 기준입니다.',
+                : AppLocalizations.of(context).myPageTrustScope,
           ),
           const Divider(color: AppColors.border),
           const NotificationSettingsSummary(entryOnly: true),

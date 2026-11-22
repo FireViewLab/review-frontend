@@ -1,3 +1,4 @@
+import 'package:re_view_front/l10n/generated/app_localizations.dart';
 import 'package:re_view_front/shared/presentation/analysis_formatters.dart';
 import 'package:re_view_front/core/analysis/analysis_display.dart';
 import 'package:flutter/material.dart';
@@ -63,7 +64,7 @@ class _SimilarProductsSectionState extends State<SimilarProductsSection> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          '이 제품을 본 고객이 함께 본 제품',
+          AppLocalizations.of(context).detailAlsoViewed,
           style: Theme.of(context).textTheme.titleSmall?.copyWith(
             color: AppColors.textPrimary,
             fontWeight: FontWeight.w900,
@@ -302,7 +303,9 @@ class _RtiBadgeMini extends StatelessWidget {
             Text(
               analysis?.isV2 == true
                   ? analysis!.badgeText(context)
-                  : (score == null ? '분석 전' : 'RTI $score'),
+                  : (score == null
+                        ? AppLocalizations.of(context).externalUnanalyzed
+                        : 'RTI $score'),
               style: Theme.of(context).textTheme.labelSmall?.copyWith(
                 color: color,
                 fontWeight: FontWeight.w900,

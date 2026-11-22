@@ -1,3 +1,4 @@
+import 'package:re_view_front/l10n/generated/app_localizations.dart';
 import 'package:re_view_front/features/search/data/dtos/search_result_product_dto.dart';
 import 'package:flutter/material.dart';
 import 'dart:ui' show PointerDeviceKind;
@@ -22,6 +23,9 @@ void main() {
             ProviderScope(
               overrides: [isLoggedInProvider.overrideWithValue(false)],
               child: MaterialApp(
+                locale: const Locale('ko'),
+                supportedLocales: AppLocalizations.supportedLocales,
+                localizationsDelegates: AppLocalizations.localizationsDelegates,
                 theme: AppTheme.light,
                 home: MediaQuery(
                   data: MediaQueryData(disableAnimations: reduced),
@@ -92,7 +96,12 @@ void main() {
       await tester.pumpWidget(
         ProviderScope(
           overrides: [isLoggedInProvider.overrideWithValue(false)],
-          child: MaterialApp.router(routerConfig: router),
+          child: MaterialApp.router(
+            locale: const Locale('ko'),
+            supportedLocales: AppLocalizations.supportedLocales,
+            localizationsDelegates: AppLocalizations.localizationsDelegates,
+            routerConfig: router,
+          ),
         ),
       );
       await tester.pumpAndSettle();
@@ -135,6 +144,9 @@ void main() {
         ProviderScope(
           overrides: [isLoggedInProvider.overrideWithValue(false)],
           child: MaterialApp.router(
+            locale: const Locale('ko'),
+            supportedLocales: AppLocalizations.supportedLocales,
+            localizationsDelegates: AppLocalizations.localizationsDelegates,
             theme: AppTheme.light,
             routerConfig: router,
           ),

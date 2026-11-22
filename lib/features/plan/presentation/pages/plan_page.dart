@@ -37,8 +37,9 @@ class PlanContent extends ConsumerWidget {
               PlanNotice.changed => l10n.planChanged(plan),
               PlanNotice.unavailable => l10n.planChangeUnavailable,
               PlanNotice.failed => l10n.planChangeFailed,
-              PlanNotice.refreshFailed =>
-                '요금제 변경 요청은 처리됐지만 현재 플랜과 한도를 확인하지 못했습니다. 다시 불러와 확인해 주세요.',
+              PlanNotice.refreshFailed => AppLocalizations.of(
+                context,
+              ).planRefreshFailed,
             }),
           ),
         );
@@ -68,7 +69,7 @@ class PlanContent extends ConsumerWidget {
           OutlinedButton.icon(
             onPressed: () => context.push(RoutePaths.testPayment),
             icon: const Icon(Icons.science_outlined),
-            label: const Text('토스 TEST 서비스 결제'),
+            label: Text(AppLocalizations.of(context).paymentTestServiceTitle),
           ),
         switch (state.status) {
           PlanStatus.loading => const SizedBox(

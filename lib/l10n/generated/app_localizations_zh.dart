@@ -3070,4 +3070,1019 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get onboardingReload => '重新加载';
+
+  @override
+  String get reportSubmit => '提交举报';
+
+  @override
+  String get reportReceived => '受理举报';
+
+  @override
+  String get reportReceivedDescription => '将保存目标评价和举报原因。';
+
+  @override
+  String get reportAssistedReview => 'AI 辅助审核';
+
+  @override
+  String get reportAssistedReviewDescription => '一并查看 RTI 信号和类似评价记录。';
+
+  @override
+  String get reportTeamDecision => '运营团队判断';
+
+  @override
+  String get reportTeamDecisionDescription => '发现虚假或恶意情况时将更新审核状态。';
+
+  @override
+  String get reportResultNotification => '结果通知';
+
+  @override
+  String get reportResultNotificationDescription => '审核完成后，结果将显示在反馈记录中。';
+
+  @override
+  String get reportProcessTitle => '处理流程';
+
+  @override
+  String get reportProcessDescription => '这是运营团队在受理举报后的审核流程。';
+
+  @override
+  String get reportGuideRepeated => '具体说明重复措辞';
+
+  @override
+  String get reportGuideRepeatedDescription => '请说明具体位置、句子或明显的表达模式。';
+
+  @override
+  String get reportGuideContext => '核实商品使用情境';
+
+  @override
+  String get reportGuideContextDescription => '请指出缺乏实际使用经历或与商品无关的内容。';
+
+  @override
+  String get reportGuideAttachments => '附上相关材料';
+
+  @override
+  String get reportGuideAttachmentsDescription => '同类证据在多个情境中重复出现时，建议附上材料。';
+
+  @override
+  String get reportGuideTitle => '举报指南';
+
+  @override
+  String get reportGuideDescription => '这些信息有助于处理举报。';
+
+  @override
+  String get reportSummaryTitle => '提交摘要';
+
+  @override
+  String get reportSummaryDescription => '提交前请核对填写内容。';
+
+  @override
+  String get reportLiveBadge => '实时';
+
+  @override
+  String get reportSelectedReasons => '所选原因';
+
+  @override
+  String get reportAnalysisEvidence => 'AI 依据';
+
+  @override
+  String get reportTargetReviews => '目标评价';
+
+  @override
+  String get reportReasonTitle => '选择举报原因';
+
+  @override
+  String get reportReasonDescription => '点击卡片选择 · 可多选。';
+
+  @override
+  String get reportViewCriteria => '查看举报标准';
+
+  @override
+  String get reportStepTarget => '确认对象';
+
+  @override
+  String get reportStepTargetDescription => '核对商品和评价信息';
+
+  @override
+  String get reportStepReasonDescription => '选择问题类型';
+
+  @override
+  String get reportStepDetails => '详细依据';
+
+  @override
+  String get reportStepDetailsDescription => '输入补充说明';
+
+  @override
+  String get reportStepComplete => '提交完成';
+
+  @override
+  String get reportStepCompleteDescription => '追踪审核状态';
+
+  @override
+  String get reportTargetDescription => '请确认要举报的商品和评价是否正确。';
+
+  @override
+  String get reportFromAnalysis => '从分析弹窗进入';
+
+  @override
+  String get reportPrivacyConsent => '我同意个人信息收集及举报处理说明。';
+
+  @override
+  String get reportPrivacyDescription => '举报内容将用于评价受理、处理结果通知和模型质量改进，并在必要期限内保存。';
+
+  @override
+  String get reportTruthConsent => '我确认这不是虚假举报。';
+
+  @override
+  String get reportTruthDescription => '举报内容与事实不符时，处理优先级可能降低。';
+
+  @override
+  String get reportTitleText => '提交评价举报';
+
+  @override
+  String get reportDescription => '请填写可疑评价的问题类型和依据。举报将用于运营审核和模型改进反馈。';
+
+  @override
+  String get reportViewMyFeedback => '查看我的反馈记录';
+
+  @override
+  String get reportReportBreadcrumb => '报告';
+
+  @override
+  String get reportEvidenceTitle => '同时提交分析依据（选填）';
+
+  @override
+  String get reportEvidenceDescription => '您可以将此评价的 RTI 分析信号附作举报依据。';
+
+  @override
+  String get reportAttachEvidence => '附上 AI 分析依据';
+
+  @override
+  String get reportAttachEvidenceDescription => 'RTI 信号数据会随举报依据一并提交。';
+
+  @override
+  String get reportViewEvidence => '查看依据';
+
+  @override
+  String get reportDetailsTitle => '填写详细依据';
+
+  @override
+  String get reportDetailsDescription => '请填写有助于判断举报的信息。';
+
+  @override
+  String get reportType => '举报类型';
+
+  @override
+  String get reportVisibility => '处理结果公开范围';
+
+  @override
+  String get reportDetailHint => '请具体说明问题内容和情境。';
+
+  @override
+  String get reportAttachments => '附件材料 ';
+
+  @override
+  String get reportOptional => '（选填）';
+
+  @override
+  String get reportAttachmentsFull => '已达到附件数量上限';
+
+  @override
+  String get reportAttachmentsHint => '请附上截图或补充依据';
+
+  @override
+  String get reportChooseFiles => '选择文件';
+
+  @override
+  String get reportConsentsRequired => '请确认所有同意事项。';
+
+  @override
+  String get reportSubmittedTitle => '举报提交成功';
+
+  @override
+  String get reportSubmittedDescription => '举报已受理。\n可在反馈记录中查看处理结果。';
+
+  @override
+  String get reportViewFeedback => '查看反馈记录';
+
+  @override
+  String get reportAlreadyReportedTitle => '已举报的评价';
+
+  @override
+  String get reportAlreadyReportedDescription => '您已举报过此评价。\n不受理重复举报。';
+
+  @override
+  String reportReviewCount(int count) {
+    return '$count 条';
+  }
+
+  @override
+  String reportAverageReviewRound(int round) {
+    return '平均第 $round 轮审核';
+  }
+
+  @override
+  String reportRiskyReviewScore(String score) {
+    return '风险评价 · RTI $score';
+  }
+
+  @override
+  String reportMaxAttachments(int count) {
+    return '最多可添加 $count 个附件。';
+  }
+
+  @override
+  String reportFileTooLarge(String name, int size) {
+    return '$name 超过 ${size}MB。';
+  }
+
+  @override
+  String reportMinimumCharacters(int count) {
+    return '请至少输入 $count 个字符。';
+  }
+
+  @override
+  String reportMinimumCharactersHelp(int count) {
+    return '至少填写 $count 个字符将更有助于运营团队审核。';
+  }
+
+  @override
+  String reportCharacterCount(int count) {
+    return '$count 个字符';
+  }
+
+  @override
+  String reportAttachmentLimits(int size, int count) {
+    return 'PNG, JPG, PDF · 最大 ${size}MB · 最多 $count 个';
+  }
+
+  @override
+  String reportReasonRequired(int count) {
+    return '请至少选择 $count 个举报原因。';
+  }
+
+  @override
+  String reportDetailsRequired(int count) {
+    return '详细说明请至少输入 $count 个字符。';
+  }
+
+  @override
+  String get reportReasonFake => '疑似虚假评价／有偿评价';
+
+  @override
+  String get reportReasonGenerated => '疑似 AI 生成痕迹';
+
+  @override
+  String get reportReasonFakeDescription => '存在重复、过度赞美或多个购买记录可能相互呼应的评价。';
+
+  @override
+  String get reportReasonGeneratedDescription => '重复过于精确或反复使用相同句式的评价。';
+
+  @override
+  String get reportReasonIrrelevantDescription => '内容与实际商品使用无关，或包含其他商品／页面的内容。';
+
+  @override
+  String get reportReasonInappropriateDescription => '包含诽谤、仇恨言论或姓名等个人信息的评价。';
+
+  @override
+  String get reportReasonAdDescription => '这是广告评价。';
+
+  @override
+  String get reportReasonRepeatDescription => '内容重复。';
+
+  @override
+  String get reportReasonOtherDescription => '其他举报原因。';
+
+  @override
+  String get reportTypeRepetition => '重复措辞';
+
+  @override
+  String get reportTypeNewAccount => '账户创建后不久';
+
+  @override
+  String get reportTypeSimilarCluster => '相似评价群';
+
+  @override
+  String get reportPrivate => '不公开';
+
+  @override
+  String get reportOnlyMe => '仅自己可见';
+
+  @override
+  String get reportTeamOnly => '与运营团队共享';
+
+  @override
+  String get reportSelectPrompt => '请选择';
+
+  @override
+  String get reportGuideBadge => '说明';
+
+  @override
+  String get paymentTestCartTitle => '购物车 Toss TEST 支付';
+
+  @override
+  String get paymentTestServiceTitle => 'Toss TEST 服务支付';
+
+  @override
+  String get paymentTestCartDescription =>
+      '仅用于 TEST 订单和支付，不会进行真实发货或扣款。可销售配送的商品及最终金额以服务器报价为准。';
+
+  @override
+  String get paymentTestServiceDescription => '仅用于测试，不会下单购买外部商城商品、真实扣款或自动更改套餐。';
+
+  @override
+  String get paymentTestLoginRequired => '查看订单和支付需要登录。请登录后重新打开支付回调地址。';
+
+  @override
+  String get paymentTestNotConfigured =>
+      'TEST 支付密钥及服务器订单和审批接口尚未就绪，目前无法发起或完成支付。';
+
+  @override
+  String get paymentTestWebOnly => '目前仅网页浏览器支持 TEST 支付。';
+
+  @override
+  String get paymentTestOrder => 'TEST 订单';
+
+  @override
+  String get paymentTestReloadTargets => '重新查询支付对象';
+
+  @override
+  String get paymentTestOpening => '正在打开 TEST 支付窗口';
+
+  @override
+  String get paymentTestOpen => '打开 TEST 支付窗口';
+
+  @override
+  String get paymentTestReloadWindow => '重新加载支付窗口';
+
+  @override
+  String get paymentTestReloadApproval => '重新查询服务器审批状态';
+
+  @override
+  String get paymentTestBackToOrders => '返回 TEST 订单选择';
+
+  @override
+  String get paymentTestCheckPlan => '查看当前套餐';
+
+  @override
+  String get paymentCheckoutTitle => '购物车 TEST 订单';
+
+  @override
+  String get paymentCheckoutDescription =>
+      '不会真实扣款或发货。此服务能否销售和配送商城商品须由服务器确认。显示价格仅供参考，运费及最终金额以服务器报价为准。';
+
+  @override
+  String get paymentCheckoutNotConfigured =>
+      'TEST 公钥及购物车报价、订单和审批 API 尚未就绪，无法保存订单或支付。地址不会发送或保存至服务器。';
+
+  @override
+  String get paymentCheckoutLoginSelect => '登录后选择订单';
+
+  @override
+  String get paymentCheckoutNoSelection => '当前账户未选择商品，请在购物车中选择商品。';
+
+  @override
+  String get paymentCheckoutRecipient => '收件人';
+
+  @override
+  String get paymentCheckoutPhone => '联系电话';
+
+  @override
+  String get paymentCheckoutPostalCode => '邮政编码';
+
+  @override
+  String get paymentCheckoutAddress => '地址';
+
+  @override
+  String get paymentCheckoutAddressDetail => '详细地址（选填）';
+
+  @override
+  String get paymentCheckoutRequired => '请填写。';
+
+  @override
+  String get paymentCheckoutPhoneInvalid => '请检查联系电话格式。';
+
+  @override
+  String get paymentCheckoutQuote => '查看服务器 TEST 报价';
+
+  @override
+  String get paymentCheckoutBack => '返回购物车';
+
+  @override
+  String paymentCheckoutUnitPrice(String price) {
+    return '参考单价：$price 韩元';
+  }
+
+  @override
+  String paymentCheckoutQuantity(int count, String price) {
+    return '$count 件 · $price';
+  }
+
+  @override
+  String paymentCheckoutPostalLength(int count) {
+    return '请输入 $count 位邮政编码。';
+  }
+
+  @override
+  String get paymentTestRequestFailed => '支付窗口请求已取消或失败，未将支付标记为完成。';
+
+  @override
+  String get paymentTestLoadFailed => '无法加载 TEST 支付窗口，请检查网络和配置后重试。';
+
+  @override
+  String get paymentTestWebBrowserOnly => 'TEST 支付仅可在网页浏览器中使用。';
+
+  @override
+  String get planRefreshFailed => '套餐更改请求已处理，但未能确认当前套餐和额度，请重新加载确认。';
+
+  @override
+  String get detailSettingsRetry => '无法加载显示设置，重试';
+
+  @override
+  String get detailHelpfulUnavailable => '未提供有用次数，因此按原评价顺序显示。';
+
+  @override
+  String get detailNoReviews => '暂无已发布的评价。';
+
+  @override
+  String get detailNoMatchingReviews => '没有符合这些条件的评价。';
+
+  @override
+  String get detailVerified => '已验证购买';
+
+  @override
+  String get detailSortRti => 'RTI 从高到低';
+
+  @override
+  String get detailViewReviewAnalysis => '查看评价分析';
+
+  @override
+  String get detailHelpful => '有帮助';
+
+  @override
+  String get detailNotHelpful => '没有帮助';
+
+  @override
+  String get detailFeedbackSubmitted => '反馈已提交。';
+
+  @override
+  String get detailFeedbackFailed => '反馈提交失败，请重试。';
+
+  @override
+  String detailShowHiddenReviews(int count) {
+    return '显示低于设置门槛的 $count 条评价';
+  }
+
+  @override
+  String detailMoreReviewsRemaining(int count) {
+    return '查看更多评价（剩余 $count 条）';
+  }
+
+  @override
+  String get detailLowestPrice => '最低价';
+
+  @override
+  String get detailShipping => '配送';
+
+  @override
+  String detailCompareAllSellers(int count) {
+    return '比较全部 $count 家卖家的价格';
+  }
+
+  @override
+  String get detailInsights => '评价洞察';
+
+  @override
+  String get detailMentionedKeywords => '高频提及关键词';
+
+  @override
+  String get detailPositivePoints => '满意之处';
+
+  @override
+  String get detailNegativePoints => '不足之处';
+
+  @override
+  String get detailMoreInsights => '查看更多评价洞察';
+
+  @override
+  String get detailRiskSummary => '综合风险摘要';
+
+  @override
+  String get detailRiskSummaryTooltip => '此商品全部评价的\nAI 可信度分析结果。';
+
+  @override
+  String get detailScoreTooltip => 'RTI 可信度分数综合考虑购买验证、文本可信度、\n重复表达及时间模式等因素。';
+
+  @override
+  String get detailDisclaimer => '分析结果仅供参考，请结合多条评价做出最终判断。';
+
+  @override
+  String get detailCriteria => '分析标准';
+
+  @override
+  String get detailReported => '已举报';
+
+  @override
+  String get detailReportReview => '举报评价';
+
+  @override
+  String get detailSignalsTitle => 'RTI 组成信号';
+
+  @override
+  String get detailSignalsTooltip => '组成 RTI 的信号及各项分数，\n综合文本、行为及网络分析得出。';
+
+  @override
+  String get detailEvidenceTooltip => '判断评价可信度的具体依据，\n以及各项依据对分数的贡献比例。';
+
+  @override
+  String get detailAlsoViewed => '浏览此商品的用户也看过';
+
+  @override
+  String get detailKeySignals => '主要判断信号';
+
+  @override
+  String get detailTrend => '风险趋势';
+
+  @override
+  String get detailTrendDescription => '显示商品评价平均 RTI 和风险评价比例的变化。';
+
+  @override
+  String get detailTrendPending => 'AI 分析完成后可查看风险趋势';
+
+  @override
+  String get detailAverageRti => '平均 RTI';
+
+  @override
+  String get detailRiskyReviewRatio => '风险评价比例';
+
+  @override
+  String get detailToday => '今天';
+
+  @override
+  String get detailRecentReviewOrder => '最新评价顺序';
+
+  @override
+  String get detailAnalyzing => 'AI 分析中';
+
+  @override
+  String get detailNoAnalyzedReviews => '暂无已分析的评价。';
+
+  @override
+  String get detailOfficialSeller => '官方卖家';
+
+  @override
+  String get detailTrustHigh => '评价可信度高';
+
+  @override
+  String get detailTrustMedium => '评价可信度一般';
+
+  @override
+  String get detailTrustLow => '评价可信度低';
+
+  @override
+  String detailFormattedReviewCount(String count) {
+    return '$count 条评价';
+  }
+
+  @override
+  String get detailBrand => '品牌';
+
+  @override
+  String get detailAverageRating => '平均评分';
+
+  @override
+  String detailSellerCount(int count) {
+    return '$count 家';
+  }
+
+  @override
+  String detailRatingReviewCount(String rating, String count) {
+    return '$rating（$count 条评价）';
+  }
+
+  @override
+  String get detailAnalysisInProgress => 'AI 评价分析进行中';
+
+  @override
+  String get detailAnalysisInProgressDescription =>
+      'Re:view AI 正在实时分析评价，完成后将自动更新可信度分数。';
+
+  @override
+  String get detailInformation => '商品信息';
+
+  @override
+  String detailReviewTabCount(String count) {
+    return '评价 $count';
+  }
+
+  @override
+  String detailComparisonTabCount(int count) {
+    return '比价 $count';
+  }
+
+  @override
+  String get searchGridView => '卡片视图';
+
+  @override
+  String get searchListView => '列表视图';
+
+  @override
+  String get searchSort => '排序';
+
+  @override
+  String get searchPageSize => '每页商品数';
+
+  @override
+  String searchResultCountLabel(int count) {
+    return '$count 条结果';
+  }
+
+  @override
+  String searchPageSizeCount(int count) {
+    return '每页显示 $count 件';
+  }
+
+  @override
+  String get searchCartAdded => '已加入购物车。';
+
+  @override
+  String get searchCartAddFailed => '加入购物车失败。';
+
+  @override
+  String searchFormattedReviewCount(String count) {
+    return '（$count 条评价）';
+  }
+
+  @override
+  String get searchAllProducts => '全部商品';
+
+  @override
+  String get searchCategoryProducts => '分类商品';
+
+  @override
+  String get searchResultsTitle => '搜索结果';
+
+  @override
+  String get searchAboutRti => '什么是 Re:view Trust Index（RTI）？';
+
+  @override
+  String get searchAboutRtiDescription => '综合实际买家评价可信度得出的指标。';
+
+  @override
+  String searchFormattedProductCount(String count) {
+    return '$count 件商品';
+  }
+
+  @override
+  String searchQuickFilterAllCount(int count) {
+    return '全部 $count';
+  }
+
+  @override
+  String get searchMultiStoreTitle => '多店铺统一搜索';
+
+  @override
+  String get searchComparedProducts => '对比商品';
+
+  @override
+  String get searchCollectedReviews => '已收集评价';
+
+  @override
+  String get searchNotCounted => '未统计';
+
+  @override
+  String get searchReviewBasedComparison => '基于实际使用评价对比';
+
+  @override
+  String get searchComparisonDescription => '同时比较价格、评价和 RTI 可信度，快速挑选可信赖的商品。';
+
+  @override
+  String get searchLowestPriceComparison => '最低价对比';
+
+  @override
+  String get searchReviewTrust => '评价可信度';
+
+  @override
+  String get searchFastDelivery => '快速配送';
+
+  @override
+  String get searchOfficialStores => '包含官方店铺';
+
+  @override
+  String get searchVeryHighTrust => '可信度很高';
+
+  @override
+  String get searchModerateTrust => '一般';
+
+  @override
+  String get searchLowTrust => '低';
+
+  @override
+  String searchComparedProductCount(String count) {
+    return '$count 件';
+  }
+
+  @override
+  String searchCollectedReviewCount(String count) {
+    return '$count 条';
+  }
+
+  @override
+  String get searchUnconfirmedCategoriesNotice =>
+      '商城商品按分类名称搜索，也会显示尚未确认分类的结果。详细分类请查看商城原文。';
+
+  @override
+  String searchLoadedProductsScope(int count, int limit) {
+    return '对当前加载的 $count 件商品进行筛选和排序。关键词搜索最多返回 $limit 条结果，并非针对商城全部商品的搜索筛选。未提供配送、销量、发布日期和图片评价信息，因此不支持这些条件。';
+  }
+
+  @override
+  String get searchSortAccuracy => '推荐';
+
+  @override
+  String get searchSortRti => '按 RTI';
+
+  @override
+  String get searchSortReviewCount => '评价最多';
+
+  @override
+  String get searchSortSales => '销量最多';
+
+  @override
+  String get searchSortPriceLow => '价格从低到高';
+
+  @override
+  String get searchSortPriceHigh => '价格从高到低';
+
+  @override
+  String get searchSortNewest => '最新商品';
+
+  @override
+  String get searchMissingClassification => '暂无分类信息';
+
+  @override
+  String get cartSelectionSummary => '所选商品摘要';
+
+  @override
+  String get cartUnknownPriceExcluded => '无价格信息的商品已从合计中排除。';
+
+  @override
+  String get cartReferencePriceNotice => '显示价格仅供参考，请前往各商城购买并确认运费及优惠券。';
+
+  @override
+  String get cartViewSelectedSellers => '查看所选商品购买渠道';
+
+  @override
+  String get cartContinueShopping => '继续购物';
+
+  @override
+  String get cartShippingConditions => '配送条件请向卖家确认';
+
+  @override
+  String get cartSaveLater => '稍后再买';
+
+  @override
+  String get cartDelete => '删除';
+
+  @override
+  String cartTrustLevel(String level) {
+    return '可信度 $level';
+  }
+
+  @override
+  String cartPriceReduction(String price) {
+    return '降价 $price';
+  }
+
+  @override
+  String cartEstimatedArrival(String date) {
+    return '预计 $date 送达';
+  }
+
+  @override
+  String cartStockRemaining(int count) {
+    return '库存剩余 $count 件';
+  }
+
+  @override
+  String get cartDeleteSelected => '删除所选';
+
+  @override
+  String get cartMoveToWishlist => '移至收藏';
+
+  @override
+  String cartSelectAllCount(int selected, int total) {
+    return '全选（$selected/$total）';
+  }
+
+  @override
+  String get cartSellersTitle => '查看购买渠道';
+
+  @override
+  String get cartSellersDescription =>
+      '请使用商品详情提供的商城购买链接。TEST 下单功能正由独立页面筹备，目前尚无服务器销售和配送接口。';
+
+  @override
+  String get cartViewProductAndSeller => '查看商品详情及购买渠道';
+
+  @override
+  String get cartDescription => '查看已加入的商品，下单前比较评价可信度。';
+
+  @override
+  String get cartTrustCheckTitle => '检查评价可信度';
+
+  @override
+  String get cartTrustCheckDescription => '查看各商品的 RTI 指数，选择可信评价较多的商品。';
+
+  @override
+  String cartTotalProducts(int count) {
+    return '共 $count 件商品';
+  }
+
+  @override
+  String wishlistCountItems(int count) {
+    return '$count 项';
+  }
+
+  @override
+  String get wishlistShoppingMall => '商城';
+
+  @override
+  String get wishlistPriceComparisonUnavailable => '服务器未提供降价对比信息，这并不代表价格没有变化。';
+
+  @override
+  String get wishlistUncategorized => '未分类';
+
+  @override
+  String get wishlistShopUnknown => '暂无商城信息';
+
+  @override
+  String get myPageTrustUnavailable => '无法查看收藏商品的分析信息。';
+
+  @override
+  String get myPageTrustScope => '以收藏商品已分析的 RTI 平均值及服务器需留意等级为准。';
+
+  @override
+  String myPageTrustScorePoints(int score) {
+    return '$score 分';
+  }
+
+  @override
+  String get myPageBack => '返回我的页面';
+
+  @override
+  String get myPageActivityLoadFailed => '无法加载近期动态。';
+
+  @override
+  String get myPageActivityRecent => '最近';
+
+  @override
+  String get myPageActivityJustNow => '刚刚';
+
+  @override
+  String myPageActivityDaysAgo(int count) {
+    return '$count 天前';
+  }
+
+  @override
+  String myPageActivityHoursAgo(int count) {
+    return '$count 小时前';
+  }
+
+  @override
+  String myPageNamedDescription(String name) {
+    return '管理 $name 的信息和收藏商品动态。';
+  }
+
+  @override
+  String get myPageWarningScope => '收藏商品中由服务器分析为可疑或危险等级的商品，不包含尚未分析的商品。';
+
+  @override
+  String get myPageCheckList => '查看列表';
+
+  @override
+  String get myPageAllWarnings => '全部需留意等级';
+
+  @override
+  String get myPageLoadFailed => '无法查看需留意的商品。';
+
+  @override
+  String myPageViewListCount(int count) {
+    return '查看列表（$count）';
+  }
+
+  @override
+  String recentProductsScope(int count) {
+    return '已从服务器最近 $count 条浏览记录中去除重复商品，数量可能不同于全部历史商品数。';
+  }
+
+  @override
+  String get recentProductsLoadFailed => '无法加载最近浏览的商品。';
+
+  @override
+  String get notificationsAll => '全部通知';
+
+  @override
+  String get notificationsPriceAlerts => '价格通知';
+
+  @override
+  String get notificationsSavedSettings => '已保存的通知接收设置';
+
+  @override
+  String get notificationsMore => '查看更多';
+
+  @override
+  String get notificationsTargetUnsupported => '暂不支持此通知的跳转目标。';
+
+  @override
+  String get notificationsCheckingUnreadShort => '正在检查未读通知';
+
+  @override
+  String get notificationsUnreadFailedShort => '未能查询通知数量。';
+
+  @override
+  String get notificationsManageInboxAndPrices => '通知中心 · 管理价格通知';
+
+  @override
+  String get notificationsServiceTitle => '服务通知';
+
+  @override
+  String get notificationsCheckingUnread => '正在检查未读通知。';
+
+  @override
+  String get notificationsUnreadFailed => '未能查询未读通知数量。';
+
+  @override
+  String get notificationsSettingsFailed => '无法加载已保存的通知设置。';
+
+  @override
+  String get notificationsSettingsChecking => '正在查询已保存的通知设置';
+
+  @override
+  String get notificationsReviewSettings => '通知及评价设置';
+
+  @override
+  String get notificationsMonitoringNotice => '风险变化自动监测需要服务器接入，仅开启接收设置并不会开始监测。';
+
+  @override
+  String get notificationsInboxNotice => '查看保存在通知中心的通知，不支持浏览器推送、邮件和短信。';
+
+  @override
+  String notificationsUnreadCount(int count) {
+    return '$count 条未读通知';
+  }
+
+  @override
+  String get notificationsReceiving => '接收';
+
+  @override
+  String get notificationsNotReceiving => '不接收';
+
+  @override
+  String notificationsRiskStatus(String status) {
+    return '风险检测 $status';
+  }
+
+  @override
+  String notificationsAnalysisStatus(String status) {
+    return '分析结果 $status';
+  }
+
+  @override
+  String notificationsFeedbackStatus(String status) {
+    return '处理结果 $status';
+  }
+
+  @override
+  String get priceWatchTitle => '降价 · 价格通知管理';
+
+  @override
+  String get priceWatchHistoryNotice =>
+      '暂不支持价格通知记录和订阅保存。下方为收藏商品的服务器降价标记，并非通知记录。';
+
+  @override
+  String get priceWatchComparisonUnavailable => '服务器未提供收藏商品的对比价格，无法确认是否降价。';
+
+  @override
+  String get priceWatchRefreshWishlistPrices => '刷新收藏商品价格';
+
+  @override
+  String get priceWatchViewWishlist => '查看收藏商品';
+
+  @override
+  String get priceWatchSubscriptionNotice => '接入服务器价格历史和订阅保存后才可申请。';
+
+  @override
+  String get priceWatchSubscriptionUnavailable => '申请价格通知 · 暂不支持';
+
+  @override
+  String get priceWatchDropIndicator => '服务器降价标记 · 无降价金额或比例信息';
+
+  @override
+  String priceWatchLoadFailed(String message) {
+    return '未能查询降价标记。$message';
+  }
+
+  @override
+  String priceWatchDropCounts(int total, int known, int drops) {
+    return '$total 件收藏商品中有 $known 件提供降价信息，其中 $drops 件标记为降价。未提供基准价格及时间。';
+  }
 }

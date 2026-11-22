@@ -1,3 +1,4 @@
+import 'package:re_view_front/l10n/generated/app_localizations.dart';
 import 'package:re_view_front/shared/presentation/analysis_formatters.dart';
 import 'package:re_view_front/app/theme/app_motion.dart';
 import 'package:flutter/material.dart';
@@ -203,7 +204,9 @@ class ListTileDetails extends StatelessWidget {
                 Text(
                   product.reviewCount == null
                       ? ''
-                      : '(리뷰 ${formatSearchCount(product.reviewCount)})',
+                      : AppLocalizations.of(context).searchFormattedReviewCount(
+                          formatSearchCount(product.reviewCount),
+                        ),
                   style: Theme.of(context).textTheme.labelSmall?.copyWith(
                     color: AppColors.textSecondary,
                     fontWeight: FontWeight.w700,

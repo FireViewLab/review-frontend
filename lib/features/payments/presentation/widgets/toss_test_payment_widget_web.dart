@@ -1,3 +1,4 @@
+import 'package:re_view_front/l10n/generated/app_localizations.dart';
 import 'dart:async';
 import 'dart:js_interop';
 import 'package:flutter/material.dart';
@@ -123,7 +124,9 @@ class _TossTestPaymentWidgetState extends State<TossTestPaymentWidget> {
               .toDart;
         } catch (_) {
           if (mounted) {
-            widget.onError('결제창 요청이 취소되었거나 실패했습니다. 결제 완료로 처리하지 않았습니다.');
+            widget.onError(
+              AppLocalizations.of(context).paymentTestRequestFailed,
+            );
           }
         } finally {
           _requesting = false;
@@ -131,7 +134,7 @@ class _TossTestPaymentWidgetState extends State<TossTestPaymentWidget> {
       });
     } catch (_) {
       if (mounted) {
-        widget.onError('TEST 결제창을 불러오지 못했습니다. 네트워크와 설정을 확인한 뒤 다시 시도해 주세요.');
+        widget.onError(AppLocalizations.of(context).paymentTestLoadFailed);
       }
     }
   }

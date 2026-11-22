@@ -1,3 +1,4 @@
+import 'package:re_view_front/l10n/generated/app_localizations.dart';
 import 'package:re_view_front/app/theme/app_motion.dart';
 import 'package:flutter/material.dart';
 import 'package:re_view_front/app/theme/app_colors.dart';
@@ -20,11 +21,23 @@ class ReviewReportStepIndicator extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    const items = <(String, String)>[
-      ('대상 확인', '상품과 리뷰 정보 확인'),
-      ('신고 사유', '문제 유형 선택'),
-      ('상세 근거', '추가 설명 입력'),
-      ('접수 완료', '검토 상태 추적'),
+    final items = <(String, String)>[
+      (
+        AppLocalizations.of(context).reportStepTarget,
+        AppLocalizations.of(context).reportStepTargetDescription,
+      ),
+      (
+        AppLocalizations.of(context).adminReportReason,
+        AppLocalizations.of(context).reportStepReasonDescription,
+      ),
+      (
+        AppLocalizations.of(context).reportStepDetails,
+        AppLocalizations.of(context).reportStepDetailsDescription,
+      ),
+      (
+        AppLocalizations.of(context).reportStepComplete,
+        AppLocalizations.of(context).reportStepCompleteDescription,
+      ),
     ];
 
     final activeIndex = currentStep.index;

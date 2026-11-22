@@ -1,3 +1,4 @@
+import 'package:re_view_front/l10n/generated/app_localizations.dart';
 import 'package:re_view_front/shared/presentation/analysis_formatters.dart';
 import 'package:re_view_front/core/analysis/analysis_display.dart';
 import 'package:re_view_front/features/settings/presentation/providers/settings_providers.dart';
@@ -49,7 +50,9 @@ class RtiBadge extends ConsumerWidget {
               child: Text(
                 analysis?.isV2 == true
                     ? analysis!.badgeText(context)
-                    : (value == null ? '분석 전' : 'RTI $value'),
+                    : (value == null
+                          ? AppLocalizations.of(context).externalUnanalyzed
+                          : 'RTI $value'),
                 style: Theme.of(context).textTheme.labelSmall?.copyWith(
                   color: value == null ? AppColors.textTertiary : color,
                   fontWeight: FontWeight.w900,

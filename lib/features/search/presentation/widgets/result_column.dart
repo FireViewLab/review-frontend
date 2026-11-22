@@ -1,3 +1,4 @@
+import 'package:re_view_front/features/search/presentation/search_labels.dart';
 import 'package:re_view_front/shared/widgets/empty_state_view.dart';
 import 'package:re_view_front/l10n/generated/app_localizations.dart';
 import 'package:re_view_front/shared/widgets/sliver_width_builder.dart';
@@ -360,7 +361,9 @@ class ResultToolbar extends StatelessWidget {
               runSpacing: AppSpacing.xs,
               children: [
                 Text(
-                  '$resultCount개 결과',
+                  AppLocalizations.of(
+                    context,
+                  ).searchResultCountLabel(resultCount),
                   style: Theme.of(context).textTheme.labelMedium?.copyWith(
                     color: AppColors.textSecondary,
                     fontWeight: FontWeight.w800,
@@ -369,13 +372,13 @@ class ResultToolbar extends StatelessWidget {
                 const SizedBox(width: AppSpacing.sm),
                 ViewModeButton(
                   icon: Icons.grid_view_rounded,
-                  tooltip: '카드형 보기',
+                  tooltip: AppLocalizations.of(context).searchGridView,
                   selected: viewMode == SearchViewMode.grid,
                   onPressed: () => onViewModeChanged(SearchViewMode.grid),
                 ),
                 ViewModeButton(
                   icon: Icons.view_list_rounded,
-                  tooltip: '리스트형 보기',
+                  tooltip: AppLocalizations.of(context).searchListView,
                   selected: viewMode == SearchViewMode.list,
                   onPressed: () => onViewModeChanged(SearchViewMode.list),
                 ),
@@ -419,7 +422,7 @@ class SortSegmentedControl extends StatelessWidget {
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: AppSpacing.xs),
               child: Text(
-                '정렬',
+                AppLocalizations.of(context).searchSort,
                 style: Theme.of(context).textTheme.labelMedium?.copyWith(
                   color: AppColors.textSecondary,
                   fontWeight: FontWeight.w800,
@@ -443,7 +446,7 @@ class SortSegmentedControl extends StatelessWidget {
                   SortSegment(
                     label: option == SearchSortOption.rti && hasPolicyIndex
                         ? AppLocalizations.of(context).analysisScore
-                        : option.label,
+                        : searchSortLabel(AppLocalizations.of(context), option),
                     selected: option == selectedOption,
                     onPressed: () => onChanged(option),
                   ),
@@ -546,7 +549,7 @@ class PageSizeButton extends StatelessWidget {
     const pageSizes = [30, 60];
 
     return PopupMenuButton<int>(
-      tooltip: '페이지당 상품 수',
+      tooltip: AppLocalizations.of(context).searchPageSize,
       initialValue: pageSize,
       onSelected: onChanged,
       itemBuilder: (context) => [
@@ -554,13 +557,13 @@ class PageSizeButton extends StatelessWidget {
           PopupMenuItem(
             value: size,
             child: SelectMenuItemLabel(
-              label: '$size개씩 보기',
+              label: AppLocalizations.of(context).searchPageSizeCount(size),
               selected: size == pageSize,
             ),
           ),
       ],
       child: SmallToolbarButton(
-        label: '$pageSize개씩 보기',
+        label: AppLocalizations.of(context).searchPageSizeCount(pageSize),
         icon: Icons.keyboard_arrow_down_rounded,
       ),
     );

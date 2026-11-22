@@ -249,7 +249,7 @@ class _ProductInfo extends StatelessWidget {
                 item.rtiGrade != null &&
                 item.rtiColor != null)
               Text(
-                '신뢰도 ${item.trustLevel}',
+                AppLocalizations.of(context).cartTrustLevel(item.trustLevel),
                 style: Theme.of(context).textTheme.labelSmall?.copyWith(
                   color: AppColors.textSecondary,
                   fontWeight: FontWeight.w700,
@@ -305,7 +305,9 @@ class _PriceSection extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.end,
       children: [
         Text(
-          item.price == null ? '가격 정보 없음' : formatSearchPrice(item.price!),
+          item.price == null
+              ? AppLocalizations.of(context).homePriceUnavailable
+              : formatSearchPrice(item.price!),
           style: Theme.of(context).textTheme.titleMedium?.copyWith(
             color: AppColors.textPrimary,
             fontWeight: FontWeight.w900,
@@ -323,7 +325,9 @@ class _PriceSection extends StatelessWidget {
                 size: 12,
               ),
               Text(
-                '${formatSearchPrice(item.priceDropAmount!)} 인하',
+                AppLocalizations.of(
+                  context,
+                ).cartPriceReduction(formatSearchPrice(item.priceDropAmount!)),
                 style: Theme.of(context).textTheme.labelSmall?.copyWith(
                   color: AppColors.error,
                   fontWeight: FontWeight.w700,
@@ -453,7 +457,7 @@ class _ShippingInfo extends StatelessWidget {
                     vertical: 2,
                   ),
                   child: Text(
-                    '배송 조건은 구매처에서 확인',
+                    AppLocalizations.of(context).cartShippingConditions,
                     style: Theme.of(context).textTheme.labelSmall?.copyWith(
                       color: AppColors.primary,
                       fontWeight: FontWeight.w900,
@@ -468,7 +472,9 @@ class _ShippingInfo extends StatelessWidget {
         if (item.estimatedDelivery != null) ...[
           const SizedBox(height: 2),
           Text(
-            '${item.estimatedDelivery} 도착 예정',
+            AppLocalizations.of(
+              context,
+            ).cartEstimatedArrival(item.estimatedDelivery.toString()),
             style: Theme.of(context).textTheme.labelSmall?.copyWith(
               color: AppColors.textSecondary,
               fontWeight: FontWeight.w600,
@@ -488,7 +494,9 @@ class _ShippingInfo extends StatelessWidget {
               ),
               const SizedBox(width: 2),
               Text(
-                '재고 ${item.stockCount}개 남음',
+                AppLocalizations.of(
+                  context,
+                ).cartStockRemaining(item.stockCount!),
                 style: Theme.of(context).textTheme.labelSmall?.copyWith(
                   color: AppColors.warning,
                   fontWeight: FontWeight.w700,
@@ -522,15 +530,19 @@ class _ItemActions extends StatelessWidget {
       children: [
         _ActionButton(
           icon: Icons.bookmark_border,
-          label: '나중에 담기',
+          label: AppLocalizations.of(context).cartSaveLater,
           onTap: onSaveForLater,
         ),
         _ActionButton(
           icon: Icons.favorite_border,
-          label: '찜하기',
+          label: AppLocalizations.of(context).externalWishAdd,
           onTap: onMoveToWishlist,
         ),
-        _ActionButton(icon: Icons.delete_outline, label: '삭제', onTap: onRemove),
+        _ActionButton(
+          icon: Icons.delete_outline,
+          label: AppLocalizations.of(context).cartDelete,
+          onTap: onRemove,
+        ),
       ],
     );
   }

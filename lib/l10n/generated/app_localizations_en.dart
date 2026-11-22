@@ -3238,4 +3238,1084 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get onboardingReload => 'Reload';
+
+  @override
+  String get reportSubmit => 'Submit report';
+
+  @override
+  String get reportReceived => 'Report received';
+
+  @override
+  String get reportReceivedDescription =>
+      'The review and report reasons are saved.';
+
+  @override
+  String get reportAssistedReview => 'AI-assisted review';
+
+  @override
+  String get reportAssistedReviewDescription =>
+      'RTI signals and similar review history are checked together.';
+
+  @override
+  String get reportTeamDecision => 'Operations team decision';
+
+  @override
+  String get reportTeamDecisionDescription =>
+      'The review status is updated if false or malicious intent is found.';
+
+  @override
+  String get reportResultNotification => 'Result notification';
+
+  @override
+  String get reportResultNotificationDescription =>
+      'Results appear in feedback history when the review is complete.';
+
+  @override
+  String get reportProcessTitle => 'Review process';
+
+  @override
+  String get reportProcessDescription =>
+      'This is how the operations team reviews a report.';
+
+  @override
+  String get reportGuideRepeated => 'Describe repeated phrases specifically';
+
+  @override
+  String get reportGuideRepeatedDescription =>
+      'Specify the location, wording, or pattern that stood out.';
+
+  @override
+  String get reportGuideContext => 'Check the product usage context';
+
+  @override
+  String get reportGuideContextDescription =>
+      'Point out content unrelated to the product or actual use.';
+
+  @override
+  String get reportGuideAttachments => 'Attach supporting material';
+
+  @override
+  String get reportGuideAttachmentsDescription =>
+      'Attachments help when the same evidence appears in multiple contexts.';
+
+  @override
+  String get reportGuideTitle => 'Reporting guide';
+
+  @override
+  String get reportGuideDescription => 'These details help us process reports.';
+
+  @override
+  String get reportSummaryTitle => 'Submission summary';
+
+  @override
+  String get reportSummaryDescription =>
+      'Check your details before submitting.';
+
+  @override
+  String get reportLiveBadge => 'Live';
+
+  @override
+  String get reportSelectedReasons => 'Selected reasons';
+
+  @override
+  String get reportAnalysisEvidence => 'AI evidence';
+
+  @override
+  String get reportTargetReviews => 'Target reviews';
+
+  @override
+  String get reportReasonTitle => 'Select report reasons';
+
+  @override
+  String get reportReasonDescription =>
+      'Tap cards to select · Multiple selections allowed.';
+
+  @override
+  String get reportViewCriteria => 'View reporting criteria';
+
+  @override
+  String get reportStepTarget => 'Check target';
+
+  @override
+  String get reportStepTargetDescription => 'Check product and review details';
+
+  @override
+  String get reportStepReasonDescription => 'Choose issue types';
+
+  @override
+  String get reportStepDetails => 'Supporting details';
+
+  @override
+  String get reportStepDetailsDescription => 'Enter additional details';
+
+  @override
+  String get reportStepComplete => 'Submitted';
+
+  @override
+  String get reportStepCompleteDescription => 'Track review status';
+
+  @override
+  String get reportTargetDescription =>
+      'Confirm the product and review you want to report.';
+
+  @override
+  String get reportFromAnalysis => 'Opened from analysis popup';
+
+  @override
+  String get reportPrivacyConsent =>
+      'I agree to the data collection and report processing notice.';
+
+  @override
+  String get reportPrivacyDescription =>
+      'Report details are used for review intake, result notices, and model quality improvements, and retained as needed.';
+
+  @override
+  String get reportTruthConsent => 'I confirm this is not a false report.';
+
+  @override
+  String get reportTruthDescription =>
+      'Reports that do not match the facts may receive lower priority.';
+
+  @override
+  String get reportTitleText => 'Report a review';
+
+  @override
+  String get reportDescription =>
+      'Describe the issue and evidence for a suspicious review. Reports support operations checks and model improvement feedback.';
+
+  @override
+  String get reportViewMyFeedback => 'View my feedback';
+
+  @override
+  String get reportReportBreadcrumb => 'Report';
+
+  @override
+  String get reportEvidenceTitle => 'Include analysis evidence (optional)';
+
+  @override
+  String get reportEvidenceDescription =>
+      'You can attach this review\'s RTI signals as evidence.';
+
+  @override
+  String get reportAttachEvidence => 'Attach AI analysis evidence';
+
+  @override
+  String get reportAttachEvidenceDescription =>
+      'RTI signal data is submitted with your evidence.';
+
+  @override
+  String get reportViewEvidence => 'View evidence';
+
+  @override
+  String get reportDetailsTitle => 'Enter supporting details';
+
+  @override
+  String get reportDetailsDescription =>
+      'Provide details that help assess the report.';
+
+  @override
+  String get reportType => 'Report type';
+
+  @override
+  String get reportVisibility => 'Result visibility';
+
+  @override
+  String get reportDetailHint =>
+      'Describe the issue and its context specifically.';
+
+  @override
+  String get reportAttachments => 'Attachments ';
+
+  @override
+  String get reportOptional => '(optional)';
+
+  @override
+  String get reportAttachmentsFull => 'Attachment limit reached';
+
+  @override
+  String get reportAttachmentsHint =>
+      'Attach screenshots or additional evidence';
+
+  @override
+  String get reportChooseFiles => 'Choose files';
+
+  @override
+  String get reportConsentsRequired => 'Please check all consent items.';
+
+  @override
+  String get reportSubmittedTitle => 'Report submitted';
+
+  @override
+  String get reportSubmittedDescription =>
+      'Your report was received.\nCheck the result in your feedback history.';
+
+  @override
+  String get reportViewFeedback => 'View feedback history';
+
+  @override
+  String get reportAlreadyReportedTitle => 'Already reported';
+
+  @override
+  String get reportAlreadyReportedDescription =>
+      'You have already reported this review.\nDuplicate reports are not accepted.';
+
+  @override
+  String reportReviewCount(int count) {
+    return '$count reviews';
+  }
+
+  @override
+  String reportAverageReviewRound(int round) {
+    return 'Average round $round review';
+  }
+
+  @override
+  String reportRiskyReviewScore(String score) {
+    return 'Risky review · RTI $score';
+  }
+
+  @override
+  String reportMaxAttachments(int count) {
+    return 'You can attach up to $count files.';
+  }
+
+  @override
+  String reportFileTooLarge(String name, int size) {
+    return '$name exceeds ${size}MB.';
+  }
+
+  @override
+  String reportMinimumCharacters(int count) {
+    return 'Enter at least $count characters.';
+  }
+
+  @override
+  String reportMinimumCharactersHelp(int count) {
+    return 'At least $count characters help the operations team review your report.';
+  }
+
+  @override
+  String reportCharacterCount(int count) {
+    return '$count characters';
+  }
+
+  @override
+  String reportAttachmentLimits(int size, int count) {
+    return 'PNG, JPG, PDF · Up to ${size}MB · Up to $count files';
+  }
+
+  @override
+  String reportReasonRequired(int count) {
+    return 'Select at least $count report reason.';
+  }
+
+  @override
+  String reportDetailsRequired(int count) {
+    return 'Enter at least $count characters of detail.';
+  }
+
+  @override
+  String get reportReasonFake => 'Suspected fake review / paid reviewer';
+
+  @override
+  String get reportReasonGenerated => 'Signs of AI generation';
+
+  @override
+  String get reportReasonFakeDescription =>
+      'A review with repetition, excessive praise, or possibly coordinated purchase histories.';
+
+  @override
+  String get reportReasonGeneratedDescription =>
+      'A review with overly precise repetition or recurring sentence structures.';
+
+  @override
+  String get reportReasonIrrelevantDescription =>
+      'Content unrelated to actual product use, or copied from another product or page.';
+
+  @override
+  String get reportReasonInappropriateDescription =>
+      'A review containing slander, hate speech, or personal information such as names.';
+
+  @override
+  String get reportReasonAdDescription => 'This is an advertising review.';
+
+  @override
+  String get reportReasonRepeatDescription => 'This content is repetitive.';
+
+  @override
+  String get reportReasonOtherDescription => 'Another reason for reporting.';
+
+  @override
+  String get reportTypeRepetition => 'Repeated phrases';
+
+  @override
+  String get reportTypeNewAccount => 'Immediately after account creation';
+
+  @override
+  String get reportTypeSimilarCluster => 'Similar review cluster';
+
+  @override
+  String get reportPrivate => 'Private';
+
+  @override
+  String get reportOnlyMe => 'Only visible to me';
+
+  @override
+  String get reportTeamOnly => 'Share with operations team';
+
+  @override
+  String get reportSelectPrompt => 'Please select';
+
+  @override
+  String get reportGuideBadge => 'Guide';
+
+  @override
+  String get paymentTestCartTitle => 'Cart Toss TEST payment';
+
+  @override
+  String get paymentTestServiceTitle => 'Toss TEST service payment';
+
+  @override
+  String get paymentTestCartDescription =>
+      'For TEST orders and payments only. No real payment or shipping occurs. Server quotes confirm eligible products and final amounts.';
+
+  @override
+  String get paymentTestServiceDescription =>
+      'For testing only. No external shop orders, real payments, or automatic plan changes occur.';
+
+  @override
+  String get paymentTestLoginRequired =>
+      'Log in to view orders and pay. Reopen the payment callback URL after login.';
+
+  @override
+  String get paymentTestNotConfigured =>
+      'TEST payment keys and server order/approval contracts are not ready. Payments cannot currently be started or completed.';
+
+  @override
+  String get paymentTestWebOnly =>
+      'TEST payments are currently supported only in a web browser.';
+
+  @override
+  String get paymentTestOrder => 'TEST order';
+
+  @override
+  String get paymentTestReloadTargets => 'Reload payment targets';
+
+  @override
+  String get paymentTestOpening => 'Opening TEST payment';
+
+  @override
+  String get paymentTestOpen => 'Open TEST payment';
+
+  @override
+  String get paymentTestReloadWindow => 'Reload payment window';
+
+  @override
+  String get paymentTestReloadApproval => 'Check server approval again';
+
+  @override
+  String get paymentTestBackToOrders => 'Back to TEST order selection';
+
+  @override
+  String get paymentTestCheckPlan => 'Check current plan';
+
+  @override
+  String get paymentCheckoutTitle => 'Cart TEST order';
+
+  @override
+  String get paymentCheckoutDescription =>
+      'No real payment or shipping occurs. The server must confirm whether this service can sell and ship shop products. Displayed prices are indicative; shipping and final totals come from server quotes.';
+
+  @override
+  String get paymentCheckoutNotConfigured =>
+      'TEST public keys and cart quote/order/approval APIs are not available yet. Orders and payments are unavailable. Addresses are neither sent to nor saved on the server.';
+
+  @override
+  String get paymentCheckoutLoginSelect => 'Log in to select an order';
+
+  @override
+  String get paymentCheckoutNoSelection =>
+      'No products selected for this account. Select products in your cart.';
+
+  @override
+  String get paymentCheckoutRecipient => 'Recipient';
+
+  @override
+  String get paymentCheckoutPhone => 'Phone number';
+
+  @override
+  String get paymentCheckoutPostalCode => 'Postal code';
+
+  @override
+  String get paymentCheckoutAddress => 'Address';
+
+  @override
+  String get paymentCheckoutAddressDetail => 'Address details (optional)';
+
+  @override
+  String get paymentCheckoutRequired => 'Please enter a value.';
+
+  @override
+  String get paymentCheckoutPhoneInvalid => 'Check the phone number format.';
+
+  @override
+  String get paymentCheckoutQuote => 'Check server TEST quote';
+
+  @override
+  String get paymentCheckoutBack => 'Back to cart';
+
+  @override
+  String paymentCheckoutUnitPrice(String price) {
+    return 'Indicative unit price: ₩$price';
+  }
+
+  @override
+  String paymentCheckoutQuantity(int count, String price) {
+    return '$count items · $price';
+  }
+
+  @override
+  String paymentCheckoutPostalLength(int count) {
+    return 'Enter a $count-digit postal code.';
+  }
+
+  @override
+  String get paymentTestRequestFailed =>
+      'The payment request was canceled or failed. It was not marked as complete.';
+
+  @override
+  String get paymentTestLoadFailed =>
+      'Could not load TEST payment. Check your network and configuration, then retry.';
+
+  @override
+  String get paymentTestWebBrowserOnly =>
+      'TEST payment is available only in a web browser.';
+
+  @override
+  String get planRefreshFailed =>
+      'The plan change was processed, but the current plan and limits could not be verified. Reload to check.';
+
+  @override
+  String get detailSettingsRetry => 'Could not load display settings. Retry';
+
+  @override
+  String get detailHelpfulUnavailable =>
+      'Helpful counts are unavailable, so the original review order is used.';
+
+  @override
+  String get detailNoReviews => 'No reviews have been posted yet.';
+
+  @override
+  String get detailNoMatchingReviews => 'No reviews match these conditions.';
+
+  @override
+  String get detailVerified => 'Verified purchase';
+
+  @override
+  String get detailSortRti => 'Highest RTI';
+
+  @override
+  String get detailViewReviewAnalysis => 'View review analysis';
+
+  @override
+  String get detailHelpful => 'Helpful';
+
+  @override
+  String get detailNotHelpful => 'Not helpful';
+
+  @override
+  String get detailFeedbackSubmitted => 'Feedback submitted.';
+
+  @override
+  String get detailFeedbackFailed => 'Could not submit feedback. Please retry.';
+
+  @override
+  String detailShowHiddenReviews(int count) {
+    return 'Show $count reviews below your threshold';
+  }
+
+  @override
+  String detailMoreReviewsRemaining(int count) {
+    return 'More reviews ($count remaining)';
+  }
+
+  @override
+  String get detailLowestPrice => 'Lowest price';
+
+  @override
+  String get detailShipping => 'Shipping';
+
+  @override
+  String detailCompareAllSellers(int count) {
+    return 'Compare prices from all $count sellers';
+  }
+
+  @override
+  String get detailInsights => 'Review insights';
+
+  @override
+  String get detailMentionedKeywords => 'Frequently mentioned keywords';
+
+  @override
+  String get detailPositivePoints => 'What people liked';
+
+  @override
+  String get detailNegativePoints => 'What could be better';
+
+  @override
+  String get detailMoreInsights => 'More review insights';
+
+  @override
+  String get detailRiskSummary => 'Overall risk summary';
+
+  @override
+  String get detailRiskSummaryTooltip =>
+      'AI trust analysis results\nfor all reviews of this product.';
+
+  @override
+  String get detailScoreTooltip =>
+      'RTI trust scores combine purchase verification, text trust,\nrepeated expressions, timing patterns, and more.';
+
+  @override
+  String get detailDisclaimer =>
+      'Analysis is for reference. Check multiple reviews before making a final judgment.';
+
+  @override
+  String get detailCriteria => 'Analysis criteria';
+
+  @override
+  String get detailReported => 'Reported';
+
+  @override
+  String get detailReportReview => 'Report review';
+
+  @override
+  String get detailSignalsTitle => 'RTI component signals';
+
+  @override
+  String get detailSignalsTooltip =>
+      'Signals contributing to RTI and their scores.\nCalculated from text, behavior, and network analysis.';
+
+  @override
+  String get detailEvidenceTooltip =>
+      'Specific evidence behind review trust assessments\nand its contribution to the score.';
+
+  @override
+  String get detailAlsoViewed =>
+      'Products also viewed by customers who viewed this item';
+
+  @override
+  String get detailKeySignals => 'Key assessment signals';
+
+  @override
+  String get detailTrend => 'Risk trend';
+
+  @override
+  String get detailTrendDescription =>
+      'Shows changes in average review RTI and the share of risky reviews.';
+
+  @override
+  String get detailTrendPending =>
+      'Risk trends are available after AI analysis is complete';
+
+  @override
+  String get detailAverageRti => 'Average RTI';
+
+  @override
+  String get detailRiskyReviewRatio => 'Risky review ratio';
+
+  @override
+  String get detailToday => 'Today';
+
+  @override
+  String get detailRecentReviewOrder => 'Most recent reviews';
+
+  @override
+  String get detailAnalyzing => 'AI analysis in progress';
+
+  @override
+  String get detailNoAnalyzedReviews => 'No analyzed reviews.';
+
+  @override
+  String get detailOfficialSeller => 'Official seller';
+
+  @override
+  String get detailTrustHigh => 'High review trust';
+
+  @override
+  String get detailTrustMedium => 'Moderate review trust';
+
+  @override
+  String get detailTrustLow => 'Low review trust';
+
+  @override
+  String detailFormattedReviewCount(String count) {
+    return '$count reviews';
+  }
+
+  @override
+  String get detailBrand => 'Brand';
+
+  @override
+  String get detailAverageRating => 'Average rating';
+
+  @override
+  String detailSellerCount(int count) {
+    return '$count sellers';
+  }
+
+  @override
+  String detailRatingReviewCount(String rating, String count) {
+    return '$rating ($count reviews)';
+  }
+
+  @override
+  String get detailAnalysisInProgress => 'AI review analysis in progress';
+
+  @override
+  String get detailAnalysisInProgressDescription =>
+      'Re:view AI is analyzing reviews in real time. Trust scores update automatically when complete.';
+
+  @override
+  String get detailInformation => 'Product information';
+
+  @override
+  String detailReviewTabCount(String count) {
+    return 'Reviews $count';
+  }
+
+  @override
+  String detailComparisonTabCount(int count) {
+    return 'Compare prices $count';
+  }
+
+  @override
+  String get searchGridView => 'Card view';
+
+  @override
+  String get searchListView => 'List view';
+
+  @override
+  String get searchSort => 'Sort';
+
+  @override
+  String get searchPageSize => 'Products per page';
+
+  @override
+  String searchResultCountLabel(int count) {
+    return '$count results';
+  }
+
+  @override
+  String searchPageSizeCount(int count) {
+    return 'Show $count per page';
+  }
+
+  @override
+  String get searchCartAdded => 'Added to cart.';
+
+  @override
+  String get searchCartAddFailed => 'Could not add to cart.';
+
+  @override
+  String searchFormattedReviewCount(String count) {
+    return '($count reviews)';
+  }
+
+  @override
+  String get searchAllProducts => 'All products';
+
+  @override
+  String get searchCategoryProducts => 'Category products';
+
+  @override
+  String get searchResultsTitle => 'Search results';
+
+  @override
+  String get searchAboutRti => 'What is the Re:view Trust Index (RTI)?';
+
+  @override
+  String get searchAboutRtiDescription =>
+      'An index combining the trustworthiness of reviews from actual buyers.';
+
+  @override
+  String searchFormattedProductCount(String count) {
+    return '$count products';
+  }
+
+  @override
+  String searchQuickFilterAllCount(int count) {
+    return 'All $count';
+  }
+
+  @override
+  String get searchMultiStoreTitle => 'Multi-store search';
+
+  @override
+  String get searchComparedProducts => 'Products compared';
+
+  @override
+  String get searchCollectedReviews => 'Collected reviews';
+
+  @override
+  String get searchNotCounted => 'Not counted';
+
+  @override
+  String get searchReviewBasedComparison => 'Compare with real-use reviews';
+
+  @override
+  String get searchComparisonDescription =>
+      'Compare prices, reviews, and RTI trust at once to find trustworthy products faster.';
+
+  @override
+  String get searchLowestPriceComparison => 'Compare lowest prices';
+
+  @override
+  String get searchReviewTrust => 'Review trust';
+
+  @override
+  String get searchFastDelivery => 'Fast delivery';
+
+  @override
+  String get searchOfficialStores => 'Includes official stores';
+
+  @override
+  String get searchVeryHighTrust => 'Very high trust';
+
+  @override
+  String get searchModerateTrust => 'Moderate';
+
+  @override
+  String get searchLowTrust => 'Low';
+
+  @override
+  String searchComparedProductCount(String count) {
+    return '$count products';
+  }
+
+  @override
+  String searchCollectedReviewCount(String count) {
+    return '$count reviews';
+  }
+
+  @override
+  String get searchUnconfirmedCategoriesNotice =>
+      'Shop products are searched by category name and may include unconfirmed classifications. Check the shop\'s original listing for detailed categories.';
+
+  @override
+  String searchLoadedProductsScope(int count, int limit) {
+    return 'Filters and sorting apply to the $count loaded products. Keyword searches return up to $limit results, not all shop products. Shipping, sales, release dates, and photo-review data are unavailable, so those conditions are unsupported.';
+  }
+
+  @override
+  String get searchSortAccuracy => 'Recommended';
+
+  @override
+  String get searchSortRti => 'By RTI';
+
+  @override
+  String get searchSortReviewCount => 'Most reviews';
+
+  @override
+  String get searchSortSales => 'Most sales';
+
+  @override
+  String get searchSortPriceLow => 'Lowest price';
+
+  @override
+  String get searchSortPriceHigh => 'Highest price';
+
+  @override
+  String get searchSortNewest => 'Newest';
+
+  @override
+  String get searchMissingClassification => 'No classification information';
+
+  @override
+  String get cartSelectionSummary => 'Selected products summary';
+
+  @override
+  String get cartUnknownPriceExcluded =>
+      'Products without price information are excluded from the total.';
+
+  @override
+  String get cartReferencePriceNotice =>
+      'Displayed prices are indicative. Purchase and check shipping/coupons at each shop.';
+
+  @override
+  String get cartViewSelectedSellers => 'View sellers for selected products';
+
+  @override
+  String get cartContinueShopping => 'Continue shopping';
+
+  @override
+  String get cartShippingConditions => 'Check delivery terms at the seller';
+
+  @override
+  String get cartSaveLater => 'Save for later';
+
+  @override
+  String get cartDelete => 'Delete';
+
+  @override
+  String cartTrustLevel(String level) {
+    return 'Trust $level';
+  }
+
+  @override
+  String cartPriceReduction(String price) {
+    return '$price reduction';
+  }
+
+  @override
+  String cartEstimatedArrival(String date) {
+    return 'Expected arrival: $date';
+  }
+
+  @override
+  String cartStockRemaining(int count) {
+    return '$count left in stock';
+  }
+
+  @override
+  String get cartDeleteSelected => 'Delete selected';
+
+  @override
+  String get cartMoveToWishlist => 'Move to wishlist';
+
+  @override
+  String cartSelectAllCount(int selected, int total) {
+    return 'Select all ($selected/$total)';
+  }
+
+  @override
+  String get cartSellersTitle => 'View sellers';
+
+  @override
+  String get cartSellersDescription =>
+      'Use the shop links in product details. TEST ordering is being prepared on a separate screen; server sales/shipping contracts are not available yet.';
+
+  @override
+  String get cartViewProductAndSeller => 'View product details and seller';
+
+  @override
+  String get cartDescription =>
+      'Check saved products and compare review trust before ordering.';
+
+  @override
+  String get cartTrustCheckTitle => 'Check review trust';
+
+  @override
+  String get cartTrustCheckDescription =>
+      'Check each product\'s RTI and choose products with more trustworthy reviews.';
+
+  @override
+  String cartTotalProducts(int count) {
+    return '$count products in total';
+  }
+
+  @override
+  String wishlistCountItems(int count) {
+    return '$count items';
+  }
+
+  @override
+  String get wishlistShoppingMall => 'Shop';
+
+  @override
+  String get wishlistPriceComparisonUnavailable =>
+      'The server does not provide price-drop comparisons. This does not mean prices have stayed the same.';
+
+  @override
+  String get wishlistUncategorized => 'Uncategorized';
+
+  @override
+  String get wishlistShopUnknown => 'Shop information unavailable';
+
+  @override
+  String get myPageTrustUnavailable =>
+      'Could not check analysis information for wishlisted products.';
+
+  @override
+  String get myPageTrustScope =>
+      'Based on average analyzed RTI and server attention grades for wishlisted products.';
+
+  @override
+  String myPageTrustScorePoints(int score) {
+    return '$score points';
+  }
+
+  @override
+  String get myPageBack => 'Back to my page';
+
+  @override
+  String get myPageActivityLoadFailed => 'Could not load recent activity.';
+
+  @override
+  String get myPageActivityRecent => 'Recent';
+
+  @override
+  String get myPageActivityJustNow => 'Just now';
+
+  @override
+  String myPageActivityDaysAgo(int count) {
+    return '$count days ago';
+  }
+
+  @override
+  String myPageActivityHoursAgo(int count) {
+    return '$count hours ago';
+  }
+
+  @override
+  String myPageNamedDescription(String name) {
+    return 'Manage $name’s information and saved-product activity.';
+  }
+
+  @override
+  String get myPageWarningScope =>
+      'Wishlisted products graded suspicious or dangerous by the server. Unanalyzed products are excluded.';
+
+  @override
+  String get myPageCheckList => 'Check list';
+
+  @override
+  String get myPageAllWarnings => 'All attention grades';
+
+  @override
+  String get myPageLoadFailed => 'Could not check products needing attention.';
+
+  @override
+  String myPageViewListCount(int count) {
+    return 'View list ($count)';
+  }
+
+  @override
+  String recentProductsScope(int count) {
+    return 'Duplicates were removed from the server’s latest $count view records. This may differ from the all-time product count.';
+  }
+
+  @override
+  String get recentProductsLoadFailed =>
+      'Could not load recently viewed products.';
+
+  @override
+  String get notificationsAll => 'All notifications';
+
+  @override
+  String get notificationsPriceAlerts => 'Price alerts';
+
+  @override
+  String get notificationsSavedSettings => 'Saved notification preferences';
+
+  @override
+  String get notificationsMore => 'View more';
+
+  @override
+  String get notificationsTargetUnsupported =>
+      'This notification’s destination is not supported yet.';
+
+  @override
+  String get notificationsCheckingUnreadShort =>
+      'Checking unread notifications';
+
+  @override
+  String get notificationsUnreadFailedShort =>
+      'Could not check the notification count.';
+
+  @override
+  String get notificationsManageInboxAndPrices => 'Inbox · Manage price alerts';
+
+  @override
+  String get notificationsServiceTitle => 'Service notifications';
+
+  @override
+  String get notificationsCheckingUnread => 'Checking unread notifications.';
+
+  @override
+  String get notificationsUnreadFailed => 'Could not check the unread count.';
+
+  @override
+  String get notificationsSettingsFailed =>
+      'Could not load saved notification settings.';
+
+  @override
+  String get notificationsSettingsChecking =>
+      'Checking saved notification settings';
+
+  @override
+  String get notificationsReviewSettings => 'Notification and review settings';
+
+  @override
+  String get notificationsMonitoringNotice =>
+      'Automatic risk monitoring requires server integration. Enabling notifications alone does not start monitoring.';
+
+  @override
+  String get notificationsInboxNotice =>
+      'View notifications saved in your inbox. Browser push, email, and SMS are unsupported.';
+
+  @override
+  String notificationsUnreadCount(int count) {
+    return '$count unread notifications';
+  }
+
+  @override
+  String get notificationsReceiving => 'On';
+
+  @override
+  String get notificationsNotReceiving => 'Off';
+
+  @override
+  String notificationsRiskStatus(String status) {
+    return 'Risk detection $status';
+  }
+
+  @override
+  String notificationsAnalysisStatus(String status) {
+    return 'Analysis results $status';
+  }
+
+  @override
+  String notificationsFeedbackStatus(String status) {
+    return 'Review outcomes $status';
+  }
+
+  @override
+  String get priceWatchTitle => 'Price drops · Manage price alerts';
+
+  @override
+  String get priceWatchHistoryNotice =>
+      'Price alert history and saved subscriptions are not supported yet. Below are server price-drop indicators for wishlisted products, rather than notification records.';
+
+  @override
+  String get priceWatchComparisonUnavailable =>
+      'The server does not provide comparative prices for wishlisted products, so price drops cannot be checked.';
+
+  @override
+  String get priceWatchRefreshWishlistPrices => 'Refresh wishlist prices';
+
+  @override
+  String get priceWatchViewWishlist => 'View wishlisted products';
+
+  @override
+  String get priceWatchSubscriptionNotice =>
+      'Available once server price history and subscription storage are connected.';
+
+  @override
+  String get priceWatchSubscriptionUnavailable =>
+      'Price alert signup · Unavailable';
+
+  @override
+  String get priceWatchDropIndicator =>
+      'Server price-drop indicator · No amount/percentage provided';
+
+  @override
+  String priceWatchLoadFailed(String message) {
+    return 'Could not check price-drop indicators. $message';
+  }
+
+  @override
+  String priceWatchDropCounts(int total, int known, int drops) {
+    return 'Of $total wishlisted products, $known have price-drop data and $drops are marked as lower. Reference prices and dates are unavailable.';
+  }
 }

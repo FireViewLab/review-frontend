@@ -1,3 +1,4 @@
+import 'package:re_view_front/l10n/generated/app_localizations.dart';
 import 'package:re_view_front/shared/presentation/analysis_formatters.dart';
 import 'package:re_view_front/core/analysis/analysis_display.dart';
 // ignore_for_file: use_key_in_widget_constructors
@@ -44,7 +45,7 @@ class AnalysisReportReviewListSection extends StatelessWidget {
             Row(
               children: [
                 Text(
-                  '최신 리뷰 순서',
+                  AppLocalizations.of(context).detailRecentReviewOrder,
                   style: Theme.of(context).textTheme.titleSmall?.copyWith(
                     color: AppColors.textPrimary,
                     fontWeight: FontWeight.w900,
@@ -65,7 +66,7 @@ class AnalysisReportReviewListSection extends StatelessWidget {
                       ),
                       const SizedBox(width: 5),
                       Text(
-                        'AI 분석 중',
+                        AppLocalizations.of(context).detailAnalyzing,
                         style: Theme.of(context).textTheme.labelSmall?.copyWith(
                           color: AppColors.primary,
                           fontWeight: FontWeight.w600,
@@ -82,7 +83,7 @@ class AnalysisReportReviewListSection extends StatelessWidget {
                 child: Padding(
                   padding: const EdgeInsets.symmetric(vertical: AppSpacing.xl),
                   child: Text(
-                    '분석된 리뷰가 없습니다.',
+                    AppLocalizations.of(context).detailNoAnalyzedReviews,
                     style: Theme.of(context).textTheme.bodySmall?.copyWith(
                       color: AppColors.textSecondary,
                     ),
@@ -256,7 +257,9 @@ class AnalysisReportRtiBadge extends StatelessWidget {
           Text(
             analysis?.isV2 == true
                 ? analysis!.badgeText(context)
-                : (score == null ? '분석 전' : 'RTI $score'),
+                : (score == null
+                      ? AppLocalizations.of(context).externalUnanalyzed
+                      : 'RTI $score'),
             style: Theme.of(context).textTheme.labelSmall?.copyWith(
               color: color,
               fontWeight: FontWeight.w900,

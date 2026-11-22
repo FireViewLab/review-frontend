@@ -1,3 +1,4 @@
+import 'package:re_view_front/l10n/generated/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -16,23 +17,30 @@ class NotificationSettingsSummary extends ConsumerWidget {
       return Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          Text('알림', style: Theme.of(context).textTheme.titleSmall),
+          Text(
+            AppLocalizations.of(context).myPageSideNavAlerts,
+            style: Theme.of(context).textTheme.titleSmall,
+          ),
           Text(
             unread.isLoading
-                ? '읽지 않은 알림 확인 중'
+                ? AppLocalizations.of(context).notificationsCheckingUnreadShort
                 : unread.hasError
-                ? '알림 수를 확인하지 못했어요.'
-                : '읽지 않은 알림 ${unread.value ?? 0}개',
+                ? AppLocalizations.of(context).notificationsUnreadFailedShort
+                : AppLocalizations.of(
+                    context,
+                  ).notificationsUnreadCount(unread.value ?? 0),
           ),
           TextButton.icon(
             onPressed: () => context.push(RoutePaths.notifications),
             icon: const Icon(Icons.notifications_outlined),
-            label: const Text('알림함 · 가격 알림 관리'),
+            label: Text(
+              AppLocalizations.of(context).notificationsManageInboxAndPrices,
+            ),
           ),
           if (unread.hasError)
             TextButton(
               onPressed: () => ref.invalidate(unreadNotificationCountProvider),
-              child: const Text('다시 시도'),
+              child: Text(AppLocalizations.of(context).actionRetry),
             ),
         ],
       );
@@ -44,32 +52,55 @@ class NotificationSettingsSummary extends ConsumerWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        Text('서비스 알림', style: Theme.of(context).textTheme.titleSmall),
+        Text(
+          AppLocalizations.of(context).notificationsServiceTitle,
+          style: Theme.of(context).textTheme.titleSmall,
+        ),
         const SizedBox(height: 8),
         Text(
           unread.isLoading
-              ? '읽지 않은 알림을 확인하고 있어요.'
+              ? AppLocalizations.of(context).notificationsCheckingUnread
               : unread.hasError
-              ? '읽지 않은 알림 수를 확인하지 못했어요.'
-              : '읽지 않은 알림 ${unread.value ?? 0}개',
+              ? AppLocalizations.of(context).notificationsUnreadFailed
+              : AppLocalizations.of(
+                  context,
+                ).notificationsUnreadCount(unread.value ?? 0),
         ),
         if (data != null)
           Text(
             [
-              '위험 감지 ${data.notifyRiskyProduct ? '받음' : '받지 않음'}',
-              '분석 결과 ${data.notifyAnalysisComplete ? '받음' : '받지 않음'}',
-              '처리 결과 ${data.notifyFeedbackResult ? '받음' : '받지 않음'}',
+              AppLocalizations.of(context).notificationsRiskStatus(
+                data.notifyRiskyProduct
+                    ? AppLocalizations.of(context).notificationsReceiving
+                    : AppLocalizations.of(context).notificationsNotReceiving,
+              ),
+              AppLocalizations.of(context).notificationsAnalysisStatus(
+                data.notifyAnalysisComplete
+                    ? AppLocalizations.of(context).notificationsReceiving
+                    : AppLocalizations.of(context).notificationsNotReceiving,
+              ),
+              AppLocalizations.of(context).notificationsFeedbackStatus(
+                data.notifyFeedbackResult
+                    ? AppLocalizations.of(context).notificationsReceiving
+                    : AppLocalizations.of(context).notificationsNotReceiving,
+              ),
             ].join(' · '),
           )
         else
-          Text(settings.hasError ? '저장된 알림 설정을 불러오지 못했어요.' : '저장된 알림 설정 확인 중'),
+          Text(
+            settings.hasError
+                ? AppLocalizations.of(context).notificationsSettingsFailed
+                : AppLocalizations.of(context).notificationsSettingsChecking,
+          ),
         Wrap(
           spacing: 8,
           children: [
             TextButton.icon(
               onPressed: () => context.push(RoutePaths.settings),
               icon: const Icon(Icons.settings_outlined),
-              label: const Text('알림·리뷰 설정'),
+              label: Text(
+                AppLocalizations.of(context).notificationsReviewSettings,
+              ),
             ),
             if (settings.hasError || unread.hasError)
               TextButton(
@@ -81,12 +112,12 @@ class NotificationSettingsSummary extends ConsumerWidget {
                     ref.invalidate(unreadNotificationCountProvider);
                   }
                 },
-                child: const Text('다시 시도'),
+                child: Text(AppLocalizations.of(context).actionRetry),
               ),
           ],
         ),
-        const Text('위험 변화 자동 감시는 서버 연동이 필요해요. 수신 설정을 켜는 것만으로 감시가 시작되지는 않아요.'),
-        const Text('알림함에 저장된 알림을 확인해요. 브라우저 푸시·이메일·문자는 지원하지 않아요.'),
+        Text(AppLocalizations.of(context).notificationsMonitoringNotice),
+        Text(AppLocalizations.of(context).notificationsInboxNotice),
       ],
     );
   }

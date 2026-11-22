@@ -5951,6 +5951,1824 @@ abstract class AppLocalizations {
   /// In ko, this message translates to:
   /// **'다시 불러오기'**
   String get onboardingReload;
+
+  /// No description provided for @reportSubmit.
+  ///
+  /// In ko, this message translates to:
+  /// **'신고 접수하기'**
+  String get reportSubmit;
+
+  /// No description provided for @reportReceived.
+  ///
+  /// In ko, this message translates to:
+  /// **'신고 접수'**
+  String get reportReceived;
+
+  /// No description provided for @reportReceivedDescription.
+  ///
+  /// In ko, this message translates to:
+  /// **'대상 리뷰와 신고 사유가 저장됩니다.'**
+  String get reportReceivedDescription;
+
+  /// No description provided for @reportAssistedReview.
+  ///
+  /// In ko, this message translates to:
+  /// **'AI 보조 검토'**
+  String get reportAssistedReview;
+
+  /// No description provided for @reportAssistedReviewDescription.
+  ///
+  /// In ko, this message translates to:
+  /// **'RTI 신호와 유사 리뷰 이력을 함께 확인합니다.'**
+  String get reportAssistedReviewDescription;
+
+  /// No description provided for @reportTeamDecision.
+  ///
+  /// In ko, this message translates to:
+  /// **'운영팀 판단'**
+  String get reportTeamDecision;
+
+  /// No description provided for @reportTeamDecisionDescription.
+  ///
+  /// In ko, this message translates to:
+  /// **'허위/악의성이면 무선 검토 상태가 갱신됩니다.'**
+  String get reportTeamDecisionDescription;
+
+  /// No description provided for @reportResultNotification.
+  ///
+  /// In ko, this message translates to:
+  /// **'결과 알림'**
+  String get reportResultNotification;
+
+  /// No description provided for @reportResultNotificationDescription.
+  ///
+  /// In ko, this message translates to:
+  /// **'검토 완료되면 피드백 내역에 결과가 반영됩니다.'**
+  String get reportResultNotificationDescription;
+
+  /// No description provided for @reportProcessTitle.
+  ///
+  /// In ko, this message translates to:
+  /// **'처리 절차'**
+  String get reportProcessTitle;
+
+  /// No description provided for @reportProcessDescription.
+  ///
+  /// In ko, this message translates to:
+  /// **'신고 접수 후 운영팀이 검토하는 흐름이에요.'**
+  String get reportProcessDescription;
+
+  /// No description provided for @reportGuideRepeated.
+  ///
+  /// In ko, this message translates to:
+  /// **'반복 문구를 구체적으로 적기'**
+  String get reportGuideRepeated;
+
+  /// No description provided for @reportGuideRepeatedDescription.
+  ///
+  /// In ko, this message translates to:
+  /// **'정확한 위치/문장/패턴 등 눈에 띄는 표현을 적어주세요.'**
+  String get reportGuideRepeatedDescription;
+
+  /// No description provided for @reportGuideContext.
+  ///
+  /// In ko, this message translates to:
+  /// **'상품 사용 맥락 확인'**
+  String get reportGuideContext;
+
+  /// No description provided for @reportGuideContextDescription.
+  ///
+  /// In ko, this message translates to:
+  /// **'실제 사용 경험이 없거나 상품과 무관한 부분을 알려주세요.'**
+  String get reportGuideContextDescription;
+
+  /// No description provided for @reportGuideAttachments.
+  ///
+  /// In ko, this message translates to:
+  /// **'첨부 자료 첨부'**
+  String get reportGuideAttachments;
+
+  /// No description provided for @reportGuideAttachmentsDescription.
+  ///
+  /// In ko, this message translates to:
+  /// **'해당 근거가 여러 상황에 반복된다면 첨부가 좋습니다.'**
+  String get reportGuideAttachmentsDescription;
+
+  /// No description provided for @reportGuideTitle.
+  ///
+  /// In ko, this message translates to:
+  /// **'신고 가이드'**
+  String get reportGuideTitle;
+
+  /// No description provided for @reportGuideDescription.
+  ///
+  /// In ko, this message translates to:
+  /// **'이런 경우 신고가 더 잘 처리돼요.'**
+  String get reportGuideDescription;
+
+  /// No description provided for @reportSummaryTitle.
+  ///
+  /// In ko, this message translates to:
+  /// **'접수 요약'**
+  String get reportSummaryTitle;
+
+  /// No description provided for @reportSummaryDescription.
+  ///
+  /// In ko, this message translates to:
+  /// **'제출 전 입력한 내용을 확인하세요.'**
+  String get reportSummaryDescription;
+
+  /// No description provided for @reportLiveBadge.
+  ///
+  /// In ko, this message translates to:
+  /// **'실시간'**
+  String get reportLiveBadge;
+
+  /// No description provided for @reportSelectedReasons.
+  ///
+  /// In ko, this message translates to:
+  /// **'선택 사유'**
+  String get reportSelectedReasons;
+
+  /// No description provided for @reportAnalysisEvidence.
+  ///
+  /// In ko, this message translates to:
+  /// **'AI 근거'**
+  String get reportAnalysisEvidence;
+
+  /// No description provided for @reportTargetReviews.
+  ///
+  /// In ko, this message translates to:
+  /// **'대상 리뷰'**
+  String get reportTargetReviews;
+
+  /// No description provided for @reportReasonTitle.
+  ///
+  /// In ko, this message translates to:
+  /// **'신고 사유 선택'**
+  String get reportReasonTitle;
+
+  /// No description provided for @reportReasonDescription.
+  ///
+  /// In ko, this message translates to:
+  /// **'카드를 탭해서 선택하세요 · 여러 개 선택 가능합니다.'**
+  String get reportReasonDescription;
+
+  /// No description provided for @reportViewCriteria.
+  ///
+  /// In ko, this message translates to:
+  /// **'신고 기준 보기'**
+  String get reportViewCriteria;
+
+  /// No description provided for @reportStepTarget.
+  ///
+  /// In ko, this message translates to:
+  /// **'대상 확인'**
+  String get reportStepTarget;
+
+  /// No description provided for @reportStepTargetDescription.
+  ///
+  /// In ko, this message translates to:
+  /// **'상품과 리뷰 정보 확인'**
+  String get reportStepTargetDescription;
+
+  /// No description provided for @reportStepReasonDescription.
+  ///
+  /// In ko, this message translates to:
+  /// **'문제 유형 선택'**
+  String get reportStepReasonDescription;
+
+  /// No description provided for @reportStepDetails.
+  ///
+  /// In ko, this message translates to:
+  /// **'상세 근거'**
+  String get reportStepDetails;
+
+  /// No description provided for @reportStepDetailsDescription.
+  ///
+  /// In ko, this message translates to:
+  /// **'추가 설명 입력'**
+  String get reportStepDetailsDescription;
+
+  /// No description provided for @reportStepComplete.
+  ///
+  /// In ko, this message translates to:
+  /// **'접수 완료'**
+  String get reportStepComplete;
+
+  /// No description provided for @reportStepCompleteDescription.
+  ///
+  /// In ko, this message translates to:
+  /// **'검토 상태 추적'**
+  String get reportStepCompleteDescription;
+
+  /// No description provided for @reportTargetDescription.
+  ///
+  /// In ko, this message translates to:
+  /// **'신고하려는 상품과 리뷰가 맞는지 확인해주세요.'**
+  String get reportTargetDescription;
+
+  /// No description provided for @reportFromAnalysis.
+  ///
+  /// In ko, this message translates to:
+  /// **'분석 팝업에서 이동'**
+  String get reportFromAnalysis;
+
+  /// No description provided for @reportPrivacyConsent.
+  ///
+  /// In ko, this message translates to:
+  /// **'개인정보 수집 및 신고 처리 안내에 동의합니다.'**
+  String get reportPrivacyConsent;
+
+  /// No description provided for @reportPrivacyDescription.
+  ///
+  /// In ko, this message translates to:
+  /// **'신고 내용은 리뷰 접수, 처리 결과 안내, 모델 품질 개선을 위해 사용되며 필요한 기간 동안 보관됩니다.'**
+  String get reportPrivacyDescription;
+
+  /// No description provided for @reportTruthConsent.
+  ///
+  /// In ko, this message translates to:
+  /// **'허위 신고가 아님을 확인합니다.'**
+  String get reportTruthConsent;
+
+  /// No description provided for @reportTruthDescription.
+  ///
+  /// In ko, this message translates to:
+  /// **'신고 내용이 사실과 다를 경우 처리 우선순위가 낮아질 수 있습니다.'**
+  String get reportTruthDescription;
+
+  /// No description provided for @reportTitleText.
+  ///
+  /// In ko, this message translates to:
+  /// **'리뷰 신고 접수'**
+  String get reportTitleText;
+
+  /// No description provided for @reportDescription.
+  ///
+  /// In ko, this message translates to:
+  /// **'의심 리뷰의 문제 유형과 근거를 남겨주세요. 제출된 신고는 운영 검수와 모델 개선 피드백에 함께 활용됩니다.'**
+  String get reportDescription;
+
+  /// No description provided for @reportViewMyFeedback.
+  ///
+  /// In ko, this message translates to:
+  /// **'내 피드백 내역 보기'**
+  String get reportViewMyFeedback;
+
+  /// No description provided for @reportReportBreadcrumb.
+  ///
+  /// In ko, this message translates to:
+  /// **'리포트'**
+  String get reportReportBreadcrumb;
+
+  /// No description provided for @reportEvidenceTitle.
+  ///
+  /// In ko, this message translates to:
+  /// **'분석 근거 함께 제출 (선택)'**
+  String get reportEvidenceTitle;
+
+  /// No description provided for @reportEvidenceDescription.
+  ///
+  /// In ko, this message translates to:
+  /// **'현재 리뷰의 RTI 분석 신호를 신고 근거로 첨부할 수 있어요.'**
+  String get reportEvidenceDescription;
+
+  /// No description provided for @reportAttachEvidence.
+  ///
+  /// In ko, this message translates to:
+  /// **'AI 분석 근거 첨부'**
+  String get reportAttachEvidence;
+
+  /// No description provided for @reportAttachEvidenceDescription.
+  ///
+  /// In ko, this message translates to:
+  /// **'RTI 신호 데이터가 신고 근거와 함께 제출돼요.'**
+  String get reportAttachEvidenceDescription;
+
+  /// No description provided for @reportViewEvidence.
+  ///
+  /// In ko, this message translates to:
+  /// **'근거 보기'**
+  String get reportViewEvidence;
+
+  /// No description provided for @reportDetailsTitle.
+  ///
+  /// In ko, this message translates to:
+  /// **'상세 근거 입력'**
+  String get reportDetailsTitle;
+
+  /// No description provided for @reportDetailsDescription.
+  ///
+  /// In ko, this message translates to:
+  /// **'신고 판단에 도움이 되는 내용을 남겨주세요.'**
+  String get reportDetailsDescription;
+
+  /// No description provided for @reportType.
+  ///
+  /// In ko, this message translates to:
+  /// **'신고 유형'**
+  String get reportType;
+
+  /// No description provided for @reportVisibility.
+  ///
+  /// In ko, this message translates to:
+  /// **'처리 결과 공개 범위'**
+  String get reportVisibility;
+
+  /// No description provided for @reportDetailHint.
+  ///
+  /// In ko, this message translates to:
+  /// **'구체적인 문제 내용과 맥락을 입력해주세요.'**
+  String get reportDetailHint;
+
+  /// No description provided for @reportAttachments.
+  ///
+  /// In ko, this message translates to:
+  /// **'첨부 자료 '**
+  String get reportAttachments;
+
+  /// No description provided for @reportOptional.
+  ///
+  /// In ko, this message translates to:
+  /// **'(선택)'**
+  String get reportOptional;
+
+  /// No description provided for @reportAttachmentsFull.
+  ///
+  /// In ko, this message translates to:
+  /// **'첨부 가능한 개수를 모두 채웠어요'**
+  String get reportAttachmentsFull;
+
+  /// No description provided for @reportAttachmentsHint.
+  ///
+  /// In ko, this message translates to:
+  /// **'스크린샷이나 추가 근거를 첨부해주세요'**
+  String get reportAttachmentsHint;
+
+  /// No description provided for @reportChooseFiles.
+  ///
+  /// In ko, this message translates to:
+  /// **'파일 선택'**
+  String get reportChooseFiles;
+
+  /// No description provided for @reportConsentsRequired.
+  ///
+  /// In ko, this message translates to:
+  /// **'동의 항목을 모두 확인해주세요.'**
+  String get reportConsentsRequired;
+
+  /// No description provided for @reportSubmittedTitle.
+  ///
+  /// In ko, this message translates to:
+  /// **'신고 접수 완료'**
+  String get reportSubmittedTitle;
+
+  /// No description provided for @reportSubmittedDescription.
+  ///
+  /// In ko, this message translates to:
+  /// **'신고가 접수되었습니다.\n처리 결과는 피드백 내역에서 확인할 수 있어요.'**
+  String get reportSubmittedDescription;
+
+  /// No description provided for @reportViewFeedback.
+  ///
+  /// In ko, this message translates to:
+  /// **'피드백 내역 보기'**
+  String get reportViewFeedback;
+
+  /// No description provided for @reportAlreadyReportedTitle.
+  ///
+  /// In ko, this message translates to:
+  /// **'이미 신고한 리뷰'**
+  String get reportAlreadyReportedTitle;
+
+  /// No description provided for @reportAlreadyReportedDescription.
+  ///
+  /// In ko, this message translates to:
+  /// **'이 리뷰는 이미 신고하셨습니다.\n중복 신고는 접수되지 않아요.'**
+  String get reportAlreadyReportedDescription;
+
+  /// No description provided for @reportReviewCount.
+  ///
+  /// In ko, this message translates to:
+  /// **'{count}건'**
+  String reportReviewCount(int count);
+
+  /// No description provided for @reportAverageReviewRound.
+  ///
+  /// In ko, this message translates to:
+  /// **'평균 {round}차 검토'**
+  String reportAverageReviewRound(int round);
+
+  /// No description provided for @reportRiskyReviewScore.
+  ///
+  /// In ko, this message translates to:
+  /// **'위험 리뷰 · RTI {score}'**
+  String reportRiskyReviewScore(String score);
+
+  /// No description provided for @reportMaxAttachments.
+  ///
+  /// In ko, this message translates to:
+  /// **'최대 {count}개까지만 첨부할 수 있어요.'**
+  String reportMaxAttachments(int count);
+
+  /// No description provided for @reportFileTooLarge.
+  ///
+  /// In ko, this message translates to:
+  /// **'{name}은 {size}MB를 초과합니다.'**
+  String reportFileTooLarge(String name, int size);
+
+  /// No description provided for @reportMinimumCharacters.
+  ///
+  /// In ko, this message translates to:
+  /// **'최소 {count}자 이상 입력해주세요.'**
+  String reportMinimumCharacters(int count);
+
+  /// No description provided for @reportMinimumCharactersHelp.
+  ///
+  /// In ko, this message translates to:
+  /// **'최소 {count}자 이상 입력하면 운영팀 검토에 더 도움이 돼요.'**
+  String reportMinimumCharactersHelp(int count);
+
+  /// No description provided for @reportCharacterCount.
+  ///
+  /// In ko, this message translates to:
+  /// **'{count}자'**
+  String reportCharacterCount(int count);
+
+  /// No description provided for @reportAttachmentLimits.
+  ///
+  /// In ko, this message translates to:
+  /// **'PNG, JPG, PDF · 최대 {size}MB · 최대 {count}개'**
+  String reportAttachmentLimits(int size, int count);
+
+  /// No description provided for @reportReasonRequired.
+  ///
+  /// In ko, this message translates to:
+  /// **'신고 사유를 {count}개 이상 선택해주세요.'**
+  String reportReasonRequired(int count);
+
+  /// No description provided for @reportDetailsRequired.
+  ///
+  /// In ko, this message translates to:
+  /// **'상세 설명을 {count}자 이상 입력해주세요.'**
+  String reportDetailsRequired(int count);
+
+  /// No description provided for @reportReasonFake.
+  ///
+  /// In ko, this message translates to:
+  /// **'가짜 리뷰 / 리뷰 날바 의심'**
+  String get reportReasonFake;
+
+  /// No description provided for @reportReasonGenerated.
+  ///
+  /// In ko, this message translates to:
+  /// **'AI 생성 흔적 의심'**
+  String get reportReasonGenerated;
+
+  /// No description provided for @reportReasonFakeDescription.
+  ///
+  /// In ko, this message translates to:
+  /// **'반복되고, 과도한 칭찬, 구매 이력 복수가 동조하는 가능성이 있는 리뷰예요.'**
+  String get reportReasonFakeDescription;
+
+  /// No description provided for @reportReasonGeneratedDescription.
+  ///
+  /// In ko, this message translates to:
+  /// **'반복이 지나치게 정밀하거나, 동일한 문장 구조가 반복되는 리뷰예요.'**
+  String get reportReasonGeneratedDescription;
+
+  /// No description provided for @reportReasonIrrelevantDescription.
+  ///
+  /// In ko, this message translates to:
+  /// **'실제 상품 사용 경험과 관련이 없는 내용이거나 다른 상품/페이지의 내용을 포함해요.'**
+  String get reportReasonIrrelevantDescription;
+
+  /// No description provided for @reportReasonInappropriateDescription.
+  ///
+  /// In ko, this message translates to:
+  /// **'비방, 혐오 표현, 이름 등 개인정보가 포함된 리뷰예요.'**
+  String get reportReasonInappropriateDescription;
+
+  /// No description provided for @reportReasonAdDescription.
+  ///
+  /// In ko, this message translates to:
+  /// **'광고 리뷰입니다.'**
+  String get reportReasonAdDescription;
+
+  /// No description provided for @reportReasonRepeatDescription.
+  ///
+  /// In ko, this message translates to:
+  /// **'반복되는 내용입니다.'**
+  String get reportReasonRepeatDescription;
+
+  /// No description provided for @reportReasonOtherDescription.
+  ///
+  /// In ko, this message translates to:
+  /// **'기타 신고 사유입니다.'**
+  String get reportReasonOtherDescription;
+
+  /// No description provided for @reportTypeRepetition.
+  ///
+  /// In ko, this message translates to:
+  /// **'반복 문구'**
+  String get reportTypeRepetition;
+
+  /// No description provided for @reportTypeNewAccount.
+  ///
+  /// In ko, this message translates to:
+  /// **'계정 생성 직후'**
+  String get reportTypeNewAccount;
+
+  /// No description provided for @reportTypeSimilarCluster.
+  ///
+  /// In ko, this message translates to:
+  /// **'유사 리뷰 군집'**
+  String get reportTypeSimilarCluster;
+
+  /// No description provided for @reportPrivate.
+  ///
+  /// In ko, this message translates to:
+  /// **'비공개'**
+  String get reportPrivate;
+
+  /// No description provided for @reportOnlyMe.
+  ///
+  /// In ko, this message translates to:
+  /// **'나에게만 공개'**
+  String get reportOnlyMe;
+
+  /// No description provided for @reportTeamOnly.
+  ///
+  /// In ko, this message translates to:
+  /// **'운영팀 공유'**
+  String get reportTeamOnly;
+
+  /// No description provided for @reportSelectPrompt.
+  ///
+  /// In ko, this message translates to:
+  /// **'선택해주세요'**
+  String get reportSelectPrompt;
+
+  /// No description provided for @reportGuideBadge.
+  ///
+  /// In ko, this message translates to:
+  /// **'안내'**
+  String get reportGuideBadge;
+
+  /// No description provided for @paymentTestCartTitle.
+  ///
+  /// In ko, this message translates to:
+  /// **'장바구니 토스 TEST 결제'**
+  String get paymentTestCartTitle;
+
+  /// No description provided for @paymentTestServiceTitle.
+  ///
+  /// In ko, this message translates to:
+  /// **'토스 TEST 서비스 결제'**
+  String get paymentTestServiceTitle;
+
+  /// No description provided for @paymentTestCartDescription.
+  ///
+  /// In ko, this message translates to:
+  /// **'TEST 주문·결제 전용입니다. 실제 상품 배송과 실결제는 진행하지 않습니다. 판매·배송 가능 상품과 최종 금액은 서버 견적으로 확인합니다.'**
+  String get paymentTestCartDescription;
+
+  /// No description provided for @paymentTestServiceDescription.
+  ///
+  /// In ko, this message translates to:
+  /// **'테스트 전용입니다. 외부 쇼핑몰 상품 주문·실결제·자동 플랜 변경을 진행하지 않습니다.'**
+  String get paymentTestServiceDescription;
+
+  /// No description provided for @paymentTestLoginRequired.
+  ///
+  /// In ko, this message translates to:
+  /// **'주문 조회와 결제는 로그인이 필요합니다. 결제 콜백 주소는 로그인 후 다시 열어 주세요.'**
+  String get paymentTestLoginRequired;
+
+  /// No description provided for @paymentTestNotConfigured.
+  ///
+  /// In ko, this message translates to:
+  /// **'TEST 결제 키와 서버 주문·승인 계약이 아직 준비되지 않았습니다. 현재 결제를 시작하거나 완료할 수 없습니다.'**
+  String get paymentTestNotConfigured;
+
+  /// No description provided for @paymentTestWebOnly.
+  ///
+  /// In ko, this message translates to:
+  /// **'현재 TEST 결제는 웹 브라우저에서만 지원합니다.'**
+  String get paymentTestWebOnly;
+
+  /// No description provided for @paymentTestOrder.
+  ///
+  /// In ko, this message translates to:
+  /// **'TEST 주문'**
+  String get paymentTestOrder;
+
+  /// No description provided for @paymentTestReloadTargets.
+  ///
+  /// In ko, this message translates to:
+  /// **'결제 대상 다시 조회'**
+  String get paymentTestReloadTargets;
+
+  /// No description provided for @paymentTestOpening.
+  ///
+  /// In ko, this message translates to:
+  /// **'TEST 결제창 여는 중'**
+  String get paymentTestOpening;
+
+  /// No description provided for @paymentTestOpen.
+  ///
+  /// In ko, this message translates to:
+  /// **'TEST 결제창 열기'**
+  String get paymentTestOpen;
+
+  /// No description provided for @paymentTestReloadWindow.
+  ///
+  /// In ko, this message translates to:
+  /// **'결제창 다시 불러오기'**
+  String get paymentTestReloadWindow;
+
+  /// No description provided for @paymentTestReloadApproval.
+  ///
+  /// In ko, this message translates to:
+  /// **'서버 승인 상태 다시 조회'**
+  String get paymentTestReloadApproval;
+
+  /// No description provided for @paymentTestBackToOrders.
+  ///
+  /// In ko, this message translates to:
+  /// **'TEST 주문 선택으로 돌아가기'**
+  String get paymentTestBackToOrders;
+
+  /// No description provided for @paymentTestCheckPlan.
+  ///
+  /// In ko, this message translates to:
+  /// **'현재 플랜 확인'**
+  String get paymentTestCheckPlan;
+
+  /// No description provided for @paymentCheckoutTitle.
+  ///
+  /// In ko, this message translates to:
+  /// **'장바구니 TEST 주문'**
+  String get paymentCheckoutTitle;
+
+  /// No description provided for @paymentCheckoutDescription.
+  ///
+  /// In ko, this message translates to:
+  /// **'실결제·실제 배송은 진행하지 않습니다. 쇼핑몰 상품을 이 서비스가 판매·배송할 수 있는지 서버 확인이 필요합니다. 표시 가격은 참고용이며 배송비·최종 금액은 서버 견적으로 확인합니다.'**
+  String get paymentCheckoutDescription;
+
+  /// No description provided for @paymentCheckoutNotConfigured.
+  ///
+  /// In ko, this message translates to:
+  /// **'TEST 공개 키와 장바구니 견적·주문·승인 API가 아직 없습니다. 주문 저장과 결제는 사용할 수 없습니다. 주소는 서버에 보내거나 저장하지 않습니다.'**
+  String get paymentCheckoutNotConfigured;
+
+  /// No description provided for @paymentCheckoutLoginSelect.
+  ///
+  /// In ko, this message translates to:
+  /// **'로그인 후 주문 선택'**
+  String get paymentCheckoutLoginSelect;
+
+  /// No description provided for @paymentCheckoutNoSelection.
+  ///
+  /// In ko, this message translates to:
+  /// **'현재 계정의 선택 상품이 없습니다. 장바구니에서 상품을 선택해 주세요.'**
+  String get paymentCheckoutNoSelection;
+
+  /// No description provided for @paymentCheckoutRecipient.
+  ///
+  /// In ko, this message translates to:
+  /// **'수령인'**
+  String get paymentCheckoutRecipient;
+
+  /// No description provided for @paymentCheckoutPhone.
+  ///
+  /// In ko, this message translates to:
+  /// **'연락처'**
+  String get paymentCheckoutPhone;
+
+  /// No description provided for @paymentCheckoutPostalCode.
+  ///
+  /// In ko, this message translates to:
+  /// **'우편번호'**
+  String get paymentCheckoutPostalCode;
+
+  /// No description provided for @paymentCheckoutAddress.
+  ///
+  /// In ko, this message translates to:
+  /// **'주소'**
+  String get paymentCheckoutAddress;
+
+  /// No description provided for @paymentCheckoutAddressDetail.
+  ///
+  /// In ko, this message translates to:
+  /// **'상세 주소 (선택)'**
+  String get paymentCheckoutAddressDetail;
+
+  /// No description provided for @paymentCheckoutRequired.
+  ///
+  /// In ko, this message translates to:
+  /// **'입력해 주세요.'**
+  String get paymentCheckoutRequired;
+
+  /// No description provided for @paymentCheckoutPhoneInvalid.
+  ///
+  /// In ko, this message translates to:
+  /// **'연락처 형식을 확인해 주세요.'**
+  String get paymentCheckoutPhoneInvalid;
+
+  /// No description provided for @paymentCheckoutQuote.
+  ///
+  /// In ko, this message translates to:
+  /// **'서버 TEST 견적 확인'**
+  String get paymentCheckoutQuote;
+
+  /// No description provided for @paymentCheckoutBack.
+  ///
+  /// In ko, this message translates to:
+  /// **'장바구니로 돌아가기'**
+  String get paymentCheckoutBack;
+
+  /// No description provided for @paymentCheckoutUnitPrice.
+  ///
+  /// In ko, this message translates to:
+  /// **'참고 개당 {price}원'**
+  String paymentCheckoutUnitPrice(String price);
+
+  /// No description provided for @paymentCheckoutQuantity.
+  ///
+  /// In ko, this message translates to:
+  /// **'{count}개 · {price}'**
+  String paymentCheckoutQuantity(int count, String price);
+
+  /// No description provided for @paymentCheckoutPostalLength.
+  ///
+  /// In ko, this message translates to:
+  /// **'우편번호 {count}자리를 입력해 주세요.'**
+  String paymentCheckoutPostalLength(int count);
+
+  /// No description provided for @paymentTestRequestFailed.
+  ///
+  /// In ko, this message translates to:
+  /// **'결제창 요청이 취소되었거나 실패했습니다. 결제 완료로 처리하지 않았습니다.'**
+  String get paymentTestRequestFailed;
+
+  /// No description provided for @paymentTestLoadFailed.
+  ///
+  /// In ko, this message translates to:
+  /// **'TEST 결제창을 불러오지 못했습니다. 네트워크와 설정을 확인한 뒤 다시 시도해 주세요.'**
+  String get paymentTestLoadFailed;
+
+  /// No description provided for @paymentTestWebBrowserOnly.
+  ///
+  /// In ko, this message translates to:
+  /// **'TEST 결제는 웹 브라우저에서만 사용할 수 있습니다.'**
+  String get paymentTestWebBrowserOnly;
+
+  /// No description provided for @planRefreshFailed.
+  ///
+  /// In ko, this message translates to:
+  /// **'요금제 변경 요청은 처리됐지만 현재 플랜과 한도를 확인하지 못했습니다. 다시 불러와 확인해 주세요.'**
+  String get planRefreshFailed;
+
+  /// No description provided for @detailSettingsRetry.
+  ///
+  /// In ko, this message translates to:
+  /// **'표시 설정을 불러오지 못했습니다. 재시도'**
+  String get detailSettingsRetry;
+
+  /// No description provided for @detailHelpfulUnavailable.
+  ///
+  /// In ko, this message translates to:
+  /// **'도움 횟수가 제공되지 않아 기존 리뷰 순서로 표시합니다.'**
+  String get detailHelpfulUnavailable;
+
+  /// No description provided for @detailNoReviews.
+  ///
+  /// In ko, this message translates to:
+  /// **'아직 등록된 리뷰가 없습니다.'**
+  String get detailNoReviews;
+
+  /// No description provided for @detailNoMatchingReviews.
+  ///
+  /// In ko, this message translates to:
+  /// **'해당 조건에 맞는 리뷰가 없습니다.'**
+  String get detailNoMatchingReviews;
+
+  /// No description provided for @detailVerified.
+  ///
+  /// In ko, this message translates to:
+  /// **'구매인증'**
+  String get detailVerified;
+
+  /// No description provided for @detailSortRti.
+  ///
+  /// In ko, this message translates to:
+  /// **'RTI 높은순'**
+  String get detailSortRti;
+
+  /// No description provided for @detailViewReviewAnalysis.
+  ///
+  /// In ko, this message translates to:
+  /// **'리뷰 분석 보기'**
+  String get detailViewReviewAnalysis;
+
+  /// No description provided for @detailHelpful.
+  ///
+  /// In ko, this message translates to:
+  /// **'도움이 됐어요'**
+  String get detailHelpful;
+
+  /// No description provided for @detailNotHelpful.
+  ///
+  /// In ko, this message translates to:
+  /// **'도움이 안 됐어요'**
+  String get detailNotHelpful;
+
+  /// No description provided for @detailFeedbackSubmitted.
+  ///
+  /// In ko, this message translates to:
+  /// **'피드백이 제출됐습니다.'**
+  String get detailFeedbackSubmitted;
+
+  /// No description provided for @detailFeedbackFailed.
+  ///
+  /// In ko, this message translates to:
+  /// **'피드백 제출에 실패했습니다. 다시 시도해주세요.'**
+  String get detailFeedbackFailed;
+
+  /// No description provided for @detailShowHiddenReviews.
+  ///
+  /// In ko, this message translates to:
+  /// **'설정 기준 이하 리뷰 {count}개 표시'**
+  String detailShowHiddenReviews(int count);
+
+  /// No description provided for @detailMoreReviewsRemaining.
+  ///
+  /// In ko, this message translates to:
+  /// **'리뷰 더보기 ({count}개 남음)'**
+  String detailMoreReviewsRemaining(int count);
+
+  /// No description provided for @detailLowestPrice.
+  ///
+  /// In ko, this message translates to:
+  /// **'최저가'**
+  String get detailLowestPrice;
+
+  /// No description provided for @detailShipping.
+  ///
+  /// In ko, this message translates to:
+  /// **'배송'**
+  String get detailShipping;
+
+  /// No description provided for @detailCompareAllSellers.
+  ///
+  /// In ko, this message translates to:
+  /// **'전체 {count}개 판매처 가격 비교'**
+  String detailCompareAllSellers(int count);
+
+  /// No description provided for @detailInsights.
+  ///
+  /// In ko, this message translates to:
+  /// **'리뷰 인사이트'**
+  String get detailInsights;
+
+  /// No description provided for @detailMentionedKeywords.
+  ///
+  /// In ko, this message translates to:
+  /// **'많이 언급된 키워드'**
+  String get detailMentionedKeywords;
+
+  /// No description provided for @detailPositivePoints.
+  ///
+  /// In ko, this message translates to:
+  /// **'만족 포인트'**
+  String get detailPositivePoints;
+
+  /// No description provided for @detailNegativePoints.
+  ///
+  /// In ko, this message translates to:
+  /// **'아쉬운 포인트'**
+  String get detailNegativePoints;
+
+  /// No description provided for @detailMoreInsights.
+  ///
+  /// In ko, this message translates to:
+  /// **'리뷰 인사이트 더보기'**
+  String get detailMoreInsights;
+
+  /// No description provided for @detailRiskSummary.
+  ///
+  /// In ko, this message translates to:
+  /// **'종합 위험 요약'**
+  String get detailRiskSummary;
+
+  /// No description provided for @detailRiskSummaryTooltip.
+  ///
+  /// In ko, this message translates to:
+  /// **'이 상품의 전체 리뷰에 대한\nAI 신뢰도 분석 결과입니다.'**
+  String get detailRiskSummaryTooltip;
+
+  /// No description provided for @detailScoreTooltip.
+  ///
+  /// In ko, this message translates to:
+  /// **'RTI 신뢰도 점수는 구매 인증, 텍스트 신뢰도,\n반복 표현, 시점 패턴 등을 종합해 산출됩니다.'**
+  String get detailScoreTooltip;
+
+  /// No description provided for @detailDisclaimer.
+  ///
+  /// In ko, this message translates to:
+  /// **'분석 결과는 참고용이며 최종 판단은 여러 리뷰를 함께 확인해주세요.'**
+  String get detailDisclaimer;
+
+  /// No description provided for @detailCriteria.
+  ///
+  /// In ko, this message translates to:
+  /// **'분석 기준'**
+  String get detailCriteria;
+
+  /// No description provided for @detailReported.
+  ///
+  /// In ko, this message translates to:
+  /// **'신고 완료'**
+  String get detailReported;
+
+  /// No description provided for @detailReportReview.
+  ///
+  /// In ko, this message translates to:
+  /// **'리뷰 신고'**
+  String get detailReportReview;
+
+  /// No description provided for @detailSignalsTitle.
+  ///
+  /// In ko, this message translates to:
+  /// **'RTI 구성 신호'**
+  String get detailSignalsTitle;
+
+  /// No description provided for @detailSignalsTooltip.
+  ///
+  /// In ko, this message translates to:
+  /// **'RTI 점수를 구성하는 신호와 각각의 점수입니다.\n텍스트·행동·네트워크 분석을 종합해 산출합니다.'**
+  String get detailSignalsTooltip;
+
+  /// No description provided for @detailEvidenceTooltip.
+  ///
+  /// In ko, this message translates to:
+  /// **'리뷰 신뢰도를 판단한 구체적인 근거와\n각 근거가 점수에 기여한 비중입니다.'**
+  String get detailEvidenceTooltip;
+
+  /// No description provided for @detailAlsoViewed.
+  ///
+  /// In ko, this message translates to:
+  /// **'이 제품을 본 고객이 함께 본 제품'**
+  String get detailAlsoViewed;
+
+  /// No description provided for @detailKeySignals.
+  ///
+  /// In ko, this message translates to:
+  /// **'주요 판단 신호'**
+  String get detailKeySignals;
+
+  /// No description provided for @detailTrend.
+  ///
+  /// In ko, this message translates to:
+  /// **'위험도 추이'**
+  String get detailTrend;
+
+  /// No description provided for @detailTrendDescription.
+  ///
+  /// In ko, this message translates to:
+  /// **'상품 리뷰의 평균 RTI와 위험 리뷰 비율 변화를 보여줘요.'**
+  String get detailTrendDescription;
+
+  /// No description provided for @detailTrendPending.
+  ///
+  /// In ko, this message translates to:
+  /// **'AI 분석 완료 후 위험도 추이를 확인할 수 있습니다'**
+  String get detailTrendPending;
+
+  /// No description provided for @detailAverageRti.
+  ///
+  /// In ko, this message translates to:
+  /// **'평균 RTI'**
+  String get detailAverageRti;
+
+  /// No description provided for @detailRiskyReviewRatio.
+  ///
+  /// In ko, this message translates to:
+  /// **'위험 리뷰 비율'**
+  String get detailRiskyReviewRatio;
+
+  /// No description provided for @detailToday.
+  ///
+  /// In ko, this message translates to:
+  /// **'오늘'**
+  String get detailToday;
+
+  /// No description provided for @detailRecentReviewOrder.
+  ///
+  /// In ko, this message translates to:
+  /// **'최신 리뷰 순서'**
+  String get detailRecentReviewOrder;
+
+  /// No description provided for @detailAnalyzing.
+  ///
+  /// In ko, this message translates to:
+  /// **'AI 분석 중'**
+  String get detailAnalyzing;
+
+  /// No description provided for @detailNoAnalyzedReviews.
+  ///
+  /// In ko, this message translates to:
+  /// **'분석된 리뷰가 없습니다.'**
+  String get detailNoAnalyzedReviews;
+
+  /// No description provided for @detailOfficialSeller.
+  ///
+  /// In ko, this message translates to:
+  /// **'공식 판매처'**
+  String get detailOfficialSeller;
+
+  /// No description provided for @detailTrustHigh.
+  ///
+  /// In ko, this message translates to:
+  /// **'리뷰 신뢰도 높음'**
+  String get detailTrustHigh;
+
+  /// No description provided for @detailTrustMedium.
+  ///
+  /// In ko, this message translates to:
+  /// **'리뷰 신뢰도 보통'**
+  String get detailTrustMedium;
+
+  /// No description provided for @detailTrustLow.
+  ///
+  /// In ko, this message translates to:
+  /// **'리뷰 신뢰도 낮음'**
+  String get detailTrustLow;
+
+  /// No description provided for @detailFormattedReviewCount.
+  ///
+  /// In ko, this message translates to:
+  /// **'리뷰 {count}개'**
+  String detailFormattedReviewCount(String count);
+
+  /// No description provided for @detailBrand.
+  ///
+  /// In ko, this message translates to:
+  /// **'브랜드'**
+  String get detailBrand;
+
+  /// No description provided for @detailAverageRating.
+  ///
+  /// In ko, this message translates to:
+  /// **'평균 별점'**
+  String get detailAverageRating;
+
+  /// No description provided for @detailSellerCount.
+  ///
+  /// In ko, this message translates to:
+  /// **'{count}곳'**
+  String detailSellerCount(int count);
+
+  /// No description provided for @detailRatingReviewCount.
+  ///
+  /// In ko, this message translates to:
+  /// **'{rating} (리뷰 {count}개)'**
+  String detailRatingReviewCount(String rating, String count);
+
+  /// No description provided for @detailAnalysisInProgress.
+  ///
+  /// In ko, this message translates to:
+  /// **'AI 리뷰 분석 진행 중'**
+  String get detailAnalysisInProgress;
+
+  /// No description provided for @detailAnalysisInProgressDescription.
+  ///
+  /// In ko, this message translates to:
+  /// **'Re:view AI가 리뷰를 실시간 분석하고 있습니다. 완료 후 신뢰도 점수가 자동으로 업데이트됩니다.'**
+  String get detailAnalysisInProgressDescription;
+
+  /// No description provided for @detailInformation.
+  ///
+  /// In ko, this message translates to:
+  /// **'상품 정보'**
+  String get detailInformation;
+
+  /// No description provided for @detailReviewTabCount.
+  ///
+  /// In ko, this message translates to:
+  /// **'리뷰 {count}'**
+  String detailReviewTabCount(String count);
+
+  /// No description provided for @detailComparisonTabCount.
+  ///
+  /// In ko, this message translates to:
+  /// **'가격비교 {count}'**
+  String detailComparisonTabCount(int count);
+
+  /// No description provided for @searchGridView.
+  ///
+  /// In ko, this message translates to:
+  /// **'카드형 보기'**
+  String get searchGridView;
+
+  /// No description provided for @searchListView.
+  ///
+  /// In ko, this message translates to:
+  /// **'리스트형 보기'**
+  String get searchListView;
+
+  /// No description provided for @searchSort.
+  ///
+  /// In ko, this message translates to:
+  /// **'정렬'**
+  String get searchSort;
+
+  /// No description provided for @searchPageSize.
+  ///
+  /// In ko, this message translates to:
+  /// **'페이지당 상품 수'**
+  String get searchPageSize;
+
+  /// No description provided for @searchResultCountLabel.
+  ///
+  /// In ko, this message translates to:
+  /// **'{count}개 결과'**
+  String searchResultCountLabel(int count);
+
+  /// No description provided for @searchPageSizeCount.
+  ///
+  /// In ko, this message translates to:
+  /// **'{count}개씩 보기'**
+  String searchPageSizeCount(int count);
+
+  /// No description provided for @searchCartAdded.
+  ///
+  /// In ko, this message translates to:
+  /// **'장바구니에 담겼습니다.'**
+  String get searchCartAdded;
+
+  /// No description provided for @searchCartAddFailed.
+  ///
+  /// In ko, this message translates to:
+  /// **'장바구니 담기에 실패했습니다.'**
+  String get searchCartAddFailed;
+
+  /// No description provided for @searchFormattedReviewCount.
+  ///
+  /// In ko, this message translates to:
+  /// **'(리뷰 {count})'**
+  String searchFormattedReviewCount(String count);
+
+  /// No description provided for @searchAllProducts.
+  ///
+  /// In ko, this message translates to:
+  /// **'전체 상품'**
+  String get searchAllProducts;
+
+  /// No description provided for @searchCategoryProducts.
+  ///
+  /// In ko, this message translates to:
+  /// **'카테고리 상품'**
+  String get searchCategoryProducts;
+
+  /// No description provided for @searchResultsTitle.
+  ///
+  /// In ko, this message translates to:
+  /// **'검색 결과'**
+  String get searchResultsTitle;
+
+  /// No description provided for @searchAboutRti.
+  ///
+  /// In ko, this message translates to:
+  /// **'Re:view Trust Index(RTI)란?'**
+  String get searchAboutRti;
+
+  /// No description provided for @searchAboutRtiDescription.
+  ///
+  /// In ko, this message translates to:
+  /// **'실제 구매자 리뷰의 신뢰도를 종합해 산출한 지표입니다.'**
+  String get searchAboutRtiDescription;
+
+  /// No description provided for @searchFormattedProductCount.
+  ///
+  /// In ko, this message translates to:
+  /// **'{count}개 상품'**
+  String searchFormattedProductCount(String count);
+
+  /// No description provided for @searchQuickFilterAllCount.
+  ///
+  /// In ko, this message translates to:
+  /// **'전체 {count}'**
+  String searchQuickFilterAllCount(int count);
+
+  /// No description provided for @searchMultiStoreTitle.
+  ///
+  /// In ko, this message translates to:
+  /// **'멀티 스토어 통합 검색'**
+  String get searchMultiStoreTitle;
+
+  /// No description provided for @searchComparedProducts.
+  ///
+  /// In ko, this message translates to:
+  /// **'비교 상품'**
+  String get searchComparedProducts;
+
+  /// No description provided for @searchCollectedReviews.
+  ///
+  /// In ko, this message translates to:
+  /// **'수집 리뷰'**
+  String get searchCollectedReviews;
+
+  /// No description provided for @searchNotCounted.
+  ///
+  /// In ko, this message translates to:
+  /// **'미집계'**
+  String get searchNotCounted;
+
+  /// No description provided for @searchReviewBasedComparison.
+  ///
+  /// In ko, this message translates to:
+  /// **'실사용 리뷰 기반 비교'**
+  String get searchReviewBasedComparison;
+
+  /// No description provided for @searchComparisonDescription.
+  ///
+  /// In ko, this message translates to:
+  /// **'가격과 리뷰, RTI 신뢰도를 한 번에 비교해 신뢰도 높은 상품을 빠르게 골라보세요.'**
+  String get searchComparisonDescription;
+
+  /// No description provided for @searchLowestPriceComparison.
+  ///
+  /// In ko, this message translates to:
+  /// **'최저가 비교'**
+  String get searchLowestPriceComparison;
+
+  /// No description provided for @searchReviewTrust.
+  ///
+  /// In ko, this message translates to:
+  /// **'리뷰 신뢰도'**
+  String get searchReviewTrust;
+
+  /// No description provided for @searchFastDelivery.
+  ///
+  /// In ko, this message translates to:
+  /// **'빠른 배송'**
+  String get searchFastDelivery;
+
+  /// No description provided for @searchOfficialStores.
+  ///
+  /// In ko, this message translates to:
+  /// **'공식몰 포함'**
+  String get searchOfficialStores;
+
+  /// No description provided for @searchVeryHighTrust.
+  ///
+  /// In ko, this message translates to:
+  /// **'매우 신뢰 높음'**
+  String get searchVeryHighTrust;
+
+  /// No description provided for @searchModerateTrust.
+  ///
+  /// In ko, this message translates to:
+  /// **'보통'**
+  String get searchModerateTrust;
+
+  /// No description provided for @searchLowTrust.
+  ///
+  /// In ko, this message translates to:
+  /// **'낮음'**
+  String get searchLowTrust;
+
+  /// No description provided for @searchComparedProductCount.
+  ///
+  /// In ko, this message translates to:
+  /// **'{count}개'**
+  String searchComparedProductCount(String count);
+
+  /// No description provided for @searchCollectedReviewCount.
+  ///
+  /// In ko, this message translates to:
+  /// **'{count}건'**
+  String searchCollectedReviewCount(String count);
+
+  /// No description provided for @searchUnconfirmedCategoriesNotice.
+  ///
+  /// In ko, this message translates to:
+  /// **'쇼핑몰 상품은 카테고리 이름으로 검색하며, 분류가 확정되지 않은 결과도 함께 표시합니다. 상세 분류는 쇼핑몰 원문을 확인해 주세요.'**
+  String get searchUnconfirmedCategoriesNotice;
+
+  /// No description provided for @searchLoadedProductsScope.
+  ///
+  /// In ko, this message translates to:
+  /// **'현재 불러온 {count}개 상품에서 필터·정렬합니다. 키워드 검색은 최대 {limit}개 결과이며 전체 쇼핑몰 상품 검색 필터가 아닙니다. 배송·판매량·출시일·사진 리뷰 정보는 제공되지 않아 해당 조건은 지원하지 않습니다.'**
+  String searchLoadedProductsScope(int count, int limit);
+
+  /// No description provided for @searchSortAccuracy.
+  ///
+  /// In ko, this message translates to:
+  /// **'추천순'**
+  String get searchSortAccuracy;
+
+  /// No description provided for @searchSortRti.
+  ///
+  /// In ko, this message translates to:
+  /// **'RTI순'**
+  String get searchSortRti;
+
+  /// No description provided for @searchSortReviewCount.
+  ///
+  /// In ko, this message translates to:
+  /// **'리뷰 많은순'**
+  String get searchSortReviewCount;
+
+  /// No description provided for @searchSortSales.
+  ///
+  /// In ko, this message translates to:
+  /// **'판매 많은순'**
+  String get searchSortSales;
+
+  /// No description provided for @searchSortPriceLow.
+  ///
+  /// In ko, this message translates to:
+  /// **'최저가순'**
+  String get searchSortPriceLow;
+
+  /// No description provided for @searchSortPriceHigh.
+  ///
+  /// In ko, this message translates to:
+  /// **'높은 가격순'**
+  String get searchSortPriceHigh;
+
+  /// No description provided for @searchSortNewest.
+  ///
+  /// In ko, this message translates to:
+  /// **'신상품순'**
+  String get searchSortNewest;
+
+  /// No description provided for @searchMissingClassification.
+  ///
+  /// In ko, this message translates to:
+  /// **'분류 정보 없음'**
+  String get searchMissingClassification;
+
+  /// No description provided for @cartSelectionSummary.
+  ///
+  /// In ko, this message translates to:
+  /// **'선택 상품 요약'**
+  String get cartSelectionSummary;
+
+  /// No description provided for @cartUnknownPriceExcluded.
+  ///
+  /// In ko, this message translates to:
+  /// **'가격 정보가 없는 상품은 합계에서 제외했어요.'**
+  String get cartUnknownPriceExcluded;
+
+  /// No description provided for @cartReferencePriceNotice.
+  ///
+  /// In ko, this message translates to:
+  /// **'표시 가격은 참고용입니다. 구매와 배송비·쿠폰 확인은 각 쇼핑몰에서 진행해 주세요.'**
+  String get cartReferencePriceNotice;
+
+  /// No description provided for @cartViewSelectedSellers.
+  ///
+  /// In ko, this message translates to:
+  /// **'선택 상품 구매처 확인'**
+  String get cartViewSelectedSellers;
+
+  /// No description provided for @cartContinueShopping.
+  ///
+  /// In ko, this message translates to:
+  /// **'쇼핑 계속하기'**
+  String get cartContinueShopping;
+
+  /// No description provided for @cartShippingConditions.
+  ///
+  /// In ko, this message translates to:
+  /// **'배송 조건은 구매처에서 확인'**
+  String get cartShippingConditions;
+
+  /// No description provided for @cartSaveLater.
+  ///
+  /// In ko, this message translates to:
+  /// **'나중에 담기'**
+  String get cartSaveLater;
+
+  /// No description provided for @cartDelete.
+  ///
+  /// In ko, this message translates to:
+  /// **'삭제'**
+  String get cartDelete;
+
+  /// No description provided for @cartTrustLevel.
+  ///
+  /// In ko, this message translates to:
+  /// **'신뢰도 {level}'**
+  String cartTrustLevel(String level);
+
+  /// No description provided for @cartPriceReduction.
+  ///
+  /// In ko, this message translates to:
+  /// **'{price} 인하'**
+  String cartPriceReduction(String price);
+
+  /// No description provided for @cartEstimatedArrival.
+  ///
+  /// In ko, this message translates to:
+  /// **'{date} 도착 예정'**
+  String cartEstimatedArrival(String date);
+
+  /// No description provided for @cartStockRemaining.
+  ///
+  /// In ko, this message translates to:
+  /// **'재고 {count}개 남음'**
+  String cartStockRemaining(int count);
+
+  /// No description provided for @cartDeleteSelected.
+  ///
+  /// In ko, this message translates to:
+  /// **'선택 삭제'**
+  String get cartDeleteSelected;
+
+  /// No description provided for @cartMoveToWishlist.
+  ///
+  /// In ko, this message translates to:
+  /// **'찜한 상품으로 이동'**
+  String get cartMoveToWishlist;
+
+  /// No description provided for @cartSelectAllCount.
+  ///
+  /// In ko, this message translates to:
+  /// **'전체 선택 ({selected}/{total})'**
+  String cartSelectAllCount(int selected, int total);
+
+  /// No description provided for @cartSellersTitle.
+  ///
+  /// In ko, this message translates to:
+  /// **'구매처 확인'**
+  String get cartSellersTitle;
+
+  /// No description provided for @cartSellersDescription.
+  ///
+  /// In ko, this message translates to:
+  /// **'상품 상세에서 제공되는 쇼핑몰 구매 링크를 이용해 주세요. TEST 주문 기능은 별도 화면에서 준비하며 현재 서버 판매·배송 계약은 없습니다.'**
+  String get cartSellersDescription;
+
+  /// No description provided for @cartViewProductAndSeller.
+  ///
+  /// In ko, this message translates to:
+  /// **'상품 상세 및 구매처 보기'**
+  String get cartViewProductAndSeller;
+
+  /// No description provided for @cartDescription.
+  ///
+  /// In ko, this message translates to:
+  /// **'담아둔 상품을 확인하고 주문 전 리뷰 신뢰도도 함께 비교하세요.'**
+  String get cartDescription;
+
+  /// No description provided for @cartTrustCheckTitle.
+  ///
+  /// In ko, this message translates to:
+  /// **'리뷰 신뢰도 체크'**
+  String get cartTrustCheckTitle;
+
+  /// No description provided for @cartTrustCheckDescription.
+  ///
+  /// In ko, this message translates to:
+  /// **'제품별 RTI 지수를 확인하고, 신뢰할 수 있는 리뷰가 많은 상품을 선택해보세요.'**
+  String get cartTrustCheckDescription;
+
+  /// No description provided for @cartTotalProducts.
+  ///
+  /// In ko, this message translates to:
+  /// **'총 {count}개 상품'**
+  String cartTotalProducts(int count);
+
+  /// No description provided for @wishlistCountItems.
+  ///
+  /// In ko, this message translates to:
+  /// **'{count}개'**
+  String wishlistCountItems(int count);
+
+  /// No description provided for @wishlistShoppingMall.
+  ///
+  /// In ko, this message translates to:
+  /// **'쇼핑몰'**
+  String get wishlistShoppingMall;
+
+  /// No description provided for @wishlistPriceComparisonUnavailable.
+  ///
+  /// In ko, this message translates to:
+  /// **'서버에서 가격하락 비교 정보를 제공하지 않고 있어요. 가격이 변하지 않았다는 뜻은 아니에요.'**
+  String get wishlistPriceComparisonUnavailable;
+
+  /// No description provided for @wishlistUncategorized.
+  ///
+  /// In ko, this message translates to:
+  /// **'미분류'**
+  String get wishlistUncategorized;
+
+  /// No description provided for @wishlistShopUnknown.
+  ///
+  /// In ko, this message translates to:
+  /// **'쇼핑몰 정보 없음'**
+  String get wishlistShopUnknown;
+
+  /// No description provided for @myPageTrustUnavailable.
+  ///
+  /// In ko, this message translates to:
+  /// **'찜 상품의 분석 정보를 확인할 수 없어요.'**
+  String get myPageTrustUnavailable;
+
+  /// No description provided for @myPageTrustScope.
+  ///
+  /// In ko, this message translates to:
+  /// **'찜한 상품 중 분석된 RTI의 평균과 서버 주의 등급 기준입니다.'**
+  String get myPageTrustScope;
+
+  /// No description provided for @myPageTrustScorePoints.
+  ///
+  /// In ko, this message translates to:
+  /// **'{score}점'**
+  String myPageTrustScorePoints(int score);
+
+  /// No description provided for @myPageBack.
+  ///
+  /// In ko, this message translates to:
+  /// **'마이페이지로 돌아가기'**
+  String get myPageBack;
+
+  /// No description provided for @myPageActivityLoadFailed.
+  ///
+  /// In ko, this message translates to:
+  /// **'최근 활동을 불러오지 못했어요.'**
+  String get myPageActivityLoadFailed;
+
+  /// No description provided for @myPageActivityRecent.
+  ///
+  /// In ko, this message translates to:
+  /// **'최근'**
+  String get myPageActivityRecent;
+
+  /// No description provided for @myPageActivityJustNow.
+  ///
+  /// In ko, this message translates to:
+  /// **'방금 전'**
+  String get myPageActivityJustNow;
+
+  /// No description provided for @myPageActivityDaysAgo.
+  ///
+  /// In ko, this message translates to:
+  /// **'{count}일 전'**
+  String myPageActivityDaysAgo(int count);
+
+  /// No description provided for @myPageActivityHoursAgo.
+  ///
+  /// In ko, this message translates to:
+  /// **'{count}시간 전'**
+  String myPageActivityHoursAgo(int count);
+
+  /// No description provided for @myPageNamedDescription.
+  ///
+  /// In ko, this message translates to:
+  /// **'{name}님의 정보와 저장한 상품 활동을 관리해요.'**
+  String myPageNamedDescription(String name);
+
+  /// No description provided for @myPageWarningScope.
+  ///
+  /// In ko, this message translates to:
+  /// **'찜한 상품 중 서버가 의심·위험 등급으로 분석한 상품이에요. 분석 전 상품은 포함하지 않아요.'**
+  String get myPageWarningScope;
+
+  /// No description provided for @myPageCheckList.
+  ///
+  /// In ko, this message translates to:
+  /// **'목록 확인'**
+  String get myPageCheckList;
+
+  /// No description provided for @myPageAllWarnings.
+  ///
+  /// In ko, this message translates to:
+  /// **'전체 주의'**
+  String get myPageAllWarnings;
+
+  /// No description provided for @myPageLoadFailed.
+  ///
+  /// In ko, this message translates to:
+  /// **'주의 상품을 확인할 수 없어요.'**
+  String get myPageLoadFailed;
+
+  /// No description provided for @myPageViewListCount.
+  ///
+  /// In ko, this message translates to:
+  /// **'목록 보기 ({count})'**
+  String myPageViewListCount(int count);
+
+  /// No description provided for @recentProductsScope.
+  ///
+  /// In ko, this message translates to:
+  /// **'서버의 최근 {count}개 조회 기록에서 중복 상품을 제외했어요. 전체 기간의 상품 수와는 다를 수 있어요.'**
+  String recentProductsScope(int count);
+
+  /// No description provided for @recentProductsLoadFailed.
+  ///
+  /// In ko, this message translates to:
+  /// **'최근 본 상품을 불러오지 못했어요.'**
+  String get recentProductsLoadFailed;
+
+  /// No description provided for @notificationsAll.
+  ///
+  /// In ko, this message translates to:
+  /// **'전체 알림'**
+  String get notificationsAll;
+
+  /// No description provided for @notificationsPriceAlerts.
+  ///
+  /// In ko, this message translates to:
+  /// **'가격 알림'**
+  String get notificationsPriceAlerts;
+
+  /// No description provided for @notificationsSavedSettings.
+  ///
+  /// In ko, this message translates to:
+  /// **'저장된 알림 수신 설정'**
+  String get notificationsSavedSettings;
+
+  /// No description provided for @notificationsMore.
+  ///
+  /// In ko, this message translates to:
+  /// **'더 보기'**
+  String get notificationsMore;
+
+  /// No description provided for @notificationsTargetUnsupported.
+  ///
+  /// In ko, this message translates to:
+  /// **'이 알림의 이동 대상은 아직 지원되지 않습니다.'**
+  String get notificationsTargetUnsupported;
+
+  /// No description provided for @notificationsCheckingUnreadShort.
+  ///
+  /// In ko, this message translates to:
+  /// **'읽지 않은 알림 확인 중'**
+  String get notificationsCheckingUnreadShort;
+
+  /// No description provided for @notificationsUnreadFailedShort.
+  ///
+  /// In ko, this message translates to:
+  /// **'알림 수를 확인하지 못했어요.'**
+  String get notificationsUnreadFailedShort;
+
+  /// No description provided for @notificationsManageInboxAndPrices.
+  ///
+  /// In ko, this message translates to:
+  /// **'알림함 · 가격 알림 관리'**
+  String get notificationsManageInboxAndPrices;
+
+  /// No description provided for @notificationsServiceTitle.
+  ///
+  /// In ko, this message translates to:
+  /// **'서비스 알림'**
+  String get notificationsServiceTitle;
+
+  /// No description provided for @notificationsCheckingUnread.
+  ///
+  /// In ko, this message translates to:
+  /// **'읽지 않은 알림을 확인하고 있어요.'**
+  String get notificationsCheckingUnread;
+
+  /// No description provided for @notificationsUnreadFailed.
+  ///
+  /// In ko, this message translates to:
+  /// **'읽지 않은 알림 수를 확인하지 못했어요.'**
+  String get notificationsUnreadFailed;
+
+  /// No description provided for @notificationsSettingsFailed.
+  ///
+  /// In ko, this message translates to:
+  /// **'저장된 알림 설정을 불러오지 못했어요.'**
+  String get notificationsSettingsFailed;
+
+  /// No description provided for @notificationsSettingsChecking.
+  ///
+  /// In ko, this message translates to:
+  /// **'저장된 알림 설정 확인 중'**
+  String get notificationsSettingsChecking;
+
+  /// No description provided for @notificationsReviewSettings.
+  ///
+  /// In ko, this message translates to:
+  /// **'알림·리뷰 설정'**
+  String get notificationsReviewSettings;
+
+  /// No description provided for @notificationsMonitoringNotice.
+  ///
+  /// In ko, this message translates to:
+  /// **'위험 변화 자동 감시는 서버 연동이 필요해요. 수신 설정을 켜는 것만으로 감시가 시작되지는 않아요.'**
+  String get notificationsMonitoringNotice;
+
+  /// No description provided for @notificationsInboxNotice.
+  ///
+  /// In ko, this message translates to:
+  /// **'알림함에 저장된 알림을 확인해요. 브라우저 푸시·이메일·문자는 지원하지 않아요.'**
+  String get notificationsInboxNotice;
+
+  /// No description provided for @notificationsUnreadCount.
+  ///
+  /// In ko, this message translates to:
+  /// **'읽지 않은 알림 {count}개'**
+  String notificationsUnreadCount(int count);
+
+  /// No description provided for @notificationsReceiving.
+  ///
+  /// In ko, this message translates to:
+  /// **'받음'**
+  String get notificationsReceiving;
+
+  /// No description provided for @notificationsNotReceiving.
+  ///
+  /// In ko, this message translates to:
+  /// **'받지 않음'**
+  String get notificationsNotReceiving;
+
+  /// No description provided for @notificationsRiskStatus.
+  ///
+  /// In ko, this message translates to:
+  /// **'위험 감지 {status}'**
+  String notificationsRiskStatus(String status);
+
+  /// No description provided for @notificationsAnalysisStatus.
+  ///
+  /// In ko, this message translates to:
+  /// **'분석 결과 {status}'**
+  String notificationsAnalysisStatus(String status);
+
+  /// No description provided for @notificationsFeedbackStatus.
+  ///
+  /// In ko, this message translates to:
+  /// **'처리 결과 {status}'**
+  String notificationsFeedbackStatus(String status);
+
+  /// No description provided for @priceWatchTitle.
+  ///
+  /// In ko, this message translates to:
+  /// **'가격하락 · 가격 알림 관리'**
+  String get priceWatchTitle;
+
+  /// No description provided for @priceWatchHistoryNotice.
+  ///
+  /// In ko, this message translates to:
+  /// **'가격 알림 이력·구독 저장은 아직 지원되지 않아요. 아래는 알림 기록이 아닌 찜 상품의 서버 가격하락 표시입니다.'**
+  String get priceWatchHistoryNotice;
+
+  /// No description provided for @priceWatchComparisonUnavailable.
+  ///
+  /// In ko, this message translates to:
+  /// **'서버가 찜 상품의 비교 가격 정보를 제공하지 않아 하락 여부를 확인할 수 없어요.'**
+  String get priceWatchComparisonUnavailable;
+
+  /// No description provided for @priceWatchRefreshWishlistPrices.
+  ///
+  /// In ko, this message translates to:
+  /// **'찜 가격 정보 새로고침'**
+  String get priceWatchRefreshWishlistPrices;
+
+  /// No description provided for @priceWatchViewWishlist.
+  ///
+  /// In ko, this message translates to:
+  /// **'찜 상품 확인'**
+  String get priceWatchViewWishlist;
+
+  /// No description provided for @priceWatchSubscriptionNotice.
+  ///
+  /// In ko, this message translates to:
+  /// **'서버 가격이력·구독 저장 연동 후 신청할 수 있어요.'**
+  String get priceWatchSubscriptionNotice;
+
+  /// No description provided for @priceWatchSubscriptionUnavailable.
+  ///
+  /// In ko, this message translates to:
+  /// **'가격 알림 신청 · 미지원'**
+  String get priceWatchSubscriptionUnavailable;
+
+  /// No description provided for @priceWatchDropIndicator.
+  ///
+  /// In ko, this message translates to:
+  /// **'서버 가격하락 표시 · 하락액/비율 정보 없음'**
+  String get priceWatchDropIndicator;
+
+  /// No description provided for @priceWatchLoadFailed.
+  ///
+  /// In ko, this message translates to:
+  /// **'가격하락 표시를 확인하지 못했어요. {message}'**
+  String priceWatchLoadFailed(String message);
+
+  /// No description provided for @priceWatchDropCounts.
+  ///
+  /// In ko, this message translates to:
+  /// **'찜 {total}개 중 가격하락 정보가 있는 {known}개에서 {drops}개가 하락으로 표시됐어요. 기준 가격·시점은 제공되지 않았어요.'**
+  String priceWatchDropCounts(int total, int known, int drops);
 }
 
 class _AppLocalizationsDelegate

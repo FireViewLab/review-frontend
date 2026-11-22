@@ -149,7 +149,7 @@ class ReviewComparisonBanner extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        '멀티 스토어 통합 검색',
+                        AppLocalizations.of(context).searchMultiStoreTitle,
                         style: Theme.of(context).textTheme.labelMedium
                             ?.copyWith(
                               color: AppColors.textPrimary,
@@ -164,29 +164,48 @@ class ReviewComparisonBanner extends StatelessWidget {
                         children: [
                           BannerMetric(
                             icon: Icons.shopping_bag_outlined,
-                            label: '비교 상품',
-                            value: '${formatSearchCount(products.length)}개',
+                            label: AppLocalizations.of(
+                              context,
+                            ).searchComparedProducts,
+                            value: AppLocalizations.of(context)
+                                .searchComparedProductCount(
+                                  formatSearchCount(products.length),
+                                ),
                           ),
                           BannerMetric(
                             icon: Icons.chat_bubble_outline,
-                            label: '수집 리뷰',
+                            label: AppLocalizations.of(
+                              context,
+                            ).searchCollectedReviews,
                             value: totalReviews == null
-                                ? '미집계'
-                                : '${formatSearchCount(totalReviews)}건',
+                                ? AppLocalizations.of(context).searchNotCounted
+                                : AppLocalizations.of(
+                                    context,
+                                  ).searchCollectedReviewCount(
+                                    formatSearchCount(totalReviews),
+                                  ),
                           ),
                           BannerMetric(
                             icon: Icons.favorite_border,
-                            label: '평균 RTI',
+                            label: AppLocalizations.of(
+                              context,
+                            ).detailAverageRti,
                             value: avgRti == null
-                                ? '분석 전'
+                                ? AppLocalizations.of(
+                                    context,
+                                  ).externalUnanalyzed
                                 : '${avgRti.round()}',
-                            subtitle: avgRti == null ? null : _rtiLabel(avgRti),
+                            subtitle: avgRti == null
+                                ? null
+                                : _rtiLabel(context, avgRti),
                           ),
                         ],
                       ),
                       const SizedBox(height: AppSpacing.sm),
                       Text(
-                        '실사용 리뷰 기반 비교',
+                        AppLocalizations.of(
+                          context,
+                        ).searchReviewBasedComparison,
                         style: Theme.of(context).textTheme.headlineSmall
                             ?.copyWith(
                               color: AppColors.textPrimary,
@@ -196,7 +215,9 @@ class ReviewComparisonBanner extends StatelessWidget {
                       ),
                       const SizedBox(height: AppSpacing.xs),
                       Text(
-                        '가격과 리뷰, RTI 신뢰도를 한 번에 비교해 신뢰도 높은 상품을 빠르게 골라보세요.',
+                        AppLocalizations.of(
+                          context,
+                        ).searchComparisonDescription,
                         maxLines: 2,
                         overflow: TextOverflow.ellipsis,
                         style: Theme.of(context).textTheme.bodySmall?.copyWith(
@@ -209,18 +230,29 @@ class ReviewComparisonBanner extends StatelessWidget {
                       Wrap(
                         spacing: AppSpacing.sm,
                         runSpacing: AppSpacing.xs,
-                        children: const [
-                          BannerFeature(label: '최저가 비교', icon: Icons.swap_vert),
+                        children: [
                           BannerFeature(
-                            label: '리뷰 신뢰도',
+                            label: AppLocalizations.of(
+                              context,
+                            ).searchLowestPriceComparison,
+                            icon: Icons.swap_vert,
+                          ),
+                          BannerFeature(
+                            label: AppLocalizations.of(
+                              context,
+                            ).searchReviewTrust,
                             icon: Icons.verified_outlined,
                           ),
                           BannerFeature(
-                            label: '빠른 배송',
+                            label: AppLocalizations.of(
+                              context,
+                            ).searchFastDelivery,
                             icon: Icons.local_shipping_outlined,
                           ),
                           BannerFeature(
-                            label: '공식몰 포함',
+                            label: AppLocalizations.of(
+                              context,
+                            ).searchOfficialStores,
                             icon: Icons.workspace_premium_outlined,
                           ),
                         ],
@@ -236,11 +268,11 @@ class ReviewComparisonBanner extends StatelessWidget {
     );
   }
 
-  String _rtiLabel(double rti) {
-    if (rti >= 90) return '매우 신뢰 높음';
-    if (rti >= 75) return '신뢰 높음';
-    if (rti >= 60) return '보통';
-    return '낮음';
+  String _rtiLabel(BuildContext context, double rti) {
+    if (rti >= 90) return AppLocalizations.of(context).searchVeryHighTrust;
+    if (rti >= 75) return AppLocalizations.of(context).landingGradeHigh;
+    if (rti >= 60) return AppLocalizations.of(context).searchModerateTrust;
+    return AppLocalizations.of(context).searchLowTrust;
   }
 
   SearchResultProduct _representativeProduct(

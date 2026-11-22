@@ -167,20 +167,20 @@ class _CartBody extends ConsumerWidget {
   Future<void> _showPurchaseChoices(BuildContext context) => showDialog<void>(
     context: context,
     builder: (dialogContext) => AlertDialog(
-      title: const Text('구매처 확인'),
+      title: Text(AppLocalizations.of(context).cartSellersTitle),
       content: SizedBox(
         width: 420,
         child: SingleChildScrollView(
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              const Text(
-                '상품 상세에서 제공되는 쇼핑몰 구매 링크를 이용해 주세요. TEST 주문 기능은 별도 화면에서 준비하며 현재 서버 판매·배송 계약은 없습니다.',
-              ),
+              Text(AppLocalizations.of(context).cartSellersDescription),
               for (final item in cartState.selectedItems)
                 ListTile(
                   title: Text(item.name),
-                  subtitle: Text('상품 상세 및 구매처 보기'),
+                  subtitle: Text(
+                    AppLocalizations.of(context).cartViewProductAndSeller,
+                  ),
                   trailing: const Icon(Icons.chevron_right),
                   onTap: () {
                     Navigator.of(dialogContext).pop();
@@ -194,7 +194,7 @@ class _CartBody extends ConsumerWidget {
       actions: [
         TextButton(
           onPressed: () => Navigator.of(dialogContext).pop(),
-          child: const Text('닫기'),
+          child: Text(AppLocalizations.of(context).reportClose),
         ),
       ],
     ),
@@ -218,7 +218,7 @@ class _CartBody extends ConsumerWidget {
           ),
           TextButton(
             onPressed: cartState.isUpdating ? null : () => vm.load(),
-            child: const Text('다시 불러오기'),
+            child: Text(AppLocalizations.of(context).onboardingReload),
           ),
         ],
         const SizedBox(height: AppSpacing.md),
@@ -326,7 +326,7 @@ class _CartPageHeader extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                '장바구니',
+                AppLocalizations.of(context).headerCart,
                 style: Theme.of(context).textTheme.headlineSmall?.copyWith(
                   color: AppColors.textPrimary,
                   fontWeight: FontWeight.w900,
@@ -334,7 +334,7 @@ class _CartPageHeader extends StatelessWidget {
               ),
               const SizedBox(height: AppSpacing.xxs),
               Text(
-                '담아둔 상품을 확인하고 주문 전 리뷰 신뢰도도 함께 비교하세요.',
+                AppLocalizations.of(context).cartDescription,
                 style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                   color: AppColors.textSecondary,
                 ),
@@ -343,7 +343,7 @@ class _CartPageHeader extends StatelessWidget {
           ),
         ),
         Text(
-          '총 $totalCount개 상품',
+          AppLocalizations.of(context).cartTotalProducts(totalCount),
           style: Theme.of(context).textTheme.labelMedium?.copyWith(
             color: AppColors.textSecondary,
             fontWeight: FontWeight.w700,
@@ -390,14 +390,14 @@ class _RtiCheckBanner extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    '리뷰 신뢰도 체크',
+                    AppLocalizations.of(context).cartTrustCheckTitle,
                     style: Theme.of(context).textTheme.labelMedium?.copyWith(
                       color: AppColors.primary,
                       fontWeight: FontWeight.w900,
                     ),
                   ),
                   Text(
-                    '제품별 RTI 지수를 확인하고, 신뢰할 수 있는 리뷰가 많은 상품을 선택해보세요.',
+                    AppLocalizations.of(context).cartTrustCheckDescription,
                     style: Theme.of(context).textTheme.labelSmall?.copyWith(
                       color: AppColors.primary.withValues(alpha: 0.8),
                       fontWeight: FontWeight.w600,

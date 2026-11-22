@@ -99,7 +99,7 @@ class MyPageBody extends StatelessWidget {
                       TextButton(
                         onPressed: () =>
                             ref.read(wishlistViewModelProvider.notifier).load(),
-                        child: const Text('다시 시도'),
+                        child: Text(AppLocalizations.of(context).actionRetry),
                       ),
                     ],
                   ),

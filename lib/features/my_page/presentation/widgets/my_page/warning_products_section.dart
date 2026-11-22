@@ -12,7 +12,8 @@ import 'my_page_saved_products.dart';
 import 'personal_products_page.dart';
 import 'package:re_view_front/app/router/route_paths.dart';
 
-const _scope = '찜한 상품 중 서버가 의심·위험 등급으로 분석한 상품이에요. 분석 전 상품은 포함하지 않아요.';
+String _scope(BuildContext context) =>
+    AppLocalizations.of(context).myPageWarningScope;
 
 void showWarningProducts(BuildContext context) =>
     context.push(RoutePaths.warningProducts);
@@ -32,19 +33,23 @@ class WarningProductsSection extends ConsumerWidget {
       children: [
         Row(
           children: [
-            const Expanded(
+            Expanded(
               child: Text(
-                '주의 상품',
+                AppLocalizations.of(context).myPageSideNavRiskyProducts,
                 style: TextStyle(fontWeight: FontWeight.w700),
               ),
             ),
             TextButton(
               onPressed: () => showWarningProducts(context),
-              child: Text(count == null ? '목록 확인' : '목록 보기 ($count)'),
+              child: Text(
+                count == null
+                    ? AppLocalizations.of(context).myPageCheckList
+                    : AppLocalizations.of(context).myPageViewListCount(count),
+              ),
             ),
           ],
         ),
-        const Text(_scope),
+        Text(_scope(context)),
       ],
     );
   }
@@ -78,8 +83,8 @@ class WarningProductsPageState extends ConsumerState<WarningProductsPage> {
         ? state.errorMessage
         : null;
     return PersonalProductsPage(
-      title: '주의 상품',
-      scope: _scope,
+      title: AppLocalizations.of(context).myPageSideNavRiskyProducts,
+      scope: _scope(context),
       onRefresh: () => ref.read(wishlistViewModelProvider.notifier).load(),
       controls: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -89,9 +94,9 @@ class WarningProductsPageState extends ConsumerState<WarningProductsPage> {
             runSpacing: 8,
             children: [
               for (final entry in <String?, String>{
-                null: '전체 주의',
-                'SUSPICIOUS': '의심',
-                'DANGER': '위험',
+                null: AppLocalizations.of(context).myPageAllWarnings,
+                'SUSPICIOUS': AppLocalizations.of(context).adminSuspicious,
+                'DANGER': AppLocalizations.of(context).adminDanger,
               }.entries)
                 ChoiceChip(
                   label: Text(entry.value),
@@ -105,7 +110,7 @@ class WarningProductsPageState extends ConsumerState<WarningProductsPage> {
             TextButton(
               onPressed: () =>
                   ref.read(wishlistViewModelProvider.notifier).load(),
-              child: const Text('다시 시도'),
+              child: Text(AppLocalizations.of(context).actionRetry),
             ),
           ],
         ],
@@ -115,9 +120,11 @@ class WarningProductsPageState extends ConsumerState<WarningProductsPage> {
           : items.isEmpty
           ? SliverToBoxAdapter(
               child: failed != null
-                  ? const Padding(
+                  ? Padding(
                       padding: EdgeInsets.all(24),
-                      child: Text('주의 상품을 확인할 수 없어요.'),
+                      child: Text(
+                        AppLocalizations.of(context).myPageLoadFailed,
+                      ),
                     )
                   : EmptyStateView(
                       title: _grade == null
@@ -151,7 +158,7 @@ class WarningProductsPageState extends ConsumerState<WarningProductsPage> {
                     reviewCount: item.reviewCount,
                     rtiLabel: item.analysisDisplay.isV2
                         ? '${item.analysisDisplay.gradeLabel(context) ?? ''} · ${item.analysisDisplay.badgeText(context)}'
-                        : '${item.rtiGrade?.trim().toUpperCase() == 'DANGER' ? '위험' : '의심'} · RTI ${item.analysisDisplay.score!.round()}',
+                        : '${item.rtiGrade?.trim().toUpperCase() == 'DANGER' ? AppLocalizations.of(context).adminDanger : AppLocalizations.of(context).adminSuspicious} · RTI ${item.analysisDisplay.score!.round()}',
                     onTap: () {
                       context.go(item.detailPath, extra: item.routeContext);
                     },

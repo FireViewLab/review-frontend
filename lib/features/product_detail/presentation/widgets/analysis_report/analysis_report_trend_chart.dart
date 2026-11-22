@@ -1,3 +1,4 @@
+import 'package:re_view_front/l10n/generated/app_localizations.dart';
 // ignore_for_file: use_key_in_widget_constructors
 
 import 'dart:math' as math;
@@ -15,14 +16,21 @@ class AnalysisReportTrendChart extends StatelessWidget {
   Widget build(BuildContext context) {
     if (points.isEmpty) return const SizedBox.shrink();
     return CustomPaint(
-      painter: AnalysisReportTrendChartPainter(points: points),
+      painter: AnalysisReportTrendChartPainter(
+        points: points,
+        todayLabel: AppLocalizations.of(context).detailToday,
+      ),
       size: Size.infinite,
     );
   }
 }
 
 class AnalysisReportTrendChartPainter extends CustomPainter {
-  const AnalysisReportTrendChartPainter({required this.points});
+  const AnalysisReportTrendChartPainter({
+    required this.points,
+    required this.todayLabel,
+  });
+  final String todayLabel;
   final List<AnalysisTrendPoint> points;
 
   @override
@@ -133,7 +141,7 @@ class AnalysisReportTrendChartPainter extends CustomPainter {
     // Always show last
     {
       final tp = TextPainter(
-        text: TextSpan(text: '오늘', style: labelStyle),
+        text: TextSpan(text: todayLabel, style: labelStyle),
         textDirection: TextDirection.ltr,
       )..layout();
       tp.paint(
@@ -210,5 +218,5 @@ class AnalysisReportTrendChartPainter extends CustomPainter {
 
   @override
   bool shouldRepaint(AnalysisReportTrendChartPainter old) =>
-      old.points != points;
+      old.points != points || old.todayLabel != todayLabel;
 }

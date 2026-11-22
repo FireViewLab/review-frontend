@@ -1,3 +1,4 @@
+import 'package:re_view_front/l10n/generated/app_localizations.dart';
 import 'package:re_view_front/app/theme/app_motion.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -69,8 +70,10 @@ class SearchProductWishlistButton extends ConsumerWidget {
             : () async {
                 if (!ref.read(authSessionProvider).isLoggedIn) {
                   ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(
-                      content: Text('로그인이 필요합니다.'),
+                    SnackBar(
+                      content: Text(
+                        AppLocalizations.of(context).homeLoginRequired,
+                      ),
                       duration: Duration(seconds: 2),
                     ),
                   );
@@ -151,8 +154,8 @@ class _CartSquareButtonState extends ConsumerState<SearchProductCartButton> {
     if (_loading) return;
     if (!ref.read(isLoggedInProvider)) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('로그인이 필요합니다.'),
+        SnackBar(
+          content: Text(AppLocalizations.of(context).homeLoginRequired),
           duration: Duration(seconds: 2),
         ),
       );
@@ -176,7 +179,11 @@ class _CartSquareButtonState extends ConsumerState<SearchProductCartButton> {
         ref.read(cartButtonProvider(widget.productId)).value ?? false;
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
-        content: Text(inCart ? '장바구니에 담겼습니다.' : '장바구니 담기에 실패했습니다.'),
+        content: Text(
+          inCart
+              ? AppLocalizations.of(context).searchCartAdded
+              : AppLocalizations.of(context).searchCartAddFailed,
+        ),
         duration: const Duration(seconds: 2),
       ),
     );

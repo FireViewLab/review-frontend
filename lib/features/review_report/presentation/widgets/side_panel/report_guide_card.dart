@@ -1,3 +1,4 @@
+import 'package:re_view_front/l10n/generated/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:re_view_front/app/theme/app_colors.dart';
 import 'package:re_view_front/app/theme/app_spacing.dart';
@@ -8,10 +9,19 @@ class ReportGuideCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    const items = [
-      ('반복 문구를 구체적으로 적기', '정확한 위치/문장/패턴 등 눈에 띄는 표현을 적어주세요.'),
-      ('상품 사용 맥락 확인', '실제 사용 경험이 없거나 상품과 무관한 부분을 알려주세요.'),
-      ('첨부 자료 첨부', '해당 근거가 여러 상황에 반복된다면 첨부가 좋습니다.'),
+    final items = [
+      (
+        AppLocalizations.of(context).reportGuideRepeated,
+        AppLocalizations.of(context).reportGuideRepeatedDescription,
+      ),
+      (
+        AppLocalizations.of(context).reportGuideContext,
+        AppLocalizations.of(context).reportGuideContextDescription,
+      ),
+      (
+        AppLocalizations.of(context).reportGuideAttachments,
+        AppLocalizations.of(context).reportGuideAttachmentsDescription,
+      ),
     ];
 
     return Container(
@@ -24,10 +34,10 @@ class ReportGuideCard extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          const SidePanelHeader(
+          SidePanelHeader(
             icon: Icons.lightbulb_outline,
-            title: '신고 가이드',
-            description: '이런 경우 신고가 더 잘 처리돼요.',
+            title: AppLocalizations.of(context).reportGuideTitle,
+            description: AppLocalizations.of(context).reportGuideDescription,
           ),
           const SizedBox(height: AppSpacing.md),
           for (var i = 0; i < items.length; i++) ...[

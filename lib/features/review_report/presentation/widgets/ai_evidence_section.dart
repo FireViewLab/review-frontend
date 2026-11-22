@@ -1,3 +1,4 @@
+import 'package:re_view_front/l10n/generated/app_localizations.dart';
 import 'package:re_view_front/app/theme/app_motion.dart';
 import 'package:flutter/material.dart';
 import 'package:re_view_front/app/theme/app_colors.dart';
@@ -19,8 +20,8 @@ class AiEvidenceSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SectionCard(
-      title: '분석 근거 함께 제출 (선택)',
-      description: '현재 리뷰의 RTI 분석 신호를 신고 근거로 첨부할 수 있어요.',
+      title: AppLocalizations.of(context).reportEvidenceTitle,
+      description: AppLocalizations.of(context).reportEvidenceDescription,
       child: AnimatedContainer(
         duration: AppMotion.of(context, AppMotion.base),
         padding: const EdgeInsets.all(AppSpacing.md),
@@ -55,7 +56,7 @@ class AiEvidenceSection extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    'AI 분석 근거 첨부',
+                    AppLocalizations.of(context).reportAttachEvidence,
                     style: Theme.of(context).textTheme.labelMedium?.copyWith(
                       fontWeight: FontWeight.w800,
                       color: AppColors.textPrimary,
@@ -63,7 +64,9 @@ class AiEvidenceSection extends StatelessWidget {
                   ),
                   const SizedBox(height: 2),
                   Text(
-                    'RTI 신호 데이터가 신고 근거와 함께 제출돼요.',
+                    AppLocalizations.of(
+                      context,
+                    ).reportAttachEvidenceDescription,
                     style: Theme.of(context).textTheme.labelSmall?.copyWith(
                       color: AppColors.textSecondary,
                       fontSize: 11,
@@ -75,8 +78,8 @@ class AiEvidenceSection extends StatelessWidget {
             if (onShowEvidence != null)
               TextButton(
                 onPressed: onShowEvidence,
-                child: const Text(
-                  '근거 보기',
+                child: Text(
+                  AppLocalizations.of(context).reportViewEvidence,
                   style: TextStyle(fontSize: 12, fontWeight: FontWeight.w700),
                 ),
               ),

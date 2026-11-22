@@ -1,3 +1,4 @@
+import 'package:re_view_front/l10n/generated/app_localizations.dart';
 import 'package:re_view_front/app/theme/app_motion.dart';
 import 'package:flutter/material.dart';
 import 'package:re_view_front/app/theme/app_colors.dart';
@@ -30,8 +31,8 @@ class ReasonSelectorSection extends StatelessWidget {
     final hasSelection = selectedReasons.isNotEmpty;
 
     return SectionCard(
-      title: '신고 사유 선택',
-      description: '카드를 탭해서 선택하세요 · 여러 개 선택 가능합니다.',
+      title: AppLocalizations.of(context).reportReasonTitle,
+      description: AppLocalizations.of(context).reportReasonDescription,
       trailing: TextButton(
         onPressed: onShowCriteria,
         style: TextButton.styleFrom(
@@ -40,8 +41,8 @@ class ReasonSelectorSection extends StatelessWidget {
           minimumSize: Size.zero,
           tapTargetSize: MaterialTapTargetSize.shrinkWrap,
         ),
-        child: const Text(
-          '신고 기준 보기',
+        child: Text(
+          AppLocalizations.of(context).reportViewCriteria,
           style: TextStyle(fontSize: 12, fontWeight: FontWeight.w700),
         ),
       ),
@@ -67,7 +68,9 @@ class ReasonSelectorSection extends StatelessWidget {
                           borderRadius: BorderRadius.circular(999),
                         ),
                         child: Text(
-                          '${selectedReasons.length}개 선택됨',
+                          AppLocalizations.of(
+                            context,
+                          ).adminSelectedCount(selectedReasons.length),
                           style: const TextStyle(
                             fontSize: 11,
                             fontWeight: FontWeight.w800,

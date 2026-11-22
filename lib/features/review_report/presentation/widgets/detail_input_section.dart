@@ -1,3 +1,4 @@
+import 'package:re_view_front/l10n/generated/app_localizations.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:re_view_front/app/theme/app_colors.dart';
@@ -53,9 +54,10 @@ class _DetailInputSectionState extends State<DetailInputSection> {
   }
 
   Future<void> _pickFiles() async {
+    final l10n = AppLocalizations.of(context);
     final remaining = _maxFiles - widget.attachments.length;
     if (remaining <= 0) {
-      _showSnack('최대 $_maxFiles개까지만 첨부할 수 있어요.');
+      _showSnack(l10n.reportMaxAttachments(_maxFiles));
       return;
     }
 
@@ -71,7 +73,7 @@ class _DetailInputSectionState extends State<DetailInputSection> {
     for (final f in result.files) {
       if (added.length + widget.attachments.length >= _maxFiles) break;
       if (f.size > _maxBytes) {
-        _showSnack('${f.name}은 10MB를 초과합니다.');
+        _showSnack(l10n.reportFileTooLarge(f.name, 10));
         continue;
       }
       final exists = widget.attachments.any(
@@ -102,8 +104,8 @@ class _DetailInputSectionState extends State<DetailInputSection> {
     final canAddMore = widget.attachments.length < _maxFiles;
 
     return SectionCard(
-      title: '상세 근거 입력',
-      description: '신고 판단에 도움이 되는 내용을 남겨주세요.',
+      title: AppLocalizations.of(context).reportDetailsTitle,
+      description: AppLocalizations.of(context).reportDetailsDescription,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
@@ -111,7 +113,7 @@ class _DetailInputSectionState extends State<DetailInputSection> {
             children: [
               Expanded(
                 child: TrendyDropdown(
-                  label: '신고 유형',
+                  label: AppLocalizations.of(context).reportType,
                   value: widget.reportType,
                   items: const ['반복 문구', '계정 생성 직후', '유사 리뷰 군집', '기타'],
                   onChanged: widget.onReportTypeChanged,
@@ -120,7 +122,7 @@ class _DetailInputSectionState extends State<DetailInputSection> {
               const SizedBox(width: AppSpacing.md),
               Expanded(
                 child: TrendyDropdown(
-                  label: '처리 결과 공개 범위',
+                  label: AppLocalizations.of(context).reportVisibility,
                   value: widget.disclosure,
                   items: const ['비공개', '나에게만 공개', '운영팀 공유'],
                   onChanged: widget.onDisclosureChanged,
@@ -130,7 +132,7 @@ class _DetailInputSectionState extends State<DetailInputSection> {
           ),
           const SizedBox(height: AppSpacing.md),
           Text(
-            '상세 설명',
+            AppLocalizations.of(context).extNavDescription,
             style: Theme.of(context).textTheme.labelMedium?.copyWith(
               color: AppColors.textSecondary,
               fontWeight: FontWeight.w700,
@@ -142,12 +144,12 @@ class _DetailInputSectionState extends State<DetailInputSection> {
             maxLines: 5,
             validator: (v) {
               if (v == null || v.trim().length < 20) {
-                return '최소 20자 이상 입력해주세요.';
+                return AppLocalizations.of(context).reportMinimumCharacters(20);
               }
               return null;
             },
             decoration: InputDecoration(
-              hintText: '구체적인 문제 내용과 맥락을 입력해주세요.',
+              hintText: AppLocalizations.of(context).reportDetailHint,
               hintStyle: Theme.of(
                 context,
               ).textTheme.bodyMedium?.copyWith(color: AppColors.textTertiary),
@@ -176,15 +178,19 @@ class _DetailInputSectionState extends State<DetailInputSection> {
               Expanded(
                 child: Text(
                   isEnough
-                      ? '최소 20자 이상 입력하면 운영팀 검토에 더 도움이 돼요.'
-                      : '최소 20자 이상 입력해주세요.',
+                      ? AppLocalizations.of(
+                          context,
+                        ).reportMinimumCharactersHelp(20)
+                      : AppLocalizations.of(
+                          context,
+                        ).reportMinimumCharacters(20),
                   style: Theme.of(context).textTheme.labelSmall?.copyWith(
                     color: isEnough ? AppColors.textTertiary : AppColors.error,
                   ),
                 ),
               ),
               Text(
-                '$_charCount자',
+                AppLocalizations.of(context).reportCharacterCount(_charCount),
                 style: Theme.of(context).textTheme.labelSmall?.copyWith(
                   color: isEnough ? AppColors.primary : AppColors.textTertiary,
                   fontWeight: FontWeight.w700,
@@ -196,14 +202,14 @@ class _DetailInputSectionState extends State<DetailInputSection> {
           Row(
             children: [
               Text(
-                '첨부 자료 ',
+                AppLocalizations.of(context).reportAttachments,
                 style: Theme.of(context).textTheme.labelMedium?.copyWith(
                   color: AppColors.textSecondary,
                   fontWeight: FontWeight.w700,
                 ),
               ),
               Text(
-                '(선택)',
+                AppLocalizations.of(context).reportOptional,
                 style: Theme.of(context).textTheme.labelMedium?.copyWith(
                   color: AppColors.textTertiary,
                 ),
@@ -291,7 +297,9 @@ class _AttachmentBox extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    disabled ? '첨부 가능한 개수를 모두 채웠어요' : '스크린샷이나 추가 근거를 첨부해주세요',
+                    disabled
+                        ? AppLocalizations.of(context).reportAttachmentsFull
+                        : AppLocalizations.of(context).reportAttachmentsHint,
                     style: Theme.of(context).textTheme.labelMedium?.copyWith(
                       fontWeight: FontWeight.w700,
                       color: disabled
@@ -301,7 +309,7 @@ class _AttachmentBox extends StatelessWidget {
                   ),
                   const SizedBox(height: 2),
                   Text(
-                    'PNG, JPG, PDF · 최대 10MB · 최대 4개',
+                    AppLocalizations.of(context).reportAttachmentLimits(10, 4),
                     style: Theme.of(context).textTheme.labelSmall?.copyWith(
                       color: AppColors.textTertiary,
                       fontSize: 11,
@@ -324,8 +332,8 @@ class _AttachmentBox extends StatelessWidget {
                   borderRadius: BorderRadius.circular(6),
                 ),
               ),
-              child: const Text(
-                '파일 선택',
+              child: Text(
+                AppLocalizations.of(context).reportChooseFiles,
                 style: TextStyle(fontSize: 12, fontWeight: FontWeight.w700),
               ),
             ),

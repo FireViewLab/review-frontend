@@ -26,10 +26,10 @@ class MyPageRecentActivitySection extends ConsumerWidget {
     if (activityState.hasError) {
       return Column(
         children: [
-          const Text('최근 활동을 불러오지 못했어요.'),
+          Text(AppLocalizations.of(context).myPageActivityLoadFailed),
           TextButton(
             onPressed: () => ref.invalidate(myActivitiesProvider),
-            child: const Text('다시 시도'),
+            child: Text(AppLocalizations.of(context).actionRetry),
           ),
         ],
       );
@@ -42,7 +42,7 @@ class MyPageRecentActivitySection extends ConsumerWidget {
               ? Icons.rate_review_outlined
               : Icons.favorite_border,
           title: activity.description,
-          trailing: _relativeDate(activity.createdAt),
+          trailing: _relativeDate(context, activity.createdAt),
           onTap: () => switch (activity.type) {
             'WISHLIST_ADD' when activity.targetId != null => onProductTap(
               activity.targetId!,
@@ -131,10 +131,14 @@ class MyPageActivityTile extends StatelessWidget {
   }
 }
 
-String _relativeDate(DateTime? date) {
-  if (date == null) return '최근';
+String _relativeDate(BuildContext context, DateTime? date) {
+  if (date == null) return AppLocalizations.of(context).myPageActivityRecent;
   final diff = DateTime.now().difference(date);
-  if (diff.inDays >= 1) return '${diff.inDays}일 전';
-  if (diff.inHours >= 1) return '${diff.inHours}시간 전';
-  return '방금 전';
+  if (diff.inDays >= 1) {
+    return AppLocalizations.of(context).myPageActivityDaysAgo(diff.inDays);
+  }
+  if (diff.inHours >= 1) {
+    return AppLocalizations.of(context).myPageActivityHoursAgo(diff.inHours);
+  }
+  return AppLocalizations.of(context).myPageActivityJustNow;
 }

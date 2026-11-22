@@ -3103,4 +3103,1046 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String get onboardingReload => '再読み込み';
+
+  @override
+  String get reportSubmit => '通報を送信';
+
+  @override
+  String get reportReceived => '通報受付';
+
+  @override
+  String get reportReceivedDescription => '対象レビューと通報理由を保存します。';
+
+  @override
+  String get reportAssistedReview => 'AIによる補助確認';
+
+  @override
+  String get reportAssistedReviewDescription => 'RTIの情報と類似レビューの履歴を併せて確認します。';
+
+  @override
+  String get reportTeamDecision => '運営チームの判断';
+
+  @override
+  String get reportTeamDecisionDescription => '虚偽・悪意がある場合は審査状況が更新されます。';
+
+  @override
+  String get reportResultNotification => '結果の通知';
+
+  @override
+  String get reportResultNotificationDescription =>
+      '確認が完了するとフィードバック履歴に結果が反映されます。';
+
+  @override
+  String get reportProcessTitle => '処理の流れ';
+
+  @override
+  String get reportProcessDescription => '通報受付後、運営チームが確認する流れです。';
+
+  @override
+  String get reportGuideRepeated => '繰り返し表現を具体的に記載';
+
+  @override
+  String get reportGuideRepeatedDescription => '目立った箇所・文・パターンを具体的に記載してください。';
+
+  @override
+  String get reportGuideContext => '商品を使用した背景を確認';
+
+  @override
+  String get reportGuideContextDescription =>
+      '実際の使用経験がない内容や、商品と無関係な部分を教えてください。';
+
+  @override
+  String get reportGuideAttachments => '参考資料を添付';
+
+  @override
+  String get reportGuideAttachmentsDescription =>
+      '同じ根拠が複数の場面で繰り返される場合は添付が役立ちます。';
+
+  @override
+  String get reportGuideTitle => '通報ガイド';
+
+  @override
+  String get reportGuideDescription => 'このような情報が通報の処理に役立ちます。';
+
+  @override
+  String get reportSummaryTitle => '受付内容の概要';
+
+  @override
+  String get reportSummaryDescription => '送信前に入力内容を確認してください。';
+
+  @override
+  String get reportLiveBadge => 'リアルタイム';
+
+  @override
+  String get reportSelectedReasons => '選択した理由';
+
+  @override
+  String get reportAnalysisEvidence => 'AIの根拠';
+
+  @override
+  String get reportTargetReviews => '対象レビュー';
+
+  @override
+  String get reportReasonTitle => '通報理由を選択';
+
+  @override
+  String get reportReasonDescription => 'カードをタップして選択・複数選択できます。';
+
+  @override
+  String get reportViewCriteria => '通報基準を見る';
+
+  @override
+  String get reportStepTarget => '対象を確認';
+
+  @override
+  String get reportStepTargetDescription => '商品とレビューの情報を確認';
+
+  @override
+  String get reportStepReasonDescription => '問題の種類を選択';
+
+  @override
+  String get reportStepDetails => '詳しい根拠';
+
+  @override
+  String get reportStepDetailsDescription => '追加説明を入力';
+
+  @override
+  String get reportStepComplete => '受付完了';
+
+  @override
+  String get reportStepCompleteDescription => '確認状況を追跡';
+
+  @override
+  String get reportTargetDescription => '通報する商品とレビューが正しいか確認してください。';
+
+  @override
+  String get reportFromAnalysis => '分析ポップアップから移動';
+
+  @override
+  String get reportPrivacyConsent => '個人情報の収集と通報処理の案内に同意します。';
+
+  @override
+  String get reportPrivacyDescription =>
+      '通報内容はレビュー受付、処理結果の案内、モデル品質の改善に使用し、必要な期間保管します。';
+
+  @override
+  String get reportTruthConsent => '虚偽の通報ではないことを確認します。';
+
+  @override
+  String get reportTruthDescription => '通報内容が事実と異なる場合、処理の優先順位が下がることがあります。';
+
+  @override
+  String get reportTitleText => 'レビュー通報の受付';
+
+  @override
+  String get reportDescription =>
+      '疑わしいレビューの問題点と根拠を記載してください。通報は運営の確認とモデル改善のフィードバックに活用します。';
+
+  @override
+  String get reportViewMyFeedback => '自分のフィードバック履歴を見る';
+
+  @override
+  String get reportReportBreadcrumb => 'レポート';
+
+  @override
+  String get reportEvidenceTitle => '分析の根拠を併せて提出（任意）';
+
+  @override
+  String get reportEvidenceDescription => '現在のレビューのRTI分析情報を通報の根拠として添付できます。';
+
+  @override
+  String get reportAttachEvidence => 'AI分析の根拠を添付';
+
+  @override
+  String get reportAttachEvidenceDescription => 'RTIの情報が通報の根拠と一緒に提出されます。';
+
+  @override
+  String get reportViewEvidence => '根拠を見る';
+
+  @override
+  String get reportDetailsTitle => '詳しい根拠を入力';
+
+  @override
+  String get reportDetailsDescription => '通報の判断に役立つ内容を記載してください。';
+
+  @override
+  String get reportType => '通報の種類';
+
+  @override
+  String get reportVisibility => '処理結果の公開範囲';
+
+  @override
+  String get reportDetailHint => '具体的な問題とその背景を入力してください。';
+
+  @override
+  String get reportAttachments => '添付資料 ';
+
+  @override
+  String get reportOptional => '（任意）';
+
+  @override
+  String get reportAttachmentsFull => '添付できる数の上限に達しました';
+
+  @override
+  String get reportAttachmentsHint => 'スクリーンショットや追加の根拠を添付してください';
+
+  @override
+  String get reportChooseFiles => 'ファイルを選択';
+
+  @override
+  String get reportConsentsRequired => 'すべての同意項目を確認してください。';
+
+  @override
+  String get reportSubmittedTitle => '通報の受付完了';
+
+  @override
+  String get reportSubmittedDescription =>
+      '通報を受け付けました。\n処理結果はフィードバック履歴で確認できます。';
+
+  @override
+  String get reportViewFeedback => 'フィードバック履歴を見る';
+
+  @override
+  String get reportAlreadyReportedTitle => '通報済みのレビュー';
+
+  @override
+  String get reportAlreadyReportedDescription =>
+      'このレビューはすでに通報済みです。\n重複した通報は受け付けません。';
+
+  @override
+  String reportReviewCount(int count) {
+    return '$count件';
+  }
+
+  @override
+  String reportAverageReviewRound(int round) {
+    return '平均第$round回確認';
+  }
+
+  @override
+  String reportRiskyReviewScore(String score) {
+    return '危険なレビュー · RTI $score';
+  }
+
+  @override
+  String reportMaxAttachments(int count) {
+    return '最大$count件まで添付できます。';
+  }
+
+  @override
+  String reportFileTooLarge(String name, int size) {
+    return '$nameは${size}MBを超えています。';
+  }
+
+  @override
+  String reportMinimumCharacters(int count) {
+    return '$count文字以上入力してください。';
+  }
+
+  @override
+  String reportMinimumCharactersHelp(int count) {
+    return '$count文字以上入力すると、運営チームの確認に役立ちます。';
+  }
+
+  @override
+  String reportCharacterCount(int count) {
+    return '$count文字';
+  }
+
+  @override
+  String reportAttachmentLimits(int size, int count) {
+    return 'PNG, JPG, PDF · 最大${size}MB · 最大$count件';
+  }
+
+  @override
+  String reportReasonRequired(int count) {
+    return '通報理由を$count件以上選んでください。';
+  }
+
+  @override
+  String reportDetailsRequired(int count) {
+    return '詳しい説明を$count文字以上入力してください。';
+  }
+
+  @override
+  String get reportReasonFake => '偽レビュー・有償レビュアーの疑い';
+
+  @override
+  String get reportReasonGenerated => 'AI生成の痕跡の疑い';
+
+  @override
+  String get reportReasonFakeDescription =>
+      '繰り返しや過度な称賛があり、複数の購入履歴が連動している可能性のあるレビューです。';
+
+  @override
+  String get reportReasonGeneratedDescription =>
+      '繰り返しが過度に精密だったり、同じ文の構造が繰り返されるレビューです。';
+
+  @override
+  String get reportReasonIrrelevantDescription =>
+      '実際の商品使用とは関係がない内容や、別の商品・ページの内容を含みます。';
+
+  @override
+  String get reportReasonInappropriateDescription =>
+      '誹謗中傷、差別表現、氏名などの個人情報を含むレビューです。';
+
+  @override
+  String get reportReasonAdDescription => '広告レビューです。';
+
+  @override
+  String get reportReasonRepeatDescription => '繰り返しの内容です。';
+
+  @override
+  String get reportReasonOtherDescription => 'その他の通報理由です。';
+
+  @override
+  String get reportTypeRepetition => '繰り返しの表現';
+
+  @override
+  String get reportTypeNewAccount => 'アカウント作成直後';
+
+  @override
+  String get reportTypeSimilarCluster => '類似レビューの集まり';
+
+  @override
+  String get reportPrivate => '非公開';
+
+  @override
+  String get reportOnlyMe => '自分のみに公開';
+
+  @override
+  String get reportTeamOnly => '運営チームと共有';
+
+  @override
+  String get reportSelectPrompt => '選択してください';
+
+  @override
+  String get reportGuideBadge => 'ご案内';
+
+  @override
+  String get paymentTestCartTitle => 'カートのToss TEST決済';
+
+  @override
+  String get paymentTestServiceTitle => 'Toss TESTサービス決済';
+
+  @override
+  String get paymentTestCartDescription =>
+      'TEST注文・決済専用です。実際の配送や決済は行いません。販売・配送可能な商品と最終金額はサーバーの見積もりで確認します。';
+
+  @override
+  String get paymentTestServiceDescription =>
+      'テスト専用です。外部ショップへの注文、実際の決済、プランの自動変更は行いません。';
+
+  @override
+  String get paymentTestLoginRequired =>
+      '注文の確認と決済にはログインが必要です。決済のコールバックURLはログイン後に開き直してください。';
+
+  @override
+  String get paymentTestNotConfigured =>
+      'TEST決済キーとサーバーの注文・承認仕様はまだ準備されていません。現在は決済を開始・完了できません。';
+
+  @override
+  String get paymentTestWebOnly => '現在、TEST決済はウェブブラウザのみ対応しています。';
+
+  @override
+  String get paymentTestOrder => 'TEST注文';
+
+  @override
+  String get paymentTestReloadTargets => '決済対象を再取得';
+
+  @override
+  String get paymentTestOpening => 'TEST決済画面を開いています';
+
+  @override
+  String get paymentTestOpen => 'TEST決済画面を開く';
+
+  @override
+  String get paymentTestReloadWindow => '決済画面を再読み込み';
+
+  @override
+  String get paymentTestReloadApproval => 'サーバーの承認状況を再確認';
+
+  @override
+  String get paymentTestBackToOrders => 'TEST注文の選択に戻る';
+
+  @override
+  String get paymentTestCheckPlan => '現在のプランを確認';
+
+  @override
+  String get paymentCheckoutTitle => 'カートのTEST注文';
+
+  @override
+  String get paymentCheckoutDescription =>
+      '実際の決済・配送は行いません。このサービスでショップの商品を販売・配送できるかサーバーでの確認が必要です。表示価格は参考で、送料と最終金額はサーバーの見積もりで確認します。';
+
+  @override
+  String get paymentCheckoutNotConfigured =>
+      'TEST公開キーとカートの見積もり・注文・承認APIはまだありません。注文保存と決済は利用できません。住所はサーバーに送信・保存しません。';
+
+  @override
+  String get paymentCheckoutLoginSelect => 'ログインして注文を選択';
+
+  @override
+  String get paymentCheckoutNoSelection =>
+      '現在のアカウントで選択した商品がありません。カートで商品を選んでください。';
+
+  @override
+  String get paymentCheckoutRecipient => '受取人';
+
+  @override
+  String get paymentCheckoutPhone => '連絡先';
+
+  @override
+  String get paymentCheckoutPostalCode => '郵便番号';
+
+  @override
+  String get paymentCheckoutAddress => '住所';
+
+  @override
+  String get paymentCheckoutAddressDetail => '住所の詳細（任意）';
+
+  @override
+  String get paymentCheckoutRequired => '入力してください。';
+
+  @override
+  String get paymentCheckoutPhoneInvalid => '連絡先の形式を確認してください。';
+
+  @override
+  String get paymentCheckoutQuote => 'サーバーのTEST見積もりを確認';
+
+  @override
+  String get paymentCheckoutBack => 'カートに戻る';
+
+  @override
+  String paymentCheckoutUnitPrice(String price) {
+    return '参考単価：$priceウォン';
+  }
+
+  @override
+  String paymentCheckoutQuantity(int count, String price) {
+    return '$count個 · $price';
+  }
+
+  @override
+  String paymentCheckoutPostalLength(int count) {
+    return '$count桁の郵便番号を入力してください。';
+  }
+
+  @override
+  String get paymentTestRequestFailed =>
+      '決済画面のリクエストがキャンセルされたか失敗しました。決済完了として処理していません。';
+
+  @override
+  String get paymentTestLoadFailed =>
+      'TEST決済画面を読み込めませんでした。ネットワークと設定を確認して再度お試しください。';
+
+  @override
+  String get paymentTestWebBrowserOnly => 'TEST決済はウェブブラウザのみ利用できます。';
+
+  @override
+  String get planRefreshFailed =>
+      'プラン変更は処理されましたが、現在のプランと上限を確認できませんでした。再読み込みして確認してください。';
+
+  @override
+  String get detailSettingsRetry => '表示設定を読み込めませんでした。再試行';
+
+  @override
+  String get detailHelpfulUnavailable => '役に立った件数がないため、元のレビュー順で表示します。';
+
+  @override
+  String get detailNoReviews => 'まだレビューがありません。';
+
+  @override
+  String get detailNoMatchingReviews => '条件に合うレビューがありません。';
+
+  @override
+  String get detailVerified => '購入認証';
+
+  @override
+  String get detailSortRti => 'RTIが高い順';
+
+  @override
+  String get detailViewReviewAnalysis => 'レビュー分析を見る';
+
+  @override
+  String get detailHelpful => '役に立ちました';
+
+  @override
+  String get detailNotHelpful => '役に立ちませんでした';
+
+  @override
+  String get detailFeedbackSubmitted => 'フィードバックを送信しました。';
+
+  @override
+  String get detailFeedbackFailed => 'フィードバックを送信できませんでした。再度お試しください。';
+
+  @override
+  String detailShowHiddenReviews(int count) {
+    return '設定基準未満のレビュー$count件を表示';
+  }
+
+  @override
+  String detailMoreReviewsRemaining(int count) {
+    return 'レビューをもっと見る（残り$count件）';
+  }
+
+  @override
+  String get detailLowestPrice => '最安値';
+
+  @override
+  String get detailShipping => '配送';
+
+  @override
+  String detailCompareAllSellers(int count) {
+    return '全$count店舗の価格を比較';
+  }
+
+  @override
+  String get detailInsights => 'レビューのインサイト';
+
+  @override
+  String get detailMentionedKeywords => 'よく挙げられるキーワード';
+
+  @override
+  String get detailPositivePoints => '満足した点';
+
+  @override
+  String get detailNegativePoints => '惜しい点';
+
+  @override
+  String get detailMoreInsights => 'レビューのインサイトをもっと見る';
+
+  @override
+  String get detailRiskSummary => '総合リスクの概要';
+
+  @override
+  String get detailRiskSummaryTooltip => 'この商品の全レビューに対する\nAI信頼度分析の結果です。';
+
+  @override
+  String get detailScoreTooltip =>
+      'RTI信頼度スコアは購入認証、文章の信頼度、\n繰り返し表現や投稿時期のパターンなどを総合して算出します。';
+
+  @override
+  String get detailDisclaimer => '分析結果は参考情報です。最終判断の前に複数のレビューを併せて確認してください。';
+
+  @override
+  String get detailCriteria => '分析基準';
+
+  @override
+  String get detailReported => '通報済み';
+
+  @override
+  String get detailReportReview => 'レビューを通報';
+
+  @override
+  String get detailSignalsTitle => 'RTIを構成する情報';
+
+  @override
+  String get detailSignalsTooltip =>
+      'RTIを構成する情報とそれぞれのスコアです。\n文章・行動・ネットワークの分析を総合して算出します。';
+
+  @override
+  String get detailEvidenceTooltip =>
+      'レビューの信頼度を判断した具体的な根拠と、\n各根拠がスコアに寄与した割合です。';
+
+  @override
+  String get detailAlsoViewed => 'この商品を見たお客様が併せて見た商品';
+
+  @override
+  String get detailKeySignals => '主な判断材料';
+
+  @override
+  String get detailTrend => 'リスクの推移';
+
+  @override
+  String get detailTrendDescription => '商品レビューの平均RTIと危険なレビューの割合の変化を表示します。';
+
+  @override
+  String get detailTrendPending => 'AI分析の完了後にリスクの推移を確認できます';
+
+  @override
+  String get detailAverageRti => '平均RTI';
+
+  @override
+  String get detailRiskyReviewRatio => '危険なレビューの割合';
+
+  @override
+  String get detailToday => '今日';
+
+  @override
+  String get detailRecentReviewOrder => '新しいレビュー順';
+
+  @override
+  String get detailAnalyzing => 'AI分析中';
+
+  @override
+  String get detailNoAnalyzedReviews => '分析済みのレビューがありません。';
+
+  @override
+  String get detailOfficialSeller => '公式販売店';
+
+  @override
+  String get detailTrustHigh => 'レビューの信頼度が高い';
+
+  @override
+  String get detailTrustMedium => 'レビューの信頼度は普通';
+
+  @override
+  String get detailTrustLow => 'レビューの信頼度が低い';
+
+  @override
+  String detailFormattedReviewCount(String count) {
+    return 'レビュー$count件';
+  }
+
+  @override
+  String get detailBrand => 'ブランド';
+
+  @override
+  String get detailAverageRating => '平均評価';
+
+  @override
+  String detailSellerCount(int count) {
+    return '$count店舗';
+  }
+
+  @override
+  String detailRatingReviewCount(String rating, String count) {
+    return '$rating（レビュー$count件）';
+  }
+
+  @override
+  String get detailAnalysisInProgress => 'AIによるレビュー分析中';
+
+  @override
+  String get detailAnalysisInProgressDescription =>
+      'Re:view AIがレビューをリアルタイムで分析しています。完了後、信頼度スコアが自動更新されます。';
+
+  @override
+  String get detailInformation => '商品情報';
+
+  @override
+  String detailReviewTabCount(String count) {
+    return 'レビュー $count';
+  }
+
+  @override
+  String detailComparisonTabCount(int count) {
+    return '価格比較 $count';
+  }
+
+  @override
+  String get searchGridView => 'カード表示';
+
+  @override
+  String get searchListView => 'リスト表示';
+
+  @override
+  String get searchSort => '並べ替え';
+
+  @override
+  String get searchPageSize => '1ページの商品数';
+
+  @override
+  String searchResultCountLabel(int count) {
+    return '$count件の結果';
+  }
+
+  @override
+  String searchPageSizeCount(int count) {
+    return '$count件ずつ表示';
+  }
+
+  @override
+  String get searchCartAdded => 'カートに追加しました。';
+
+  @override
+  String get searchCartAddFailed => 'カートに追加できませんでした。';
+
+  @override
+  String searchFormattedReviewCount(String count) {
+    return '（レビュー$count件）';
+  }
+
+  @override
+  String get searchAllProducts => 'すべての商品';
+
+  @override
+  String get searchCategoryProducts => 'カテゴリーの商品';
+
+  @override
+  String get searchResultsTitle => '検索結果';
+
+  @override
+  String get searchAboutRti => 'Re:view Trust Index（RTI）とは？';
+
+  @override
+  String get searchAboutRtiDescription => '実際の購入者レビューの信頼度を総合して算出した指標です。';
+
+  @override
+  String searchFormattedProductCount(String count) {
+    return '$count商品';
+  }
+
+  @override
+  String searchQuickFilterAllCount(int count) {
+    return 'すべて $count';
+  }
+
+  @override
+  String get searchMultiStoreTitle => '複数ストアをまとめて検索';
+
+  @override
+  String get searchComparedProducts => '比較商品';
+
+  @override
+  String get searchCollectedReviews => '収集レビュー';
+
+  @override
+  String get searchNotCounted => '未集計';
+
+  @override
+  String get searchReviewBasedComparison => '実際の使用レビューに基づく比較';
+
+  @override
+  String get searchComparisonDescription =>
+      '価格・レビュー・RTI信頼度をまとめて比較し、信頼できる商品をすばやく選びましょう。';
+
+  @override
+  String get searchLowestPriceComparison => '最安値を比較';
+
+  @override
+  String get searchReviewTrust => 'レビューの信頼度';
+
+  @override
+  String get searchFastDelivery => 'スピード配送';
+
+  @override
+  String get searchOfficialStores => '公式ストアを含む';
+
+  @override
+  String get searchVeryHighTrust => '信頼度がとても高い';
+
+  @override
+  String get searchModerateTrust => '普通';
+
+  @override
+  String get searchLowTrust => '低い';
+
+  @override
+  String searchComparedProductCount(String count) {
+    return '$count件';
+  }
+
+  @override
+  String searchCollectedReviewCount(String count) {
+    return '$count件';
+  }
+
+  @override
+  String get searchUnconfirmedCategoriesNotice =>
+      'ショップ商品はカテゴリー名で検索し、分類が未確定の結果も表示します。詳しい分類はショップの原文で確認してください。';
+
+  @override
+  String searchLoadedProductsScope(int count, int limit) {
+    return '読み込んだ$count件の商品を絞り込み・並べ替えます。キーワード検索は最大$limit件で、ショップ全商品の検索フィルターではありません。配送・販売数・発売日・写真レビューの情報がないため、これらの条件は非対応です。';
+  }
+
+  @override
+  String get searchSortAccuracy => 'おすすめ順';
+
+  @override
+  String get searchSortRti => 'RTI順';
+
+  @override
+  String get searchSortReviewCount => 'レビューが多い順';
+
+  @override
+  String get searchSortSales => '販売数が多い順';
+
+  @override
+  String get searchSortPriceLow => '価格が安い順';
+
+  @override
+  String get searchSortPriceHigh => '価格が高い順';
+
+  @override
+  String get searchSortNewest => '新商品順';
+
+  @override
+  String get searchMissingClassification => '分類情報なし';
+
+  @override
+  String get cartSelectionSummary => '選択商品の概要';
+
+  @override
+  String get cartUnknownPriceExcluded => '価格情報のない商品は合計から除外しています。';
+
+  @override
+  String get cartReferencePriceNotice =>
+      '表示価格は参考情報です。購入や送料・クーポンの確認は各ショップで行ってください。';
+
+  @override
+  String get cartViewSelectedSellers => '選択商品の購入先を確認';
+
+  @override
+  String get cartContinueShopping => '買い物を続ける';
+
+  @override
+  String get cartShippingConditions => '配送条件は購入先で確認';
+
+  @override
+  String get cartSaveLater => '後で追加';
+
+  @override
+  String get cartDelete => '削除';
+
+  @override
+  String cartTrustLevel(String level) {
+    return '信頼度 $level';
+  }
+
+  @override
+  String cartPriceReduction(String price) {
+    return '$price値下げ';
+  }
+
+  @override
+  String cartEstimatedArrival(String date) {
+    return '$date到着予定';
+  }
+
+  @override
+  String cartStockRemaining(int count) {
+    return '在庫残り$count個';
+  }
+
+  @override
+  String get cartDeleteSelected => '選択項目を削除';
+
+  @override
+  String get cartMoveToWishlist => 'お気に入りに移動';
+
+  @override
+  String cartSelectAllCount(int selected, int total) {
+    return 'すべて選択（$selected/$total）';
+  }
+
+  @override
+  String get cartSellersTitle => '購入先を確認';
+
+  @override
+  String get cartSellersDescription =>
+      '商品詳細のショップ購入リンクをご利用ください。TEST注文は別画面で準備中で、現在サーバーの販売・配送契約はありません。';
+
+  @override
+  String get cartViewProductAndSeller => '商品詳細と購入先を見る';
+
+  @override
+  String get cartDescription => 'カートの商品を確認し、注文前にレビューの信頼度も比較しましょう。';
+
+  @override
+  String get cartTrustCheckTitle => 'レビューの信頼度をチェック';
+
+  @override
+  String get cartTrustCheckDescription => '商品ごとのRTIを確認し、信頼できるレビューが多い商品を選びましょう。';
+
+  @override
+  String cartTotalProducts(int count) {
+    return '全$count商品';
+  }
+
+  @override
+  String wishlistCountItems(int count) {
+    return '$count件';
+  }
+
+  @override
+  String get wishlistShoppingMall => 'ショップ';
+
+  @override
+  String get wishlistPriceComparisonUnavailable =>
+      'サーバーは値下げの比較情報を提供していません。価格が変わっていないという意味ではありません。';
+
+  @override
+  String get wishlistUncategorized => '未分類';
+
+  @override
+  String get wishlistShopUnknown => 'ショップ情報なし';
+
+  @override
+  String get myPageTrustUnavailable => 'お気に入り商品の分析情報を確認できません。';
+
+  @override
+  String get myPageTrustScope => 'お気に入り商品の分析済みRTIの平均とサーバーの注意等級を基準にしています。';
+
+  @override
+  String myPageTrustScorePoints(int score) {
+    return '$score点';
+  }
+
+  @override
+  String get myPageBack => 'マイページに戻る';
+
+  @override
+  String get myPageActivityLoadFailed => '最近のアクティビティを読み込めませんでした。';
+
+  @override
+  String get myPageActivityRecent => '最近';
+
+  @override
+  String get myPageActivityJustNow => 'たった今';
+
+  @override
+  String myPageActivityDaysAgo(int count) {
+    return '$count日前';
+  }
+
+  @override
+  String myPageActivityHoursAgo(int count) {
+    return '$count時間前';
+  }
+
+  @override
+  String myPageNamedDescription(String name) {
+    return '$nameさんの情報と保存商品のアクティビティを管理します。';
+  }
+
+  @override
+  String get myPageWarningScope =>
+      'お気に入り商品のうち、サーバーが疑わしい・危険と分析した商品です。分析前の商品は含みません。';
+
+  @override
+  String get myPageCheckList => '一覧を確認';
+
+  @override
+  String get myPageAllWarnings => 'すべての注意等級';
+
+  @override
+  String get myPageLoadFailed => '注意が必要な商品を確認できません。';
+
+  @override
+  String myPageViewListCount(int count) {
+    return '一覧を見る（$count）';
+  }
+
+  @override
+  String recentProductsScope(int count) {
+    return 'サーバーの直近$count件の閲覧記録から重複商品を除いています。全期間の商品数とは異なる場合があります。';
+  }
+
+  @override
+  String get recentProductsLoadFailed => '最近見た商品を読み込めませんでした。';
+
+  @override
+  String get notificationsAll => 'すべての通知';
+
+  @override
+  String get notificationsPriceAlerts => '価格通知';
+
+  @override
+  String get notificationsSavedSettings => '保存済みの通知受信設定';
+
+  @override
+  String get notificationsMore => 'もっと見る';
+
+  @override
+  String get notificationsTargetUnsupported => 'この通知の移動先はまだ対応していません。';
+
+  @override
+  String get notificationsCheckingUnreadShort => '未読の通知を確認中';
+
+  @override
+  String get notificationsUnreadFailedShort => '通知数を確認できませんでした。';
+
+  @override
+  String get notificationsManageInboxAndPrices => '通知ボックス・価格通知の管理';
+
+  @override
+  String get notificationsServiceTitle => 'サービス通知';
+
+  @override
+  String get notificationsCheckingUnread => '未読の通知を確認しています。';
+
+  @override
+  String get notificationsUnreadFailed => '未読通知の数を確認できませんでした。';
+
+  @override
+  String get notificationsSettingsFailed => '保存済みの通知設定を読み込めませんでした。';
+
+  @override
+  String get notificationsSettingsChecking => '保存済みの通知設定を確認中';
+
+  @override
+  String get notificationsReviewSettings => '通知・レビュー設定';
+
+  @override
+  String get notificationsMonitoringNotice =>
+      'リスク変化の自動監視にはサーバー連携が必要です。受信設定をオンにするだけでは監視は開始されません。';
+
+  @override
+  String get notificationsInboxNotice =>
+      '通知ボックスに保存された通知を確認できます。ブラウザのプッシュ通知・メール・SMSは非対応です。';
+
+  @override
+  String notificationsUnreadCount(int count) {
+    return '未読の通知$count件';
+  }
+
+  @override
+  String get notificationsReceiving => '受信';
+
+  @override
+  String get notificationsNotReceiving => '受信しない';
+
+  @override
+  String notificationsRiskStatus(String status) {
+    return 'リスク検知 $status';
+  }
+
+  @override
+  String notificationsAnalysisStatus(String status) {
+    return '分析結果 $status';
+  }
+
+  @override
+  String notificationsFeedbackStatus(String status) {
+    return '処理結果 $status';
+  }
+
+  @override
+  String get priceWatchTitle => '値下げ・価格通知の管理';
+
+  @override
+  String get priceWatchHistoryNotice =>
+      '価格通知の履歴・購読の保存はまだ非対応です。以下は通知記録ではなく、お気に入り商品に対するサーバーの値下げ表示です。';
+
+  @override
+  String get priceWatchComparisonUnavailable =>
+      'サーバーがお気に入り商品の比較価格を提供していないため、値下げの有無を確認できません。';
+
+  @override
+  String get priceWatchRefreshWishlistPrices => 'お気に入り商品の価格を更新';
+
+  @override
+  String get priceWatchViewWishlist => 'お気に入り商品を確認';
+
+  @override
+  String get priceWatchSubscriptionNotice => 'サーバーの価格履歴・購読保存と連携した後に申し込めます。';
+
+  @override
+  String get priceWatchSubscriptionUnavailable => '価格通知の申込・非対応';
+
+  @override
+  String get priceWatchDropIndicator => 'サーバーの値下げ表示・値下げ額と割合の情報なし';
+
+  @override
+  String priceWatchLoadFailed(String message) {
+    return '値下げ表示を確認できませんでした。$message';
+  }
+
+  @override
+  String priceWatchDropCounts(int total, int known, int drops) {
+    return 'お気に入り$total件のうち、値下げ情報がある$known件中$drops件が値下げと表示されています。基準価格と時点は提供されていません。';
+  }
 }

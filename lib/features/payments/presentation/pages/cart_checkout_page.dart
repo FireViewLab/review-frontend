@@ -1,3 +1,4 @@
+import 'package:re_view_front/l10n/generated/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -101,33 +102,44 @@ class _CartCheckoutPageState extends ConsumerState<CartCheckoutPage> {
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 Text(
-                  '장바구니 TEST 주문',
+                  AppLocalizations.of(context).paymentCheckoutTitle,
                   style: Theme.of(context).textTheme.headlineSmall,
                 ),
                 const SizedBox(height: 16),
-                const Text(
-                  '실결제·실제 배송은 진행하지 않습니다. 쇼핑몰 상품을 이 서비스가 판매·배송할 수 있는지 서버 확인이 필요합니다. 표시 가격은 참고용이며 배송비·최종 금액은 서버 견적으로 확인합니다.',
-                ),
+                Text(AppLocalizations.of(context).paymentCheckoutDescription),
                 if (!configured)
-                  const Padding(
+                  Padding(
                     padding: EdgeInsets.symmetric(vertical: 16),
                     child: Text(
-                      'TEST 공개 키와 장바구니 견적·주문·승인 API가 아직 없습니다. 주문 저장과 결제는 사용할 수 없습니다. 주소는 서버에 보내거나 저장하지 않습니다.',
+                      AppLocalizations.of(context).paymentCheckoutNotConfigured,
                     ),
                   ),
                 if (!session.isLoggedIn)
                   TextButton(
                     onPressed: () => context.push(RoutePaths.login),
-                    child: const Text('로그인 후 주문 선택'),
+                    child: Text(
+                      AppLocalizations.of(context).paymentCheckoutLoginSelect,
+                    ),
                   ),
                 if (!validSelection)
-                  const Text('현재 계정의 선택 상품이 없습니다. 장바구니에서 상품을 선택해 주세요.'),
+                  Text(AppLocalizations.of(context).paymentCheckoutNoSelection),
                 if (validSelection) ...[
                   for (final item in selection.items)
                     ListTile(
                       title: Text(item.name),
                       subtitle: Text(
-                        '${item.quantity}개 · ${item.price == null ? '가격 정보 없음' : '참고 개당 ${item.price}원'}',
+                        AppLocalizations.of(context).paymentCheckoutQuantity(
+                          item.quantity,
+                          item.price == null
+                              ? AppLocalizations.of(
+                                  context,
+                                ).homePriceUnavailable
+                              : AppLocalizations.of(
+                                  context,
+                                ).paymentCheckoutUnitPrice(
+                                  item.price.toString(),
+                                ),
+                        ),
                       ),
                       onTap: () => context.push(
                         item.detailPath,
@@ -142,11 +154,17 @@ class _CartCheckoutPageState extends ConsumerState<CartCheckoutPage> {
                         enabled: configured && session.isLoggedIn,
                         decoration: InputDecoration(
                           labelText: [
-                            '수령인',
-                            '연락처',
-                            '우편번호',
-                            '주소',
-                            '상세 주소 (선택)',
+                            AppLocalizations.of(
+                              context,
+                            ).paymentCheckoutRecipient,
+                            AppLocalizations.of(context).paymentCheckoutPhone,
+                            AppLocalizations.of(
+                              context,
+                            ).paymentCheckoutPostalCode,
+                            AppLocalizations.of(context).paymentCheckoutAddress,
+                            AppLocalizations.of(
+                              context,
+                            ).paymentCheckoutAddressDetail,
                           ][i],
                         ),
                         keyboardType: i == 1
@@ -158,17 +176,25 @@ class _CartCheckoutPageState extends ConsumerState<CartCheckoutPage> {
                         validator: (value) {
                           if (i == 4) return null;
                           final text = value?.trim() ?? '';
-                          if (text.isEmpty) return '입력해 주세요.';
+                          if (text.isEmpty) {
+                            return AppLocalizations.of(
+                              context,
+                            ).paymentCheckoutRequired;
+                          }
                           if (i == 1 &&
                               (!RegExp(r'^\+?[0-9\- ]+$').hasMatch(text) ||
                                   text.replaceAll(RegExp(r'\D'), '').length <
                                       8 ||
                                   text.replaceAll(RegExp(r'\D'), '').length >
                                       15)) {
-                            return '연락처 형식을 확인해 주세요.';
+                            return AppLocalizations.of(
+                              context,
+                            ).paymentCheckoutPhoneInvalid;
                           }
                           if (i == 2 && !RegExp(r'^\d{5}$').hasMatch(text)) {
-                            return '우편번호 5자리를 입력해 주세요.';
+                            return AppLocalizations.of(
+                              context,
+                            ).paymentCheckoutPostalLength(5);
                           }
                           return null;
                         },
@@ -194,12 +220,14 @@ class _CartCheckoutPageState extends ConsumerState<CartCheckoutPage> {
                             );
                           }
                         : null,
-                    child: const Text('서버 TEST 견적 확인'),
+                    child: Text(
+                      AppLocalizations.of(context).paymentCheckoutQuote,
+                    ),
                   ),
                 ],
                 TextButton(
                   onPressed: () => context.go(RoutePaths.cart),
-                  child: const Text('장바구니로 돌아가기'),
+                  child: Text(AppLocalizations.of(context).paymentCheckoutBack),
                 ),
               ],
             ),

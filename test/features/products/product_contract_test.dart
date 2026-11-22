@@ -220,17 +220,25 @@ void main() {
     ].map((v) => SearchResultProductDto.fromJson(v).toEntity()).toList();
     await tester.pumpWidget(
       MaterialApp(
+        locale: const Locale('ko'),
+        supportedLocales: AppLocalizations.supportedLocales,
+        localizationsDelegates: AppLocalizations.localizationsDelegates,
         home: Scaffold(body: ReviewComparisonBanner(products: products)),
       ),
     );
+    await tester.pumpAndSettle();
     expect(find.text('40'), findsOneWidget);
     await tester.pumpWidget(
       MaterialApp(
+        locale: const Locale('ko'),
+        supportedLocales: AppLocalizations.supportedLocales,
+        localizationsDelegates: AppLocalizations.localizationsDelegates,
         home: Scaffold(
           body: ReviewComparisonBanner(products: [products.first]),
         ),
       ),
     );
+    await tester.pumpAndSettle();
     expect(find.text('분석 전'), findsOneWidget);
     expect(find.text('0%'), findsNothing);
   });
@@ -249,6 +257,9 @@ void main() {
         ProviderScope(
           overrides: [isLoggedInProvider.overrideWithValue(false)],
           child: MaterialApp(
+            locale: const Locale('ko'),
+            supportedLocales: AppLocalizations.supportedLocales,
+            localizationsDelegates: AppLocalizations.localizationsDelegates,
             home: Scaffold(
               body: SizedBox(
                 width: 360,

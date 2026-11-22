@@ -1,3 +1,4 @@
+import 'package:re_view_front/l10n/generated/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:re_view_front/app/theme/app_colors.dart';
 import 'package:re_view_front/app/theme/app_spacing.dart';
@@ -29,7 +30,7 @@ class ReviewReportPageHeader extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    '리뷰 신고 접수',
+                    AppLocalizations.of(context).reportTitleText,
                     style: Theme.of(context).textTheme.headlineSmall?.copyWith(
                       fontWeight: FontWeight.w900,
                       color: AppColors.textPrimary,
@@ -38,7 +39,7 @@ class ReviewReportPageHeader extends StatelessWidget {
                   ),
                   const SizedBox(height: AppSpacing.xs),
                   Text(
-                    '의심 리뷰의 문제 유형과 근거를 남겨주세요. 제출된 신고는 운영 검수와 모델 개선 피드백에 함께 활용됩니다.',
+                    AppLocalizations.of(context).reportDescription,
                     style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                       color: AppColors.textSecondary,
                       height: 1.5,
@@ -59,8 +60,8 @@ class ReviewReportPageHeader extends StatelessWidget {
                 ),
                 shape: RoundedRectangleBorder(borderRadius: AppRadius.small),
               ),
-              child: const Text(
-                '내 피드백 내역 보기',
+              child: Text(
+                AppLocalizations.of(context).reportViewMyFeedback,
                 style: TextStyle(fontSize: 13, fontWeight: FontWeight.w700),
               ),
             ),
@@ -91,12 +92,20 @@ class _Breadcrumb extends StatelessWidget {
     return Wrap(
       crossAxisAlignment: WrapCrossAlignment.center,
       children: [
-        _BreadcrumbLink(label: '홈', onTap: onHome, style: style),
+        _BreadcrumbLink(
+          label: AppLocalizations.of(context).navHome,
+          onTap: onHome,
+          style: style,
+        ),
         divider,
-        _BreadcrumbLink(label: '리포트', onTap: onReport, style: style),
+        _BreadcrumbLink(
+          label: AppLocalizations.of(context).reportReportBreadcrumb,
+          onTap: onReport,
+          style: style,
+        ),
         divider,
         Text(
-          '리뷰 신고 접수',
+          AppLocalizations.of(context).reportTitleText,
           style: style?.copyWith(
             color: AppColors.textSecondary,
             fontWeight: FontWeight.w700,

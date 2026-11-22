@@ -1,3 +1,4 @@
+import 'package:re_view_front/l10n/generated/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -108,17 +109,17 @@ class _ReviewReportPageState extends ConsumerState<ReviewReportPage> {
 
   void _submit(ReviewReportDraft draft) {
     if (draft.reasons.isEmpty) {
-      _showSnack('신고 사유를 1개 이상 선택해주세요.');
+      _showSnack(AppLocalizations.of(context).reportReasonRequired(1));
       setState(() => _activeStep = ReportStep.reason);
       return;
     }
     if (draft.detail.trim().length < 20) {
-      _showSnack('상세 설명을 20자 이상 입력해주세요.');
+      _showSnack(AppLocalizations.of(context).reportDetailsRequired(20));
       setState(() => _activeStep = ReportStep.detail);
       return;
     }
     if (!draft.agreePrivacy || !draft.agreeNotFalse) {
-      _showSnack('동의 항목을 모두 확인해주세요.');
+      _showSnack(AppLocalizations.of(context).reportConsentsRequired);
       setState(() => _activeStep = ReportStep.submit);
       return;
     }
@@ -152,13 +153,13 @@ class _ReviewReportPageState extends ConsumerState<ReviewReportPage> {
       context: context,
       barrierDismissible: false,
       builder: (_) => AlertDialog(
-        title: const Text('신고 접수 완료'),
-        content: const Text('신고가 접수되었습니다.\n처리 결과는 피드백 내역에서 확인할 수 있어요.'),
+        title: Text(AppLocalizations.of(context).reportSubmittedTitle),
+        content: Text(AppLocalizations.of(context).reportSubmittedDescription),
         actions: [
           TextButton(
             onPressed: () =>
                 _clearDraftAndGo(() => context.go(RoutePaths.myPage)),
-            child: const Text('피드백 내역 보기'),
+            child: Text(AppLocalizations.of(context).reportViewFeedback),
           ),
           FilledButton(
             onPressed: () => _clearDraftAndGo(() {
@@ -171,7 +172,7 @@ class _ReviewReportPageState extends ConsumerState<ReviewReportPage> {
                 context.go(RoutePaths.home);
               }
             }),
-            child: const Text('확인'),
+            child: Text(AppLocalizations.of(context).actionConfirm),
           ),
         ],
       ),
@@ -183,12 +184,14 @@ class _ReviewReportPageState extends ConsumerState<ReviewReportPage> {
     showDialog<void>(
       context: context,
       builder: (_) => AlertDialog(
-        title: const Text('이미 신고한 리뷰'),
-        content: const Text('이 리뷰는 이미 신고하셨습니다.\n중복 신고는 접수되지 않아요.'),
+        title: Text(AppLocalizations.of(context).reportAlreadyReportedTitle),
+        content: Text(
+          AppLocalizations.of(context).reportAlreadyReportedDescription,
+        ),
         actions: [
           FilledButton(
             onPressed: () => _clearDraftAndGo(() => context.pop()),
-            child: const Text('확인'),
+            child: Text(AppLocalizations.of(context).actionConfirm),
           ),
         ],
       ),

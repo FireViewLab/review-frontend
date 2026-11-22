@@ -171,7 +171,7 @@ class MyPagePanel extends StatelessWidget {
   }
 }
 
-String myPageFormatPrice(int price) {
+String myPageFormatPrice(BuildContext context, int price) {
   final digits = price.toString();
   final buffer = StringBuffer();
   for (var i = 0; i < digits.length; i++) {
@@ -180,5 +180,5 @@ String myPageFormatPrice(int price) {
     }
     buffer.write(digits[i]);
   }
-  return '$buffer원';
+  return AppLocalizations.of(context).extProductPrice(buffer.toString());
 }

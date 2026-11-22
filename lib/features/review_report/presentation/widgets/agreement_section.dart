@@ -1,3 +1,4 @@
+import 'package:re_view_front/l10n/generated/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:re_view_front/app/theme/app_colors.dart';
 import 'package:re_view_front/app/theme/app_spacing.dart';
@@ -28,16 +29,15 @@ class AgreementSection extends StatelessWidget {
           _AgreementRow(
             checked: agreePrivacy,
             onChanged: onPrivacyChanged,
-            title: '개인정보 수집 및 신고 처리 안내에 동의합니다.',
-            subtitle:
-                '신고 내용은 리뷰 접수, 처리 결과 안내, 모델 품질 개선을 위해 사용되며 필요한 기간 동안 보관됩니다.',
+            title: AppLocalizations.of(context).reportPrivacyConsent,
+            subtitle: AppLocalizations.of(context).reportPrivacyDescription,
           ),
           const SizedBox(height: AppSpacing.sm),
           _AgreementRow(
             checked: agreeNotFalse,
             onChanged: onNotFalseChanged,
-            title: '허위 신고가 아님을 확인합니다.',
-            subtitle: '신고 내용이 사실과 다를 경우 처리 우선순위가 낮아질 수 있습니다.',
+            title: AppLocalizations.of(context).reportTruthConsent,
+            subtitle: AppLocalizations.of(context).reportTruthDescription,
           ),
         ],
       ),

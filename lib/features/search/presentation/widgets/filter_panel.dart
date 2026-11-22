@@ -348,6 +348,7 @@ String _localizedFilterLabel(BuildContext context, String label) {
     '1만원 이하' => l10n.searchFilterUnderTenThousand,
     '10~30만원' => l10n.searchFilterTenToThirtyThousand,
     '30만원 이상' => l10n.searchFilterAboveThreeHundredThousand,
+    '분류 정보 없음' => l10n.searchMissingClassification,
     _ => label,
   };
 }

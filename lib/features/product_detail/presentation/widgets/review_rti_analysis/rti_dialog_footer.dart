@@ -1,3 +1,4 @@
+import 'package:re_view_front/l10n/generated/app_localizations.dart';
 import 'package:re_view_front/shared/widgets/rti_criteria_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -50,7 +51,7 @@ class RtiDialogFooter extends ConsumerWidget {
           SizedBox(
             width: double.infinity,
             child: Text(
-              '분석 결과는 참고용이며 최종 판단은 여러 리뷰를 함께 확인해주세요.',
+              AppLocalizations.of(context).detailDisclaimer,
               style: Theme.of(context).textTheme.labelSmall?.copyWith(
                 color: AppColors.textTertiary,
                 fontSize: 12,
@@ -69,7 +70,10 @@ class RtiDialogFooter extends ConsumerWidget {
               ),
               shape: RoundedRectangleBorder(borderRadius: AppRadius.small),
             ),
-            child: const Text('닫기', style: TextStyle(fontSize: 13)),
+            child: Text(
+              AppLocalizations.of(context).reportClose,
+              style: TextStyle(fontSize: 13),
+            ),
           ),
           const SizedBox(width: AppSpacing.xs),
           OutlinedButton(
@@ -83,7 +87,10 @@ class RtiDialogFooter extends ConsumerWidget {
               ),
               shape: RoundedRectangleBorder(borderRadius: AppRadius.small),
             ),
-            child: const Text('분석 기준', style: TextStyle(fontSize: 13)),
+            child: Text(
+              AppLocalizations.of(context).detailCriteria,
+              style: TextStyle(fontSize: 13),
+            ),
           ),
           const SizedBox(width: AppSpacing.xs),
           OutlinedButton(
@@ -92,14 +99,22 @@ class RtiDialogFooter extends ConsumerWidget {
                     showDialog<void>(
                       context: context,
                       builder: (_) => AlertDialog(
-                        title: const Text('이미 신고한 리뷰'),
-                        content: const Text(
-                          '이 리뷰는 이미 신고하셨습니다.\n중복 신고는 접수되지 않아요.',
+                        title: Text(
+                          AppLocalizations.of(
+                            context,
+                          ).reportAlreadyReportedTitle,
+                        ),
+                        content: Text(
+                          AppLocalizations.of(
+                            context,
+                          ).reportAlreadyReportedDescription,
                         ),
                         actions: [
                           FilledButton(
                             onPressed: () => Navigator.of(context).pop(),
-                            child: const Text('확인'),
+                            child: Text(
+                              AppLocalizations.of(context).actionConfirm,
+                            ),
                           ),
                         ],
                       ),
@@ -139,7 +154,9 @@ class RtiDialogFooter extends ConsumerWidget {
               shape: RoundedRectangleBorder(borderRadius: AppRadius.small),
             ),
             child: Text(
-              alreadyReported ? '신고 완료' : '리뷰 신고',
+              alreadyReported
+                  ? AppLocalizations.of(context).detailReported
+                  : AppLocalizations.of(context).detailReportReview,
               style: const TextStyle(fontSize: 13),
             ),
           ),
