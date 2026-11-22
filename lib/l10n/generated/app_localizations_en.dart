@@ -2539,4 +2539,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String analysisAttentionReviews(int count) {
     return 'Reviews needing attention: $count';
   }
+
+  @override
+  String get scrollToTop => 'Back to top';
 }

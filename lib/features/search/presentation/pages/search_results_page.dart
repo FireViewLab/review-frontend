@@ -1,3 +1,4 @@
+import 'package:re_view_front/shared/widgets/scroll_to_top_button.dart';
 import 'package:flutter/foundation.dart' show kIsWeb, mapEquals;
 import 'package:re_view_front/shared/widgets/sliver_width_builder.dart';
 import 'package:flutter/material.dart';
@@ -57,6 +58,7 @@ class SearchResultsPage extends ConsumerStatefulWidget {
 }
 
 class _SearchResultsPageState extends ConsumerState<SearchResultsPage> {
+  final _scrollController = ScrollController();
   final Set<String> _selectedCategories = {};
   final Set<String> _selectedPriceRanges = {};
   final Set<String> _selectedReviewConditions = {};
@@ -128,6 +130,7 @@ class _SearchResultsPageState extends ConsumerState<SearchResultsPage> {
 
   @override
   void dispose() {
+    _scrollController.dispose();
     _minPriceController.dispose();
     _maxPriceController.dispose();
     super.dispose();
@@ -186,6 +189,7 @@ class _SearchResultsPageState extends ConsumerState<SearchResultsPage> {
     );
 
     final scrollView = CustomScrollView(
+      controller: _scrollController,
       physics: kIsWeb ? null : const AlwaysScrollableScrollPhysics(),
       slivers: [
         SliverToBoxAdapter(
@@ -291,6 +295,7 @@ class _SearchResultsPageState extends ConsumerState<SearchResultsPage> {
       ],
     );
     return Scaffold(
+      floatingActionButton: ScrollToTopButton(controller: _scrollController),
       backgroundColor: AppColors.background,
       body: kIsWeb
           ? scrollView

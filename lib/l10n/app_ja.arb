@@ -766,5 +766,6 @@
   "failureSearchRetry": "再検索",
   "analysisPending": "分析中",
   "analysisTextCaution": "本文の繰り返し・宣伝・説明文の表現を確認してください。",
-  "analysisAttentionReviews": "注意が必要なレビュー {count}件"
+  "analysisAttentionReviews": "注意が必要なレビュー {count}件",
+  "scrollToTop": "一番上へ"
 }

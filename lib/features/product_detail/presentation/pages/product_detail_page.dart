@@ -1,3 +1,4 @@
+import 'package:re_view_front/shared/widgets/scroll_to_top_button.dart';
 import 'package:re_view_front/shared/widgets/product_detail_hero.dart';
 import 'package:re_view_front/features/product_detail/presentation/widgets/analysis_report/analysis_report_content.dart';
 import 'package:re_view_front/features/product_detail/domain/entities/product_analysis_result.dart';
@@ -37,6 +38,14 @@ class ProductDetailPage extends ConsumerStatefulWidget {
 }
 
 class _ProductDetailPageState extends ConsumerState<ProductDetailPage> {
+  final _scrollController = ScrollController();
+
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
+  }
+
   ProductDetailTab _selectedTab = ProductDetailTab.review;
 
   @override
@@ -60,8 +69,10 @@ class _ProductDetailPageState extends ConsumerState<ProductDetailPage> {
     }
 
     return Scaffold(
+      floatingActionButton: ScrollToTopButton(controller: _scrollController),
       backgroundColor: AppColors.surface,
       body: CustomScrollView(
+        controller: _scrollController,
         slivers: [
           SliverToBoxAdapter(
             child: AppContentView(

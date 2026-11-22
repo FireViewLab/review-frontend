@@ -2438,4 +2438,7 @@ class AppLocalizationsKo extends AppLocalizations {
   String analysisAttentionReviews(int count) {
     return '주의 리뷰 $count건';
   }
+
+  @override
+  String get scrollToTop => '맨 위로';
 }

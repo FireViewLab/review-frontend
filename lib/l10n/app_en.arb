@@ -780,5 +780,6 @@
   "failureSearchRetry": "Search again",
   "analysisPending": "Analysis in progress",
   "analysisTextCaution": "Check the review text for repeated, promotional, or descriptive wording.",
-  "analysisAttentionReviews": "Reviews needing attention: {count}"
+  "analysisAttentionReviews": "Reviews needing attention: {count}",
+  "scrollToTop": "Back to top"
 }
