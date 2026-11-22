@@ -1,3 +1,4 @@
+import 'package:re_view_front/shared/widgets/list_row_skeleton.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -40,11 +41,6 @@ class PriceWatchSliver extends ConsumerWidget {
               const Text(
                 '가격 알림 이력·구독 저장은 아직 지원되지 않아요. 아래는 알림 기록이 아닌 찜 상품의 서버 가격하락 표시입니다.',
               ),
-              if (loading)
-                const Padding(
-                  padding: EdgeInsets.all(16),
-                  child: LinearProgressIndicator(),
-                ),
               if (failed != null) Text('가격하락 표시를 확인하지 못했어요. $failed'),
               if (items != null && known > 0)
                 Text(
@@ -82,6 +78,14 @@ class PriceWatchSliver extends ConsumerWidget {
             ],
           ),
         ),
+        if (loading)
+          const SliverToBoxAdapter(
+            child: ListLoadingSkeleton(
+              leadingSize: 24,
+              lineCount: 2,
+              card: false,
+            ),
+          ),
         SliverList.builder(
           itemCount: drops?.length ?? 0,
           itemBuilder: (context, index) {

@@ -1,3 +1,4 @@
+import 'package:re_view_front/shared/widgets/list_row_skeleton.dart';
 import 'package:re_view_front/shared/presentation/analysis_formatters.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -108,9 +109,7 @@ class WarningProductsPageState extends ConsumerState<WarningProductsPage> {
         ],
       ),
       sliver: state is WishlistLoading || state is WishlistInitial
-          ? const SliverToBoxAdapter(
-              child: Center(child: CircularProgressIndicator()),
-            )
+          ? const SliverToBoxAdapter(child: ListLoadingSkeleton())
           : items.isEmpty
           ? SliverToBoxAdapter(
               child: Padding(

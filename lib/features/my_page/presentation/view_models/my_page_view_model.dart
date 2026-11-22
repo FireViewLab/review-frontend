@@ -17,7 +17,12 @@ class MyPageViewModel extends Notifier<MyPageState> {
     if (!ref.mounted) return;
 
     final generation = ++_generation;
-    state = const MyPageLoading();
+    final isRefresh = switch (state) {
+      MyPageSuccess() => true,
+      MyPageLoading(:final isRefresh) => isRefresh,
+      _ => false,
+    };
+    state = MyPageLoading(isRefresh: isRefresh);
     final result = await ref.read(getMyProfileUseCaseProvider)();
     if (!ref.mounted ||
         generation != _generation ||

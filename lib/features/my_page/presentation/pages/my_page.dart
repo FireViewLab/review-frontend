@@ -1,3 +1,5 @@
+import 'package:re_view_front/shared/widgets/shimmer_box.dart';
+import 'package:re_view_front/shared/widgets/list_row_skeleton.dart';
 import 'package:re_view_front/features/notifications/presentation/providers/notification_providers.dart';
 import 'package:re_view_front/features/wishlist/presentation/view_models/wishlist_state.dart';
 import 'package:re_view_front/features/my_page/presentation/widgets/my_page/warning_products_section.dart';
@@ -50,6 +52,7 @@ class _MyPageState extends ConsumerState<MyPage> {
     };
 
     return switch (myPageState) {
+      MyPageLoading(isRefresh: false) => const _MyPageSkeleton(),
       MyPageLoading() => SizedBox(
         height: 360,
         child: AppLoadingView(
@@ -105,4 +108,57 @@ class _MyPageState extends ConsumerState<MyPage> {
       alignment: 0.05,
     );
   }
+}
+
+class _MyPageSkeleton extends StatelessWidget {
+  const _MyPageSkeleton();
+
+  @override
+  Widget build(BuildContext context) => LoadingSkeleton(
+    child: LayoutBuilder(
+      builder: (context, constraints) {
+        final columns = constraints.maxWidth < 600
+            ? 1
+            : constraints.maxWidth < 1000
+            ? 2
+            : 4;
+        final width = (constraints.maxWidth - (columns - 1) * 16) / columns;
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            const Align(
+              alignment: Alignment.centerLeft,
+              child: ShimmerBox(width: 180, height: 28, radius: 4),
+            ),
+            const SizedBox(height: 24),
+            Wrap(
+              spacing: 16,
+              runSpacing: 16,
+              children: [
+                for (var i = 0; i < 4; i++)
+                  SizedBox(
+                    width: width,
+                    child: const ListRowSkeleton(leadingSize: 30, lineCount: 2),
+                  ),
+              ],
+            ),
+            const SizedBox(height: 32),
+            const Align(
+              alignment: Alignment.centerLeft,
+              child: ShimmerBox(width: 120, height: 22, radius: 4),
+            ),
+            const SizedBox(height: 16),
+            Wrap(
+              spacing: 16,
+              runSpacing: 16,
+              children: [
+                for (var i = 0; i < 4; i++)
+                  SizedBox(width: width, child: const ListRowSkeleton()),
+              ],
+            ),
+          ],
+        );
+      },
+    ),
+  );
 }

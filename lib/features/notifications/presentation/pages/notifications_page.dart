@@ -1,3 +1,4 @@
+import 'package:re_view_front/shared/widgets/list_row_skeleton.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:re_view_front/features/price_watch/presentation/widgets/price_watch_section.dart';
 import 'package:re_view_front/features/notifications/presentation/widgets/notification_settings_summary.dart';
@@ -15,7 +16,6 @@ import 'package:re_view_front/l10n/generated/app_localizations.dart';
 import 'package:re_view_front/shared/extensions/context_extensions.dart';
 import 'package:re_view_front/shared/widgets/app_content_view.dart';
 import 'package:re_view_front/shared/widgets/error_view.dart';
-import 'package:re_view_front/shared/widgets/loading_view.dart';
 
 class NotificationsPage extends ConsumerStatefulWidget {
   const NotificationsPage({super.key});
@@ -215,9 +215,10 @@ class _Body extends StatelessWidget {
     final l10n = AppLocalizations.of(context);
     if (state.isLoading && state.items.isEmpty) {
       return SliverToBoxAdapter(
-        child: SizedBox(
-          height: 320,
-          child: AppLoadingView(message: l10n.notificationsLoading),
+        child: const ListLoadingSkeleton(
+          leadingSize: 36,
+          lineCount: 3,
+          card: false,
         ),
       );
     }
