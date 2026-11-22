@@ -37,7 +37,10 @@ class AnalysisSummaryCard extends ConsumerWidget {
     }
     final analysis = state.analysis;
     final display = analysis?.display;
-    final explanation = display?.isAwaitingScore == true
+    // 상세 응답의 상품 분석에는 v4 평균이 없으므로, v4 모델 정보가 왔는데
+    // 점수가 비어 있을 때만 분석 중으로 안내한다.
+    final explanation =
+        display?.isAwaitingScore == true && display?.modelVersion != null
         ? l10n.analysisPending
         : display?.localizedReasons(context).firstOrNull;
     final summary = display?.isV2 == true ? null : analysis?.summary?.trim();
