@@ -542,6 +542,9 @@ void main() {
       final l = AppLocalizations.of(
         tester.element(find.byType(AnalysisSummaryCard)),
       );
+      expect(find.textContaining('ptext-koelectra-v4.0'), findsNothing);
+      await tester.tap(find.text(l.extSummaryEvidenceToggle));
+      await tester.pump();
       expect(find.text(l.analysisTextCaution), findsOneWidget);
       expect(find.textContaining('ptext-koelectra-v4.0'), findsOneWidget);
       expect(find.textContaining('text-first-v1'), findsOneWidget);

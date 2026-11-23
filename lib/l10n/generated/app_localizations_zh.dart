@@ -4085,4 +4085,47 @@ class AppLocalizationsZh extends AppLocalizations {
   String priceWatchDropCounts(int total, int known, int drops) {
     return '$total 件收藏商品中有 $known 件提供降价信息，其中 $drops 件标记为降价。未提供基准价格及时间。';
   }
+
+  @override
+  String get extProgressPreviousComplete => '采集与分析完成 · 先前采集的信息';
+
+  @override
+  String get extProgressPreviousInfo => '先前采集的信息';
+
+  @override
+  String get extReviewSummaryTitle => '评价摘要';
+
+  @override
+  String extReviewRatingSummary(int count, String rating, String distribution) {
+    return '已加载$count条评价 · 平均$rating星 · $distribution';
+  }
+
+  @override
+  String extReviewStarCount(int stars, int count) {
+    return '$stars星 $count条';
+  }
+
+  @override
+  String extReviewKeywords(String keywords) {
+    return '常见表达：$keywords';
+  }
+
+  @override
+  String extReviewPositive(String excerpt) {
+    return '好评：“$excerpt”';
+  }
+
+  @override
+  String extReviewNegative(String excerpt) {
+    return '不足之处：“$excerpt”';
+  }
+
+  @override
+  String get extReviewSummaryRequest => '使用AI总结评价';
+
+  @override
+  String get extReviewSummaryQuestion => '请简短总结这款商品评价中的优点与不足';
+
+  @override
+  String get extSummaryEvidenceToggle => '查看分析状态与依据';
 }

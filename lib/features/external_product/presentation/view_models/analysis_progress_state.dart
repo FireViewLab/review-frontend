@@ -39,7 +39,7 @@ class AnalysisProgressState {
   factory AnalysisProgressState.fromDetail(ExternalProductState state) {
     final product = state.product != null
         ? state.collection == CollectionStatus.stale &&
-                  (state.job?.productState.isActive ?? false)
+                  (state.job?.productState == CollectionJobStatus.running)
               ? AnalysisStepStatus.refreshing
               : AnalysisStepStatus.complete
         : switch (state.collection) {
@@ -50,9 +50,10 @@ class AnalysisProgressState {
             CollectionStatus.unavailable => AnalysisStepStatus.unavailable,
             _ => _jobStep(state.job?.productState),
           };
-    // job이 없는데 상품과 리뷰를 이미 받았다면 리뷰 수집은 끝난 것이다.
-    final reviews = state.job == null && state.reviews.isNotEmpty
-        ? AnalysisStepStatus.complete
+    final reviews = state.reviews.isNotEmpty
+        ? state.job?.reviewState == CollectionJobStatus.running
+              ? AnalysisStepStatus.inProgress
+              : AnalysisStepStatus.complete
         : _jobStep(state.job?.reviewState);
     final analysis = switch (state.analysisState) {
       ExternalAnalysisStatus.pending => AnalysisStepStatus.waiting,
@@ -76,13 +77,19 @@ class AnalysisProgressState {
         state.job?.status == CollectionJobStatus.partial ||
         state.phase == ExternalProductPhase.failure;
     final AnalysisProgressNotice notice;
-    if (state.isRefreshDelayed) {
+    if (!failed &&
+        state.hasCollectedContent &&
+        !state.isRefreshRunning &&
+        state.analysisState == ExternalAnalysisStatus.done) {
+      notice = AnalysisProgressNotice.complete;
+    } else if (state.isRefreshDelayed) {
       notice = AnalysisProgressNotice.delayed;
     } else if (failed) {
       notice = AnalysisProgressNotice.failed;
     } else if (state.isStaleRefreshing) {
       notice = AnalysisProgressNotice.refreshing;
-    } else if (state.isCollecting) {
+    } else if (state.isCollecting &&
+        (!state.hasCollectedContent || state.isRefreshRunning)) {
       notice = AnalysisProgressNotice.collecting;
     } else if (state.isAnalyzing) {
       notice = AnalysisProgressNotice.analyzing;

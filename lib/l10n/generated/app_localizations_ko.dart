@@ -4148,4 +4148,47 @@ class AppLocalizationsKo extends AppLocalizations {
   String priceWatchDropCounts(int total, int known, int drops) {
     return '찜 $total개 중 가격하락 정보가 있는 $known개에서 $drops개가 하락으로 표시됐어요. 기준 가격·시점은 제공되지 않았어요.';
   }
+
+  @override
+  String get extProgressPreviousComplete => '수집·분석 완료 · 이전 수집 정보';
+
+  @override
+  String get extProgressPreviousInfo => '이전에 수집한 정보';
+
+  @override
+  String get extReviewSummaryTitle => '리뷰 요약';
+
+  @override
+  String extReviewRatingSummary(int count, String rating, String distribution) {
+    return '불러온 리뷰 $count개 · 평균 $rating점 · $distribution';
+  }
+
+  @override
+  String extReviewStarCount(int stars, int count) {
+    return '$stars점 $count개';
+  }
+
+  @override
+  String extReviewKeywords(String keywords) {
+    return '자주 언급된 표현: $keywords';
+  }
+
+  @override
+  String extReviewPositive(String excerpt) {
+    return '긍정 리뷰: “$excerpt”';
+  }
+
+  @override
+  String extReviewNegative(String excerpt) {
+    return '아쉬운 리뷰: “$excerpt”';
+  }
+
+  @override
+  String get extReviewSummaryRequest => 'AI로 리뷰 요약 받기';
+
+  @override
+  String get extReviewSummaryQuestion => '이 상품 리뷰들을 장점과 아쉬운 점으로 짧게 요약해 줘';
+
+  @override
+  String get extSummaryEvidenceToggle => '분석 상태·근거 보기';
 }

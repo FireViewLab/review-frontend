@@ -88,3 +88,138 @@ class AnalysisSummaryData {
   final List<LoadedGradeDistribution> distributions;
   final List<AnalysisReasonFrequency> topReasons;
 }
+
+/// A deterministic summary of the reviews currently loaded on screen.
+class ReviewContentSummary {
+  ReviewContentSummary.fromReviews(
+    List<ExternalReview> reviews, {
+    required String productName,
+  }) {
+    final unique = {
+      for (final review in reviews) review.reviewId: review,
+    }.values.toList();
+    loadedCount = unique.length;
+    final ratings = unique
+        .where(
+          (review) =>
+              review.rating != null &&
+              review.rating!.isFinite &&
+              review.rating! >= 1 &&
+              review.rating! <= 5,
+        )
+        .toList();
+    average = ratings.isEmpty
+        ? null
+        : ratings.fold<double>(0, (sum, review) => sum + review.rating!) /
+              ratings.length;
+    distribution = List.unmodifiable(
+      List.generate(
+        5,
+        (index) => ratings
+            .where((review) => review.rating!.round() == index + 1)
+            .length,
+      ),
+    );
+    ratings.sort((a, b) => b.rating!.compareTo(a.rating!));
+    positive = _excerpt(
+      ratings
+          .where(
+            (review) => review.rating! >= 4 && review.content.trim().isNotEmpty,
+          )
+          .firstOrNull,
+    );
+    negative = _excerpt(
+      ratings.reversed
+          .where(
+            (review) => review.rating! <= 2 && review.content.trim().isNotEmpty,
+          )
+          .firstOrNull,
+    );
+    final excluded = _tokens(productName).toSet();
+    final frequencies = <String, int>{};
+    for (final review in unique) {
+      for (final token in _tokens(
+        review.content,
+      ).toSet().difference(excluded)) {
+        frequencies.update(token, (count) => count + 1, ifAbsent: () => 1);
+      }
+    }
+    final ranked = frequencies.entries.toList()
+      ..sort((a, b) {
+        final frequency = b.value.compareTo(a.value);
+        return frequency != 0 ? frequency : a.key.compareTo(b.key);
+      });
+    keywords = List.unmodifiable(ranked.take(5).map((entry) => entry.key));
+  }
+
+  late final int loadedCount;
+  late final double? average;
+  late final List<int> distribution;
+  late final List<String> keywords;
+  late final String? positive;
+  late final String? negative;
+
+  static String? _excerpt(ExternalReview? review) {
+    if (review == null) return null;
+    final text = review.content.trim().replaceAll(RegExp(r'\s+'), ' ');
+    final characters = text.runes.toList();
+    return characters.length <= 80
+        ? text
+        : '${String.fromCharCodes(characters.take(79))}…';
+  }
+
+  static Iterable<String> _tokens(String text) sync* {
+    const stopwords = {
+      '정말',
+      '너무',
+      '아주',
+      '진짜',
+      '그냥',
+      '조금',
+      '많이',
+      '다시',
+      '이번',
+      '저는',
+      '제가',
+      '이거',
+      '이것',
+      '저것',
+      '상품',
+      '제품',
+      '구매',
+      '사용',
+      '리뷰',
+      '후기',
+      '때문',
+      '정도',
+      '같아요',
+      '좋아요',
+      '있어요',
+      '없어요',
+      '합니다',
+      '입니다',
+      'the',
+      'and',
+      'for',
+      'this',
+      'with',
+      'very',
+    };
+    final particles = RegExp(
+      r'(에서는|으로는|에서도|에게는|이라도|으로|에서|에게|까지|부터|처럼|보다|하고|이랑|랑|은|는|이|가|을|를|에|의|도|만|와|과)$',
+    );
+    for (final match in RegExp(
+      r'[가-힣a-zA-Z]+',
+    ).allMatches(text.toLowerCase())) {
+      final token = match.group(0)!.replaceFirst(particles, '');
+      if (token.runes.length < 2 ||
+          stopwords.contains(token) ||
+          RegExp(
+            r'(어요|아요|해요|네요|지만|니다|해서|하고|좋고|했음|했어요|습니다|같은|있는|없는)$',
+          ).hasMatch(token)) {
+        continue;
+      }
+      yield token;
+    }
+  }
+}

@@ -38,6 +38,14 @@ class AnalysisProgressSteps extends StatelessWidget {
       AnalysisProgressNotice.delayed => OwlGuideTone.warning,
       _ => OwlGuideTone.info,
     };
+    if (!progress.showSteps) {
+      return Text(
+        state.isStale || (state.job?.isActive ?? false)
+            ? l10n.extProgressPreviousComplete
+            : l10n.extProgressNoticeComplete,
+        style: Theme.of(context).textTheme.bodySmall,
+      );
+    }
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
@@ -63,10 +71,16 @@ class AnalysisProgressSteps extends StatelessWidget {
                 _ProgressStep(
                   label: l10n.extProgressProductStep,
                   status: progress.product,
+                  previous:
+                      (state.isStale || (state.job?.isActive ?? false)) &&
+                      progress.product == AnalysisStepStatus.complete,
                 ),
                 _ProgressStep(
                   label: l10n.extProgressReviewsStep,
                   status: progress.reviews,
+                  previous:
+                      (state.isStale || (state.job?.isActive ?? false)) &&
+                      progress.reviews == AnalysisStepStatus.complete,
                 ),
                 _ProgressStep(
                   label: l10n.extProgressAnalysisStep,
@@ -103,7 +117,13 @@ class AnalysisProgressSteps extends StatelessWidget {
 }
 
 class _ProgressStep extends StatelessWidget {
-  const _ProgressStep({required this.label, required this.status});
+  const _ProgressStep({
+    required this.label,
+    required this.status,
+    this.previous = false,
+  });
+
+  final bool previous;
 
   final String label;
   final AnalysisStepStatus status;
@@ -111,18 +131,20 @@ class _ProgressStep extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);
-    final caption = switch (status) {
-      AnalysisStepStatus.complete => l10n.extProgressStatusComplete,
-      AnalysisStepStatus.inProgress => l10n.extProgressStatusInProgress,
-      AnalysisStepStatus.waiting => l10n.extProgressStatusWaiting,
-      AnalysisStepStatus.failed => l10n.extProgressStatusFailed,
-      AnalysisStepStatus.notAnalyzed => l10n.extProgressStatusNotAnalyzed,
-      AnalysisStepStatus.unknown => l10n.extProgressStatusUnknown,
-      AnalysisStepStatus.refreshing => l10n.extProgressStatusRefreshing,
-      AnalysisStepStatus.disabled => l10n.extProgressStatusDisabled,
-      AnalysisStepStatus.unavailable => l10n.extProgressStatusUnavailable,
-      AnalysisStepStatus.partial => l10n.extProgressStatusPartial,
-    };
+    final caption = previous
+        ? l10n.extProgressPreviousInfo
+        : switch (status) {
+            AnalysisStepStatus.complete => l10n.extProgressStatusComplete,
+            AnalysisStepStatus.inProgress => l10n.extProgressStatusInProgress,
+            AnalysisStepStatus.waiting => l10n.extProgressStatusWaiting,
+            AnalysisStepStatus.failed => l10n.extProgressStatusFailed,
+            AnalysisStepStatus.notAnalyzed => l10n.extProgressStatusNotAnalyzed,
+            AnalysisStepStatus.unknown => l10n.extProgressStatusUnknown,
+            AnalysisStepStatus.refreshing => l10n.extProgressStatusRefreshing,
+            AnalysisStepStatus.disabled => l10n.extProgressStatusDisabled,
+            AnalysisStepStatus.unavailable => l10n.extProgressStatusUnavailable,
+            AnalysisStepStatus.partial => l10n.extProgressStatusPartial,
+          };
     final color = switch (status) {
       AnalysisStepStatus.complete => AppColors.success,
       AnalysisStepStatus.inProgress ||
@@ -181,11 +203,12 @@ class _ProgressStep extends StatelessWidget {
                 const SizedBox(height: AppSpacing.xxs),
                 Text(
                   caption,
-                  style: textTheme.bodyMedium?.copyWith(
-                    color: status == AnalysisStepStatus.partial
-                        ? AppColors.textSecondary
-                        : color,
-                  ),
+                  style: (previous ? textTheme.bodySmall : textTheme.bodyMedium)
+                      ?.copyWith(
+                        color: status == AnalysisStepStatus.partial
+                            ? AppColors.textSecondary
+                            : color,
+                      ),
                 ),
               ],
             ),

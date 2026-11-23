@@ -7769,6 +7769,72 @@ abstract class AppLocalizations {
   /// In ko, this message translates to:
   /// **'찜 {total}개 중 가격하락 정보가 있는 {known}개에서 {drops}개가 하락으로 표시됐어요. 기준 가격·시점은 제공되지 않았어요.'**
   String priceWatchDropCounts(int total, int known, int drops);
+
+  /// No description provided for @extProgressPreviousComplete.
+  ///
+  /// In ko, this message translates to:
+  /// **'수집·분석 완료 · 이전 수집 정보'**
+  String get extProgressPreviousComplete;
+
+  /// No description provided for @extProgressPreviousInfo.
+  ///
+  /// In ko, this message translates to:
+  /// **'이전에 수집한 정보'**
+  String get extProgressPreviousInfo;
+
+  /// No description provided for @extReviewSummaryTitle.
+  ///
+  /// In ko, this message translates to:
+  /// **'리뷰 요약'**
+  String get extReviewSummaryTitle;
+
+  /// No description provided for @extReviewRatingSummary.
+  ///
+  /// In ko, this message translates to:
+  /// **'불러온 리뷰 {count}개 · 평균 {rating}점 · {distribution}'**
+  String extReviewRatingSummary(int count, String rating, String distribution);
+
+  /// No description provided for @extReviewStarCount.
+  ///
+  /// In ko, this message translates to:
+  /// **'{stars}점 {count}개'**
+  String extReviewStarCount(int stars, int count);
+
+  /// No description provided for @extReviewKeywords.
+  ///
+  /// In ko, this message translates to:
+  /// **'자주 언급된 표현: {keywords}'**
+  String extReviewKeywords(String keywords);
+
+  /// No description provided for @extReviewPositive.
+  ///
+  /// In ko, this message translates to:
+  /// **'긍정 리뷰: “{excerpt}”'**
+  String extReviewPositive(String excerpt);
+
+  /// No description provided for @extReviewNegative.
+  ///
+  /// In ko, this message translates to:
+  /// **'아쉬운 리뷰: “{excerpt}”'**
+  String extReviewNegative(String excerpt);
+
+  /// No description provided for @extReviewSummaryRequest.
+  ///
+  /// In ko, this message translates to:
+  /// **'AI로 리뷰 요약 받기'**
+  String get extReviewSummaryRequest;
+
+  /// No description provided for @extReviewSummaryQuestion.
+  ///
+  /// In ko, this message translates to:
+  /// **'이 상품 리뷰들을 장점과 아쉬운 점으로 짧게 요약해 줘'**
+  String get extReviewSummaryQuestion;
+
+  /// No description provided for @extSummaryEvidenceToggle.
+  ///
+  /// In ko, this message translates to:
+  /// **'분석 상태·근거 보기'**
+  String get extSummaryEvidenceToggle;
 }
 
 class _AppLocalizationsDelegate
