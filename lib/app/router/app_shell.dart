@@ -1,3 +1,4 @@
+import 'package:intl/intl.dart';
 import 'package:re_view_front/l10n/generated/app_localizations.dart';
 import 'package:re_view_front/shared/presentation/analysis_formatters.dart';
 import 'package:flutter/material.dart';
@@ -95,8 +96,17 @@ class _AppShellState extends ConsumerState<AppShell> {
                 priceLabel: AppLocalizations.of(
                   context,
                 ).extProductPrice(p.price.toString()),
-                ratingLabel: p.rating?.toStringAsFixed(1) ?? '-',
-                reviewCountLabel: p.reviewCount?.toString() ?? '-',
+                ratingLabel: p.rating == null
+                    ? ''
+                    : NumberFormat(
+                        '0.0',
+                        AppLocalizations.of(context).localeName,
+                      ).format(p.rating),
+                reviewCountLabel: (p.reviewCount ?? 0) > 0
+                    ? NumberFormat.decimalPattern(
+                        AppLocalizations.of(context).localeName,
+                      ).format(p.reviewCount)
+                    : '',
                 rtiLabel: p.analysisDisplay.badgeText(
                   context,
                   legacyMissingLabel: '',

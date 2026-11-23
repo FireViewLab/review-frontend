@@ -1,6 +1,5 @@
+import 'package:re_view_front/shared/widgets/product_review_metrics.dart';
 import 'package:re_view_front/l10n/generated/app_localizations.dart';
-import 'package:re_view_front/shared/presentation/analysis_formatters.dart';
-import 'package:re_view_front/core/analysis/analysis_display.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:re_view_front/app/theme/app_motion.dart';
@@ -159,10 +158,6 @@ class _SimilarProductCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final rtiColor = (product.analysisDisplay.isV2
-        ? product.analysisDisplay.color
-        : colorFromHex(product.rtiColor));
-
     return GestureDetector(
       onTap: onTap,
       child: SizedBox(
@@ -210,11 +205,6 @@ class _SimilarProductCard extends StatelessWidget {
                       ),
                     ),
                     const SizedBox(width: AppSpacing.xxs),
-                    _RtiBadgeMini(
-                      score: product.analysisDisplay.score?.round(),
-                      analysis: product.analysisDisplay,
-                      color: rtiColor,
-                    ),
                   ],
                 ),
                 const SizedBox(height: 2),
@@ -229,33 +219,10 @@ class _SimilarProductCard extends StatelessWidget {
                   ),
                 ),
                 const Spacer(),
-                Row(
-                  children: [
-                    if (product.avgRating != null)
-                      const Icon(
-                        Icons.star,
-                        color: Color(0xFFF59E0B),
-                        size: 12,
-                      ),
-                    const SizedBox(width: 2),
-                    Text(
-                      product.avgRating?.toStringAsFixed(1) ?? '',
-                      style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                        fontWeight: FontWeight.w700,
-                        fontSize: 11,
-                      ),
-                    ),
-                    const SizedBox(width: 2),
-                    Text(
-                      product.reviewCount == null
-                          ? ''
-                          : '(${formatSearchCount(product.reviewCount)})',
-                      style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                        color: AppColors.textSecondary,
-                        fontSize: 11,
-                      ),
-                    ),
-                  ],
+                ProductReviewMetrics(
+                  rating: product.avgRating,
+                  reviewCount: product.reviewCount,
+                  analysis: product.analysisDisplay,
                 ),
                 const SizedBox(height: 2),
                 Text(
@@ -268,51 +235,6 @@ class _SimilarProductCard extends StatelessWidget {
               ],
             ),
           ),
-        ),
-      ),
-    );
-  }
-}
-
-class _RtiBadgeMini extends StatelessWidget {
-  const _RtiBadgeMini({
-    this.analysis,
-    required this.score,
-    required this.color,
-  });
-
-  final AnalysisDisplay? analysis;
-  final int? score;
-  final Color color;
-
-  @override
-  Widget build(BuildContext context) {
-    return DecoratedBox(
-      decoration: BoxDecoration(
-        color: AppColors.surface.withValues(alpha: 0.88),
-        borderRadius: AppRadius.small,
-        border: Border.all(color: color.withValues(alpha: 0.35)),
-      ),
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 2),
-        child: Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Icon(Icons.verified_user_outlined, color: color, size: 11),
-            const SizedBox(width: 2),
-            Text(
-              analysis?.isV2 == true
-                  ? analysis!.badgeText(context)
-                  : (score == null
-                        ? AppLocalizations.of(context).externalUnanalyzed
-                        : 'RTI $score'),
-              style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                color: color,
-                fontWeight: FontWeight.w900,
-                fontSize: 11,
-              ),
-            ),
-          ],
         ),
       ),
     );

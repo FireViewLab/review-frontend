@@ -1,3 +1,4 @@
+import 'package:re_view_front/shared/presentation/product_review_counts.dart';
 import 'package:re_view_front/core/analysis/analysis_display.dart';
 import 'package:re_view_front/core/analysis/analysis_contract.dart';
 import 'package:re_view_front/core/utils/product_image_urls.dart';
@@ -78,7 +79,7 @@ class ProductDetailDto {
       avgRti: (json['avgRti'] as num?)?.toDouble(),
       rtiGrade: json['rtiGrade'] as String?,
       rtiColor: json['rtiColor'] as String?,
-      reviewCount: (json['reviewCount'] as num?)?.toInt(),
+      reviewCount: productReviewCount(json),
       avgRating: (json['avgRating'] as num?)?.toDouble(),
       lowestPrice: (json['lowestPrice'] as num?)?.toInt(),
       lowestPlatform: json['lowestPlatform'] as String?,

@@ -1,3 +1,4 @@
+import 'package:re_view_front/shared/presentation/product_review_counts.dart';
 import 'package:re_view_front/core/analysis/analysis_display.dart';
 import 'package:re_view_front/core/analysis/analysis_contract.dart';
 import 'package:re_view_front/features/external_product/data/dtos/product_summary_dto.dart';
@@ -57,7 +58,7 @@ class WishlistItemDto {
       avgRti: _readDouble(json, ['avgRti', 'rtiScore', 'rti']),
       rtiGrade: _readNullableString(json, ['rtiGrade', 'grade']),
       rtiColor: _readNullableString(json, ['rtiColor', 'color']),
-      reviewCount: _readNullableInt(json, ['reviewCount', 'review_count']),
+      reviewCount: productReviewCount(json),
       avgRating: _readDouble(json, ['avgRating', 'rating', 'starRating']),
       priceDropStatus: _priceDrop(json),
       isPriceDrop: _priceDrop(json) ?? false,

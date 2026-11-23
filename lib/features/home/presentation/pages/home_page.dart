@@ -1,3 +1,4 @@
+import 'package:intl/intl.dart';
 import 'package:re_view_front/shared/widgets/scroll_to_top_button.dart';
 import 'package:re_view_front/core/error/failure.dart';
 import 'package:re_view_front/shared/presentation/analysis_formatters.dart';
@@ -230,10 +231,16 @@ class _HomePageState extends ConsumerState<HomePage> {
                               name: p.name,
                               storeName: p.platform ?? p.dataPlatform ?? '',
                               priceLabel: _formatPrice(p.price),
-                              ratingLabel:
-                                  p.avgRating?.toStringAsFixed(1) ?? '',
+                              ratingLabel: p.avgRating == null
+                                  ? ''
+                                  : NumberFormat(
+                                      '0.0',
+                                      AppLocalizations.of(context).localeName,
+                                    ).format(p.avgRating),
                               reviewCountLabel: (p.reviewCount ?? 0) > 0
-                                  ? p.reviewCount.toString()
+                                  ? NumberFormat.decimalPattern(
+                                      AppLocalizations.of(context).localeName,
+                                    ).format(p.reviewCount)
                                   : '',
                               // 분석한 리뷰가 없으면 점수 배지를 붙이지 않는다.
                               rtiLabel:
@@ -596,12 +603,25 @@ class _HomePageState extends ConsumerState<HomePage> {
       name: product.name,
       storeName: product.storeName,
       priceLabel: _formatPrice(product.price),
-      ratingLabel: product.rating?.toStringAsFixed(1) ?? '-',
-      reviewCountLabel: product.reviewCount?.toString() ?? '-',
-      rtiLabel: product.analysisDisplay.badgeText(
-        context,
-        legacyMissingLabel: '',
-      ),
+      ratingLabel: product.rating == null
+          ? ''
+          : NumberFormat(
+              '0.0',
+              AppLocalizations.of(context).localeName,
+            ).format(product.rating),
+      reviewCountLabel: (product.reviewCount ?? 0) > 0
+          ? NumberFormat.decimalPattern(
+              AppLocalizations.of(context).localeName,
+            ).format(product.reviewCount)
+          : '',
+      rtiLabel:
+          (product.summary?.catalogAnalysis?.reviewCount ??
+                      product.reviewCount ??
+                      0) >
+                  0 &&
+              product.analysisDisplay.score != null
+          ? product.analysisDisplay.badgeText(context, legacyMissingLabel: '')
+          : '',
       attentionReviewLabel: product.analysisDisplay.attentionReviewsLabel(
         context,
       ),

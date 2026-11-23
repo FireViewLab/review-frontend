@@ -1,10 +1,9 @@
-import 'package:re_view_front/shared/presentation/analysis_formatters.dart';
+import 'package:re_view_front/shared/widgets/product_review_metrics.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:re_view_front/app/theme/app_colors.dart';
 import 'package:re_view_front/app/theme/app_spacing.dart';
 import 'package:re_view_front/shared/presentation/product_formatters.dart';
-import 'package:re_view_front/features/search/presentation/widgets/product_rti_badge.dart';
 import 'package:re_view_front/features/search/presentation/widgets/search_product_actions.dart';
 import 'package:re_view_front/features/wishlist/domain/entities/wishlist_item.dart';
 import 'package:re_view_front/l10n/generated/app_localizations.dart';
@@ -24,12 +23,6 @@ class WishlistProductCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final rtiColor = item.analysisDisplay.isV2
-        ? item.analysisDisplay.color
-        : item.rtiColor == null
-        ? AppColors.textTertiary
-        : colorFromHex(item.rtiColor!);
-
     return ClipRRect(
       borderRadius: BorderRadius.circular(10),
       child: DecoratedBox(
@@ -84,20 +77,6 @@ class WishlistProductCard extends StatelessWidget {
                           _PriceDropBadge(),
                         ],
                         const SizedBox(width: AppSpacing.xxs),
-                        item.analysisDisplay.score == null
-                            ? Text(
-                                item.analysisDisplay.isV2
-                                    ? item.analysisDisplay.badgeText(context)
-                                    : AppLocalizations.of(
-                                        context,
-                                      ).externalUnanalyzed,
-                                style: Theme.of(context).textTheme.labelSmall,
-                              )
-                            : RtiBadge(
-                                analysis: item.analysisDisplay,
-                                value: item.analysisDisplay.score!.round(),
-                                color: rtiColor,
-                              ),
                       ];
                       return compact
                           ? Wrap(
@@ -108,9 +87,6 @@ class WishlistProductCard extends StatelessWidget {
                           : Row(children: children);
                     },
                   ),
-                  if (item.analysisDisplay.attentionReviewsLabel(context)
-                      case final String label)
-                    Text(label, style: Theme.of(context).textTheme.labelSmall),
                   const SizedBox(height: 2),
                   Text(
                     item.name,
@@ -124,43 +100,12 @@ class WishlistProductCard extends StatelessWidget {
                     ),
                   ),
                   const SizedBox(height: AppSpacing.xs),
-                  Row(
-                    children: [
-                      if (item.avgRating != null)
-                        const Icon(
-                          Icons.star,
-                          color: Color(0xFFF59E0B),
-                          size: 13,
-                        ),
-                      const SizedBox(width: AppSpacing.xxs),
-                      Text(
-                        item.avgRating?.toStringAsFixed(1) ?? '',
-                        style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                          color: AppColors.textPrimary,
-                          fontWeight: FontWeight.w900,
-                          fontSize: 12,
-                        ),
-                      ),
-                      const SizedBox(width: AppSpacing.xxs),
-                      Flexible(
-                        child: Text(
-                          item.reviewCount == null
-                              ? ''
-                              : AppLocalizations.of(
-                                  context,
-                                ).searchFormattedReviewCount(
-                                  formatSearchCount(item.reviewCount),
-                                ),
-                          overflow: TextOverflow.ellipsis,
-                          style: Theme.of(context).textTheme.labelSmall
-                              ?.copyWith(
-                                color: AppColors.textSecondary,
-                                fontWeight: FontWeight.w700,
-                                fontSize: 11,
-                              ),
-                        ),
-                      ),
-                    ],
+                  ProductReviewMetrics(
+                    rating: item.avgRating,
+                    reviewCount: item.reviewCount,
+                    analysis: item.analysisDisplay,
+                    analyzedReviewCount:
+                        item.summary?.catalogAnalysis?.reviewCount,
                   ),
                   const SizedBox(height: AppSpacing.xs),
                   Text(

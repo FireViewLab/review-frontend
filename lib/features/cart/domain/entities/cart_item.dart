@@ -4,6 +4,8 @@ import 'package:re_view_front/features/external_product/domain/entities/external
 class CartItem {
   const CartItem({
     this.analysis,
+    this.reviewCount,
+    this.avgRating,
     required this.cartItemId,
     required this.productId,
     required this.name,
@@ -30,6 +32,8 @@ class CartItem {
     this.subCategory,
   });
 
+  final int? reviewCount;
+  final double? avgRating;
   final AnalysisDisplay? analysis;
   AnalysisDisplay get analysisDisplay =>
       analysis ?? AnalysisDisplay(score: avgRti, level: rtiGrade);
@@ -78,6 +82,8 @@ class CartItem {
     return CartItem(
       analysis: analysis,
       summary: summary,
+      reviewCount: reviewCount,
+      avgRating: avgRating,
       externalId: externalId,
       dataPlatform: dataPlatform,
       dataProductId: dataProductId,
