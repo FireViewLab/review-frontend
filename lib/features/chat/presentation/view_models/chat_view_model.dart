@@ -211,6 +211,9 @@ class ChatViewModel extends Notifier<ChatState> {
         state.isLoadingSessions) {
       return;
     }
+    if (ref.read(chatHistoryOwnerProvider).hasError) {
+      ref.invalidate(chatHistoryOwnerProvider);
+    }
     state = state.copyWith(
       isHistoryOpen: true,
       sessions: [],
@@ -243,6 +246,28 @@ class ChatViewModel extends Notifier<ChatState> {
         !ref.read(isLoggedInProvider)) {
       return;
     }
+    final Set<int> hidden;
+    try {
+      final owner = await ref.read(chatHistoryOwnerProvider.future);
+      hidden = owner == null
+          ? {}
+          : ref.read(chatHistoryRepositoryProvider).hiddenSessionIds(owner);
+    } catch (_) {
+      if (ref.mounted &&
+          request == _historyRequest &&
+          generation == _generation) {
+        state = state.copyWith(
+          isLoadingSessions: false,
+          historyError: 'History storage unavailable',
+        );
+      }
+      return;
+    }
+    if (!ref.mounted ||
+        request != _historyRequest ||
+        generation != _generation) {
+      return;
+    }
     result.when(
       success: (loaded) {
         final items = page == 0
@@ -252,7 +277,7 @@ class ChatViewModel extends Notifier<ChatState> {
         state = state.copyWith(
           sessions: [
             for (final session in items)
-              if (seen.add(session.id)) session,
+              if (!hidden.contains(session.id) && seen.add(session.id)) session,
           ],
           sessionsPage: loaded.page,
           isLastSessionPage: loaded.isLast,
@@ -264,6 +289,65 @@ class ChatViewModel extends Notifier<ChatState> {
         historyError: failure.message,
       ),
     );
+    if (state.sessions.isEmpty &&
+        !state.isLastSessionPage &&
+        state.historyError == null) {
+      await _loadSessions(state.sessionsPage + 1);
+    }
+  }
+
+  bool _isHiding = false;
+
+  Future<bool> hideSession(ChatSession session) => _hideSessions([session.id]);
+
+  Future<bool> hideAllSessions() => _hideSessions(null);
+
+  Future<bool> _hideSessions(List<int>? ids) async {
+    if (_isHiding || !ref.read(isLoggedInProvider) || state.isLoadingSessions) {
+      return false;
+    }
+    _isHiding = true;
+    final auth = ref.read(authSessionProvider);
+    try {
+      final owner = await ref.read(chatHistoryOwnerProvider.future);
+      if (owner == null ||
+          !ref.mounted ||
+          ref.read(authSessionProvider) != auth) {
+        return false;
+      }
+      final all =
+          ids?.toSet() ?? state.sessions.map((session) => session.id).toSet();
+      if (ids == null) {
+        var page = state.sessionsPage;
+        var last = state.isLastSessionPage;
+        while (!last) {
+          final result = await _repository.getSessions(page: ++page, size: 20);
+          if (!ref.mounted || ref.read(authSessionProvider) != auth) {
+            return false;
+          }
+          final loaded = result.when(
+            success: (value) => value,
+            failure: (failure) => throw failure,
+          );
+          all.addAll(loaded.items.map((session) => session.id));
+          last = loaded.isLast;
+          page = loaded.page;
+        }
+      }
+      await ref.read(chatHistoryRepositoryProvider).hideSessions(owner, all);
+      if (!ref.mounted || ref.read(authSessionProvider) != auth) return false;
+      state = state.copyWith(
+        sessions: state.sessions
+            .where((session) => !all.contains(session.id))
+            .toList(),
+        isLastSessionPage: ids == null ? true : null,
+      );
+      return true;
+    } catch (_) {
+      return false;
+    } finally {
+      _isHiding = false;
+    }
   }
 
   void closeHistory() {

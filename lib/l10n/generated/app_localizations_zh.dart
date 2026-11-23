@@ -4128,4 +4128,41 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get extSummaryEvidenceToggle => '查看分析状态与依据';
+
+  @override
+  String get chatHistoryProductLoading => '正在加载商品信息';
+
+  @override
+  String get chatHistoryEmptyHint => '开始新对话后，可在此再次查看。';
+
+  @override
+  String chatHistoryConversationCount(int count) {
+    return '$count个对话';
+  }
+
+  @override
+  String chatHistoryToday(String time) {
+    return '今天 $time';
+  }
+
+  @override
+  String get chatHistoryMenu => '更多选项';
+
+  @override
+  String get chatHistoryDelete => '删除对话';
+
+  @override
+  String get chatHistoryDeleteAll => '全部删除';
+
+  @override
+  String get chatHistoryDeleteConfirm => '要从此设备的对话列表中移除此对话吗？';
+
+  @override
+  String get chatHistoryDeleteAllConfirm => '要从此设备的对话列表中移除所有对话吗？';
+
+  @override
+  String get chatHistoryCancel => '取消';
+
+  @override
+  String get chatHistoryDeleteError => '无法删除对话，请重试。';
 }

@@ -4363,4 +4363,45 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get extSummaryEvidenceToggle => 'View analysis status and evidence';
+
+  @override
+  String get chatHistoryProductLoading => 'Loading product information';
+
+  @override
+  String get chatHistoryEmptyHint =>
+      'Start a conversation to find it here later.';
+
+  @override
+  String chatHistoryConversationCount(int count) {
+    return '$count conversations';
+  }
+
+  @override
+  String chatHistoryToday(String time) {
+    return 'Today $time';
+  }
+
+  @override
+  String get chatHistoryMenu => 'More options';
+
+  @override
+  String get chatHistoryDelete => 'Delete conversation';
+
+  @override
+  String get chatHistoryDeleteAll => 'Delete all';
+
+  @override
+  String get chatHistoryDeleteConfirm =>
+      'Remove this conversation from the list on this device?';
+
+  @override
+  String get chatHistoryDeleteAllConfirm =>
+      'Remove all conversations from the list on this device?';
+
+  @override
+  String get chatHistoryCancel => 'Cancel';
+
+  @override
+  String get chatHistoryDeleteError =>
+      'Could not delete the conversation. Please try again.';
 }

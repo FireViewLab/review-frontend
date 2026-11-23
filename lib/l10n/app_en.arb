@@ -1304,5 +1304,17 @@
   "extReviewNegative": "Critical review: “{excerpt}”",
   "extReviewSummaryRequest": "Get a review summary with AI",
   "extReviewSummaryQuestion": "Briefly summarize the strengths and shortcomings in this product’s reviews.",
-  "extSummaryEvidenceToggle": "View analysis status and evidence"
+  "extSummaryEvidenceToggle": "View analysis status and evidence",
+  "chatHistoryProductLoading": "Loading product information",
+  "chatHistoryProductLoading": "Loading product information",
+  "chatHistoryEmptyHint": "Start a conversation to find it here later.",
+  "chatHistoryConversationCount": "{count} conversations",
+  "chatHistoryToday": "Today {time}",
+  "chatHistoryMenu": "More options",
+  "chatHistoryDelete": "Delete conversation",
+  "chatHistoryDeleteAll": "Delete all",
+  "chatHistoryDeleteConfirm": "Remove this conversation from the list on this device?",
+  "chatHistoryDeleteAllConfirm": "Remove all conversations from the list on this device?",
+  "chatHistoryCancel": "Cancel",
+  "chatHistoryDeleteError": "Could not delete the conversation. Please try again."
 }

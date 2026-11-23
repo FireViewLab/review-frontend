@@ -7,6 +7,8 @@ class ChatSessionDto {
   ChatSession toEntity() => ChatSession(
     id: (_json['id'] as num).toInt(),
     productId: _json['productId']?.toString(),
+    productName: _json['productName'] as String?,
+    productImageUrl: _json['productImageUrl'] as String?,
     title: _json['title'] as String? ?? '',
     createdAt: DateTime.tryParse(_json['createdAt']?.toString() ?? ''),
     lastMessageAt: DateTime.tryParse(_json['lastMessageAt']?.toString() ?? ''),

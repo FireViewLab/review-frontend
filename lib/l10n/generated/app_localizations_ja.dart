@@ -4188,4 +4188,41 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String get extSummaryEvidenceToggle => '分析状況・根拠を見る';
+
+  @override
+  String get chatHistoryProductLoading => '商品情報を読み込み中';
+
+  @override
+  String get chatHistoryEmptyHint => '新しい会話を始めると、ここから再び開けます。';
+
+  @override
+  String chatHistoryConversationCount(int count) {
+    return '$count件の会話';
+  }
+
+  @override
+  String chatHistoryToday(String time) {
+    return '今日 $time';
+  }
+
+  @override
+  String get chatHistoryMenu => 'その他';
+
+  @override
+  String get chatHistoryDelete => '会話を削除';
+
+  @override
+  String get chatHistoryDeleteAll => 'すべて削除';
+
+  @override
+  String get chatHistoryDeleteConfirm => 'この端末の会話一覧から削除しますか？';
+
+  @override
+  String get chatHistoryDeleteAllConfirm => 'この端末の会話一覧からすべて削除しますか？';
+
+  @override
+  String get chatHistoryCancel => 'キャンセル';
+
+  @override
+  String get chatHistoryDeleteError => '会話を削除できませんでした。もう一度お試しください。';
 }
