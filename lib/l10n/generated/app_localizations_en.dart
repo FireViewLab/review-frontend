@@ -2537,7 +2537,11 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String analysisAttentionReviews(int count) {
-    return 'Reviews needing attention: $count';
+    final intl.NumberFormat countNumberFormat =
+        intl.NumberFormat.decimalPattern(localeName);
+    final String countString = countNumberFormat.format(count);
+
+    return 'Reviews needing attention: $countString';
   }
 
   @override

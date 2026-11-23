@@ -37,13 +37,14 @@ class ProductDetailInfoTable extends StatelessWidget {
           ).detailSellerCount(detail.totalSellerCount),
         ),
       if (detail.avgRating != null)
-        (
-          AppLocalizations.of(context).detailAverageRating,
-          AppLocalizations.of(context).detailRatingReviewCount(
-            detail.avgRating!.toStringAsFixed(1),
-            _formatWon(detail.reviewCount ?? 0),
+        if ((detail.reviewCount ?? 0) > 0)
+          (
+            AppLocalizations.of(context).detailAverageRating,
+            AppLocalizations.of(context).detailRatingReviewCount(
+              detail.avgRating!.toStringAsFixed(1),
+              _formatWon(detail.reviewCount ?? 0),
+            ),
           ),
-        ),
       if (detail.analysisDisplay.isV2)
         (
           detail.analysisDisplay.scoreName(context),

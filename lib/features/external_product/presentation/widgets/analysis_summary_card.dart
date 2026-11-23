@@ -1,3 +1,4 @@
+import 'package:re_view_front/features/external_product/presentation/view_models/product_analysis_versions.dart';
 import 'package:re_view_front/features/chat/presentation/providers/chat_providers.dart';
 import 'package:re_view_front/shared/presentation/analysis_formatters.dart';
 import 'package:flutter/material.dart';
@@ -40,6 +41,7 @@ class _AnalysisSummaryCardState extends ConsumerState<AnalysisSummaryCard> {
     final l10n = AppLocalizations.of(context);
     final textTheme = Theme.of(context).textTheme;
     final analysis = state.analysis;
+    final versions = ProductAnalysisVersions.fromState(state);
     final display = analysis?.display;
     // 상세 응답의 상품 분석에는 v4 평균이 없으므로, v4 모델 정보가 왔는데
     // 점수가 비어 있을 때만 분석 중으로 안내한다.
@@ -168,13 +170,11 @@ class _AnalysisSummaryCardState extends ConsumerState<AnalysisSummaryCard> {
               ),
               _SummaryFact(
                 label: l10n.reportModel,
-                value: version(display?.modelVersion ?? analysis?.modelVersion),
+                value: version(versions.model),
               ),
               _SummaryFact(
                 label: l10n.reportPolicy,
-                value: version(
-                  display?.policyVersion ?? analysis?.policyVersion,
-                ),
+                value: version(versions.policy),
               ),
               const Divider(height: AppSpacing.xl),
               _SummaryHeading(l10n.extSummaryLoadedScope(data.loadedCount)),

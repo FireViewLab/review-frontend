@@ -2436,7 +2436,11 @@ class AppLocalizationsKo extends AppLocalizations {
 
   @override
   String analysisAttentionReviews(int count) {
-    return '주의 리뷰 $count건';
+    final intl.NumberFormat countNumberFormat =
+        intl.NumberFormat.decimalPattern(localeName);
+    final String countString = countNumberFormat.format(count);
+
+    return '주의 리뷰 $countString건';
   }
 
   @override

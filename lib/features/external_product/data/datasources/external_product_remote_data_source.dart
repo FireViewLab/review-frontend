@@ -187,20 +187,12 @@ class ExternalProductRemoteDataSourceImpl
       catalog: true,
       inheritedVersion: inheritedVersion,
     ),
-    modelVersion:
-        AnalysisContract.text(
-          AnalysisContract.read(json, AnalysisKeys.modelVersion),
-        ) ??
-        AnalysisContract.text(
-          AnalysisContract.read(json, AnalysisKeys.modelVersionV3),
-        ),
-    policyVersion:
-        AnalysisContract.text(
-          AnalysisContract.read(json, AnalysisKeys.policyVersion),
-        ) ??
-        AnalysisContract.text(
-          AnalysisContract.read(json, AnalysisKeys.policyVersionV3),
-        ),
+    modelVersion: AnalysisContract.text(
+      AnalysisContract.read(json, AnalysisKeys.modelVersion),
+    ),
+    policyVersion: AnalysisContract.text(
+      AnalysisContract.read(json, AnalysisKeys.policyVersion),
+    ),
     reviewCount: (json['reviewCount'] as num?)?.toInt(),
     sampled: json['sampled'] as bool?,
     sourceReviewCount: (json['sourceReviewCount'] as num?)?.toInt(),

@@ -2412,7 +2412,11 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String analysisAttentionReviews(int count) {
-    return '需留意的评论 $count条';
+    final intl.NumberFormat countNumberFormat =
+        intl.NumberFormat.decimalPattern(localeName);
+    final String countString = countNumberFormat.format(count);
+
+    return '需留意的评论 $countString条';
   }
 
   @override

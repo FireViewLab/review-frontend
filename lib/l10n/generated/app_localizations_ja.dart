@@ -2431,7 +2431,11 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String analysisAttentionReviews(int count) {
-    return '注意が必要なレビュー $count件';
+    final intl.NumberFormat countNumberFormat =
+        intl.NumberFormat.decimalPattern(localeName);
+    final String countString = countNumberFormat.format(count);
+
+    return '注意が必要なレビュー $countString件';
   }
 
   @override
