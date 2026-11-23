@@ -4366,4 +4366,18 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get chatHistoryProductLoading => 'Loading product information';
+
+  @override
+  String get chatHistoryEmptyHint =>
+      'Start a conversation to find it here later.';
+
+  @override
+  String chatHistoryConversationCount(int count) {
+    return '$count conversations';
+  }
+
+  @override
+  String chatHistoryToday(String time) {
+    return 'Today $time';
+  }
 }

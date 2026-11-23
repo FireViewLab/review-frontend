@@ -1305,5 +1305,9 @@
   "extReviewSummaryRequest": "Get a review summary with AI",
   "extReviewSummaryQuestion": "Briefly summarize the strengths and shortcomings in this product’s reviews.",
   "extSummaryEvidenceToggle": "View analysis status and evidence",
-  "chatHistoryProductLoading": "Loading product information"
+  "chatHistoryProductLoading": "Loading product information",
+  "chatHistoryProductLoading": "Loading product information",
+  "chatHistoryEmptyHint": "Start a conversation to find it here later.",
+  "chatHistoryConversationCount": "{count} conversations",
+  "chatHistoryToday": "Today {time}"
 }

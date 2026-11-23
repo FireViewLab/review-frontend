@@ -4131,4 +4131,17 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get chatHistoryProductLoading => '正在加载商品信息';
+
+  @override
+  String get chatHistoryEmptyHint => '开始新对话后，可在此再次查看。';
+
+  @override
+  String chatHistoryConversationCount(int count) {
+    return '$count个对话';
+  }
+
+  @override
+  String chatHistoryToday(String time) {
+    return '今天 $time';
+  }
 }

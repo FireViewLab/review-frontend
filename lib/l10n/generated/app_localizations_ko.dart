@@ -4194,4 +4194,17 @@ class AppLocalizationsKo extends AppLocalizations {
 
   @override
   String get chatHistoryProductLoading => '상품 정보 불러오는 중';
+
+  @override
+  String get chatHistoryEmptyHint => '새 대화를 시작하면 이곳에서 다시 볼 수 있어요.';
+
+  @override
+  String chatHistoryConversationCount(int count) {
+    return '$count개 대화';
+  }
+
+  @override
+  String chatHistoryToday(String time) {
+    return '오늘 $time';
+  }
 }

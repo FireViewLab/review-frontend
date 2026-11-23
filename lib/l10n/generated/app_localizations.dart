@@ -7841,6 +7841,24 @@ abstract class AppLocalizations {
   /// In ko, this message translates to:
   /// **'상품 정보 불러오는 중'**
   String get chatHistoryProductLoading;
+
+  /// No description provided for @chatHistoryEmptyHint.
+  ///
+  /// In ko, this message translates to:
+  /// **'새 대화를 시작하면 이곳에서 다시 볼 수 있어요.'**
+  String get chatHistoryEmptyHint;
+
+  /// No description provided for @chatHistoryConversationCount.
+  ///
+  /// In ko, this message translates to:
+  /// **'{count}개 대화'**
+  String chatHistoryConversationCount(int count);
+
+  /// No description provided for @chatHistoryToday.
+  ///
+  /// In ko, this message translates to:
+  /// **'오늘 {time}'**
+  String chatHistoryToday(String time);
 }
 
 class _AppLocalizationsDelegate

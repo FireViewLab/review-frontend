@@ -1,3 +1,6 @@
+import 'package:intl/intl.dart';
+import 'package:re_view_front/features/chat/presentation/view_models/chat_history_groups.dart';
+import 'package:re_view_front/shared/widgets/empty_state_view.dart';
 import 'package:re_view_front/features/chat/presentation/widgets/chat_history_product.dart';
 import 'package:flutter/material.dart';
 import 'package:re_view_front/app/theme/app_colors.dart';
@@ -26,6 +29,7 @@ class ChatHistoryView extends StatelessWidget {
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);
     final textTheme = Theme.of(context).textTheme;
+    final groups = ChatHistoryGroup.fromSessions(state.sessions);
     final loading =
         state.isLoadingMessages ||
         (state.isLoadingSessions && state.sessions.isEmpty);
@@ -75,19 +79,16 @@ class ChatHistoryView extends StatelessWidget {
                   ),
                 )
               : state.sessions.isEmpty
-              ? Center(
-                  child: Padding(
-                    padding: const EdgeInsets.all(AppSpacing.lg),
-                    child: Text(
-                      state.historyError == null ? l10n.chatHistoryEmpty : '',
-                      textAlign: TextAlign.center,
-                    ),
-                  ),
-                )
+              ? state.historyError == null
+                    ? EmptyStateView(
+                        title: l10n.chatHistoryEmpty,
+                        message: l10n.chatHistoryEmptyHint,
+                      )
+                    : const SizedBox.shrink()
               : ListView.builder(
-                  itemCount: state.sessions.length + 1,
+                  itemCount: groups.length + 1,
                   itemBuilder: (context, index) {
-                    if (index == state.sessions.length) {
+                    if (index == groups.length) {
                       if (state.isLastSessionPage) {
                         return const SizedBox.shrink();
                       }
@@ -101,58 +102,141 @@ class ChatHistoryView extends StatelessWidget {
                               ),
                       );
                     }
-                    final session = state.sessions[index];
-                    final date = session.lastMessageAt ?? session.createdAt;
-                    final local = date?.toLocal();
-                    final title = session.title.trim().isEmpty
-                        ? l10n.chatHistoryUntitled
-                        : session.title;
-                    return InkWell(
-                      onTap: () => onSelect(session),
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 20,
-                          vertical: AppSpacing.sm,
-                        ),
-                        child: Row(
-                          children: [
-                            Expanded(
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    title,
-                                    maxLines: 2,
-                                    overflow: TextOverflow.ellipsis,
-                                    style: textTheme.bodyMedium?.copyWith(
-                                      color: ChatStyle.ink,
-                                      fontWeight: FontWeight.w600,
-                                    ),
-                                  ),
-                                  ChatHistoryProduct(session: session),
-                                  if (local != null)
-                                    Text(
-                                      '${local.year}.${local.month.toString().padLeft(2, '0')}.${local.day.toString().padLeft(2, '0')}',
-                                      style: textTheme.labelSmall?.copyWith(
-                                        color: AppColors.textTertiary,
-                                      ),
-                                    ),
-                                ],
-                              ),
-                            ),
-                            const Icon(
-                              Icons.chevron_right_rounded,
-                              size: 20,
-                              color: AppColors.textTertiary,
-                            ),
-                          ],
-                        ),
-                      ),
+                    final group = groups[index];
+                    return _ProductConversations(
+                      key: ValueKey(group.productId),
+                      group: group,
+                      onSelect: onSelect,
                     );
                   },
                 ),
         ),
       ],
+    );
+  }
+}
+
+class _ProductConversations extends StatelessWidget {
+  const _ProductConversations({
+    super.key,
+    required this.group,
+    required this.onSelect,
+  });
+  final ChatHistoryGroup group;
+  final ValueChanged<ChatSession> onSelect;
+
+  @override
+  Widget build(BuildContext context) => Padding(
+    padding: const EdgeInsets.symmetric(
+      horizontal: AppSpacing.md,
+      vertical: AppSpacing.sm,
+    ),
+    child: Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        Semantics(
+          header: true,
+          child: ChatHistoryProduct(session: group.sessions.first),
+        ),
+        const SizedBox(height: AppSpacing.xs),
+        for (final conversations in group.conversations)
+          if (conversations.length == 1)
+            _ConversationRow(session: conversations.single, onSelect: onSelect)
+          else
+            ExpansionTile(
+              key: ValueKey(conversations.first.title.trim()),
+              tilePadding: EdgeInsets.zero,
+              title: Text(
+                conversations.first.title.trim().isEmpty
+                    ? AppLocalizations.of(context).chatHistoryUntitled
+                    : conversations.first.title,
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+              ),
+              subtitle: Text(
+                AppLocalizations.of(
+                  context,
+                ).chatHistoryConversationCount(conversations.length),
+              ),
+              children: [
+                for (final session in conversations)
+                  _ConversationRow(
+                    key: ValueKey(session.id),
+                    session: session,
+                    onSelect: onSelect,
+                  ),
+              ],
+            ),
+      ],
+    ),
+  );
+}
+
+class _ConversationRow extends StatelessWidget {
+  const _ConversationRow({
+    super.key,
+    required this.session,
+    required this.onSelect,
+  });
+  final ChatSession session;
+  final ValueChanged<ChatSession> onSelect;
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
+    final date = (session.lastMessageAt ?? session.createdAt)?.toLocal();
+    final now = DateTime.now();
+    final today =
+        date != null &&
+        date.year == now.year &&
+        date.month == now.month &&
+        date.day == now.day;
+    final time = date == null
+        ? null
+        : today
+        ? l10n.chatHistoryToday(
+            DateFormat('HH:mm', l10n.localeName).format(date),
+          )
+        : DateFormat('MM.dd', l10n.localeName).format(date);
+    return InkWell(
+      onTap: () => onSelect(session),
+      child: Padding(
+        padding: const EdgeInsets.symmetric(vertical: AppSpacing.sm),
+        child: Row(
+          children: [
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    session.title.trim().isEmpty
+                        ? l10n.chatHistoryUntitled
+                        : session.title,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                      color: ChatStyle.ink,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                  if (time != null)
+                    Text(
+                      time,
+                      style: Theme.of(context).textTheme.labelSmall?.copyWith(
+                        color: AppColors.textSecondary,
+                      ),
+                    ),
+                ],
+              ),
+            ),
+            const Icon(
+              Icons.chevron_right_rounded,
+              size: 20,
+              color: AppColors.textTertiary,
+            ),
+          ],
+        ),
+      ),
     );
   }
 }

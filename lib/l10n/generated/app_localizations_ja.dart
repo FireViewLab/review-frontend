@@ -4191,4 +4191,17 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String get chatHistoryProductLoading => '商品情報を読み込み中';
+
+  @override
+  String get chatHistoryEmptyHint => '新しい会話を始めると、ここから再び開けます。';
+
+  @override
+  String chatHistoryConversationCount(int count) {
+    return '$count件の会話';
+  }
+
+  @override
+  String chatHistoryToday(String time) {
+    return '今日 $time';
+  }
 }

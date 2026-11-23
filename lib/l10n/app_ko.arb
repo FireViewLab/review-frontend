@@ -2184,5 +2184,23 @@
     }
   },
   "extSummaryEvidenceToggle": "분석 상태·근거 보기",
-  "chatHistoryProductLoading": "상품 정보 불러오는 중"
+  "chatHistoryProductLoading": "상품 정보 불러오는 중",
+  "chatHistoryProductLoading": "상품 정보 불러오는 중",
+  "chatHistoryEmptyHint": "새 대화를 시작하면 이곳에서 다시 볼 수 있어요.",
+  "chatHistoryConversationCount": "{count}개 대화",
+  "chatHistoryToday": "오늘 {time}",
+  "@chatHistoryConversationCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "@chatHistoryToday": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  }
 }
