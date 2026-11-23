@@ -1,5 +1,4 @@
-import 'package:re_view_front/l10n/generated/app_localizations.dart';
-import 'package:re_view_front/shared/presentation/analysis_formatters.dart';
+import 'package:re_view_front/shared/widgets/product_review_metrics.dart';
 import 'package:re_view_front/app/theme/app_motion.dart';
 import 'package:flutter/material.dart';
 import 'package:re_view_front/app/theme/app_colors.dart';
@@ -9,7 +8,6 @@ import 'package:re_view_front/shared/presentation/product_formatters.dart';
 import 'package:re_view_front/shared/widgets/app_network_image.dart';
 import 'package:re_view_front/features/search/presentation/widgets/search_product_card.dart';
 import 'package:re_view_front/features/search/presentation/widgets/search_product_actions.dart';
-import 'package:re_view_front/features/search/presentation/widgets/product_rti_badge.dart';
 
 class SearchProductListTile extends StatefulWidget {
   const SearchProductListTile({super.key, required this.product});
@@ -149,18 +147,9 @@ class ListTileDetails extends StatelessWidget {
               ),
             ),
             const SizedBox(width: AppSpacing.xs),
-            RtiBadge(
-              analysis: product.analysisDisplay,
-              value: product.analysisDisplay.score?.round(),
-              color: (product.analysisDisplay.isV2
-                  ? product.analysisDisplay.color
-                  : colorFromHex(product.rtiColor)),
-            ),
+            const SizedBox.shrink(),
           ],
         ),
-        if (product.analysisDisplay.attentionReviewsLabel(context)
-            case final String label)
-          Text(label, style: Theme.of(context).textTheme.labelSmall),
         if (product.subCategory?.isNotEmpty ?? false)
           Text(
             product.subCategory!,
@@ -181,41 +170,11 @@ class ListTileDetails extends StatelessWidget {
           ),
         ),
         const SizedBox(height: AppSpacing.xs),
-        Wrap(
-          spacing: AppSpacing.xs,
-          runSpacing: AppSpacing.xs,
-          crossAxisAlignment: WrapCrossAlignment.center,
-          children: [
-            Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                if (product.avgRating != null)
-                  const Icon(Icons.star, color: Color(0xFFF59E0B), size: 15),
-                const SizedBox(width: AppSpacing.xxs),
-                Text(
-                  product.avgRating?.toStringAsFixed(1) ?? '',
-                  style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                    color: AppColors.textPrimary,
-                    fontWeight: FontWeight.w900,
-                    fontSize: 12,
-                  ),
-                ),
-                const SizedBox(width: AppSpacing.xxs),
-                Text(
-                  product.reviewCount == null
-                      ? ''
-                      : AppLocalizations.of(context).searchFormattedReviewCount(
-                          formatSearchCount(product.reviewCount),
-                        ),
-                  style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                    color: AppColors.textSecondary,
-                    fontWeight: FontWeight.w700,
-                    fontSize: 11,
-                  ),
-                ),
-              ],
-            ),
-          ],
+        ProductReviewMetrics(
+          rating: product.avgRating,
+          reviewCount: product.reviewCount,
+          analysis: product.analysisDisplay,
+          analyzedReviewCount: product.summary?.catalogAnalysis?.reviewCount,
         ),
       ],
     );

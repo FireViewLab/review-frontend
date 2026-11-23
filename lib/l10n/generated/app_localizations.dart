@@ -4023,7 +4023,7 @@ abstract class AppLocalizations {
   /// No description provided for @analysisPolicyIndex.
   ///
   /// In ko, this message translates to:
-  /// **'정책 지수'**
+  /// **'RTI'**
   String get analysisPolicyIndex;
 
   /// No description provided for @analysisNotCalculable.
@@ -4059,7 +4059,7 @@ abstract class AppLocalizations {
   /// No description provided for @analysisScore.
   ///
   /// In ko, this message translates to:
-  /// **'분석 점수'**
+  /// **'RTI'**
   String get analysisScore;
 
   /// No description provided for @analysisSeparateContracts.
@@ -4071,7 +4071,7 @@ abstract class AppLocalizations {
   /// No description provided for @analysisPolicyAverage.
   ///
   /// In ko, this message translates to:
-  /// **'상품 평균 정책 지수'**
+  /// **'상품 평균 RTI'**
   String get analysisPolicyAverage;
 
   /// 상품 안내 캐릭터 이름
@@ -4311,13 +4311,13 @@ abstract class AppLocalizations {
   /// Product detail summary and loaded-review evidence: V2Grades
   ///
   /// In ko, this message translates to:
-  /// **'정책 지수 기준 등급 (v2)'**
+  /// **'RTI 기준 등급'**
   String get extSummaryV2Grades;
 
   /// Product detail summary and loaded-review evidence: LegacyGrades
   ///
   /// In ko, this message translates to:
-  /// **'신뢰도 등급 (v0.5)'**
+  /// **'RTI 기준 등급'**
   String get extSummaryLegacyGrades;
 
   /// Product detail summary and loaded-review evidence: UnknownVersion

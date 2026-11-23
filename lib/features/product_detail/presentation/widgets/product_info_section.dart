@@ -173,7 +173,7 @@ class _RatingRow extends StatelessWidget {
               ),
             ],
           ),
-        if (detail.reviewCount != null)
+        if ((detail.reviewCount ?? 0) > 0)
           Text(
             AppLocalizations.of(
               context,

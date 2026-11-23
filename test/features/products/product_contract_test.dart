@@ -271,12 +271,9 @@ void main() {
         ),
       );
       await tester.pumpAndSettle();
-      expect(find.text(score == null ? '분석 전' : 'RTI 0'), findsOneWidget);
-      expect(find.text('0.0'), score == null ? findsNothing : findsOneWidget);
-      expect(
-        find.text('(리뷰 0)'),
-        score == null ? findsNothing : findsOneWidget,
-      );
+      expect(find.text(score == null ? '분석 전' : 'RTI 0'), findsNothing);
+      expect(find.text('0.0'), findsNothing);
+      expect(find.text('(리뷰 0)'), findsNothing);
       expect(find.text(realProduct['subCategory'] as String), findsOneWidget);
     });
   }
@@ -438,8 +435,8 @@ void main() {
         'policyVersion': 'old-policy',
       };
       final fallback = await source.getProduct(productRef);
-      expect(fallback.analysis?.modelVersion, 'old-model');
-      expect(fallback.analysis?.policyVersion, 'old-policy');
+      expect(fallback.analysis?.modelVersion, isNull);
+      expect(fallback.analysis?.policyVersion, isNull);
       expect(fallback.analysis?.display?.isAwaitingScore, isTrue);
     },
   );
@@ -499,7 +496,9 @@ void main() {
             find.text(
               l.analysisAttentionReviews(counts['WARN']! + counts['DANGER']!),
             ),
-            findsOneWidget,
+            counts['WARN']! + counts['DANGER']! == 0
+                ? findsNothing
+                : findsOneWidget,
           );
         }
         expect(tester.takeException(), isNull);

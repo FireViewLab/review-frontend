@@ -1,3 +1,4 @@
+import 'package:re_view_front/shared/widgets/product_review_metrics.dart';
 import 'package:re_view_front/shared/presentation/analysis_formatters.dart';
 import 'package:go_router/go_router.dart';
 import 'package:flutter/material.dart';
@@ -5,7 +6,6 @@ import 'package:re_view_front/app/theme/app_colors.dart';
 import 'package:re_view_front/app/theme/app_spacing.dart';
 import 'package:re_view_front/features/cart/domain/entities/cart_item.dart';
 import 'package:re_view_front/shared/presentation/product_formatters.dart';
-import 'package:re_view_front/features/search/presentation/widgets/product_rti_badge.dart';
 import 'package:re_view_front/l10n/generated/app_localizations.dart';
 import 'package:re_view_front/shared/widgets/app_network_image.dart';
 
@@ -223,40 +223,12 @@ class _ProductInfo extends StatelessWidget {
           const SizedBox(height: AppSpacing.xxs),
           _VariantChip(label: item.variant!),
         ],
-        if (item.analysisDisplay.attentionReviewsLabel(context)
-            case final String label)
-          Text(label, style: Theme.of(context).textTheme.labelSmall),
         const SizedBox(height: AppSpacing.xs),
-        Wrap(
-          crossAxisAlignment: WrapCrossAlignment.center,
-          runSpacing: AppSpacing.xs,
-          children: [
-            if (item.analysisDisplay.score == null)
-              Text(
-                item.analysisDisplay.isV2
-                    ? item.analysisDisplay.badgeText(context)
-                    : AppLocalizations.of(context).externalUnanalyzed,
-              )
-            else
-              RtiBadge(
-                analysis: item.analysisDisplay,
-                value: item.analysisDisplay.score!.round(),
-                color: rtiColor,
-              ),
-            const SizedBox(width: AppSpacing.xs),
-            if (!item.analysisDisplay.isV2 &&
-                item.analysisDisplay.score != null &&
-                item.rtiGrade != null &&
-                item.rtiColor != null)
-              Text(
-                AppLocalizations.of(context).cartTrustLevel(item.trustLevel),
-                style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                  color: AppColors.textSecondary,
-                  fontWeight: FontWeight.w700,
-                  fontSize: 11,
-                ),
-              ),
-          ],
+        ProductReviewMetrics(
+          rating: item.avgRating ?? item.summary?.product.rating,
+          reviewCount: item.reviewCount ?? item.summary?.product.reviewCount,
+          analysis: item.analysisDisplay,
+          analyzedReviewCount: item.summary?.catalogAnalysis?.reviewCount,
         ),
       ],
     );

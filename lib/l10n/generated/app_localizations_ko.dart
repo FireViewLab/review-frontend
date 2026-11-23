@@ -2073,7 +2073,7 @@ class AppLocalizationsKo extends AppLocalizations {
   }
 
   @override
-  String get analysisPolicyIndex => '정책 지수';
+  String get analysisPolicyIndex => 'RTI';
 
   @override
   String get analysisNotCalculable => '계산 불가';
@@ -2091,13 +2091,13 @@ class AppLocalizationsKo extends AppLocalizations {
   String get analysisNetworkScore => '네트워크 점수';
 
   @override
-  String get analysisScore => '분석 점수';
+  String get analysisScore => 'RTI';
 
   @override
   String get analysisSeparateContracts => '서로 다른 계약의 점수는 별도로 표시합니다.';
 
   @override
-  String get analysisPolicyAverage => '상품 평균 정책 지수';
+  String get analysisPolicyAverage => '상품 평균 RTI';
 
   @override
   String get owlGuideName => '리뷰엉이';
@@ -2227,10 +2227,10 @@ class AppLocalizationsKo extends AppLocalizations {
   }
 
   @override
-  String get extSummaryV2Grades => '정책 지수 기준 등급 (v2)';
+  String get extSummaryV2Grades => 'RTI 기준 등급';
 
   @override
-  String get extSummaryLegacyGrades => '신뢰도 등급 (v0.5)';
+  String get extSummaryLegacyGrades => 'RTI 기준 등급';
 
   @override
   String get extSummaryUnknownVersion => '분석 버전 미상';
@@ -2436,7 +2436,11 @@ class AppLocalizationsKo extends AppLocalizations {
 
   @override
   String analysisAttentionReviews(int count) {
-    return '주의 리뷰 $count건';
+    final intl.NumberFormat countNumberFormat =
+        intl.NumberFormat.decimalPattern(localeName);
+    final String countString = countNumberFormat.format(count);
+
+    return '주의 리뷰 $countString건';
   }
 
   @override

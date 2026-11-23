@@ -1,3 +1,4 @@
+import 'package:re_view_front/shared/presentation/product_review_counts.dart';
 import 'package:re_view_front/core/analysis/analysis_display.dart';
 import 'package:re_view_front/core/analysis/analysis_contract.dart';
 import 'package:re_view_front/features/external_product/data/dtos/product_summary_dto.dart';
@@ -60,17 +61,7 @@ class SearchResultProductDto {
       rtiGrade: _readNullableString(json, ['rtiGrade', 'grade']),
       rtiColor: _readNullableString(json, ['rtiColor', 'color']),
       // 목록 응답은 reviewCount를 비워 두고 분석에 쓴 원본 리뷰 수만 주는 경우가 많다.
-      reviewCount:
-          _positiveOrNull(
-            _readNullableInt(json, ['reviewCount', 'review_count']),
-          ) ??
-          _readNullableInt(json, [
-            'analysisSourceReviewCount',
-            'analysis_source_review_count',
-            'analysisReviewCount',
-            'analysis_review_count',
-          ]) ??
-          _readNullableInt(json, ['reviewCount', 'review_count']),
+      reviewCount: productReviewCount(json),
       avgRating: _readDouble(json, ['avgRating', 'rating', 'starRating']),
       platform: _readNullableString(json, ['platform', 'storeName']),
     );
@@ -167,5 +158,3 @@ double? _readDouble(Map<String, dynamic> json, List<String> keys) {
   }
   return null;
 }
-
-int? _positiveOrNull(int? value) => value != null && value > 0 ? value : null;

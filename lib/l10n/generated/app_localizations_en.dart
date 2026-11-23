@@ -2139,7 +2139,7 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
-  String get analysisPolicyIndex => 'Policy index';
+  String get analysisPolicyIndex => 'RTI';
 
   @override
   String get analysisNotCalculable => 'Not calculable';
@@ -2158,14 +2158,14 @@ class AppLocalizationsEn extends AppLocalizations {
   String get analysisNetworkScore => 'Network score';
 
   @override
-  String get analysisScore => 'Analysis score';
+  String get analysisScore => 'RTI';
 
   @override
   String get analysisSeparateContracts =>
       'Scores from different contracts are shown separately.';
 
   @override
-  String get analysisPolicyAverage => 'Product average policy index';
+  String get analysisPolicyAverage => 'Product average RTI';
 
   @override
   String get owlGuideName => 'Review Owl';
@@ -2308,10 +2308,10 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
-  String get extSummaryV2Grades => 'Policy index grades (v2)';
+  String get extSummaryV2Grades => 'RTI grades';
 
   @override
-  String get extSummaryLegacyGrades => 'Credibility grades (v0.5)';
+  String get extSummaryLegacyGrades => 'RTI grades';
 
   @override
   String get extSummaryUnknownVersion => 'Unknown analysis version';
@@ -2537,7 +2537,11 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String analysisAttentionReviews(int count) {
-    return 'Reviews needing attention: $count';
+    final intl.NumberFormat countNumberFormat =
+        intl.NumberFormat.decimalPattern(localeName);
+    final String countString = countNumberFormat.format(count);
+
+    return 'Reviews needing attention: $countString';
   }
 
   @override

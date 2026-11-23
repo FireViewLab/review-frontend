@@ -131,7 +131,19 @@ class ProductCard extends ConsumerWidget {
                           const SizedBox(width: AppSpacing.xxs),
                           Expanded(
                             child: Text(
-                              '${product.ratingLabel}${product.reviewCountLabel.isEmpty ? "" : " (${product.reviewCountLabel})"}',
+                              [
+                                if (product.ratingLabel.isNotEmpty &&
+                                    product.ratingLabel != '-')
+                                  product.ratingLabel,
+                                if (product.reviewCountLabel.isNotEmpty &&
+                                    product.reviewCountLabel != '-' &&
+                                    product.reviewCountLabel != '0')
+                                  AppLocalizations.of(
+                                    context,
+                                  ).detailFormattedReviewCount(
+                                    product.reviewCountLabel,
+                                  ),
+                              ].join(' · '),
                               maxLines: 1,
                               overflow: TextOverflow.ellipsis,
                               style: Theme.of(context).textTheme.labelMedium,

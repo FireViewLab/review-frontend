@@ -1,3 +1,4 @@
+import 'package:re_view_front/features/external_product/presentation/view_models/product_analysis_versions.dart';
 import 'package:re_view_front/shared/presentation/analysis_formatters.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -20,6 +21,7 @@ class ExternalProductReport extends StatelessWidget {
   Widget build(BuildContext context) {
     final l = AppLocalizations.of(context);
     final analysis = state.analysis;
+    final versions = ProductAnalysisVersions.fromState(state);
     final data = ProductTrustReportData.fromState(state);
     final reportStatus = data.isNotCalculable
         ? ProductReportStatus.running
@@ -130,21 +132,15 @@ class ExternalProductReport extends StatelessWidget {
                                 ? l.reportSampled
                                 : l.extSummaryNotSampled,
                           ),
-                        if (analysis.display?.modelVersion != null ||
-                            analysis.modelVersion != null)
+                        if (versions.model != null)
                           ReportFactRow(
                             label: l.reportModel,
-                            value:
-                                analysis.display?.modelVersion ??
-                                analysis.modelVersion!,
+                            value: versions.model!,
                           ),
-                        if (analysis.display?.policyVersion != null ||
-                            analysis.policyVersion != null)
+                        if (versions.policy != null)
                           ReportFactRow(
                             label: l.reportPolicy,
-                            value:
-                                analysis.display?.policyVersion ??
-                                analysis.policyVersion!,
+                            value: versions.policy!,
                           ),
                       ],
                     ),

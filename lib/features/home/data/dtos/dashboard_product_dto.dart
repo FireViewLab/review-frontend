@@ -1,3 +1,4 @@
+import 'package:re_view_front/shared/presentation/product_review_counts.dart';
 import 'package:re_view_front/core/analysis/analysis_display.dart';
 import 'package:re_view_front/core/analysis/analysis_contract.dart';
 import 'package:re_view_front/features/external_product/data/dtos/product_summary_dto.dart';
@@ -57,11 +58,7 @@ class DashboardProductDto {
         'averageRating',
         'avgRating',
       ]),
-      reviewCount: _readIntOrNull(json, [
-        'reviewCount',
-        'reviewsCount',
-        'review_count',
-      ]),
+      reviewCount: productReviewCount(json),
       rtiScore: _readIntOrNull(json, [
         'rtiScore',
         'rti',

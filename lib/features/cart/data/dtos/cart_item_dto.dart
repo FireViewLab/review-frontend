@@ -1,3 +1,4 @@
+import 'package:re_view_front/shared/presentation/product_review_counts.dart';
 import 'package:re_view_front/core/analysis/analysis_display.dart';
 import 'package:re_view_front/core/analysis/analysis_contract.dart';
 import 'package:re_view_front/features/external_product/data/dtos/product_summary_dto.dart';
@@ -7,6 +8,8 @@ import 'package:re_view_front/features/cart/domain/entities/cart_item.dart';
 class CartItemDto {
   const CartItemDto({
     this.analysis,
+    this.reviewCount,
+    this.avgRating,
     required this.cartItemId,
     required this.productId,
     required this.name,
@@ -36,6 +39,8 @@ class CartItemDto {
   factory CartItemDto.fromJson(Map<String, dynamic> json) {
     return CartItemDto(
       analysis: AnalysisContract.parse(json, catalog: true),
+      reviewCount: productReviewCount(json),
+      avgRating: _readDouble(json, ['avgRating', 'rating', 'starRating']),
       summary: ProductSummaryDto.fromJson(json, cart: true),
       externalId: json['externalId'] as String?,
       dataPlatform: json['dataPlatform'] as String?,
@@ -95,6 +100,8 @@ class CartItemDto {
     );
   }
 
+  final int? reviewCount;
+  final double? avgRating;
   final AnalysisDisplay? analysis;
 
   final ProductSummary? summary;
@@ -127,6 +134,8 @@ class CartItemDto {
     return CartItem(
       analysis: analysis,
       summary: summary,
+      reviewCount: reviewCount,
+      avgRating: avgRating,
       externalId: externalId,
       dataPlatform: dataPlatform,
       dataProductId: dataProductId,

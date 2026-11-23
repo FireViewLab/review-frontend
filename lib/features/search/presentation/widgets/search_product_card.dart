@@ -1,5 +1,4 @@
-import 'package:re_view_front/l10n/generated/app_localizations.dart';
-import 'package:re_view_front/shared/presentation/analysis_formatters.dart';
+import 'package:re_view_front/shared/widgets/product_review_metrics.dart';
 import 'package:re_view_front/app/theme/app_motion.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -9,7 +8,6 @@ import 'package:re_view_front/features/search/domain/entities/search_result_prod
 import 'package:re_view_front/shared/presentation/product_formatters.dart';
 import 'package:re_view_front/shared/widgets/app_network_image.dart';
 import 'package:re_view_front/features/search/presentation/widgets/search_product_actions.dart';
-import 'package:re_view_front/features/search/presentation/widgets/product_rti_badge.dart';
 
 class SearchProductCard extends StatefulWidget {
   const SearchProductCard({super.key, required this.product});
@@ -26,9 +24,6 @@ class _SearchProductCardState extends State<SearchProductCard> {
   @override
   Widget build(BuildContext context) {
     final product = widget.product;
-    final rtiColor = (product.analysisDisplay.isV2
-        ? product.analysisDisplay.color
-        : colorFromHex(product.rtiColor));
 
     return MouseRegion(
       cursor: SystemMouseCursors.click,
@@ -119,19 +114,9 @@ class _SearchProductCardState extends State<SearchProductCard> {
                             ),
                           ),
                           const SizedBox(width: AppSpacing.xs),
-                          RtiBadge(
-                            analysis: product.analysisDisplay,
-                            value: product.analysisDisplay.score?.round(),
-                            color: rtiColor,
-                          ),
+                          const SizedBox.shrink(),
                         ],
                       ),
-                      if (product.analysisDisplay.attentionReviewsLabel(context)
-                          case final String label)
-                        Text(
-                          label,
-                          style: Theme.of(context).textTheme.labelSmall,
-                        ),
                       if (product.subCategory?.isNotEmpty ?? false)
                         Text(
                           product.subCategory!,
@@ -162,44 +147,12 @@ class _SearchProductCardState extends State<SearchProductCard> {
                         ],
                       ),
                       const SizedBox(height: AppSpacing.xs),
-                      Row(
-                        children: [
-                          if (product.avgRating != null)
-                            const Icon(
-                              Icons.star,
-                              color: Color(0xFFF59E0B),
-                              size: 13,
-                            ),
-                          const SizedBox(width: AppSpacing.xxs),
-                          Text(
-                            product.avgRating?.toStringAsFixed(1) ?? '',
-                            style: Theme.of(context).textTheme.labelSmall
-                                ?.copyWith(
-                                  color: AppColors.textPrimary,
-                                  fontWeight: FontWeight.w900,
-                                  fontSize: 12,
-                                ),
-                          ),
-                          const SizedBox(width: AppSpacing.xxs),
-                          Flexible(
-                            child: Text(
-                              product.reviewCount == null
-                                  ? ''
-                                  : AppLocalizations.of(
-                                      context,
-                                    ).searchFormattedReviewCount(
-                                      formatSearchCount(product.reviewCount),
-                                    ),
-                              overflow: TextOverflow.ellipsis,
-                              style: Theme.of(context).textTheme.labelSmall
-                                  ?.copyWith(
-                                    color: AppColors.textSecondary,
-                                    fontWeight: FontWeight.w700,
-                                    fontSize: 11,
-                                  ),
-                            ),
-                          ),
-                        ],
+                      ProductReviewMetrics(
+                        rating: product.avgRating,
+                        reviewCount: product.reviewCount,
+                        analysis: product.analysisDisplay,
+                        analyzedReviewCount:
+                            product.summary?.catalogAnalysis?.reviewCount,
                       ),
                       const SizedBox(height: AppSpacing.xs),
                       Text(

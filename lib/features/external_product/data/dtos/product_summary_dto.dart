@@ -1,3 +1,4 @@
+import 'package:re_view_front/shared/presentation/product_review_counts.dart';
 import 'package:re_view_front/core/analysis/analysis_contract.dart';
 import 'package:re_view_front/core/utils/product_image_urls.dart';
 import '../../domain/entities/external_product.dart';
@@ -72,7 +73,7 @@ class ProductSummaryDto {
         ),
         brand: text(json['brand']),
         category: text(json['subCategory'] ?? json['categoryDisplayName']),
-        reviewCount: integer(json['reviewCount'] ?? json['review_count']),
+        reviewCount: productReviewCount(json),
         rating: number(
           json['avgRating'] ?? json['rating'] ?? json['starRating'],
         ),

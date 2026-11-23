@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:re_view_front/core/analysis/analysis_display.dart';
 import 'package:re_view_front/l10n/generated/app_localizations.dart';
 
 extension AnalysisFormatting on AnalysisDisplay {
-  String scoreName(BuildContext context) =>
-      isV2 ? AppLocalizations.of(context).analysisPolicyIndex : 'RTI';
+  String scoreName(BuildContext context) => 'RTI';
   String badgeText(BuildContext context, {String? legacyMissingLabel}) =>
       score == null
       ? (isV2
             ? AppLocalizations.of(context).analysisPending
             : (legacyMissingLabel ?? AppLocalizations.of(context).reportBefore))
-      : '${scoreName(context)} ${score!.round()}';
+      : '${scoreName(context)} ${NumberFormat.decimalPattern(AppLocalizations.of(context).localeName).format(score!.round())}';
   List<String> localizedReasons(BuildContext context) => isV2
       ? (needsAttentionExplanation
             ? [AppLocalizations.of(context).analysisTextCaution]
@@ -19,7 +19,7 @@ extension AnalysisFormatting on AnalysisDisplay {
 
   String? attentionReviewsLabel(BuildContext context) {
     final count = attentionReviewCount;
-    return count == null
+    return count == null || count == 0
         ? null
         : AppLocalizations.of(context).analysisAttentionReviews(count);
   }
