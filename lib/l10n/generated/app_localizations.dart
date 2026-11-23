@@ -7781,6 +7781,54 @@ abstract class AppLocalizations {
   /// In ko, this message translates to:
   /// **'이전에 수집한 정보'**
   String get extProgressPreviousInfo;
+
+  /// No description provided for @extReviewSummaryTitle.
+  ///
+  /// In ko, this message translates to:
+  /// **'리뷰 요약'**
+  String get extReviewSummaryTitle;
+
+  /// No description provided for @extReviewRatingSummary.
+  ///
+  /// In ko, this message translates to:
+  /// **'불러온 리뷰 {count}개 · 평균 {rating}점 · {distribution}'**
+  String extReviewRatingSummary(int count, String rating, String distribution);
+
+  /// No description provided for @extReviewStarCount.
+  ///
+  /// In ko, this message translates to:
+  /// **'{stars}점 {count}개'**
+  String extReviewStarCount(int stars, int count);
+
+  /// No description provided for @extReviewKeywords.
+  ///
+  /// In ko, this message translates to:
+  /// **'자주 언급된 표현: {keywords}'**
+  String extReviewKeywords(String keywords);
+
+  /// No description provided for @extReviewPositive.
+  ///
+  /// In ko, this message translates to:
+  /// **'긍정 리뷰: “{excerpt}”'**
+  String extReviewPositive(String excerpt);
+
+  /// No description provided for @extReviewNegative.
+  ///
+  /// In ko, this message translates to:
+  /// **'아쉬운 리뷰: “{excerpt}”'**
+  String extReviewNegative(String excerpt);
+
+  /// No description provided for @extReviewSummaryRequest.
+  ///
+  /// In ko, this message translates to:
+  /// **'AI로 리뷰 요약 받기'**
+  String get extReviewSummaryRequest;
+
+  /// No description provided for @extReviewSummaryQuestion.
+  ///
+  /// In ko, this message translates to:
+  /// **'이 상품 리뷰들을 장점과 아쉬운 점으로 짧게 요약해 줘'**
+  String get extReviewSummaryQuestion;
 }
 
 class _AppLocalizationsDelegate

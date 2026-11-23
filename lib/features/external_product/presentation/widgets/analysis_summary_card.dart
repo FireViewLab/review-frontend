@@ -1,3 +1,4 @@
+import 'package:re_view_front/features/chat/presentation/providers/chat_providers.dart';
 import 'package:re_view_front/shared/presentation/analysis_formatters.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -21,32 +22,41 @@ class AnalysisSummaryCard extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final l10n = AppLocalizations.of(context);
     final textTheme = Theme.of(context).textTheme;
-    if (state.analysisState != ExternalAnalysisStatus.done) {
-      final message = switch (state.analysisState) {
-        ExternalAnalysisStatus.pending ||
-        ExternalAnalysisStatus.running => l10n.extSummaryInProgress,
-        ExternalAnalysisStatus.notAnalyzed => l10n.extSummaryNotAnalyzed,
-        ExternalAnalysisStatus.failed => l10n.extSummaryFailed,
-        ExternalAnalysisStatus.disabled => l10n.extSummaryDisabled,
-        _ => l10n.extSummaryUnavailable,
-      };
-      return Text(
-        message,
-        style: textTheme.bodySmall?.copyWith(color: AppColors.textSecondary),
-      );
-    }
     final analysis = state.analysis;
     final display = analysis?.display;
     // 상세 응답의 상품 분석에는 v4 평균이 없으므로, v4 모델 정보가 왔는데
     // 점수가 비어 있을 때만 분석 중으로 안내한다.
-    final explanation =
-        display?.isAwaitingScore == true && display?.modelVersion != null
+    final explanation = state.analysisState != ExternalAnalysisStatus.done
+        ? switch (state.analysisState) {
+            ExternalAnalysisStatus.pending ||
+            ExternalAnalysisStatus.running => l10n.extSummaryInProgress,
+            ExternalAnalysisStatus.notAnalyzed => l10n.extSummaryNotAnalyzed,
+            ExternalAnalysisStatus.failed => l10n.extSummaryFailed,
+            ExternalAnalysisStatus.disabled => l10n.extSummaryDisabled,
+            _ => l10n.extSummaryUnavailable,
+          }
+        : display?.isAwaitingScore == true && display?.modelVersion != null
         ? l10n.analysisPending
         : display?.localizedReasons(context).firstOrNull;
-    final summary = display?.isV2 == true ? null : analysis?.summary?.trim();
-    if (summary != null && summary.isNotEmpty) {
-      return OwlGuide(message: summary, title: l10n.extSummaryTitle);
-    }
+    final summary = analysis?.summary?.trim();
+    final content = ReviewContentSummary.fromReviews(
+      state.reviews,
+      productName: state.displayProduct?.name ?? '',
+    );
+    final rating = content.average == null
+        ? l10n.extSummaryMissingValue
+        : NumberFormat('0.0', l10n.localeName).format(content.average);
+    final distribution = List.generate(
+      5,
+      (i) => l10n.extReviewStarCount(i + 1, content.distribution[i]),
+    ).reversed.join(' · ');
+    final reviewMessage = [
+      l10n.extReviewRatingSummary(content.loadedCount, rating, distribution),
+      if (content.keywords.isNotEmpty)
+        l10n.extReviewKeywords(content.keywords.join(' · ')),
+      if (content.positive != null) l10n.extReviewPositive(content.positive!),
+      if (content.negative != null) l10n.extReviewNegative(content.negative!),
+    ].join('\n');
     final data = ref.watch(loadedReviewAnalysisSummaryProvider(state.reviews));
     final numbers = NumberFormat.decimalPattern(l10n.localeName);
     String count(int? value) =>
@@ -66,6 +76,34 @@ class AnalysisSummaryCard extends ConsumerWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
+            if (content.loadedCount == 0)
+              Text(l10n.extSummaryNoLoadedReviews)
+            else
+              OwlGuide(
+                message: summary != null && summary.isNotEmpty
+                    ? summary
+                    : reviewMessage,
+                title: l10n.extReviewSummaryTitle,
+              ),
+            const SizedBox(height: AppSpacing.sm),
+            OutlinedButton(
+              onPressed: state.displayProduct == null
+                  ? null
+                  : () {
+                      final productId = state.displayProduct!.ref.externalId;
+                      final chat = ref.read(chatViewModelProvider.notifier);
+                      chat.openConversation(productId: productId);
+                      chat.send(
+                        l10n.extReviewSummaryQuestion,
+                        productId: productId,
+                      );
+                    },
+              child: Text(
+                l10n.extReviewSummaryRequest,
+                textAlign: TextAlign.center,
+              ),
+            ),
+            const SizedBox(height: AppSpacing.md),
             _SummaryHeading(l10n.extSummaryFallbackTitle),
             const SizedBox(height: AppSpacing.xs),
             Text(

@@ -4154,4 +4154,38 @@ class AppLocalizationsKo extends AppLocalizations {
 
   @override
   String get extProgressPreviousInfo => '이전에 수집한 정보';
+
+  @override
+  String get extReviewSummaryTitle => '리뷰 요약';
+
+  @override
+  String extReviewRatingSummary(int count, String rating, String distribution) {
+    return '불러온 리뷰 $count개 · 평균 $rating점 · $distribution';
+  }
+
+  @override
+  String extReviewStarCount(int stars, int count) {
+    return '$stars점 $count개';
+  }
+
+  @override
+  String extReviewKeywords(String keywords) {
+    return '자주 언급된 표현: $keywords';
+  }
+
+  @override
+  String extReviewPositive(String excerpt) {
+    return '긍정 리뷰: “$excerpt”';
+  }
+
+  @override
+  String extReviewNegative(String excerpt) {
+    return '아쉬운 리뷰: “$excerpt”';
+  }
+
+  @override
+  String get extReviewSummaryRequest => 'AI로 리뷰 요약 받기';
+
+  @override
+  String get extReviewSummaryQuestion => '이 상품 리뷰들을 장점과 아쉬운 점으로 짧게 요약해 줘';
 }

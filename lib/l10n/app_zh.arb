@@ -1281,5 +1281,13 @@
   "priceWatchLoadFailed": "未能查询降价标记。{message}",
   "priceWatchDropCounts": "{total} 件收藏商品中有 {known} 件提供降价信息，其中 {drops} 件标记为降价。未提供基准价格及时间。",
   "extProgressPreviousComplete": "采集与分析完成 · 先前采集的信息",
-  "extProgressPreviousInfo": "先前采集的信息"
+  "extProgressPreviousInfo": "先前采集的信息",
+  "extReviewSummaryTitle": "评价摘要",
+  "extReviewRatingSummary": "已加载{count}条评价 · 平均{rating}星 · {distribution}",
+  "extReviewStarCount": "{stars}星 {count}条",
+  "extReviewKeywords": "常见表达：{keywords}",
+  "extReviewPositive": "好评：“{excerpt}”",
+  "extReviewNegative": "不足之处：“{excerpt}”",
+  "extReviewSummaryRequest": "使用AI总结评价",
+  "extReviewSummaryQuestion": "请简短总结这款商品评价中的优点与不足"
 }

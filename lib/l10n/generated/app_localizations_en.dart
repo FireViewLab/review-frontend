@@ -4325,4 +4325,39 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get extProgressPreviousInfo => 'Previously collected information';
+
+  @override
+  String get extReviewSummaryTitle => 'Review summary';
+
+  @override
+  String extReviewRatingSummary(int count, String rating, String distribution) {
+    return '$count loaded reviews · Average $rating stars · $distribution';
+  }
+
+  @override
+  String extReviewStarCount(int stars, int count) {
+    return '$stars★ $count';
+  }
+
+  @override
+  String extReviewKeywords(String keywords) {
+    return 'Frequently mentioned: $keywords';
+  }
+
+  @override
+  String extReviewPositive(String excerpt) {
+    return 'Positive review: “$excerpt”';
+  }
+
+  @override
+  String extReviewNegative(String excerpt) {
+    return 'Critical review: “$excerpt”';
+  }
+
+  @override
+  String get extReviewSummaryRequest => 'Get a review summary with AI';
+
+  @override
+  String get extReviewSummaryQuestion =>
+      'Briefly summarize the strengths and shortcomings in this product’s reviews.';
 }

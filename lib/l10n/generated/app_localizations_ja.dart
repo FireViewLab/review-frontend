@@ -4151,4 +4151,38 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String get extProgressPreviousInfo => '以前に収集した情報';
+
+  @override
+  String get extReviewSummaryTitle => 'レビュー要約';
+
+  @override
+  String extReviewRatingSummary(int count, String rating, String distribution) {
+    return '読み込み済み$count件 · 平均$rating点 · $distribution';
+  }
+
+  @override
+  String extReviewStarCount(int stars, int count) {
+    return '$stars点 $count件';
+  }
+
+  @override
+  String extReviewKeywords(String keywords) {
+    return 'よく出る表現: $keywords';
+  }
+
+  @override
+  String extReviewPositive(String excerpt) {
+    return '高評価レビュー:「$excerpt」';
+  }
+
+  @override
+  String extReviewNegative(String excerpt) {
+    return '低評価レビュー:「$excerpt」';
+  }
+
+  @override
+  String get extReviewSummaryRequest => 'AIでレビューを要約';
+
+  @override
+  String get extReviewSummaryQuestion => 'この商品のレビューを長所と気になる点に分けて短く要約して';
 }

@@ -1281,5 +1281,13 @@
   "priceWatchLoadFailed": "値下げ表示を確認できませんでした。{message}",
   "priceWatchDropCounts": "お気に入り{total}件のうち、値下げ情報がある{known}件中{drops}件が値下げと表示されています。基準価格と時点は提供されていません。",
   "extProgressPreviousComplete": "収集・分析完了 · 以前に収集した情報",
-  "extProgressPreviousInfo": "以前に収集した情報"
+  "extProgressPreviousInfo": "以前に収集した情報",
+  "extReviewSummaryTitle": "レビュー要約",
+  "extReviewRatingSummary": "読み込み済み{count}件 · 平均{rating}点 · {distribution}",
+  "extReviewStarCount": "{stars}点 {count}件",
+  "extReviewKeywords": "よく出る表現: {keywords}",
+  "extReviewPositive": "高評価レビュー:「{excerpt}」",
+  "extReviewNegative": "低評価レビュー:「{excerpt}」",
+  "extReviewSummaryRequest": "AIでレビューを要約",
+  "extReviewSummaryQuestion": "この商品のレビューを長所と気になる点に分けて短く要約して"
 }

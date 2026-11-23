@@ -1295,5 +1295,13 @@
   "priceWatchLoadFailed": "Could not check price-drop indicators. {message}",
   "priceWatchDropCounts": "Of {total} wishlisted products, {known} have price-drop data and {drops} are marked as lower. Reference prices and dates are unavailable.",
   "extProgressPreviousComplete": "Collection and analysis complete · Previously collected information",
-  "extProgressPreviousInfo": "Previously collected information"
+  "extProgressPreviousInfo": "Previously collected information",
+  "extReviewSummaryTitle": "Review summary",
+  "extReviewRatingSummary": "{count} loaded reviews · Average {rating} stars · {distribution}",
+  "extReviewStarCount": "{stars}★ {count}",
+  "extReviewKeywords": "Frequently mentioned: {keywords}",
+  "extReviewPositive": "Positive review: “{excerpt}”",
+  "extReviewNegative": "Critical review: “{excerpt}”",
+  "extReviewSummaryRequest": "Get a review summary with AI",
+  "extReviewSummaryQuestion": "Briefly summarize the strengths and shortcomings in this product’s reviews."
 }
