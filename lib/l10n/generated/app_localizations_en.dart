@@ -2421,7 +2421,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get extNavProgress => 'Progress';
 
   @override
-  String get extNavSummary => 'AI summary';
+  String get extNavSummary => 'Review summary';
 
   @override
   String get extNavReport => 'Trust report';
@@ -4408,4 +4408,7 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get chatHistoryDeleteError =>
       'Could not delete the conversation. Please try again.';
+
+  @override
+  String get extSummaryCompleteBadge => 'Collection and analysis complete';
 }

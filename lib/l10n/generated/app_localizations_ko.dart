@@ -2331,7 +2331,7 @@ class AppLocalizationsKo extends AppLocalizations {
   String get extNavProgress => '분석 진행';
 
   @override
-  String get extNavSummary => 'AI 요약';
+  String get extNavSummary => '리뷰 요약';
 
   @override
   String get extNavReport => '신뢰도 리포트';
@@ -4232,4 +4232,7 @@ class AppLocalizationsKo extends AppLocalizations {
 
   @override
   String get chatHistoryDeleteError => '대화를 삭제하지 못했어요. 다시 시도해 주세요.';
+
+  @override
+  String get extSummaryCompleteBadge => '수집·분석 완료';
 }

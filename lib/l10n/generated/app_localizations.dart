@@ -4485,7 +4485,7 @@ abstract class AppLocalizations {
   /// No description provided for @extNavSummary.
   ///
   /// In ko, this message translates to:
-  /// **'AI 요약'**
+  /// **'리뷰 요약'**
   String get extNavSummary;
 
   /// No description provided for @extNavReport.
@@ -7901,6 +7901,12 @@ abstract class AppLocalizations {
   /// In ko, this message translates to:
   /// **'대화를 삭제하지 못했어요. 다시 시도해 주세요.'**
   String get chatHistoryDeleteError;
+
+  /// No description provided for @extSummaryCompleteBadge.
+  ///
+  /// In ko, this message translates to:
+  /// **'수집·분석 완료'**
+  String get extSummaryCompleteBadge;
 }
 
 class _AppLocalizationsDelegate

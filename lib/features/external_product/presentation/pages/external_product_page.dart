@@ -1,3 +1,4 @@
+import 'package:re_view_front/features/external_product/presentation/view_models/analysis_progress_state.dart';
 import 'package:re_view_front/features/external_product/presentation/widgets/external_product_sticky_actions.dart';
 import 'package:re_view_front/shared/widgets/scroll_to_top_button.dart';
 import 'package:re_view_front/features/external_product/presentation/widgets/product_description_section.dart';
@@ -494,10 +495,11 @@ class _ReadyState extends ConsumerState<_Ready> {
                 container: true,
                 child: SectionJumpBar(
                   items: [
-                    SectionJumpItem(
-                      label: l10n.extNavProgress,
-                      target: _progressKey,
-                    ),
+                    if (AnalysisProgressState.fromDetail(state).showSteps)
+                      SectionJumpItem(
+                        label: l10n.extNavProgress,
+                        target: _progressKey,
+                      ),
                     SectionJumpItem(
                       label: l10n.extNavSummary,
                       target: _summaryKey,
@@ -532,6 +534,9 @@ class _ReadyState extends ConsumerState<_Ready> {
                     key: _summaryKey,
                     child: AnalysisSummaryCard(state: state),
                   );
+                  if (!AnalysisProgressState.fromDetail(state).showSteps) {
+                    return analysisSummary;
+                  }
                   // 넓은 화면에서는 진행 단계와 요약을 나란히 둬 세로 길이를 줄인다.
                   if (constraints.maxWidth >= 1080) {
                     return Row(

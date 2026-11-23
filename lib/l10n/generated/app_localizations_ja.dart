@@ -2324,7 +2324,7 @@ class AppLocalizationsJa extends AppLocalizations {
   String get extNavProgress => '分析の進行';
 
   @override
-  String get extNavSummary => 'AI要約';
+  String get extNavSummary => 'レビュー要約';
 
   @override
   String get extNavReport => '信頼度レポート';
@@ -4229,4 +4229,7 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String get chatHistoryDeleteError => '会話を削除できませんでした。もう一度お試しください。';
+
+  @override
+  String get extSummaryCompleteBadge => '収集・分析完了';
 }

@@ -732,7 +732,7 @@
   "extTrustCoverageInSummary": "请在上方摘要卡片中查看分析范围和版本。",
   "extTrustScoreValue": "{label} {score} / 100",
   "extNavProgress": "分析进度",
-  "extNavSummary": "AI摘要",
+  "extNavSummary": "评价摘要",
   "extNavReport": "可信度报告",
   "extNavReviews": "评论",
   "extNavLabel": "跳转到版块",
@@ -1302,5 +1302,6 @@
   "chatHistoryDeleteConfirm": "要从此设备的对话列表中移除此对话吗？",
   "chatHistoryDeleteAllConfirm": "要从此设备的对话列表中移除所有对话吗？",
   "chatHistoryCancel": "取消",
-  "chatHistoryDeleteError": "无法删除对话，请重试。"
+  "chatHistoryDeleteError": "无法删除对话，请重试。",
+  "extSummaryCompleteBadge": "采集与分析完成"
 }

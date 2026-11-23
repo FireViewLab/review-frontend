@@ -1427,7 +1427,7 @@
     }
   },
   "extNavProgress": "분석 진행",
-  "extNavSummary": "AI 요약",
+  "extNavSummary": "리뷰 요약",
   "extNavReport": "신뢰도 리포트",
   "extNavReviews": "리뷰",
   "extNavLabel": "섹션 바로가기",
@@ -2209,5 +2209,6 @@
   "chatHistoryDeleteConfirm": "이 기기의 대화 목록에서 삭제할까요?",
   "chatHistoryDeleteAllConfirm": "모든 대화를 이 기기의 대화 목록에서 삭제할까요?",
   "chatHistoryCancel": "취소",
-  "chatHistoryDeleteError": "대화를 삭제하지 못했어요. 다시 시도해 주세요."
+  "chatHistoryDeleteError": "대화를 삭제하지 못했어요. 다시 시도해 주세요.",
+  "extSummaryCompleteBadge": "수집·분석 완료"
 }

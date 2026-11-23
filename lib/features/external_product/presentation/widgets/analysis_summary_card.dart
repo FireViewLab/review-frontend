@@ -1,3 +1,4 @@
+import 'package:re_view_front/features/external_product/presentation/view_models/analysis_progress_state.dart';
 import 'package:re_view_front/features/external_product/presentation/view_models/product_analysis_versions.dart';
 import 'package:re_view_front/features/chat/presentation/providers/chat_providers.dart';
 import 'package:re_view_front/shared/presentation/analysis_formatters.dart';
@@ -95,6 +96,33 @@ class _AnalysisSummaryCardState extends ConsumerState<AnalysisSummaryCard> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
+            Wrap(
+              alignment: WrapAlignment.spaceBetween,
+              crossAxisAlignment: WrapCrossAlignment.center,
+              spacing: AppSpacing.md,
+              runSpacing: AppSpacing.sm,
+              children: [
+                _SummaryHeading(l10n.extReviewSummaryTitle),
+                if (!AnalysisProgressState.fromDetail(state).showSteps)
+                  Container(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: AppSpacing.sm,
+                      vertical: AppSpacing.xs,
+                    ),
+                    decoration: BoxDecoration(
+                      color: AppColors.successSoft,
+                      borderRadius: AppRadius.small,
+                    ),
+                    child: Text(
+                      '✓ ${l10n.extSummaryCompleteBadge}',
+                      style: textTheme.labelSmall?.copyWith(
+                        color: AppColors.success,
+                      ),
+                    ),
+                  ),
+              ],
+            ),
+            const SizedBox(height: AppSpacing.md),
             if (content.loadedCount == 0)
               Text(l10n.extSummaryNoLoadedReviews)
             else
