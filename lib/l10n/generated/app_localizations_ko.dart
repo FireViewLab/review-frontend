@@ -4207,4 +4207,25 @@ class AppLocalizationsKo extends AppLocalizations {
   String chatHistoryToday(String time) {
     return '오늘 $time';
   }
+
+  @override
+  String get chatHistoryMenu => '더보기';
+
+  @override
+  String get chatHistoryDelete => '대화 삭제';
+
+  @override
+  String get chatHistoryDeleteAll => '전체 삭제';
+
+  @override
+  String get chatHistoryDeleteConfirm => '이 기기의 대화 목록에서 삭제할까요?';
+
+  @override
+  String get chatHistoryDeleteAllConfirm => '모든 대화를 이 기기의 대화 목록에서 삭제할까요?';
+
+  @override
+  String get chatHistoryCancel => '취소';
+
+  @override
+  String get chatHistoryDeleteError => '대화를 삭제하지 못했어요. 다시 시도해 주세요.';
 }

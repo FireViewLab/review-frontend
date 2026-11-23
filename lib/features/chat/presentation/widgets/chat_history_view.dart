@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:intl/intl.dart';
 import 'package:re_view_front/features/chat/presentation/view_models/chat_history_groups.dart';
 import 'package:re_view_front/shared/widgets/empty_state_view.dart';
@@ -18,12 +19,51 @@ class ChatHistoryView extends StatelessWidget {
     required this.onSelect,
     required this.onLoadMore,
     required this.onRetry,
+    required this.onDelete,
+    required this.onDeleteAll,
   });
   final ChatState state;
   final VoidCallback onBack;
   final ValueChanged<ChatSession> onSelect;
   final VoidCallback onLoadMore;
   final VoidCallback onRetry;
+  final Future<bool> Function(ChatSession) onDelete;
+  final Future<bool> Function() onDeleteAll;
+
+  Future<bool> _delete(BuildContext context, ChatSession? session) async {
+    final l10n = AppLocalizations.of(context);
+    final confirmed = await showDialog<bool>(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Text(
+          session == null ? l10n.chatHistoryDeleteAll : l10n.chatHistoryDelete,
+        ),
+        content: Text(
+          session == null
+              ? l10n.chatHistoryDeleteAllConfirm
+              : l10n.chatHistoryDeleteConfirm,
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context, false),
+            child: Text(l10n.chatHistoryCancel),
+          ),
+          TextButton(
+            onPressed: () => Navigator.pop(context, true),
+            child: Text(l10n.chatHistoryDelete),
+          ),
+        ],
+      ),
+    );
+    if (confirmed != true || !context.mounted) return false;
+    final deleted = await (session == null ? onDeleteAll() : onDelete(session));
+    if (!deleted && context.mounted) {
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text(l10n.chatHistoryDeleteError)));
+    }
+    return deleted;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -52,6 +92,20 @@ class ChatHistoryView extends StatelessWidget {
                     fontWeight: FontWeight.w700,
                   ),
                 ),
+              ),
+              PopupMenuButton<String>(
+                tooltip: l10n.chatHistoryMenu,
+                enabled:
+                    state.sessions.isNotEmpty &&
+                    !loading &&
+                    !state.isLoadingSessions,
+                onSelected: (_) => _delete(context, null),
+                itemBuilder: (_) => [
+                  PopupMenuItem(
+                    value: 'all',
+                    child: Text(l10n.chatHistoryDeleteAll),
+                  ),
+                ],
               ),
             ],
           ),
@@ -83,6 +137,12 @@ class ChatHistoryView extends StatelessWidget {
                     ? EmptyStateView(
                         title: l10n.chatHistoryEmpty,
                         message: l10n.chatHistoryEmptyHint,
+                        primaryActionLabel: state.isLastSessionPage
+                            ? null
+                            : l10n.chatHistoryLoadMore,
+                        onPrimaryAction: state.isLastSessionPage
+                            ? null
+                            : onLoadMore,
                       )
                     : const SizedBox.shrink()
               : ListView.builder(
@@ -107,6 +167,7 @@ class ChatHistoryView extends StatelessWidget {
                       key: ValueKey(group.productId),
                       group: group,
                       onSelect: onSelect,
+                      onDelete: (session) => _delete(context, session),
                     );
                   },
                 ),
@@ -121,7 +182,9 @@ class _ProductConversations extends StatelessWidget {
     super.key,
     required this.group,
     required this.onSelect,
+    required this.onDelete,
   });
+  final Future<bool> Function(ChatSession) onDelete;
   final ChatHistoryGroup group;
   final ValueChanged<ChatSession> onSelect;
 
@@ -141,7 +204,12 @@ class _ProductConversations extends StatelessWidget {
         const SizedBox(height: AppSpacing.xs),
         for (final conversations in group.conversations)
           if (conversations.length == 1)
-            _ConversationRow(session: conversations.single, onSelect: onSelect)
+            _ConversationRow(
+              key: ValueKey(conversations.single.id),
+              session: conversations.single,
+              onSelect: onSelect,
+              onDelete: onDelete,
+            )
           else
             ExpansionTile(
               key: ValueKey(conversations.first.title.trim()),
@@ -164,6 +232,7 @@ class _ProductConversations extends StatelessWidget {
                     key: ValueKey(session.id),
                     session: session,
                     onSelect: onSelect,
+                    onDelete: onDelete,
                   ),
               ],
             ),
@@ -177,7 +246,9 @@ class _ConversationRow extends StatelessWidget {
     super.key,
     required this.session,
     required this.onSelect,
+    required this.onDelete,
   });
+  final Future<bool> Function(ChatSession) onDelete;
   final ChatSession session;
   final ValueChanged<ChatSession> onSelect;
 
@@ -198,43 +269,62 @@ class _ConversationRow extends StatelessWidget {
             DateFormat('HH:mm', l10n.localeName).format(date),
           )
         : DateFormat('MM.dd', l10n.localeName).format(date);
-    return InkWell(
-      onTap: () => onSelect(session),
-      child: Padding(
-        padding: const EdgeInsets.symmetric(vertical: AppSpacing.sm),
-        child: Row(
-          children: [
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    session.title.trim().isEmpty
-                        ? l10n.chatHistoryUntitled
-                        : session.title,
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                      color: ChatStyle.ink,
-                      fontWeight: FontWeight.w600,
-                    ),
-                  ),
-                  if (time != null)
+    return Dismissible(
+      key: ValueKey(session.id),
+      direction: kIsWeb ? DismissDirection.none : DismissDirection.endToStart,
+      confirmDismiss: (_) async {
+        await onDelete(session);
+        return false;
+      },
+      background: Container(
+        color: AppColors.error,
+        alignment: AlignmentDirectional.centerEnd,
+        padding: const EdgeInsets.all(AppSpacing.md),
+        child: const Icon(Icons.delete_outline),
+      ),
+      child: InkWell(
+        onTap: () => onSelect(session),
+        child: Padding(
+          padding: const EdgeInsets.symmetric(vertical: AppSpacing.sm),
+          child: Row(
+            children: [
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
                     Text(
-                      time,
-                      style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                        color: AppColors.textSecondary,
+                      session.title.trim().isEmpty
+                          ? l10n.chatHistoryUntitled
+                          : session.title,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                        color: ChatStyle.ink,
+                        fontWeight: FontWeight.w600,
                       ),
                     ),
+                    if (time != null)
+                      Text(
+                        time,
+                        style: Theme.of(context).textTheme.labelSmall?.copyWith(
+                          color: AppColors.textSecondary,
+                        ),
+                      ),
+                  ],
+                ),
+              ),
+              PopupMenuButton<String>(
+                tooltip: l10n.chatHistoryMenu,
+                onSelected: (_) => onDelete(session),
+                itemBuilder: (_) => [
+                  PopupMenuItem(
+                    value: 'delete',
+                    child: Text(l10n.chatHistoryDelete),
+                  ),
                 ],
               ),
-            ),
-            const Icon(
-              Icons.chevron_right_rounded,
-              size: 20,
-              color: AppColors.textTertiary,
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

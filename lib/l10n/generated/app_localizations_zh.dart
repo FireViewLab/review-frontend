@@ -4144,4 +4144,25 @@ class AppLocalizationsZh extends AppLocalizations {
   String chatHistoryToday(String time) {
     return '今天 $time';
   }
+
+  @override
+  String get chatHistoryMenu => '更多选项';
+
+  @override
+  String get chatHistoryDelete => '删除对话';
+
+  @override
+  String get chatHistoryDeleteAll => '全部删除';
+
+  @override
+  String get chatHistoryDeleteConfirm => '要从此设备的对话列表中移除此对话吗？';
+
+  @override
+  String get chatHistoryDeleteAllConfirm => '要从此设备的对话列表中移除所有对话吗？';
+
+  @override
+  String get chatHistoryCancel => '取消';
+
+  @override
+  String get chatHistoryDeleteError => '无法删除对话，请重试。';
 }

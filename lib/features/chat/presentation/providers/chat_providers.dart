@@ -1,3 +1,5 @@
+import 'package:re_view_front/features/chat/data/repositories/chat_history_repository.dart';
+import 'package:re_view_front/features/my_page/presentation/providers/my_page_providers.dart';
 import 'package:re_view_front/features/external_product/domain/entities/external_product.dart';
 import 'package:re_view_front/features/external_product/domain/entities/external_product_ref.dart';
 import 'package:re_view_front/features/external_product/presentation/providers/external_product_providers.dart';
@@ -38,3 +40,22 @@ final chatHistoryProductProvider =
         failure: (_) => null,
       );
     });
+
+final chatHistoryRepositoryProvider = Provider<ChatHistoryRepository>(
+  (ref) => ChatHistoryRepository(),
+);
+
+final chatHistoryOwnerProvider = FutureProvider<String?>((ref) async {
+  if (!ref.watch(authSessionProvider).isLoggedIn ||
+      ref.read(authTokenStoreProvider.notifier).accessToken == null) {
+    return null;
+  }
+  final result = await ref.read(myPageRepositoryProvider).getMyProfile();
+  return result.when(
+    success: (profile) {
+      if (profile.id <= 0) throw StateError('Missing account identifier');
+      return profile.id.toString();
+    },
+    failure: (failure) => throw failure,
+  );
+});

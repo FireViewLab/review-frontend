@@ -1295,5 +1295,12 @@
   "chatHistoryProductLoading": "正在加载商品信息",
   "chatHistoryEmptyHint": "开始新对话后，可在此再次查看。",
   "chatHistoryConversationCount": "{count}个对话",
-  "chatHistoryToday": "今天 {time}"
+  "chatHistoryToday": "今天 {time}",
+  "chatHistoryMenu": "更多选项",
+  "chatHistoryDelete": "删除对话",
+  "chatHistoryDeleteAll": "全部删除",
+  "chatHistoryDeleteConfirm": "要从此设备的对话列表中移除此对话吗？",
+  "chatHistoryDeleteAllConfirm": "要从此设备的对话列表中移除所有对话吗？",
+  "chatHistoryCancel": "取消",
+  "chatHistoryDeleteError": "无法删除对话，请重试。"
 }

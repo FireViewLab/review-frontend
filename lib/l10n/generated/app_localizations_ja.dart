@@ -4204,4 +4204,25 @@ class AppLocalizationsJa extends AppLocalizations {
   String chatHistoryToday(String time) {
     return '今日 $time';
   }
+
+  @override
+  String get chatHistoryMenu => 'その他';
+
+  @override
+  String get chatHistoryDelete => '会話を削除';
+
+  @override
+  String get chatHistoryDeleteAll => 'すべて削除';
+
+  @override
+  String get chatHistoryDeleteConfirm => 'この端末の会話一覧から削除しますか？';
+
+  @override
+  String get chatHistoryDeleteAllConfirm => 'この端末の会話一覧からすべて削除しますか？';
+
+  @override
+  String get chatHistoryCancel => 'キャンセル';
+
+  @override
+  String get chatHistoryDeleteError => '会話を削除できませんでした。もう一度お試しください。';
 }

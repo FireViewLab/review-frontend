@@ -97,6 +97,8 @@ class ChatPanel extends ConsumerWidget {
                           onSelect: vm.resumeSession,
                           onLoadMore: vm.loadMoreSessions,
                           onRetry: vm.showHistory,
+                          onDelete: vm.hideSession,
+                          onDeleteAll: vm.hideAllSessions,
                         ),
                       )
                     else if (isLoggedIn)

@@ -7859,6 +7859,48 @@ abstract class AppLocalizations {
   /// In ko, this message translates to:
   /// **'오늘 {time}'**
   String chatHistoryToday(String time);
+
+  /// No description provided for @chatHistoryMenu.
+  ///
+  /// In ko, this message translates to:
+  /// **'더보기'**
+  String get chatHistoryMenu;
+
+  /// No description provided for @chatHistoryDelete.
+  ///
+  /// In ko, this message translates to:
+  /// **'대화 삭제'**
+  String get chatHistoryDelete;
+
+  /// No description provided for @chatHistoryDeleteAll.
+  ///
+  /// In ko, this message translates to:
+  /// **'전체 삭제'**
+  String get chatHistoryDeleteAll;
+
+  /// No description provided for @chatHistoryDeleteConfirm.
+  ///
+  /// In ko, this message translates to:
+  /// **'이 기기의 대화 목록에서 삭제할까요?'**
+  String get chatHistoryDeleteConfirm;
+
+  /// No description provided for @chatHistoryDeleteAllConfirm.
+  ///
+  /// In ko, this message translates to:
+  /// **'모든 대화를 이 기기의 대화 목록에서 삭제할까요?'**
+  String get chatHistoryDeleteAllConfirm;
+
+  /// No description provided for @chatHistoryCancel.
+  ///
+  /// In ko, this message translates to:
+  /// **'취소'**
+  String get chatHistoryCancel;
+
+  /// No description provided for @chatHistoryDeleteError.
+  ///
+  /// In ko, this message translates to:
+  /// **'대화를 삭제하지 못했어요. 다시 시도해 주세요.'**
+  String get chatHistoryDeleteError;
 }
 
 class _AppLocalizationsDelegate
