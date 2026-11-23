@@ -4232,4 +4232,24 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String get extSummaryCompleteBadge => '収集・分析完了';
+
+  @override
+  String extSummaryReviewBasis(String count) {
+    return 'レビュー$count件に基づく';
+  }
+
+  @override
+  String get extSummaryFrequentPhrases => 'よく出る表現';
+
+  @override
+  String get extSummaryPositiveLabel => '高評価レビュー';
+
+  @override
+  String get extSummaryNegativeLabel => '気になる点';
+
+  @override
+  String get extSummaryQuotaHint => '1日の質問枠を1回使用';
+
+  @override
+  String get extSummaryLayoutComment => '読み込み済みレビューの評価とよく出る表現です。';
 }

@@ -121,20 +121,20 @@ class ReviewContentSummary {
       ),
     );
     ratings.sort((a, b) => b.rating!.compareTo(a.rating!));
-    positive = _excerpt(
-      ratings
-          .where(
-            (review) => review.rating! >= 4 && review.content.trim().isNotEmpty,
-          )
-          .firstOrNull,
-    );
-    negative = _excerpt(
-      ratings.reversed
-          .where(
-            (review) => review.rating! <= 2 && review.content.trim().isNotEmpty,
-          )
-          .firstOrNull,
-    );
+    final positiveReview = ratings
+        .where(
+          (review) => review.rating! >= 4 && review.content.trim().isNotEmpty,
+        )
+        .firstOrNull;
+    final negativeReview = ratings.reversed
+        .where(
+          (review) => review.rating! <= 2 && review.content.trim().isNotEmpty,
+        )
+        .firstOrNull;
+    positive = _excerpt(positiveReview);
+    negative = _excerpt(negativeReview);
+    positiveRating = positiveReview?.rating;
+    negativeRating = negativeReview?.rating;
     final excluded = _tokens(productName).toSet();
     final frequencies = <String, int>{};
     for (final review in unique) {
@@ -156,6 +156,8 @@ class ReviewContentSummary {
   late final double? average;
   late final List<int> distribution;
   late final List<String> keywords;
+  late final double? positiveRating;
+  late final double? negativeRating;
   late final String? positive;
   late final String? negative;
 

@@ -12,7 +12,8 @@ import 'package:re_view_front/features/external_product/presentation/providers/e
 import 'package:re_view_front/features/external_product/presentation/view_models/analysis_summary_data.dart';
 import 'package:re_view_front/features/external_product/presentation/view_models/external_product_state.dart';
 import 'package:re_view_front/l10n/generated/app_localizations.dart';
-import 'package:re_view_front/shared/widgets/owl_guide.dart';
+import 'package:re_view_front/shared/presentation/review_owl_assets.dart';
+import 'package:re_view_front/features/external_product/presentation/widgets/review_summary_content.dart';
 import 'package:re_view_front/shared/presentation/review_evidence_formatter.dart';
 
 class AnalysisSummaryCard extends ConsumerStatefulWidget {
@@ -63,20 +64,6 @@ class _AnalysisSummaryCardState extends ConsumerState<AnalysisSummaryCard> {
       state.reviews,
       productName: state.displayProduct?.name ?? '',
     );
-    final rating = content.average == null
-        ? l10n.extSummaryMissingValue
-        : NumberFormat('0.0', l10n.localeName).format(content.average);
-    final distribution = List.generate(
-      5,
-      (i) => l10n.extReviewStarCount(i + 1, content.distribution[i]),
-    ).reversed.join(' · ');
-    final reviewMessage = [
-      l10n.extReviewRatingSummary(content.loadedCount, rating, distribution),
-      if (content.keywords.isNotEmpty)
-        l10n.extReviewKeywords(content.keywords.join(' · ')),
-      if (content.positive != null) l10n.extReviewPositive(content.positive!),
-      if (content.negative != null) l10n.extReviewNegative(content.negative!),
-    ].join('\n');
     final data = ref.watch(loadedReviewAnalysisSummaryProvider(state.reviews));
     final numbers = NumberFormat.decimalPattern(l10n.localeName);
     String count(int? value) =>
@@ -102,7 +89,22 @@ class _AnalysisSummaryCardState extends ConsumerState<AnalysisSummaryCard> {
               spacing: AppSpacing.md,
               runSpacing: AppSpacing.sm,
               children: [
-                _SummaryHeading(l10n.extReviewSummaryTitle),
+                Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    ExcludeSemantics(
+                      child: Image.asset(
+                        ReviewOwlAssets.face,
+                        width: 28,
+                        height: 28,
+                      ),
+                    ),
+                    const SizedBox(width: AppSpacing.sm),
+                    Flexible(
+                      child: _SummaryHeading(l10n.extReviewSummaryTitle),
+                    ),
+                  ],
+                ),
                 if (!AnalysisProgressState.fromDetail(state).showSteps)
                   Container(
                     padding: const EdgeInsets.symmetric(
@@ -123,50 +125,70 @@ class _AnalysisSummaryCardState extends ConsumerState<AnalysisSummaryCard> {
               ],
             ),
             const SizedBox(height: AppSpacing.md),
+            Text(
+              content.loadedCount > 0 && summary?.isNotEmpty == true
+                  ? summary!
+                  : l10n.extSummaryLayoutComment,
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+              style: textTheme.bodySmall?.copyWith(
+                color: AppColors.textSecondary,
+              ),
+            ),
+            const SizedBox(height: AppSpacing.lg),
             if (content.loadedCount == 0)
               Text(l10n.extSummaryNoLoadedReviews)
             else
-              OwlGuide(
-                message: summary != null && summary.isNotEmpty
-                    ? summary
-                    : reviewMessage,
-                title: l10n.extReviewSummaryTitle,
-              ),
+              ReviewSummaryContent(data: content),
             const SizedBox(height: AppSpacing.sm),
-            OutlinedButton(
-              onPressed: state.displayProduct == null
-                  ? null
-                  : () {
-                      final productId = state.displayProduct!.ref.externalId;
-                      final chat = ref.read(chatViewModelProvider.notifier);
-                      chat.openConversation(productId: productId);
-                      chat.send(
-                        l10n.extReviewSummaryQuestion,
-                        productId: productId,
-                      );
-                    },
-              child: Text(
-                l10n.extReviewSummaryRequest,
-                textAlign: TextAlign.center,
-              ),
+            Wrap(
+              spacing: AppSpacing.md,
+              runSpacing: AppSpacing.sm,
+              crossAxisAlignment: WrapCrossAlignment.center,
+              children: [
+                FilledButton.tonalIcon(
+                  style: FilledButton.styleFrom(
+                    backgroundColor: AppColors.primaryLight,
+                    foregroundColor: AppColors.primary,
+                  ),
+                  icon: const Icon(Icons.auto_awesome_rounded),
+                  onPressed: state.displayProduct == null
+                      ? null
+                      : () {
+                          final productId =
+                              state.displayProduct!.ref.externalId;
+                          final chat = ref.read(chatViewModelProvider.notifier);
+                          chat.openConversation(productId: productId);
+                          chat.send(
+                            l10n.extReviewSummaryQuestion,
+                            productId: productId,
+                          );
+                        },
+                  label: Text(
+                    l10n.extReviewSummaryRequest,
+                    textAlign: TextAlign.center,
+                  ),
+                ),
+                Text(
+                  l10n.extSummaryQuotaHint,
+                  style: textTheme.bodySmall?.copyWith(
+                    color: AppColors.textSecondary,
+                  ),
+                ),
+              ],
             ),
-            const SizedBox(height: AppSpacing.md),
+            const Divider(height: AppSpacing.xl),
             Semantics(
               expanded: _expanded,
-              child: InkWell(
-                onTap: () => setState(() => _expanded = !_expanded),
-                borderRadius: AppRadius.large,
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(vertical: AppSpacing.sm),
-                  child: Row(
-                    children: [
-                      Expanded(
-                        child: _SummaryHeading(l10n.extSummaryEvidenceToggle),
-                      ),
-                      const SizedBox(width: AppSpacing.sm),
-                      Icon(_expanded ? Icons.expand_less : Icons.expand_more),
-                    ],
+              child: Align(
+                alignment: AlignmentDirectional.centerStart,
+                child: TextButton.icon(
+                  onPressed: () => setState(() => _expanded = !_expanded),
+                  icon: RotatedBox(
+                    quarterTurns: _expanded ? 2 : 0,
+                    child: const Icon(Icons.expand_more),
                   ),
+                  label: Text(l10n.extSummaryEvidenceToggle),
                 ),
               ),
             ),

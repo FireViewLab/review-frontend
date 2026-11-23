@@ -4172,4 +4172,24 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get extSummaryCompleteBadge => '采集与分析完成';
+
+  @override
+  String extSummaryReviewBasis(String count) {
+    return '基于$count条评价';
+  }
+
+  @override
+  String get extSummaryFrequentPhrases => '常见表达';
+
+  @override
+  String get extSummaryPositiveLabel => '好评';
+
+  @override
+  String get extSummaryNegativeLabel => '不足之处';
+
+  @override
+  String get extSummaryQuotaHint => '使用1次每日提问额度';
+
+  @override
+  String get extSummaryLayoutComment => '已加载评价的评分与常见表达。';
 }

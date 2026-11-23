@@ -4235,4 +4235,24 @@ class AppLocalizationsKo extends AppLocalizations {
 
   @override
   String get extSummaryCompleteBadge => '수집·분석 완료';
+
+  @override
+  String extSummaryReviewBasis(String count) {
+    return '리뷰 $count개 기준';
+  }
+
+  @override
+  String get extSummaryFrequentPhrases => '자주 나온 표현';
+
+  @override
+  String get extSummaryPositiveLabel => '긍정 리뷰';
+
+  @override
+  String get extSummaryNegativeLabel => '아쉬운 점';
+
+  @override
+  String get extSummaryQuotaHint => '하루 질문 한도 1회 사용';
+
+  @override
+  String get extSummaryLayoutComment => '불러온 리뷰의 별점과 자주 나온 표현을 모았어요.';
 }

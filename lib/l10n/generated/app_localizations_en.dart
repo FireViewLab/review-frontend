@@ -4411,4 +4411,25 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get extSummaryCompleteBadge => 'Collection and analysis complete';
+
+  @override
+  String extSummaryReviewBasis(String count) {
+    return 'Based on $count reviews';
+  }
+
+  @override
+  String get extSummaryFrequentPhrases => 'Frequently mentioned';
+
+  @override
+  String get extSummaryPositiveLabel => 'Positive review';
+
+  @override
+  String get extSummaryNegativeLabel => 'Room for improvement';
+
+  @override
+  String get extSummaryQuotaHint => 'Uses 1 daily question';
+
+  @override
+  String get extSummaryLayoutComment =>
+      'Ratings and common expressions from the loaded reviews.';
 }

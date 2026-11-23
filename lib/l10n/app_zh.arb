@@ -1303,5 +1303,11 @@
   "chatHistoryDeleteAllConfirm": "要从此设备的对话列表中移除所有对话吗？",
   "chatHistoryCancel": "取消",
   "chatHistoryDeleteError": "无法删除对话，请重试。",
-  "extSummaryCompleteBadge": "采集与分析完成"
+  "extSummaryCompleteBadge": "采集与分析完成",
+  "extSummaryReviewBasis": "基于{count}条评价",
+  "extSummaryFrequentPhrases": "常见表达",
+  "extSummaryPositiveLabel": "好评",
+  "extSummaryNegativeLabel": "不足之处",
+  "extSummaryQuotaHint": "使用1次每日提问额度",
+  "extSummaryLayoutComment": "已加载评价的评分与常见表达。"
 }

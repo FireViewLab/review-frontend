@@ -1317,5 +1317,11 @@
   "chatHistoryDeleteAllConfirm": "Remove all conversations from the list on this device?",
   "chatHistoryCancel": "Cancel",
   "chatHistoryDeleteError": "Could not delete the conversation. Please try again.",
-  "extSummaryCompleteBadge": "Collection and analysis complete"
+  "extSummaryCompleteBadge": "Collection and analysis complete",
+  "extSummaryReviewBasis": "Based on {count} reviews",
+  "extSummaryFrequentPhrases": "Frequently mentioned",
+  "extSummaryPositiveLabel": "Positive review",
+  "extSummaryNegativeLabel": "Room for improvement",
+  "extSummaryQuotaHint": "Uses 1 daily question",
+  "extSummaryLayoutComment": "Ratings and common expressions from the loaded reviews."
 }
