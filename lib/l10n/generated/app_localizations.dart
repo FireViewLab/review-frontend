@@ -7835,6 +7835,12 @@ abstract class AppLocalizations {
   /// In ko, this message translates to:
   /// **'분석 상태·근거 보기'**
   String get extSummaryEvidenceToggle;
+
+  /// No description provided for @chatHistoryProductLoading.
+  ///
+  /// In ko, this message translates to:
+  /// **'상품 정보 불러오는 중'**
+  String get chatHistoryProductLoading;
 }
 
 class _AppLocalizationsDelegate

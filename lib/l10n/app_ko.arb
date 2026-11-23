@@ -2183,5 +2183,6 @@
       }
     }
   },
-  "extSummaryEvidenceToggle": "분석 상태·근거 보기"
+  "extSummaryEvidenceToggle": "분석 상태·근거 보기",
+  "chatHistoryProductLoading": "상품 정보 불러오는 중"
 }

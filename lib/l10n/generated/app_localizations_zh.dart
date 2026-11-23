@@ -4128,4 +4128,7 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get extSummaryEvidenceToggle => '查看分析状态与依据';
+
+  @override
+  String get chatHistoryProductLoading => '正在加载商品信息';
 }

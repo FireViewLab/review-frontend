@@ -3,11 +3,15 @@ class ChatSession {
     required this.id,
     required this.title,
     this.productId,
+    this.productName,
+    this.productImageUrl,
     this.createdAt,
     this.lastMessageAt,
   });
   final int id;
   final String? productId;
+  final String? productName;
+  final String? productImageUrl;
   final String title;
   final DateTime? createdAt;
   final DateTime? lastMessageAt;

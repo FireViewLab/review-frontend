@@ -4191,4 +4191,7 @@ class AppLocalizationsKo extends AppLocalizations {
 
   @override
   String get extSummaryEvidenceToggle => '분석 상태·근거 보기';
+
+  @override
+  String get chatHistoryProductLoading => '상품 정보 불러오는 중';
 }

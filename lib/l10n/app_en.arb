@@ -1304,5 +1304,6 @@
   "extReviewNegative": "Critical review: “{excerpt}”",
   "extReviewSummaryRequest": "Get a review summary with AI",
   "extReviewSummaryQuestion": "Briefly summarize the strengths and shortcomings in this product’s reviews.",
-  "extSummaryEvidenceToggle": "View analysis status and evidence"
+  "extSummaryEvidenceToggle": "View analysis status and evidence",
+  "chatHistoryProductLoading": "Loading product information"
 }

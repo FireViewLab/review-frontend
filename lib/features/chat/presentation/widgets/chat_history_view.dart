@@ -1,3 +1,4 @@
+import 'package:re_view_front/features/chat/presentation/widgets/chat_history_product.dart';
 import 'package:flutter/material.dart';
 import 'package:re_view_front/app/theme/app_colors.dart';
 import 'package:re_view_front/app/theme/app_spacing.dart';
@@ -128,16 +129,7 @@ class ChatHistoryView extends StatelessWidget {
                                       fontWeight: FontWeight.w600,
                                     ),
                                   ),
-                                  Text(
-                                    session.productId?.trim().isNotEmpty == true
-                                        ? '${l10n.chatTargetProduct}: ${session.productId}'
-                                        : l10n.chatGeneralContext,
-                                    maxLines: 1,
-                                    overflow: TextOverflow.ellipsis,
-                                    style: textTheme.labelSmall?.copyWith(
-                                      color: AppColors.textSecondary,
-                                    ),
-                                  ),
+                                  ChatHistoryProduct(session: session),
                                   if (local != null)
                                     Text(
                                       '${local.year}.${local.month.toString().padLeft(2, '0')}.${local.day.toString().padLeft(2, '0')}',

@@ -1290,5 +1290,6 @@
   "extReviewNegative": "不足之处：“{excerpt}”",
   "extReviewSummaryRequest": "使用AI总结评价",
   "extReviewSummaryQuestion": "请简短总结这款商品评价中的优点与不足",
-  "extSummaryEvidenceToggle": "查看分析状态与依据"
+  "extSummaryEvidenceToggle": "查看分析状态与依据",
+  "chatHistoryProductLoading": "正在加载商品信息"
 }

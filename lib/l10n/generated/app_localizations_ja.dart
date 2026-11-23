@@ -4188,4 +4188,7 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String get extSummaryEvidenceToggle => '分析状況・根拠を見る';
+
+  @override
+  String get chatHistoryProductLoading => '商品情報を読み込み中';
 }

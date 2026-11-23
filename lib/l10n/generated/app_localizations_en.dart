@@ -4363,4 +4363,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get extSummaryEvidenceToggle => 'View analysis status and evidence';
+
+  @override
+  String get chatHistoryProductLoading => 'Loading product information';
 }
