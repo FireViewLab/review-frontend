@@ -732,7 +732,7 @@
   "extTrustCoverageInSummary": "分析範囲とバージョンは、上の要約カードで確認できます。",
   "extTrustScoreValue": "{label} {score} / 100",
   "extNavProgress": "分析の進行",
-  "extNavSummary": "AI要約",
+  "extNavSummary": "レビュー要約",
   "extNavReport": "信頼度レポート",
   "extNavReviews": "レビュー",
   "extNavLabel": "セクションへ移動",
@@ -1302,5 +1302,12 @@
   "chatHistoryDeleteConfirm": "この端末の会話一覧から削除しますか？",
   "chatHistoryDeleteAllConfirm": "この端末の会話一覧からすべて削除しますか？",
   "chatHistoryCancel": "キャンセル",
-  "chatHistoryDeleteError": "会話を削除できませんでした。もう一度お試しください。"
+  "chatHistoryDeleteError": "会話を削除できませんでした。もう一度お試しください。",
+  "extSummaryCompleteBadge": "収集・分析完了",
+  "extSummaryReviewBasis": "レビュー{count}件に基づく",
+  "extSummaryFrequentPhrases": "よく出る表現",
+  "extSummaryPositiveLabel": "高評価レビュー",
+  "extSummaryNegativeLabel": "気になる点",
+  "extSummaryQuotaHint": "1日の質問枠を1回使用",
+  "extSummaryLayoutComment": "読み込み済みレビューの評価とよく出る表現です。"
 }

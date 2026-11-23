@@ -67,6 +67,7 @@ class ExternalProductReport extends StatelessWidget {
         ? state.summary?.catalogAnalysis
         : null;
     return ProductReportCard(
+      detailsInHeader: true,
       status: reportStatus,
       summary: message,
       resultHeader: ProductTrustReportHeader(

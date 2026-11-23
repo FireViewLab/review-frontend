@@ -33,6 +33,7 @@ class ProductReportCard extends StatelessWidget {
     this.onDetailPressed,
     this.resultHeader,
     this.content,
+    this.detailsInHeader = false,
   });
   final String summary;
   final Widget details;
@@ -43,6 +44,7 @@ class ProductReportCard extends StatelessWidget {
   final VoidCallback? onDetailPressed;
   final Widget? resultHeader;
   final Widget? content;
+  final bool detailsInHeader;
 
   @override
   Widget build(BuildContext context) {
@@ -135,17 +137,31 @@ class ProductReportCard extends StatelessWidget {
                           color: AppColors.textPrimary,
                         ),
                       ),
-                      const SizedBox(height: 4),
-                      Text(
-                        l.reportIntro,
-                        style: theme.bodySmall?.copyWith(
-                          color: AppColors.textSecondary,
-                          height: 1.5,
+                      if (!detailsInHeader) ...[
+                        const SizedBox(height: 4),
+                        Text(
+                          l.reportIntro,
+                          style: theme.bodySmall?.copyWith(
+                            color: AppColors.textSecondary,
+                            height: 1.5,
+                          ),
                         ),
-                      ),
+                      ],
                     ],
                   ),
                 ),
+                if (detailsInHeader)
+                  Flexible(
+                    child: Align(
+                      alignment: AlignmentDirectional.centerEnd,
+                      child: TextButton(
+                        onPressed:
+                            onDetailPressed ??
+                            () => showProductReport(context, details),
+                        child: Text(l.reportDetails, textAlign: TextAlign.end),
+                      ),
+                    ),
+                  ),
               ],
             ),
             const SizedBox(height: AppSpacing.lg),
@@ -296,28 +312,32 @@ class ProductReportCard extends StatelessWidget {
               const SizedBox(height: AppSpacing.lg),
               body,
             ],
-            const SizedBox(height: AppSpacing.lg),
-            const Divider(height: 1),
-            const SizedBox(height: AppSpacing.md),
-            SizedBox(
-              width: double.infinity,
-              child: OutlinedButton.icon(
-                style: OutlinedButton.styleFrom(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 16,
-                    vertical: 14,
+            if (!detailsInHeader) ...[
+              const SizedBox(height: AppSpacing.lg),
+              const Divider(height: 1),
+              const SizedBox(height: AppSpacing.md),
+              SizedBox(
+                width: double.infinity,
+                child: OutlinedButton.icon(
+                  style: OutlinedButton.styleFrom(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 16,
+                      vertical: 14,
+                    ),
+                    foregroundColor: AppColors.primary,
+                    side: const BorderSide(color: AppColors.borderStrong),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: AppRadius.medium,
+                    ),
                   ),
-                  foregroundColor: AppColors.primary,
-                  side: const BorderSide(color: AppColors.borderStrong),
-                  shape: RoundedRectangleBorder(borderRadius: AppRadius.medium),
+                  onPressed:
+                      onDetailPressed ??
+                      () => showProductReport(context, details),
+                  icon: const Icon(Icons.arrow_forward_rounded, size: 18),
+                  label: Text(l.reportDetails),
                 ),
-                onPressed:
-                    onDetailPressed ??
-                    () => showProductReport(context, details),
-                icon: const Icon(Icons.arrow_forward_rounded, size: 18),
-                label: Text(l.reportDetails),
               ),
-            ),
+            ],
           ],
         ),
       ),

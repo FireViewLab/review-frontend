@@ -2331,7 +2331,7 @@ class AppLocalizationsKo extends AppLocalizations {
   String get extNavProgress => '분석 진행';
 
   @override
-  String get extNavSummary => 'AI 요약';
+  String get extNavSummary => '리뷰 요약';
 
   @override
   String get extNavReport => '신뢰도 리포트';
@@ -4232,4 +4232,27 @@ class AppLocalizationsKo extends AppLocalizations {
 
   @override
   String get chatHistoryDeleteError => '대화를 삭제하지 못했어요. 다시 시도해 주세요.';
+
+  @override
+  String get extSummaryCompleteBadge => '수집·분석 완료';
+
+  @override
+  String extSummaryReviewBasis(String count) {
+    return '리뷰 $count개 기준';
+  }
+
+  @override
+  String get extSummaryFrequentPhrases => '자주 나온 표현';
+
+  @override
+  String get extSummaryPositiveLabel => '긍정 리뷰';
+
+  @override
+  String get extSummaryNegativeLabel => '아쉬운 점';
+
+  @override
+  String get extSummaryQuotaHint => '하루 질문 한도 1회 사용';
+
+  @override
+  String get extSummaryLayoutComment => '불러온 리뷰의 별점과 자주 나온 표현을 모았어요.';
 }

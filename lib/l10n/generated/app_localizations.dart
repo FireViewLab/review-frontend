@@ -4485,7 +4485,7 @@ abstract class AppLocalizations {
   /// No description provided for @extNavSummary.
   ///
   /// In ko, this message translates to:
-  /// **'AI 요약'**
+  /// **'리뷰 요약'**
   String get extNavSummary;
 
   /// No description provided for @extNavReport.
@@ -7901,6 +7901,48 @@ abstract class AppLocalizations {
   /// In ko, this message translates to:
   /// **'대화를 삭제하지 못했어요. 다시 시도해 주세요.'**
   String get chatHistoryDeleteError;
+
+  /// No description provided for @extSummaryCompleteBadge.
+  ///
+  /// In ko, this message translates to:
+  /// **'수집·분석 완료'**
+  String get extSummaryCompleteBadge;
+
+  /// No description provided for @extSummaryReviewBasis.
+  ///
+  /// In ko, this message translates to:
+  /// **'리뷰 {count}개 기준'**
+  String extSummaryReviewBasis(String count);
+
+  /// No description provided for @extSummaryFrequentPhrases.
+  ///
+  /// In ko, this message translates to:
+  /// **'자주 나온 표현'**
+  String get extSummaryFrequentPhrases;
+
+  /// No description provided for @extSummaryPositiveLabel.
+  ///
+  /// In ko, this message translates to:
+  /// **'긍정 리뷰'**
+  String get extSummaryPositiveLabel;
+
+  /// No description provided for @extSummaryNegativeLabel.
+  ///
+  /// In ko, this message translates to:
+  /// **'아쉬운 점'**
+  String get extSummaryNegativeLabel;
+
+  /// No description provided for @extSummaryQuotaHint.
+  ///
+  /// In ko, this message translates to:
+  /// **'하루 질문 한도 1회 사용'**
+  String get extSummaryQuotaHint;
+
+  /// No description provided for @extSummaryLayoutComment.
+  ///
+  /// In ko, this message translates to:
+  /// **'불러온 리뷰의 별점과 자주 나온 표현을 모았어요.'**
+  String get extSummaryLayoutComment;
 }
 
 class _AppLocalizationsDelegate

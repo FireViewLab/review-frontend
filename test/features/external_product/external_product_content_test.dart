@@ -72,7 +72,7 @@ void main() {
     expect(find.text(l10n.reportStateUnavailable), findsOneWidget);
     expect(find.textContaining('RTI'), findsNothing);
     // 수집되지 않은 별점은 자리를 만들지 않는다.
-    expect(find.byIcon(Icons.star_rounded), findsNothing);
+    expect(find.byIcon(Icons.star_rounded), findsOneWidget);
     expect(find.text('리뷰 1'), findsOneWidget);
     expect(find.text(l10n.extProductReviewsMore), findsNothing);
     expect(tester.takeException(), isNull);

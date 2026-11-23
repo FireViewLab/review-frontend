@@ -2421,7 +2421,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get extNavProgress => 'Progress';
 
   @override
-  String get extNavSummary => 'AI summary';
+  String get extNavSummary => 'Review summary';
 
   @override
   String get extNavReport => 'Trust report';
@@ -4408,4 +4408,28 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get chatHistoryDeleteError =>
       'Could not delete the conversation. Please try again.';
+
+  @override
+  String get extSummaryCompleteBadge => 'Collection and analysis complete';
+
+  @override
+  String extSummaryReviewBasis(String count) {
+    return 'Based on $count reviews';
+  }
+
+  @override
+  String get extSummaryFrequentPhrases => 'Frequently mentioned';
+
+  @override
+  String get extSummaryPositiveLabel => 'Positive review';
+
+  @override
+  String get extSummaryNegativeLabel => 'Room for improvement';
+
+  @override
+  String get extSummaryQuotaHint => 'Uses 1 daily question';
+
+  @override
+  String get extSummaryLayoutComment =>
+      'Ratings and common expressions from the loaded reviews.';
 }
