@@ -4185,4 +4185,7 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String get extReviewSummaryQuestion => 'この商品のレビューを長所と気になる点に分けて短く要約して';
+
+  @override
+  String get extSummaryEvidenceToggle => '分析状況・根拠を見る';
 }

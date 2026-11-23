@@ -2182,5 +2182,6 @@
         "type": "String"
       }
     }
-  }
+  },
+  "extSummaryEvidenceToggle": "분석 상태·근거 보기"
 }

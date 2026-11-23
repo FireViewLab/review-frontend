@@ -4125,4 +4125,7 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get extReviewSummaryQuestion => '请简短总结这款商品评价中的优点与不足';
+
+  @override
+  String get extSummaryEvidenceToggle => '查看分析状态与依据';
 }

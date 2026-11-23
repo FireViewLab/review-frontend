@@ -4188,4 +4188,7 @@ class AppLocalizationsKo extends AppLocalizations {
 
   @override
   String get extReviewSummaryQuestion => '이 상품 리뷰들을 장점과 아쉬운 점으로 짧게 요약해 줘';
+
+  @override
+  String get extSummaryEvidenceToggle => '분석 상태·근거 보기';
 }

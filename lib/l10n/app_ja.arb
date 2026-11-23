@@ -1289,5 +1289,6 @@
   "extReviewPositive": "高評価レビュー:「{excerpt}」",
   "extReviewNegative": "低評価レビュー:「{excerpt}」",
   "extReviewSummaryRequest": "AIでレビューを要約",
-  "extReviewSummaryQuestion": "この商品のレビューを長所と気になる点に分けて短く要約して"
+  "extReviewSummaryQuestion": "この商品のレビューを長所と気になる点に分けて短く要約して",
+  "extSummaryEvidenceToggle": "分析状況・根拠を見る"
 }

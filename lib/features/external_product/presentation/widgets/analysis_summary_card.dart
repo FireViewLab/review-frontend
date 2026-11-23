@@ -13,13 +13,30 @@ import 'package:re_view_front/l10n/generated/app_localizations.dart';
 import 'package:re_view_front/shared/widgets/owl_guide.dart';
 import 'package:re_view_front/shared/presentation/review_evidence_formatter.dart';
 
-class AnalysisSummaryCard extends ConsumerWidget {
+class AnalysisSummaryCard extends ConsumerStatefulWidget {
   const AnalysisSummaryCard({required this.state, super.key});
 
   final ExternalProductState state;
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<AnalysisSummaryCard> createState() =>
+      _AnalysisSummaryCardState();
+}
+
+class _AnalysisSummaryCardState extends ConsumerState<AnalysisSummaryCard> {
+  bool _expanded = false;
+  ExternalProductState get state => widget.state;
+
+  @override
+  void didUpdateWidget(covariant AnalysisSummaryCard oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.state.displayProduct?.ref != state.displayProduct?.ref) {
+      _expanded = false;
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);
     final textTheme = Theme.of(context).textTheme;
     final analysis = state.analysis;
@@ -104,85 +121,107 @@ class AnalysisSummaryCard extends ConsumerWidget {
               ),
             ),
             const SizedBox(height: AppSpacing.md),
-            _SummaryHeading(l10n.extSummaryFallbackTitle),
-            const SizedBox(height: AppSpacing.xs),
-            Text(
-              explanation ??
-                  (data.topReasons.isEmpty
-                      ? l10n.extSummaryNoEvidence
-                      : l10n.extSummaryFallbackIntro),
-              style: textTheme.bodyMedium?.copyWith(height: 1.5),
-            ),
-            const SizedBox(height: AppSpacing.md),
-            _SummaryFact(
-              label: l10n.reportInputCount,
-              value: count(analysis?.reviewCount),
-            ),
-            _SummaryFact(
-              label: l10n.reportSourceCount,
-              value: count(analysis?.sourceReviewCount),
-            ),
-            _SummaryFact(
-              label: l10n.extSummarySampling,
-              value: switch (analysis?.sampled) {
-                true => l10n.reportSampled,
-                false => l10n.extSummaryNotSampled,
-                null => l10n.extSummaryMissingValue,
-              },
-            ),
-            _SummaryFact(
-              label: l10n.reportModel,
-              value: version(display?.modelVersion ?? analysis?.modelVersion),
-            ),
-            _SummaryFact(
-              label: l10n.reportPolicy,
-              value: version(display?.policyVersion ?? analysis?.policyVersion),
-            ),
-            const Divider(height: AppSpacing.xl),
-            _SummaryHeading(l10n.extSummaryLoadedScope(data.loadedCount)),
-            const SizedBox(height: AppSpacing.xs),
-            if (data.distributions.isEmpty)
-              Text(l10n.extSummaryNoLoadedReviews)
-            else
-              for (final distribution in data.distributions)
-                Padding(
-                  padding: const EdgeInsets.only(bottom: AppSpacing.sm),
-                  child: _GradeDistribution(distribution: distribution),
-                ),
-            if (data.topReasons.isNotEmpty) ...[
-              const Divider(height: AppSpacing.xl),
-              _SummaryHeading(l10n.extSummaryEvidenceTitle),
-              const SizedBox(height: AppSpacing.xs),
-              Text(
-                l10n.extSummaryEvidenceScope,
-                style: textTheme.bodySmall?.copyWith(
-                  color: AppColors.textSecondary,
-                  height: 1.5,
-                ),
-              ),
-              for (final reason in data.topReasons)
-                Padding(
-                  padding: const EdgeInsets.only(top: AppSpacing.sm),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+            Semantics(
+              expanded: _expanded,
+              child: InkWell(
+                onTap: () => setState(() => _expanded = !_expanded),
+                borderRadius: AppRadius.large,
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(vertical: AppSpacing.sm),
+                  child: Row(
                     children: [
-                      Text(
-                        ReviewEvidenceFormatter.text(
-                          context,
-                          reason.message,
-                          detailed: true,
-                        ),
-                        style: textTheme.bodyMedium,
+                      Expanded(
+                        child: _SummaryHeading(l10n.extSummaryEvidenceToggle),
                       ),
-                      Text(
-                        l10n.extSummaryReasonCount(reason.count),
-                        style: textTheme.bodySmall?.copyWith(
-                          color: AppColors.textSecondary,
-                        ),
-                      ),
+                      const SizedBox(width: AppSpacing.sm),
+                      Icon(_expanded ? Icons.expand_less : Icons.expand_more),
                     ],
                   ),
                 ),
+              ),
+            ),
+            if (_expanded) ...[
+              const SizedBox(height: AppSpacing.xs),
+              Text(
+                explanation ??
+                    (data.topReasons.isEmpty
+                        ? l10n.extSummaryNoEvidence
+                        : l10n.extSummaryFallbackIntro),
+                style: textTheme.bodyMedium?.copyWith(height: 1.5),
+              ),
+              const SizedBox(height: AppSpacing.md),
+              _SummaryFact(
+                label: l10n.reportInputCount,
+                value: count(analysis?.reviewCount),
+              ),
+              _SummaryFact(
+                label: l10n.reportSourceCount,
+                value: count(analysis?.sourceReviewCount),
+              ),
+              _SummaryFact(
+                label: l10n.extSummarySampling,
+                value: switch (analysis?.sampled) {
+                  true => l10n.reportSampled,
+                  false => l10n.extSummaryNotSampled,
+                  null => l10n.extSummaryMissingValue,
+                },
+              ),
+              _SummaryFact(
+                label: l10n.reportModel,
+                value: version(display?.modelVersion ?? analysis?.modelVersion),
+              ),
+              _SummaryFact(
+                label: l10n.reportPolicy,
+                value: version(
+                  display?.policyVersion ?? analysis?.policyVersion,
+                ),
+              ),
+              const Divider(height: AppSpacing.xl),
+              _SummaryHeading(l10n.extSummaryLoadedScope(data.loadedCount)),
+              const SizedBox(height: AppSpacing.xs),
+              if (data.distributions.isEmpty)
+                Text(l10n.extSummaryNoLoadedReviews)
+              else
+                for (final distribution in data.distributions)
+                  Padding(
+                    padding: const EdgeInsets.only(bottom: AppSpacing.sm),
+                    child: _GradeDistribution(distribution: distribution),
+                  ),
+              if (data.topReasons.isNotEmpty) ...[
+                const Divider(height: AppSpacing.xl),
+                _SummaryHeading(l10n.extSummaryEvidenceTitle),
+                const SizedBox(height: AppSpacing.xs),
+                Text(
+                  l10n.extSummaryEvidenceScope,
+                  style: textTheme.bodySmall?.copyWith(
+                    color: AppColors.textSecondary,
+                    height: 1.5,
+                  ),
+                ),
+                for (final reason in data.topReasons)
+                  Padding(
+                    padding: const EdgeInsets.only(top: AppSpacing.sm),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          ReviewEvidenceFormatter.text(
+                            context,
+                            reason.message,
+                            detailed: true,
+                          ),
+                          style: textTheme.bodyMedium,
+                        ),
+                        Text(
+                          l10n.extSummaryReasonCount(reason.count),
+                          style: textTheme.bodySmall?.copyWith(
+                            color: AppColors.textSecondary,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+              ],
             ],
           ],
         ),

@@ -4360,4 +4360,7 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get extReviewSummaryQuestion =>
       'Briefly summarize the strengths and shortcomings in this product’s reviews.';
+
+  @override
+  String get extSummaryEvidenceToggle => 'View analysis status and evidence';
 }

@@ -7829,6 +7829,12 @@ abstract class AppLocalizations {
   /// In ko, this message translates to:
   /// **'이 상품 리뷰들을 장점과 아쉬운 점으로 짧게 요약해 줘'**
   String get extReviewSummaryQuestion;
+
+  /// No description provided for @extSummaryEvidenceToggle.
+  ///
+  /// In ko, this message translates to:
+  /// **'분석 상태·근거 보기'**
+  String get extSummaryEvidenceToggle;
 }
 
 class _AppLocalizationsDelegate
