@@ -2052,7 +2052,7 @@ class AppLocalizationsZh extends AppLocalizations {
   }
 
   @override
-  String get analysisPolicyIndex => '政策指数';
+  String get analysisPolicyIndex => 'RTI';
 
   @override
   String get analysisNotCalculable => '无法计算';
@@ -2070,13 +2070,13 @@ class AppLocalizationsZh extends AppLocalizations {
   String get analysisNetworkScore => '网络分数';
 
   @override
-  String get analysisScore => '分析分数';
+  String get analysisScore => 'RTI';
 
   @override
   String get analysisSeparateContracts => '不同契约的分数分开显示。';
 
   @override
-  String get analysisPolicyAverage => '商品平均政策指数';
+  String get analysisPolicyAverage => '商品平均RTI';
 
   @override
   String get owlGuideName => '评论猫头鹰';
@@ -2204,10 +2204,10 @@ class AppLocalizationsZh extends AppLocalizations {
   }
 
   @override
-  String get extSummaryV2Grades => '政策指数等级 (v2)';
+  String get extSummaryV2Grades => 'RTI等级';
 
   @override
-  String get extSummaryLegacyGrades => '可信度等级 (v0.5)';
+  String get extSummaryLegacyGrades => 'RTI等级';
 
   @override
   String get extSummaryUnknownVersion => '分析版本未知';

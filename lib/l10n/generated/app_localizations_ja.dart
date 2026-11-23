@@ -2067,7 +2067,7 @@ class AppLocalizationsJa extends AppLocalizations {
   }
 
   @override
-  String get analysisPolicyIndex => 'ポリシー指数';
+  String get analysisPolicyIndex => 'RTI';
 
   @override
   String get analysisNotCalculable => '算出不可';
@@ -2085,13 +2085,13 @@ class AppLocalizationsJa extends AppLocalizations {
   String get analysisNetworkScore => 'ネットワークスコア';
 
   @override
-  String get analysisScore => '分析スコア';
+  String get analysisScore => 'RTI';
 
   @override
   String get analysisSeparateContracts => '異なる契約のスコアは分けて表示します。';
 
   @override
-  String get analysisPolicyAverage => '商品の平均ポリシー指数';
+  String get analysisPolicyAverage => '商品の平均RTI';
 
   @override
   String get owlGuideName => 'レビューフクロウ';
@@ -2220,10 +2220,10 @@ class AppLocalizationsJa extends AppLocalizations {
   }
 
   @override
-  String get extSummaryV2Grades => 'ポリシー指数に基づく等級 (v2)';
+  String get extSummaryV2Grades => 'RTIに基づく等級';
 
   @override
-  String get extSummaryLegacyGrades => '信頼性の等級 (v0.5)';
+  String get extSummaryLegacyGrades => 'RTIに基づく等級';
 
   @override
   String get extSummaryUnknownVersion => '分析バージョン不明';

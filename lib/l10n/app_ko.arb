@@ -1104,15 +1104,15 @@
       }
     }
   },
-  "analysisPolicyIndex": "정책 지수",
+  "analysisPolicyIndex": "RTI",
   "analysisNotCalculable": "계산 불가",
   "analysisPolicyExplanation": "정책 기준에 따른 상대 지수입니다.",
   "analysisTextScore": "텍스트 점수",
   "analysisBehaviorScore": "행동 점수",
   "analysisNetworkScore": "네트워크 점수",
-  "analysisScore": "분석 점수",
+  "analysisScore": "RTI",
   "analysisSeparateContracts": "서로 다른 계약의 점수는 별도로 표시합니다.",
-  "analysisPolicyAverage": "상품 평균 정책 지수",
+  "analysisPolicyAverage": "상품 평균 RTI",
   "owlGuideName": "리뷰엉이",
   "@owlGuideName": {
     "description": "상품 안내 캐릭터 이름"
@@ -1283,11 +1283,11 @@
       }
     }
   },
-  "extSummaryV2Grades": "정책 지수 기준 등급 (v2)",
+  "extSummaryV2Grades": "RTI 기준 등급",
   "@extSummaryV2Grades": {
     "description": "Product detail summary and loaded-review evidence: V2Grades"
   },
-  "extSummaryLegacyGrades": "신뢰도 등급 (v0.5)",
+  "extSummaryLegacyGrades": "RTI 기준 등급",
   "@extSummaryLegacyGrades": {
     "description": "Product detail summary and loaded-review evidence: LegacyGrades"
   },
