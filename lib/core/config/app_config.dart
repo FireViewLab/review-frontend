@@ -139,6 +139,9 @@ class AppConfig {
   final String apiBaseUrl;
   final String homeDashboardPath;
   final String searchPath;
+
+  /// 카테고리·페이지 단위 상품 목록(review-backend#248).
+  String get catalogPath => '$searchPath/catalog';
   final String productPath;
   final String analysisPath;
   final String analysisHealthPath;

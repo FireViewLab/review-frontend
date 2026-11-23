@@ -71,7 +71,8 @@ final homeCatalogProvider = FutureProvider<List<SearchResultProduct>>((
   ref,
 ) async {
   final result = await ref.watch(searchProductsUseCaseProvider)(
-    const SearchParams(query: ''),
+    // 카탈로그 API는 리뷰가 있는 상품을 페이지 단위로 준다(review-backend#248).
+    const SearchParams(query: '', catalog: true, size: 40),
   );
   return result.when(success: (v) => v.products, failure: (f) => throw f);
 });

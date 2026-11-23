@@ -16,7 +16,13 @@ class SearchRepositoryImpl implements SearchRepository {
   @override
   Future<Result<SearchResponse>> searchProducts(SearchParams params) async {
     try {
-      final dto = await _remoteDataSource.searchProducts(query: params.query);
+      final dto = params.catalog
+          ? await _remoteDataSource.catalogProducts(
+              category: params.category,
+              page: params.page,
+              size: params.size,
+            )
+          : await _remoteDataSource.searchProducts(query: params.query);
       return Success(dto.toEntity());
     } on ApiResponseException catch (error) {
       return FailureResult(failureFromApiResponseException(error));

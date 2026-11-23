@@ -5,14 +5,20 @@ import 'package:re_view_front/features/search/data/dtos/search_response_dto.dart
 
 abstract interface class SearchRemoteDataSource {
   Future<SearchResponseDto> searchProducts({required String query});
+
+  Future<SearchResponseDto> catalogProducts({
+    String? category,
+    int page = 0,
+    int size = 40,
+  });
 }
 
 class SearchRemoteDataSourceImpl implements SearchRemoteDataSource {
   const SearchRemoteDataSourceImpl({
     required ApiClient apiClient,
     required AppConfig config,
-  })  : _apiClient = apiClient,
-        _config = config;
+  }) : _apiClient = apiClient,
+       _config = config;
 
   final ApiClient _apiClient;
   final AppConfig _config;
@@ -48,6 +54,34 @@ class SearchRemoteDataSourceImpl implements SearchRemoteDataSource {
       }
     }
 
+    return const SearchResponseDto(products: [], totalCount: null);
+  }
+
+  @override
+  Future<SearchResponseDto> catalogProducts({
+    String? category,
+    int page = 0,
+    int size = 40,
+  }) async {
+    final response = await _apiClient.get(
+      _config.catalogPath,
+      queryParameters: <String, dynamic>{
+        if (category != null && category.isNotEmpty) 'category': category,
+        'page': page,
+        'size': size,
+      },
+    );
+    final data = response.data;
+    if (data is Map<String, dynamic>) {
+      final body = ApiResponse<Object?>.fromJson(data).requireSuccess();
+      if (body is Map<String, dynamic> && body['items'] is List<dynamic>) {
+        return SearchResponseDto.fromListWithTotal(
+          body['items'] as List<dynamic>,
+          (body['totalElements'] as num?)?.toInt(),
+        );
+      }
+      if (body is List<dynamic>) return SearchResponseDto.fromList(body);
+    }
     return const SearchResponseDto(products: [], totalCount: null);
   }
 }

@@ -309,7 +309,7 @@ void main() {
       addTearDown(() => client.dio.close());
       final products = await container.read(homeCatalogProvider.future);
       expect(products.single.detailPath, '/product/kurly/1001319595');
-      expect(paths, ['/api/products']);
+      expect(paths, ['/api/products/catalog']);
     },
   );
 
