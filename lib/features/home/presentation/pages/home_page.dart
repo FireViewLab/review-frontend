@@ -232,8 +232,16 @@ class _HomePageState extends ConsumerState<HomePage> {
                               priceLabel: _formatPrice(p.price),
                               ratingLabel:
                                   p.avgRating?.toStringAsFixed(1) ?? '',
-                              reviewCountLabel: p.reviewCount?.toString() ?? '',
-                              rtiLabel: p.analysisDisplay.badgeText(context),
+                              reviewCountLabel: (p.reviewCount ?? 0) > 0
+                                  ? p.reviewCount.toString()
+                                  : '',
+                              // 분석한 리뷰가 없으면 점수 배지를 붙이지 않는다.
+                              rtiLabel:
+                                  (p.summary?.catalogAnalysis?.reviewCount ??
+                                          0) >
+                                      0
+                                  ? p.analysisDisplay.badgeText(context)
+                                  : '',
                               attentionReviewLabel: p.analysisDisplay
                                   .attentionReviewsLabel(context),
                               analysisDescription: p.analysisDisplay
