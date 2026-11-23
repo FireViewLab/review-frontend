@@ -4145,4 +4145,10 @@ class AppLocalizationsJa extends AppLocalizations {
   String priceWatchDropCounts(int total, int known, int drops) {
     return 'お気に入り$total件のうち、値下げ情報がある$known件中$drops件が値下げと表示されています。基準価格と時点は提供されていません。';
   }
+
+  @override
+  String get extProgressPreviousComplete => '収集・分析完了 · 以前に収集した情報';
+
+  @override
+  String get extProgressPreviousInfo => '以前に収集した情報';
 }

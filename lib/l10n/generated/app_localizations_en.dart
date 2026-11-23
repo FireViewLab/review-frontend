@@ -4318,4 +4318,11 @@ class AppLocalizationsEn extends AppLocalizations {
   String priceWatchDropCounts(int total, int known, int drops) {
     return 'Of $total wishlisted products, $known have price-drop data and $drops are marked as lower. Reference prices and dates are unavailable.';
   }
+
+  @override
+  String get extProgressPreviousComplete =>
+      'Collection and analysis complete · Previously collected information';
+
+  @override
+  String get extProgressPreviousInfo => 'Previously collected information';
 }

@@ -7769,6 +7769,18 @@ abstract class AppLocalizations {
   /// In ko, this message translates to:
   /// **'찜 {total}개 중 가격하락 정보가 있는 {known}개에서 {drops}개가 하락으로 표시됐어요. 기준 가격·시점은 제공되지 않았어요.'**
   String priceWatchDropCounts(int total, int known, int drops);
+
+  /// No description provided for @extProgressPreviousComplete.
+  ///
+  /// In ko, this message translates to:
+  /// **'수집·분석 완료 · 이전 수집 정보'**
+  String get extProgressPreviousComplete;
+
+  /// No description provided for @extProgressPreviousInfo.
+  ///
+  /// In ko, this message translates to:
+  /// **'이전에 수집한 정보'**
+  String get extProgressPreviousInfo;
 }
 
 class _AppLocalizationsDelegate

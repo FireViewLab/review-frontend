@@ -59,7 +59,12 @@ class ExternalProductState {
   bool get isCollecting =>
       !_collectionStopped && (collection.isActive || (job?.isActive ?? false));
   bool get isAnalyzing => analysisState.isActive;
-  bool get isStaleRefreshing => isStale && (job?.isActive ?? false);
+  bool get isRefreshRunning =>
+      job?.status == CollectionJobStatus.running ||
+      job?.productState == CollectionJobStatus.running ||
+      job?.reviewState == CollectionJobStatus.running;
+  bool get hasCollectedContent => product != null && reviews.isNotEmpty;
+  bool get isStaleRefreshing => isStale && isRefreshRunning;
   bool get isTerminal =>
       (collection.isTerminal || _collectionStopped) &&
       (job == null || job!.isTerminal) &&

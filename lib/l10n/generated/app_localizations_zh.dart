@@ -4085,4 +4085,10 @@ class AppLocalizationsZh extends AppLocalizations {
   String priceWatchDropCounts(int total, int known, int drops) {
     return '$total 件收藏商品中有 $known 件提供降价信息，其中 $drops 件标记为降价。未提供基准价格及时间。';
   }
+
+  @override
+  String get extProgressPreviousComplete => '采集与分析完成 · 先前采集的信息';
+
+  @override
+  String get extProgressPreviousInfo => '先前采集的信息';
 }

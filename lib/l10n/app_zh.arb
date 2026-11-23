@@ -1279,5 +1279,7 @@
   "priceWatchSubscriptionUnavailable": "申请价格通知 · 暂不支持",
   "priceWatchDropIndicator": "服务器降价标记 · 无降价金额或比例信息",
   "priceWatchLoadFailed": "未能查询降价标记。{message}",
-  "priceWatchDropCounts": "{total} 件收藏商品中有 {known} 件提供降价信息，其中 {drops} 件标记为降价。未提供基准价格及时间。"
+  "priceWatchDropCounts": "{total} 件收藏商品中有 {known} 件提供降价信息，其中 {drops} 件标记为降价。未提供基准价格及时间。",
+  "extProgressPreviousComplete": "采集与分析完成 · 先前采集的信息",
+  "extProgressPreviousInfo": "先前采集的信息"
 }
