@@ -14,71 +14,90 @@ class ReviewSummaryContent extends StatelessWidget {
     final l = AppLocalizations.of(context);
     final theme = Theme.of(context).textTheme;
     final numbers = NumberFormat.decimalPattern(l.localeName);
-    final total = data.distribution.fold<int>(0, (a, b) => a + b);
-    final ratings = Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Row(
-          children: [
-            const Icon(Icons.star_rounded, color: AppColors.warning, size: 28),
-            const SizedBox(width: AppSpacing.xs),
-            Flexible(
-              child: Text(
-                data.average == null
-                    ? l.extSummaryMissingValue
-                    : NumberFormat('0.0', l.localeName).format(data.average),
-                style: theme.headlineLarge?.copyWith(
-                  fontWeight: FontWeight.w800,
-                  color: AppColors.textPrimary,
-                ),
-              ),
-            ),
-          ],
-        ),
-        const SizedBox(height: AppSpacing.xs),
-        Text(
-          l.extSummaryReviewBasis(numbers.format(data.loadedCount)),
-          style: theme.bodySmall,
-        ),
-        const SizedBox(height: AppSpacing.md),
-        for (var star = 5; star >= 1; star--)
-          Padding(
-            padding: const EdgeInsets.only(bottom: AppSpacing.sm),
-            child: Semantics(
-              label: l.extReviewStarCount(star, data.distribution[star - 1]),
-              excludeSemantics: true,
-              child: Row(
+    final hasKeywords = data.keywords.length >= 2;
+    final hasPhrases =
+        hasKeywords || data.positive != null || data.negative != null;
+    final count = Text(
+      l.extSummaryReviewBasis(numbers.format(data.loadedCount)),
+      style: data.ratedCount == 0 ? theme.titleLarge : theme.bodySmall,
+    );
+    final average = data.average;
+    final ratings = average == null
+        ? count
+        : Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
                 children: [
-                  Text('$star ★', style: theme.labelSmall),
-                  const SizedBox(width: AppSpacing.sm),
-                  Expanded(
-                    child: ClipRRect(
-                      borderRadius: AppRadius.small,
-                      child: LinearProgressIndicator(
-                        value: total == 0
-                            ? 0
-                            : data.distribution[star - 1] / total,
-                        minHeight: 8,
-                        color: AppColors.warning,
-                        backgroundColor: AppColors.border,
+                  const Icon(
+                    Icons.star_rounded,
+                    color: AppColors.warning,
+                    size: 28,
+                  ),
+                  const SizedBox(width: AppSpacing.xs),
+                  Flexible(
+                    child: Text(
+                      NumberFormat('0.0', l.localeName).format(average),
+                      style: theme.headlineLarge?.copyWith(
+                        fontWeight: FontWeight.w800,
+                        color: AppColors.textPrimary,
                       ),
                     ),
                   ),
-                  const SizedBox(width: AppSpacing.sm),
-                  Text(
-                    numbers.format(data.distribution[star - 1]),
-                    style: theme.labelSmall,
-                  ),
                 ],
               ),
-            ),
-          ),
-      ],
-    );
+              const SizedBox(height: AppSpacing.xs),
+              count,
+              if (data.ratedCount < data.loadedCount)
+                Text(
+                  l.extSummaryRatedReviewBasis(numbers.format(data.ratedCount)),
+                  style: theme.bodySmall?.copyWith(
+                    color: AppColors.textSecondary,
+                  ),
+                ),
+              const SizedBox(height: AppSpacing.md),
+              for (var star = 5; star >= 1; star--)
+                Padding(
+                  padding: EdgeInsets.only(
+                    bottom: star == 1 ? 0 : AppSpacing.sm,
+                  ),
+                  child: Semantics(
+                    label: l.extReviewStarCount(
+                      star,
+                      data.distribution[star - 1],
+                    ),
+                    excludeSemantics: true,
+                    child: Row(
+                      children: [
+                        Text('$star ★', style: theme.labelSmall),
+                        const SizedBox(width: AppSpacing.sm),
+                        Expanded(
+                          child: ClipRRect(
+                            borderRadius: AppRadius.small,
+                            child: LinearProgressIndicator(
+                              value:
+                                  data.distribution[star - 1] / data.ratedCount,
+                              minHeight: 8,
+                              color: AppColors.warning,
+                              backgroundColor: AppColors.border,
+                            ),
+                          ),
+                        ),
+                        const SizedBox(width: AppSpacing.sm),
+                        Text(
+                          numbers.format(data.distribution[star - 1]),
+                          style: theme.labelSmall,
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+            ],
+          );
     final phrases = Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        if (data.keywords.isNotEmpty) ...[
+        if (hasKeywords) ...[
           Text(l.extSummaryFrequentPhrases, style: theme.titleSmall),
           const SizedBox(height: AppSpacing.sm),
           Wrap(
@@ -104,7 +123,8 @@ class ReviewSummaryContent extends StatelessWidget {
                 ),
             ],
           ),
-          const SizedBox(height: AppSpacing.md),
+          if (data.positive != null || data.negative != null)
+            const SizedBox(height: AppSpacing.md),
         ],
         if (data.positive != null)
           _ReviewQuote(
@@ -125,7 +145,25 @@ class ReviewSummaryContent extends StatelessWidget {
     return LayoutBuilder(
       builder: (context, constraints) {
         final scale = MediaQuery.textScalerOf(context).scale(14) / 14;
-        if (constraints.maxWidth >= 680 * scale) {
+        if (!hasPhrases) {
+          return Align(
+            alignment: AlignmentDirectional.centerStart,
+            child: ConstrainedBox(
+              constraints: const BoxConstraints(maxWidth: 360),
+              child: ratings,
+            ),
+          );
+        }
+        if (average == null && constraints.maxWidth >= 560 * scale) {
+          return Row(
+            children: [
+              count,
+              const SizedBox(width: AppSpacing.xl),
+              Expanded(child: phrases),
+            ],
+          );
+        }
+        if (average != null && constraints.maxWidth >= 680 * scale) {
           return Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -139,7 +177,7 @@ class ReviewSummaryContent extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             ratings,
-            const SizedBox(height: AppSpacing.lg),
+            const SizedBox(height: AppSpacing.md),
             phrases,
           ],
         );

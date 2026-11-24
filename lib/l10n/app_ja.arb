@@ -717,7 +717,7 @@
   "extSummaryFact": "{label}：{value}",
   "extTrustDetailSource": "詳細分析の結果",
   "extTrustCatalogSource": "商品一覧で確認した平均",
-  "extTrustNoAverage": "この画面では商品の平均点を取得できません。",
+  "extTrustNoAverage": "表示できるレビューの信頼度スコアや等級がありません。",
   "extTrustBefore": "まだ分析前のため、商品スコアはありません。",
   "extTrustRunning": "分析中のため、商品スコアは表示されません。",
   "extTrustGradeMissing": "等級情報なし",
@@ -1304,10 +1304,13 @@
   "chatHistoryCancel": "キャンセル",
   "chatHistoryDeleteError": "会話を削除できませんでした。もう一度お試しください。",
   "extSummaryCompleteBadge": "収集・分析完了",
-  "extSummaryReviewBasis": "レビュー{count}件に基づく",
+  "extSummaryReviewBasis": "レビュー{count}件",
   "extSummaryFrequentPhrases": "よく出る表現",
   "extSummaryPositiveLabel": "高評価レビュー",
   "extSummaryNegativeLabel": "気になる点",
   "extSummaryQuotaHint": "1日の質問枠を1回使用",
-  "extSummaryLayoutComment": "読み込み済みレビューの評価とよく出る表現です。"
+  "extSummaryLayoutComment": "読み込み済みレビューの評価とよく出る表現です。",
+  "extSummaryRatedReviewBasis": "評価のあるレビュー{count}件に基づく",
+  "extTrustLoadedSource": "読み込んだレビュー{count}件に基づく",
+  "extTrustLoadedAverage": "平均RTI"
 }

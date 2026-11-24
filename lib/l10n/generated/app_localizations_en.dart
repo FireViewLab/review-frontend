@@ -2367,7 +2367,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get extTrustNoAverage =>
-      'A product average is not available on this screen.';
+      'No review trust scores or grades are available yet.';
 
   @override
   String get extTrustBefore => 'There is no product score before analysis.';
@@ -4414,7 +4414,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String extSummaryReviewBasis(String count) {
-    return 'Based on $count reviews';
+    return '$count reviews';
   }
 
   @override
@@ -4432,4 +4432,17 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get extSummaryLayoutComment =>
       'Ratings and common expressions from the loaded reviews.';
+
+  @override
+  String extSummaryRatedReviewBasis(String count) {
+    return 'Based on $count reviews with ratings';
+  }
+
+  @override
+  String extTrustLoadedSource(String count) {
+    return 'Based on $count loaded reviews';
+  }
+
+  @override
+  String get extTrustLoadedAverage => 'Average RTI';
 }
