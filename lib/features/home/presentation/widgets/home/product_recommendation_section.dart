@@ -35,7 +35,7 @@ class ProductRecommendationSection extends ConsumerWidget {
               final cardWidth =
                   (constraints.maxWidth - (columns - 1) * AppSpacing.md) /
                   columns;
-              const imageAspectRatio = 16.0 / 9.0;
+              const imageAspectRatio = 4.0 / 3.0;
               final imageHeight = cardWidth / imageAspectRatio;
               final textAreaHeight =
                   (compact ? 196.0 : 212.0) +
@@ -46,22 +46,42 @@ class ProductRecommendationSection extends ConsumerWidget {
 
               if (MediaQuery.sizeOf(context).width < 1024 ||
                   products.any((p) => p.attentionReviewLabel != null)) {
-                return Wrap(
-                  spacing: AppSpacing.md,
-                  runSpacing: AppSpacing.md,
+                // 같은 줄 카드만 내용 높이에 맞춰 높이를 맞춘다. 고정 최소 높이를 두면
+                // 짧은 카드 아래에 빈 여백이 길게 남는다.
+                return Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    for (final product in products)
-                      SizedBox(
-                        width: cardWidth,
-                        child: ConstrainedBox(
-                          constraints: BoxConstraints(
-                            minHeight: imageHeight + textAreaHeight,
-                          ),
-                          child: ProductCard(
-                            product: product,
-                            onTap: onProductTap == null
-                                ? null
-                                : () => onProductTap?.call(product),
+                    for (
+                      var start = 0;
+                      start < products.length;
+                      start += columns
+                    )
+                      Padding(
+                        padding: EdgeInsets.only(
+                          top: start == 0 ? 0 : AppSpacing.md,
+                        ),
+                        child: IntrinsicHeight(
+                          child: Row(
+                            crossAxisAlignment: CrossAxisAlignment.stretch,
+                            children: [
+                              for (
+                                var i = start;
+                                i < start + columns && i < products.length;
+                                i++
+                              ) ...[
+                                if (i > start)
+                                  const SizedBox(width: AppSpacing.md),
+                                SizedBox(
+                                  width: cardWidth,
+                                  child: ProductCard(
+                                    product: products[i],
+                                    onTap: onProductTap == null
+                                        ? null
+                                        : () => onProductTap?.call(products[i]),
+                                  ),
+                                ),
+                              ],
+                            ],
                           ),
                         ),
                       ),

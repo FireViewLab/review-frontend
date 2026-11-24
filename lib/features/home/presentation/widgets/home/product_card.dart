@@ -59,7 +59,7 @@ class ProductCard extends ConsumerWidget {
                 // 이미지 위에는 아무것도 겹쳐 그리지 않는다. 외부 이미지는 DOM 요소라
                 // 겹친 라벨·버튼이 이미지 아래에 깔릴 수 있다.
                 AspectRatio(
-                  aspectRatio: 16 / 9,
+                  aspectRatio: 4 / 3,
                   child: AppNetworkImage(
                     url: product.imageUrl,
                     thumbnailWidth: 480,
