@@ -21,8 +21,20 @@ abstract final class AnalysisContract {
         : null;
   }
 
+  /// 서버 계약 버전을 화면 형식으로 정규화한다. v2 이후(v3, v4 …)는 모두
+  /// 정책 점수 형식이고, v0.x만 이전 RTI 형식이다.
   static String? version(Map<String, dynamic> json) =>
-      text(read(json, AnalysisKeys.version));
+      normalizeVersion(text(read(json, AnalysisKeys.version)));
+
+  static String? normalizeVersion(String? raw) {
+    final value = raw?.trim().toLowerCase();
+    if (value == null || value.isEmpty) return null;
+    final major = int.tryParse(
+      RegExp(r'^v?(\d+)').firstMatch(value)?.group(1) ?? '',
+    );
+    if (major == null) return value;
+    return major >= 2 ? 'v2' : 'v0.5';
+  }
 
   static List<String> _reasons(Object? value) => [
     if (value is List)
@@ -56,7 +68,7 @@ abstract final class AnalysisContract {
   }) {
     final contract =
         version(json) ??
-        inheritedVersion ??
+        normalizeVersion(inheritedVersion) ??
         ([
               ...AnalysisKeys.policyIndex,
               ...AnalysisKeys.averagePolicyIndex,
