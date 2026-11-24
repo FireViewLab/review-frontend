@@ -51,16 +51,23 @@ class AnalysisProgressSteps extends StatelessWidget {
       children: [
         Semantics(
           liveRegion: true,
-          child: OwlGuide(
-            message: message,
-            tone: tone,
-            action: progress.notice == AnalysisProgressNotice.delayed
-                ? TextButton.icon(
-                    onPressed: onRetry,
-                    icon: const Icon(Icons.refresh_rounded),
-                    label: Text(l10n.extProgressRetry),
-                  )
-                : null,
+          child: Align(
+            alignment: AlignmentDirectional.centerStart,
+            child: ConstrainedBox(
+              constraints: const BoxConstraints(maxWidth: 600),
+              child: OwlGuide(
+                avatarSize: 40,
+                message: message,
+                tone: tone,
+                action: progress.notice == AnalysisProgressNotice.delayed
+                    ? TextButton.icon(
+                        onPressed: onRetry,
+                        icon: const Icon(Icons.refresh_rounded),
+                        label: Text(l10n.extProgressRetry),
+                      )
+                    : null,
+              ),
+            ),
           ),
         ),
         if (progress.showSteps) ...[
