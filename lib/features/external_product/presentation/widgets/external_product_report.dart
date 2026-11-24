@@ -23,8 +23,8 @@ class ExternalProductReport extends StatelessWidget {
     final analysis = state.analysis;
     final versions = ProductAnalysisVersions.fromState(state);
     final data = ProductTrustReportData.fromState(state);
-    final reportStatus = data.isNotCalculable
-        ? ProductReportStatus.running
+    final reportStatus = data.hasResults
+        ? ProductReportStatus.ready
         : state.phase == ExternalProductPhase.collecting
         ? ProductReportStatus.collecting
         : switch (state.analysisState) {
@@ -40,19 +40,27 @@ class ExternalProductReport extends StatelessWidget {
                   : ProductReportStatus.unavailable,
           };
     final message = switch (reportStatus) {
+      ProductReportStatus.ready
+          when data.source == ProductScoreSource.loadedReviews =>
+        l.analysisPolicyExplanation,
       ProductReportStatus.collecting => l.reportCollecting,
-      ProductReportStatus.running =>
-        data.isNotCalculable ? l.analysisPending : l.extTrustRunning,
+      ProductReportStatus.running => l.extTrustRunning,
       ProductReportStatus.failed => l.reportFailed,
       ProductReportStatus.disabled => l.reportDisabled,
       ProductReportStatus.stale => l.reportStale,
       ProductReportStatus.pending => l.extTrustBefore,
-      ProductReportStatus.ready when data.score == null => l.extTrustNoAverage,
+      ProductReportStatus.ready when !data.hasResults => l.extTrustNoAverage,
       ProductReportStatus.ready => l.reportDone,
       ProductReportStatus.unavailable => l.reportUnavailable,
     };
+    final loadedCount = data.loadedReviewCount;
+    final loadedSource = loadedCount == null
+        ? null
+        : l.extTrustLoadedSource(
+            NumberFormat.decimalPattern(l.localeName).format(loadedCount),
+          );
     final done = state.analysisState == ExternalAnalysisStatus.done;
-    final reviews = done
+    final reviews = done || data.hasResults
         ? state.reviews.where((r) => r.analysisDisplay.hasResult).toList()
         : const <ExternalReview>[];
     final hasDetails =
@@ -74,6 +82,7 @@ class ExternalProductReport extends StatelessWidget {
         data: data,
         status: reportStatus,
         missingReason: message,
+        loadedSource: loadedSource,
       ),
       content: hasDetails ? _ScoreDetails(data: data) : null,
       details: Column(
@@ -90,6 +99,10 @@ class ExternalProductReport extends StatelessWidget {
                     context,
                   ).textTheme.bodyMedium?.copyWith(height: 1.6),
                 ),
+                if (loadedSource != null) ...[
+                  const SizedBox(height: AppSpacing.sm),
+                  Text(loadedSource),
+                ],
                 if (catalog != null) ...[
                   const SizedBox(height: AppSpacing.sm),
                   Text(l.reportCatalogSource),

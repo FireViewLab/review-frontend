@@ -108,6 +108,7 @@ abstract final class AnalysisContract {
           : null,
       modelVersion: text(read(json, AnalysisKeys.modelVersion)),
       policyVersion: text(read(json, AnalysisKeys.policyVersion)),
+      reportedLevelV4: v2 && !catalog ? rawLevel : null,
       levelCounts: v2 && catalog
           ? _levelCounts(read(json, AnalysisKeys.levelCounts))
           : null,

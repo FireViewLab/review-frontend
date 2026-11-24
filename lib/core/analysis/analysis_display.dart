@@ -14,6 +14,7 @@ class AnalysisDisplay {
     this.modelVersion,
     this.policyVersion,
     this.levelCounts,
+    this.reportedLevelV4,
   });
 
   final String contractVersion;
@@ -30,6 +31,9 @@ class AnalysisDisplay {
   final String? modelVersion;
   final String? policyVersion;
   final Map<String, int>? levelCounts;
+
+  // A review may report a level even when its index is unavailable.
+  final String? reportedLevelV4;
 
   bool get isAwaitingScore => isV2 && score == null;
   bool get needsAttentionExplanation =>
