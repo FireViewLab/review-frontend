@@ -108,6 +108,7 @@ class ReviewContentSummary {
               review.rating! <= 5,
         )
         .toList();
+    ratedCount = ratings.length;
     average = ratings.isEmpty
         ? null
         : ratings.fold<double>(0, (sum, review) => sum + review.rating!) /
@@ -144,15 +145,17 @@ class ReviewContentSummary {
         frequencies.update(token, (count) => count + 1, ifAbsent: () => 1);
       }
     }
-    final ranked = frequencies.entries.toList()
-      ..sort((a, b) {
-        final frequency = b.value.compareTo(a.value);
-        return frequency != 0 ? frequency : a.key.compareTo(b.key);
-      });
+    final ranked =
+        frequencies.entries.where((entry) => entry.value >= 2).toList()
+          ..sort((a, b) {
+            final frequency = b.value.compareTo(a.value);
+            return frequency != 0 ? frequency : a.key.compareTo(b.key);
+          });
     keywords = List.unmodifiable(ranked.take(5).map((entry) => entry.key));
   }
 
   late final int loadedCount;
+  late final int ratedCount;
   late final double? average;
   late final List<int> distribution;
   late final List<String> keywords;
@@ -170,55 +173,93 @@ class ReviewContentSummary {
         : '${String.fromCharCodes(characters.take(79))}…';
   }
 
+  static const _stopwords = {
+    '정말',
+    '너무',
+    '아주',
+    '진짜',
+    '그냥',
+    '조금',
+    '많이',
+    '다시',
+    '이번',
+    '다음',
+    '다른',
+    '저는',
+    '제가',
+    '이거',
+    '이것',
+    '저것',
+    '상품',
+    '제품',
+    '구매',
+    '사용',
+    '배송',
+    '주문',
+    '포장',
+    '재구매',
+    '리뷰',
+    '후기',
+    '때문',
+    '정도',
+    '항상',
+    '요즘',
+    '계속',
+    '역시',
+    '아직',
+    '처음',
+    '원래',
+    '평소',
+    '하나',
+    '완전',
+    '살짝',
+    '생각',
+    '느낌',
+    '이렇게',
+    '그렇게',
+    '그리고',
+    '그런데',
+    '그래서',
+    '하지만',
+    '일단',
+    '같은',
+    '있는',
+    '없는',
+    '좋은',
+    '좋고',
+    '먹고',
+    '먹기',
+    '먹는',
+    '먹었',
+    '합니다',
+    '입니다',
+    '했어요',
+    '같아요',
+    'the',
+    'and',
+    'for',
+    'this',
+    'with',
+    'very',
+  };
+  static final _word = RegExp(r'[가-힣a-z]+');
+  static final _conjugation = RegExp(
+    r'(습니다|했어요|아요|어요|해요|네요|는데|지만|했다|한다|하다|다)$',
+  );
+  static final _suffix = RegExp(
+    r'(?<=[가-힣]{2})(이었어요|이에요|이라서|이라도|이라|이고|인데|에서는|으로는|에서도|'
+    r'에게는|으로|에서|에게|까지|부터|처럼|보다|이랑|랑|은|는|이|가|을|를|에|의|도|만|와|과|로)$',
+  );
+
   static Iterable<String> _tokens(String text) sync* {
-    const stopwords = {
-      '정말',
-      '너무',
-      '아주',
-      '진짜',
-      '그냥',
-      '조금',
-      '많이',
-      '다시',
-      '이번',
-      '저는',
-      '제가',
-      '이거',
-      '이것',
-      '저것',
-      '상품',
-      '제품',
-      '구매',
-      '사용',
-      '리뷰',
-      '후기',
-      '때문',
-      '정도',
-      '같아요',
-      '좋아요',
-      '있어요',
-      '없어요',
-      '합니다',
-      '입니다',
-      'the',
-      'and',
-      'for',
-      'this',
-      'with',
-      'very',
-    };
-    final particles = RegExp(
-      r'(에서는|으로는|에서도|에게는|이라도|으로|에서|에게|까지|부터|처럼|보다|하고|이랑|랑|은|는|이|가|을|를|에|의|도|만|와|과)$',
-    );
-    for (final match in RegExp(
-      r'[가-힣a-zA-Z]+',
-    ).allMatches(text.toLowerCase())) {
-      final token = match.group(0)!.replaceFirst(particles, '');
-      if (token.runes.length < 2 ||
-          stopwords.contains(token) ||
-          RegExp(
-            r'(어요|아요|해요|네요|지만|니다|해서|하고|좋고|했음|했어요|습니다|같은|있는|없는)$',
-          ).hasMatch(token)) {
+    for (final match in _word.allMatches(text.toLowerCase())) {
+      final word = match.group(0)!;
+      if (_stopwords.contains(word)) continue;
+      // Keep noun forms from the copula (유기농인데 → 유기농).
+      final token = word.replaceFirst(_suffix, '');
+      if (token.length < 2 ||
+          _stopwords.contains(token) ||
+          _conjugation.hasMatch(token)) {
         continue;
       }
       yield token;

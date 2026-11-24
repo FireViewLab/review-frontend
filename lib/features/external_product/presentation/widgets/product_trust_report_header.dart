@@ -5,7 +5,6 @@ import 'package:re_view_front/app/theme/app_spacing.dart';
 import 'package:re_view_front/features/external_product/presentation/view_models/product_trust_report_data.dart';
 import 'package:re_view_front/l10n/generated/app_localizations.dart';
 import 'package:re_view_front/shared/presentation/analysis_formatters.dart';
-import 'package:re_view_front/shared/presentation/review_owl_assets.dart';
 import 'package:re_view_front/shared/widgets/product_report_card.dart';
 import 'package:re_view_front/shared/widgets/rti_score_ring.dart';
 
@@ -14,22 +13,35 @@ class ProductTrustReportHeader extends StatelessWidget {
     required this.data,
     required this.status,
     required this.missingReason,
+    this.loadedSource,
     super.key,
   });
   final ProductTrustReportData data;
   final ProductReportStatus status;
   final String missingReason;
+  final String? loadedSource;
 
   @override
   Widget build(BuildContext context) {
     final l = AppLocalizations.of(context);
     final theme = Theme.of(context).textTheme;
     final score = data.score;
+    final numbers = NumberFormat.decimalPattern(l.localeName);
     final source = switch (data.source) {
       ProductScoreSource.detail => l.extTrustDetailSource,
       ProductScoreSource.catalog => l.extTrustCatalogSource,
+      ProductScoreSource.loadedReviews => loadedSource,
       ProductScoreSource.none => null,
     };
+    final loadedScoreCount = data.loadedScoreCount;
+    final loadedLevelCount = data.loadedLevelCount;
+    final separateCounts =
+        loadedScoreCount != null &&
+        loadedLevelCount != null &&
+        loadedScoreCount > 0 &&
+        loadedLevelCount > 0 &&
+        (loadedScoreCount != data.loadedReviewCount ||
+            loadedLevelCount != data.loadedReviewCount);
     final grade = switch (data.grade) {
       ProductTrustGrade.safe => l.reviewAnalysisSafe,
       ProductTrustGrade.warn => l.reviewAnalysisWarn,
@@ -42,46 +54,14 @@ class ProductTrustReportHeader extends StatelessWidget {
       ProductTrustGrade.danger => AppColors.error,
       ProductTrustGrade.unknown => AppColors.textSecondary,
     };
-    final message = score == null
-        ? missingReason
-        : switch (data.grade) {
-            ProductTrustGrade.safe => l.extTrustGuideSafe,
-            ProductTrustGrade.warn ||
-            ProductTrustGrade.danger => l.extTrustGuideCaution,
-            ProductTrustGrade.unknown => l.extTrustGuideUnknown,
-          };
-    final result = Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Container(
-          padding: const EdgeInsets.symmetric(
-            horizontal: AppSpacing.sm,
-            vertical: AppSpacing.xs,
-          ),
-          decoration: BoxDecoration(
-            color: color.withValues(alpha: .08),
-            borderRadius: AppRadius.small,
-          ),
-          child: Text(grade, style: theme.labelLarge?.copyWith(color: color)),
-        ),
-        if (source != null) ...[
-          const SizedBox(height: AppSpacing.sm),
-          Text(
-            source,
-            style: theme.bodySmall?.copyWith(color: AppColors.textSecondary),
-          ),
-        ],
-        if (data.isV2) ...[
-          const SizedBox(height: AppSpacing.xs),
-          Text(l.analysisPolicyExplanation, style: theme.bodySmall),
-        ],
-      ],
+    final secondary = theme.bodySmall?.copyWith(
+      color: AppColors.textSecondary,
+      height: 1.5,
     );
-    final counts = data.analysis?.levelCounts;
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: [
-        if (score == null) ...[
+    if (!data.hasResults) {
+      return Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
           Text(switch (status) {
             ProductReportStatus.ready => l.reportStateReady,
             ProductReportStatus.pending => l.reportBefore,
@@ -92,89 +72,112 @@ class ProductTrustReportHeader extends StatelessWidget {
             ProductReportStatus.disabled => l.reportStateDisabled,
             ProductReportStatus.unavailable => l.reportStateUnavailable,
           }, style: theme.labelLarge),
-          if (source != null) Text(source, style: theme.bodySmall),
-        ] else
-          LayoutBuilder(
-            builder: (context, constraints) {
-              final scale = MediaQuery.textScalerOf(context).scale(14) / 14;
-              final ring = Semantics(
+          const SizedBox(height: AppSpacing.xxs),
+          Text(missingReason, style: secondary),
+        ],
+      );
+    }
+    final counts = data.analysis?.levelCounts;
+    final distribution = counts == null
+        ? null
+        : _TrustDistribution(
+            counts: counts,
+            data: data,
+            scope: separateCounts
+                ? l.extTrustLoadedSource(numbers.format(loadedLevelCount))
+                : null,
+          );
+    final scoreLabel = data.source == ProductScoreSource.loadedReviews
+        ? l.extTrustLoadedAverage
+        : data.analysis?.scoreName(context);
+    final overview = score == null
+        ? null
+        : Row(
+            children: [
+              Semantics(
                 label: l.extTrustScoreValue(
-                  data.analysis!.scoreName(context),
+                  scoreLabel!,
                   NumberFormat('0.#', l.localeName).format(score),
                 ),
                 child: ExcludeSemantics(
                   child: RtiScoreRing(
                     score: score,
-                    color: color,
-                    size: 112,
-                    scoreLabel: data.analysis!.scoreName(context),
+                    color: data.source == ProductScoreSource.loadedReviews
+                        ? AppColors.primary
+                        : color,
+                    size: 88,
+                    scoreLabel: 'RTI',
                     fitContent: true,
                   ),
                 ),
-              );
-              final overview = LayoutBuilder(
-                builder: (context, inner) {
-                  if (inner.maxWidth < 380 * scale) {
-                    return Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        ring,
-                        const SizedBox(height: AppSpacing.md),
-                        result,
-                      ],
-                    );
-                  }
-                  return Row(
-                    children: [
-                      ring,
-                      const SizedBox(width: AppSpacing.md),
-                      Expanded(child: result),
-                    ],
-                  );
-                },
-              );
-              if (counts != null && constraints.maxWidth >= 700 * scale) {
-                return Row(
+              ),
+              const SizedBox(width: AppSpacing.md),
+              Expanded(
+                child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      data.source == ProductScoreSource.loadedReviews
+                          ? scoreLabel
+                          : grade,
+                      style: theme.titleSmall?.copyWith(
+                        color: data.source == ProductScoreSource.loadedReviews
+                            ? AppColors.textPrimary
+                            : color,
+                      ),
+                    ),
+                    if (separateCounts)
+                      Text(
+                        l.extTrustLoadedSource(
+                          numbers.format(loadedScoreCount),
+                        ),
+                        style: secondary,
+                      ),
+                    if (data.isV2)
+                      Text(l.analysisPolicyExplanation, style: secondary),
+                  ],
+                ),
+              ),
+            ],
+          );
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        if (source != null) ...[
+          Text(source, style: secondary),
+          const SizedBox(height: AppSpacing.md),
+        ],
+        ConstrainedBox(
+          constraints: const BoxConstraints(maxWidth: 860),
+          child: LayoutBuilder(
+            builder: (context, constraints) {
+              final scale = MediaQuery.textScalerOf(context).scale(14) / 14;
+              if (overview != null &&
+                  distribution != null &&
+                  constraints.maxWidth >= 640 * scale) {
+                return Row(
                   children: [
                     Expanded(child: overview),
                     const SizedBox(width: AppSpacing.xl),
-                    Expanded(
-                      child: _TrustDistribution(counts: counts, data: data),
-                    ),
+                    Expanded(child: distribution),
                   ],
                 );
               }
               return Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  overview,
-                  if (counts != null) ...[
-                    const SizedBox(height: AppSpacing.lg),
-                    _TrustDistribution(counts: counts, data: data),
-                  ],
+                  ?overview,
+                  if (overview != null && distribution != null)
+                    const SizedBox(height: AppSpacing.md),
+                  if (distribution != null)
+                    ConstrainedBox(
+                      constraints: const BoxConstraints(maxWidth: 420),
+                      child: distribution,
+                    ),
                 ],
               );
             },
           ),
-        const SizedBox(height: AppSpacing.md),
-        Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            ExcludeSemantics(
-              child: Image.asset(ReviewOwlAssets.face, width: 24, height: 24),
-            ),
-            const SizedBox(width: AppSpacing.sm),
-            Expanded(
-              child: Text(
-                message,
-                style: theme.bodySmall?.copyWith(
-                  color: AppColors.textSecondary,
-                  height: 1.5,
-                ),
-              ),
-            ),
-          ],
         ),
       ],
     );
@@ -182,8 +185,13 @@ class ProductTrustReportHeader extends StatelessWidget {
 }
 
 class _TrustDistribution extends StatelessWidget {
-  const _TrustDistribution({required this.counts, required this.data});
+  const _TrustDistribution({
+    required this.counts,
+    required this.data,
+    this.scope,
+  });
   final Map<String, int> counts;
+  final String? scope;
   final ProductTrustReportData data;
 
   @override
@@ -202,7 +210,8 @@ class _TrustDistribution extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         Text(l.extSummaryV2Grades, style: theme.titleSmall),
-        const SizedBox(height: AppSpacing.md),
+        if (scope case final String scope) Text(scope, style: theme.bodySmall),
+        const SizedBox(height: AppSpacing.sm),
         for (var i = 0; i < levels.length; i++)
           Padding(
             padding: const EdgeInsets.only(bottom: AppSpacing.sm),

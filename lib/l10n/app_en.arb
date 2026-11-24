@@ -731,7 +731,7 @@
   "extSummaryFact": "{label}: {value}",
   "extTrustDetailSource": "Detailed analysis result",
   "extTrustCatalogSource": "Average from the product list",
-  "extTrustNoAverage": "A product average is not available on this screen.",
+  "extTrustNoAverage": "No review trust scores or grades are available yet.",
   "extTrustBefore": "There is no product score before analysis.",
   "extTrustRunning": "The product score is not displayed while analysis is in progress.",
   "extTrustGradeMissing": "Grade not provided",
@@ -1318,10 +1318,13 @@
   "chatHistoryCancel": "Cancel",
   "chatHistoryDeleteError": "Could not delete the conversation. Please try again.",
   "extSummaryCompleteBadge": "Collection and analysis complete",
-  "extSummaryReviewBasis": "Based on {count} reviews",
+  "extSummaryReviewBasis": "{count} reviews",
   "extSummaryFrequentPhrases": "Frequently mentioned",
   "extSummaryPositiveLabel": "Positive review",
   "extSummaryNegativeLabel": "Room for improvement",
   "extSummaryQuotaHint": "Uses 1 daily question",
-  "extSummaryLayoutComment": "Ratings and common expressions from the loaded reviews."
+  "extSummaryLayoutComment": "Ratings and common expressions from the loaded reviews.",
+  "extSummaryRatedReviewBasis": "Based on {count} reviews with ratings",
+  "extTrustLoadedSource": "Based on {count} loaded reviews",
+  "extTrustLoadedAverage": "Average RTI"
 }

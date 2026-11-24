@@ -439,6 +439,7 @@ class _ReadyState extends ConsumerState<_Ready> {
     final l10n = AppLocalizations.of(context);
     final textTheme = Theme.of(context).textTheme;
     final category = product.category;
+    final showProgress = AnalysisProgressState.fromDetail(state).showSteps;
     final preferences = ref.watch(confirmedDisplayPreferencesProvider);
     final visibleReviews = _prepareReviews(
       preferences?.reviewSortOrder,
@@ -495,7 +496,7 @@ class _ReadyState extends ConsumerState<_Ready> {
                 container: true,
                 child: SectionJumpBar(
                   items: [
-                    if (AnalysisProgressState.fromDetail(state).showSteps)
+                    if (showProgress)
                       SectionJumpItem(
                         label: l10n.extNavProgress,
                         target: _progressKey,
@@ -521,42 +522,19 @@ class _ReadyState extends ConsumerState<_Ready> {
                 ),
               ),
               const SizedBox(height: AppSpacing.lg),
-              LayoutBuilder(
-                builder: (context, constraints) {
-                  final progress = KeyedSubtree(
-                    key: _progressKey,
-                    child: AnalysisProgressSteps(
-                      state: state,
-                      onRetry: widget.onRetry,
-                    ),
-                  );
-                  final analysisSummary = KeyedSubtree(
-                    key: _summaryKey,
-                    child: AnalysisSummaryCard(state: state),
-                  );
-                  if (!AnalysisProgressState.fromDetail(state).showSteps) {
-                    return analysisSummary;
-                  }
-                  // 넓은 화면에서는 진행 단계와 요약을 나란히 둬 세로 길이를 줄인다.
-                  if (constraints.maxWidth >= 1080) {
-                    return Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Expanded(child: progress),
-                        const SizedBox(width: AppSpacing.lg),
-                        Expanded(child: analysisSummary),
-                      ],
-                    );
-                  }
-                  return Column(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: [
-                      progress,
-                      const SizedBox(height: AppSpacing.lg),
-                      analysisSummary,
-                    ],
-                  );
-                },
+              if (showProgress) ...[
+                KeyedSubtree(
+                  key: _progressKey,
+                  child: AnalysisProgressSteps(
+                    state: state,
+                    onRetry: widget.onRetry,
+                  ),
+                ),
+                const SizedBox(height: AppSpacing.lg),
+              ],
+              KeyedSubtree(
+                key: _summaryKey,
+                child: AnalysisSummaryCard(state: state),
               ),
               const SizedBox(height: AppSpacing.lg),
               KeyedSubtree(

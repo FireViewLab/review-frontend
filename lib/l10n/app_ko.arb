@@ -1362,7 +1362,7 @@
   "@extTrustCatalogSource": {
     "description": "Product trust report: CatalogSource"
   },
-  "extTrustNoAverage": "이 화면에서는 상품 평균을 받을 수 없어요.",
+  "extTrustNoAverage": "표시할 리뷰 신뢰도 점수와 등급 정보가 없어요.",
   "@extTrustNoAverage": {
     "description": "Product trust report: NoAverage"
   },
@@ -2211,7 +2211,7 @@
   "chatHistoryCancel": "취소",
   "chatHistoryDeleteError": "대화를 삭제하지 못했어요. 다시 시도해 주세요.",
   "extSummaryCompleteBadge": "수집·분석 완료",
-  "extSummaryReviewBasis": "리뷰 {count}개 기준",
+  "extSummaryReviewBasis": "리뷰 {count}개",
   "extSummaryFrequentPhrases": "자주 나온 표현",
   "extSummaryPositiveLabel": "긍정 리뷰",
   "extSummaryNegativeLabel": "아쉬운 점",
@@ -2223,5 +2223,22 @@
         "type": "String"
       }
     }
-  }
+  },
+  "extSummaryRatedReviewBasis": "별점 있는 리뷰 {count}개 기준",
+  "@extSummaryRatedReviewBasis": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "extTrustLoadedSource": "불러온 리뷰 {count}개 기준",
+  "@extTrustLoadedSource": {
+    "placeholders": {
+      "count": {
+        "type": "String"
+      }
+    }
+  },
+  "extTrustLoadedAverage": "평균 RTI"
 }

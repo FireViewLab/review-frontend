@@ -2260,7 +2260,7 @@ class AppLocalizationsZh extends AppLocalizations {
   String get extTrustCatalogSource => '商品列表中的平均分';
 
   @override
-  String get extTrustNoAverage => '此页面无法获取商品平均分。';
+  String get extTrustNoAverage => '暂无可显示的评价可信度分数或等级。';
 
   @override
   String get extTrustBefore => '尚未进行分析，暂无商品分数。';
@@ -4175,7 +4175,7 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String extSummaryReviewBasis(String count) {
-    return '基于$count条评价';
+    return '$count条评价';
   }
 
   @override
@@ -4192,4 +4192,17 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get extSummaryLayoutComment => '已加载评价的评分与常见表达。';
+
+  @override
+  String extSummaryRatedReviewBasis(String count) {
+    return '基于$count条带评分的评价';
+  }
+
+  @override
+  String extTrustLoadedSource(String count) {
+    return '基于已加载的$count条评价';
+  }
+
+  @override
+  String get extTrustLoadedAverage => '平均 RTI';
 }

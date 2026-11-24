@@ -45,8 +45,6 @@ class _AnalysisSummaryCardState extends ConsumerState<AnalysisSummaryCard> {
     final analysis = state.analysis;
     final versions = ProductAnalysisVersions.fromState(state);
     final display = analysis?.display;
-    // 상세 응답의 상품 분석에는 v4 평균이 없으므로, v4 모델 정보가 왔는데
-    // 점수가 비어 있을 때만 분석 중으로 안내한다.
     final explanation = state.analysisState != ExternalAnalysisStatus.done
         ? switch (state.analysisState) {
             ExternalAnalysisStatus.pending ||
@@ -56,8 +54,6 @@ class _AnalysisSummaryCardState extends ConsumerState<AnalysisSummaryCard> {
             ExternalAnalysisStatus.disabled => l10n.extSummaryDisabled,
             _ => l10n.extSummaryUnavailable,
           }
-        : display?.isAwaitingScore == true && display?.modelVersion != null
-        ? l10n.analysisPending
         : display?.localizedReasons(context).firstOrNull;
     final summary = analysis?.summary?.trim();
     final content = ReviewContentSummary.fromReviews(
@@ -124,76 +120,80 @@ class _AnalysisSummaryCardState extends ConsumerState<AnalysisSummaryCard> {
                   ),
               ],
             ),
-            const SizedBox(height: AppSpacing.md),
-            Text(
-              content.loadedCount > 0 && summary?.isNotEmpty == true
-                  ? summary!
-                  : l10n.extSummaryLayoutComment,
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
-              style: textTheme.bodySmall?.copyWith(
-                color: AppColors.textSecondary,
+            if (content.loadedCount > 0 && summary?.isNotEmpty == true) ...[
+              const SizedBox(height: AppSpacing.sm),
+              Text(
+                summary!,
+                style: textTheme.bodySmall?.copyWith(
+                  color: AppColors.textSecondary,
+                ),
               ),
-            ),
-            const SizedBox(height: AppSpacing.lg),
+            ],
+            const SizedBox(height: AppSpacing.md),
             if (content.loadedCount == 0)
               Text(l10n.extSummaryNoLoadedReviews)
             else
               ReviewSummaryContent(data: content),
-            const SizedBox(height: AppSpacing.sm),
+            const SizedBox(height: AppSpacing.md),
             Wrap(
+              alignment: WrapAlignment.spaceBetween,
               spacing: AppSpacing.md,
-              runSpacing: AppSpacing.sm,
+              runSpacing: AppSpacing.xs,
               crossAxisAlignment: WrapCrossAlignment.center,
               children: [
-                FilledButton.tonalIcon(
-                  style: FilledButton.styleFrom(
-                    backgroundColor: AppColors.primaryLight,
-                    foregroundColor: AppColors.primary,
-                  ),
-                  icon: const Icon(Icons.auto_awesome_rounded),
-                  onPressed: state.displayProduct == null
-                      ? null
-                      : () {
-                          final productId =
-                              state.displayProduct!.ref.externalId;
-                          final chat = ref.read(chatViewModelProvider.notifier);
-                          chat.openConversation(productId: productId);
-                          chat.send(
-                            l10n.extReviewSummaryQuestion,
-                            productId: productId,
-                          );
-                        },
-                  label: Text(
-                    l10n.extReviewSummaryRequest,
-                    textAlign: TextAlign.center,
-                  ),
+                Wrap(
+                  spacing: AppSpacing.sm,
+                  runSpacing: AppSpacing.xs,
+                  crossAxisAlignment: WrapCrossAlignment.center,
+                  children: [
+                    FilledButton.tonalIcon(
+                      style: FilledButton.styleFrom(
+                        backgroundColor: AppColors.primaryLight,
+                        foregroundColor: AppColors.primary,
+                      ),
+                      icon: const Icon(Icons.auto_awesome_rounded),
+                      onPressed: state.displayProduct == null
+                          ? null
+                          : () {
+                              final productId =
+                                  state.displayProduct!.ref.externalId;
+                              final chat = ref.read(
+                                chatViewModelProvider.notifier,
+                              );
+                              chat.openConversation(productId: productId);
+                              chat.send(
+                                l10n.extReviewSummaryQuestion,
+                                productId: productId,
+                              );
+                            },
+                      label: Text(
+                        l10n.extReviewSummaryRequest,
+                        textAlign: TextAlign.center,
+                      ),
+                    ),
+                    Text(
+                      l10n.extSummaryQuotaHint,
+                      style: textTheme.bodySmall?.copyWith(
+                        color: AppColors.textSecondary,
+                      ),
+                    ),
+                  ],
                 ),
-                Text(
-                  l10n.extSummaryQuotaHint,
-                  style: textTheme.bodySmall?.copyWith(
-                    color: AppColors.textSecondary,
+                Semantics(
+                  expanded: _expanded,
+                  child: TextButton.icon(
+                    onPressed: () => setState(() => _expanded = !_expanded),
+                    icon: RotatedBox(
+                      quarterTurns: _expanded ? 2 : 0,
+                      child: const Icon(Icons.expand_more),
+                    ),
+                    label: Text(l10n.extSummaryEvidenceToggle),
                   ),
                 ),
               ],
             ),
-            const Divider(height: AppSpacing.xl),
-            Semantics(
-              expanded: _expanded,
-              child: Align(
-                alignment: AlignmentDirectional.centerStart,
-                child: TextButton.icon(
-                  onPressed: () => setState(() => _expanded = !_expanded),
-                  icon: RotatedBox(
-                    quarterTurns: _expanded ? 2 : 0,
-                    child: const Icon(Icons.expand_more),
-                  ),
-                  label: Text(l10n.extSummaryEvidenceToggle),
-                ),
-              ),
-            ),
             if (_expanded) ...[
-              const SizedBox(height: AppSpacing.xs),
+              const Divider(height: AppSpacing.xl),
               Text(
                 explanation ??
                     (data.topReasons.isEmpty

@@ -2284,7 +2284,7 @@ class AppLocalizationsKo extends AppLocalizations {
   String get extTrustCatalogSource => '목록에서 확인한 평균';
 
   @override
-  String get extTrustNoAverage => '이 화면에서는 상품 평균을 받을 수 없어요.';
+  String get extTrustNoAverage => '표시할 리뷰 신뢰도 점수와 등급 정보가 없어요.';
 
   @override
   String get extTrustBefore => '아직 분석 전이라 상품 점수가 없어요.';
@@ -4238,7 +4238,7 @@ class AppLocalizationsKo extends AppLocalizations {
 
   @override
   String extSummaryReviewBasis(String count) {
-    return '리뷰 $count개 기준';
+    return '리뷰 $count개';
   }
 
   @override
@@ -4255,4 +4255,17 @@ class AppLocalizationsKo extends AppLocalizations {
 
   @override
   String get extSummaryLayoutComment => '불러온 리뷰의 별점과 자주 나온 표현을 모았어요.';
+
+  @override
+  String extSummaryRatedReviewBasis(String count) {
+    return '별점 있는 리뷰 $count개 기준';
+  }
+
+  @override
+  String extTrustLoadedSource(String count) {
+    return '불러온 리뷰 $count개 기준';
+  }
+
+  @override
+  String get extTrustLoadedAverage => '평균 RTI';
 }

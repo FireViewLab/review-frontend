@@ -717,7 +717,7 @@
   "extSummaryFact": "{label}：{value}",
   "extTrustDetailSource": "详细分析结果",
   "extTrustCatalogSource": "商品列表中的平均分",
-  "extTrustNoAverage": "此页面无法获取商品平均分。",
+  "extTrustNoAverage": "暂无可显示的评价可信度分数或等级。",
   "extTrustBefore": "尚未进行分析，暂无商品分数。",
   "extTrustRunning": "分析进行中，暂不显示商品分数。",
   "extTrustGradeMissing": "未提供等级信息",
@@ -1304,10 +1304,13 @@
   "chatHistoryCancel": "取消",
   "chatHistoryDeleteError": "无法删除对话，请重试。",
   "extSummaryCompleteBadge": "采集与分析完成",
-  "extSummaryReviewBasis": "基于{count}条评价",
+  "extSummaryReviewBasis": "{count}条评价",
   "extSummaryFrequentPhrases": "常见表达",
   "extSummaryPositiveLabel": "好评",
   "extSummaryNegativeLabel": "不足之处",
   "extSummaryQuotaHint": "使用1次每日提问额度",
-  "extSummaryLayoutComment": "已加载评价的评分与常见表达。"
+  "extSummaryLayoutComment": "已加载评价的评分与常见表达。",
+  "extSummaryRatedReviewBasis": "基于{count}条带评分的评价",
+  "extTrustLoadedSource": "基于已加载的{count}条评价",
+  "extTrustLoadedAverage": "平均 RTI"
 }

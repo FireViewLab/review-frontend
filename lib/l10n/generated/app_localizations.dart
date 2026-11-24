@@ -4395,7 +4395,7 @@ abstract class AppLocalizations {
   /// Product trust report: NoAverage
   ///
   /// In ko, this message translates to:
-  /// **'이 화면에서는 상품 평균을 받을 수 없어요.'**
+  /// **'표시할 리뷰 신뢰도 점수와 등급 정보가 없어요.'**
   String get extTrustNoAverage;
 
   /// Product trust report: Before
@@ -7911,7 +7911,7 @@ abstract class AppLocalizations {
   /// No description provided for @extSummaryReviewBasis.
   ///
   /// In ko, this message translates to:
-  /// **'리뷰 {count}개 기준'**
+  /// **'리뷰 {count}개'**
   String extSummaryReviewBasis(String count);
 
   /// No description provided for @extSummaryFrequentPhrases.
@@ -7943,6 +7943,24 @@ abstract class AppLocalizations {
   /// In ko, this message translates to:
   /// **'불러온 리뷰의 별점과 자주 나온 표현을 모았어요.'**
   String get extSummaryLayoutComment;
+
+  /// No description provided for @extSummaryRatedReviewBasis.
+  ///
+  /// In ko, this message translates to:
+  /// **'별점 있는 리뷰 {count}개 기준'**
+  String extSummaryRatedReviewBasis(String count);
+
+  /// No description provided for @extTrustLoadedSource.
+  ///
+  /// In ko, this message translates to:
+  /// **'불러온 리뷰 {count}개 기준'**
+  String extTrustLoadedSource(String count);
+
+  /// No description provided for @extTrustLoadedAverage.
+  ///
+  /// In ko, this message translates to:
+  /// **'평균 RTI'**
+  String get extTrustLoadedAverage;
 }
 
 class _AppLocalizationsDelegate

@@ -110,61 +110,76 @@ class ProductReportCard extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Container(
-                  padding: const EdgeInsets.all(10),
-                  decoration: BoxDecoration(
-                    color: AppColors.primaryLight,
-                    borderRadius: AppRadius.medium,
-                  ),
-                  child: const Icon(
-                    Icons.shield_outlined,
-                    color: AppColors.primary,
-                    size: 24,
-                  ),
-                ),
-                const SizedBox(width: AppSpacing.sm),
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        l.reportTitle,
-                        style: theme.titleMedium?.copyWith(
-                          fontWeight: FontWeight.w800,
-                          color: AppColors.textPrimary,
-                        ),
+            LayoutBuilder(
+              builder: (context, constraints) {
+                final scale = MediaQuery.textScalerOf(context).scale(14) / 14;
+                final stacked = constraints.maxWidth < 480 * scale;
+                final title = Row(
+                  crossAxisAlignment: detailsInHeader
+                      ? CrossAxisAlignment.center
+                      : CrossAxisAlignment.start,
+                  children: [
+                    Container(
+                      padding: const EdgeInsets.all(10),
+                      decoration: BoxDecoration(
+                        color: AppColors.primaryLight,
+                        borderRadius: AppRadius.medium,
                       ),
-                      if (!detailsInHeader) ...[
-                        const SizedBox(height: 4),
-                        Text(
-                          l.reportIntro,
-                          style: theme.bodySmall?.copyWith(
-                            color: AppColors.textSecondary,
-                            height: 1.5,
-                          ),
-                        ),
-                      ],
-                    ],
-                  ),
-                ),
-                if (detailsInHeader)
-                  Flexible(
-                    child: Align(
-                      alignment: AlignmentDirectional.centerEnd,
-                      child: TextButton(
-                        onPressed:
-                            onDetailPressed ??
-                            () => showProductReport(context, details),
-                        child: Text(l.reportDetails, textAlign: TextAlign.end),
+                      child: const Icon(
+                        Icons.shield_outlined,
+                        color: AppColors.primary,
+                        size: 24,
                       ),
                     ),
-                  ),
-              ],
+                    const SizedBox(width: AppSpacing.sm),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            l.reportTitle,
+                            style: theme.titleMedium?.copyWith(
+                              fontWeight: FontWeight.w800,
+                              color: AppColors.textPrimary,
+                            ),
+                          ),
+                          if (!detailsInHeader) ...[
+                            const SizedBox(height: AppSpacing.xxs),
+                            Text(
+                              l.reportIntro,
+                              style: theme.bodySmall?.copyWith(
+                                color: AppColors.textSecondary,
+                                height: 1.5,
+                              ),
+                            ),
+                          ],
+                        ],
+                      ),
+                    ),
+                  ],
+                );
+                if (!detailsInHeader) return title;
+                final action = TextButton(
+                  onPressed:
+                      onDetailPressed ??
+                      () => showProductReport(context, details),
+                  child: Text(l.reportDetails),
+                );
+                if (stacked) {
+                  return Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [title, action],
+                  );
+                }
+                return Row(
+                  children: [
+                    Expanded(child: title),
+                    action,
+                  ],
+                );
+              },
             ),
-            const SizedBox(height: AppSpacing.lg),
+            SizedBox(height: detailsInHeader ? AppSpacing.sm : AppSpacing.lg),
             if (resultHeader case final header?)
               header
             else

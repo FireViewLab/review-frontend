@@ -2277,7 +2277,7 @@ class AppLocalizationsJa extends AppLocalizations {
   String get extTrustCatalogSource => '商品一覧で確認した平均';
 
   @override
-  String get extTrustNoAverage => 'この画面では商品の平均点を取得できません。';
+  String get extTrustNoAverage => '表示できるレビューの信頼度スコアや等級がありません。';
 
   @override
   String get extTrustBefore => 'まだ分析前のため、商品スコアはありません。';
@@ -4235,7 +4235,7 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String extSummaryReviewBasis(String count) {
-    return 'レビュー$count件に基づく';
+    return 'レビュー$count件';
   }
 
   @override
@@ -4252,4 +4252,17 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String get extSummaryLayoutComment => '読み込み済みレビューの評価とよく出る表現です。';
+
+  @override
+  String extSummaryRatedReviewBasis(String count) {
+    return '評価のあるレビュー$count件に基づく';
+  }
+
+  @override
+  String extTrustLoadedSource(String count) {
+    return '読み込んだレビュー$count件に基づく';
+  }
+
+  @override
+  String get extTrustLoadedAverage => '平均RTI';
 }
