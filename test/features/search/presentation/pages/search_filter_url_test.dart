@@ -128,13 +128,13 @@ void main() {
         expect(result.state.isRtiFilterActive, isTrue);
         expect(result.selectedBrand, '컬리');
         expect(result.selectedQuickFilter, 'RTI 80+');
-        expect(result.selectedCategories, {'분류 A', '분류 B'});
+        expect(result.selectedCategories, isEmpty);
         expect(result.selectedReviewConditions, {'리뷰 50개 이상'});
         expect(result.selectedAttributeFilters, {'가격 정보 없음만'});
-        expect(params(), containsPair('campaign', 'autumn'));
-        for (final entry in filters.entries) {
-          expect(params(), containsPair(entry.key, entry.value));
-        }
+        expect(
+          params(),
+          {...Uri.parse(_location(filters)).queryParameters}..remove('cat'),
+        );
       },
     );
 

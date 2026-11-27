@@ -79,6 +79,8 @@ class _SearchResultsPageState extends ConsumerState<SearchResultsPage> {
   final _resultsKey = GlobalKey();
   String? _lastPriceRangeQuery;
   Map<String, String>? _lastSyncedFilterParams;
+  bool _needsUrlFacetValidation = false;
+  bool _searchStartPending = false;
 
   // 상품 단위 카테고리 해석은 결과가 바뀌지 않는 한 같으므로 상품 객체에 붙여 둔다.
   final _categoryLabelCache = Expando<String>('categoryLabel');
@@ -139,15 +141,18 @@ class _SearchResultsPageState extends ConsumerState<SearchResultsPage> {
   }
 
   void _triggerSearch({bool refresh = false}) {
-    Future.microtask(
-      () => ref
+    _searchStartPending = true;
+    Future<void>.microtask(() async {
+      if (!mounted) return;
+      setState(() => _searchStartPending = false);
+      await ref
           .read(searchViewModelProvider.notifier)
           .search(
             _effectiveSearchQuery,
             allowEmpty: widget.categoryId != null || widget.initialSort != null,
             refresh: refresh,
-          ),
-    );
+          );
+    });
   }
 
   @override
@@ -158,13 +163,23 @@ class _SearchResultsPageState extends ConsumerState<SearchResultsPage> {
       _triggerSearch(refresh: true);
     });
     final searchState = ref.watch(searchViewModelProvider);
-    final products = _resolveProducts(searchState);
+    final hasCurrentResults =
+        !_searchStartPending &&
+        searchState is SearchCompleted &&
+        searchState.query == _effectiveSearchQuery;
+    final products = hasCurrentResults
+        ? _resolveProducts(searchState)
+        : const <SearchResultProduct>[];
 
     if (!identical(_facetSource, products)) {
       _facetSource = products;
       _quickFilterFacets = _buildQuickFilters(products, products.length);
       _categoryFacets = _buildCategoryFilters(products);
       _priceRangeFacets = _buildPriceRanges(products);
+    }
+    // 다른 검색어의 이전 결과나 로딩·실패 상태로 공유 주소를 정리하지 않는다.
+    if (_needsUrlFacetValidation && hasCurrentResults) {
+      _validateUrlFacets(products);
     }
     final filteredProducts = _sortProducts(_filterProducts(products));
     final effectiveTotalCount = filteredProducts.length;
@@ -183,7 +198,7 @@ class _SearchResultsPageState extends ConsumerState<SearchResultsPage> {
       isRtiFilterActive: _isRtiFilterActive,
       selectedRtiMinimum: _selectedRtiMinimum.round(),
       totalCount: effectiveTotalCount,
-      isLoading: searchState.isLoading,
+      isLoading: _searchStartPending || searchState.isLoading,
       errorMessage: searchState is SearchFailure
           ? searchState.failure.message
           : null,
@@ -490,6 +505,7 @@ class _SearchResultsPageState extends ConsumerState<SearchResultsPage> {
     _isRtiFilterActive = false;
     _currentPage = 1;
     _pageSize = defaultSearchPageSize;
+    _needsUrlFacetValidation = false;
   }
 
   // ─── 주소 쿼리와 필터 상태 ────────────────────────────────────────────────
@@ -572,12 +588,34 @@ class _SearchResultsPageState extends ConsumerState<SearchResultsPage> {
     _selectedBrand = mall == null || mall.isEmpty ? null : mall;
     _selectedQuickFilter = params['qf'] ?? '전체';
     _selectedCategories.addAll(split(params['cat']));
+    _needsUrlFacetValidation =
+        _selectedBrand != null ||
+        _selectedQuickFilter != '전체' ||
+        _selectedCategories.isNotEmpty;
     _selectedReviewConditions.addAll(
       split(params['review']).where(searchReviewConditions.contains),
     );
     _selectedAttributeFilters.addAll(
       split(params['attr']).where(searchAttributeFilters.contains),
     );
+  }
+
+  void _validateUrlFacets(List<SearchResultProduct> products) {
+    _needsUrlFacetValidation = false;
+
+    if (!_quickFilterFacets.any(
+      (facet) => facet.label == _selectedQuickFilter,
+    )) {
+      _selectedQuickFilter = '전체';
+    }
+    final categories = _categoryFacets.map((facet) => facet.label).toSet();
+    _selectedCategories.retainAll(categories);
+    final brand = normalizeSearchPlatform(_selectedBrand);
+    _selectedBrand =
+        brand != null &&
+            products.any((product) => product.normalizedPlatform == brand)
+        ? brand
+        : null;
   }
 
   /// 화면 상태가 주소와 다르면 방문 기록을 늘리지 않고 주소만 바꾼다.
@@ -634,12 +672,7 @@ class _SearchResultsPageState extends ConsumerState<SearchResultsPage> {
           }
 
           if (_selectedBrand != null &&
-              normalizeSearchPlatform(
-                    product.platform ??
-                        product.dataPlatform ??
-                        product.externalRef?.platform,
-                  ) !=
-                  _selectedBrand) {
+              product.normalizedPlatform != _selectedBrand) {
             return false;
           }
           if (_selectedAttributeFilters.contains('분석 전만') &&
@@ -796,7 +829,9 @@ class _SearchResultsPageState extends ConsumerState<SearchResultsPage> {
     final minPrice = prices.reduce((a, b) => a < b ? a : b);
     final maxPrice = prices.reduce((a, b) => a > b ? a : b);
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      if (!mounted) return;
+      if (!mounted || _isPriceFilterActive || _lastPriceRangeQuery != query) {
+        return;
+      }
       _minPriceController.text = '$minPrice';
       _maxPriceController.text = '$maxPrice';
     });

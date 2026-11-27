@@ -47,8 +47,9 @@ class SearchViewModel extends Notifier<SearchState> {
     if (!ref.mounted) return;
     final next = result.when<SearchState>(
       success: (response) => response.isEmpty
-          ? const SearchEmpty()
+          ? SearchEmpty(query: key)
           : SearchSuccess(
+              query: key,
               products: response.products,
               totalCount: response.totalCount,
             ),

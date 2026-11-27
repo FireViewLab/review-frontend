@@ -2,7 +2,6 @@ import 'package:re_view_front/l10n/generated/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:re_view_front/app/theme/app_colors.dart';
 import 'package:re_view_front/app/theme/app_spacing.dart';
-import 'package:re_view_front/features/search/domain/entities/search_result_product.dart';
 import 'package:re_view_front/features/search/presentation/models/search_filter_options.dart';
 import 'package:re_view_front/features/search/presentation/view_models/search_results_state.dart';
 import 'package:re_view_front/features/search/presentation/widgets/filter_section_widgets.dart';
@@ -190,13 +189,7 @@ class FilterPanel extends StatelessWidget {
                       AppLocalizations.of(context).searchFilterSellerHint,
                   selectedBrand: selectedBrand,
                   brands: state.sourceProducts
-                      .map(
-                        (p) => normalizeSearchPlatform(
-                          p.platform ??
-                              p.dataPlatform ??
-                              p.externalRef?.platform,
-                        ),
-                      )
+                      .map((p) => p.normalizedPlatform)
                       .whereType<String>()
                       .toSet()
                       .toList(),
