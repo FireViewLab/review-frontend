@@ -1,3 +1,4 @@
+import 'package:re_view_front/features/search/presentation/models/search_filter_options.dart';
 import 'package:re_view_front/features/search/presentation/search_labels.dart';
 import 'package:re_view_front/shared/widgets/empty_state_view.dart';
 import 'package:re_view_front/l10n/generated/app_localizations.dart';
@@ -546,14 +547,12 @@ class PageSizeButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    const pageSizes = [30, 60];
-
     return PopupMenuButton<int>(
       tooltip: AppLocalizations.of(context).searchPageSize,
       initialValue: pageSize,
       onSelected: onChanged,
       itemBuilder: (context) => [
-        for (final size in pageSizes)
+        for (final size in searchPageSizes)
           PopupMenuItem(
             value: size,
             child: SelectMenuItemLabel(
