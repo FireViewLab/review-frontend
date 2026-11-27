@@ -2451,6 +2451,12 @@ class AppLocalizationsJa extends AppLocalizations {
   String get cartRemoved => 'カートから削除しました';
 
   @override
+  String get cartWishlistRemovalFailed => 'お気に入りに保存しましたが、カートから削除できませんでした。';
+
+  @override
+  String get cartRetryRemoval => '削除を再試行';
+
+  @override
   String get listLoading => '読み込み中';
 
   @override

@@ -4716,6 +4716,18 @@ abstract class AppLocalizations {
   /// **'장바구니에서 뺐어요'**
   String get cartRemoved;
 
+  /// Shown when an item is saved to the wishlist but remains in the cart.
+  ///
+  /// In ko, this message translates to:
+  /// **'찜에는 저장했지만 장바구니에서 빼지 못했어요'**
+  String get cartWishlistRemovalFailed;
+
+  /// Tries removing an already saved item from the cart again.
+  ///
+  /// In ko, this message translates to:
+  /// **'다시 빼기'**
+  String get cartRetryRemoval;
+
   /// No description provided for @listLoading.
   ///
   /// In ko, this message translates to:

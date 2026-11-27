@@ -1562,6 +1562,14 @@
   "actionUndo": "되돌리기",
   "wishlistRemoved": "찜에서 뺐어요",
   "cartRemoved": "장바구니에서 뺐어요",
+  "cartWishlistRemovalFailed": "찜에는 저장했지만 장바구니에서 빼지 못했어요",
+  "@cartWishlistRemovalFailed": {
+    "description": "Shown when an item is saved to the wishlist but remains in the cart."
+  },
+  "cartRetryRemoval": "다시 빼기",
+  "@cartRetryRemoval": {
+    "description": "Tries removing an already saved item from the cart again."
+  },
   "listLoading": "불러오는 중",
   "cartEmptyTitle": "장바구니가 비어 있어요",
   "cartEmptyDescription": "마음에 드는 상품을 담아보세요.",
