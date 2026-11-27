@@ -58,6 +58,9 @@ class SearchResultProduct {
   final String category;
   final String categoryDisplayName;
   final String? platform;
+  String? get normalizedPlatform => normalizeSearchPlatform(
+    platform ?? dataPlatform ?? externalRef?.platform,
+  );
   final double? avgRti;
   final String? rtiGrade;
   final String? rtiColor;

@@ -9,6 +9,7 @@ import 'package:re_view_front/app/theme/app_colors.dart';
 import 'package:re_view_front/app/theme/app_spacing.dart';
 import 'package:re_view_front/features/category/domain/entities/product_category_resolver.dart';
 import 'package:re_view_front/features/search/domain/entities/search_result_product.dart';
+import 'package:re_view_front/features/search/presentation/models/search_filter_options.dart';
 import 'package:re_view_front/features/search/presentation/models/search_view_mode.dart';
 import 'package:re_view_front/features/search/presentation/providers/search_providers.dart';
 import 'package:re_view_front/features/search/presentation/view_models/search_results_state.dart';
@@ -74,10 +75,12 @@ class _SearchResultsPageState extends ConsumerState<SearchResultsPage> {
   bool _isPriceFilterActive = false;
   bool _isRtiFilterActive = false;
   int _currentPage = 1;
-  int _pageSize = 30;
+  int _pageSize = defaultSearchPageSize;
   final _resultsKey = GlobalKey();
   String? _lastPriceRangeQuery;
   Map<String, String>? _lastSyncedFilterParams;
+  bool _needsUrlFacetValidation = false;
+  bool _searchStartPending = false;
 
   // 상품 단위 카테고리 해석은 결과가 바뀌지 않는 한 같으므로 상품 객체에 붙여 둔다.
   final _categoryLabelCache = Expando<String>('categoryLabel');
@@ -138,15 +141,18 @@ class _SearchResultsPageState extends ConsumerState<SearchResultsPage> {
   }
 
   void _triggerSearch({bool refresh = false}) {
-    Future.microtask(
-      () => ref
+    _searchStartPending = true;
+    Future<void>.microtask(() async {
+      if (!mounted) return;
+      setState(() => _searchStartPending = false);
+      await ref
           .read(searchViewModelProvider.notifier)
           .search(
             _effectiveSearchQuery,
             allowEmpty: widget.categoryId != null || widget.initialSort != null,
             refresh: refresh,
-          ),
-    );
+          );
+    });
   }
 
   @override
@@ -157,13 +163,23 @@ class _SearchResultsPageState extends ConsumerState<SearchResultsPage> {
       _triggerSearch(refresh: true);
     });
     final searchState = ref.watch(searchViewModelProvider);
-    final products = _resolveProducts(searchState);
+    final hasCurrentResults =
+        !_searchStartPending &&
+        searchState is SearchCompleted &&
+        searchState.query == _effectiveSearchQuery;
+    final products = hasCurrentResults
+        ? _resolveProducts(searchState)
+        : const <SearchResultProduct>[];
 
     if (!identical(_facetSource, products)) {
       _facetSource = products;
       _quickFilterFacets = _buildQuickFilters(products, products.length);
       _categoryFacets = _buildCategoryFilters(products);
       _priceRangeFacets = _buildPriceRanges(products);
+    }
+    // 다른 검색어의 이전 결과나 로딩·실패 상태로 공유 주소를 정리하지 않는다.
+    if (_needsUrlFacetValidation && hasCurrentResults) {
+      _validateUrlFacets(products);
     }
     final filteredProducts = _sortProducts(_filterProducts(products));
     final effectiveTotalCount = filteredProducts.length;
@@ -182,7 +198,7 @@ class _SearchResultsPageState extends ConsumerState<SearchResultsPage> {
       isRtiFilterActive: _isRtiFilterActive,
       selectedRtiMinimum: _selectedRtiMinimum.round(),
       totalCount: effectiveTotalCount,
-      isLoading: searchState.isLoading,
+      isLoading: _searchStartPending || searchState.isLoading,
       errorMessage: searchState is SearchFailure
           ? searchState.failure.message
           : null,
@@ -366,18 +382,11 @@ class _SearchResultsPageState extends ConsumerState<SearchResultsPage> {
   ) {
     if (products.isEmpty) return const [];
     return [
-      SearchFilterChipData(
-        label: '1만원 이하',
-        count: products.where((p) => _matchesPriceRange(p, '1만원 이하')).length,
-      ),
-      SearchFilterChipData(
-        label: '10~30만원',
-        count: products.where((p) => _matchesPriceRange(p, '10~30만원')).length,
-      ),
-      SearchFilterChipData(
-        label: '30만원 이상',
-        count: products.where((p) => _matchesPriceRange(p, '30만원 이상')).length,
-      ),
+      for (final label in searchPriceRanges.keys)
+        SearchFilterChipData(
+          label: label,
+          count: products.where((p) => _matchesPriceRange(p, label)).length,
+        ),
     ];
   }
 
@@ -445,10 +454,7 @@ class _SearchResultsPageState extends ConsumerState<SearchResultsPage> {
         _selectedPriceRanges
           ..clear()
           ..add(label);
-        final range = _priceRangeFor(label);
-        _minPriceController.text = range.$1;
-        _maxPriceController.text = range.$2;
-        _isPriceFilterActive = true;
+        _setPriceBounds(searchPriceRanges[label]!);
       }
       _currentPage = 1;
     });
@@ -498,7 +504,8 @@ class _SearchResultsPageState extends ConsumerState<SearchResultsPage> {
     _selectedRtiMinimum = 50;
     _isRtiFilterActive = false;
     _currentPage = 1;
-    _pageSize = 30;
+    _pageSize = defaultSearchPageSize;
+    _needsUrlFacetValidation = false;
   }
 
   // ─── 주소 쿼리와 필터 상태 ────────────────────────────────────────────────
@@ -509,26 +516,27 @@ class _SearchResultsPageState extends ConsumerState<SearchResultsPage> {
 
   Map<String, String> _pickFilterParams(Map<String, String> params) => {
     for (final entry in params.entries)
-      if (searchFilterQueryKeys.contains(entry.key) && entry.value.isNotEmpty)
-        entry.key: entry.value,
+      if (searchFilterQueryKeys.contains(entry.key)) entry.key: entry.value,
   };
 
   Map<String, String> _filterParams() {
     String join(Set<String> values) =>
         (values.toList()..sort()).join(_listSeparator);
-    final min = _minPriceController.text.trim();
-    final max = _maxPriceController.text.trim();
+    final (min, max) = _normalizedPriceBounds(
+      _minPriceController.text,
+      _maxPriceController.text,
+    );
     return {
       if (_sortOption != _supportedSort(widget.initialSort))
         'order': _sortOption.name,
       if (_currentPage != 1) 'page': '$_currentPage',
-      if (_pageSize != 30) 'size': '$_pageSize',
+      if (_pageSize != defaultSearchPageSize) 'size': '$_pageSize',
       if (_viewMode != SearchViewMode.grid) 'view': _viewMode.name,
       if (_selectedPriceRanges.isNotEmpty)
         'price': join(_selectedPriceRanges)
       else if (_isPriceFilterActive) ...{
-        if (min.isNotEmpty) 'min': min,
-        if (max.isNotEmpty) 'max': max,
+        'min': ?min?.toString(),
+        'max': ?max?.toString(),
       },
       if (_isRtiFilterActive) 'rti': '${_selectedRtiMinimum.round()}',
       'mall': ?_selectedBrand,
@@ -556,30 +564,20 @@ class _SearchResultsPageState extends ConsumerState<SearchResultsPage> {
         .firstOrNull;
     if (order != null) _sortOption = _supportedSort(order);
     _currentPage = positive(params['page']) ?? 1;
-    _pageSize = positive(params['size']) ?? 30;
+    final size = int.tryParse(params['size'] ?? '') ?? defaultSearchPageSize;
+    _pageSize = searchPageSizes.contains(size) ? size : defaultSearchPageSize;
     _viewMode = params['view'] == SearchViewMode.list.name
         ? SearchViewMode.list
         : SearchViewMode.grid;
 
-    final priceRanges = split(params['price']);
-    if (priceRanges.isNotEmpty) {
-      final label = priceRanges.first;
-      final range = _priceRangeFor(label);
-      _selectedPriceRanges
-        ..clear()
-        ..add(label);
-      _minPriceController.text = range.$1;
-      _maxPriceController.text = range.$2;
-      _isPriceFilterActive = true;
-    } else {
-      final min = int.tryParse(params['min'] ?? '');
-      final max = int.tryParse(params['max'] ?? '');
-      if (min != null || max != null) {
-        _minPriceController.text = min == null ? '' : '$min';
-        _maxPriceController.text = max == null ? '' : '$max';
-        _isPriceFilterActive = true;
-      }
-    }
+    final price = split(
+      params['price'],
+    ).where(searchPriceRanges.containsKey).firstOrNull;
+    if (price != null) _selectedPriceRanges.add(price);
+    final bounds =
+        searchPriceRanges[price] ??
+        _normalizedPriceBounds(params['min'], params['max']);
+    if (bounds != (null, null)) _setPriceBounds(bounds);
 
     final rti = int.tryParse(params['rti'] ?? '');
     if (rti != null) {
@@ -590,8 +588,34 @@ class _SearchResultsPageState extends ConsumerState<SearchResultsPage> {
     _selectedBrand = mall == null || mall.isEmpty ? null : mall;
     _selectedQuickFilter = params['qf'] ?? '전체';
     _selectedCategories.addAll(split(params['cat']));
-    _selectedReviewConditions.addAll(split(params['review']));
-    _selectedAttributeFilters.addAll(split(params['attr']));
+    _needsUrlFacetValidation =
+        _selectedBrand != null ||
+        _selectedQuickFilter != '전체' ||
+        _selectedCategories.isNotEmpty;
+    _selectedReviewConditions.addAll(
+      split(params['review']).where(searchReviewConditions.contains),
+    );
+    _selectedAttributeFilters.addAll(
+      split(params['attr']).where(searchAttributeFilters.contains),
+    );
+  }
+
+  void _validateUrlFacets(List<SearchResultProduct> products) {
+    _needsUrlFacetValidation = false;
+
+    if (!_quickFilterFacets.any(
+      (facet) => facet.label == _selectedQuickFilter,
+    )) {
+      _selectedQuickFilter = '전체';
+    }
+    final categories = _categoryFacets.map((facet) => facet.label).toSet();
+    _selectedCategories.retainAll(categories);
+    final brand = normalizeSearchPlatform(_selectedBrand);
+    _selectedBrand =
+        brand != null &&
+            products.any((product) => product.normalizedPlatform == brand)
+        ? brand
+        : null;
   }
 
   /// 화면 상태가 주소와 다르면 방문 기록을 늘리지 않고 주소만 바꾼다.
@@ -628,6 +652,12 @@ class _SearchResultsPageState extends ConsumerState<SearchResultsPage> {
   List<SearchResultProduct> _filterProducts(
     List<SearchResultProduct> products,
   ) {
+    final (minPrice, maxPrice) = _isPriceFilterActive
+        ? _normalizedPriceBounds(
+            _minPriceController.text,
+            _maxPriceController.text,
+          )
+        : (null, null);
     return products
         .where((product) {
           if (widget.categoryId != null &&
@@ -642,12 +672,7 @@ class _SearchResultsPageState extends ConsumerState<SearchResultsPage> {
           }
 
           if (_selectedBrand != null &&
-              normalizeSearchPlatform(
-                    product.platform ??
-                        product.dataPlatform ??
-                        product.externalRef?.platform,
-                  ) !=
-                  _selectedBrand) {
+              product.normalizedPlatform != _selectedBrand) {
             return false;
           }
           if (_selectedAttributeFilters.contains('분석 전만') &&
@@ -674,19 +699,14 @@ class _SearchResultsPageState extends ConsumerState<SearchResultsPage> {
             return false;
           }
 
-          if (_isPriceFilterActive) {
-            var minPrice = _parsePrice(_minPriceController.text);
-            var maxPrice = _parsePrice(_maxPriceController.text);
-            // 슬라이더는 최소>최대를 뒤집어 보여주므로 필터도 같은 범위로 맞춘다.
-            if (minPrice != null && maxPrice != null && minPrice > maxPrice) {
-              (minPrice, maxPrice) = (maxPrice, minPrice);
-            }
-            if ((minPrice != null || maxPrice != null) &&
-                product.price == null) {
-              return false;
-            }
-            if (minPrice != null && product.price! < minPrice) return false;
-            if (maxPrice != null && product.price! > maxPrice) return false;
+          final price = product.price;
+          if (price == null && (minPrice != null || maxPrice != null)) {
+            return false;
+          }
+          if (price != null &&
+              ((minPrice != null && price < minPrice) ||
+                  (maxPrice != null && price > maxPrice))) {
+            return false;
           }
 
           if (_isRtiFilterActive &&
@@ -757,28 +777,31 @@ class _SearchResultsPageState extends ConsumerState<SearchResultsPage> {
   }
 
   bool _matchesPriceRange(SearchResultProduct product, String label) {
-    if (product.price == null) return false;
-    return switch (label) {
-      '1만원 이하' => product.price! <= 10000,
-      '10~30만원' => product.price! >= 100000 && product.price! <= 300000,
-      '30만원 이상' => product.price! >= 300000,
-      _ => true,
-    };
+    final (min, max) = searchPriceRanges[label]!;
+    final price = product.price;
+    return price != null &&
+        (min == null || price >= min) &&
+        (max == null || price <= max);
   }
 
-  (String, String) _priceRangeFor(String label) {
-    return switch (label) {
-      '1만원 이하' => ('0', '10000'),
-      '10~30만원' => ('100000', '300000'),
-      '30만원 이상' => ('300000', ''),
-      _ => ('0', '700000'),
-    };
+  void _setPriceBounds((int?, int?) bounds) {
+    final (min, max) = bounds;
+    _minPriceController.text = min == null ? '' : '$min';
+    _maxPriceController.text = max == null ? '' : '$max';
+    _isPriceFilterActive = true;
   }
 
-  int? _parsePrice(String value) {
-    final normalized = value.replaceAll(',', '').trim();
-    if (normalized.isEmpty) return null;
-    return int.tryParse(normalized);
+  (int?, int?) _normalizedPriceBounds(String? min, String? max) {
+    final lower = _parsePrice(min);
+    final upper = _parsePrice(max);
+    // 슬라이더와 검색 결과에 같은 가격 범위를 적용한다.
+    if (lower != null && upper != null && lower > upper) return (upper, lower);
+    return (lower, upper);
+  }
+
+  int? _parsePrice(String? value) {
+    final parsed = int.tryParse(value?.replaceAll(',', '').trim() ?? '');
+    return parsed != null && parsed >= 0 ? parsed : null;
   }
 
   void _syncInitialPriceRange(
@@ -806,7 +829,9 @@ class _SearchResultsPageState extends ConsumerState<SearchResultsPage> {
     final minPrice = prices.reduce((a, b) => a < b ? a : b);
     final maxPrice = prices.reduce((a, b) => a > b ? a : b);
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      if (!mounted) return;
+      if (!mounted || _isPriceFilterActive || _lastPriceRangeQuery != query) {
+        return;
+      }
       _minPriceController.text = '$minPrice';
       _maxPriceController.text = '$maxPrice';
     });

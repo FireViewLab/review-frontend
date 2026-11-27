@@ -16,8 +16,15 @@ class SearchLoading extends SearchState {
   const SearchLoading();
 }
 
-class SearchSuccess extends SearchState {
+sealed class SearchCompleted extends SearchState {
+  const SearchCompleted({required this.query});
+
+  final String query;
+}
+
+class SearchSuccess extends SearchCompleted {
   const SearchSuccess({
+    required super.query,
     required this.products,
     required this.totalCount,
   });
@@ -28,8 +35,8 @@ class SearchSuccess extends SearchState {
   bool get isEmpty => products.isEmpty;
 }
 
-class SearchEmpty extends SearchState {
-  const SearchEmpty();
+class SearchEmpty extends SearchCompleted {
+  const SearchEmpty({required super.query});
 }
 
 class SearchFailure extends SearchState {
