@@ -11,6 +11,19 @@ import 'package:re_view_front/features/wishlist/presentation/providers/wishlist_
 
 typedef CartRemoval = ({List<CartItem> items, String? errorMessage});
 
+class CartWishlistResult {
+  const CartWishlistResult({required this.wishlistSave, this.cartRemoval});
+
+  final Result<void> wishlistSave;
+  final Result<void>? cartRemoval;
+
+  bool get isSaved => switch (wishlistSave) {
+    Success<void>() => true,
+    FailureResult<void>(:final failure) =>
+      failure.code == 'WISHLIST_ALREADY_EXISTS',
+  };
+}
+
 class CartViewModel extends Notifier<CartState> {
   late GetCartUseCase _getCartUseCase;
   late UpdateCartUseCase _updateCartUseCase;
@@ -86,71 +99,78 @@ class CartViewModel extends Notifier<CartState> {
     await _mutate(
       productId,
       () => _updateCartUseCase.updateQuantity(productId, quantity),
+      errorMessage: _mutationError,
     );
   }
 
   Future<Result<void>?> removeItem(int productId) => _mutate(
     productId,
     () => _updateCartUseCase.remove(productId),
-    feedbackOnSuccess: () => true,
+    errorMessage: _mutationError,
+    shouldGiveFeedback: (result) => result is Success<void>,
   );
 
-  Future<void> saveToWishlist(
+  Future<CartWishlistResult?> saveToWishlist(
     int productId, {
     bool removeFromCart = false,
-  }) async {
+  }) {
     final generation = _generation;
     final session = ref.read(authSessionProvider);
-    var changed = false;
-    await _mutate(productId, () async {
-      final result = await ref
-          .read(toggleWishlistUseCaseProvider)
-          .add(productId);
-      if (!ref.mounted ||
-          generation != _generation ||
-          ref.read(authSessionProvider) != session) {
-        return result;
-      }
-      final alreadySaved =
-          result is FailureResult<void> &&
-          result.failure.code == 'WISHLIST_ALREADY_EXISTS';
-      if (result is FailureResult<void> && !alreadySaved) return result;
-      changed = result is Success<void>;
-      refreshWishlistSnapshot(ref);
-      ref.invalidate(wishlistViewModelProvider);
-      if (removeFromCart) {
-        final removal = await _updateCartUseCase.remove(productId);
-        changed = removal is Success<void>;
-        return removal;
-      }
-      return const Success(null);
-    }, feedbackOnSuccess: () => changed);
+    return _mutate(
+      productId,
+      () async {
+        final save = CartWishlistResult(
+          wishlistSave: await ref
+              .read(toggleWishlistUseCaseProvider)
+              .add(productId),
+        );
+        if (!ref.mounted ||
+            generation != _generation ||
+            ref.read(authSessionProvider) != session ||
+            !save.isSaved) {
+          return save;
+        }
+        refreshWishlistSnapshot(ref);
+        ref.invalidate(wishlistViewModelProvider);
+        if (!removeFromCart) return save;
+
+        return CartWishlistResult(
+          wishlistSave: save.wishlistSave,
+          cartRemoval: await _updateCartUseCase.remove(productId),
+        );
+      },
+      errorMessage: (result) =>
+          result.isSaved ? null : _mutationError(result.wishlistSave),
+      shouldGiveFeedback: (result) =>
+          (result.cartRemoval ?? result.wishlistSave) is Success<void>,
+    );
   }
 
-  Future<Result<void>?> _mutate(
+  String? _mutationError(Result<void> result) =>
+      result.when(success: (_) => null, failure: (failure) => failure.message);
+
+  Future<T?> _mutate<T>(
     int productId,
-    Future<Result<void>> Function() operation, {
-    bool Function()? feedbackOnSuccess,
+    Future<T> Function() operation, {
+    required String? Function(T) errorMessage,
+    bool Function(T)? shouldGiveFeedback,
   }) async {
     final current = state;
-    if (!ref.read(isLoggedInProvider) ||
-        current is! CartSuccess ||
-        current.isUpdating) {
+    final session = ref.read(authSessionProvider);
+    if (!session.isLoggedIn || current is! CartSuccess || current.isUpdating) {
       return null;
     }
     final generation = _generation;
     state = current.copyWith(updatingProductIds: {productId}, clearError: true);
     final result = await operation();
-    if (!ref.mounted || generation != _generation) return null;
-    if (result is Success<void> && feedbackOnSuccess?.call() == true) {
-      ActionFeedback.selection();
+    if (!ref.mounted ||
+        generation != _generation ||
+        ref.read(authSessionProvider) != session) {
+      return null;
     }
+    if (shouldGiveFeedback?.call(result) == true) ActionFeedback.selection();
     refreshCartSnapshot(ref);
-    final message = result.when(
-      success: (_) => null,
-      failure: (f) => f.message,
-    );
-    await load(message: message);
+    await load(message: errorMessage(result));
     return result;
   }
 

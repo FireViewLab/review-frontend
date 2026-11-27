@@ -785,6 +785,8 @@
   "actionUndo": "Undo",
   "wishlistRemoved": "Removed from wishlist",
   "cartRemoved": "Removed from cart",
+  "cartWishlistRemovalFailed": "Saved to your wishlist, but the item couldn’t be removed from your cart.",
+  "cartRetryRemoval": "Retry removal",
   "listLoading": "Loading",
   "cartEmptyTitle": "Your cart is empty",
   "cartEmptyDescription": "Add products you like to your cart.",

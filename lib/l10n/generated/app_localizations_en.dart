@@ -2557,6 +2557,13 @@ class AppLocalizationsEn extends AppLocalizations {
   String get cartRemoved => 'Removed from cart';
 
   @override
+  String get cartWishlistRemovalFailed =>
+      'Saved to your wishlist, but the item couldn’t be removed from your cart.';
+
+  @override
+  String get cartRetryRemoval => 'Retry removal';
+
+  @override
   String get listLoading => 'Loading';
 
   @override

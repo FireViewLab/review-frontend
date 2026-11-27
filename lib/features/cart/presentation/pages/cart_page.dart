@@ -53,6 +53,36 @@ class _CartPageState extends ConsumerState<CartPage> {
     _showRemoved([item]);
   }
 
+  Future<void> _saveForLater(int productId) async {
+    final session = ref.read(authSessionProvider);
+    final result = await ref
+        .read(cartViewModelProvider.notifier)
+        .saveToWishlist(productId, removeFromCart: true);
+    if (!mounted ||
+        ref.read(authSessionProvider) != session ||
+        result == null ||
+        !result.isSaved ||
+        result.cartRemoval is! FailureResult<void>) {
+      return;
+    }
+    final l10n = AppLocalizations.of(context);
+    final messenger = ScaffoldMessenger.of(context);
+    messenger.hideCurrentSnackBar();
+    messenger.showSnackBar(
+      SnackBar(
+        content: Text(l10n.cartWishlistRemovalFailed),
+        action: SnackBarAction(
+          label: l10n.cartRetryRemoval,
+          onPressed: () {
+            if (mounted && ref.read(authSessionProvider) == session) {
+              _removeItem(productId);
+            }
+          },
+        ),
+      ),
+    );
+  }
+
   Future<void> _removeSelected() async {
     final session = ref.read(authSessionProvider);
     final result = await ref
@@ -142,6 +172,7 @@ class _CartPageState extends ConsumerState<CartPage> {
                 CartSuccess() => _CartBody(
                   cartState: cartState,
                   onRemove: _removeItem,
+                  onSaveForLater: _saveForLater,
                   onRemoveSelected: _removeSelected,
                 ),
               },
@@ -157,11 +188,13 @@ class _CartBody extends ConsumerWidget {
   const _CartBody({
     required this.cartState,
     required this.onRemove,
+    required this.onSaveForLater,
     required this.onRemoveSelected,
   });
 
   final CartSuccess cartState;
   final ValueChanged<int> onRemove;
+  final ValueChanged<int> onSaveForLater;
   final VoidCallback onRemoveSelected;
 
   Future<void> _showPurchaseChoices(BuildContext context) => showDialog<void>(
@@ -250,8 +283,7 @@ class _CartBody extends ConsumerWidget {
                       vm.updateQuantity(item.productId, qty),
                   onRemove: () => onRemove(item.productId),
                   onMoveToWishlist: () => vm.saveToWishlist(item.productId),
-                  onSaveForLater: () =>
-                      vm.saveToWishlist(item.productId, removeFromCart: true),
+                  onSaveForLater: () => onSaveForLater(item.productId),
                 ),
             ],
           ),

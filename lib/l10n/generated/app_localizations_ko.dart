@@ -2456,6 +2456,12 @@ class AppLocalizationsKo extends AppLocalizations {
   String get cartRemoved => '장바구니에서 뺐어요';
 
   @override
+  String get cartWishlistRemovalFailed => '찜에는 저장했지만 장바구니에서 빼지 못했어요';
+
+  @override
+  String get cartRetryRemoval => '다시 빼기';
+
+  @override
   String get listLoading => '불러오는 중';
 
   @override

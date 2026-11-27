@@ -771,6 +771,8 @@
   "actionUndo": "撤销",
   "wishlistRemoved": "已从收藏中移除",
   "cartRemoved": "已从购物车移除",
+  "cartWishlistRemovalFailed": "已添加到收藏，但未能从购物车中移除。",
+  "cartRetryRemoval": "重试移除",
   "listLoading": "正在加载",
   "cartEmptyTitle": "购物车是空的",
   "cartEmptyDescription": "把喜欢的商品加入购物车吧。",
