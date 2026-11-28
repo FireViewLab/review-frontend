@@ -7284,6 +7284,18 @@ abstract class AppLocalizations {
   /// **'쇼핑몰 상품은 카테고리 이름으로 검색하며, 분류가 확정되지 않은 결과도 함께 표시합니다. 상세 분류는 쇼핑몰 원문을 확인해 주세요.'**
   String get searchUnconfirmedCategoriesNotice;
 
+  /// No description provided for @searchCatalogPageScope.
+  ///
+  /// In ko, this message translates to:
+  /// **'필터와 정렬은 현재 페이지에만 적용돼요.'**
+  String get searchCatalogPageScope;
+
+  /// No description provided for @searchCatalogParentScope.
+  ///
+  /// In ko, this message translates to:
+  /// **'필터와 정렬은 현재 페이지에만 적용돼요. 전체 상품 수와 페이지는 대분류 기준이에요.'**
+  String get searchCatalogParentScope;
+
   /// No description provided for @searchLoadedProductsScope.
   ///
   /// In ko, this message translates to:

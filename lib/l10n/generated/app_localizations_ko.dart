@@ -3868,6 +3868,13 @@ class AppLocalizationsKo extends AppLocalizations {
       '쇼핑몰 상품은 카테고리 이름으로 검색하며, 분류가 확정되지 않은 결과도 함께 표시합니다. 상세 분류는 쇼핑몰 원문을 확인해 주세요.';
 
   @override
+  String get searchCatalogPageScope => '필터와 정렬은 현재 페이지에만 적용돼요.';
+
+  @override
+  String get searchCatalogParentScope =>
+      '필터와 정렬은 현재 페이지에만 적용돼요. 전체 상품 수와 페이지는 대분류 기준이에요.';
+
+  @override
   String searchLoadedProductsScope(int count, int limit) {
     return '현재 불러온 $count개 상품에서 필터·정렬합니다. 키워드 검색은 최대 $limit개 결과이며 전체 쇼핑몰 상품 검색 필터가 아닙니다. 배송·판매량·출시일·사진 리뷰 정보는 제공되지 않아 해당 조건은 지원하지 않습니다.';
   }

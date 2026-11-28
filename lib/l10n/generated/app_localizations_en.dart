@@ -4027,6 +4027,14 @@ class AppLocalizationsEn extends AppLocalizations {
       'Shop products are searched by category name and may include unconfirmed classifications. Check the shop\'s original listing for detailed categories.';
 
   @override
+  String get searchCatalogPageScope =>
+      'Filters and sorting apply to the current page.';
+
+  @override
+  String get searchCatalogParentScope =>
+      'Filters and sorting apply to the current page. The product total and pages are for the top-level category.';
+
+  @override
   String searchLoadedProductsScope(int count, int limit) {
     return 'Filters and sorting apply to the $count loaded products. Keyword searches return up to $limit results, not all shop products. Shipping, sales, release dates, and photo-review data are unavailable, so those conditions are unsupported.';
   }

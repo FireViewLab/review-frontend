@@ -19,7 +19,7 @@ class SearchEmptyState extends StatelessWidget {
     final l10n = AppLocalizations.of(context);
     return EmptyStateView(
       title: l10n.searchEmptyTitle,
-      message: state.query.isEmpty
+      message: state.query.isEmpty && !state.isCatalog
           ? l10n.searchEmptyQueryDescription
           : l10n.searchEmptyDescription,
       primaryActionLabel: l10n.wishlistBrowse,

@@ -71,6 +71,14 @@ final _idsByCatalogCode = {
   for (final entry in _catalogCodes.entries) entry.value: entry.key,
 };
 
+ResolvedProductCategory? resolveCatalogCategory(
+  String? value, {
+  String? displayName,
+}) => resolveProductCategory(
+  _idsByCatalogCode[value?.trim().toUpperCase()] ?? value,
+  displayName: displayName,
+);
+
 class ProductCatalogCategory {
   const ProductCatalogCategory._({required this.code, this.localFilterId});
 
@@ -97,7 +105,7 @@ class ProductCatalogCategory {
 
     final catalogId = _idsByCatalogCode[category];
     for (final candidate in [
-      if (catalogId != null) catalogId,
+      ?catalogId,
       category,
       categoryDisplayName,
       if (subCategory != null) ...subCategory.split('>').reversed,

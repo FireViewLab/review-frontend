@@ -51,13 +51,18 @@ class ResultColumn extends StatelessWidget {
     return SliverWidthBuilder(
       builder: (context, width) {
         final columns = ProductGrid.columnsForWidth(width);
-        final totalPages = products.isEmpty
-            ? 1
-            : (products.length / pageSize).ceil();
+        final totalPages = searchPageCount(
+          state.isCatalog ? state.displayTotalCount : products.length,
+          pageSize,
+        );
         final activePage = currentPage.clamp(1, totalPages);
         final pageStart = (activePage - 1) * pageSize;
-        final pageEnd = (pageStart + pageSize).clamp(0, products.length);
-        final pageProducts = products.sublist(pageStart, pageEnd);
+        final pageProducts = state.isCatalog
+            ? products
+            : products.sublist(
+                pageStart,
+                (pageStart + pageSize).clamp(0, products.length),
+              );
         return SliverMainAxisGroup(
           slivers: [
             SliverToBoxAdapter(
@@ -72,7 +77,7 @@ class ResultColumn extends StatelessWidget {
                     hasPolicyIndex: state.sourceProducts.any(
                       (p) => p.analysisDisplay.isV2,
                     ),
-                    resultCount: products.length,
+                    resultCount: state.displayTotalCount,
                     sortOption: sortOption,
                     viewMode: viewMode,
                     pageSize: pageSize,
@@ -97,23 +102,21 @@ class ResultColumn extends StatelessWidget {
                   onPrimaryAction: onResetFilters,
                 ),
               )
-            else ...[
-              if (viewMode == SearchViewMode.grid)
-                ProductGrid(products: pageProducts, columns: columns)
-              else
-                ProductList(products: pageProducts),
-              if (totalPages > 1)
-                SliverToBoxAdapter(
-                  child: Padding(
-                    padding: const EdgeInsets.only(top: AppSpacing.lg),
-                    child: Pagination(
-                      currentPage: activePage,
-                      totalPages: totalPages,
-                      onPageSelected: onPageSelected,
-                    ),
+            else if (viewMode == SearchViewMode.grid)
+              ProductGrid(products: pageProducts, columns: columns)
+            else
+              ProductList(products: pageProducts),
+            if (totalPages > 1)
+              SliverToBoxAdapter(
+                child: Padding(
+                  padding: const EdgeInsets.only(top: AppSpacing.lg),
+                  child: Pagination(
+                    currentPage: activePage,
+                    totalPages: totalPages,
+                    onPageSelected: onPageSelected,
                   ),
                 ),
-            ],
+              ),
           ],
         );
       },

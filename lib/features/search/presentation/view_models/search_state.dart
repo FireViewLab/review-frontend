@@ -1,6 +1,5 @@
 import 'package:re_view_front/core/error/failure.dart';
 import 'package:re_view_front/features/search/domain/entities/search_result_product.dart';
-
 import 'package:re_view_front/features/search/domain/usecases/search_products_use_case.dart';
 
 sealed class SearchState {
@@ -22,7 +21,6 @@ sealed class SearchCompleted extends SearchState {
   const SearchCompleted({required this.params});
 
   final SearchParams params;
-  String get query => params.query;
 }
 
 class SearchSuccess extends SearchCompleted {
