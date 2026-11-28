@@ -314,23 +314,38 @@ class FilterPanel extends StatelessWidget {
                   ),
               ],
             ),
-            const SizedBox(height: AppSpacing.md),
-            SizedBox(
-              width: double.infinity,
-              child: FilledButton(
-                onPressed: onShowResults,
-                child: Text(
-                  AppLocalizations.of(
-                    context,
-                  ).searchFilterShowResults(resultCount),
-                ),
-              ),
-            ),
+            if (onShowResults case final VoidCallback showResults) ...[
+              const SizedBox(height: AppSpacing.md),
+              FilterResultsButton(count: resultCount, onPressed: showResults),
+            ],
           ],
         ),
       ),
     );
   }
+}
+
+class FilterResultsButton extends StatelessWidget {
+  const FilterResultsButton({
+    super.key,
+    required this.count,
+    required this.onPressed,
+  });
+
+  final int count;
+  final VoidCallback onPressed;
+
+  @override
+  Widget build(BuildContext context) => SizedBox(
+    width: double.infinity,
+    child: FilledButton(
+      onPressed: onPressed,
+      child: Text(
+        AppLocalizations.of(context).searchFilterShowResults(count),
+        textAlign: TextAlign.center,
+      ),
+    ),
+  );
 }
 
 String _localizedFilterLabel(BuildContext context, String label) {

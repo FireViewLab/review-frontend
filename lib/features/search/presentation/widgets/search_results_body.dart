@@ -114,9 +114,9 @@ class SearchResultsBody extends StatelessWidget {
 
     final useSingleColumn =
         context.isMobile || MediaQuery.sizeOf(context).width < 1080;
-    Widget filters({bool compact = false, VoidCallback? onShowResults}) =>
+    FilterPanel filters({bool compact = false, bool inSheet = false}) =>
         FilterPanel(
-          onShowResults: onShowResults ?? showResults,
+          onShowResults: inSheet ? null : showResults,
           state: state,
           selectedCategories: selectedCategories,
           selectedPriceRanges: selectedPriceRanges,
@@ -157,8 +157,7 @@ class SearchResultsBody extends StatelessWidget {
                   _MobileFilterBar(
                     activeCount: _activeFilterCount,
                     onResetFilters: onResetFilters,
-                    panelBuilder: (onShowResults) =>
-                        filters(compact: true, onShowResults: onShowResults),
+                    panelBuilder: () => filters(compact: true, inSheet: true),
                     onShowResults: showResults,
                   )
                 else
@@ -216,7 +215,7 @@ extension on SearchResultsBody {
 
 // ─── Mobile filter sheet ─────────────────────────────────────────────────────
 
-typedef _FilterPanelBuilder = Widget Function(VoidCallback onShowResults);
+typedef _FilterPanelBuilder = FilterPanel Function();
 
 /// 휴대폰 폭의 필터 버튼. 시트가 열린 동안에도 화면 상태가 바뀌면
 /// 최신 패널을 다시 그리도록 빌더를 [ValueNotifier]로 넘긴다.
@@ -256,37 +255,70 @@ class _MobileFilterBarState extends State<_MobileFilterBar> {
   }
 
   Future<void> _openSheet() async {
-    var showResults = false;
-    await showModalBottomSheet<void>(
+    Future<bool?>? dismissal;
+    final accepted = await showModalBottomSheet<bool>(
       context: context,
       isScrollControlled: true,
       useSafeArea: true,
       showDragHandle: true,
       backgroundColor: AppColors.background,
-      builder: (sheetContext) => DraggableScrollableSheet(
-        expand: false,
-        initialChildSize: 0.85,
-        minChildSize: 0.4,
-        maxChildSize: 0.95,
-        builder: (context, controller) => SingleChildScrollView(
-          controller: controller,
-          padding: const EdgeInsets.fromLTRB(
-            AppSpacing.md,
-            0,
-            AppSpacing.md,
-            AppSpacing.lg,
-          ),
-          child: ValueListenableBuilder<_FilterPanelBuilder>(
-            valueListenable: _panel,
-            builder: (context, build, _) => build(() {
-              showResults = true;
-              Navigator.of(sheetContext).pop();
-            }),
-          ),
+      builder: (sheetContext) => Padding(
+        padding: EdgeInsets.only(
+          bottom: MediaQuery.viewInsetsOf(sheetContext).bottom,
+        ),
+        child: DraggableScrollableSheet(
+          expand: false,
+          initialChildSize: 0.85,
+          minChildSize: 0.4,
+          maxChildSize: 0.95,
+          builder: (context, controller) =>
+              ValueListenableBuilder<_FilterPanelBuilder>(
+                valueListenable: _panel,
+                builder: (context, buildPanel, _) {
+                  final panel = buildPanel();
+                  return Column(
+                    children: [
+                      Expanded(
+                        child: SingleChildScrollView(
+                          controller: controller,
+                          padding: const EdgeInsets.fromLTRB(
+                            AppSpacing.md,
+                            0,
+                            AppSpacing.md,
+                            AppSpacing.xs,
+                          ),
+                          child: panel,
+                        ),
+                      ),
+                      SafeArea(
+                        top: false,
+                        minimum: const EdgeInsets.fromLTRB(
+                          AppSpacing.md,
+                          AppSpacing.xs,
+                          AppSpacing.md,
+                          AppSpacing.sm,
+                        ),
+                        child: FilterResultsButton(
+                          count: panel.resultCount,
+                          onPressed: () {
+                            dismissal = ModalRoute.of<bool>(
+                              sheetContext,
+                            )?.completed;
+                            FocusScope.of(sheetContext).unfocus();
+                            Navigator.of(sheetContext).pop(true);
+                          },
+                        ),
+                      ),
+                    ],
+                  );
+                },
+              ),
         ),
       ),
     );
-    if (showResults && mounted) widget.onShowResults();
+    if (accepted != true) return;
+    await dismissal;
+    if (mounted) widget.onShowResults();
   }
 
   @override
