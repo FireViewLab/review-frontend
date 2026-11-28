@@ -21,11 +21,18 @@ class Pagination extends StatelessWidget {
     if (totalPages < 2) return const SizedBox.shrink();
     final activePage = currentPage.clamp(1, totalPages);
     final l10n = AppLocalizations.of(context);
+    final position = l10n.searchPaginationPosition(activePage, totalPages);
     final previous = _PageButton(
+      key: const ValueKey('previous-page'),
+      semanticLabel: l10n.searchPaginationPrevious,
+      showTooltip: true,
       onPressed: activePage > 1 ? () => onPageSelected(activePage - 1) : null,
       child: const Icon(Icons.chevron_left, size: 18),
     );
     final next = _PageButton(
+      key: const ValueKey('next-page'),
+      semanticLabel: l10n.searchPaginationNext,
+      showTooltip: true,
       onPressed: activePage < totalPages
           ? () => onPageSelected(activePage + 1)
           : null,
@@ -41,9 +48,17 @@ class Pagination extends StatelessWidget {
               previous,
               const SizedBox(width: AppSpacing.xs),
               Flexible(
-                child: Text(
-                  l10n.searchPaginationPosition(activePage, totalPages),
-                  textAlign: TextAlign.center,
+                child: Semantics(
+                  label: position,
+                  liveRegion: true,
+                  excludeSemantics: true,
+                  child: Text(
+                    l10n.searchPaginationCompactPosition(
+                      activePage,
+                      totalPages,
+                    ),
+                    textAlign: TextAlign.center,
+                  ),
                 ),
               ),
               const SizedBox(width: AppSpacing.xs),
@@ -69,10 +84,14 @@ class Pagination extends StatelessWidget {
           children: [
             previous,
             for (var i = 0; i < pages.length; i++) ...[
-              if (i > 0 && pages[i] - pages[i - 1] > 1) const Text('…'),
+              if (i > 0 && pages[i] - pages[i - 1] > 1)
+                const ExcludeSemantics(child: Text('…')),
               _PageButton(
                 key: ValueKey(pages[i]),
                 selected: pages[i] == activePage,
+                semanticLabel: pages[i] == activePage
+                    ? position
+                    : l10n.searchPaginationGoToPage(pages[i]),
                 onPressed: () => onPageSelected(pages[i]),
                 child: Text(pageNumber.format(pages[i])),
               ),
@@ -90,16 +109,20 @@ class _PageButton extends StatelessWidget {
     super.key,
     required this.onPressed,
     required this.child,
+    required this.semanticLabel,
     this.selected = false,
+    this.showTooltip = false,
   });
 
   final bool selected;
   final VoidCallback? onPressed;
   final Widget child;
+  final String semanticLabel;
+  final bool showTooltip;
 
   @override
   Widget build(BuildContext context) {
-    return OutlinedButton(
+    final button = OutlinedButton(
       onPressed: onPressed,
       style: OutlinedButton.styleFrom(
         minimumSize: const Size.square(48),
@@ -111,7 +134,19 @@ class _PageButton extends StatelessWidget {
         foregroundColor: selected ? AppColors.onPrimary : AppColors.textPrimary,
         shape: RoundedRectangleBorder(borderRadius: AppRadius.small),
       ),
-      child: child,
+      child: Semantics(
+        label: semanticLabel,
+        selected: selected ? true : null,
+        liveRegion: selected,
+        child: ExcludeSemantics(child: child),
+      ),
     );
+    return showTooltip
+        ? Tooltip(
+            message: semanticLabel,
+            excludeFromSemantics: true,
+            child: button,
+          )
+        : button;
   }
 }

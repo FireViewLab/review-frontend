@@ -3879,6 +3879,35 @@ class AppLocalizationsJa extends AppLocalizations {
   }
 
   @override
+  String searchPaginationCompactPosition(int page, int total) {
+    final intl.NumberFormat pageNumberFormat = intl.NumberFormat.decimalPattern(
+      localeName,
+    );
+    final String pageString = pageNumberFormat.format(page);
+    final intl.NumberFormat totalNumberFormat =
+        intl.NumberFormat.decimalPattern(localeName);
+    final String totalString = totalNumberFormat.format(total);
+
+    return '$pageString / $totalString';
+  }
+
+  @override
+  String get searchPaginationPrevious => '前のページ';
+
+  @override
+  String get searchPaginationNext => '次のページ';
+
+  @override
+  String searchPaginationGoToPage(int page) {
+    final intl.NumberFormat pageNumberFormat = intl.NumberFormat.decimalPattern(
+      localeName,
+    );
+    final String pageString = pageNumberFormat.format(page);
+
+    return '$pageStringページへ移動';
+  }
+
+  @override
   String get searchCatalogPageScope => '絞り込みと並べ替えは現在のページに適用されます。';
 
   @override

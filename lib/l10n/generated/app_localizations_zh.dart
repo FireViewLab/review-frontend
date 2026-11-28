@@ -3825,6 +3825,35 @@ class AppLocalizationsZh extends AppLocalizations {
   }
 
   @override
+  String searchPaginationCompactPosition(int page, int total) {
+    final intl.NumberFormat pageNumberFormat = intl.NumberFormat.decimalPattern(
+      localeName,
+    );
+    final String pageString = pageNumberFormat.format(page);
+    final intl.NumberFormat totalNumberFormat =
+        intl.NumberFormat.decimalPattern(localeName);
+    final String totalString = totalNumberFormat.format(total);
+
+    return '$pageString / $totalString';
+  }
+
+  @override
+  String get searchPaginationPrevious => '上一页';
+
+  @override
+  String get searchPaginationNext => '下一页';
+
+  @override
+  String searchPaginationGoToPage(int page) {
+    final intl.NumberFormat pageNumberFormat = intl.NumberFormat.decimalPattern(
+      localeName,
+    );
+    final String pageString = pageNumberFormat.format(page);
+
+    return '转到第 $pageString 页';
+  }
+
+  @override
   String get searchCatalogPageScope => '筛选和排序仅适用于当前页。';
 
   @override

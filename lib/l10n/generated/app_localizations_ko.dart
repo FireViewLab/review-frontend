@@ -3881,6 +3881,35 @@ class AppLocalizationsKo extends AppLocalizations {
   }
 
   @override
+  String searchPaginationCompactPosition(int page, int total) {
+    final intl.NumberFormat pageNumberFormat = intl.NumberFormat.decimalPattern(
+      localeName,
+    );
+    final String pageString = pageNumberFormat.format(page);
+    final intl.NumberFormat totalNumberFormat =
+        intl.NumberFormat.decimalPattern(localeName);
+    final String totalString = totalNumberFormat.format(total);
+
+    return '$pageString / $totalString';
+  }
+
+  @override
+  String get searchPaginationPrevious => '이전 페이지';
+
+  @override
+  String get searchPaginationNext => '다음 페이지';
+
+  @override
+  String searchPaginationGoToPage(int page) {
+    final intl.NumberFormat pageNumberFormat = intl.NumberFormat.decimalPattern(
+      localeName,
+    );
+    final String pageString = pageNumberFormat.format(page);
+
+    return '$pageString페이지로 이동';
+  }
+
+  @override
   String get searchCatalogPageScope => '필터와 정렬은 현재 페이지에만 적용돼요.';
 
   @override
