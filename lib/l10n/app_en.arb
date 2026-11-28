@@ -1159,6 +1159,8 @@
   "detailTrend": "Risk trend",
   "detailTrendDescription": "Shows changes in average review RTI and the share of risky reviews.",
   "detailTrendPending": "Risk trends are available after AI analysis is complete",
+  "detailTrendEmptyPeriod": "No analysis data for the selected period.",
+  "detailTrendSingleScore": "Average RTI: {score}",
   "detailAverageRti": "Average RTI",
   "detailRiskyReviewRatio": "Risky review ratio",
   "detailToday": "Today",

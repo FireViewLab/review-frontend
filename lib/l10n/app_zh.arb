@@ -1145,6 +1145,8 @@
   "detailTrend": "风险趋势",
   "detailTrendDescription": "显示商品评价平均 RTI 和风险评价比例的变化。",
   "detailTrendPending": "AI 分析完成后可查看风险趋势",
+  "detailTrendEmptyPeriod": "所选时段内暂无分析数据。",
+  "detailTrendSingleScore": "平均 RTI：{score} 分",
   "detailAverageRti": "平均 RTI",
   "detailRiskyReviewRatio": "风险评价比例",
   "detailToday": "今天",

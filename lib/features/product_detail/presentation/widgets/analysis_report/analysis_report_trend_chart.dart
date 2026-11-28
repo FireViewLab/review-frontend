@@ -4,21 +4,31 @@ import 'package:re_view_front/l10n/generated/app_localizations.dart';
 import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
-import 'package:re_view_front/features/product_detail/domain/entities/product_analysis_result.dart';
+import 'package:flutter/foundation.dart' show listEquals;
+import 'package:intl/intl.dart' show DateFormat;
+import 'package:re_view_front/features/product_detail/presentation/formatters/analysis_trend_period.dart';
 import 'package:re_view_front/app/theme/app_colors.dart';
 
 // Chart Widget
 class AnalysisReportTrendChart extends StatelessWidget {
-  const AnalysisReportTrendChart({required this.points});
-  final List<AnalysisTrendPoint> points;
+  const AnalysisReportTrendChart({required this.points, required this.today});
+  final List<DatedAnalysisTrendPoint> points;
+  final DateTime today;
 
   @override
   Widget build(BuildContext context) {
-    if (points.isEmpty) return const SizedBox.shrink();
+    if (points.length < 2) return const SizedBox.shrink();
+    final l10n = AppLocalizations.of(context);
+    final dateFormat = DateFormat.Md(l10n.localeName);
     return CustomPaint(
       painter: AnalysisReportTrendChartPainter(
         points: points,
-        todayLabel: AppLocalizations.of(context).detailToday,
+        dateLabels: [
+          for (final observation in points)
+            DateUtils.isSameDay(observation.localDate, today)
+                ? l10n.detailToday
+                : dateFormat.format(observation.localDate),
+        ],
       ),
       size: Size.infinite,
     );
@@ -28,10 +38,10 @@ class AnalysisReportTrendChart extends StatelessWidget {
 class AnalysisReportTrendChartPainter extends CustomPainter {
   const AnalysisReportTrendChartPainter({
     required this.points,
-    required this.todayLabel,
+    required this.dateLabels,
   });
-  final String todayLabel;
-  final List<AnalysisTrendPoint> points;
+  final List<String> dateLabels;
+  final List<DatedAnalysisTrendPoint> points;
 
   @override
   void paint(Canvas canvas, Size size) {
@@ -80,11 +90,12 @@ class AnalysisReportTrendChartPainter extends CustomPainter {
 
     final rtiPts = List.generate(
       points.length,
-      (i) => pt(i, points[i].averageRti),
+      (i) => pt(i, points[i].point.averageRti),
     );
     final dangerPts = List.generate(points.length, (i) {
-      final rc = points[i].reviewCount;
-      final pct = rc > 0 ? points[i].dangerCount / rc * 100 : 0.0;
+      final point = points[i].point;
+      final rc = point.reviewCount;
+      final pct = rc > 0 ? point.dangerCount / rc * 100 : 0.0;
       return pt(i, pct);
     });
 
@@ -129,9 +140,9 @@ class AnalysisReportTrendChartPainter extends CustomPainter {
     // X-axis date labels
     final labelCount = math.min(5, points.length);
     final step = (points.length / labelCount).ceil().clamp(1, 999);
-    for (var i = 0; i < points.length; i += step) {
+    for (var i = 0; i < points.length - 1; i += step) {
       final x = chartLeft + chartW * i / (points.length - 1);
-      final dateLabel = _fmtDate(points[i].date);
+      final dateLabel = dateLabels[i];
       final tp = TextPainter(
         text: TextSpan(text: dateLabel, style: labelStyle),
         textDirection: TextDirection.ltr,
@@ -141,7 +152,7 @@ class AnalysisReportTrendChartPainter extends CustomPainter {
     // Always show last
     {
       final tp = TextPainter(
-        text: TextSpan(text: todayLabel, style: labelStyle),
+        text: TextSpan(text: dateLabels.last, style: labelStyle),
         textDirection: TextDirection.ltr,
       )..layout();
       tp.paint(
@@ -207,16 +218,8 @@ class AnalysisReportTrendChartPainter extends CustomPainter {
     }
   }
 
-  static String _fmtDate(String raw) {
-    try {
-      final dt = DateTime.parse(raw);
-      return '${dt.month}/${dt.day}';
-    } catch (_) {
-      return raw.length > 5 ? raw.substring(5) : raw;
-    }
-  }
-
   @override
   bool shouldRepaint(AnalysisReportTrendChartPainter old) =>
-      old.points != points || old.todayLabel != todayLabel;
+      !listEquals(old.points, points) ||
+      !listEquals(old.dateLabels, dateLabels);
 }

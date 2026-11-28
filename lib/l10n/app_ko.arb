@@ -1968,6 +1968,14 @@
   "detailTrend": "위험도 추이",
   "detailTrendDescription": "상품 리뷰의 평균 RTI와 위험 리뷰 비율 변화를 보여줘요.",
   "detailTrendPending": "AI 분석 완료 후 위험도 추이를 확인할 수 있습니다",
+  "detailTrendEmptyPeriod": "선택한 기간에 분석 기록이 없어요.",
+  "detailTrendSingleScore": "평균 RTI {score}점",
+  "@detailTrendSingleScore": {
+    "description": "Average RTI score when only one trend observation is available.",
+    "placeholders": {
+      "score": {"type": "double", "format": "decimalPattern"}
+    }
+  },
   "detailAverageRti": "평균 RTI",
   "detailRiskyReviewRatio": "위험 리뷰 비율",
   "detailToday": "오늘",

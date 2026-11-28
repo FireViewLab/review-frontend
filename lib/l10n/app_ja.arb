@@ -1145,6 +1145,8 @@
   "detailTrend": "リスクの推移",
   "detailTrendDescription": "商品レビューの平均RTIと危険なレビューの割合の変化を表示します。",
   "detailTrendPending": "AI分析の完了後にリスクの推移を確認できます",
+  "detailTrendEmptyPeriod": "選択した期間に分析データはありません。",
+  "detailTrendSingleScore": "平均RTI {score}点",
   "detailAverageRti": "平均RTI",
   "detailRiskyReviewRatio": "危険なレビューの割合",
   "detailToday": "今日",

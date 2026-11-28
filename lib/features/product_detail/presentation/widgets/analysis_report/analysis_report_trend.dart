@@ -2,10 +2,12 @@ import 'package:re_view_front/l10n/generated/app_localizations.dart';
 // ignore_for_file: use_key_in_widget_constructors
 
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart' show DateFormat;
 import 'package:shimmer/shimmer.dart';
 import 'package:re_view_front/app/theme/app_colors.dart';
 import 'package:re_view_front/app/theme/app_spacing.dart';
 import 'package:re_view_front/features/product_detail/domain/entities/product_analysis_result.dart';
+import 'package:re_view_front/features/product_detail/presentation/formatters/analysis_trend_period.dart';
 import 'package:re_view_front/features/product_detail/presentation/widgets/analysis_report/analysis_report_trend_chart.dart';
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -29,21 +31,15 @@ class AnalysisReportTrendSectionState
     extends State<AnalysisReportTrendSection> {
   int _selectedDays = 30;
 
-  List<AnalysisTrendPoint> get _filtered {
-    if (widget.trend.isEmpty) return [];
-    final cutoff = DateTime.now().subtract(Duration(days: _selectedDays));
-    final filtered = widget.trend.where((p) {
-      try {
-        return DateTime.parse(p.date).isAfter(cutoff);
-      } catch (_) {
-        return true;
-      }
-    }).toList();
-    return filtered.isEmpty ? widget.trend : filtered;
-  }
-
   @override
   Widget build(BuildContext context) {
+    final now = DateTime.now();
+    final points = filterAnalysisTrendByPeriod(
+      widget.trend,
+      now: now,
+      days: _selectedDays,
+    );
+    final l10n = AppLocalizations.of(context);
     return DecoratedBox(
       decoration: BoxDecoration(
         color: AppColors.surface,
@@ -156,7 +152,7 @@ class AnalysisReportTrendSectionState
                   ),
                 ),
               )
-            else if (widget.trend.isEmpty)
+            else if (points.isEmpty)
               Container(
                 height: 160,
                 decoration: BoxDecoration(
@@ -164,9 +160,10 @@ class AnalysisReportTrendSectionState
                   borderRadius: BorderRadius.circular(AppRadius.sm),
                   border: Border.all(color: AppColors.border),
                 ),
-                child: Center(
+                child: Padding(
+                  padding: const EdgeInsets.all(AppSpacing.sm),
                   child: Column(
-                    mainAxisSize: MainAxisSize.min,
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Icon(
                         Icons.show_chart,
@@ -175,7 +172,8 @@ class AnalysisReportTrendSectionState
                       ),
                       const SizedBox(height: AppSpacing.xs),
                       Text(
-                        AppLocalizations.of(context).detailTrendPending,
+                        l10n.detailTrendEmptyPeriod,
+                        textAlign: TextAlign.center,
                         style: Theme.of(context).textTheme.labelSmall?.copyWith(
                           color: AppColors.textTertiary,
                         ),
@@ -184,12 +182,13 @@ class AnalysisReportTrendSectionState
                   ),
                 ),
               )
-            else
+            else if (points.length == 1)
+              _SingleTrendObservation(observation: points.single)
+            else ...[
               SizedBox(
                 height: 200,
-                child: AnalysisReportTrendChart(points: _filtered),
+                child: AnalysisReportTrendChart(points: points, today: now),
               ),
-            if (widget.trend.isNotEmpty) ...[
               const SizedBox(height: AppSpacing.sm),
               Row(
                 children: [
@@ -205,6 +204,42 @@ class AnalysisReportTrendSectionState
                 ],
               ),
             ],
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class _SingleTrendObservation extends StatelessWidget {
+  const _SingleTrendObservation({required this.observation});
+
+  final DatedAnalysisTrendPoint observation;
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
+    final date = DateFormat.yMMMd(
+      l10n.localeName,
+    ).format(observation.localDate);
+    final score = observation.point.averageRti;
+
+    return SizedBox(
+      width: double.infinity,
+      child: Padding(
+        padding: const EdgeInsets.symmetric(vertical: AppSpacing.lg),
+        child: Column(
+          children: [
+            Text(date, textAlign: TextAlign.center),
+            const SizedBox(height: AppSpacing.xs),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const Icon(Icons.circle, size: 8, color: AppColors.primary),
+                const SizedBox(width: AppSpacing.xs),
+                Flexible(child: Text(l10n.detailTrendSingleScore(score))),
+              ],
+            ),
           ],
         ),
       ),

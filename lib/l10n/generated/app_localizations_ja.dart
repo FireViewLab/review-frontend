@@ -3671,6 +3671,18 @@ class AppLocalizationsJa extends AppLocalizations {
   String get detailTrendPending => 'AI分析の完了後にリスクの推移を確認できます';
 
   @override
+  String get detailTrendEmptyPeriod => '選択した期間に分析データはありません。';
+
+  @override
+  String detailTrendSingleScore(double score) {
+    final intl.NumberFormat scoreNumberFormat =
+        intl.NumberFormat.decimalPattern(localeName);
+    final String scoreString = scoreNumberFormat.format(score);
+
+    return '平均RTI $scoreString点';
+  }
+
+  @override
   String get detailAverageRti => '平均RTI';
 
   @override

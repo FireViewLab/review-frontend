@@ -3673,6 +3673,18 @@ class AppLocalizationsKo extends AppLocalizations {
   String get detailTrendPending => 'AI 분석 완료 후 위험도 추이를 확인할 수 있습니다';
 
   @override
+  String get detailTrendEmptyPeriod => '선택한 기간에 분석 기록이 없어요.';
+
+  @override
+  String detailTrendSingleScore(double score) {
+    final intl.NumberFormat scoreNumberFormat =
+        intl.NumberFormat.decimalPattern(localeName);
+    final String scoreString = scoreNumberFormat.format(score);
+
+    return '평균 RTI $scoreString점';
+  }
+
+  @override
   String get detailAverageRti => '평균 RTI';
 
   @override
