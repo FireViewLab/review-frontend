@@ -1,6 +1,9 @@
 import 'package:re_view_front/shared/widgets/product_review_metrics.dart';
 import 'package:re_view_front/app/theme/app_motion.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:re_view_front/features/settings/presentation/providers/settings_providers.dart';
+import 'package:re_view_front/shared/widgets/product_card_layout.dart';
 import 'package:go_router/go_router.dart';
 import 'package:re_view_front/app/theme/app_colors.dart';
 import 'package:re_view_front/app/theme/app_spacing.dart';
@@ -9,21 +12,25 @@ import 'package:re_view_front/shared/presentation/product_formatters.dart';
 import 'package:re_view_front/shared/widgets/app_network_image.dart';
 import 'package:re_view_front/features/search/presentation/widgets/search_product_actions.dart';
 
-class SearchProductCard extends StatefulWidget {
+class SearchProductCard extends ConsumerStatefulWidget {
   const SearchProductCard({super.key, required this.product});
 
   final SearchResultProduct product;
 
   @override
-  State<SearchProductCard> createState() => _SearchProductCardState();
+  ConsumerState<SearchProductCard> createState() => _SearchProductCardState();
 }
 
-class _SearchProductCardState extends State<SearchProductCard> {
+class _SearchProductCardState extends ConsumerState<SearchProductCard> {
   bool _hovered = false;
 
   @override
   Widget build(BuildContext context) {
     final product = widget.product;
+    final compact =
+        ref.watch(confirmedDisplayPreferencesProvider)?.cardDensity ==
+        'COMPACT';
+    final spacing = compact ? AppSpacing.xxs : AppSpacing.xs;
 
     return MouseRegion(
       cursor: SystemMouseCursors.click,
@@ -59,64 +66,65 @@ class _SearchProductCardState extends State<SearchProductCard> {
             onTap: () => openSearchProductDetail(context, product),
             borderRadius: BorderRadius.circular(10),
             child: Column(
+              mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                Expanded(
-                  child: Stack(
-                    fit: StackFit.expand,
-                    children: [
-                      AnimatedScale(
-                        scale:
-                            _hovered && !MediaQuery.disableAnimationsOf(context)
-                            ? 1.035
-                            : 1,
-                        duration: AppMotion.of(context, AppMotion.fast),
-                        curve: AppMotion.enter,
-                        child: AppNetworkImage(
-                          url: product.imageUrl,
-                          thumbnailWidth: 480,
-                          borderRadius: const BorderRadius.vertical(
-                            top: Radius.circular(9),
+                Flexible(
+                  child: Align(
+                    heightFactor: 1,
+                    child: AspectRatio(
+                      aspectRatio: productCardImageAspectRatio,
+                      child: Stack(
+                        fit: StackFit.expand,
+                        children: [
+                          AnimatedScale(
+                            scale:
+                                _hovered &&
+                                    !MediaQuery.disableAnimationsOf(context)
+                                ? 1.035
+                                : 1,
+                            duration: AppMotion.of(context, AppMotion.fast),
+                            curve: AppMotion.enter,
+                            child: AppNetworkImage(
+                              url: product.imageUrl,
+                              thumbnailWidth: 480,
+                              borderRadius: const BorderRadius.vertical(
+                                top: Radius.circular(9),
+                              ),
+                            ),
                           ),
-                        ),
+                          Positioned.fill(
+                            child: SearchProductHoverTapLayer(
+                              onEnter: () => setState(() => _hovered = true),
+                              onExit: () => setState(() => _hovered = false),
+                              onTap: () =>
+                                  openSearchProductDetail(context, product),
+                            ),
+                          ),
+                        ],
                       ),
-                      Positioned.fill(
-                        child: SearchProductHoverTapLayer(
-                          onEnter: () => setState(() => _hovered = true),
-                          onExit: () => setState(() => _hovered = false),
-                          onTap: () =>
-                              openSearchProductDetail(context, product),
-                        ),
-                      ),
-                    ],
+                    ),
                   ),
                 ),
                 Padding(
-                  padding: const EdgeInsets.all(AppSpacing.xs),
+                  padding: EdgeInsets.all(spacing),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       // RTI 배지는 이미지 위에 겹치지 않고 정보 영역에 둔다.
-                      Row(
-                        children: [
-                          Expanded(
-                            child: Text(
-                              product.platform ?? '',
-                              maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
-                              style: Theme.of(context).textTheme.labelSmall
-                                  ?.copyWith(
-                                    color: AppColors.textSecondary,
-                                    fontWeight: FontWeight.w800,
-                                    fontSize: 11,
-                                  ),
-                            ),
-                          ),
-                          const SizedBox(width: AppSpacing.xs),
-                          const SizedBox.shrink(),
-                        ],
-                      ),
+                      if (product.platform case final String platform)
+                        Text(
+                          platform,
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                          style: Theme.of(context).textTheme.labelSmall
+                              ?.copyWith(
+                                color: AppColors.textSecondary,
+                                fontWeight: FontWeight.w800,
+                                fontSize: 11,
+                              ),
+                        ),
                       if (product.subCategory?.isNotEmpty ?? false)
                         Text(
                           product.subCategory!,
@@ -146,7 +154,7 @@ class _SearchProductCardState extends State<SearchProductCard> {
                           SearchProductQuickActions(productId: product.id),
                         ],
                       ),
-                      const SizedBox(height: AppSpacing.xs),
+                      SizedBox(height: spacing),
                       ProductReviewMetrics(
                         rating: product.avgRating,
                         reviewCount: product.reviewCount,
@@ -154,7 +162,7 @@ class _SearchProductCardState extends State<SearchProductCard> {
                         analyzedReviewCount:
                             product.summary?.catalogAnalysis?.reviewCount,
                       ),
-                      const SizedBox(height: AppSpacing.xs),
+                      SizedBox(height: spacing),
                       Text(
                         formatSearchPrice(product.price),
                         style: Theme.of(context).textTheme.titleMedium
