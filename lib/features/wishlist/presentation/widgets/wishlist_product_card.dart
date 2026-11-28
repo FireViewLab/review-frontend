@@ -1,3 +1,4 @@
+import 'package:re_view_front/shared/widgets/product_card_layout.dart';
 import 'package:re_view_front/shared/widgets/product_review_metrics.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -39,14 +40,21 @@ class WishlistProductCard extends StatelessWidget {
           ],
         ),
         child: Column(
+          mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            Expanded(
-              child: AppNetworkImage(
-                url: item.imageUrl,
-                thumbnailWidth: 480,
-                borderRadius: const BorderRadius.vertical(
-                  top: Radius.circular(9),
+            Flexible(
+              child: Align(
+                heightFactor: 1,
+                child: AspectRatio(
+                  aspectRatio: productCardImageAspectRatio,
+                  child: AppNetworkImage(
+                    url: item.imageUrl,
+                    thumbnailWidth: 480,
+                    borderRadius: const BorderRadius.vertical(
+                      top: Radius.circular(9),
+                    ),
+                  ),
                 ),
               ),
             ),
@@ -56,37 +64,27 @@ class WishlistProductCard extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  // 배지는 이미지 위에 겹치지 않고 정보 영역에 둔다.
-                  Builder(
-                    builder: (context) {
-                      final compact = MediaQuery.sizeOf(context).width < 1024;
-                      final platform = Text(
-                        item.platform ?? '',
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                        style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                          color: AppColors.textSecondary,
-                          fontWeight: FontWeight.w800,
-                          fontSize: 11,
-                        ),
-                      );
-                      final children = <Widget>[
-                        if (compact) platform else Expanded(child: platform),
-                        if (item.isPriceDrop) ...[
-                          const SizedBox(width: AppSpacing.xxs),
-                          _PriceDropBadge(),
-                        ],
-                        const SizedBox(width: AppSpacing.xxs),
-                      ];
-                      return compact
-                          ? Wrap(
-                              crossAxisAlignment: WrapCrossAlignment.center,
-                              runSpacing: AppSpacing.xxs,
-                              children: children,
-                            )
-                          : Row(children: children);
-                    },
-                  ),
+                  if (item.platform != null || item.isPriceDrop)
+                    Wrap(
+                      spacing: AppSpacing.xxs,
+                      runSpacing: AppSpacing.xxs,
+                      crossAxisAlignment: WrapCrossAlignment.center,
+                      children: [
+                        if (item.platform case final String platform)
+                          Text(
+                            platform,
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                            style: Theme.of(context).textTheme.labelSmall
+                                ?.copyWith(
+                                  color: AppColors.textSecondary,
+                                  fontWeight: FontWeight.w800,
+                                  fontSize: 11,
+                                ),
+                          ),
+                        if (item.isPriceDrop) _PriceDropBadge(),
+                      ],
+                    ),
                   const SizedBox(height: 2),
                   Text(
                     item.name,
@@ -146,8 +144,8 @@ class WishlistProductCard extends StatelessWidget {
                       ),
                       const SizedBox(width: AppSpacing.xs),
                       Expanded(
-                        child: SizedBox(
-                          height: 36,
+                        child: ConstrainedBox(
+                          constraints: const BoxConstraints(minHeight: 36),
                           child: OutlinedButton(
                             onPressed: () => context.go(
                               item.detailPath,
@@ -155,11 +153,13 @@ class WishlistProductCard extends StatelessWidget {
                             ),
                             style: outlineHoverButtonStyle(
                               padding: const EdgeInsets.symmetric(
-                                horizontal: AppSpacing.sm,
+                                horizontal: AppSpacing.xs,
+                                vertical: AppSpacing.xxs,
                               ),
                             ),
                             child: Text(
                               AppLocalizations.of(context).wishlistProductView,
+                              textAlign: TextAlign.center,
                               style: Theme.of(context).textTheme.labelSmall
                                   ?.copyWith(fontWeight: FontWeight.w900),
                             ),
@@ -201,12 +201,14 @@ class _PriceDropBadge extends StatelessWidget {
               size: 12,
             ),
             const SizedBox(width: 2),
-            Text(
-              AppLocalizations.of(context).wishlistProductPriceDrop,
-              style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                color: AppColors.error,
-                fontWeight: FontWeight.w900,
-                fontSize: 11,
+            Flexible(
+              child: Text(
+                AppLocalizations.of(context).wishlistProductPriceDrop,
+                style: Theme.of(context).textTheme.labelSmall?.copyWith(
+                  color: AppColors.error,
+                  fontWeight: FontWeight.w900,
+                  fontSize: 11,
+                ),
               ),
             ),
           ],

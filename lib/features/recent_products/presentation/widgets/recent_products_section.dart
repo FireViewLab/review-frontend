@@ -1,7 +1,6 @@
 import 'package:re_view_front/shared/widgets/empty_state_view.dart';
 import 'package:re_view_front/l10n/generated/app_localizations.dart';
 import 'package:re_view_front/shared/widgets/list_row_skeleton.dart';
-import 'package:re_view_front/shared/presentation/analysis_formatters.dart';
 import 'package:flutter/material.dart';
 import 'package:re_view_front/app/router/route_paths.dart';
 import 'package:re_view_front/features/my_page/presentation/widgets/my_page/personal_products_page.dart';
@@ -113,7 +112,8 @@ class _RecentBody extends ConsumerWidget {
         price: item.price,
         rating: item.avgRating,
         reviewCount: item.reviewCount,
-        rtiLabel: item.analysisDisplay.badgeText(context),
+        analysis: item.analysisDisplay,
+        analyzedReviewCount: item.summary?.catalogAnalysis?.reviewCount,
         onTap: () {
           context.go(item.detailPath, extra: item.routeContext);
         },

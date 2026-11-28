@@ -1,3 +1,4 @@
+import 'package:re_view_front/shared/widgets/product_card_layout.dart';
 import 'package:re_view_front/shared/widgets/empty_state_view.dart';
 import 'package:re_view_front/shared/widgets/list_row_skeleton.dart';
 import 'package:re_view_front/core/providers/core_providers.dart';
@@ -343,39 +344,41 @@ class _WishlistGrid extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final width = MediaQuery.sizeOf(context).width;
-    final crossAxisCount = switch (width) {
-      >= 1400 => 6,
-      >= 1100 => 5,
-      >= 860 => 4,
-      >= 600 => 3,
-      >= 400 => 2,
-      _ => 2,
-    };
-
-    return GridView.builder(
-      shrinkWrap: true,
-      physics: const NeverScrollableScrollPhysics(),
-      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisCount: crossAxisCount,
-        crossAxisSpacing: AppSpacing.sm,
-        mainAxisSpacing: AppSpacing.sm,
-        childAspectRatio: width < 1024
-            ? 0.62 / (MediaQuery.textScalerOf(context).scale(14) / 14)
-            : 0.62,
-      ),
-      itemCount: items.length,
-      itemBuilder: (context, index) {
-        final item = items[index];
-        return WishlistProductCard(
-          item: item,
-          isToggling: togglingProductIds.contains(item.productId),
-          onRemove: () => onRemove(item.productId),
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        final columns = _wishlistColumns(constraints.maxWidth);
+        return Column(
+          children: [
+            for (var start = 0; start < items.length; start += columns)
+              Padding(
+                padding: EdgeInsets.only(top: start == 0 ? 0 : AppSpacing.sm),
+                child: ProductCardRow(
+                  columns: columns,
+                  cards: [
+                    for (final item in items.skip(start).take(columns))
+                      WishlistProductCard(
+                        key: ValueKey(item.productId),
+                        item: item,
+                        isToggling: togglingProductIds.contains(item.productId),
+                        onRemove: () => onRemove(item.productId),
+                      ),
+                  ],
+                ),
+              ),
+          ],
         );
       },
     );
   }
 }
+
+int _wishlistColumns(double width) => switch (width) {
+  >= 1300 => 6,
+  >= 1000 => 5,
+  >= 780 => 4,
+  >= 560 => 3,
+  _ => 2,
+};
 
 class _WishlistPageHeader extends StatelessWidget {
   const _WishlistPageHeader({required this.totalCount});

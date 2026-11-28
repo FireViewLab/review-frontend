@@ -156,9 +156,14 @@ class WarningProductsPageState extends ConsumerState<WarningProductsPage> {
                     price: item.price,
                     rating: item.avgRating,
                     reviewCount: item.reviewCount,
-                    rtiLabel: item.analysisDisplay.isV2
-                        ? '${item.analysisDisplay.gradeLabel(context) ?? ''} · ${item.analysisDisplay.badgeText(context)}'
-                        : '${item.rtiGrade?.trim().toUpperCase() == 'DANGER' ? AppLocalizations.of(context).adminDanger : AppLocalizations.of(context).adminSuspicious} · RTI ${item.analysisDisplay.score!.round()}',
+                    analysis: item.analysisDisplay,
+                    analyzedReviewCount:
+                        item.summary?.catalogAnalysis?.reviewCount,
+                    gradeLabel: item.analysisDisplay.isV2
+                        ? item.analysisDisplay.gradeLabel(context)
+                        : item.rtiGrade?.trim().toUpperCase() == 'DANGER'
+                        ? AppLocalizations.of(context).adminDanger
+                        : AppLocalizations.of(context).adminSuspicious,
                     onTap: () {
                       context.go(item.detailPath, extra: item.routeContext);
                     },
