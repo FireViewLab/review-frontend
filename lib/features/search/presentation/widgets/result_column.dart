@@ -195,25 +195,9 @@ class SearchProductGridSkeleton extends StatelessWidget {
       child: LayoutBuilder(
         builder: (context, constraints) {
           final columns = ProductGrid.columnsForWidth(constraints.maxWidth);
-          final cardHeight = switch (columns) {
-            1 => 520.0,
-            2 => 490.0,
-            3 => 465.0,
-            4 => 445.0,
-            _ => 425.0,
-          };
-          final itemCount = columns * 2;
-
-          return GridView.builder(
-            shrinkWrap: true,
-            physics: const NeverScrollableScrollPhysics(),
-            itemCount: itemCount,
-            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: columns,
-              mainAxisSpacing: AppSpacing.sm,
-              crossAxisSpacing: AppSpacing.sm,
-              mainAxisExtent: cardHeight,
-            ),
+          return ProductCardRows(
+            columns: columns,
+            itemCount: columns * 2,
             itemBuilder: (context, _) => const _SearchCardSkeleton(),
           );
         },
@@ -240,7 +224,10 @@ class _SearchCardSkeleton extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             // 이미지 영역
-            const Expanded(child: ShimmerBox()),
+            const AspectRatio(
+              aspectRatio: productCardImageAspectRatio,
+              child: ShimmerBox(),
+            ),
             // 텍스트 영역
             Padding(
               padding: const EdgeInsets.all(AppSpacing.xs),
@@ -252,37 +239,38 @@ class _SearchCardSkeleton extends StatelessWidget {
                     alignment: Alignment.centerLeft,
                     child: const ShimmerBox(width: 56, height: 11, radius: 3),
                   ),
-                  const SizedBox(height: 4),
-                  const SizedBox(height: 13, child: ShimmerBox(radius: 3)),
-                  const SizedBox(height: 3),
-                  Align(
-                    alignment: Alignment.centerLeft,
-                    child: const ShimmerBox(width: 110, height: 13, radius: 3),
-                  ),
-                  const SizedBox(height: AppSpacing.xs),
-                  Align(
-                    alignment: Alignment.centerLeft,
-                    child: const ShimmerBox(width: 96, height: 12, radius: 3),
-                  ),
-                  const SizedBox(height: AppSpacing.xs),
-                  Align(
-                    alignment: Alignment.centerLeft,
-                    child: const ShimmerBox(width: 68, height: 19, radius: 3),
-                  ),
-                  const SizedBox(height: AppSpacing.xs),
+                  const SizedBox(height: AppSpacing.xxs),
                   Row(
                     children: const [
-                      ShimmerBox(width: 36, height: 36, radius: 6),
-                      SizedBox(width: AppSpacing.xs),
-                      ShimmerBox(width: 36, height: 36, radius: 6),
-                      SizedBox(width: AppSpacing.xs),
                       Expanded(
-                        child: SizedBox(
-                          height: 36,
-                          child: ShimmerBox(radius: 6),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          children: [
+                            ShimmerBox(height: 13, radius: 3),
+                            SizedBox(height: AppSpacing.xxs),
+                            FractionallySizedBox(
+                              alignment: Alignment.centerLeft,
+                              widthFactor: 0.7,
+                              child: ShimmerBox(height: 13, radius: 3),
+                            ),
+                          ],
                         ),
                       ),
+                      SizedBox(width: AppSpacing.xs),
+                      ShimmerBox(width: 36, height: 36, radius: 6),
+                      SizedBox(width: AppSpacing.xs),
+                      ShimmerBox(width: 36, height: 36, radius: 6),
                     ],
+                  ),
+                  const SizedBox(height: AppSpacing.xs),
+                  const Align(
+                    alignment: Alignment.centerLeft,
+                    child: ShimmerBox(width: 96, height: 12, radius: 3),
+                  ),
+                  const SizedBox(height: AppSpacing.xs),
+                  const Align(
+                    alignment: Alignment.centerLeft,
+                    child: ShimmerBox(width: 68, height: 19, radius: 3),
                   ),
                 ],
               ),

@@ -346,26 +346,18 @@ class _WishlistGrid extends StatelessWidget {
   Widget build(BuildContext context) {
     return LayoutBuilder(
       builder: (context, constraints) {
-        final columns = _wishlistColumns(constraints.maxWidth);
-        return Column(
-          children: [
-            for (var start = 0; start < items.length; start += columns)
-              Padding(
-                padding: EdgeInsets.only(top: start == 0 ? 0 : AppSpacing.sm),
-                child: ProductCardRow(
-                  columns: columns,
-                  cards: [
-                    for (final item in items.skip(start).take(columns))
-                      WishlistProductCard(
-                        key: ValueKey(item.productId),
-                        item: item,
-                        isToggling: togglingProductIds.contains(item.productId),
-                        onRemove: () => onRemove(item.productId),
-                      ),
-                  ],
-                ),
-              ),
-          ],
+        return ProductCardRows(
+          columns: _wishlistColumns(constraints.maxWidth),
+          itemCount: items.length,
+          itemBuilder: (context, index) {
+            final item = items[index];
+            return WishlistProductCard(
+              key: ValueKey(item.productId),
+              item: item,
+              isToggling: togglingProductIds.contains(item.productId),
+              onRemove: () => onRemove(item.productId),
+            );
+          },
         );
       },
     );
@@ -444,27 +436,13 @@ class _WishlistGridSkeleton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final width = MediaQuery.sizeOf(context).width;
-    final crossAxisCount = switch (width) {
-      >= 1400 => 6,
-      >= 1100 => 5,
-      >= 860 => 4,
-      >= 600 => 3,
-      _ => 2,
-    };
-
     return LoadingSkeleton(
-      child: GridView.builder(
-        shrinkWrap: true,
-        physics: const NeverScrollableScrollPhysics(),
-        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: crossAxisCount,
-          crossAxisSpacing: AppSpacing.sm,
-          mainAxisSpacing: AppSpacing.sm,
-          childAspectRatio: 0.62,
+      child: LayoutBuilder(
+        builder: (context, constraints) => ProductCardRows(
+          columns: _wishlistColumns(constraints.maxWidth),
+          itemCount: 6,
+          itemBuilder: (context, _) => const _WishlistCardSkeleton(),
         ),
-        itemCount: 6,
-        itemBuilder: (context, _) => const _WishlistCardSkeleton(),
       ),
     );
   }
@@ -479,14 +457,16 @@ class _WishlistCardSkeleton extends StatelessWidget {
       borderRadius: BorderRadius.circular(10),
       child: DecoratedBox(
         decoration: BoxDecoration(
-          color: AppColors.surface,
           borderRadius: BorderRadius.circular(10),
           border: Border.all(color: AppColors.border),
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            const Expanded(child: ShimmerBox()),
+            const AspectRatio(
+              aspectRatio: productCardImageAspectRatio,
+              child: ShimmerBox(),
+            ),
             Padding(
               padding: const EdgeInsets.all(AppSpacing.xs),
               child: Column(

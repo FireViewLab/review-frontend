@@ -2,31 +2,32 @@ import 'package:flutter/material.dart';
 import 'package:re_view_front/app/theme/app_colors.dart';
 import 'package:re_view_front/app/theme/app_spacing.dart';
 import 'package:re_view_front/shared/widgets/shimmer_box.dart';
+import 'package:re_view_front/shared/widgets/product_card_layout.dart';
 
 class ProductCardSkeleton extends StatelessWidget {
-  const ProductCardSkeleton({super.key});
+  const ProductCardSkeleton({
+    super.key,
+    this.borderRadius = const BorderRadius.all(Radius.circular(20)),
+  });
+
+  final BorderRadius borderRadius;
 
   @override
   Widget build(BuildContext context) {
     return DecoratedBox(
       decoration: BoxDecoration(
-        color: AppColors.surface,
-        borderRadius: BorderRadius.circular(20),
+        borderRadius: borderRadius,
         border: Border.all(color: AppColors.border),
-        boxShadow: const [
-          BoxShadow(
-            color: Color(0x0F0F172A),
-            blurRadius: 18,
-            offset: Offset(0, 8),
-          ),
-        ],
       ),
       child: ClipRRect(
-        borderRadius: BorderRadius.circular(20),
+        borderRadius: borderRadius,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            const AspectRatio(aspectRatio: 16 / 9, child: ShimmerBox()),
+            const AspectRatio(
+              aspectRatio: productCardImageAspectRatio,
+              child: ShimmerBox(),
+            ),
             Padding(
               padding: const EdgeInsets.all(AppSpacing.md),
               child: Column(
@@ -75,22 +76,9 @@ class ProductCardGridSkeleton extends StatelessWidget {
     return ShimmerWrapper(
       child: LayoutBuilder(
         builder: (context, constraints) {
-          final columns = _columnsFor(constraints.maxWidth);
-          final cardWidth =
-              (constraints.maxWidth - (columns - 1) * AppSpacing.md) / columns;
-          const imageAspectRatio = 16.0 / 9.0;
-          final imageHeight = cardWidth / imageAspectRatio;
-          const textAreaHeight = 212.0;
-
-          return GridView.builder(
-            shrinkWrap: true,
-            physics: const NeverScrollableScrollPhysics(),
-            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: columns,
-              mainAxisSpacing: AppSpacing.md,
-              crossAxisSpacing: AppSpacing.md,
-              mainAxisExtent: imageHeight + textAreaHeight,
-            ),
+          return ProductCardRows(
+            columns: _columnsFor(constraints.maxWidth),
+            spacing: AppSpacing.md,
             itemCount: itemCount,
             itemBuilder: (context, _) => const ProductCardSkeleton(),
           );

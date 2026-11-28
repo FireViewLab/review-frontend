@@ -13,11 +13,13 @@ class ProductReviewMetrics extends StatelessWidget {
     this.reviewCount,
     required this.analysis,
     this.analyzedReviewCount,
+    this.alignment = WrapAlignment.spaceBetween,
   });
   final double? rating;
   final int? reviewCount;
   final AnalysisDisplay analysis;
   final int? analyzedReviewCount;
+  final WrapAlignment alignment;
 
   @override
   Widget build(BuildContext context) {
@@ -41,7 +43,7 @@ class ProductReviewMetrics extends StatelessWidget {
       children: [
         if (label.isNotEmpty || showScore)
           Wrap(
-            alignment: WrapAlignment.spaceBetween,
+            alignment: alignment,
             spacing: AppSpacing.xs,
             runSpacing: AppSpacing.xxs,
             children: [

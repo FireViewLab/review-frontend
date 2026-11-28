@@ -3,6 +3,7 @@ import 'package:re_view_front/shared/widgets/list_row_skeleton.dart';
 import 'package:re_view_front/core/analysis/analysis_display.dart';
 import 'package:re_view_front/shared/widgets/product_card_layout.dart';
 import 'package:re_view_front/shared/widgets/product_review_metrics.dart';
+import 'package:re_view_front/shared/widgets/product_card_skeleton.dart';
 // ignore_for_file: use_key_in_widget_constructors
 
 import 'package:flutter/material.dart';
@@ -28,7 +29,17 @@ class MyPageSavedProductsSection extends StatelessWidget {
   Widget build(BuildContext context) {
     if (isLoading) {
       if (items.isEmpty) {
-        return const ListLoadingSkeleton(responsiveGrid: true);
+        return LoadingSkeleton(
+          child: LayoutBuilder(
+            builder: (context, constraints) => ProductCardRows(
+              columns: _savedProductColumns(constraints.maxWidth),
+              spacing: AppSpacing.md,
+              itemCount: 4,
+              itemBuilder: (context, _) =>
+                  const ProductCardSkeleton(borderRadius: AppRadius.small),
+            ),
+          ),
+        );
       }
       return SizedBox(
         height: 180,
@@ -48,26 +59,11 @@ class MyPageSavedProductsSection extends StatelessWidget {
     final displayItems = items.take(4).toList(growable: false);
     return LayoutBuilder(
       builder: (context, constraints) {
-        final columns = constraints.maxWidth < 600
-            ? 1
-            : constraints.maxWidth < 1000
-            ? 2
-            : 4;
-        return Column(
-          children: [
-            for (var start = 0; start < displayItems.length; start += columns)
-              Padding(
-                padding: EdgeInsets.only(top: start == 0 ? 0 : AppSpacing.md),
-                child: ProductCardRow(
-                  columns: columns,
-                  spacing: AppSpacing.md,
-                  cards: [
-                    for (final item in displayItems.skip(start).take(columns))
-                      _card(context, item),
-                  ],
-                ),
-              ),
-          ],
+        return ProductCardRows(
+          columns: _savedProductColumns(constraints.maxWidth),
+          spacing: AppSpacing.md,
+          itemCount: displayItems.length,
+          itemBuilder: (context, index) => _card(context, displayItems[index]),
         );
       },
     );
@@ -92,6 +88,12 @@ class MyPageSavedProductsSection extends StatelessWidget {
     );
   }
 }
+
+int _savedProductColumns(double width) => switch (width) {
+  >= 1000 => 4,
+  >= 600 => 2,
+  _ => 1,
+};
 
 class MyPageCompactProductCard extends StatelessWidget {
   const MyPageCompactProductCard({
@@ -161,7 +163,7 @@ class MyPageCompactProductCard extends StatelessWidget {
           Text(
             grade,
             style: Theme.of(context).textTheme.labelSmall?.copyWith(
-              color: analysis.color,
+              color: AppColors.primary,
               fontWeight: FontWeight.w900,
             ),
           ),
@@ -170,6 +172,7 @@ class MyPageCompactProductCard extends StatelessWidget {
           reviewCount: reviewCount,
           analysis: analysis,
           analyzedReviewCount: analyzedReviewCount,
+          alignment: stacked ? WrapAlignment.spaceBetween : WrapAlignment.start,
         ),
       ],
     );

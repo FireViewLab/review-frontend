@@ -37,3 +37,38 @@ class ProductCardRow extends StatelessWidget {
     );
   }
 }
+
+class ProductCardRows extends StatelessWidget {
+  const ProductCardRows({
+    super.key,
+    required this.columns,
+    required this.itemCount,
+    required this.itemBuilder,
+    this.spacing = AppSpacing.sm,
+  });
+
+  final int columns;
+  final int itemCount;
+  final IndexedWidgetBuilder itemBuilder;
+  final double spacing;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        for (var start = 0; start < itemCount; start += columns)
+          Padding(
+            padding: EdgeInsets.only(top: start == 0 ? 0 : spacing),
+            child: ProductCardRow(
+              columns: columns,
+              spacing: spacing,
+              cards: [
+                for (var i = start; i < start + columns && i < itemCount; i++)
+                  itemBuilder(context, i),
+              ],
+            ),
+          ),
+      ],
+    );
+  }
+}
