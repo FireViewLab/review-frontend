@@ -219,8 +219,9 @@ class _SearchResultsPageState extends ConsumerState<SearchResultsPage> {
     if (_needsUrlFacetValidation && hasCurrentResults) {
       _validateUrlFacets(_pageProducts);
     }
-    final filteredProducts = _productDerivation.sort(
-      _productDerivation.filter(_pageProducts, _productFilters),
+    final filteredProducts = _productDerivation.resolve(
+      _pageProducts,
+      _productFilters,
       _sortOption,
     );
     final totalCount = catalogTotal ?? filteredProducts.length;
@@ -707,21 +708,23 @@ class _SearchResultsPageState extends ConsumerState<SearchResultsPage> {
   }
 
   SearchProductFilters get _productFilters => (
-    categoryId: _isCatalog ? null : widget.categoryId,
-    platform: _selectedBrand,
     categories: _selectedCategories,
     priceRanges: _selectedPriceRanges,
-    priceBounds: _isPriceFilterActive
-        ? _normalizedPriceBounds(
-            _minPriceController.text,
-            _maxPriceController.text,
-          )
-        : (null, null),
-    quickFilter: _selectedQuickFilter,
-    unanalyzedOnly: _selectedAttributeFilters.contains('분석 전만'),
-    missingPriceOnly: _selectedAttributeFilters.contains('가격 정보 없음만'),
-    minimumRti: _isRtiFilterActive ? _selectedRtiMinimum : null,
-    minimumReviews: _selectedReviewConditions.contains('리뷰 50개 이상'),
+    rules: (
+      categoryId: _isCatalog ? null : widget.categoryId,
+      platform: _selectedBrand,
+      priceBounds: _isPriceFilterActive
+          ? _normalizedPriceBounds(
+              _minPriceController.text,
+              _maxPriceController.text,
+            )
+          : (null, null),
+      quickFilter: _selectedQuickFilter,
+      unanalyzedOnly: _selectedAttributeFilters.contains('분석 전만'),
+      missingPriceOnly: _selectedAttributeFilters.contains('가격 정보 없음만'),
+      minimumRti: _isRtiFilterActive ? _selectedRtiMinimum : null,
+      minimumReviews: _selectedReviewConditions.contains('리뷰 50개 이상'),
+    ),
   );
 
   void _setPriceBounds((int?, int?) bounds) {

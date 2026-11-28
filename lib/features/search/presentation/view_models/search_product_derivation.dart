@@ -1,19 +1,25 @@
+import 'dart:collection';
+
+import 'package:flutter/foundation.dart' show setEquals;
 import 'package:re_view_front/features/category/domain/entities/product_category_resolver.dart';
 import 'package:re_view_front/features/search/domain/entities/search_result_product.dart';
 import 'package:re_view_front/features/search/presentation/models/search_filter_options.dart';
 import 'package:re_view_front/features/search/presentation/view_models/search_results_state.dart';
 
 typedef SearchProductFilters = ({
-  String? categoryId,
-  String? platform,
   Set<String> categories,
   Set<String> priceRanges,
-  (int?, int?) priceBounds,
-  String quickFilter,
-  bool unanalyzedOnly,
-  bool missingPriceOnly,
-  double? minimumRti,
-  bool minimumReviews,
+  ({
+    String? categoryId,
+    String? platform,
+    (int?, int?) priceBounds,
+    String quickFilter,
+    bool unanalyzedOnly,
+    bool missingPriceOnly,
+    double? minimumRti,
+    bool minimumReviews,
+  })
+  rules,
 });
 
 class SearchProductDerivation {
@@ -22,84 +28,118 @@ class SearchProductDerivation {
   Expando<bool> _inCategoryCache = Expando<bool>('inCategory');
   String? _matchingCategoryId;
 
-  List<SearchResultProduct> filter(
+  List<SearchResultProduct>? _source;
+  SearchProductFilters? _lastFilters;
+  List<SearchResultProduct> _filtered = const [];
+  SearchSortOption? _lastSort;
+  List<SearchResultProduct> _sorted = const [];
+
+  List<SearchResultProduct> resolve(
+    List<SearchResultProduct> products,
+    SearchProductFilters filters,
+    SearchSortOption sortOption,
+  ) {
+    final lastFilters = _lastFilters;
+    if (!identical(_source, products) ||
+        lastFilters == null ||
+        lastFilters.rules != filters.rules ||
+        !setEquals(lastFilters.categories, filters.categories) ||
+        !setEquals(lastFilters.priceRanges, filters.priceRanges)) {
+      _filtered = _filter(products, filters);
+      _source = products;
+      // The page updates its selections in place, so keep independent sets.
+      _lastFilters = (
+        categories: Set.of(filters.categories),
+        priceRanges: Set.of(filters.priceRanges),
+        rules: filters.rules,
+      );
+      _lastSort = null;
+    }
+
+    if (_lastSort != sortOption) {
+      _sorted = _sort(_filtered, sortOption);
+      _lastSort = sortOption;
+    }
+    return _sorted;
+  }
+
+  List<SearchResultProduct> _filter(
     List<SearchResultProduct> products,
     SearchProductFilters filters,
   ) {
-    final categoryId = filters.categoryId;
+    final (:categories, :priceRanges, :rules) = filters;
+    final categoryId = rules.categoryId;
     if (_matchingCategoryId != categoryId) {
       _matchingCategoryId = categoryId;
       _inCategoryCache = Expando<bool>('inCategory');
     }
-    final (minPrice, maxPrice) = filters.priceBounds;
-    return products
-        .where((product) {
-          if (categoryId != null &&
-              hasResolvedCategory(product) &&
-              !(_inCategoryCache[product] ??= isProductInCategory(
-                categoryId,
-                productCategory: product.category,
-                productCategoryDisplayName: product.categoryDisplayName,
-                productName: '',
-              ))) {
-            return false;
-          }
+    final (minPrice, maxPrice) = rules.priceBounds;
+    return List.unmodifiable(
+      products.where((product) {
+        if (categoryId != null &&
+            hasResolvedCategory(product) &&
+            !(_inCategoryCache[product] ??= isProductInCategory(
+              categoryId,
+              productCategory: product.category,
+              productCategoryDisplayName: product.categoryDisplayName,
+              productName: '',
+            ))) {
+          return false;
+        }
 
-          if (filters.platform != null &&
-              product.normalizedPlatform != filters.platform) {
-            return false;
-          }
-          if (filters.unanalyzedOnly &&
-              (product.analysisDisplay.isV2 ||
-                  product.analysisDisplay.score != null)) {
-            return false;
-          }
-          if (filters.missingPriceOnly && product.price != null) {
-            return false;
-          }
+        if (rules.platform != null &&
+            product.normalizedPlatform != rules.platform) {
+          return false;
+        }
+        if (rules.unanalyzedOnly &&
+            (product.analysisDisplay.isV2 ||
+                product.analysisDisplay.score != null)) {
+          return false;
+        }
+        if (rules.missingPriceOnly && product.price != null) {
+          return false;
+        }
 
-          if (filters.categories.isNotEmpty &&
-              !filters.categories.contains(categoryLabel(product))) {
-            return false;
-          }
+        if (categories.isNotEmpty &&
+            !categories.contains(categoryLabel(product))) {
+          return false;
+        }
 
-          if (filters.priceRanges.isNotEmpty &&
-              !filters.priceRanges.any(
-                (range) => matchesPriceRange(product, range),
-              )) {
-            return false;
-          }
+        if (priceRanges.isNotEmpty &&
+            !priceRanges.any((range) => matchesPriceRange(product, range))) {
+          return false;
+        }
 
-          final price = product.price;
-          if (price == null && (minPrice != null || maxPrice != null)) {
-            return false;
-          }
-          if (price != null &&
-              ((minPrice != null && price < minPrice) ||
-                  (maxPrice != null && price > maxPrice))) {
-            return false;
-          }
+        final price = product.price;
+        if (price == null && (minPrice != null || maxPrice != null)) {
+          return false;
+        }
+        if (price != null &&
+            ((minPrice != null && price < minPrice) ||
+                (maxPrice != null && price > maxPrice))) {
+          return false;
+        }
 
-          final minimumRti = filters.minimumRti;
-          if (minimumRti != null &&
-              (product.analysisDisplay.score == null ||
-                  product.analysisDisplay.score! < minimumRti)) {
-            return false;
-          }
+        final minimumRti = rules.minimumRti;
+        if (minimumRti != null &&
+            (product.analysisDisplay.score == null ||
+                product.analysisDisplay.score! < minimumRti)) {
+          return false;
+        }
 
-          if (filters.minimumReviews &&
-              (product.reviewCount == null || product.reviewCount! < 50)) {
-            return false;
-          }
+        if (rules.minimumReviews &&
+            (product.reviewCount == null || product.reviewCount! < 50)) {
+          return false;
+        }
 
-          if (filters.quickFilter != '전체' &&
-              !matchesQuickFilter(product, filters.quickFilter)) {
-            return false;
-          }
+        if (rules.quickFilter != '전체' &&
+            !matchesQuickFilter(product, rules.quickFilter)) {
+          return false;
+        }
 
-          return true;
-        })
-        .toList(growable: false);
+        return true;
+      }),
+    );
   }
 
   /// 정책 지수(v2)와 RTI(v0.5)는 척도가 달라 서로 비교하지 않는다.
@@ -121,34 +161,26 @@ class SearchProductDerivation {
     );
   }
 
-  List<SearchResultProduct> sort(
+  List<SearchResultProduct> _sort(
     List<SearchResultProduct> products,
     SearchSortOption sortOption,
   ) {
-    final sorted = [...products];
-    switch (sortOption) {
-      case SearchSortOption.accuracy:
-        return sorted;
-      case SearchSortOption.rti:
-        sorted.sort(_compareAnalysisScore);
-      case SearchSortOption.reviewCount:
-        sorted.sort(
-          (a, b) => (b.reviewCount ?? -1).compareTo(a.reviewCount ?? -1),
-        );
-      case SearchSortOption.sales:
-        sorted.sort(
-          (a, b) => (b.reviewCount ?? -1).compareTo(a.reviewCount ?? -1),
-        );
-      case SearchSortOption.priceLow:
-        sorted.sort((a, b) => _comparePrice(a.price, b.price));
-      case SearchSortOption.priceHigh:
-        sorted.sort(
-          (a, b) => _comparePrice(a.price, b.price, descending: true),
-        );
-      case SearchSortOption.newest:
-        sorted.sort((a, b) => 0);
-    }
-    return sorted;
+    final Comparator<SearchResultProduct>? compare = switch (sortOption) {
+      SearchSortOption.accuracy => null,
+      SearchSortOption.rti => _compareAnalysisScore,
+      SearchSortOption.reviewCount || SearchSortOption.sales =>
+        (a, b) => (b.reviewCount ?? -1).compareTo(a.reviewCount ?? -1),
+      SearchSortOption.priceLow => (a, b) => _comparePrice(a.price, b.price),
+      SearchSortOption.priceHigh => (a, b) => _comparePrice(
+        a.price,
+        b.price,
+        descending: true,
+      ),
+      SearchSortOption.newest => (a, b) => 0,
+    };
+    if (compare == null) return products;
+    final sorted = [...products]..sort(compare);
+    return UnmodifiableListView(sorted);
   }
 
   bool matchesPriceRange(SearchResultProduct product, String label) {
