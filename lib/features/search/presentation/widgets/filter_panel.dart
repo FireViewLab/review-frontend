@@ -31,6 +31,7 @@ class FilterPanel extends StatelessWidget {
     required this.onRtiMinimumChanged,
     required this.onResetFilters,
     this.compact = false,
+    this.keepPriceVisibleOnFocus = false,
   });
 
   final SearchResultsState state;
@@ -52,6 +53,7 @@ class FilterPanel extends StatelessWidget {
   final ValueChanged<double> onRtiMinimumChanged;
   final VoidCallback onResetFilters;
   final bool compact;
+  final bool keepPriceVisibleOnFocus;
   final VoidCallback? onShowResults;
 
   @override
@@ -116,19 +118,29 @@ class FilterPanel extends StatelessWidget {
                   builder: (context, _) => Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      RangeEndpoint(
-                        label: minPriceController.text.isNotEmpty
-                            ? AppLocalizations.of(
-                                context,
-                              ).searchFilterPriceAmount(minPriceController.text)
-                            : '-',
+                      Flexible(
+                        child: RangeEndpoint(
+                          label: minPriceController.text.isNotEmpty
+                              ? AppLocalizations.of(
+                                  context,
+                                ).searchFilterPriceAmount(
+                                  minPriceController.text,
+                                )
+                              : '-',
+                        ),
                       ),
-                      RangeEndpoint(
-                        label: maxPriceController.text.isNotEmpty
-                            ? AppLocalizations.of(
-                                context,
-                              ).searchFilterPriceAmount(maxPriceController.text)
-                            : '-',
+                      const SizedBox(width: AppSpacing.xs),
+                      Flexible(
+                        child: RangeEndpoint(
+                          label: maxPriceController.text.isNotEmpty
+                              ? AppLocalizations.of(
+                                  context,
+                                ).searchFilterPriceAmount(
+                                  maxPriceController.text,
+                                )
+                              : '-',
+                          textAlign: TextAlign.end,
+                        ),
                       ),
                     ],
                   ),
@@ -146,6 +158,7 @@ class FilterPanel extends StatelessWidget {
                     Expanded(
                       child: PriceBox(
                         controller: minPriceController,
+                        keepVisibleOnFocus: keepPriceVisibleOnFocus,
                         onChanged: onPriceChanged,
                       ),
                     ),
@@ -156,6 +169,7 @@ class FilterPanel extends StatelessWidget {
                     Expanded(
                       child: PriceBox(
                         controller: maxPriceController,
+                        keepVisibleOnFocus: keepPriceVisibleOnFocus,
                         onChanged: onPriceChanged,
                       ),
                     ),
@@ -314,23 +328,38 @@ class FilterPanel extends StatelessWidget {
                   ),
               ],
             ),
-            const SizedBox(height: AppSpacing.md),
-            SizedBox(
-              width: double.infinity,
-              child: FilledButton(
-                onPressed: onShowResults,
-                child: Text(
-                  AppLocalizations.of(
-                    context,
-                  ).searchFilterShowResults(resultCount),
-                ),
-              ),
-            ),
+            if (onShowResults case final VoidCallback showResults) ...[
+              const SizedBox(height: AppSpacing.md),
+              FilterResultsButton(count: resultCount, onPressed: showResults),
+            ],
           ],
         ),
       ),
     );
   }
+}
+
+class FilterResultsButton extends StatelessWidget {
+  const FilterResultsButton({
+    super.key,
+    required this.count,
+    required this.onPressed,
+  });
+
+  final int count;
+  final VoidCallback onPressed;
+
+  @override
+  Widget build(BuildContext context) => SizedBox(
+    width: double.infinity,
+    child: FilledButton(
+      onPressed: onPressed,
+      child: Text(
+        AppLocalizations.of(context).searchFilterShowResults(count),
+        textAlign: TextAlign.center,
+      ),
+    ),
+  );
 }
 
 String _localizedFilterLabel(BuildContext context, String label) {
