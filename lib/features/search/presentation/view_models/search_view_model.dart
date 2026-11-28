@@ -19,21 +19,31 @@ class SearchViewModel extends Notifier<SearchState> {
     return const SearchInitial();
   }
 
-  /// [refresh]가 true면 저장된 결과를 쓰지 않고 새로 받는다.
   Future<void> search(
     String query, {
     bool allowEmpty = false,
     bool refresh = false,
+  }) => load(
+    SearchParams(query: query.trim()),
+    allowEmpty: allowEmpty,
+    refresh: refresh,
+  );
+
+  /// 키워드 결과는 재사용하고, 카탈로그 페이지는 이동할 때마다 조회한다.
+  Future<void> load(
+    SearchParams params, {
+    bool allowEmpty = false,
+    bool refresh = false,
   }) async {
     final request = ++_request;
-    final key = query.trim();
-    if (key.isEmpty && !allowEmpty) {
+    final query = params.query;
+    if (!params.catalog && query.isEmpty && !allowEmpty) {
       state = const SearchInitial();
       return;
     }
 
     if (!ref.mounted) return;
-    final cached = _cache[key];
+    final cached = params.catalog ? null : _cache[query];
     if (!refresh &&
         cached != null &&
         DateTime.now().difference(cached.fetchedAt) < _cacheTtl) {
@@ -42,20 +52,20 @@ class SearchViewModel extends Notifier<SearchState> {
     }
     state = const SearchLoading();
 
-    final result = await _searchProductsUseCase(SearchParams(query: key));
+    final result = await _searchProductsUseCase(params);
 
     if (!ref.mounted) return;
     final next = result.when<SearchState>(
-      success: (response) => response.isEmpty
-          ? SearchEmpty(query: key)
+      success: (response) => response.isEmpty && !params.catalog
+          ? SearchEmpty(params: params)
           : SearchSuccess(
-              query: key,
+              params: params,
               products: response.products,
               totalCount: response.totalCount,
             ),
-      failure: SearchFailure.new,
+      failure: (failure) => SearchFailure(failure, params: params),
     );
-    if (next is! SearchFailure) _remember(key, next);
+    if (!params.catalog && next is! SearchFailure) _remember(query, next);
     if (request != _request) return;
     state = next;
   }

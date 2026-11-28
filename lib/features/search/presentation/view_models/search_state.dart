@@ -1,5 +1,6 @@
 import 'package:re_view_front/core/error/failure.dart';
 import 'package:re_view_front/features/search/domain/entities/search_result_product.dart';
+import 'package:re_view_front/features/search/domain/usecases/search_products_use_case.dart';
 
 sealed class SearchState {
   const SearchState();
@@ -17,14 +18,14 @@ class SearchLoading extends SearchState {
 }
 
 sealed class SearchCompleted extends SearchState {
-  const SearchCompleted({required this.query});
+  const SearchCompleted({required this.params});
 
-  final String query;
+  final SearchParams params;
 }
 
 class SearchSuccess extends SearchCompleted {
   const SearchSuccess({
-    required super.query,
+    required super.params,
     required this.products,
     required this.totalCount,
   });
@@ -36,11 +37,12 @@ class SearchSuccess extends SearchCompleted {
 }
 
 class SearchEmpty extends SearchCompleted {
-  const SearchEmpty({required super.query});
+  const SearchEmpty({required super.params});
 }
 
 class SearchFailure extends SearchState {
-  const SearchFailure(this.failure);
+  const SearchFailure(this.failure, {required this.params});
 
   final Failure failure;
+  final SearchParams params;
 }

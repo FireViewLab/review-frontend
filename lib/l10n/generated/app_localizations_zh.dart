@@ -3812,6 +3812,12 @@ class AppLocalizationsZh extends AppLocalizations {
       '商城商品按分类名称搜索，也会显示尚未确认分类的结果。详细分类请查看商城原文。';
 
   @override
+  String get searchCatalogPageScope => '筛选和排序仅适用于当前页。';
+
+  @override
+  String get searchCatalogParentScope => '筛选和排序仅适用于当前页。商品总数和页码以一级分类为准。';
+
+  @override
   String searchLoadedProductsScope(int count, int limit) {
     return '对当前加载的 $count 件商品进行筛选和排序。关键词搜索最多返回 $limit 条结果，并非针对商城全部商品的搜索筛选。未提供配送、销量、发布日期和图片评价信息，因此不支持这些条件。';
   }

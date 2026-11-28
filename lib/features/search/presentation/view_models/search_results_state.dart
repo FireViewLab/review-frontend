@@ -44,6 +44,7 @@ class SearchResultsState {
     required this.categoryFilters,
     required this.priceRanges,
     this.totalCount,
+    this.isCatalog = false,
     this.sortOption = SearchSortOption.accuracy,
     this.selectedRtiMinimum = 50,
     this.isLoading = false,
@@ -59,6 +60,7 @@ class SearchResultsState {
   final List<SearchFilterChipData> categoryFilters;
   final List<SearchFilterChipData> priceRanges;
   final int? totalCount;
+  final bool isCatalog;
   final SearchSortOption sortOption;
   final int selectedRtiMinimum;
   final bool isLoading;
@@ -73,5 +75,8 @@ class SearchResultsState {
   bool get isEmpty => !isLoading && !hasError && products.isEmpty;
 
   /// 서버가 준 상품부터 없을 때만 참이다. 필터 결과만 0건이면 거짓이다.
-  bool get isSourceEmpty => isEmpty && sourceProducts.isEmpty;
+  bool get isSourceEmpty =>
+      isEmpty &&
+      sourceProducts.isEmpty &&
+      (!isCatalog || displayTotalCount == 0);
 }

@@ -3866,6 +3866,13 @@ class AppLocalizationsJa extends AppLocalizations {
       'ショップ商品はカテゴリー名で検索し、分類が未確定の結果も表示します。詳しい分類はショップの原文で確認してください。';
 
   @override
+  String get searchCatalogPageScope => '絞り込みと並べ替えは現在のページに適用されます。';
+
+  @override
+  String get searchCatalogParentScope =>
+      '絞り込みと並べ替えは現在のページに適用されます。商品総数とページは大分類に基づきます。';
+
+  @override
   String searchLoadedProductsScope(int count, int limit) {
     return '読み込んだ$count件の商品を絞り込み・並べ替えます。キーワード検索は最大$limit件で、ショップ全商品の検索フィルターではありません。配送・販売数・発売日・写真レビューの情報がないため、これらの条件は非対応です。';
   }

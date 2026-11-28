@@ -16,10 +16,18 @@ class Pagination extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final pages = List<int>.generate(totalPages, (index) => index + 1);
+    final start = (currentPage - 2).clamp(1, totalPages);
+    final end = (currentPage + 2).clamp(1, totalPages);
+    final pages = [
+      if (start > 1) 1,
+      for (var page = start; page <= end; page++) page,
+      if (end < totalPages) totalPages,
+    ];
 
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
+    return Wrap(
+      alignment: WrapAlignment.center,
+      crossAxisAlignment: WrapCrossAlignment.center,
+      runSpacing: AppSpacing.xxs,
       children: [
         PageButton(
           icon: Icons.chevron_left,
@@ -27,13 +35,15 @@ class Pagination extends StatelessWidget {
           enabled: currentPage > 1,
           onPressed: () => onPageSelected(currentPage - 1),
         ),
-        for (final page in pages)
+        for (var index = 0; index < pages.length; index++) ...[
+          if (index > 0 && pages[index] - pages[index - 1] > 1) const Text('…'),
           PageButton(
-            label: '$page',
-            selected: page == currentPage,
+            label: '${pages[index]}',
+            selected: pages[index] == currentPage,
             enabled: true,
-            onPressed: () => onPageSelected(page),
+            onPressed: () => onPageSelected(pages[index]),
           ),
+        ],
         PageButton(
           icon: Icons.chevron_right,
           selected: false,

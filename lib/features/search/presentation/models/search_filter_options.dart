@@ -9,3 +9,6 @@ const searchPriceRanges = <String, (int?, int?)>{
 
 const searchAttributeFilters = ['분석 전만', '가격 정보 없음만'];
 const searchReviewConditions = ['리뷰 50개 이상'];
+
+int searchPageCount(int total, int size) =>
+    total > 0 ? (total - 1) ~/ size + 1 : 1;
