@@ -3866,6 +3866,19 @@ class AppLocalizationsJa extends AppLocalizations {
       'ショップ商品はカテゴリー名で検索し、分類が未確定の結果も表示します。詳しい分類はショップの原文で確認してください。';
 
   @override
+  String searchPaginationPosition(int page, int total) {
+    final intl.NumberFormat pageNumberFormat = intl.NumberFormat.decimalPattern(
+      localeName,
+    );
+    final String pageString = pageNumberFormat.format(page);
+    final intl.NumberFormat totalNumberFormat =
+        intl.NumberFormat.decimalPattern(localeName);
+    final String totalString = totalNumberFormat.format(total);
+
+    return '全$totalStringページ中$pageStringページ';
+  }
+
+  @override
   String get searchCatalogPageScope => '絞り込みと並べ替えは現在のページに適用されます。';
 
   @override

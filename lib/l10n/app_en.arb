@@ -1213,6 +1213,7 @@
   "searchComparedProductCount": "{count} products",
   "searchCollectedReviewCount": "{count} reviews",
   "searchUnconfirmedCategoriesNotice": "Shop products are searched by category name and may include unconfirmed classifications. Check the shop's original listing for detailed categories.",
+  "searchPaginationPosition": "Page {page} of {total}",
   "searchCatalogPageScope": "Filters and sorting apply to the current page.",
   "searchCatalogParentScope": "Filters and sorting apply to the current page. The product total and pages are for the top-level category.",
   "searchLoadedProductsScope": "Filters and sorting apply to the {count} loaded products. Keyword searches return up to {limit} results, not all shop products. Shipping, sales, release dates, and photo-review data are unavailable, so those conditions are unsupported.",

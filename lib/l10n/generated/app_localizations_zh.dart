@@ -3812,6 +3812,19 @@ class AppLocalizationsZh extends AppLocalizations {
       '商城商品按分类名称搜索，也会显示尚未确认分类的结果。详细分类请查看商城原文。';
 
   @override
+  String searchPaginationPosition(int page, int total) {
+    final intl.NumberFormat pageNumberFormat = intl.NumberFormat.decimalPattern(
+      localeName,
+    );
+    final String pageString = pageNumberFormat.format(page);
+    final intl.NumberFormat totalNumberFormat =
+        intl.NumberFormat.decimalPattern(localeName);
+    final String totalString = totalNumberFormat.format(total);
+
+    return '第 $pageString 页，共 $totalString 页';
+  }
+
+  @override
   String get searchCatalogPageScope => '筛选和排序仅适用于当前页。';
 
   @override
