@@ -4027,6 +4027,48 @@ class AppLocalizationsEn extends AppLocalizations {
       'Shop products are searched by category name and may include unconfirmed classifications. Check the shop\'s original listing for detailed categories.';
 
   @override
+  String searchPaginationPosition(int page, int total) {
+    final intl.NumberFormat pageNumberFormat = intl.NumberFormat.decimalPattern(
+      localeName,
+    );
+    final String pageString = pageNumberFormat.format(page);
+    final intl.NumberFormat totalNumberFormat =
+        intl.NumberFormat.decimalPattern(localeName);
+    final String totalString = totalNumberFormat.format(total);
+
+    return 'Page $pageString of $totalString';
+  }
+
+  @override
+  String searchPaginationCompactPosition(int page, int total) {
+    final intl.NumberFormat pageNumberFormat = intl.NumberFormat.decimalPattern(
+      localeName,
+    );
+    final String pageString = pageNumberFormat.format(page);
+    final intl.NumberFormat totalNumberFormat =
+        intl.NumberFormat.decimalPattern(localeName);
+    final String totalString = totalNumberFormat.format(total);
+
+    return '$pageString / $totalString';
+  }
+
+  @override
+  String get searchPaginationPrevious => 'Previous page';
+
+  @override
+  String get searchPaginationNext => 'Next page';
+
+  @override
+  String searchPaginationGoToPage(int page) {
+    final intl.NumberFormat pageNumberFormat = intl.NumberFormat.decimalPattern(
+      localeName,
+    );
+    final String pageString = pageNumberFormat.format(page);
+
+    return 'Go to page $pageString';
+  }
+
+  @override
   String get searchCatalogPageScope =>
       'Filters and sorting apply to the current page.';
 

@@ -7284,6 +7284,36 @@ abstract class AppLocalizations {
   /// **'쇼핑몰 상품은 카테고리 이름으로 검색하며, 분류가 확정되지 않은 결과도 함께 표시합니다. 상세 분류는 쇼핑몰 원문을 확인해 주세요.'**
   String get searchUnconfirmedCategoriesNotice;
 
+  /// Current page and total pages in search pagination.
+  ///
+  /// In ko, this message translates to:
+  /// **'전체 {total}페이지 중 {page}페이지'**
+  String searchPaginationPosition(int page, int total);
+
+  /// Short visual form of the current and total search pages.
+  ///
+  /// In ko, this message translates to:
+  /// **'{page} / {total}'**
+  String searchPaginationCompactPosition(int page, int total);
+
+  /// No description provided for @searchPaginationPrevious.
+  ///
+  /// In ko, this message translates to:
+  /// **'이전 페이지'**
+  String get searchPaginationPrevious;
+
+  /// No description provided for @searchPaginationNext.
+  ///
+  /// In ko, this message translates to:
+  /// **'다음 페이지'**
+  String get searchPaginationNext;
+
+  /// Accessible name for a numbered search page button.
+  ///
+  /// In ko, this message translates to:
+  /// **'{page}페이지로 이동'**
+  String searchPaginationGoToPage(int page);
+
   /// No description provided for @searchCatalogPageScope.
   ///
   /// In ko, this message translates to:

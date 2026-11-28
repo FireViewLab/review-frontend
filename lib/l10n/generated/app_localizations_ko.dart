@@ -3868,6 +3868,48 @@ class AppLocalizationsKo extends AppLocalizations {
       '쇼핑몰 상품은 카테고리 이름으로 검색하며, 분류가 확정되지 않은 결과도 함께 표시합니다. 상세 분류는 쇼핑몰 원문을 확인해 주세요.';
 
   @override
+  String searchPaginationPosition(int page, int total) {
+    final intl.NumberFormat pageNumberFormat = intl.NumberFormat.decimalPattern(
+      localeName,
+    );
+    final String pageString = pageNumberFormat.format(page);
+    final intl.NumberFormat totalNumberFormat =
+        intl.NumberFormat.decimalPattern(localeName);
+    final String totalString = totalNumberFormat.format(total);
+
+    return '전체 $totalString페이지 중 $pageString페이지';
+  }
+
+  @override
+  String searchPaginationCompactPosition(int page, int total) {
+    final intl.NumberFormat pageNumberFormat = intl.NumberFormat.decimalPattern(
+      localeName,
+    );
+    final String pageString = pageNumberFormat.format(page);
+    final intl.NumberFormat totalNumberFormat =
+        intl.NumberFormat.decimalPattern(localeName);
+    final String totalString = totalNumberFormat.format(total);
+
+    return '$pageString / $totalString';
+  }
+
+  @override
+  String get searchPaginationPrevious => '이전 페이지';
+
+  @override
+  String get searchPaginationNext => '다음 페이지';
+
+  @override
+  String searchPaginationGoToPage(int page) {
+    final intl.NumberFormat pageNumberFormat = intl.NumberFormat.decimalPattern(
+      localeName,
+    );
+    final String pageString = pageNumberFormat.format(page);
+
+    return '$pageString페이지로 이동';
+  }
+
+  @override
   String get searchCatalogPageScope => '필터와 정렬은 현재 페이지에만 적용돼요.';
 
   @override
