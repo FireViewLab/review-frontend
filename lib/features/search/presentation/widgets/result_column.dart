@@ -3,8 +3,6 @@ import 'package:re_view_front/features/search/presentation/search_labels.dart';
 import 'package:re_view_front/shared/widgets/empty_state_view.dart';
 import 'package:re_view_front/l10n/generated/app_localizations.dart';
 import 'package:re_view_front/shared/widgets/sliver_width_builder.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:re_view_front/features/settings/presentation/providers/settings_providers.dart';
 import 'package:flutter/material.dart';
 import 'package:re_view_front/app/theme/app_colors.dart';
 import 'package:re_view_front/app/theme/app_spacing.dart';
@@ -17,6 +15,7 @@ import 'package:re_view_front/features/search/presentation/widgets/search_produc
 import 'package:re_view_front/features/search/presentation/widgets/search_product_list_tile.dart';
 import 'package:re_view_front/features/search/presentation/widgets/filter_select_widgets.dart';
 import 'package:re_view_front/shared/widgets/shimmer_box.dart';
+import 'package:re_view_front/shared/widgets/product_card_layout.dart';
 
 class ResultColumn extends StatelessWidget {
   const ResultColumn({
@@ -124,7 +123,7 @@ class ResultColumn extends StatelessWidget {
   }
 }
 
-class ProductGrid extends ConsumerWidget {
+class ProductGrid extends StatelessWidget {
   const ProductGrid({super.key, required this.products, required this.columns});
 
   final List<SearchResultProduct> products;
@@ -143,33 +142,23 @@ class ProductGrid extends ConsumerWidget {
   }
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final compact =
-        ref.watch(confirmedDisplayPreferencesProvider)?.cardDensity ==
-        'COMPACT';
-    final cardHeight = switch (columns) {
-      1 => 520.0,
-      2 => 490.0,
-      3 => 465.0,
-      4 => 445.0,
-      _ => 425.0,
-    };
-
-    return SliverGrid.builder(
-      itemCount: products.length,
-      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisCount: columns,
-        mainAxisSpacing: AppSpacing.sm,
-        crossAxisSpacing: AppSpacing.sm,
-        mainAxisExtent: compact ? cardHeight - 32 : cardHeight,
-      ),
-      itemBuilder: (context, index) {
-        final product = products[index];
-        return RepaintBoundary(
-          key: ValueKey('search-product-card-${product.id}'),
-          child: SearchProductCard(product: product),
+  Widget build(BuildContext context) {
+    return SliverList.separated(
+      itemCount: (products.length + columns - 1) ~/ columns,
+      itemBuilder: (context, row) {
+        final start = row * columns;
+        return ProductCardRow(
+          columns: columns,
+          cards: [
+            for (var i = start; i < start + columns && i < products.length; i++)
+              RepaintBoundary(
+                key: ValueKey('search-product-card-${products[i].id}'),
+                child: SearchProductCard(product: products[i]),
+              ),
+          ],
         );
       },
+      separatorBuilder: (context, _) => const SizedBox(height: AppSpacing.sm),
     );
   }
 }
@@ -206,25 +195,9 @@ class SearchProductGridSkeleton extends StatelessWidget {
       child: LayoutBuilder(
         builder: (context, constraints) {
           final columns = ProductGrid.columnsForWidth(constraints.maxWidth);
-          final cardHeight = switch (columns) {
-            1 => 520.0,
-            2 => 490.0,
-            3 => 465.0,
-            4 => 445.0,
-            _ => 425.0,
-          };
-          final itemCount = columns * 2;
-
-          return GridView.builder(
-            shrinkWrap: true,
-            physics: const NeverScrollableScrollPhysics(),
-            itemCount: itemCount,
-            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: columns,
-              mainAxisSpacing: AppSpacing.sm,
-              crossAxisSpacing: AppSpacing.sm,
-              mainAxisExtent: cardHeight,
-            ),
+          return ProductCardRows(
+            columns: columns,
+            itemCount: columns * 2,
             itemBuilder: (context, _) => const _SearchCardSkeleton(),
           );
         },
@@ -251,7 +224,10 @@ class _SearchCardSkeleton extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             // 이미지 영역
-            const Expanded(child: ShimmerBox()),
+            const AspectRatio(
+              aspectRatio: productCardImageAspectRatio,
+              child: ShimmerBox(),
+            ),
             // 텍스트 영역
             Padding(
               padding: const EdgeInsets.all(AppSpacing.xs),
@@ -263,37 +239,38 @@ class _SearchCardSkeleton extends StatelessWidget {
                     alignment: Alignment.centerLeft,
                     child: const ShimmerBox(width: 56, height: 11, radius: 3),
                   ),
-                  const SizedBox(height: 4),
-                  const SizedBox(height: 13, child: ShimmerBox(radius: 3)),
-                  const SizedBox(height: 3),
-                  Align(
-                    alignment: Alignment.centerLeft,
-                    child: const ShimmerBox(width: 110, height: 13, radius: 3),
-                  ),
-                  const SizedBox(height: AppSpacing.xs),
-                  Align(
-                    alignment: Alignment.centerLeft,
-                    child: const ShimmerBox(width: 96, height: 12, radius: 3),
-                  ),
-                  const SizedBox(height: AppSpacing.xs),
-                  Align(
-                    alignment: Alignment.centerLeft,
-                    child: const ShimmerBox(width: 68, height: 19, radius: 3),
-                  ),
-                  const SizedBox(height: AppSpacing.xs),
+                  const SizedBox(height: AppSpacing.xxs),
                   Row(
                     children: const [
-                      ShimmerBox(width: 36, height: 36, radius: 6),
-                      SizedBox(width: AppSpacing.xs),
-                      ShimmerBox(width: 36, height: 36, radius: 6),
-                      SizedBox(width: AppSpacing.xs),
                       Expanded(
-                        child: SizedBox(
-                          height: 36,
-                          child: ShimmerBox(radius: 6),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          children: [
+                            ShimmerBox(height: 13, radius: 3),
+                            SizedBox(height: AppSpacing.xxs),
+                            FractionallySizedBox(
+                              alignment: Alignment.centerLeft,
+                              widthFactor: 0.7,
+                              child: ShimmerBox(height: 13, radius: 3),
+                            ),
+                          ],
                         ),
                       ),
+                      SizedBox(width: AppSpacing.xs),
+                      ShimmerBox(width: 36, height: 36, radius: 6),
+                      SizedBox(width: AppSpacing.xs),
+                      ShimmerBox(width: 36, height: 36, radius: 6),
                     ],
+                  ),
+                  const SizedBox(height: AppSpacing.xs),
+                  const Align(
+                    alignment: Alignment.centerLeft,
+                    child: ShimmerBox(width: 96, height: 12, radius: 3),
+                  ),
+                  const SizedBox(height: AppSpacing.xs),
+                  const Align(
+                    alignment: Alignment.centerLeft,
+                    child: ShimmerBox(width: 68, height: 19, radius: 3),
                   ),
                 ],
               ),

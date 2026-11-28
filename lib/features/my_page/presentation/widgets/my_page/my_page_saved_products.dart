@@ -1,6 +1,9 @@
 import 'package:re_view_front/shared/widgets/loading_view.dart';
 import 'package:re_view_front/shared/widgets/list_row_skeleton.dart';
-import 'package:re_view_front/shared/presentation/analysis_formatters.dart';
+import 'package:re_view_front/core/analysis/analysis_display.dart';
+import 'package:re_view_front/shared/widgets/product_card_layout.dart';
+import 'package:re_view_front/shared/widgets/product_review_metrics.dart';
+import 'package:re_view_front/shared/widgets/product_card_skeleton.dart';
 // ignore_for_file: use_key_in_widget_constructors
 
 import 'package:flutter/material.dart';
@@ -26,7 +29,17 @@ class MyPageSavedProductsSection extends StatelessWidget {
   Widget build(BuildContext context) {
     if (isLoading) {
       if (items.isEmpty) {
-        return const ListLoadingSkeleton(responsiveGrid: true);
+        return LoadingSkeleton(
+          child: LayoutBuilder(
+            builder: (context, constraints) => ProductCardRows(
+              columns: _savedProductColumns(constraints.maxWidth),
+              spacing: AppSpacing.md,
+              itemCount: 4,
+              itemBuilder: (context, _) =>
+                  const ProductCardSkeleton(borderRadius: AppRadius.small),
+            ),
+          ),
+        );
       }
       return SizedBox(
         height: 180,
@@ -46,20 +59,11 @@ class MyPageSavedProductsSection extends StatelessWidget {
     final displayItems = items.take(4).toList(growable: false);
     return LayoutBuilder(
       builder: (context, constraints) {
-        final columns = constraints.maxWidth < 600
-            ? 1
-            : constraints.maxWidth < 1000
-            ? 2
-            : 4;
-        final width =
-            (constraints.maxWidth - (columns - 1) * AppSpacing.md) / columns;
-        return Wrap(
+        return ProductCardRows(
+          columns: _savedProductColumns(constraints.maxWidth),
           spacing: AppSpacing.md,
-          runSpacing: AppSpacing.md,
-          children: [
-            for (final item in displayItems)
-              SizedBox(width: width, child: _card(context, item)),
-          ],
+          itemCount: displayItems.length,
+          itemBuilder: (context, index) => _card(context, displayItems[index]),
         );
       },
     );
@@ -67,6 +71,8 @@ class MyPageSavedProductsSection extends StatelessWidget {
 
   Widget _card(BuildContext context, WishlistItem item) {
     return MyPageCompactProductCard(
+      key: ValueKey(item.productId),
+      stacked: true,
       title: item.name,
       subtitle:
           item.platform ??
@@ -76,22 +82,33 @@ class MyPageSavedProductsSection extends StatelessWidget {
       price: item.price,
       rating: item.avgRating,
       reviewCount: item.reviewCount,
-      rtiLabel: item.analysisDisplay.badgeText(context),
+      analysis: item.analysisDisplay,
+      analyzedReviewCount: item.summary?.catalogAnalysis?.reviewCount,
       onTap: () => onProductTap(item),
     );
   }
 }
 
+int _savedProductColumns(double width) => switch (width) {
+  >= 1000 => 4,
+  >= 600 => 2,
+  _ => 1,
+};
+
 class MyPageCompactProductCard extends StatelessWidget {
   const MyPageCompactProductCard({
+    super.key,
     required this.title,
     required this.subtitle,
     required this.imageUrl,
     required this.price,
     required this.rating,
     required this.reviewCount,
-    required this.rtiLabel,
+    required this.analysis,
     required this.onTap,
+    this.analyzedReviewCount,
+    this.gradeLabel,
+    this.stacked = false,
   });
 
   final String title;
@@ -100,93 +117,104 @@ class MyPageCompactProductCard extends StatelessWidget {
   final int? price;
   final double? rating;
   final int? reviewCount;
-  final String rtiLabel;
+  final AnalysisDisplay analysis;
+  final int? analyzedReviewCount;
+  final String? gradeLabel;
   final VoidCallback onTap;
+  final bool stacked;
 
   @override
   Widget build(BuildContext context) {
+    final details = Column(
+      mainAxisSize: MainAxisSize.min,
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        Text(
+          subtitle,
+          maxLines: 1,
+          overflow: TextOverflow.ellipsis,
+          style: Theme.of(context).textTheme.labelMedium?.copyWith(
+            color: AppColors.textSecondary,
+            fontWeight: FontWeight.w800,
+          ),
+        ),
+        const SizedBox(height: AppSpacing.xxs),
+        Text(
+          title,
+          maxLines: 2,
+          overflow: TextOverflow.ellipsis,
+          style: Theme.of(context).textTheme.titleSmall?.copyWith(
+            color: AppColors.textPrimary,
+            fontWeight: FontWeight.w900,
+          ),
+        ),
+        const SizedBox(height: AppSpacing.xs),
+        Text(
+          price == null
+              ? AppLocalizations.of(context).homePriceUnavailable
+              : myPageFormatPrice(context, price!),
+          style: Theme.of(context).textTheme.labelLarge?.copyWith(
+            color: AppColors.textPrimary,
+            fontWeight: FontWeight.w900,
+          ),
+        ),
+        const SizedBox(height: AppSpacing.xs),
+        if (gradeLabel case final String grade)
+          Text(
+            grade,
+            style: Theme.of(context).textTheme.labelSmall?.copyWith(
+              color: AppColors.primary,
+              fontWeight: FontWeight.w900,
+            ),
+          ),
+        ProductReviewMetrics(
+          rating: rating,
+          reviewCount: reviewCount,
+          analysis: analysis,
+          analyzedReviewCount: analyzedReviewCount,
+          alignment: stacked ? WrapAlignment.spaceBetween : WrapAlignment.start,
+        ),
+      ],
+    );
+
     return MyPagePanel(
       onTap: onTap,
-      padding: const EdgeInsets.all(AppSpacing.md),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          ClipRRect(
-            borderRadius: AppRadius.small,
-            child: SizedBox.square(
-              dimension: 96,
-              child: AppNetworkImage(url: imageUrl, thumbnailWidth: 240),
-            ),
-          ),
-          const SizedBox(width: AppSpacing.md),
-          Expanded(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.start,
+      padding: stacked ? EdgeInsets.zero : const EdgeInsets.all(AppSpacing.md),
+      child: stacked
+          ? Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                Text(
-                  subtitle,
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                  style: Theme.of(context).textTheme.labelMedium?.copyWith(
-                    color: AppColors.textSecondary,
-                    fontWeight: FontWeight.w800,
+                AspectRatio(
+                  aspectRatio: productCardImageAspectRatio,
+                  child: AppNetworkImage(
+                    url: imageUrl,
+                    thumbnailWidth: 480,
+                    borderRadius: const BorderRadius.vertical(
+                      top: Radius.circular(AppRadius.sm),
+                    ),
                   ),
                 ),
-                const SizedBox(height: AppSpacing.xxs),
-                Text(
-                  title,
-                  maxLines: 2,
-                  overflow: TextOverflow.ellipsis,
-                  style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                    color: AppColors.textPrimary,
-                    fontWeight: FontWeight.w900,
-                  ),
-                ),
-                const SizedBox(height: AppSpacing.xs),
-                Text(
-                  price == null
-                      ? AppLocalizations.of(context).homePriceUnavailable
-                      : myPageFormatPrice(context, price!),
-                  style: Theme.of(context).textTheme.labelLarge?.copyWith(
-                    color: AppColors.textPrimary,
-                    fontWeight: FontWeight.w900,
-                  ),
-                ),
-                const SizedBox(height: AppSpacing.xs),
-                Wrap(
-                  spacing: 4,
-                  runSpacing: 4,
-                  crossAxisAlignment: WrapCrossAlignment.center,
-                  children: [
-                    if (rating != null)
-                      const Icon(
-                        Icons.star,
-                        color: Color(0xFFF59E0B),
-                        size: 14,
-                      ),
-                    if (rating != null || reviewCount != null)
-                      Text(
-                        '${rating?.toStringAsFixed(1) ?? ""}${reviewCount == null ? "" : " ($reviewCount)"}',
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                        style: Theme.of(context).textTheme.labelSmall,
-                      ),
-                    if (rtiLabel.isNotEmpty)
-                      Text(
-                        rtiLabel,
-                        style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                          color: AppColors.primary,
-                          fontWeight: FontWeight.w900,
-                        ),
-                      ),
-                  ],
+                Padding(
+                  padding: const EdgeInsets.all(AppSpacing.md),
+                  child: details,
                 ),
               ],
+            )
+          : Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                SizedBox.square(
+                  dimension: 96,
+                  child: AppNetworkImage(
+                    url: imageUrl,
+                    thumbnailWidth: 240,
+                    borderRadius: AppRadius.small,
+                  ),
+                ),
+                const SizedBox(width: AppSpacing.md),
+                Expanded(child: details),
+              ],
             ),
-          ),
-        ],
-      ),
     );
   }
 }

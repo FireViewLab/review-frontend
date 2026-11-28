@@ -13,11 +13,13 @@ class ProductReviewMetrics extends StatelessWidget {
     this.reviewCount,
     required this.analysis,
     this.analyzedReviewCount,
+    this.alignment = WrapAlignment.spaceBetween,
   });
   final double? rating;
   final int? reviewCount;
   final AnalysisDisplay analysis;
   final int? analyzedReviewCount;
+  final WrapAlignment alignment;
 
   @override
   Widget build(BuildContext context) {
@@ -39,27 +41,22 @@ class ProductReviewMetrics extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Expanded(
-              child: Text(label, style: Theme.of(context).textTheme.labelSmall),
-            ),
-            if (showScore) ...[
-              const SizedBox(width: AppSpacing.xs),
-              Flexible(
-                child: Align(
-                  alignment: AlignmentDirectional.centerEnd,
-                  child: RtiBadge(
-                    value: analysis.score!.round(),
-                    color: analysis.color,
-                    analysis: analysis,
-                  ),
+        if (label.isNotEmpty || showScore)
+          Wrap(
+            alignment: alignment,
+            spacing: AppSpacing.xs,
+            runSpacing: AppSpacing.xxs,
+            children: [
+              if (label.isNotEmpty)
+                Text(label, style: Theme.of(context).textTheme.labelSmall),
+              if (showScore)
+                RtiBadge(
+                  value: analysis.score!.round(),
+                  color: analysis.color,
+                  analysis: analysis,
                 ),
-              ),
             ],
-          ],
-        ),
+          ),
         if (analysis.attentionReviewsLabel(context) case final String attention)
           Text(attention, style: Theme.of(context).textTheme.labelSmall),
       ],

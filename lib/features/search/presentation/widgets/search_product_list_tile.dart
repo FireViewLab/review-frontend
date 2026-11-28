@@ -25,9 +25,8 @@ class _SearchProductListTileState extends State<SearchProductListTile> {
   Widget build(BuildContext context) {
     final product = widget.product;
     final isCompact = MediaQuery.sizeOf(context).width < 760;
-    final image = SizedBox(
-      width: isCompact ? 120 : 188,
-      height: isCompact ? 92 : 126,
+    final image = SizedBox.square(
+      dimension: isCompact ? 96 : 120,
       child: Stack(
         children: [
           Positioned.fill(
