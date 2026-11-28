@@ -14,6 +14,7 @@ import 'package:re_view_front/features/search/domain/usecases/search_products_us
 import 'package:re_view_front/features/search/presentation/models/search_filter_options.dart';
 import 'package:re_view_front/features/search/presentation/models/search_view_mode.dart';
 import 'package:re_view_front/features/search/presentation/providers/search_providers.dart';
+import 'package:re_view_front/features/search/presentation/view_models/search_product_derivation.dart';
 import 'package:re_view_front/features/search/presentation/view_models/search_results_state.dart';
 import 'package:re_view_front/features/search/presentation/view_models/search_state.dart';
 import 'package:re_view_front/features/search/presentation/widgets/search_results_body.dart';
@@ -84,13 +85,11 @@ class _SearchResultsPageState extends ConsumerState<SearchResultsPage> {
   bool _needsUrlFacetValidation = false;
   bool _searchStartPending = false;
 
-  // 상품 단위 카테고리 해석은 결과가 바뀌지 않는 한 같으므로 상품 객체에 붙여 둔다.
-  final _categoryLabelCache = Expando<String>('categoryLabel');
-  final _resolvedCategoryCache = Expando<bool>('resolvedCategory');
-  Expando<bool> _inCategoryCache = Expando<bool>('inCategory');
+  final _productDerivation = SearchProductDerivation();
 
   // 원본 결과로만 정해지는 필터 집계는 원본 목록이 바뀔 때만 다시 만든다.
   List<SearchResultProduct>? _facetSource;
+  String? _facetScopeId;
   List<SearchResultProduct> _pageProducts = const [];
   List<SearchFilterChipData> _quickFilterFacets = const [];
   List<SearchFilterChipData> _categoryFacets = const [];
@@ -110,11 +109,6 @@ class _SearchResultsPageState extends ConsumerState<SearchResultsPage> {
     super.didUpdateWidget(oldWidget);
     if (!mapEquals(oldWidget.filterParams, widget.filterParams)) {
       _lastSyncedFilterParams = null;
-    }
-    if (oldWidget.categoryId != widget.categoryId ||
-        oldWidget.categoryLabel != widget.categoryLabel) {
-      _facetSource = null;
-      _inCategoryCache = Expando<bool>('inCategory');
     }
     if (oldWidget.query != widget.query ||
         oldWidget.categoryId != widget.categoryId ||
@@ -197,9 +191,11 @@ class _SearchResultsPageState extends ConsumerState<SearchResultsPage> {
         params.catalog && hasCurrentResults && searchState is SearchSuccess
         ? searchState.totalCount
         : null;
-    if (!identical(_facetSource, products)) {
+    final facetScopeId = catalogCategory?.localFilterId;
+    if (!identical(_facetSource, products) || _facetScopeId != facetScopeId) {
       _facetSource = products;
-      _pageProducts = catalogCategory?.localFilterId == null
+      _facetScopeId = facetScopeId;
+      _pageProducts = facetScopeId == null
           ? products
           : products
                 .where(
@@ -210,19 +206,33 @@ class _SearchResultsPageState extends ConsumerState<SearchResultsPage> {
                   ),
                 )
                 .toList(growable: false);
+      _categoryFacets = _buildCategoryFilters(_pageProducts);
       _quickFilterFacets = _buildQuickFilters(
         _pageProducts,
+        _categoryFacets,
         catalogTotal ?? _pageProducts.length,
       );
-      _categoryFacets = _buildCategoryFilters(_pageProducts);
       _priceRangeFacets = _buildPriceRanges(_pageProducts);
+    } else if (_quickFilterFacets.first.count !=
+        (catalogTotal ?? _pageProducts.length)) {
+      _quickFilterFacets = [
+        SearchFilterChipData(
+          label: '전체',
+          count: catalogTotal ?? _pageProducts.length,
+        ),
+        ..._quickFilterFacets.skip(1),
+      ];
     }
 
     // 다른 검색어의 이전 결과나 로딩·실패 상태로 공유 주소를 정리하지 않는다.
     if (_needsUrlFacetValidation && hasCurrentResults) {
       _validateUrlFacets(_pageProducts);
     }
-    final filteredProducts = _sortProducts(_filterProducts(_pageProducts));
+    final filteredProducts = _productDerivation.resolve(
+      _pageProducts,
+      _productFilters,
+      _sortOption,
+    );
     final totalCount = catalogTotal ?? filteredProducts.length;
     final failure =
         !_searchStartPending &&
@@ -271,7 +281,7 @@ class _SearchResultsPageState extends ConsumerState<SearchResultsPage> {
         ),
         if (!params.catalog &&
             widget.categoryId != null &&
-            products.any((p) => !_hasResolvedCategory(p)))
+            products.any((p) => !_productDerivation.hasResolvedCategory(p)))
           SliverToBoxAdapter(
             child: Padding(
               padding: EdgeInsets.all(AppSpacing.md),
@@ -383,43 +393,26 @@ class _SearchResultsPageState extends ConsumerState<SearchResultsPage> {
 
   List<SearchFilterChipData> _buildQuickFilters(
     List<SearchResultProduct> products,
+    List<SearchFilterChipData> categories,
     int totalCount,
   ) {
-    final categorySet = <String>{};
-    for (final p in products) {
-      final label = _categoryLabelForProduct(p);
-      if (label.isNotEmpty) {
-        categorySet.add(label);
+    var highRti = 0;
+    var unanalyzed = 0;
+    for (final product in products) {
+      final analysis = product.analysisDisplay;
+      if (analysis.isV2) continue;
+      final score = analysis.score;
+      if (score == null) {
+        unanalyzed++;
+      } else if (score >= 80) {
+        highRti++;
       }
     }
     return [
       SearchFilterChipData(label: '전체', count: totalCount),
-      SearchFilterChipData(
-        label: 'RTI 80+',
-        count: products
-            .where(
-              (p) =>
-                  !p.analysisDisplay.isV2 &&
-                  p.analysisDisplay.score != null &&
-                  p.analysisDisplay.score! >= 80,
-            )
-            .length,
-      ),
-      SearchFilterChipData(
-        label: '분석 전',
-        count: products
-            .where(
-              (p) => !p.analysisDisplay.isV2 && p.analysisDisplay.score == null,
-            )
-            .length,
-      ),
-      for (final cat in categorySet)
-        SearchFilterChipData(
-          label: cat,
-          count: products
-              .where((p) => _categoryLabelForProduct(p) == cat)
-              .length,
-        ),
+      SearchFilterChipData(label: 'RTI 80+', count: highRti),
+      SearchFilterChipData(label: '분석 전', count: unanalyzed),
+      ...categories,
     ];
   }
 
@@ -431,7 +424,9 @@ class _SearchResultsPageState extends ConsumerState<SearchResultsPage> {
       for (final label in searchPriceRanges.keys)
         SearchFilterChipData(
           label: label,
-          count: products.where((p) => _matchesPriceRange(p, label)).length,
+          count: products
+              .where((p) => _productDerivation.matchesPriceRange(p, label))
+              .length,
         ),
     ];
   }
@@ -441,7 +436,7 @@ class _SearchResultsPageState extends ConsumerState<SearchResultsPage> {
   ) {
     final counts = <String, int>{};
     for (final p in products) {
-      final label = _categoryLabelForProduct(p);
+      final label = _productDerivation.categoryLabel(p);
       if (label.isEmpty) continue;
       counts[label] = (counts[label] ?? 0) + 1;
     }
@@ -704,141 +699,25 @@ class _SearchResultsPageState extends ConsumerState<SearchResultsPage> {
     });
   }
 
-  List<SearchResultProduct> _filterProducts(
-    List<SearchResultProduct> products,
-  ) {
-    final categoryId = _isCatalog ? null : widget.categoryId;
-    final (minPrice, maxPrice) = _isPriceFilterActive
-        ? _normalizedPriceBounds(
-            _minPriceController.text,
-            _maxPriceController.text,
-          )
-        : (null, null);
-    return products
-        .where((product) {
-          if (categoryId != null &&
-              _hasResolvedCategory(product) &&
-              !(_inCategoryCache[product] ??= isProductInCategory(
-                categoryId,
-                productCategory: product.category,
-                productCategoryDisplayName: product.categoryDisplayName,
-                productName: '',
-              ))) {
-            return false;
-          }
-
-          if (_selectedBrand != null &&
-              product.normalizedPlatform != _selectedBrand) {
-            return false;
-          }
-          if (_selectedAttributeFilters.contains('분석 전만') &&
-              (product.analysisDisplay.isV2 ||
-                  product.analysisDisplay.score != null)) {
-            return false;
-          }
-          if (_selectedAttributeFilters.contains('가격 정보 없음만') &&
-              product.price != null) {
-            return false;
-          }
-
-          if (_selectedCategories.isNotEmpty &&
-              !_selectedCategories.contains(
-                _categoryLabelForProduct(product),
-              )) {
-            return false;
-          }
-
-          if (_selectedPriceRanges.isNotEmpty &&
-              !_selectedPriceRanges.any(
-                (range) => _matchesPriceRange(product, range),
-              )) {
-            return false;
-          }
-
-          final price = product.price;
-          if (price == null && (minPrice != null || maxPrice != null)) {
-            return false;
-          }
-          if (price != null &&
-              ((minPrice != null && price < minPrice) ||
-                  (maxPrice != null && price > maxPrice))) {
-            return false;
-          }
-
-          if (_isRtiFilterActive &&
-              (product.analysisDisplay.score == null ||
-                  product.analysisDisplay.score! < _selectedRtiMinimum)) {
-            return false;
-          }
-
-          if (_selectedReviewConditions.contains('리뷰 50개 이상') &&
-              (product.reviewCount == null || product.reviewCount! < 50)) {
-            return false;
-          }
-
-          if (_selectedQuickFilter != '전체' &&
-              !_matchesQuickFilter(product, _selectedQuickFilter)) {
-            return false;
-          }
-
-          return true;
-        })
-        .toList(growable: false);
-  }
-
-  /// 정책 지수(v2)와 RTI(v0.5)는 척도가 달라 서로 비교하지 않는다.
-  /// v2 그룹, v0.5 그룹, 점수 없음 순으로 두고 같은 그룹 안에서만 점수로 정렬한다.
-  static int _compareAnalysisScore(
-    SearchResultProduct a,
-    SearchResultProduct b,
-  ) {
-    int group(SearchResultProduct product) {
-      final display = product.analysisDisplay;
-      if (display.score == null) return 2;
-      return display.isV2 ? 0 : 1;
-    }
-
-    final byGroup = group(a).compareTo(group(b));
-    if (byGroup != 0) return byGroup;
-    return (b.analysisDisplay.score ?? -1).compareTo(
-      a.analysisDisplay.score ?? -1,
-    );
-  }
-
-  List<SearchResultProduct> _sortProducts(List<SearchResultProduct> products) {
-    final sorted = [...products];
-    switch (_sortOption) {
-      case SearchSortOption.accuracy:
-        return sorted;
-      case SearchSortOption.rti:
-        sorted.sort(_compareAnalysisScore);
-      case SearchSortOption.reviewCount:
-        sorted.sort(
-          (a, b) => (b.reviewCount ?? -1).compareTo(a.reviewCount ?? -1),
-        );
-      case SearchSortOption.sales:
-        sorted.sort(
-          (a, b) => (b.reviewCount ?? -1).compareTo(a.reviewCount ?? -1),
-        );
-      case SearchSortOption.priceLow:
-        sorted.sort((a, b) => _comparePrice(a.price, b.price));
-      case SearchSortOption.priceHigh:
-        sorted.sort(
-          (a, b) => _comparePrice(a.price, b.price, descending: true),
-        );
-      case SearchSortOption.newest:
-        sorted.sort((a, b) => 0);
-    }
-    return sorted;
-  }
-
-  bool _matchesPriceRange(SearchResultProduct product, String label) {
-    final (min, max) = searchPriceRanges[label]!;
-    final price = product.price;
-    return price != null &&
-        (min == null || price >= min) &&
-        (max == null || price <= max);
-  }
+  SearchProductFilters get _productFilters => (
+    categories: _selectedCategories,
+    priceRanges: _selectedPriceRanges,
+    rules: (
+      categoryId: _isCatalog ? null : widget.categoryId,
+      platform: _selectedBrand,
+      priceBounds: _isPriceFilterActive
+          ? _normalizedPriceBounds(
+              _minPriceController.text,
+              _maxPriceController.text,
+            )
+          : (null, null),
+      quickFilter: _selectedQuickFilter,
+      unanalyzedOnly: _selectedAttributeFilters.contains('분석 전만'),
+      missingPriceOnly: _selectedAttributeFilters.contains('가격 정보 없음만'),
+      minimumRti: _isRtiFilterActive ? _selectedRtiMinimum : null,
+      minimumReviews: _selectedReviewConditions.contains('리뷰 50개 이상'),
+    ),
+  );
 
   void _setPriceBounds((int?, int?) bounds) {
     final (min, max) = bounds;
@@ -895,18 +774,6 @@ class _SearchResultsPageState extends ConsumerState<SearchResultsPage> {
     });
   }
 
-  bool _matchesQuickFilter(SearchResultProduct product, String label) {
-    return switch (label) {
-      '분석 전' =>
-        !product.analysisDisplay.isV2 && product.analysisDisplay.score == null,
-      'RTI 80+' =>
-        !product.analysisDisplay.isV2 &&
-            product.analysisDisplay.score != null &&
-            product.analysisDisplay.score! >= 80,
-      _ => _categoryLabelForProduct(product) == label,
-    };
-  }
-
   void _toggleSetValue(Set<String> values, String value) {
     if (values.contains(value)) {
       values.remove(value);
@@ -914,36 +781,6 @@ class _SearchResultsPageState extends ConsumerState<SearchResultsPage> {
       values.add(value);
     }
   }
-
-  String _categoryLabelForProduct(SearchResultProduct product) =>
-      _categoryLabelCache[product] ??= _computeCategoryLabel(product);
-
-  String _computeCategoryLabel(SearchResultProduct product) {
-    if (product.category.isEmpty) {
-      return product.subCategory?.trim().isNotEmpty == true
-          ? product.subCategory!
-          : product.categoryDisplayName.isNotEmpty
-          ? product.categoryDisplayName
-          : '분류 정보 없음';
-    }
-    return normalizedCategoryLabel(
-      category: product.category,
-      categoryDisplayName: product.categoryDisplayName,
-      productName: '',
-    );
-  }
-
-  bool _hasResolvedCategory(SearchResultProduct product) =>
-      _resolvedCategoryCache[product] ??= _computeHasResolvedCategory(product);
-
-  bool _computeHasResolvedCategory(SearchResultProduct product) =>
-      product.category.isNotEmpty &&
-      resolveProductCategory(
-            product.category,
-            displayName: product.categoryDisplayName,
-            productName: '',
-          ) !=
-          null;
 
   List<SearchCategoryCrumb> get _categoryPath {
     final categoryId = widget.categoryId;
@@ -1014,8 +851,3 @@ SearchSortOption _supportedSort(SearchSortOption? option) =>
     option == SearchSortOption.sales || option == SearchSortOption.newest
     ? SearchSortOption.accuracy
     : option ?? SearchSortOption.accuracy;
-int _comparePrice(int? a, int? b, {bool descending = false}) {
-  if (a == null) return b == null ? 0 : 1;
-  if (b == null) return -1;
-  return descending ? b.compareTo(a) : a.compareTo(b);
-}
