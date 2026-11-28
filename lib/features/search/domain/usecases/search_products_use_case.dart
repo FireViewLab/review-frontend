@@ -18,6 +18,18 @@ class SearchParams {
   final String? category;
   final int page;
   final int size;
+
+  @override
+  bool operator ==(Object other) =>
+      other is SearchParams &&
+      query == other.query &&
+      catalog == other.catalog &&
+      category == other.category &&
+      page == other.page &&
+      size == other.size;
+
+  @override
+  int get hashCode => Object.hash(query, catalog, category, page, size);
 }
 
 class SearchProductsUseCase {
