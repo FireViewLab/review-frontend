@@ -89,6 +89,7 @@ class _SearchResultsPageState extends ConsumerState<SearchResultsPage> {
 
   // 원본 결과로만 정해지는 필터 집계는 원본 목록이 바뀔 때만 다시 만든다.
   List<SearchResultProduct>? _facetSource;
+  String? _facetScopeId;
   List<SearchResultProduct> _pageProducts = const [];
   List<SearchFilterChipData> _quickFilterFacets = const [];
   List<SearchFilterChipData> _categoryFacets = const [];
@@ -108,10 +109,6 @@ class _SearchResultsPageState extends ConsumerState<SearchResultsPage> {
     super.didUpdateWidget(oldWidget);
     if (!mapEquals(oldWidget.filterParams, widget.filterParams)) {
       _lastSyncedFilterParams = null;
-    }
-    if (oldWidget.categoryId != widget.categoryId ||
-        oldWidget.categoryLabel != widget.categoryLabel) {
-      _facetSource = null;
     }
     if (oldWidget.query != widget.query ||
         oldWidget.categoryId != widget.categoryId ||
@@ -194,9 +191,11 @@ class _SearchResultsPageState extends ConsumerState<SearchResultsPage> {
         params.catalog && hasCurrentResults && searchState is SearchSuccess
         ? searchState.totalCount
         : null;
-    if (!identical(_facetSource, products)) {
+    final facetScopeId = catalogCategory?.localFilterId;
+    if (!identical(_facetSource, products) || _facetScopeId != facetScopeId) {
       _facetSource = products;
-      _pageProducts = catalogCategory?.localFilterId == null
+      _facetScopeId = facetScopeId;
+      _pageProducts = facetScopeId == null
           ? products
           : products
                 .where(
@@ -207,12 +206,22 @@ class _SearchResultsPageState extends ConsumerState<SearchResultsPage> {
                   ),
                 )
                 .toList(growable: false);
+      _categoryFacets = _buildCategoryFilters(_pageProducts);
       _quickFilterFacets = _buildQuickFilters(
         _pageProducts,
+        _categoryFacets,
         catalogTotal ?? _pageProducts.length,
       );
-      _categoryFacets = _buildCategoryFilters(_pageProducts);
       _priceRangeFacets = _buildPriceRanges(_pageProducts);
+    } else if (_quickFilterFacets.first.count !=
+        (catalogTotal ?? _pageProducts.length)) {
+      _quickFilterFacets = [
+        SearchFilterChipData(
+          label: '전체',
+          count: catalogTotal ?? _pageProducts.length,
+        ),
+        ..._quickFilterFacets.skip(1),
+      ];
     }
 
     // 다른 검색어의 이전 결과나 로딩·실패 상태로 공유 주소를 정리하지 않는다.
@@ -384,43 +393,26 @@ class _SearchResultsPageState extends ConsumerState<SearchResultsPage> {
 
   List<SearchFilterChipData> _buildQuickFilters(
     List<SearchResultProduct> products,
+    List<SearchFilterChipData> categories,
     int totalCount,
   ) {
-    final categorySet = <String>{};
-    for (final p in products) {
-      final label = _productDerivation.categoryLabel(p);
-      if (label.isNotEmpty) {
-        categorySet.add(label);
+    var highRti = 0;
+    var unanalyzed = 0;
+    for (final product in products) {
+      final analysis = product.analysisDisplay;
+      if (analysis.isV2) continue;
+      final score = analysis.score;
+      if (score == null) {
+        unanalyzed++;
+      } else if (score >= 80) {
+        highRti++;
       }
     }
     return [
       SearchFilterChipData(label: '전체', count: totalCount),
-      SearchFilterChipData(
-        label: 'RTI 80+',
-        count: products
-            .where(
-              (p) =>
-                  !p.analysisDisplay.isV2 &&
-                  p.analysisDisplay.score != null &&
-                  p.analysisDisplay.score! >= 80,
-            )
-            .length,
-      ),
-      SearchFilterChipData(
-        label: '분석 전',
-        count: products
-            .where(
-              (p) => !p.analysisDisplay.isV2 && p.analysisDisplay.score == null,
-            )
-            .length,
-      ),
-      for (final cat in categorySet)
-        SearchFilterChipData(
-          label: cat,
-          count: products
-              .where((p) => _productDerivation.categoryLabel(p) == cat)
-              .length,
-        ),
+      SearchFilterChipData(label: 'RTI 80+', count: highRti),
+      SearchFilterChipData(label: '분석 전', count: unanalyzed),
+      ...categories,
     ];
   }
 
