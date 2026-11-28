@@ -3830,6 +3830,19 @@ class AppLocalizationsEn extends AppLocalizations {
       'Risk trends are available after AI analysis is complete';
 
   @override
+  String get detailTrendEmptyPeriod =>
+      'No analysis data for the selected period.';
+
+  @override
+  String detailTrendSingleScore(double score) {
+    final intl.NumberFormat scoreNumberFormat =
+        intl.NumberFormat.decimalPattern(localeName);
+    final String scoreString = scoreNumberFormat.format(score);
+
+    return 'Average RTI: $scoreString';
+  }
+
+  @override
   String get detailAverageRti => 'Average RTI';
 
   @override

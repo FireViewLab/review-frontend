@@ -6960,6 +6960,18 @@ abstract class AppLocalizations {
   /// **'AI 분석 완료 후 위험도 추이를 확인할 수 있습니다'**
   String get detailTrendPending;
 
+  /// No description provided for @detailTrendEmptyPeriod.
+  ///
+  /// In ko, this message translates to:
+  /// **'선택한 기간에 분석 기록이 없어요.'**
+  String get detailTrendEmptyPeriod;
+
+  /// Average RTI score when only one trend observation is available.
+  ///
+  /// In ko, this message translates to:
+  /// **'평균 RTI {score}점'**
+  String detailTrendSingleScore(double score);
+
   /// No description provided for @detailAverageRti.
   ///
   /// In ko, this message translates to:

@@ -3618,6 +3618,18 @@ class AppLocalizationsZh extends AppLocalizations {
   String get detailTrendPending => 'AI 分析完成后可查看风险趋势';
 
   @override
+  String get detailTrendEmptyPeriod => '所选时段内暂无分析数据。';
+
+  @override
+  String detailTrendSingleScore(double score) {
+    final intl.NumberFormat scoreNumberFormat =
+        intl.NumberFormat.decimalPattern(localeName);
+    final String scoreString = scoreNumberFormat.format(score);
+
+    return '平均 RTI：$scoreString 分';
+  }
+
+  @override
   String get detailAverageRti => '平均 RTI';
 
   @override
