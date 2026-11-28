@@ -4,27 +4,72 @@ import 'package:re_view_front/app/theme/app_colors.dart';
 import 'package:re_view_front/app/theme/app_spacing.dart';
 import 'package:re_view_front/features/search/domain/entities/search_result_product.dart';
 
-class PriceBox extends StatelessWidget {
+class PriceBox extends StatefulWidget {
   const PriceBox({
     super.key,
     required this.controller,
     required this.onChanged,
+    this.keepVisibleOnFocus = false,
   });
 
   final TextEditingController controller;
   final VoidCallback onChanged;
+  final bool keepVisibleOnFocus;
+
+  @override
+  State<PriceBox> createState() => _PriceBoxState();
+}
+
+class _PriceBoxState extends State<PriceBox> {
+  late final _focusNode = FocusNode()..addListener(_scheduleReveal);
+  double _keyboardInset = 0;
+  bool _revealScheduled = false;
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    if (!widget.keepVisibleOnFocus) return;
+
+    final inset = MediaQuery.viewInsetsOf(context).bottom;
+    if (inset > _keyboardInset) _scheduleReveal();
+    _keyboardInset = inset;
+  }
+
+  void _scheduleReveal() {
+    if (!widget.keepVisibleOnFocus ||
+        !_focusNode.hasFocus ||
+        _revealScheduled) {
+      return;
+    }
+    _revealScheduled = true;
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _revealScheduled = false;
+      if (!mounted || !_focusNode.hasFocus) return;
+      Scrollable.ensureVisible(
+        context,
+        alignmentPolicy: ScrollPositionAlignmentPolicy.keepVisibleAtEnd,
+      );
+    });
+  }
+
+  @override
+  void dispose() {
+    _focusNode.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      height: 34,
+    return ConstrainedBox(
+      constraints: const BoxConstraints(minHeight: 34),
       child: TextField(
-        controller: controller,
+        controller: widget.controller,
+        focusNode: _focusNode,
         keyboardType: TextInputType.number,
         // 음수·소수·문자가 들어가면 필터와 슬라이더 값이 어긋나므로 숫자만 받는다.
         inputFormatters: [FilteringTextInputFormatter.digitsOnly],
         textAlign: TextAlign.center,
-        onChanged: (_) => onChanged(),
+        onChanged: (_) => widget.onChanged(),
         style: Theme.of(context).textTheme.labelSmall?.copyWith(
           color: AppColors.textPrimary,
           fontWeight: FontWeight.w700,
@@ -102,14 +147,16 @@ class PriceRangeChip extends StatelessWidget {
 }
 
 class RangeEndpoint extends StatelessWidget {
-  const RangeEndpoint({super.key, required this.label});
+  const RangeEndpoint({super.key, required this.label, this.textAlign});
 
   final String label;
+  final TextAlign? textAlign;
 
   @override
   Widget build(BuildContext context) {
     return Text(
       label,
+      textAlign: textAlign,
       style: Theme.of(context).textTheme.labelSmall?.copyWith(
         color: AppColors.textPrimary,
         fontWeight: FontWeight.w800,

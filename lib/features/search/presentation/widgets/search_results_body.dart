@@ -117,6 +117,7 @@ class SearchResultsBody extends StatelessWidget {
     FilterPanel filters({bool compact = false, bool inSheet = false}) =>
         FilterPanel(
           onShowResults: inSheet ? null : showResults,
+          keepPriceVisibleOnFocus: inSheet,
           state: state,
           selectedCategories: selectedCategories,
           selectedPriceRanges: selectedPriceRanges,
